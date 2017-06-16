@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dwsync>
+<file name="FieldtypeLanguageInterface.php" server="192.168.1.2//var/www/html/dpluso/" local="131297458703437153" remote="131297668200000000" Dst="1" />
+<file name="FieldtypeTextareaLanguage.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458703912525" remote="131297668200000000" Dst="1" />
+<file name="FieldtypePageTitleLanguage.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458703612302" remote="131297668200000000" Dst="1" />
+<file name="FieldtypeTextLanguage.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458703772434" remote="131297668200000000" Dst="1" />
+<file name="Language.php" server="192.168.1.2//var/www/html/dpluso/" local="131297458704162691" remote="131297668200000000" Dst="1" />
+<file name="LanguageParser.php" server="192.168.1.2//var/www/html/dpluso/" local="131297458704382838" remote="131297668200000000" Dst="1" />
+<file name="Languages.php" server="192.168.1.2//var/www/html/dpluso/" local="131297458706755266" remote="131297668200000000" Dst="1" />
+<file name="LanguagesPageFieldValue.php" server="192.168.1.2//var/www/html/dpluso/" local="131297458707005436" remote="131297668200000000" Dst="1" />
+<file name="LanguageSupport.css" server="192.168.1.2//var/www/html/dpluso/" local="131297458704512960" remote="131297668200000000" Dst="1" />
+<file name="LanguageSupportFields.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458704838257" remote="131297668200000000" Dst="1" />
+<file name="LanguageSupportInstall.php" server="192.168.1.2//var/www/html/dpluso/" local="131297458705098443" remote="131297668200000000" Dst="1" />
+<file name="LanguageSupport.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458705388624" remote="131297668200000000" Dst="1" />
+<file name="LanguageSupportPageNames.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458705999733" remote="131297668200000000" Dst="1" />
+<file name="LanguagesValueInterface.php" server="192.168.1.2//var/www/html/dpluso/" local="131297458707095496" remote="131297668200000000" Dst="1" />
+<file name="LanguageTabs.js" server="192.168.1.2//var/www/html/dpluso/" local="131297458705603796" remote="131297668200000000" Dst="1" />
+<file name="LanguageTabs.css" server="192.168.1.2//var/www/html/dpluso/" local="131297458705468681" remote="131297668200000000" Dst="1" />
+<file name="LanguageTabs.min.js" server="192.168.1.2//var/www/html/dpluso/" local="131297458706149837" remote="131297668200000000" Dst="1" />
+<file name="LanguageTabs.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458706159847" remote="131297668200000000" Dst="1" />
+<file name="LanguageTranslator.php" server="192.168.1.2//var/www/html/dpluso/" local="131297458706530106" remote="131297668200000000" Dst="1" />
+<file name="ProcessLanguage.css" server="192.168.1.2//var/www/html/dpluso/" local="131297458707135529" remote="131297668200000000" Dst="1" />
+<file name="ProcessLanguage.js" server="192.168.1.2//var/www/html/dpluso/" local="131297458707225583" remote="131297668200000000" Dst="1" />
+<file name="ProcessLanguage.min.js" server="192.168.1.2//var/www/html/dpluso/" local="131297458707435720" remote="131297668200000000" Dst="1" />
+<file name="ProcessLanguage.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458707753980" remote="131297668200000000" Dst="1" />
+<file name="ProcessLanguageTranslator.css" server="192.168.1.2//var/www/html/dpluso/" local="131297458707475750" remote="131297668200000000" Dst="1" />
+<file name="ProcessLanguageTranslator.js" server="192.168.1.2//var/www/html/dpluso/" local="131297458707844043" remote="131297668200000000" Dst="1" />
+<file name="ProcessLanguageTranslator.min.js" server="192.168.1.2//var/www/html/dpluso/" local="131297458707944110" remote="131297668200000000" Dst="1" />
+<file name="ProcessLanguageTranslator.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458708224297" remote="131297668200000000" Dst="1" />
+</dwsync>

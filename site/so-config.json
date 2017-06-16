@@ -1,0 +1,10 @@
+{
+    "config": {
+        "use_discount": "N",
+        "change_list_price": "N",
+        "show_cost": "N",
+        "show_listprice": "N",
+        "show_originalprice": "N",
+        "show_margin": "N"
+    }
+}

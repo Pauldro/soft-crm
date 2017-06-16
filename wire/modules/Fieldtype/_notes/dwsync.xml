@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<dwsync>
+<file name="FieldtypeCache.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458607645754" remote="131297668200000000" Dst="1" />
+<file name="FieldtypeCheckbox.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458607875904" remote="131297668200000000" Dst="1" />
+<file name="FieldtypeDatetime.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458612161591" remote="131297668200000000" Dst="1" />
+<file name="FieldtypeEmail.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458612466817" remote="131297668200000000" Dst="1" />
+<file name="FieldtypeFieldsetClose.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458612611952" remote="131297668200000000" Dst="1" />
+<file name="FieldtypeFieldsetOpen.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458613082256" remote="131297668200000000" Dst="1" />
+<file name="FieldtypeFieldsetTabOpen.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458613302403" remote="131297668200000000" Dst="1" />
+<file name="FieldtypeFile.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458613612652" remote="131297668200000000" Dst="1" />
+<file name="FieldtypeFloat.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458613862822" remote="131297668200000000" Dst="1" />
+<file name="FieldtypeImage.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458614082965" remote="131297668200000000" Dst="1" />
+<file name="FieldtypeInteger.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458614313122" remote="131297668200000000" Dst="1" />
+<file name="FieldtypeModule.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458614323129" remote="131297668200000000" Dst="1" />
+<file name="FieldtypePage.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458615854252" remote="131297668200000000" Dst="1" />
+<file name="FieldtypePageTable.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458617035097" remote="131297668200000000" Dst="1" />
+<file name="FieldtypePageTitle.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458616494720" remote="131297668200000000" Dst="1" />
+<file name="FieldtypePassword.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458616694867" remote="131297668200000000" Dst="1" />
+<file name="FieldtypeSelector.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458619511908" remote="131297668200000000" Dst="1" />
+<file name="FieldtypeText.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458619793032" remote="131297668200000000" Dst="1" />
+<file name="FieldtypeTextarea.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458620003175" remote="131297668200000000" Dst="1" />
+<file name="FieldtypeTextareaHelper.php" server="192.168.1.2//var/www/html/dpluso/" local="131297458620223322" remote="131297668200000000" Dst="1" />
+<file name="FieldtypeURL.module" server="192.168.1.2//var/www/html/dpluso/" local="131297458620687035" remote="131297668200000000" Dst="1" />
+</dwsync>

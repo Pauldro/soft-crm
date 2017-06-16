@@ -1,0 +1,14 @@
+<form action="<?php echo $config->pages->ajax."load/ii/search-results/modal/"; ?>" method="POST" id="ci-cust-lookup">
+    <input type="hidden" name="action" value="ii-item-lookup">
+    <input type="hidden" name="shipID" class="shipid" value="<?php echo $shipID; ?>">
+    <input type="hidden" name="nextshipID" class="nextshipid" value="<?php echo $nextshipid; ?>">
+    <input type="hidden" name="shiptocount" class="shiptocount" value="<?php echo $custjson['shiptocount']; ?>">
+    <div class="form-group">
+        <div class="input-group custom-search-form">
+            <input type="text" class="form-control input-sm not-round custid" name="custid" placeholder="Search custID" value="<?php echo $custID;  ?>">
+            <span class="input-group-btn">
+            	<button type="submit" class="btn btn-sm btn-default not-round"> <span class="glyphicon glyphicon-search"></span> </button>
+            </span>
+        </div>
+    </div>
+</form>

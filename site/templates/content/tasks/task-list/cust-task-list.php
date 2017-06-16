@@ -1,0 +1,26 @@
+<?php
+	$tasks = get_linked_tasks($user->loginid, $custID, $shipID, '', '', '', '', $taskpanel->completed, $config->showonpage, $input->pageNum(), false);
+?>
+<table class="table table-bordered table-condensed table-striped">
+	<thead>
+    	<tr> <th>Due</th> <th>Note</th> <th>View Task</th>  <th>Mark as Complete</th>  </tr>
+    </thead>
+    <tbody>
+    	<?php foreach ($tasks as $task) : ?>
+            <tr <?php if ($task->isoverdue) {echo 'class="bg-warning"'; } ?>>
+                <td><?= date('m/d/Y', strtotime($task->duedate)); ?></td>
+                <td><?= $task->textbody; ?></td>
+                <td>
+                    <a href="<?= $task->generateviewtaskurl(); ?>" class="btn btn-primary btn-xs load-task-item" data-modal="<?= $taskpanel->modal; ?>" role="button" title="View Task">
+                       <i class="material-icons md-18">&#xE02F;</i>
+                    </a>
+                </td>
+                <td>
+                    <a href="<?= $task->generatecompletionurl('true'); ?>" class="btn btn-primary btn-xs complete-task" data-id="<?= $task->id; ?>" role="button" title="Mark as Complete">
+                       <i class="material-icons md-18">&#xE86C;</i>
+                    </a>
+                </td>
+            </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>

@@ -1,0 +1,75 @@
+<?php
+	$date = date('Ymd');
+	$time = date('His');
+
+	if ($input->post->action) { $action = $input->post->text('action'); } else { $action = $input->get->text('action'); }
+
+	$session->{'from-redirect'} = $page->url;
+
+	$filename = session_id();
+	switch ($action) {
+		case 'get-order-notes':
+			$ordn = $input->get->text('ordn');
+			$linenbr = $input->get->text('linenbr');
+			$data = array('DBNAME' => $config->dbName, 'LQNOTE' => 'SORD', 'KEY1' => $ordn, 'KEY2' => $linenbr);
+			$session->loc = $config->pages->ajax."load/notes/dplus/order/?ordn=".$ordn."&linenbr=".$linenbr;
+			break;
+		case 'get-quote-notes':
+			$qnbr = $input->get->text('qnbr');
+			$linenbr = $input->get->text('linenbr');
+			$data = array('DBNAME' => $config->dbName, 'LQNOTE' => 'QUOT', 'KEY1' => $qnbr, 'KEY2' => $linenbr);
+			$session->loc = $config->pages->ajax."load/notes/dplus/quote/?qnbr=".$qnbr."&linenbr=".$linenbr;
+			break;
+		case 'write-sales-order-note':
+			$form1 = $input->post->form1 ? "Y": "N";  $form2 = $input->post->form2 ? "Y": "N";
+			$form3 = $input->post->form3 ? "Y": "N";  $form4 = $input->post->form4 ? "Y": "N";  $form5 ='';
+
+			$key1 = $input->post->text('key1'); $key2 = $input->post->text('key2');
+			$note = addslashes($input->post->text('note'));
+			$editorinsert = $input->post->text('editorinsert');
+			$notetype = $config->dplusnotes['order']['type'];
+			$note_width = $config->dplusnotes['order']['width'];
+			$data = array('DBNAME' => $config->dbName, 'RQNOTE' => 'SORD', 'KEY1' => $key1, "KEY2" => $key2);
+			$data['FORM1'] = $form1; $data['FORM2'] = $form2; $data['FORM3'] = $form3; $data['FORM4'] = $form4; $data['FORM5'] = $form5;
+			$data = array();
+
+			if ($editorinsert == 'edit') {
+				$recnbr = $input->post->text('recnbr');
+				$session->sql = edit_note(session_id(), $key1, $key2, $form1, $form2, $form3, $form4, $form5, $note, $recnbr, $date, $time, $note_width);
+			} else {
+				$recnbr = get_next_note_recno(session_id(), $key1, $key2, $notetype);
+				$session->nextrec = $recnbr;
+				$session->sql = insert_note(session_id(), $key1, $key2, $form1, $form2, $form3, $form4, $form5, $note, $notetype, $recnbr, $date, $time, $note_width);
+			}
+			break;
+		case 'write-quote-note':
+				$form1 = $input->post->form1 ? "Y": "N";  $form2 = $input->post->form2 ? "Y": "N";
+				$form3 = $input->post->form3 ? "Y": "N";  $form4 = $input->post->form4 ? "Y": "N";  $form5 = $input->post->form5 ? "Y": "N";
+
+				$key1 = $input->post->text('key1'); $key2 = $input->post->text('key2');
+				$note = addslashes($input->post->text('note'));
+				$editorinsert = $input->post->text('editorinsert');
+				$notetype = $config->dplusnotes['quote']['type'];
+				$note_width = $config->dplusnotes['quote']['width'];
+				$data = array('DBNAME' => $config->dbName, 'RQNOTE' => 'QUOT', 'KEY1' => $key1, "KEY2" => $key2);
+				$data['FORM1'] = $form1; $data['FORM2'] = $form2; $data['FORM3'] = $form3; $data['FORM4'] = $form4;
+
+
+				if ($editorinsert == 'edit') {
+					$recnbr = $input->post->text('recnbr');
+					$session->sql = edit_note(session_id(), $key1, $key2, $form1, $form2, $form3, $form4, $form5, $note, $recnbr, $date, $time, $note_width);
+				} else {
+					$recnbr = get_next_note_recno(session_id(), $key1, $key2, $notetype);
+					$session->nextrec = $recnbr;
+					$session->sql = insertdplusnote(session_id(), $key1, $key2, $form1, $form2, $form3, $form4, $form5, $note, $notetype, $recnbr, $date, $time, $note_width);
+				}
+				break;
+
+
+	}
+
+	writedplusfile($data, $filename);
+	header("location: /cgi-bin/" . $config->cgi . "?fname=" . $filename);
+
+ 	exit;
+?>

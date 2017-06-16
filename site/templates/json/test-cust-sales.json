@@ -1,0 +1,321 @@
+{
+    "error": false,
+    "data": {
+        "custid": "BECKER",
+        "shiptoid": "",
+        "salesdata": {
+            "1": {
+                    "weekno": "1",
+                    "weekstart": "2017-04-10",
+                    "weekend": "2017-04-14",
+                    "amount": 61.98
+                },
+                "2": {
+                    "weekno": "2",
+                    "weekstart": "2017-04-03",
+                    "weekend": "2017-04-07",
+                    "amount": 26.72
+                },
+                "3": {
+                    "weekno": "3",
+                    "weekstart": "2017-03-27",
+                    "weekend": "2017-03-31",
+                    "amount": 48.81
+                },
+                "4": {
+                    "weekno": "4",
+                    "weekstart": "2017-03-20",
+                    "weekend": "2017-03-24",
+                    "amount": 27.55
+                },
+                "5": {
+                    "weekno": "5",
+                    "weekstart": "2017-03-13",
+                    "weekend": "2017-03-17",
+                    "amount": 88.5
+                },
+                "6": {
+                    "weekno": "6",
+                    "weekstart": "2017-03-06",
+                    "weekend": "2017-03-10",
+                    "amount": 50.10
+                },
+                "7": {
+                    "weekno": "7",
+                    "weekstart": "2017-02-27",
+                    "weekend": "2017-03-03",
+                    "amount": 5.50
+                },
+                "8": {
+                    "weekno": "8",
+                    "weekstart": "2017-02-20",
+                    "weekend": "2017-02-24",
+                    "amount": 91.69
+                },
+                "9": {
+                    "weekno": "9",
+                    "weekstart": "2017-02-13",
+                    "weekend": "2017-02-17",
+                    "amount": 70.55
+                },
+                "10": {
+                    "weekno": "10",
+                    "weekstart": "2017-02-06",
+                    "weekend": "2017-02-10",
+                    "amount": 98.69
+                },
+                "11": {
+                    "weekno": "11",
+                    "weekstart": "2017-01-30",
+                    "weekend": "2017-02-03",
+                    "amount": 5.31
+                },
+                "12": {
+                    "weekno": "12",
+                    "weekstart": "2017-01-23",
+                    "weekend": "2017-01-27",
+                    "amount": 67.65
+                },
+                "13": {
+                    "weekno": "13",
+                    "weekstart": "2017-01-16",
+                    "weekend": "2017-01-20",
+                    "amount": 83.28
+                },
+                "14": {
+                    "weekno": "14",
+                    "weekstart": "2017-01-09",
+                    "weekend": "2017-01-13",
+                    "amount": 46.52
+                },
+                "15": {
+                    "weekno": "15",
+                    "weekstart": "2017-01-02",
+                    "weekend": "2017-01-06",
+                    "amount": 24.14
+                },
+                "16": {
+                    "weekno": "16",
+                    "weekstart": "2016-12-26",
+                    "weekend": "2016-12-30",
+                    "amount": 30.49
+                },
+                "17": {
+                    "weekno": "17",
+                    "weekstart": "2016-12-19",
+                    "weekend": "2016-12-23",
+                    "amount": 100.96
+                },
+                "18": {
+                    "weekno": "18",
+                    "weekstart": "2016-12-12",
+                    "weekend": "2016-12-16",
+                    "amount": 67.25
+                },
+                "19": {
+                    "weekno": "19",
+                    "weekstart": "2016-12-05",
+                    "weekend": "2016-12-09",
+                    "amount": 35.58
+                },
+                "20": {
+                    "weekno": "20",
+                    "weekstart": "2016-11-28",
+                    "weekend": "2016-12-02",
+                    "amount": 54.74
+                },
+                "21": {
+                    "weekno": "21",
+                    "weekstart": "2016-11-21",
+                    "weekend": "2016-11-25",
+                    "amount": 99.36
+                },
+                "22": {
+                    "weekno": "22",
+                    "weekstart": "2016-11-14",
+                    "weekend": "2016-11-18",
+                    "amount": 38.63
+                },
+                "23": {
+                    "weekno": "23",
+                    "weekstart": "2016-11-07",
+                    "weekend": "2016-11-11",
+                    "amount": 14.12
+                },
+                "24": {
+                    "weekno": "24",
+                    "weekstart": "2016-10-31",
+                    "weekend": "2016-11-04",
+                    "amount": 16.48
+                },
+                "25": {
+                    "weekno": "25",
+                    "weekstart": "2016-10-24",
+                    "weekend": "2016-10-28",
+                    "amount": 53.22
+                },
+                "26": {
+                    "weekno": "26",
+                    "weekstart": "2016-10-17",
+                    "weekend": "2016-10-21",
+                    "amount": 33.47
+                },
+                "27": {
+                    "weekno": "27",
+                    "weekstart": "2016-10-10",
+                    "weekend": "2016-10-14",
+                    "amount": 36.49
+                },
+                "28": {
+                    "weekno": "28",
+                    "weekstart": "2016-10-03",
+                    "weekend": "2016-10-07",
+                    "amount": 88.98
+                },
+                "29": {
+                    "weekno": "29",
+                    "weekstart": "2016-09-26",
+                    "weekend": "2016-09-30",
+                    "amount": 37.28
+                },
+                "30": {
+                    "weekno": "30",
+                    "weekstart": "2016-09-19",
+                    "weekend": "2016-09-23",
+                    "amount": 28.33
+                },
+                "31": {
+                    "weekno": "31",
+                    "weekstart": "2016-09-12",
+                    "weekend": "2016-09-16",
+                    "amount": 77.44
+                },
+                "32": {
+                    "weekno": "32",
+                    "weekstart": "2016-09-05",
+                    "weekend": "2016-09-09",
+                    "amount": 48.25
+                },
+                "33": {
+                    "weekno": "33",
+                    "weekstart": "2016-08-29",
+                    "weekend": "2016-09-02",
+                    "amount": 27.31
+                },
+                "34": {
+                    "weekno": "34",
+                    "weekstart": "2016-08-22",
+                    "weekend": "2016-08-26",
+                    "amount": 96.15
+                },
+                "35": {
+                    "weekno": "35",
+                    "weekstart": "2016-08-15",
+                    "weekend": "2016-08-19",
+                    "amount": 10.73
+                },
+                "36": {
+                    "weekno": "36",
+                    "weekstart": "2016-08-08",
+                    "weekend": "2016-08-12",
+                    "amount": 69.32
+                },
+                "37": {
+                    "weekno": "37",
+                    "weekstart": "2016-08-01",
+                    "weekend": "2016-08-05",
+                    "amount": 97.59
+                },
+                "38": {
+                    "weekno": "38",
+                    "weekstart": "2016-07-25",
+                    "weekend": "2016-07-29",
+                    "amount": 14.62
+                },
+                "39": {
+                    "weekno": "39",
+                    "weekstart": "2016-07-18",
+                    "weekend": "2016-07-22",
+                    "amount": 11.11
+                },
+                "40": {
+                    "weekno": "40",
+                    "weekstart": "2016-07-11",
+                    "weekend": "2016-07-15",
+                    "amount": 27.65
+                },
+                "41": {
+                    "weekno": "41",
+                    "weekstart": "2016-07-04",
+                    "weekend": "2016-07-08",
+                    "amount": 23.25
+                },
+                "42": {
+                    "weekno": "42",
+                    "weekstart": "2016-06-27",
+                    "weekend": "2016-07-01",
+                    "amount": 56.49
+                },
+                "43": {
+                    "weekno": "43",
+                    "weekstart": "2016-06-20",
+                    "weekend": "2016-06-24",
+                    "amount": 55.32
+                },
+                "44": {
+                    "weekno": "44",
+                    "weekstart": "2016-06-13",
+                    "weekend": "2016-06-17",
+                    "amount": 97.75
+                },
+                "45": {
+                    "weekno": "45",
+                    "weekstart": "2016-06-06",
+                    "weekend": "2016-06-10",
+                    "amount": 79.66
+                },
+                "46": {
+                    "weekno": "46",
+                    "weekstart": "2016-05-30",
+                    "weekend": "2016-06-03",
+                    "amount": 97.51
+                },
+                "47": {
+                    "weekno": "47",
+                    "weekstart": "2016-05-23",
+                    "weekend": "2016-05-27",
+                    "amount": 17.12
+                },
+                "48": {
+                    "weekno": "48",
+                    "weekstart": "2016-05-16",
+                    "weekend": "2016-05-20",
+                    "amount": 53.37
+                },
+                "49": {
+                    "weekno": "49",
+                    "weekstart": "2016-05-09",
+                    "weekend": "2016-05-13",
+                    "amount": 41.33
+                },
+                "50": {
+                    "weekno": "50",
+                    "weekstart": "2016-05-02",
+                    "weekend": "2016-05-06",
+                    "amount": 12.43
+                },
+                "51": {
+                    "weekno": "51",
+                    "weekstart": "2016-04-25",
+                    "weekend": "2016-04-29",
+                    "amount": 72.25
+                },
+                "52": {
+                    "weekno": "52",
+                    "weekstart": "2016-04-18",
+                    "weekend": "2016-04-22",
+                    "amount": 71.27
+                }
+        }
+    }
+}

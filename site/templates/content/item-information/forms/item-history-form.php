@@ -1,0 +1,24 @@
+<form action="<?php echo $config->pages->products."redir/"; ?>" id="ii-sales-history-form" method="post">
+    <input type="hidden" name="action" value="ii-sales-history">
+    <input type="hidden" name="itemid" value="<?php echo $itemid; ?>">
+    <div class="row">
+        <div class="col-xs-10">
+            <div class="form-group">
+                <p>Item: <?php echo $itemid; ?></p>
+            </div>
+            <div class="form-group">
+                <label for="">Starting Invoice Date</label>
+                <div class="input-group date">
+                   	<?php $name = 'date'; $value = '';?>
+					<?php include $config->paths->content."common/date-picker.php"; ?>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="">Customer ID</label>
+                <input type="text" class="form-control not-round custid" name="custID" placeholder="CustID" value="<?php echo $custID; ?>">
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm">Submit</button> &nbsp; &nbsp;
+            <button type="button" class="btn btn-primary btn-sm" onclick="iicust('ii-item-hist');">Choose Cust</button>
+        </div>
+    </div>
+</form>

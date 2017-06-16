@@ -1,0 +1,380 @@
+{
+    "error": false,
+    "errormsg": "",
+    "sessionid": "ci53",
+    "custid": "BECKER",
+    "shipid": "",
+    "data": {
+        "1": {
+            "weekstartdate": "04/30/2017",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "2": {
+            "weekstartdate": "04/23/2017",
+            "nbroforders": "2",
+            "nbrofitems": "3",
+            "saleamount": "120.00000",
+            "costamount": "47.85000"
+        },
+        "3": {
+            "weekstartdate": "04/16/2017",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "4": {
+            "weekstartdate": "04/09/2017",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "5": {
+            "weekstartdate": "04/02/2017",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "6": {
+            "weekstartdate": "03/26/2017",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "7": {
+            "weekstartdate": "03/19/2017",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "8": {
+            "weekstartdate": "03/12/2017",
+            "nbroforders": "3",
+            "nbrofitems": "4",
+            "saleamount": "794.00000",
+            "costamount": "641.45000"
+        },
+        "9": {
+            "weekstartdate": "03/05/2017",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "10": {
+            "weekstartdate": "02/26/2017",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "11": {
+            "weekstartdate": "02/19/2017",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "12": {
+            "weekstartdate": "02/12/2017",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "13": {
+            "weekstartdate": "02/05/2017",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "14": {
+            "weekstartdate": "01/29/2017",
+            "nbroforders": "1",
+            "nbrofitems": "1",
+            "saleamount": "4500.00000",
+            "costamount": "3100.00000"
+        },
+        "15": {
+            "weekstartdate": "01/22/2017",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "16": {
+            "weekstartdate": "01/15/2017",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "17": {
+            "weekstartdate": "01/08/2017",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "18": {
+            "weekstartdate": "01/01/2017",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "19": {
+            "weekstartdate": "12/25/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "20": {
+            "weekstartdate": "12/18/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "21": {
+            "weekstartdate": "12/11/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "22": {
+            "weekstartdate": "12/04/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "23": {
+            "weekstartdate": "11/27/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "24": {
+            "weekstartdate": "11/20/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "25": {
+            "weekstartdate": "11/13/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "26": {
+            "weekstartdate": "11/06/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "27": {
+            "weekstartdate": "10/30/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "28": {
+            "weekstartdate": "10/23/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "29": {
+            "weekstartdate": "10/16/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "30": {
+            "weekstartdate": "10/09/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "31": {
+            "weekstartdate": "10/02/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "32": {
+            "weekstartdate": "09/25/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "33": {
+            "weekstartdate": "09/18/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "34": {
+            "weekstartdate": "09/11/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "35": {
+            "weekstartdate": "09/04/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "36": {
+            "weekstartdate": "08/28/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "37": {
+            "weekstartdate": "08/21/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "38": {
+            "weekstartdate": "08/14/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "39": {
+            "weekstartdate": "08/07/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "40": {
+            "weekstartdate": "07/31/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "41": {
+            "weekstartdate": "07/24/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "42": {
+            "weekstartdate": "07/17/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "43": {
+            "weekstartdate": "07/10/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "44": {
+            "weekstartdate": "07/03/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "45": {
+            "weekstartdate": "06/26/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "46": {
+            "weekstartdate": "06/19/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "47": {
+            "weekstartdate": "06/12/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "48": {
+            "weekstartdate": "06/05/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "49": {
+            "weekstartdate": "05/29/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "50": {
+            "weekstartdate": "05/22/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "51": {
+            "weekstartdate": "05/15/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "52": {
+            "weekstartdate": "05/08/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        },
+        "53": {
+            "weekstartdate": "05/01/2016",
+            "nbroforders": "0",
+            "nbrofitems": "0",
+            "saleamount": "0.00000",
+            "costamount": "0.00000"
+        }
+    }
+}
