@@ -15,7 +15,7 @@ $(document).ready(function() {
 		$('body').popover({selector: '[data-toggle="popover"]', placement: 'top'});
 
 
-initializedatepicker();
+		initializedatepicker();
 
 
 
@@ -274,9 +274,11 @@ initializedatepicker();
 	/*==============================================================
 	  ADD ITEM MODAL FUNCTIONS
 	=============================================================*/
-		$("body").on("submit", ".add-to-order-form", function(e) { //FIX MAKE IT JUST AJAX ADD ALSO FIX REGULAR ADD ITEM
+		$("body").on("submit", ".add-and-edit-form", function(e) { //FIX MAKE IT JUST AJAX ADD ALSO FIX REGULAR ADD ITEM
+			//WAS .add-to-order-form | MODIFIED TO SUIT BOTH QUOTES AND ORDERS
 			e.preventDefault();
 			var form = $(this);
+			var addto = form.data('addto');
 			var itemid = form.find('input[name="itemid"]');
 			var ordn = form.find('input[name="ordn"]');
 			var custid = form.find('input[name="custid"]');
@@ -284,14 +286,19 @@ initializedatepicker();
 			var parentmodal = $(this).closest('.modal');
 			$(parentmodal).modal('hide');
 			showajaxloading();
+
 			$('#'+form.attr('id')+"-form").postform({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
-				console.log(config.urls.json.getorderdetails+"?ordn="+ordn);
 				$.getJSON(config.urls.json.getorderdetails+"?ordn="+ordn, function(json) {
 					var linenumber = json.response.order_details.length+1;
-					var url = urls.load.edit_detail+"order/?ordn="+ordn+"&line="+linenumber;
-					console.log(url);
+					var editurl = '';
+					if (addto == 'order') {
+						editurl = config.urls.load.edit_detail+"order/?ordn="+ordn+"&line="+linenumber;
+					} else if (addto == 'quote') {
+						editurl = editurl = config.urls.load.edit_detail+"quote/?qnbr="+ordn+"&line="+linenumber;
+					}
+					console.log(editurl);
 					edititempricing(itemid, custid,  function() {
-						loadin(url, loadinto, function() {
+						loadin(editurl, loadinto, function() {
 							hideajaxloading();
 							$(config.modals.pricing).modal();
 							setchildheightequaltoparent('.row.row-bordered', '.grid-item');
