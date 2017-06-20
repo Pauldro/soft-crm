@@ -36,6 +36,7 @@
 					<input type="hidden" name="shipID" value="<?= $shipID; ?>">
 				<?php endif; ?>
 				<input type="hidden" name="ordn" value="<?= $ordn; ?>">
+				<input type="hidden" name="linenumber" value="<?= $linenumber; ?>">
 				<table class="table table-condensed no-bottom ">
 					<tr> <td>UoM</td> <td><?= $item['unit']; ?></td> </tr>
 					<?php if ($soconfig['config']['show_listprice'] == 'Y') : ?>

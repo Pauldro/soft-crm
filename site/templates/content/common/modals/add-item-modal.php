@@ -11,6 +11,7 @@
                         <input type="hidden" name="action" value="item-search">
                         <input type="hidden" class="custid" name="custID">
                         <input type="hidden" class="addonurl" name="addonurl">
+                        <input type="hidden" class="linenumber" name="linenumber">
                         <div class="row form-group">
                             <div class="col-xs-12">
                                 <div class="input-group add-item-search-form">

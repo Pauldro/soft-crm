@@ -5,7 +5,3 @@
 		<?php include $config->paths->content."cust-information/cust-search-results.php"; ?>
 	</div>
 </form>
-
-	<a href="<?= $config->pages->customer."redir/?action=ci-customer&custID=BECKER"; ?>" class="btn btn-info">BECKER </a>
-	<br><br>
-	<a href="<?= $config->pages->customer."redir/?action=ci-customer&custID=RYAN"; ?>" class="btn btn-info">RYAN </a>

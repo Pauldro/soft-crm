@@ -1,11 +1,12 @@
 <?php
     $ordn = $custid = '';
     $addtype = $input->urlSegment4; // cart|order|quote
+    $linenumber = $input->get->text('linenumber');
     $pathtoajax = "load/products/item-search-results/";
-    switch($addtype) { 
+    switch($addtype) {
         case 'cart':
             $ordn = '';
-            $shipID = $sanitizer->text($input->get->shipID);
+            $shipID = $input->get->text('shipID');
             $pathtoajax .= "cart/";
             $formaction = $config->pages->cart."redir/";
             $rediraction = 'add-to-cart';
@@ -13,7 +14,7 @@
             break;
 		case 'order':
             $ordn = $sanitizer->text($input->get->ordn);
-            $shipID = $sanitizer->text($input->get->shipID);
+            $shipID = $input->get->text('shipID');
             $pathtoajax .= "order/";
             $formaction = $config->pages->orders."redir/";
             $rediraction = 'add-to-order';
@@ -21,7 +22,7 @@
             break;
 		case 'quote':
             $qnbr = $sanitizer->text($input->get->qnbr);
-            $shipID = $sanitizer->text($input->get->shipID);
+            $shipID = $input->get->text('shipID');
             $pathtoajax .= "quote/";
             $formaction = $config->pages->quotes."redir/";
             $rediraction = 'add-to-quote';
@@ -46,7 +47,7 @@
 		<?php foreach ($items as $item) : ?>
 			<?php if (!file_exists($config->imagefiledirectory.$item['image'])) {$item['image'] = 'notavailable.png'; } ?>
 			<?php $specs = $pricing = $item; ?>
-			<?php 
+			<?php
 				switch ($addtype) {
 					case 'cart':
 						include $config->paths->content."products/ajax/load/product-results/product-cart-results.php";

@@ -85,12 +85,13 @@ var config = {
 			getorderhead: sitepath + "ajax/json/order/orderhead/",
 			getorderdetails: sitepath + "ajax/json/order/details/",
 			getquotehead: sitepath + "ajax/json/quote/quotehead/",
+            getquotedetails: sitepath + "ajax/json/quote/details/",
 			ii_moveitemdoc: sitepath + "ajax/json/ii/ii-move-document/",
 			ci_shiptolist: sitepath + "ajax/json/ci/ci-shipto-list/"
 		},
 		load: {
 			productresults: sitepath + "ajax/load/products/item-search-results/",
-			editdetail: sitepath + "load/edit-detail/",
+			editdetail: sitepath + "ajax/load/edit-detail/",
             ii_productresults: sitepath + "ajax/load/ii/search-results/",
 			ii_select: sitepath + "", // NOT USED
 			ii_pricing: sitepath + "ajax/load/ii/ii-pricing/",

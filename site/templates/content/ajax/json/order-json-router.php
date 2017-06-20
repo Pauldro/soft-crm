@@ -1,7 +1,7 @@
-<?php 
+<?php
  	header('Content-Type: application/json');
     $ordn = $input->get->text('ordn');
-    
+
 
 	switch ($input->urlSegment3) {
 		case 'orderhead':
@@ -10,6 +10,6 @@
 			break;
 		case 'details':
 			$orderdetails = getorderdetails(session_id(), $ordn, false);
-    		echo json_encode(array("response" => array("order_details" => $orderdetails)));
+    		echo json_encode(array("response" => array("orderdetails" => $orderdetails)));
 			break;
 	}

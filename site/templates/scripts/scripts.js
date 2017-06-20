@@ -279,31 +279,44 @@ $(document).ready(function() {
 			e.preventDefault();
 			var form = $(this);
 			var addto = form.data('addto');
-			var itemid = form.find('input[name="itemid"]');
-			var ordn = form.find('input[name="ordn"]');
-			var custid = form.find('input[name="custid"]');
+			var itemid = form.find('input[name="itemid"]').val();
+			var custid = form.find('input[name="custID"]').val();
 			var loadinto = config.modals.pricing+" .modal-body";
 			var parentmodal = $(this).closest('.modal');
+			var editurl = '';
+			var jsonurl = '';
 			$(parentmodal).modal('hide');
 			showajaxloading();
 
-			$('#'+form.attr('id')+"-form").postform({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
-				$.getJSON(config.urls.json.getorderdetails+"?ordn="+ordn, function(json) {
-					var linenumber = json.response.order_details.length+1;
-					var editurl = '';
+			if (addto == 'order') {
+				var ordn = form.find('input[name="ordn"]').val();
+				jsonurl = config.urls.json.getorderdetails+"?ordn="+ordn;
+			} else if (addto == 'quote') {
+				var qnbr = form.find('input[name="qnbr"]').val();
+				jsonurl = config.urls.json.getquotedetails+"?qnbr="+qnbr;
+			}
+			var uri = new URI();
+			uri.addQuery('show', 'details');
+
+			$('#'+form.attr('id')).postform({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
+				$.getJSON(jsonurl, function(json) {
 					if (addto == 'order') {
-						editurl = config.urls.load.edit_detail+"order/?ordn="+ordn+"&line="+linenumber;
+						linenumber = json.response.orderdetails.length+1;
+						editurl = config.urls.load.editdetail+"order/?ordn="+ordn+"&line="+linenumber;
 					} else if (addto == 'quote') {
-						editurl = editurl = config.urls.load.edit_detail+"quote/?qnbr="+ordn+"&line="+linenumber;
+						linenumber = json.response.quotedetails.length+1;
+						editurl = config.urls.load.editdetail+"quote/?qnbr="+ordn+"&line="+linenumber;
 					}
-					console.log(editurl);
-					edititempricing(itemid, custid,  function() {
-						loadin(editurl, loadinto, function() {
-							hideajaxloading();
-							$(config.modals.pricing).modal();
-							setchildheightequaltoparent('.row.row-bordered', '.grid-item');
+					loadin(uri.toString()+"#edit-page", '.page', function() {
+						edititempricing(itemid, custid,  function() {
+							loadin(editurl, loadinto, function() {
+								hideajaxloading();
+								$(config.modals.pricing).modal();
+								setchildheightequaltoparent('.row.row-bordered', '.grid-item');
+							});
 						});
 					});
+
 				});
 			});
 		});
@@ -311,6 +324,10 @@ $(document).ready(function() {
 		$('#add-item-modal').on('show.bs.modal', function(event) {
 			var button = $(event.relatedTarget);
 			var addtype = button.data('addtype'); // order|cart|quote
+			var linenumber = 1;
+			if (button.attr('data-linenumber')) {
+				linenumber = button.data('linenumber');
+			}
 			var modal = $(this);
 			var title = ''; var addonurl = '';
 			var custid = button.data('custid');
@@ -319,24 +336,26 @@ $(document).ready(function() {
 					$('#'+modal.attr('id')+ " .custid").val(custid);
 					title = "Add item to Cart";
 					addonurl = "cart/?custID="+urlencode(custid);
-					$('#'+modal.attr('id')+ " .addonurl").val(addonurl);
+
 					break;
 				case 'order':
 					var ordn = button.data('ordn');
 					$('#'+modal.attr('id')+ " .custid").val(custid);
 					title = "Add item to Order #" + ordn;
 					addonurl = "order/?ordn="+ordn+"&custID="+urlencode(custid);
-					$('#'+modal.attr('id')+ " .addonurl").val(addonurl);
+
 					break;
 				case 'quote':
 					var qnbr = button.data('qnbr');
 					$('#'+modal.attr('id')+ " .custid").val(custid);
 					title = "Add item to Quote #" + qnbr;
 					addonurl = "quote/?qnbr="+qnbr+"&custID="+urlencode(custid);
-					$('#'+modal.attr('id')+ " .addonurl").val(addonurl);
 					break;
 			}
 			$('#add-item-modal-label').text(title);
+			addonurl += "&linenumber="+linenumber;
+			$('#'+modal.attr('id')+ " .addonurl").val(addonurl);
+			$('#'+modal.attr('id')+ " .linenumber").val(linenumber);
 
 		});
 
@@ -829,6 +848,7 @@ $(document).ready(function() {
 
 	function edititempricing(itemid, custid, callback) {
 		var url = config.urls.products.redir.getitempricing+"&itemid="+urlencode(itemid)+"&custID="+urlencode(custid);
+		console.log(url);
 		$.get(url, function() { callback(); });
 	}
 

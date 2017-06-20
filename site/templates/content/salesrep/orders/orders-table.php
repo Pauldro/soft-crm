@@ -32,7 +32,7 @@
 
 
 				//CLICK TO EXPAND ICON
-				$sorting = false; 
+				$sorting = false;
 				if ($on == $input->get->text('ordn')) {
 					$oni = ""; $rowclass = 'selected';
 					$orderlink = $ajax->path.querystring_replace($ajax->querystring, array('ordn', 'show', 'orderby'), array(false, false, false));
@@ -46,7 +46,7 @@
 
 				//DOCUMENTS ICON
 				$docsurl = $config->pages->customer."redir/".querystring_replace("", array('action','ordn','linenbr','page', 'orderby'), array('get-order-documents',$on, '0',$input->pageNum, $sorting));
-		
+
 				if ($order['havedoc'] == 'Y') {
 					$documentlink = '
 								<a class="h3 generate-load-link" href="'.$docsurl.'" '.$ajax->data.'>
@@ -111,10 +111,10 @@
                 <td><?php echo $order['custid'];?></td>
                 <td><?php echo $order['custpo']; ?></td>
                 <td>
-                    <a href="<?php echo $customer_ship; ?>"><?php echo $shipID = $order['shiptoid']; ?></a>
+                    <a href="<?php echo $config->pages->customer.$order['custid']."/shipto-".$order['shiptoid']."/"; ?>"><?php echo $shipID = $order['shiptoid']; ?></a>
                     <a tabindex="0" class="btn btn-default bordered btn-sm" <?php echo $shiptopopover; ?> data-content="<?php echo $shiptoaddress; ?>"><b>?</b></a>
                 </td>
-                <td align="right">$ <?php echo formatmoney($order['odrtotal']); ?></td> 
+                <td align="right">$ <?php echo formatmoney($order['odrtotal']); ?></td>
                 <td align="right" ><?php echo $order['orderdate']; ?></td>
                 <td align="right"><?php echo $order['status']; ?></td>
                 <td colspan="2">

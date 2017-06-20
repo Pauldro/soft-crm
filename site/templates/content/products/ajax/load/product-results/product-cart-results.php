@@ -6,7 +6,7 @@
 			</a>
 		</div>
 		<div class="col-md-7 col-sm-6 print-col-sm-10">
-			<h4><a href="<?= $config->pages->products.'redir/?action=ii-select&itemid='.urlencode($item['itemid']); ?>" target="_blank"><?= $item['itemid']; ?></a></h4> 
+			<h4><a href="<?= $config->pages->products.'redir/?action=ii-select&itemid='.urlencode($item['itemid']); ?>" target="_blank"><?= $item['itemid']; ?></a></h4>
 			<h5><?= $item['name1']; ?></h5>
 			<div class="product-info">
 				<ul class="nav nav-tabs nav_tabs hidden-print">
@@ -33,10 +33,10 @@
 				<input type="hidden" name="whse" class="<?= cleanforjs($item['itemid'])."-whse"; ?>" value="">
 				<?php if ($custID != '') : ?>
 					<input type="hidden" name="custID" value="<?= $custID; ?>">
-					<?php if ($custID != '') : ?>
-						<input type="hidden" name="shipID" value="<?= $shipID; ?>">
-					<?php endif; ?>
+					<input type="hidden" name="shipID" value="<?= $shipID; ?>">
 				<?php endif; ?>
+				<input type="hidden" name="linenumber" value="<?= $linenumber; ?>">
+
 				<table class="table table-condensed no-bottom ">
 					<tr> <td>UoM</td> <td><?= $item['unit']; ?></td> </tr>
 					<?php if ($soconfig['config']['show_listprice'] == 'Y') : ?>

@@ -9,7 +9,7 @@
             if ($input->post->q) { $query = $input->post->q; } else { $query = $input->get->text('q'); }
 			if ($input->post->custID) { $custID = $input->post->custID; } else { $custID = $input->get->text('custID'); }
 			if ($custID == '') { $custID == $config->defaultweb; }
-			$data = array('DBNAME' => $config->dbName, 'ITNOSRCH' => $query, 'ITEMID' => $itemid, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dbName, 'ITNOSRCH' => $query, 'CUSTID' => $custID);
             $session->loc = $config->page->index;
             break;
 		 case 'ii-select':
@@ -18,7 +18,7 @@
 			$session->loc = $config->pages->iteminfo."?itemid=".urlencode($itemid);
             if ($input->post->custID) { $custID = $input->post->custID; } else { $custID = $input->get->text('custID'); }
             if ($input->post->shipID) { $shipID = $input->post->shipID; } else { $shipID = $input->get->text('shipID'); }
-            if ($custID != '') {$data['CUSTID'] = $custID; $session->loc .= "&custID=".urlencode($custID); } 
+            if ($custID != '') {$data['CUSTID'] = $custID; $session->loc .= "&custID=".urlencode($custID); }
 			if ($shipID != '') {$data['SHIPID'] = $shipID; $session->loc .= "&shipID=".urlencode($shipID); }
             break;
         case 'item-info':
@@ -129,7 +129,7 @@
        case 'ii-stock':
 			$data = array('DBNAME' => $config->dbName, 'IISTKBYWHSE' => false, 'ITEMID' => $itemid);
 			$session->loc = $config->page->index;
-            break; 
+            break;
         case 'ii-substitutes':
 			$data = array('DBNAME' => $config->dbName, 'IISUB' => false, 'ITEMID' => $itemid);
             $session->loc = $config->page->index;
@@ -139,7 +139,7 @@
 			$session->sql = getitemdescription($itemid, true);
 			$data = array('DBNAME' => $config->dbName, 'DOCVIEW' => false, 'FLD1CD' => 'IT', 'FLD1DATA' => $itemid, 'FLD1DESC' => $desc);
             $session->loc = $config->page->index;
-            break; 
+            break;
     }
 
     writedplusfile($data, $filename);
