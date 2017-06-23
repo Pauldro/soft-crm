@@ -21,6 +21,24 @@
             <td><?php echo $note->contactlink; ?> <a href="<?php echo $note->generatecontacturl(); ?>"><i class="glyphicon glyphicon-share"></i> Go to Contact Page</a></td>
         </tr>
     <?php endif; ?>
+    <?php if ($note->hasorderlink) : ?>
+        <tr>
+            <td>Sales Order #:</td>
+            <td><?php echo $note->salesorderlink; ?></td>
+        </tr>
+    <?php endif; ?>
+    <?php if ($note->hasquotelink) : ?>
+        <tr>
+            <td>Quote #:</td>
+            <td><?php echo $note->quotelink; ?></td>
+        </tr>
+    <?php endif; ?>
+    <?php if ($note->hastasklink) : ?>
+        <tr>
+            <td>Sales Order #:</td>
+            <td><?php echo $note->salestasklink; ?></td>
+        </tr>
+    <?php endif; ?>
     <tr>
         <td colspan="2"><b>Notes</b><br><?php echo $note->textbody; ?></td>
     </tr>
