@@ -1,4 +1,9 @@
 <?php
+	/**
+	*  QUOTE REDIRECT
+	* @param string $action
+	*/
+
 
 	if ($input->post->action) { $action = $input->post->text('action'); } else { $action = $input->get->text('action'); }
 	if ($input->get->page) { $pagenumber = $input->get->int('page'); } else { $pagenumber = 1; }
@@ -7,8 +12,57 @@
 	$linkaddon = $sortaddon;
 	$session->{'from-redirect'} = $page->url;
 	$session->remove('quote-search');
-
 	$filename = session_id();
+
+	/**
+	*  QUOTE REDIRECT
+	* @param string $action
+	*
+	*
+	*
+	* switch ($action) {
+	*	case 'get-quote-details':
+	*		DBNAME=$config->DBNAME
+	*		QUOTDET=$qnbr
+	*		CUSTID=$custID
+	*		break;
+	*	case 'get-quote-details-print':
+	*		DBNAME=$config->DBNAME
+	*		QUOTDET=$qnbr
+	*		CUSTID=$custID
+	*		break;
+	*	case 'save-quotehead':
+	*		DBNAME=$config->DBNAME
+	*		QUOTEHEAD
+	*		QUOTENO=$qnbr
+	*		CUSTID=$custID
+	*		break;
+	*	case 'add-to-quote':
+	*		DBNAME=$config->DBNAME
+	*		QUOTEDETAIL
+	*		QUOTNO=$qnbr
+	*		ITEMID=$itemID
+	*		QTY=$qty
+	*		break;
+	*	case 'update-line':
+	*		DBNAME=$config->DBNAME
+	*		QUOTEDETAIL
+	*		QUOTNO=$qnbr
+	*		LINENO=$linenbr
+	*		break;
+	*	case 'unlock-quote':
+	*		$data = array('UNLOCKING QUOTE' => '');
+	*		break;
+	*	default:
+	*		break;
+	* }
+	*
+	**/
+
+
+
+
+
 	switch ($action) {
 		case 'get-quote-details':
 			$qnbr = $input->get->text('qnbr');
