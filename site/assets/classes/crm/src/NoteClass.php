@@ -1,4 +1,4 @@
-<?php 
+<?php
 
     class Note {
         public $id;
@@ -33,18 +33,20 @@
 		}
 
         public function generatecustomerurl() {
-            return wire('config')->pages->customer.urlencode($this->customerlink)."/";
+            return wire('config')->pages->customer.'redir/?action=load-customer&custID='.urlencode($this->customerlink);
         }
 
         public function generateshiptourl() {
-            return $this->generatecustomerurl() . "shipto-".urlencode($this->shiptolink)."/";
+            return $this->generatecustomerurl() . "&shipID=".urlencode($this->shiptolink);
         }
 
         public function generatecontacturl() {
             if ($this->hasshiptolink) {
-                return $this->generatecustomerurl() . "shipto-".urlencode($this->shiptolink)."/contacts/?id=".urlencode($this->contactlink);
+                return wire('config')->pages->customer.urlencode($this->customerlink).'/';
+                //return $this->generatecustomerurl() . "shipto-".urlencode($this->shiptolink)."/contacts/?id=".urlencode($this->contactlink);
             } else {
-                return generatecustomerurl()."contacts/?id=".urlencode($this->contactlink);
+                return wire('config')->pages->customer.urlencode($this->customerlink).'/shipto-'.urlencode($this->shiptolink).'contacts/?id='.urlencode($this->contactlink);
+                //return generatecustomerurl()."contacts/?id=".urlencode($this->contactlink);
             }
         }
 
