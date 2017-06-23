@@ -21,7 +21,7 @@
 						<?php if (isset($table['detail']['rows'][$x]['columns'][$i])) : ?>
 							<?php $column = $table['detail']['rows'][$x]['columns'][$i]; ?>
 							<td class="<?= $config->textjustify[$fieldsjson['data']['detail'][$column['id']]['datajustify']]; ?>">
-								<?= generatecelldata($fieldsjson['data']['detail'][$column['id']]['type'],$order, $column); ?>
+								<?= generatecelldata($fieldsjson['data']['detail'][$column['id']]['type'],$order, $column, false); ?>
 							</td>
 						<?php else : ?>
 							<td></td>
@@ -39,7 +39,7 @@
 					<?php if (isset($table['detail']['rows'][$x]['columns'][$i])) : ?>
 						<?php $column = $table['detail']['rows'][$x]['columns'][$i]; ?>
 						<td class="<?= $config->textjustify[$fieldsjson['data']['detail'][$column['id']]['datajustify']]; ?>">
-							<?= generatecelldata($fieldsjson['data']['detail'][$column['id']]['type'],$order, $column); ?>
+							<?= generatecelldata($fieldsjson['data']['detail'][$column['id']]['type'],$order, $column, false); ?>
 						</td>
 					<?php else : ?>
 						<td></td>

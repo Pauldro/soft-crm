@@ -179,6 +179,21 @@ function openinv() {
 	});
 }
 
+function loadorderdocuments(ordn) {
+	var custid = $(custlookupform + " .custid").val();
+	var modal = config.modals.ajax;
+	var loadinto =  modal+" .modal-content";
+	var href = URI(config.urls.customer.load.ci_orderdocuments).addQuery("custID", custid).addQuery('ordn', ordn).toString();
+	showajaxloading();
+	ci_getorderdocuments(custid, ordn, function() {
+		loadin(href, loadinto, function() {
+			console.log(href);
+			hideajaxloading();
+			$(modal).resizemodal('lg').modal();
+		});
+	});
+}
+
 function payment() {
 	var custid = $(custlookupform + " .custid").val();
 	var modal = config.modals.ajax;

@@ -27,7 +27,7 @@
 							$column = $table['detail']['rows'][$x]['columns'][$i];
 							$class = $config->textjustify[$fieldsjson['data']['detail'][$column['id']]['datajustify']];
 							$colspan = $column['col-length'];
-							$tb->cell('colspan='.$colspan.'|class='.$class, generatecelldata($fieldsjson['data']['detail'][$column['id']]['type'],$invoice, $column));
+							$tb->cell('colspan='.$colspan.'|class='.$class, generatecelldata($fieldsjson['data']['detail'][$column['id']]['type'],$invoice, $column, false));
 							if ($colspan > 1) { $i = $i + ($colspan - 1); }
 						} else {
 							$tb->cell();

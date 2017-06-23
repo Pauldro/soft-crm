@@ -27,7 +27,16 @@
 							$column = $table['detail']['rows'][$x]['columns'][$i];
 							$class = $config->textjustify[$fieldsjson['data']['detail'][$column['id']]['datajustify']];
 							$colspan = $column['col-length'];
-							$tb->cell('colspan='.$colspan.'|class='.$class, generatecelldata($fieldsjson['data']['detail'][$column['id']]['type'],$invoice, $column));
+
+							if ($i == 1 && !empty($invoice['Invoice Number'])) {
+								$ordn = $invoice['Ordn'];
+								$onclick = 'loadorderdocuments("'.$ordn.'")';
+								$extracelldata = "&nbsp; <a href='#' title='load order documents' data-load='#ajax-modal' onclick='$onclick'><i class='fa fa-folder-open' aria-hidden='true'></i></a>";
+								$tb->cell('colspan='.$colspan.'|class='.$class, generatecelldata($fieldsjson['data']['detail'][$column['id']]['type'],$invoice, $column, $extracelldata));
+							} else {
+								$tb->cell('colspan='.$colspan.'|class='.$class, generatecelldata($fieldsjson['data']['detail'][$column['id']]['type'],$invoice, $column, false));
+							}
+
 							if ($colspan > 1) { $i = $i + ($colspan - 1); }
 						} else {
 							$tb->cell();
@@ -49,7 +58,7 @@
 					$column = $table['detail']['rows'][$x]['columns'][$i];
 					$class = $config->textjustify[$fieldsjson['data']['detail'][$column['id']]['datajustify']];
 					$colspan = $column['col-length'];
-					$tb->cell('colspan='.$colspan.'|class='.$class, generatecelldata($fieldsjson['data']['detail'][$column['id']]['type'],$invoice, $column));
+					$tb->cell('colspan='.$colspan.'|class='.$class, generatecelldata($fieldsjson['data']['detail'][$column['id']]['type'],$invoice, $column, false));
 					if ($colspan > 1) { $i = $i + ($colspan - 1); }
 				} else {
 					$tb->cell('');

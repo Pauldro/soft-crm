@@ -27,8 +27,6 @@
 			$nextshipid = $custshiptos['data']["1"]['shipid'];
 		}
 
-
-
 		$config->scripts->append($config->urls->templates.'scripts/libs/datatables.js');
 		$config->scripts->append($config->urls->templates.'scripts/ci/cust-functions.js');
 		$config->scripts->append($config->urls->templates.'scripts/ci/cust-info.js');

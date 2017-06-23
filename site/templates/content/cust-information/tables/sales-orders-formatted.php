@@ -27,7 +27,7 @@
 						$column = $table['header']['rows'][$x]['columns'][$i];
 						$class = $config->textjustify[$fieldsjson['data']['header'][$column['id']]['datajustify']];
 						$colspan = $column['col-length'];
-						$tb->cell('colspan='.$colspan.'|class='.$class, '<b>'.$column['label'].'</b>: '.generatecelldata($fieldsjson['data']['header'][$column['id']]['type'],$order, $column));
+						$tb->cell('colspan='.$colspan.'|class='.$class, '<b>'.$column['label'].'</b>: '.generatecelldata($fieldsjson['data']['header'][$column['id']]['type'],$order, $column, false));
 						if ($colspan > 1) { $i = $i + ($colspan - 1); }
 					} else {
 						$tb->cell('');
@@ -44,7 +44,7 @@
 							$column = $table['detail']['rows'][$x]['columns'][$i];
 							$class = $config->textjustify[$fieldsjson['data']['detail'][$column['id']]['datajustify']];
 							$colspan = $column['col-length'];
-							$tb->cell('colspan='.$colspan.'|class='.$class, generatecelldata($fieldsjson['data']['detail'][$column['id']]['type'],$item, $column));
+							$tb->cell('colspan='.$colspan.'|class='.$class, generatecelldata($fieldsjson['data']['detail'][$column['id']]['type'],$item, $column, false));
 							if ($colspan > 1) { $i = $i + ($colspan - 1); }
 						} else {
 							$tb->cell('');
@@ -57,7 +57,7 @@
 						$column = $table['itemstatus']['rows'][1]['columns'][$i];
 						$class = $config->textjustify[$fieldsjson['data']['itemstatus'][$column['id']]['datajustify']];
 						$colspan = $column['col-length'];
-						$celldata = '<b>'.$column['label'] . ':</b> ' .generatecelldata($fieldsjson['data']['itemstatus'][$column['id']]['type'],$item['itemstatus'], $column);
+						$celldata = '<b>'.$column['label'] . ':</b> ' .generatecelldata($fieldsjson['data']['itemstatus'][$column['id']]['type'],$item['itemstatus'], $column, false);
 						$tb->cell('colspan='.$colspan.'|class='.$class, $celldata);
 						if ($colspan > 1) { $i = $i + ($colspan - 1); }
 					} else {
@@ -73,7 +73,7 @@
 							$column = $table['purchaseorder']['rows'][1]['columns'][$i];
 							$class = $config->textjustify[$fieldsjson['data']['purchaseorder'][$column['id']]['datajustify']];
 							$colspan = $column['col-length'];
-							$celldata = '<b>'.$column['label'] . ':</b> ' .generatecelldata($fieldsjson['data']['purchaseorder'][$column['id']]['type'],$purchaseorder, $column);
+							$celldata = '<b>'.$column['label'] . ':</b> ' .generatecelldata($fieldsjson['data']['purchaseorder'][$column['id']]['type'],$purchaseorder, $column, false);
 							$tb->cell('colspan='.$colspan.'|class='.$class, $celldata);
 							if ($colspan > 1) { $i = $i + ($colspan - 1); }
 						} else {
@@ -91,7 +91,7 @@
 						$class = $config->textjustify[$fieldsjson['data']['total'][$column['id']]['datajustify']];
 						$colspan = $column['col-length'];
 						$tb->cell('', '<b>'.$column['label'] . '</b>');
-						$tb->cell('colspan='.$colspan.'|class='.$class, generatecelldata($fieldsjson['data']['total'][$column['id']]['type'],$order['totals'], $column));
+						$tb->cell('colspan='.$colspan.'|class='.$class, generatecelldata($fieldsjson['data']['total'][$column['id']]['type'],$order['totals'], $column, false));
 						$i++;
 						if ($colspan > 1) { $i = $i + ($colspan - 1); }
 					} else {
@@ -124,7 +124,7 @@
 							$column = $table['shipments']['rows'][$x]['columns'][$i];
 							$class = $config->textjustify[$fieldsjson['data']['shipments'][$column['id']]['datajustify']];
 							$colspan = $column['col-length'];
-							$celldata = generatecelldata($fieldsjson['data']['shipments'][$column['id']]['type'],$shipment, $column);
+							$celldata = generatecelldata($fieldsjson['data']['shipments'][$column['id']]['type'],$shipment, $column, false);
 							$tb->cell('colspan='.$colspan.'|class='.$class, $celldata);
 
 							if ($colspan > 1) { $i = $i + ($colspan - 1); }

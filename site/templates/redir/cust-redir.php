@@ -166,6 +166,11 @@
 			$session->loc = $config->pages->index;
 			$session->loc = $config->pages->custinfo."$custID/";
 			break;
+		case 'ci-order-documents':
+			$ordn = $input->get->text('ordn');
+			$data = array('DBNAME' => $config->dbName, 'ORDDOCS' => $ordn, 'CUSTID' => $custID);
+			$session->loc = $config->pages->ajax."load/order/documents/?ordn=".$ordn;
+			break;
 		case 'ci-shiptos':
 			$data = array('DBNAME' => $config->dbName, 'CISHIPTOLIST' => false, 'CUSTID' => $custID);
 			$session->loc = $config->pages->index;

@@ -16,6 +16,11 @@
 		$.get(url, function() { callback();});
 	}
 
+	function ci_getorderdocuments(custid, ordn, callback) {
+		var url = config.urls.customer.redir.ci_orderdocuments+"&custID="+urlencode(custid)+"&ordn="+urlencode(ordn);
+		$.get(url, function() { callback();});
+	}
+
 	function ci_standingorders(custid, shiptoid, callback) {
 		var url = config.urls.customer.redir.ci_standingorders+"&custID="+urlencode(custid)+"&shipID="+urlencode(shiptoid);
 		$.get(url, function() { callback();});

@@ -28,7 +28,7 @@
 							$column = $table['detail']['rows'][$x]['columns'][$i];
 							$class = $config->textjustify[$fieldsjson['data']['detail'][$column['id']]['datajustify']];
 							$colspan = $column['col-length'];
-							$tb->cell('colspan='.$colspan.'|class='.$class, generatecelldata($fieldsjson['data']['detail'][$column['id']]['type'], $invoice, $column));
+							$tb->cell('colspan='.$colspan.'|class='.$class, generatecelldata($fieldsjson['data']['detail'][$column['id']]['type'], $invoice, $column, false));
 							if ($colspan > 1) { $i = $i + ($colspan - 1); }
 						} else {
 							$tb->cell();
@@ -58,7 +58,7 @@
 									$column = $table['lotserial']['rows'][$x]['columns'][$i];
 									$class = $config->textjustify[$fieldsjson['data']['lotserial'][$column['id']]['datajustify']];
 									$colspan = $column['col-length'];
-									$tb->cell('colspan='.$colspan.'|class='.$class, generatecelldata($fieldsjson['data']['lotserial'][$column['id']]['type'], $lot, $column));
+									$tb->cell('colspan='.$colspan.'|class='.$class, generatecelldata($fieldsjson['data']['lotserial'][$column['id']]['type'], $lot, $column, false));
 									if ($colspan > 1) { $i = $i + ($colspan - 1); }
 								} else {
 									$tb->cell('');
@@ -81,7 +81,7 @@
 				if (isset($table['detail']['rows'][$x]['columns'][$i])) {
 					$column = $table['detail']['rows'][$x]['columns'][$i];
 					$class = $config->textjustify[$fieldsjson['data']['detail'][$column['id']]['datajustify']];
-					$tb->cell('colspan=|class='.$class, generatecelldata($fieldsjson['data']['detail'][$column['id']]['type'],$invoice, $column));
+					$tb->cell('colspan=|class='.$class, generatecelldata($fieldsjson['data']['detail'][$column['id']]['type'],$invoice, $column, false));
 				} else {
 					$tb->cell('');
 				}
