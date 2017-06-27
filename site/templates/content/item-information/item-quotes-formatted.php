@@ -1,26 +1,26 @@
-<?php 
-	
-	include $config->paths->assets."classes/Table.php"; 
+<?php
+
+	include $config->paths->assets."classes/Table.php";
 	include $config->paths->content."item-information/functions/ii-functions.php";
 	$quotesfile = $config->jsonfilepath.session_id()."-iiquote.json";
-	//$quotesfile = $config->jsonfilepath."iiqt-iiquote.json"; 
-	
+	//$quotesfile = $config->jsonfilepath."iiqt-iiquote.json";
+
 
 
 	if (checkformatterifexists($user->loginid, 'ii-quote', false)) {
 		$defaultjson = json_decode(getformatter($user->loginid, 'ii-quote', false), true);
 	} else {
 		$default = $config->paths->content."item-information/screen-formatters/default/ii-quote.json";
-		$defaultjson = json_decode(file_get_contents($default), true); 
+		$defaultjson = json_decode(file_get_contents($default), true);
 	}
-	
+
 	$detailcolumns = array_keys($defaultjson['detail']['columns']);
 	$headercolumns = array_keys($defaultjson['header']['columns']);
 	$fieldsjson = json_decode(file_get_contents($config->companyfiles."json/iiqtfmattbl.json"), true);
 
 	$table = array(
-				'maxcolumns' => $defaultjson['cols'], 
-				'detail' => array('maxrows' => $defaultjson['detail']['rows'], 'rows' => array()), 
+				'maxcolumns' => $defaultjson['cols'],
+				'detail' => array('maxrows' => $defaultjson['detail']['rows'], 'rows' => array()),
 				'header' => array('maxrows' => $defaultjson['header']['rows'], 'rows' => array())
 				  );
 
@@ -44,11 +44,11 @@
 		}
 	}
 
-	
+
 ?>
 
 <?php if ($config->ajax) : ?>
-	<p> <a href="<?php echo $config->filename; ?>" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a> </p>
+	<p> <a href="<?php echo $config->filename; ?>" class="h4" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a> </p>
 <?php endif; ?>
 <?php if (file_exists($quotesfile)) : ?>
     <?php $quotejson = json_decode(file_get_contents($quotesfile), true);  ?>
@@ -69,4 +69,3 @@
 <?php else : ?>
     <div class="alert alert-warning" role="alert">Information Not Available</div>
 <?php endif; ?>
-

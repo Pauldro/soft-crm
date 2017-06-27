@@ -1,12 +1,12 @@
 <?php $quotesfile = $config->jsonfilepath.session_id()."-iiquote.json"; ?>
 <?php //$quotesfile = $config->jsonfilepath."iiqt-iiquote.json";?>
 <?php if ($config->ajax) : ?>
-	<p> <a href="<?php echo $config->filename; ?>" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a> </p>
+	<p> <a href="<?php echo $config->filename; ?>" class="h4" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a> </p>
 <?php endif; ?>
 <?php if (file_exists($quotesfile)) : ?>
     <?php $quotesjson = json_decode(file_get_contents($quotesfile), true);  ?>
     <?php if (!$quotesjson) { $quotesjson = array('error' => true, 'errormsg' => 'The item quotes JSON contains errors');} ?>
-    
+
     <?php if ($quotesjson['error']) : ?>
         <div class="alert alert-warning" role="alert"><?php echo $quotesjson['errormsg']; ?></div>
     <?php else : ?>

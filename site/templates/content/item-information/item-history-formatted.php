@@ -1,26 +1,26 @@
-<?php 
-	
-	include $config->paths->assets."classes/Table.php"; 
+<?php
+
+	include $config->paths->assets."classes/Table.php";
 	include $config->paths->content."item-information/functions/ii-functions.php";
 	$historyfile = $config->jsonfilepath.session_id()."-iisaleshist.json";
-	//$historyfile = $config->jsonfilepath."iish-iisaleshist.json"; 
-	
+	//$historyfile = $config->jsonfilepath."iish-iisaleshist.json";
+
 
 
 	if (checkformatterifexists($user->loginid, 'ii-sales-history', false)) {
 		$defaultjson = json_decode(getformatter($user->loginid, 'ii-sales-history', false), true);
 	} else {
 		$default = $config->paths->content."item-information/screen-formatters/default/ii-sales-history.json";
-		$defaultjson = json_decode(file_get_contents($default), true); 
+		$defaultjson = json_decode(file_get_contents($default), true);
 	}
-	
+
 	$detailcolumns = array_keys($defaultjson['detail']['columns']);
 	$lotserialcolumns = array_keys($defaultjson['lotserial']['columns']);
 	$fieldsjson = json_decode(file_get_contents($config->companyfiles."json/iishfmattbl.json"), true);
 
 	$table = array(
-				'maxcolumns' => $defaultjson['cols'], 
-				'detail' => array('maxrows' => $defaultjson['detail']['rows'], 'rows' => array()), 
+				'maxcolumns' => $defaultjson['cols'],
+				'detail' => array('maxrows' => $defaultjson['detail']['rows'], 'rows' => array()),
 				'lotserial' => array('maxrows' => $defaultjson['lotserial']['rows'], 'rows' => array())
 				  );
 
@@ -43,10 +43,10 @@
 		}
 	}
 
-	
+
 ?>
 <?php if ($config->ajax) : ?>
-	<p> <a href="<?php echo $config->filename; ?>" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a> </p>
+	<p> <a href="<?php echo $config->filename; ?>" class="h4" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a> </p>
 <?php endif; ?>
 <?php if (file_exists($historyfile)) : ?>
     <?php $historyjson = json_decode(file_get_contents($historyfile), true);  ?>
@@ -78,4 +78,3 @@
 <?php else : ?>
     <div class="alert alert-warning" role="alert">Information Not Available</div>
 <?php endif; ?>
-

@@ -1,19 +1,19 @@
-<?php 
-	
-	include $config->paths->assets."classes/Table.php"; 
+<?php
+
+	include $config->paths->assets."classes/Table.php";
 	include $config->paths->content."item-information/functions/ii-functions.php";
 	$purchasefile = $config->jsonfilepath.session_id()."-iipurchordr.json";
-	//$purchasefile = $config->jsonfilepath."iiso-iipurchordr.json"; 
-	
+	//$purchasefile = $config->jsonfilepath."iiso-iipurchordr.json";
+
 
 
 	if (checkformatterifexists($user->loginid, 'ii-purchase-order', false)) {
 		$defaultjson = json_decode(getformatter($user->loginid, 'ii-purchase-order', false), true);
 	} else {
 		$default = $config->paths->content."item-information/screen-formatters/default/ii-purchase-order.json";
-		$defaultjson = json_decode(file_get_contents($default), true); 
+		$defaultjson = json_decode(file_get_contents($default), true);
 	}
-	
+
 	$columns = array_keys($defaultjson['detail']['columns']);
 	$fieldsjson = json_decode(file_get_contents($config->companyfiles."json/iipofmattbl.json"), true);
 
@@ -29,10 +29,10 @@
 		}
 	}
 
-	
+
 ?>
 <?php if ($config->ajax) : ?>
-	<p> <a href="<?php echo $config->filename; ?>" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a> </p>
+	<p> <a href="<?php echo $config->filename; ?>" class="h4" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a> </p>
 <?php endif; ?>
 
 <?php if (file_exists($purchasefile)) : ?>
@@ -65,4 +65,3 @@
 <?php else : ?>
     <div class="alert alert-warning" role="alert">Information Not Available</div>
 <?php endif; ?>
-

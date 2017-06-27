@@ -35,6 +35,3 @@
         <?php endif; ?>
     <?php endif; ?>
 </div>
-
-
-

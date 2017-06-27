@@ -2,9 +2,9 @@
     $pricefile = $config->jsonfilepath.session_id()."-iiprice.json";
     //$pricefile = $config->jsonfilepath."iiprc-iiprice.json";
  ?>
- 
+
  <?php if ($config->ajax) : ?>
-	<p> <a href="<?php echo $config->filename; ?>" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a> </p>
+	<p> <a href="<?php echo $config->filename; ?>" class="h4" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a> </p>
 <?php endif; ?>
 
 <?php if (file_exists($pricefile)) : ?>
