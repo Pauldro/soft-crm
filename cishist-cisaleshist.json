@@ -1,0 +1,243 @@
+{
+    "error": false,
+    "errormsg": "",
+    "sessionid": "cishist",
+    "custid": "RYAN",
+    "shipid": "",
+    "date": "20150426",
+    "data": {
+        "BU": {
+            "Whse Name": "BURNSVILLE-EAGAN",
+            "orders": {
+                "1": {
+                    "Invoice Number": "4210300",
+                    "Order Number": "4210300",
+                    "Customer PO Number": "STEVE",
+                    "Order Date": "10/27/16",
+                    "Invoice Date": "10/27/16",
+                    "Ship-To ID": "2",
+                    "Ship-To Name": "DOWN TOWN EAST COMMONS",
+                    "Ship-To City/State/Zip": "",
+                    "Ship Via Code": "COTR",
+                    "Ship Via Description": "COMPANY TRUCK",
+                    "Terms Code": "CRED",
+                    "Terms Description": "CREDIT CARD TERMS",
+                    "Salesperson 1 ID": "200",
+                    "Salesperson 1 Name": "MIKE MCCABE",
+                    "Salesperson 2 ID": "",
+                    "Salesperson 2 Name": "",
+                    "Salesperson 3 ID": "",
+                    "Salesperson 3 Name": "",
+                    "Release Number": "",
+                    "Pick Date": "",
+                    "Verify Date": "10/27/16",
+                    "details": {
+                        "1": {
+                            "Item ID": "280910",
+                            "Item Description 1": "WEST CURE BLANKET-ULTRA CURE NCF",
+                            "Item Description 2": "",
+                            "Customer Item ID": "",
+                            "Warehouse ID": "BU",
+                            "Sales Unit of Measure": "SF",
+                            "Special Order": "N",
+                            "Item Reference": "",
+                            "Requested Date": "10/26/16",
+                            "Ship Date": "10/27/16",
+                            "Quantity Ordered": "1200.00000",
+                            "Quantity Shipped": "1000.00000",
+                            "Quantity Backordered": "200.00000",
+                            "Unit Price": "0.13000",
+                            "Total Amount": "130.00000",
+                            "Unit Cost": "0.00000",
+                            "Total Cost": "90.00000",
+                            "Picker Initials": "",
+                            "Non-Stock Vendor ID": "",
+                            "Non-Stock PO Number": "",
+                            "Non-Stock Vendor Item": "",
+                            "detailnotes": {
+                            },
+                            "lotserial": {
+                                "1": {
+                                    "Lot/Serial Number": "Q102700001",
+                                    "Lot/Serial Qty Shipped": "1200.00000",
+                                    "Batch": "",
+                                    "Cure Date": "",
+                                    "Lot Reference": ""
+                                }
+                            }
+                        },
+                        "2": {
+                            "Item ID": "190025",
+                            "Item Description 1": "SUPER DIAMOND CLEAR",
+                            "Item Description 2": "",
+                            "Customer Item ID": "",
+                            "Warehouse ID": "BU",
+                            "Sales Unit of Measure": "PL",
+                            "Special Order": "N",
+                            "Item Reference": "",
+                            "Requested Date": "10/26/16",
+                            "Ship Date": "10/27/16",
+                            "Quantity Ordered": "5.00000",
+                            "Quantity Shipped": "5.00000",
+                            "Quantity Backordered": "0.00000",
+                            "Unit Price": "150.00000",
+                            "Total Amount": "750.00000",
+                            "Unit Cost": "117.00000",
+                            "Total Cost": "584.00000",
+                            "Picker Initials": "",
+                            "Non-Stock Vendor ID": "",
+                            "Non-Stock PO Number": "",
+                            "Non-Stock Vendor Item": "",
+                            "detailnotes": {
+                            },
+                            "lotserial": {
+                                "1": {
+                                    "Lot/Serial Number": "Q102700002",
+                                    "Lot/Serial Qty Shipped": "5.00000",
+                                    "Batch": "",
+                                    "Cure Date": "",
+                                    "Lot Reference": ""
+                                }
+                            }
+                        },
+                        "3": {
+                            "Item ID": "180095",
+                            "Item Description 1": "AQUA CURE VOX - 5GAL PAIL",
+                            "Item Description 2": "",
+                            "Customer Item ID": "",
+                            "Warehouse ID": "BU",
+                            "Sales Unit of Measure": "PL",
+                            "Special Order": "N",
+                            "Item Reference": "",
+                            "Requested Date": "10/26/16",
+                            "Ship Date": "10/27/16",
+                            "Quantity Ordered": "5.00000",
+                            "Quantity Shipped": "5.00000",
+                            "Quantity Backordered": "0.00000",
+                            "Unit Price": "86.00000",
+                            "Total Amount": "430.00000",
+                            "Unit Cost": "70.00000",
+                            "Total Cost": "350.00000",
+                            "Picker Initials": "",
+                            "Non-Stock Vendor ID": "",
+                            "Non-Stock PO Number": "",
+                            "Non-Stock Vendor Item": "",
+                            "detailnotes": {
+                            },
+                            "lotserial": {
+                                "1": {
+                                    "Lot/Serial Number": "Q102700003",
+                                    "Lot/Serial Qty Shipped": "5.00000",
+                                    "Batch": "",
+                                    "Cure Date": "",
+                                    "Lot Reference": ""
+                                }
+                            }
+                        },
+                        "4": {
+                            "Item ID": "430370",
+                            "Item Description 1": "SINGLE STEP",
+                            "Item Description 2": "",
+                            "Customer Item ID": "",
+                            "Warehouse ID": "BU",
+                            "Sales Unit of Measure": "PL",
+                            "Special Order": "N",
+                            "Item Reference": "",
+                            "Requested Date": "10/26/16",
+                            "Ship Date": "10/27/16",
+                            "Quantity Ordered": "5.00000",
+                            "Quantity Shipped": "5.00000",
+                            "Quantity Backordered": "0.00000",
+                            "Unit Price": "160.00000",
+                            "Total Amount": "800.00000",
+                            "Unit Cost": "112.00000",
+                            "Total Cost": "560.00000",
+                            "Picker Initials": "",
+                            "Non-Stock Vendor ID": "",
+                            "Non-Stock PO Number": "",
+                            "Non-Stock Vendor Item": "",
+                            "detailnotes": {
+                            },
+                            "lotserial": {
+                                "1": {
+                                    "Lot/Serial Number": "Q102700004",
+                                    "Lot/Serial Qty Shipped": "5.00000",
+                                    "Batch": "",
+                                    "Cure Date": "",
+                                    "Lot Reference": ""
+                                }
+                            }
+                        },
+                        "5": {
+                            "Item ID": "N",
+                            "Item Description 1": "QWIKJOINT UVR GRAY 10 GAL",
+                            "Item Description 2": "",
+                            "Customer Item ID": "",
+                            "Warehouse ID": "BU",
+                            "Sales Unit of Measure": "EACH",
+                            "Special Order": "S",
+                            "Item Reference": "",
+                            "Requested Date": "10/26/16",
+                            "Ship Date": "10/27/16",
+                            "Quantity Ordered": "2.00000",
+                            "Quantity Shipped": "2.00000",
+                            "Quantity Backordered": "0.00000",
+                            "Unit Price": "556.00000",
+                            "Total Amount": "1112.00000",
+                            "Unit Cost": "0.00000",
+                            "Total Cost": "0.00000",
+                            "Picker Initials": "",
+                            "Non-Stock Vendor ID": "EUCLID",
+                            "Non-Stock PO Number": "",
+                            "Non-Stock Vendor Item": "000596",
+                            "detailnotes": {
+                            },
+                            "lotserial": {
+                            }
+                        },
+                        "6": {
+                            "Item ID": "N",
+                            "Item Description 1": "SILICONE DAP ALEX PLUS WHT 10 OZ",
+                            "Item Description 2": "",
+                            "Customer Item ID": "",
+                            "Warehouse ID": "BU",
+                            "Sales Unit of Measure": "EACH",
+                            "Special Order": "S",
+                            "Item Reference": "",
+                            "Requested Date": "10/26/16",
+                            "Ship Date": "10/27/16",
+                            "Quantity Ordered": "10.00000",
+                            "Quantity Shipped": "0.00000",
+                            "Quantity Backordered": "10.00000",
+                            "Unit Price": "3.75000",
+                            "Total Amount": "0.00000",
+                            "Unit Cost": "0.00000",
+                            "Total Cost": "0.00000",
+                            "Picker Initials": "",
+                            "Non-Stock Vendor ID": "HOME",
+                            "Non-Stock PO Number": "7090",
+                            "Non-Stock Vendor Item": "DE598",
+                            "detailnotes": {
+                            },
+                            "lotserial": {
+                            }
+                        }
+                    },
+                    "ordernotes": {
+                    },
+                    "totals": {
+                        "Subtotal": "3222.00000",
+                        "Tax": "238.43000",
+                        "Freight": "0.00000",
+                        "Miscellaneous": "5.00000",
+                        "Order Total": "3465.43000",
+                        "Number of Boxes": "",
+                        "Total Weight": "0.00000"
+                    },
+                    "shipments": {
+                    }
+                }
+            }
+        }
+    }
+}

@@ -131,12 +131,11 @@
 		}
 	}
 
-
+	if ($config->ajax) {
+		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
+	}
 ?>
 
-<?php if ($config->ajax) : ?>
-	<p> <a href="<?php echo $config->filename; ?>" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a> </p>
-<?php endif; ?>
 <?php if (file_exists($salesfile)) : ?>
     <?php $quotejson = json_decode(file_get_contents($salesfile), true);  ?>
     <?php if (!$quotejson) { $quotejson = array('error' => true, 'errormsg' => 'The CI Sales Order JSON contains errors');} ?>

@@ -1,19 +1,19 @@
-<?php 
-	
-	include $config->paths->assets."classes/Table.php"; 
+<?php
+
+	include $config->paths->assets."classes/Table.php";
 	include $config->paths->content."item-information/functions/ii-functions.php";
 	$historyfile = $config->jsonfilepath.session_id()."-cipayment.json";
-	//$historyfile = $config->jsonfilepath."cioi-cipayment.json"; 
-	
+	//$historyfile = $config->jsonfilepath."cioi-cipayment.json";
+
 
 
 	if (checkformatterifexists($user->loginid, 'ci-payment-history', false)) {
 		$defaultjson = json_decode(getformatter($user->loginid, 'ci-payment-history', false), true);
 	} else {
 		$default = $config->paths->content."cust-information/screen-formatters/default/ci-payment-history.json";
-		$defaultjson = json_decode(file_get_contents($default), true); 
+		$defaultjson = json_decode(file_get_contents($default), true);
 	}
-	
+
 	$columns = array_keys($defaultjson['detail']['columns']);
 	$fieldsjson = json_decode(file_get_contents($config->companyfiles."json/cipyfmattbl.json"), true);
 
@@ -29,11 +29,10 @@
 		}
 	}
 
-	
+	if ($config->ajax) {
+		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
+	}
 ?>
-<?php if ($config->ajax) : ?>
-	<p> <a href="<?php echo $config->filename; ?>" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a> </p>
-<?php endif; ?>
 <?php if (file_exists($historyfile)) : ?>
     <?php $historyjson = json_decode(file_get_contents($historyfile), true);  ?>
     <?php if (!$historyjson) { $historyjson= array('error' => true, 'errormsg' => 'The Payment History JSON contains errors');} ?>
@@ -52,4 +51,3 @@
 <?php else : ?>
     <div class="alert alert-warning" role="alert">Information Not Available</div>
 <?php endif; ?>
-

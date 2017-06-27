@@ -145,14 +145,14 @@
 			break;
 		case 'load-quotes':
 			$custID = $input->get->text('custID');
-			$data = array('DBNAME' => $config->dbName, 'QUOTHED' => false, 'TYPE' => 'QUOTE', 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dbName, 'LOADCUSTQUOTEHEAD' => false, 'TYPE' => 'QUOTE', 'CUSTID' => $custID);
 			$session->loc = $config->pages->ajax."load/quotes/cust/".urlencode($custID)."/?qnbr=".$link_addon;
 			$session->{'quotes-loaded-for'} = $custID;
 			$session->{'quotes-updated'} = date('m/d/Y h:i A');
 			break;
 		case 'load-quote-details':
 			$qnbr = $input->get->text('qnbr');
-			$data = array('DBNAME' => $config->dbName, 'QUOTDET' => $qnbr, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dbName, 'LOADQUOTEDETAIL' => false, 'QUOTENO' => $qnbr);
 			$session->loc = $config->pages->ajax."load/quotes/cust/".urlencode($custID)."/?qnbr=".$qnbr.$link_addon;;
 			$session->{'quotes-loaded-for'} = $custID;
 			$session->{'quotes-updated'} = date('m/d/Y h:i A');
@@ -182,6 +182,11 @@
 			break;
 		case 'ci-shipto-buttons':
 			$data = array('DBNAME' => $config->dbName, 'CISTBUTTONS' => false);
+			$session->loc = $config->pages->index;
+			break;
+		case 'ci-pricing':
+			$itemid = $input->get->text('itemid');
+			$data = array('DBNAME' => $config->dbName, 'CIPRICE' => false, 'ITEMID' => $itemid, 'CUSTID' => $custID);
 			$session->loc = $config->pages->index;
 			break;
 		case 'ci-contacts':
@@ -241,8 +246,7 @@
 		default:
 			$session->remove('ordersearch');
 			$data = array('DBNAME' => $config->dbName, 'ORDRHED' => false, 'CUSTID' => $custID, 'TYPE' => 'O');
-			$session->loc = $config->pages->ajax."load/orders/cust/".urlencode($custID)."/";
-			$session->loc .= "?ordn=".$link_addon;
+			$session->loc = $config->pages->ajax."load/orders/cust/".urlencode($custID)."/"."?ordn=".$link_addon;
 			$session->{'orders-loaded-for'} = $custID;
 			$session->{'orders-updated'} = date('m/d/Y h:i A');
 			break;

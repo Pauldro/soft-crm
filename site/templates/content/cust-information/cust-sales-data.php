@@ -1,6 +1,10 @@
 <?php
     $salesfile = $config->jsonfilepath.session_id()."-ci53weeks.json";
     //$salesfile = $config->paths->templates."json/test-cust-sales.json";
+
+    $href = $config->pages->ajax.'load/ci/ci-53weeks/?custID='.urlencode($custID);
+	echo '<p>' . makeprintlink($href, 'View Printable Version') . '</p>';
+
 ?>
 
 <?php if (file_exists($salesfile)) : ?>

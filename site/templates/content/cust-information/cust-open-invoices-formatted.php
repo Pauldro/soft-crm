@@ -1,19 +1,19 @@
-<?php 
-	
-	include $config->paths->assets."classes/Table.php"; 
+<?php
+
+	include $config->paths->assets."classes/Table.php";
 	include $config->paths->content."item-information/functions/ii-functions.php";
 	$invoicefile = $config->jsonfilepath.session_id()."-ciopeninv.json";
-	//$invoicefile = $config->jsonfilepath."cioi-ciopeninv.json"; 
-	
+	//$invoicefile = $config->jsonfilepath."cioi-ciopeninv.json";
+
 
 
 	if (checkformatterifexists($user->loginid, 'ci-open-invoice', false)) {
 		$defaultjson = json_decode(getformatter($user->loginid, 'ci-open-invoice', false), true);
 	} else {
 		$default = $config->paths->content."cust-information/screen-formatters/default/ci-open-invoices.json";
-		$defaultjson = json_decode(file_get_contents($default), true); 
+		$defaultjson = json_decode(file_get_contents($default), true);
 	}
-	
+
 	$columns = array_keys($defaultjson['detail']['columns']);
 	$fieldsjson = json_decode(file_get_contents($config->companyfiles."json/cioifmattbl.json"), true);
 
@@ -29,11 +29,10 @@
 		}
 	}
 
-	
+	if ($config->ajax) {
+		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
+	}
 ?>
-<?php if ($config->ajax) : ?>
-	<p> <a href="<?php echo $config->filename; ?>" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a> </p>
-<?php endif; ?>
 <?php if (file_exists($invoicefile)) : ?>
     <?php $invoicejson = json_decode(file_get_contents($invoicefile), true);  ?>
     <?php if (!$invoicejson) { $invoicejson= array('error' => true, 'errormsg' => 'The open invoice JSON contains errors');} ?>
@@ -52,4 +51,3 @@
 <?php else : ?>
     <div class="alert alert-warning" role="alert">Information Not Available</div>
 <?php endif; ?>
-
