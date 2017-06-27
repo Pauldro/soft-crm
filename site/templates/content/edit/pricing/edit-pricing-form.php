@@ -2,11 +2,11 @@
 	<p>
 		<a href="<?php echo $config->filename; ?>" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a>
 		&nbsp; &nbsp;
-		<a href="<?= $config->pages->products.'redir/?action=ii-select&itemid='.urlencode($linedetail['itemid']); ?>" target="_blank"><i class="material-icons" aria-hidden="true">&#xE051;</i> View In II</a> 
+		<a href="<?= $config->pages->products.'redir/?action=ii-select&itemid='.urlencode($linedetail['itemid']); ?>" target="_blank"><i class="material-icons" aria-hidden="true">&#xE051;</i> View In II</a>
 	</p>
 <?php endif; ?>
 <form action="<?php echo $formaction; ?>" method="post" id="<?= $linedetail['itemid'].'-form'; ?>">
-    <input type="hidden" name="action" value="update-line">
+    <input type="hidden" class="action" name="action" value="update-line">
     <input type="hidden" name="ordn" value="<?= $ordn; ?>">
     <input type="hidden" class="listprice" value="<?= formatmoney($linedetail['listprice']); ?> ">
     <input type="hidden" class="linenumber" name="linenbr" value="<?= $linedetail['linenbr']; ?> ">
@@ -63,7 +63,6 @@
 						<div class="input-group date" style="width: 180px;">
 							<?php $name = 'duedate'; $value = $linedetail['rshipdate'];?>
 							<?php include $config->paths->content."common/date-picker.php"; ?>
-
 						</div>
 					</td>
 				</tr>
@@ -72,13 +71,12 @@
 				</tr>
 			</table>
 
+			<?php if ($linedetail['can-edit']) :?>
+		    	<button type="submit" class="btn btn-success btn-block"><i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Save Changes</button>
+				<br>
+				<button type="button" class="btn btn-danger btn-block remove-item"><i class="fa fa-trash" aria-hidden="true"></i> Delete Line</button>
+		    <?php endif; ?>
+
     	</div>
     </div>
-
-
-  	<?php if ($linedetail['can-edit']) :?>
-        <div class="text-center">
-            <button type="submit" class="btn btn-success">Submit</button>
-        </div>
-    <?php endif; ?>
 </form>
