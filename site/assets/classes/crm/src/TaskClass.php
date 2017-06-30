@@ -28,6 +28,7 @@
         public $hasnotelink = false;
         public $isoverdue = false;
         public $hascompleted = false;
+        public $isrescheduled = false;
 
         public static function buildfromPDO($data) {
             $task = new Task();
@@ -55,7 +56,11 @@
             if ($task->salesorderlink != '') { $task->hasorderlink = true; }
             if ($task->quotelink != '') { $task->hasquotelink = true; }
             if ($task->notelink != '') { $task->hasnotelink = true; }
-            if ($task->completed == 'Y') { $task->hascompleted = true; }
+            if ($task->completed == 'Y') {
+                $task->hascompleted = true;
+            } elseif ($task->completed == 'R') {
+                $task->isrescheduled = true;
+            }
             if (strtotime($task->duedate) < strtotime("now") ) { $task->isoverdue = true;}
             return $task;
         }
@@ -82,7 +87,11 @@
             if ($this->salesorderlink != '') { $this->hasorderlink = true; }
             if ($this->quotelink != '') { $this->hasquotelink = true; }
             if ($this->notelink != '') { $this->hasnotelink = true; }
-            if ($this->completed == 'Y') { $this->hascompleted = true; }
+            if ($this->completed == 'Y') {
+                $this->hascompleted = true;
+            } elseif ($this->completed == 'R') {
+                $this->isrescheduled = true;
+            }
             if (strtotime($this->duedate) < strtotime("now") && (!$this->hascompleted) ) { $this->isoverdue = true;}
             $contact = getcustcontact($this->customerlink, $this->shiptolink, $this->contactlink, false);
             switch ($this->tasktype) {

@@ -20,19 +20,24 @@
     <?php endif; ?>
     <?php if ($task->hascontactlink) : ?>
         <tr>
-            <td>Contact:</td>
+            <td>Task Contact:</td>
             <td><?php echo $task->contactlink; ?> <a href="<?php echo $task->generatecontacturl(); ?>"><i class="glyphicon glyphicon-share"></i> Go to Contact Page</a></td>
         </tr>
     <?php else : ?>
         <tr>
-            <td>Contact:</td>
+            <td class="text-center h5" colspan="2">
+                Who to Contact
+            </td>
+        </tr>
+        <tr>
+            <td>Contact: </td>
             <td><?php echo $contactinfo['contact']; ?></td>
         </tr>
     <?php endif; ?>
     <tr>
         <td>Phone:</td>
         <td>
-            <a href="tel:<?php echo $contactinfo['cphone']; ?>"><?php echo $contactinfo['cphone']; ?></a> &nbsp; <?php if ($contactinfo['cphone'] != '') {echo ' Ext. '.$contactinfo['cphext'];} ?>
+            <a href="tel:<?php echo $contactinfo['cphone']; ?>"><?php echo $contactinfo['cphone']; ?></a> &nbsp; <?php if ($contactinfo['cphext'] != '') {echo ' Ext. '.$contactinfo['cphext'];} ?>
         </td>
     </tr>
     <?php if ($contactinfo['ccellphone'] != '') : ?>
@@ -47,6 +52,18 @@
         <td>Email:</td>
         <td><a href="mailto:<?php echo $contactinfo['email']; ?>"><?php echo $contactinfo['email']; ?></a></td>
     </tr>
+    <?php if ($task->hasorderlink) : ?>
+        <tr>
+            <td>Sales Order #:</td>
+            <td><?php echo $task->salesorderlink; ?></td>
+        </tr>
+    <?php endif; ?>
+    <?php if ($task->hasquotelink) : ?>
+        <tr>
+            <td>Quote #:</td>
+            <td><?php echo $task->quotelink; ?></td>
+        </tr>
+    <?php endif; ?>
     <tr>
         <td colspan="2"><b>Notes</b><br><?php echo $task->textbody; ?></td>
     </tr>

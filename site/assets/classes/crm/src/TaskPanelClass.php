@@ -8,13 +8,17 @@
 		public $modal;
 		public $collapse;
 		public $completed = false;
-		public $completechecked = '';
+        public $rescheduled = false;
+
+        public $taskstatus = 'N';
 
 		public $custID;
 		public $shipID;
 		public $contactID;
 
         public $links = array('assignedto' => false, 'customerlink' => false, 'shiptolink' => false, 'contactlink' => false);
+
+        public $statuses = array('Y' => 'Completed', 'N' => 'Not Completed', 'R' => 'Rescheduled');
 
         public $count = 0;
 
@@ -44,9 +48,15 @@
 
 
 		function setupcompletetasks() {
-			$this->completechecked = 'checked';
+            $this->taskstatus = 'Y';
 			$this->completed = true;
 		}
+
+        function setuprescheduledtasks() {
+            $this->taskstatus = 'R';
+			$this->rescheduled = true;
+		}
+
 
 		function getaddtasklink() {
 			$link = '';

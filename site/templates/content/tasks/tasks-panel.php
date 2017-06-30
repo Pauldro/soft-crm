@@ -34,12 +34,20 @@
     <div id="tasks-div" class="<?= $taskpanel->collapse; ?>">
         <div>
         	<div class="panel-body">
-                <div class="row">
-                	<div class="col-xs-5">
-                    	<label>View Completed Tasks</label>
-                    	<input type="checkbox" id="view-completed-tasks" class="check-toggle" data-size="small" data-width="73px" <?= $taskpanel->data; ?> data-url="<?= $taskpanel->getpanelrefreshlink(); ?>" <?php echo $taskpanel->completechecked; ?>>
-                    </div>
-                </div>
+				<div class="row">
+					<div class="col-xs-5">
+						<label for="view-task-status">View Completed Tasks</label>
+						<select name="" id="view-task-status" class="form-control input-sm" <?= $taskpanel->data; ?> data-url="<?= $taskpanel->getpanelrefreshlink(); ?>" >
+							<?php foreach ($taskpanel->statuses as $status => $label) : ?>
+								<?php if ($status == $taskpanel->taskstatus) : ?>
+									<option value="<?= $status; ?>" selected><?= $label; ?></option>
+								<?php else : ?>
+									<option value="<?= $status; ?>"><?= $label; ?></option>
+								<?php endif; ?>
+							<?php endforeach; ?>
+						</select>
+					</div>
+				</div>
             </div>
              <?php include $config->paths->content.'pagination/ajax/pagination-start-no-form.php'; ?>
              <?php include $config->paths->content.'tasks/task-list/'.$taskpanel->type.'-task-list.php'; ?>

@@ -1,5 +1,5 @@
 <?php
-	$tasks = get_linked_tasks($user->loginid, $custID, $shipID, $contactID, '', '', '', $taskpanel->completed, $config->showonpage, $input->pageNum(), false);
+	$tasks = get_linked_tasks($user->loginid, $custID, $shipID, $contactID, '', '', '', $taskpanel->taskstatus, $config->showonpage, $input->pageNum(), false);
 ?>
 <table class="table table-bordered table-condensed table-striped">
 	<thead>
