@@ -3,7 +3,7 @@
 	$modalbody = false;
     switch ($input->urlSegment(3)) { //Parts of order to load
         case 'search-results':
-            if ($input->get->q) {$q = $input->get->text('q'); $title = "Searching for '$q'";} 
+            if ($input->get->q) {$q = $input->get->text('q'); $title = "Searching for '$q'";}
 			switch ($input->urlSegment(4)) {
 				case 'modal':
 					$modal = true;
@@ -17,7 +17,7 @@
 		case 'ii-pricing':
             $itemid = $input->get->text('itemid');
 			$custID = $input->get->text('custID');
-            $title = $itemid. ' Price Inquiry for ' . $custID; 
+            $title = $itemid. ' Price Inquiry for ' . $custID;
             $modalcontent = $config->paths->content."item-information/item-pricing.php";
 			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
             break;
@@ -30,19 +30,19 @@
         case 'ii-purchase-order':
             $itemid = $input->get->text('itemid');
             $title = $itemid. ' Purchase Order Inquiry';
-            $modalcontent = $config->paths->content."item-information/item-purchase-orders-formatted.php";
+            $modalcontent = $config->paths->content."item-information/item-purchase-orders.php";
 			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
             break;
 		case 'ii-quotes':
             $itemid = $input->get->text('itemid');
             $title = 'Viewing ' .$itemid . ' Quotes';
-            $modalcontent = $config->paths->content."item-information/item-quotes-formatted.php"; 
+            $modalcontent = $config->paths->content."item-information/item-quotes.php";
 			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
             break;
 		 case 'ii-purchase-history':
             $itemid = $input->get->text('itemid');
             $title = $itemid.'Purchase History Inquiry';
-            $modalcontent = $config->paths->content."item-information/item-purchase-history-formatted.php";
+            $modalcontent = $config->paths->content."item-information/item-purchase-history.php";
 			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
             break;
 		case 'ii-where-used':
@@ -59,7 +59,7 @@
             break;
 		case 'ii-bom':
             $itemid = $input->get->text('itemid');
-			$bom = $input->get->text('bom'); 
+			$bom = $input->get->text('bom');
             $title = $itemid.' BOM Item Inquiry ';
             $modalcontent = $config->paths->content."item-information/item-bom-".$bom.".php";
 			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
@@ -83,25 +83,25 @@
             break;
 		case 'ii-requirements':
             $itemid = $input->get->text('itemid');
-            $title = $itemid. ' Requirements Inquiry'; 
+            $title = $itemid. ' Requirements Inquiry';
             $modalcontent = $config->paths->content."item-information/item-requirements.php";
 			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
             break;
 		case 'ii-lot-serial':
             $itemid = $input->get->text('itemid');
-            $title = 'Viewing ' .$itemid. ' Lot/Serial Inquiry'; 
+            $title = 'Viewing ' .$itemid. ' Lot/Serial Inquiry';
             $modalcontent = $config->paths->content."item-information/item-lot-serial.php";
 			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
             break;
 		case 'ii-sales-orders':
             $itemid = $input->get->text('itemid');
             $title = $itemid . ' Sales Order Inquiry';
-            $modalcontent = $config->paths->content."item-information/item-sales-orders-formatted.php";
+            $modalcontent = $config->paths->content."item-information/item-sales-orders.php";
 			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
             break;
 		case 'ii-sales-history':
 			$itemid = $input->get->text('itemid');
-	
+
 			if ($input->urlSegment4 == 'form') {
 				if ($input->get->custID) { $custID = $input->get->text('custID'); } else { $custID = ''; }
 				$title = 'Search Item History';
@@ -110,7 +110,6 @@
 				if ($input->get->custID) { $custID = $input->get->text('custID'); } else { $custID = ''; }
 				$title = $itemid. ' Sales History Inquiry';
 				$modalcontent = $config->paths->content."item-information/item-history.php";
-				$modalcontent = $config->paths->content."item-information/item-history-formatted.php";
 			}
 			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
 			break;
@@ -160,7 +159,7 @@
 			$config->scripts->append($config->urls->templates.'scripts/ii/item-info.js');
 			include $config->paths->content."common/include-blank-page.php";
 		}
-		
+
     }
 
 

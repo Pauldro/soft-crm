@@ -1,6 +1,7 @@
 <?php
     $modal = false;
 	$modalbody = false;
+    $shipID = '';
     switch ($input->urlSegment(3)) { //Parts of order to load
         case 'search-results':
             if ($input->get->q) {$q = $input->get->text('q'); $title = "Searching for '$q'";}
@@ -15,6 +16,8 @@
 			}
             break;
         case 'item-search-results':
+            $title = "Searching items for " . $input->get->text('q');
+            $q = $input->get->text('q');
             $modalbody = $config->paths->content."cust-information/item-search-results.php";
             break;
 		case 'ci-shiptos':
@@ -30,10 +33,32 @@
 			$modalcontent = $config->paths->content."cust-information/cust-shipto-info.php";
 			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
 			break;
+        case 'ci-pricing-search':
+            $title = 'Search for an Item';
+            $action = 'ci-pricing';
+            $custID = $input->get->text('custID');
+            if ($input->get->q) {$q = $input->get->text('q'); $title = "Searching for '$q'";}
+			switch ($input->urlSegment(4)) {
+				case 'modal':
+					$modal = true;
+					$modalcontent = $config->paths->content."cust-information/forms/item-search-form.php";
+					break;
+				default:
+					$modalbody = $config->paths->content."cust-information/item-search-results.php";
+					break;
+			}
+            break;
+        case 'ci-pricing':
+            $custID = $input->get->text('custID');
+            $itemid = $input->get->text('itemid');
+            $title = 'Viewing Pricing for ' . $itemid;
+			$modalcontent = $config->paths->content."cust-information/item-pricing.php";
+            if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
+            break;
 		case 'ci-open-invoices':
 			$custID = $input->get->text('custID');
 			$title = get_customer_name($custID) . ' Open Invoice Inquiry';
-			$modalcontent = $config->paths->content."cust-information/cust-open-invoices-formatted.php";
+			$modalcontent = $config->paths->content."cust-information/cust-open-invoices.php";
 			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
 			break;
         case 'ci-order-documents':
@@ -52,7 +77,7 @@
 		case 'ci-payment-history':
 			$custID = $input->get->text('custID');
 			$title = get_customer_name($custID) . ' Payment History Inquiry';
-			$modalcontent = $config->paths->content."cust-information/cust-payment-history-formatted.php";
+			$modalcontent = $config->paths->content."cust-information/cust-payment-history.php";
 			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
 			break;
 		case 'ci-documents':
@@ -64,7 +89,7 @@
 		case 'ci-quotes':
 			$custID = $input->get->text('custID');
 			$title = get_customer_name($custID) . ' Quote Inquiry';
-			$modalcontent = $config->paths->content."cust-information/cust-quotes-formatted.php";
+			$modalcontent = $config->paths->content."cust-information/cust-quotes.php";
 			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
 			break;
 		case 'ci-contacts':
@@ -100,6 +125,7 @@
         case 'ci-sales-history':
 			$custID = $input->get->text('custID');
             if ($input->urlSegment4 == 'form') {
+                $action = 'ci-sales-history';
                 $title = get_customer_name($custID) . ' Choose a Starting Date';
     			$modalbody = $config->paths->content."cust-information/forms/cust-sales-history-form.php";
             } else {
@@ -113,6 +139,12 @@
 			$custID = $input->get->text('custID');
 			$title = get_customer_name($custID) . ' Customer PO Inquiry';
 			$modalcontent = $config->paths->content."cust-information/cust-po.php";
+			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
+			break;
+        case 'ci-53weeks':
+			$custID = $input->get->text('custID');
+			$title = get_customer_name($custID) . ' 52 Week Sales Data';
+			$modalcontent = $config->paths->content."cust-information/cust-sales-data.php";
 			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
 			break;
         default:
