@@ -23,12 +23,14 @@
 	* switch ($action) {
 	*	case 'get-quote-details':
 	*		DBNAME=$config->DBNAME
-	*		QUOTDET=$qnbr
+	*		LOADQUOTEDETAIL
+	*		QUOTENO=$qnbr
 	*		CUSTID=$custID
 	*		break;
 	*	case 'get-quote-details-print':
 	*		DBNAME=$config->DBNAME
-	*		QUOTDET=$qnbr
+	*		LOADQUOTEDETAIL
+	*		QUOTENO=$qnbr
 	*		CUSTID=$custID
 	*		break;
 	*	case 'save-quotehead':
@@ -40,15 +42,21 @@
 	*	case 'add-to-quote':
 	*		DBNAME=$config->DBNAME
 	*		QUOTEDETAIL
-	*		QUOTNO=$qnbr
+	*		QUOTENO=$qnbr
 	*		ITEMID=$itemID
 	*		QTY=$qty
 	*		break;
 	*	case 'update-line':
 	*		DBNAME=$config->DBNAME
 	*		QUOTEDETAIL
-	*		QUOTNO=$qnbr
+	*		QUOTENO=$qnbr
 	*		LINENO=$linenbr
+	*		break;
+	*	case 'load-cust-quotes':
+	*		DBNAME=$config->DBNAME
+	*		LOADCUSTQUOTEHEAD
+	*		TYPE=QUOTE
+	*		CUSTID=$custID
 	*		break;
 	*	case 'unlock-quote':
 	*		$data = array('UNLOCKING QUOTE' => '');
@@ -67,7 +75,7 @@
 		case 'get-quote-details':
 			$qnbr = $input->get->text('qnbr');
 			$custID = getquotecustomer(session_id(), $qnbr, false);
-			$data = array('DBNAME' => $config->dbName, 'QUOTDET' => $qnbr, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dbName, 'LOADQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'CUSTID' => $custID);
 			if ($input->get->lock) {
 				$session->loc= $config->pages->editquote."?qnbr=".$qnbr;
 			} else {
@@ -77,7 +85,7 @@
 		case 'get-quote-details-print':
 			$qnbr = $input->get->text('qnbr');
 			$custID = getquotecustomer(session_id(), $qnbr, false);
-			$data = array('DBNAME' => $config->dbName, 'QUOTDET' => $qnbr, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dbName, 'LOADQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'CUSTID' => $custID);
 			$session->loc = $config->pages->print."quote/?qnbr=".$qnbr;
 			break;
 		case 'save-quotehead':
@@ -114,14 +122,14 @@
 			$quote['faxnbr'] = $input->post->text('contact-fax');
 
 			$session->sql = edit_quotehead(session_id(), $qnbr, $quote, false);
-			$data = array('DBNAME' => $config->dbName, 'QUOTEHEAD' => false, 'QUOTENO' => $qnbr);
+			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEHEAD' => false, 'QUOTENO' => $qnbr);
 			$session->loc = $config->pages->edit."quote/?qnbr=".$qnbr.$linkaddon;
 			break;
 		case 'add-to-quote':
 			$qnbr = $input->post->text('qnbr');
 			$itemid = $input->post->text('itemid');
 			$qty = $input->post->text('qty');
-			$data = array('DBNAME' => $config->dbName, 'QUOTEDETAIL' => false, 'QUOTNO' => $qnbr, 'ITEMID' => $itemid, 'QTY' => $qty);
+			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'ITEMID' => $itemid, 'QTY' => $qty);
 			break;
 		case 'update-line':
 			$qnbr = $input->post->text('qnbr');
@@ -129,19 +137,26 @@
 			$quotedetail = getquotelinedetail(session_id(), $qnbr, $linenbr, false);
 			$quotedetail['price'] = $input->post->text('price');
 			$quotedetail['discpct'] =  $input->post->text('discount');
-			$quotedetail['qtyordered'] = $input->post->text('qty');
+			$quotedetail['quotunit'] = $input->post->text('qty');
 			$quotedetail['rshipdate'] = $input->post->text('rqst-date');
 			$quotedetail['whse'] = $input->post->text('whse');
 
-			$session->sql = edit_quoteline(session_id(), $qnbr, $linenbr, $quotedetail, true);
-			$data = array('DBNAME' => $config->dbName, 'QUOTEDETAIL' => false, 'QUOTNO' => $qnbr, 'LINENO' => $linenbr);
+			$session->sql = edit_quoteline(session_id(), $qnbr, $linenbr, $quotedetail, false);
+
+			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'QTY' => '0');
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
 			} else {
 				$session->loc = $config->pages->edit."quote/?qnbr=".$qnbr;
 			}
 			$session->editdetail = true;
-
+			break;
+		case 'load-cust-quotes':
+			$custID = $input->get->text('custID');
+			$data = array('DBNAME' => $config->dbName, 'LOADCUSTQUOTEHEAD' => false, 'TYPE' => 'QUOTE', 'CUSTID' => $custID);
+			$session->loc = $config->pages->ajax."load/quotes/cust/".urlencode($custID)."/?qnbr=".$link_addon;
+			$session->{'quotes-loaded-for'} = $custID;
+			$session->{'quotes-updated'} = date('m/d/Y h:i A');
 			break;
 		case 'unlock-quote':
 			$qnbr = $input->get->text('qnbr');
