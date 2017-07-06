@@ -32,6 +32,9 @@
                     case 'completion':
                         include $config->paths->content."tasks/crud/update-completion.php";
                         break;
+                    case 'reschedule':
+                        include $config->paths->content."tasks/crud/reschedule.php";
+                        break;
                 }
                 break;
             case 'load':
