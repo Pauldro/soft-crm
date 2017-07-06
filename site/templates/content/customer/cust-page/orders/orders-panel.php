@@ -5,9 +5,14 @@
 	$ajax->focus = "#orders-panel"; //WHERE TO FOCUS AFTER LOADED DATA IS LOADED
 	$ajax->searchlink = $config->pages->ajax.'load/orders/search/cust/?custID='.urlencode($custID);  //LINK TO THE SEARCH PAGE FOR THIS OBJECT
 	$ajax->data = 'data-loadinto="'.$ajax->loadinto.'" data-focus="'.$ajax->focus.'"'; //DATA FIELDS FOR JAVASCRIPT
-	$ajax->path = buildajaxpath($config->pages->ajax, "load/orders/cust/", $input->urlSegmentsStr); //MODAL TO LOAD INTO IF NEED BE
-	$ajax->querystring = querystring_replace($querystring, array("display", "ajax"), array(false, false)); //BASE QUERYSTRING NEEDED FOR AJAX
-	$ajax->link = $ajax->path.$ajax->querystring; //LINK TO THE AJAX FILE
+	$ajax->url = $page->fullURL;
+	$ajax->url->path = $config->pages->ajax;
+	$ajax->url->path->setDplusPath("load/orders/cust/", $input->urlSegmentsStr."/");
+	$ajax->url->query->setData(array("display" => false, "ajax" => false));
+
+	$ajax->path = $ajax->url->path; //MODAL TO LOAD INTO IF NEED BE
+	$ajax->querystring = $ajax->url->query;//BASE QUERYSTRING NEEDED FOR AJAX
+	$ajax->link = $ajax->url; //LINK TO THE AJAX FILE
 
 	if ($shipID != '') {
 		$ajax->insertafter = 'shipto-'.$shipID;
@@ -18,15 +23,12 @@
 
     if ($config->ajax) {$collapse = '';} else {$collapse = 'collapse'; }
 
-
 	include $config->paths->content.'recent-orders/setup.php';
 	$ordercount =  get_cust_order_count(session_id(), $custID, false);
 	$totalcount = $ordercount;
 
 ?>
-<?php
-	if ($session)
-?>
+
 <div class="panel panel-primary not-round" id="orders-panel">
     <div class="panel-heading not-round" id="order-panel-heading">
     	<?php if ($session->ordersearch) : ?>

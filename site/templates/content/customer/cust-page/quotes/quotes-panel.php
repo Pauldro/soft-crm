@@ -5,9 +5,15 @@
 	$ajax->focus = "#quotes-panel"; //WHERE TO FOCUS AFTER LOADED DATA IS LOADED
 	$ajax->searchlink = $config->pages->ajax.'load/quote-search/cust/'.$custID."/";  //LINK TO THE SEARCH PAGE FOR THIS OBJECT
 	$ajax->data = 'data-loadinto="'.$ajax->loadinto.'" data-focus="'.$ajax->focus.'"'; //DATA FIELDS FOR JAVASCRIPT
-	$ajax->path = buildajaxpath($config->pages->ajax, "load/quotes/cust/", $input->urlSegmentsStr); //MODAL TO LOAD INTO IF NEED BE
-	$ajax->querystring = querystring_replace($querystring, array("display", "ajax"), array(false, false)); //BASE QUERYSTRING NEEDED FOR AJAX
-	$ajax->link = $ajax->path.$ajax->querystring; //LINK TO THE AJAX FILE
+
+	$ajax->url = $page->fullURL;
+	$ajax->url->path = $config->pages->ajax;
+	$ajax->url->path->setDplusPath("load/quotes/cust/", $input->urlSegmentsStr."/");
+	$ajax->url->query->setData(array("display" => false, "ajax" => false));
+
+	$ajax->path = $ajax->url->path; //MODAL TO LOAD INTO IF NEED BE
+	$ajax->querystring = $ajax->url->query;//BASE QUERYSTRING NEEDED FOR AJAX
+	$ajax->link = $ajax->url; //LINK TO THE AJAX FILE
 
 	if ($shipID != '') {
 		$ajax->insertafter = 'shipto-'.$shipID;

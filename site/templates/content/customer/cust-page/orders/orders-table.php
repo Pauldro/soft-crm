@@ -32,21 +32,27 @@
 
 
 				//CLICK TO EXPAND ICON
-				$sorting = false; 
+				$sorting = false;
 				if ($on == $input->get->text('ordn')) {
 					$oni = ""; $rowclass = 'selected';
-					$orderlink = $ajax->path.querystring_replace($ajax->querystring, array('ordn', 'show', 'orderby'), array(false, false, false));
+					$orderlink = new \Purl\Url($page->httpUrl);
+					$orderlink->path = $ajax->path;
+					$orderlink->query->setData(array('ordn' => false, 'show' => false, 'orderby' => false));
 					$ordnjsdata = $ajax->data;
 				} else {
 					$oni = $on; $rowclass = ''; $title = "View Order Details";
 					if ($input->get->orderby) { $sorting = 	$orderby."-".$sortrule; } // just to set up the orderlink querystring replace
-					$orderlink = $config->pages->customer."redir/".querystring_replace("", array('action','ordn','custID','page', 'orderby'), array('get-order-details',$on, $custID, $input->pageNum, $sorting));
+					$orderlink = new \Purl\Url($page->httpUrl);
+					$orderlink->path = $config->pages->customer."redir/";
+					$orderlink->query->setData(array('action' => 'get-order-details', 'ordn' => $on, 'custID' => urlencode($custID), 'page' => $input->pageNum, 'orderby' => $sorting));
 					$ordnjsdata = 'data-loadinto="'.$ajax->loadinto.'"  data-focus="#'.$on.'"';
 				}
 
 				//DOCUMENTS ICON
-				$docsurl = $config->pages->customer."redir/".querystring_replace("", array('action','ordn','linenbr','page', 'orderby'), array('get-order-documents',$on, '0',$input->pageNum, $sorting));
-		
+				$docsurl = new \Purl\Url($page->httpUrl);
+				$docsurl->path = $config->pages->customer."redir/";
+				$docsurl->query->setData(array('action' => 'get-order-documents', 'ordn' => $on, 'linenbr' => '0', 'page' => $input->pageNum, 'orderby' => $sorting));
+
 				if ($order['havedoc'] == 'Y') {
 					$documentlink = '
 								<a class="h3 generate-load-link" href="'.$docsurl.'" '.$ajax->data.'>
@@ -62,7 +68,11 @@
 
 
 				//TRACKING ICON
-				$trackhref = $config->pages->customer."redir/".querystring_replace("", array('action','ordn','page','orderby'), array('get-order-tracking',$on, $input->pageNum, $sorting));
+				$trackhref = new \Purl\Url($page->httpUrl);
+				$trackhref->path = $config->pages->customer."redir/";
+				$trackhref->query->setData(array('action' => 'get-order-tracking','ordn' => $on,'page' => $input->pageNum,'orderby' => $sorting));
+
+
 				if ($order['havetrk'] == 'Y') {
 					$tracklink = '
 								<a href="'.$trackhref.'" class="h3 generate-load-link" '.$ajax->data.'>
