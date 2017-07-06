@@ -11,6 +11,11 @@
 		$.get(url, function() { callback();});
 	}
 
+	function ci_pricing(custid, itemid, callback) {
+		var url = config.urls.customer.redir.ci_pricing+"&custID="+urlencode(custid)+"&itemid="+urlencode(itemid);
+		$.get(url, function() { callback();});
+	}
+
 	function ci_openinvoices(custid, callback) {
 		var url = config.urls.customer.redir.ci_openinvoices+"&custID="+urlencode(custid);
 		$.get(url, function() { callback();});
@@ -56,8 +61,8 @@
 		$.get(url, function() { callback();});
 	}
 
-	function ci_saleshistory(custid, shipid, callback) {
-		var url = config.urls.customer.redir.ci_saleshistory+"&custID="+urlencode(custid)+"&shipID="+urlencode(shipid);
+	function ci_saleshistory(custid, shipid, startdate, callback) {
+		var url = config.urls.customer.redir.ci_saleshistory+"&custID="+urlencode(custid)+"&shipID="+urlencode(shipid)+"&startdate="+urlencode(startdate);
 		$.get(url, function() { callback();});
 	}
 
