@@ -35,7 +35,7 @@
     <?php endif; ?>
     <?php if ($note->hastasklink) : ?>
         <tr>
-            <td>Sales Order #:</td>
+            <td>Task #:</td>
             <td><?php echo $note->salestasklink; ?></td>
         </tr>
     <?php endif; ?>

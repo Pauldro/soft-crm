@@ -56,6 +56,22 @@
 			return $link;
 		}
 
+        function needsaddnotelink() {
+            $needsadd = false;
+            switch ($this->type) {
+				case 'cust':
+					$needsadd = true;
+					break;
+				case 'contact':
+					$needsadd = true;
+					break;
+                case 'user':
+					$needsadd = false;
+					break;
+			}
+            return $needsadd;
+        }
+
 		function getpanelrefreshlink() {
 			$link = '';
 			switch ($this->type) {

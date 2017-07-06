@@ -14,9 +14,11 @@
         	<i class="fa fa-sticky-note" aria-hidden="true"></i> &nbsp; <?= $notepanel->getpaneltitle(); ?> <span class="caret"></span>
         </a>
          &nbsp;&nbsp;<span class="badge"> <?= $notepanel->count; ?></span>
-        <a href="<?= $notepanel->getaddnotelink(); ?>" class="btn btn-info btn-xs pull-right load-crm-note add-note hidden-print" data-modal="<?= $notepanel->modal; ?>" role="button" title="Add Note">
-            <i class="material-icons md-18">&#xE146;</i>
-        </a>
+		<?php if ($notepanel->needsaddnotelink()) : ?>
+			<a href="<?= $notepanel->getaddnotelink(); ?>" class="btn btn-info btn-xs pull-right load-crm-note add-note hidden-print" data-modal="<?= $notepanel->modal; ?>" role="button" title="Add Note">
+	            <i class="material-icons md-18">&#xE146;</i>
+	        </a>
+		<?php endif; ?>
         <span class="pull-right">&nbsp; &nbsp;&nbsp; &nbsp;</span>
         <a href="<?= $notepanel->getpanelrefreshlink(); ?>" class="btn btn-info btn-xs pull-right load-link notes-refresh hidden-print" <?= $notepanel->data; ?> role="button" title="Refresh Notes">
             <i class="material-icons md-18">&#xE86A; </i> <span class="hidden-xs">Refresh Notes</span>
