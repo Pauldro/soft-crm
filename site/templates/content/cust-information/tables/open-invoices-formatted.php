@@ -28,7 +28,7 @@
 							$class = $config->textjustify[$fieldsjson['data']['detail'][$column['id']]['datajustify']];
 							$colspan = $column['col-length'];
 
-							if ($i == 1 && !empty($invoice['Invoice Number'])) {
+						  if ($i == 1 && !empty($invoice['Invoice Number'])) {
 								$ordn = $invoice['Ordn'];
 								$onclick = 'loadorderdocuments("'.$ordn.'")';
 								$extracelldata = "&nbsp; <a href='#' title='load order documents' data-load='#ajax-modal' onclick='$onclick'><i class='fa fa-folder-open' aria-hidden='true'></i></a>";

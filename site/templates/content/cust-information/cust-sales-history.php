@@ -2,13 +2,27 @@
 
 	include_once $config->paths->assets."classes/Table.php";
 	include_once $config->paths->content."item-information/functions/ii-functions.php";
-	$salesfile = $config->jsonfilepath.session_id()."-cisaleshist.json";
-	//$salesfile = $config->jsonfilepath."cishist-cisaleshist.json";
+	$historyfile = $config->jsonfilepath.session_id()."-cisaleshist.json";
+	//$historyfile = $config->jsonfilepath."cishist-cisaleshist.json";
+	$shipID = $input->get->text('shipID');
+	$pageajax = 'N';
+	if ($config->ajax) {
+		$pageajax = 'Y';
+	}
+	$shownotes = false;
+	$startdate = $input->get->text('startdate');
+	$shownoteslink = $config->pages->ajax.'load/ci/ci-sales-history/?custID='.urlencode($custID).'&shipID'.urlencode($shipID).'&startdate='.urlencode($startdate);
 
-
+	if ($input->get->text('shownotes') == 'Y') {
+		$shownotes = true;
+		$shownoteslink = $config->pages->ajax.'load/ci/ci-sales-history/?custID='.urlencode($custID).'&shipID'.urlencode($shipID).'&startdate='.urlencode($startdate);
+	}
 
 	if (checkformatterifexists($user->loginid, 'ci-sales-history', false)) {
 		$defaultjson = json_decode(getformatter($user->loginid, 'ci-sales-history', false), true);
+
+		$default = $config->paths->content."cust-information/screen-formatters/default/ci-sales-history.json";
+		$defaultjson = json_decode(file_get_contents($default), true);
 	} else {
 		$default = $config->paths->content."cust-information/screen-formatters/default/ci-sales-history.json";
 		$defaultjson = json_decode(file_get_contents($default), true);
@@ -123,20 +137,35 @@
 	if ($config->ajax) {
 		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
 	}
-?>
-<?php if (file_exists($salesfile)) : ?>
-    <?php $quotejson = json_decode(file_get_contents($salesfile), true);  ?>
-    <?php if (!$quotejson) { $quotejson = array('error' => true, 'errormsg' => 'The CI Sales History JSON contains errors');} ?>
 
-    <?php if ($quotejson['error']) : ?>
-        <div class="alert alert-warning" role="alert"><?php echo $quotejson['errormsg']; ?></div>
+?>
+<?php if (file_exists($historyfile)) : ?>
+    <?php $historyjson = json_decode(convertfiletojson($historyfile), true);  ?>
+    <?php if (!$historyjson) { $historyjson = array('error' => true, 'errormsg' => 'The CI Sales History JSON contains errors. JSON ERROR: ' . json_last_error() );} ?>
+
+    <?php if ($historyjson['error']) : ?>
+        <div class="alert alert-warning" role="alert"><?php echo $historyjson['errormsg']; ?></div>
     <?php else : ?>
-       <?php foreach ($quotejson['data'] as $whse) : ?>
-      		<div>
-      			<h3><?= $whse['Whse Name']; ?></h3>
-      			<?php include $config->paths->content."/cust-information/tables/sales-history-formatted.php"; ?>
-      		</div>
-      	<?php endforeach; ?>
+		<div class="row form-group">
+			<div class="col-sm-3 col-xs-5">
+				<label for="shownotes">Show Notes</label>
+				<select name="" class="form-control" id="shownotes" data-link="<?= $shownoteslink; ?>" data-ajax="<?= $pageajax; ?>">
+					<?php foreach ($config->yesnoarray as $key => $value) : ?>
+						<?php if ($value == $input->get->text('shownotes')) : ?>
+							<option value="<?= $value; ?>" selected><?= $key; ?></option>
+						<?php else : ?>
+							<option value="<?= $value; ?>"><?= $key; ?></option>
+						<?php endif; ?>
+					<?php endforeach; ?>
+				</select>
+			</div>
+		</div>
+		<?php foreach ($historyjson['data'] as $whse) : ?>
+			<div>
+				<h3><?= $whse['Whse Name']; ?></h3>
+				<?php include $config->paths->content."/cust-information/tables/sales-history-formatted.php"; ?>
+			</div>
+		<?php endforeach; ?>
     <?php endif; ?>
 <?php else : ?>
     <div class="alert alert-warning" role="alert">Information Not Available</div>

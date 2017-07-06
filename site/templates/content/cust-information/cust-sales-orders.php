@@ -137,13 +137,13 @@
 ?>
 
 <?php if (file_exists($salesfile)) : ?>
-    <?php $quotejson = json_decode(file_get_contents($salesfile), true);  ?>
-    <?php if (!$quotejson) { $quotejson = array('error' => true, 'errormsg' => 'The CI Sales Order JSON contains errors');} ?>
+    <?php $salesjson = json_decode(convertfiletojson($salesfile), true);  ?>
+    <?php if (!$salesjson) { $salesjson = array('error' => true, 'errormsg' => 'The CI Sales Order JSON contains errors. JSON ERROR: ' . json_last_error());} ?>
 
-    <?php if ($quotejson['error']) : ?>
-        <div class="alert alert-warning" role="alert"><?php echo $quotejson['errormsg']; ?></div>
+    <?php if ($salesjson['error']) : ?>
+        <div class="alert alert-warning" role="alert"><?php echo $salesjson['errormsg']; ?></div>
     <?php else : ?>
-       <?php foreach ($quotejson['data'] as $whse) : ?>
+       <?php foreach ($salesjson['data'] as $whse) : ?>
       		<div>
       			<h3><?= $whse['Whse Name']; ?></h3>
       			<?php include $config->paths->content."/cust-information/tables/sales-orders-formatted.php"; ?>

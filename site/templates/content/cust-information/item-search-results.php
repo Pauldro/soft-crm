@@ -15,8 +15,21 @@
     <?php if ($input->get->q) : ?>
         <?php if ($resultscount) : ?>
             <?php foreach ($items as $item) : ?>
-            	<?php if (!file_exists($config->imagefiledirectory.$item['image'])) {$item['image'] = 'notavailable.png'; } ?>
-                <a href="#" class="list-group-item item-master-result" onclick="choosecipricingitem('<?= $item['itemid']; ?>')">
+            	<?php
+                    if (!file_exists($config->imagefiledirectory.$item['image'])) {$item['image'] = 'notavailable.png'; }
+                    switch($input->get->text('action')) {
+                        case 'ci-pricing':
+                            $onclick = "choosecipricingitem('".$item['itemid']."')";
+                            break;
+                        case 'ci-sales-history':
+                            $onclick = "choosecisaleshistoryitem('".$item['itemid']."')";
+                            break;
+                        default:
+                            $onclick = "choosecipricingitem('".$item['itemid']."')";
+                            break;
+                    }
+                ?>
+                <a href="#<?= $item['itemid']; ?>" class="list-group-item item-master-result" onclick="<?= $onclick; ?>">
                     <div class="row">
                         <div class="col-xs-2"><img src="<?php echo $config->imagedirectory.$item['image']; ?>" alt=""></div>
                         <div class="col-xs-10"><h4 class="list-group-item-heading"><?php echo $item['itemid']; ?></h4>
