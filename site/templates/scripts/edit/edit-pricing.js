@@ -9,10 +9,19 @@ $(function() {
     //$(".page").on("click", ".update-line", function(e) { It's now defined in scripts.js
 
 
-   
+
 
     $("body").on("change", fields.qty, function() {
         calculateextendedprice();
+    });
+
+    $("body").on("click", '.remove-item', function() {
+        var button = $(this);
+        var form = button.closest('form');
+        console.log(button.attr('class'));
+        console.log(form.attr('id'));
+        form.find('.action').val('remove-line');
+        form.submit();
     });
 });
 

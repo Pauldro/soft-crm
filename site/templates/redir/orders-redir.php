@@ -92,16 +92,23 @@
 			}
 			$session->editdetail = true;
 			break;
-		case 'remove':
-			$qty = 0;
-			$warehouse = $input->post->text('warehouse');
+		case 'remove-line':
 			$ordn = $input->post->text('ordn');
 			$linenbr = $input->post->text('linenbr');
-			$price = $input->post->text('price');
-			$session->sql = update_qty_and_warehouse(session_id(), $ordn, $linenbr, $qty, $warehouse, $price);
+			$orderdetail = getorderlinedetail(session_id(), $ordn, $linenbr, false);
+			$orderdetail['price'] = $input->post->text('price');
+			$orderdetail['discpct'] =  $input->post->text('discount');
+			$orderdetail['qtyordered'] = '0';
+			$orderdetail['rshipdate'] = $input->post->text('rqst-date');
+			$orderdetail['whse'] = $input->post->text('whse');
+			$session->sql = edit_orderline(session_id(), $ordn, $linenbr, $orderdetail, false);
 			$session->editdetail = true;
 			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr);
-			$session->loc = $input->post->page;
+			if ($input->post->page) {
+				$session->loc = $input->post->text('page');
+			} else {
+				$session->loc = $config->pages->edit."order/?ordn=".$ordn;
+			}
 			break;
 		case 'add-to-order':
 			$itemid = $input->post->text('itemid');
