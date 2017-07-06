@@ -47,15 +47,6 @@ function renderNavTree($items, $maxDepth = 3) {
    URL FUNCTIONS
  ============================================================ */
 
- function return_querystring($url) {
-	 if (strpos($url, '?') !== false) {
-		 $url_arr = explode("?", $url);
-		 return $url_arr[1];
-	 } else {
-		return trim('');
-	 }
- }
-
 function paginate($url, $page, $insertafter, $hash) {
 	if (strpos($url, 'page') !== false) {
 		$regex = "((page)\d{1,3})";
@@ -293,6 +284,35 @@ function show_requirements($field) {
 			return "";
 		}
 	}
+	/**
+	 * [returnpreppedquery description]
+	 * @param  [array] $originalarray [Key-Valued array with original record column values]
+	 * @param  [type] $changedarray  [Key-Valued array with changed record column values]
+	 * @return [array]                [Array that has the Set statement with prepped values, columns changed, how many need quotes, AND
+	 * 								   The count of how many values changed between the original and changed.]
+	 */
+	function returnpreppedquery($originalarray, $changedarray) {
+		$withquotes = $switching = array();
+		$setstmt = '';
+		$columns = array_keys($originalarray);
+		foreach ($columns as $column) {
+			if (strlen($changedarray[$column])) {
+				if ($originalarray[$column] != $changedarray[$column]) {
+					$prepped = ':'.$column;
+					$setstmt .= $column." = ".$prepped.", ";
+					$switching[$prepped] = $changedarray[$column];
+					$withquotes[] = true;
+				}
+			}
+		}
+		$setstmt = rtrim($setstmt, ', ');
+		return array(
+			'switching' => $switching,
+			'withquotes' => $withquotes,
+			'setstatement' => $setstmt,
+			'changecount' => sizeof($switching)
+		);
+	}
 
 	function returncustindextable($distincton) {
 		if ($distincton) {
@@ -305,6 +325,24 @@ function show_requirements($field) {
 			}
 		} else {
 			$table = 'custindex';
+		}
+		return $table;
+	}
+
+	function returntaskstable($status) {
+		switch ($status) {
+			case 'Y':
+				$table = 'view_completed_tasks';
+				break;
+			case 'N':
+				$table = 'view_incomplete_tasks';
+				break;
+			case 'R':
+				$table = 'view_rescheduled_tasks';
+				break;
+			default:
+				$table = 'view_incomplete_tasks';
+				break;
 		}
 		return $table;
 	}
@@ -408,7 +446,7 @@ function show_requirements($field) {
 		if ($shipID != '') {
 			$replace .= " Shipto: " . get_shipto_name($custID, $shipID, false)." ($shipID)";
 		}
-		
+
 		if ($contactID != '') {
 			$replace .= " Contact: " . $contactID;
 		}
@@ -437,13 +475,22 @@ function show_requirements($field) {
 			} else {
 				$file .= $key . "\n";
 			}
-
 		}
 		$vard = "/usr/capsys/ecomm/" . $filename;
 		$handle = fopen($vard, "w") or die("cant open file");
 		fwrite($handle, $file);
 		fclose($handle);
-
+	}
+	/**
+	 * [convertfiletojson description]
+	 * @param  [string] $file [String that contains file location]
+	 * @return [string]       [Returns json-encode string]
+	 */
+	function convertfiletojson($file) {
+		$json = file_get_contents($file);
+		$json = preg_replace('~[\r\n]+~', '', $json);
+		$json = utf8_clean($json);
+		return $json;
 	}
 
 	function cleanforjs($str) {
@@ -507,7 +554,7 @@ function show_requirements($field) {
 	}
 
 	function makeprintlink($link, $msg) {
-		return '<a href="'.$link.'" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i>'.$msg.'.</a>';
+		return '<a href="'.$link.'" class="h4" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> '.$msg.'.</a>';
 	}
 
 ?>
