@@ -17,22 +17,39 @@ $(function() {
 
 	listener.simple_combo("n", function() {toggleshipto();});
 
+	$("body").on("submit", custlookupform, function(e) {
+		e.preventDefault();
+		var custid = $(this).find('.custid').val();
+		var modal = config.modals.ajax;
+        var loadinto =  modal+" .modal-content";
+		var href = URI($(this).attr('action')).addQuery('q', custid).normalizeQuery().toString();
+		showajaxloading();
+		loadin(href, loadinto, function() {
+			console.log(href);
+			hideajaxloading();
+			$(modal).resizemodal('lg').modal();
+
+		});
+	});
+
 
 	$("body").on("submit", "#cust-sales-history-form", function(event) {
 		event.preventDefault();
 		var form = $(this);
 		var custid = form.find('input[name=custID]').val();
 		var shipid = form.find('input[name=shipID]').val();
-		var startdate = form.find('input[name=startdate]').val();
+		var startdate = form.find('input[name=date]').val();
 		var shownotes = 'N';
-		if (form.find('input[name=shownotes]').is(':checked')) {
-			shownotes = 'Y';
-		}
+		if (form.find('input[name=shownotes]').is(':checked')) { shownotes = 'Y'; }
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.customer.load.ci_saleshistory).addQuery("custID", custid).addQuery("shipID", shipid).addQuery("startdate", startdate).addQuery("shownotes", shownotes).toString();
+		var href = URI(config.urls.customer.load.ci_saleshistory).addQuery("custID", custid)
+																 .addQuery("shipID", shipid)
+																 .addQuery("startdate", startdate)
+																 .addQuery("shownotes", shownotes)
+																 .toString();
 		showajaxloading();
-		ci_saleshistory(custid, shipid, function() {
+		ci_saleshistory(custid, shipid, startdate, function() {
 			loadin(href, loadinto, function() {
 				console.log(href);
 				hideajaxloading();
@@ -41,7 +58,29 @@ $(function() {
 		});
 	});
 
+	$("body").on("change", "select#shownotes", function(event) {
+		event.preventDefault();
+		var select = $(this);
+		var shownotesvalue = select.val();
+		var href = URI(select.data('link')).addQuery('shownotes', shownotesvalue).toString();
+		var ajax = select.data('ajax');
+		if (ajax == 'Y') {
+			var modal = config.modals.ajax;
+	        var loadinto =  modal+" .modal-content";
+			showajaxloading();
+			loadin(href, loadinto, function() {
+				console.log(href);
+				hideajaxloading();
+				$(modal).resizemodal('lg').modal();
+			});
+		} else {
+			window.location.href = href;
+		}
+	});
+
 });
+
+
 
 
 function shipto() { //CAN BE USED IF SHIPTO IS DEFINED
@@ -80,8 +119,32 @@ function contact() {
 		});
 	});
 }
+
 function pricing() {
-	//TODO
+	var custid = $(custlookupform + " .custid").val();
+	var href = URI(config.urls.customer.load.ci_pricingform+'modal/').addQuery("custID", custid).toString();
+	var modal = config.modals.ajax;
+	var loadinto =  modal+" .modal-content";
+	showajaxloading();
+	loadin(href, loadinto, function() {
+		console.log(href);
+		hideajaxloading();
+		$(modal).resizemodal('lg').modal();
+	});
+}
+
+function choosecipricingitem(itemid) {
+	var custid = $(custlookupform + " .custid").val();
+	var modal = config.modals.ajax;
+	var loadinto =  modal+" .modal-content";
+	var href = URI(config.urls.customer.load.ci_pricing).addQuery("custID", custid).addQuery("itemid", itemid).toString();
+	ci_pricing(custid, itemid, function() {
+		loadin(href, loadinto, function() {
+			console.log(href);
+			hideajaxloading();
+			$(modal).resizemodal('lg').modal();
+		});
+	});
 }
 function salesorder() { //CAN BE USED IF SHIPTO IS DEFINED
 	var custid = $(custlookupform + " .custid").val();
@@ -271,9 +334,7 @@ function toggleshipto() {
 	showajaxloading();
 	var custid = $(custlookupform + " .custid").val();
 	var nextshipid = '';
-	if (!$(custlookupform + " .shipid").val() != '') {
-		nextshipid = $(custlookupform + " .nextshipid").val();
-	}
+	if (!$(custlookupform + " .shipid").val() != '') { nextshipid = $(custlookupform + " .nextshipid").val(); }
 	ci_shiptoinfo(custid, nextshipid, function() {
 		var href = config.urls.customer.ci + "/"+urlencode(custid)+"/";
 		if (nextshipid != '') {
@@ -285,11 +346,10 @@ function toggleshipto() {
 }
 
 
-
-
-
 function loadshiptoinfo(custid, shiptoid) {
-	var href = URI(config.urls.customer.load.ci_shiptoinfo).addQuery("custID", custid).addQuery('shipID', shiptoid).toString();
+	var href = URI(config.urls.customer.load.ci_shiptoinfo).addQuery("custID", custid)
+														   .addQuery('shipID', shiptoid)
+														   .toString();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
 	showajaxloading();
@@ -300,4 +360,10 @@ function loadshiptoinfo(custid, shiptoid) {
 			$(modal).resizemodal('lg').modal();
 		});
 	});
+}
+
+function choosecisaleshistoryitem(itemid) {
+	var row = $('[href=#'+itemid+']');
+	row.siblings().remove();
+	$('.ci-item-search').val(itemid);
 }
