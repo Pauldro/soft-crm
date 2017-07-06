@@ -69,3 +69,6 @@
     </tr>
 </table>
 <a href="<?= $task->generatecompletionurl('true'); ?>" class="btn btn-primary complete-task" data-id="<?= $task->id; ?>"><i class="fa fa-check-circle" aria-hidden="true"></i> Complete Task</a>
+&nbsp;
+&nbsp;
+<a href="<?= $task->generaterescheduleurl(); ?>" class="btn btn-default reschedule-task"><i class="fa fa-calendar" aria-hidden="true"></i> Reschedule Task</a>

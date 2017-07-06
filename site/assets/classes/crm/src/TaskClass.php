@@ -15,6 +15,7 @@
         public $salesorderlink;
         public $quotelink;
         public $notelink;
+        public $tasklink;
         public $completed;
         public $completedate;
         public $lastupdated;
@@ -26,9 +27,11 @@
         public $hasorderlink = false;
         public $hasquotelink = false;
         public $hasnotelink = false;
+        public $hastasklink = false;
         public $isoverdue = false;
         public $hascompleted = false;
         public $isrescheduled = false;
+        public $rescheduledtask = false;
 
         public static function buildfromPDO($data) {
             $task = new Task();
@@ -47,6 +50,7 @@
             $task->salesorderlink = $data['salesorderlink'];
             $task->quotelink = $data['quotelink'];
             $task->notelink = $data['notelink'];
+            $task->tasklink = $data['tasklink'];
             $task->completed = $data['completed'];
             $task->completedate = $data['completedate'];
             $task->lastupdated = $data['updatedate'];
@@ -65,7 +69,7 @@
             return $task;
         }
 
-		public static function blanktask($customerlink, $shiptolink, $contactlink, $salesorderlink, $quotelink, $notelink) {
+		public static function blanktask($customerlink, $shiptolink, $contactlink, $salesorderlink, $quotelink, $notelink, $tasklink) {
 			$task = new Task();
 			$task->customerlink = $customerlink;
             $task->shiptolink = $shiptolink;
@@ -73,11 +77,13 @@
             $task->salesorderlink = $salesorderlink;
             $task->quotelink = $quotelink;
             $task->notelink = $notelink;
+            $task->tasklink = $tasklink;
 			if ($task->shiptolink != '') { $task->hasshiptolink = true; }
             if ($task->contactlink != '') { $task->hascontactlink = true; }
             if ($task->salesorderlink != '') { $task->hasorderlink = true; }
             if ($task->quotelink != '') { $task->hasquotelink = true; }
             if ($task->notelink != '') { $task->hasnotelink = true; }
+            if ($task->tasklink != '') { $task->hastasklink = true; }
 			return $task;
 		}
 
@@ -87,6 +93,7 @@
             if ($this->salesorderlink != '') { $this->hasorderlink = true; }
             if ($this->quotelink != '') { $this->hasquotelink = true; }
             if ($this->notelink != '') { $this->hasnotelink = true; }
+            if ($this->tasklink != '') { $this->hastasklink = true; }
             if ($this->completed == 'Y') {
                 $this->hascompleted = true;
             } elseif ($this->completed == 'R') {
@@ -107,8 +114,6 @@
             }
         }
 
-
-
         public function generatecustomerurl() {
             return wire('config')->pages->customer."/redir/?action=load-customer&custID=".urlencode($this->customerlink);
         }
@@ -127,6 +132,10 @@
 
         public function generatecompletionurl($complete) {
             return wire('config')->pages->tasks."update/completion/?id=".$this->id."&complete=".$complete; //true or false
+        }
+
+        public function generaterescheduleurl() {
+            return wire('config')->pages->tasks."update/reschedule/?id=".$this->id;
         }
 
         public function generateviewtaskurl() {

@@ -13,10 +13,10 @@
 
 
 	$response = updatetaskcompletion($taskid, $completedate, $updatedate, $complete);
-	$_SESSION['sql'] = $response['sql'];
+	$session->sql = $response['sql'];
 	$response['request_type'] = 'update';
 	$response['taskid'] = $taskid;
-	
+
 	echo json_encode($response);
 
 ?>

@@ -17,9 +17,11 @@
         	<span class="glyphicon glyphicon-check"></span> &nbsp; <?php echo $taskpanel->getpaneltitle(); ?> <span class="caret"></span>  &nbsp;&nbsp;<span class="badge"><?= $taskpanel->count; ?></span>
         </a>
 
-        <a href="<?= $taskpanel->getaddtasklink(); ?>" class="btn btn-info btn-xs load-task-item add-new-task pull-right hidden-print" data-modal="<?= $taskpanel->modal; ?>" role="button" title="Add Task">
-            <i class="material-icons md-18">&#xE146;</i>
-        </a>
+		<?php if ($taskpanel->needsaddtasklink()) : ?>
+			<a href="<?= $taskpanel->getaddtasklink(); ?>" class="btn btn-info btn-xs load-task-item add-new-task pull-right hidden-print" data-modal="<?= $taskpanel->modal; ?>" role="button" title="Add Task">
+	            <i class="material-icons md-18">&#xE146;</i>
+	        </a>
+		<?php endif; ?>
 
         <span class="pull-right">&nbsp; &nbsp;&nbsp; &nbsp;</span>
         <a tabindex="0" class="btn btn-info btn-xs pull-right task-popover hidden-print" <?= $ajax->data; ?> role="button" data-toggle="popover" data-html="true" data-placement="top" data-trigger="focus" title="Schedule Tasks" data-content="<?= $popover_content; ?>"><i class="material-icons md-18">&#xE192;</i> <span class="hidden-xs">Schedule Tasks</span>

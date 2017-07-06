@@ -154,6 +154,22 @@
 			return $link;
 		}
 
+        function needsaddtasklink() {
+            $needsadd = false;
+            switch ($this->type) {
+				case 'cust':
+					$needsadd = true;
+					break;
+				case 'contact':
+					$needsadd = true;
+					break;
+                case 'user':
+					$needsadd = false;
+					break;
+			}
+            return $needsadd;
+        }
+
 		function getloadtasklink($noteid) {
 			return wire('config')->pages->tasks."load/?id=".$noteid;
 		}
