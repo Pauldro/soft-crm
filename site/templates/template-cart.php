@@ -1,4 +1,5 @@
-<?php 
+<?php
+	$config->scripts->append($config->urls->templates.'scripts/dplusnotes/cart-notes.js');
 	$config->scripts->append($config->urls->templates.'scripts/edit/edit-pricing.js');
     if (getcartheadcount(session_id(), false) > 0) {
         $carthead = getcarthead(session_id(), false);
@@ -6,6 +7,7 @@
         $shipID = $carthead['shiptoid'];
         $page->title = "Cart for ".get_customer_name($carthead['custid']);
     }
+	$noteurl = $config->pages->notes.'redir/?action=get-cart-notes';
 ?>
    <?php include('./_head.php'); // include header markup ?>
     <div class="jumbotron pagetitle">
@@ -16,5 +18,4 @@
     <div class="container page">
         <?php include $config->paths->content.'cart/cart-outline.php'; ?>
     </div>
-    <button class="btn btn-primary" onclick="opencustindexmodal('', '<?= $config->pages->cart; ?>')">Choose Cust</button> 
 <?php include('./_foot.php'); // include footer markup ?>
