@@ -15,11 +15,12 @@
        		<?php $orderdetails = getcart(session_id(), false); ?>
             <?php foreach ($orderdetails as $detail) : ?>
             	<?php
-                    $detailnoteurl = '#';
+                    $detail['havenote'] = hasdplusnote(session_id(), session_id(), $detail['linenbr'], $config->dplusnotes['cart']['type']);
+                    $detailnoteurl = $config->pages->notes.'redir/?action=get-cart-notes&linenbr='.$detail['linenbr'];
     				if ($detail['havenote'] != 'Y') {
-    					$detnoteicon = '<a class="show-cart-notes text-muted" href="'.$detailnoteurl.'" data-modal="#ajax-modal"><i class="material-icons md-36" title="View order notes">&#xE0B9;</i></a>';
+    					$detnoteicon = '<a class="load-notes text-muted" href="'.$detailnoteurl.'" data-modal="#ajax-modal"><i class="material-icons md-36" title="View order notes">&#xE0B9;</i></a>';
     				} else {
-    					$detnoteicon = '<a class="show-cart-notes" href="'.$detailnoteurl.'" data-modal="#ajax-modal"> <i class="material-icons md-36" title="View order notes">&#xE0B9;</i></a>';
+    					$detnoteicon = '<a class="load-notes" href="'.$detailnoteurl.'" data-modal="#ajax-modal"> <i class="material-icons md-36" title="View order notes">&#xE0B9;</i></a>';
     				}
 				?>
             <tr>
@@ -27,7 +28,7 @@
                 <td data-title="Price" class="text-right">$ <?= formatMoney($detail['price']); ?></td>
                 <td data-title="Ordered" class="text-right"><?= $detail['qtyordered'] + 0; ?></td>
                 <td data-title="Total" class="text-right">$ <?= formatMoney($detail['extamt']); ?></td>
-                <td data-title="Requested Ship Date" class="text-right">11/31/2016</td>
+                <td data-title="Requested Ship Date" class="text-right"><?= $detail['rshipdate']; ?></td>
                 <td data-title="Warehouse">MN</td>
                 <td class="action">
                     <div class="row">
