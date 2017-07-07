@@ -1,5 +1,9 @@
 <?php if ($config->ajax) : ?>
-	<p> <a href="<?php echo $config->filename; ?>" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a> </p>
+	<p>
+		<a href="<?php echo $config->filename; ?>" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a>
+		&nbsp; &nbsp;
+		<a href="<?= $config->pages->products.'redir/?action=ii-select&itemid='.urlencode($linedetail['itemid']); ?>" target="_blank"><i class="material-icons" aria-hidden="true">&#xE051;</i> View In II</a>
+	</p>
 <?php endif; ?>
 <form action="<?php echo $formaction; ?>" method="post" id="<?= $linedetail['itemid'].'-form'; ?>">
     <input type="hidden" name="action" value="update-line">
@@ -59,7 +63,7 @@
 					<td>Requested Ship Date</td>
 					<td>
 						<div class="input-group date" style="width: 180px;">
-							<?php $name = 'duedate'; $value = $linedetail['rshipdate'];?>
+							<?php $name = 'rqstdate'; $value = $linedetail['rshipdate'];?>
 							<?php include $config->paths->content."common/date-picker.php"; ?>
 
 						</div>
@@ -68,25 +72,43 @@
 				<tr>
 					<td>Warehouse</td><td><input type="text" class="form-control input-sm qty <?= $linedetail['itemid']."-whse"; ?>" name="whse" value="<?= $linedetail['whse']; ?>"></td>
 				</tr>
+				<?php if (1 == 100) : ?>
+					<tr>
+						<td>
+							On Order
+						</td>
+						<td>
+							<input type="checkbox" name="form1" id="so-form1" class="check-toggle" data-size="small" data-width="73px" value="Y">
+						</td>
+					</tr>
+				<?php endif; ?>
 				<tr>
 					<td>
-						On Order
+						Special Order
 					</td>
 					<td>
-						<input type="checkbox" name="form1" id="so-form1" class="check-toggle" data-size="small" data-width="73px" value="Y">
+						<select name="specialorder" class="form-control input-sm">
+							<?php foreach ($config->specialordertypes as $spectype => $specdesc) : ?>
+								<?php if ($linedetail['spcord'] == $spectype) : ?>
+									<option value="<?= $spectype; ?>" selected><?= $specdesc; ?></option>
+								<?php else : ?>
+									<option value="<?= $spectype; ?>"><?= $specdesc; ?></option>
+								<?php endif; ?>
+							<?php endforeach; ?>
+						</select>
 					</td>
 				</tr>
 			</table>
+			<?php if ($linedetail['can-edit']) :?>
+		    	<button type="submit" class="btn btn-success btn-block"><i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Save Changes</button>
+				<br>
+				<button type="button" class="btn btn-danger btn-block remove-item"><i class="fa fa-trash" aria-hidden="true"></i> Delete Line</button>
+		    <?php endif; ?>
     	</div>
     </div>
 
 
 
-  		<?php if ($linedetail['can-edit']) :?>
-        <div class="text-center">
-            <button type="submit" class="btn btn-success">Submit</button>
-        </div>
-    <?php endif; ?>
-  	
+
 
 </form>

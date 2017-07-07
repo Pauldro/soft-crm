@@ -61,13 +61,29 @@
 					<td>Requested Ship Date</td>
 					<td>
 						<div class="input-group date" style="width: 180px;">
-							<?php $name = 'duedate'; $value = $linedetail['rshipdate'];?>
+							<?php $name = 'rqstdate'; $value = $linedetail['rshipdate'];?>
 							<?php include $config->paths->content."common/date-picker.php"; ?>
 						</div>
 					</td>
 				</tr>
 				<tr>
 					<td>Warehouse</td><td><input type="text" class="form-control input-sm qty <?= $linedetail['itemid']."-whse"; ?>" name="whse" value="<?= $linedetail['whse']; ?>"></td>
+				</tr>
+                <tr>
+					<td>
+						Special Order
+					</td>
+					<td>
+						<select name="specialorder" class="form-control input-sm">
+							<?php foreach ($config->specialordertypes as $spectype => $specdesc) : ?>
+								<?php if ($linedetail['spcord'] == $spectype) : ?>
+									<option value="<?= $spectype; ?>" selected><?= $specdesc; ?></option>
+								<?php else : ?>
+									<option value="<?= $spectype; ?>"><?= $specdesc; ?></option>
+								<?php endif; ?>
+							<?php endforeach; ?>
+						</select>
+					</td>
 				</tr>
 			</table>
 
