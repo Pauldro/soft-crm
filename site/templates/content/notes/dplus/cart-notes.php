@@ -1,11 +1,10 @@
 <?php
-	$qnbr = $input->get->text('qnbr');
 	$linenbr = $input->get->text('linenbr');
 	$canwrite = true;
 ?>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
-    <h4 class="modal-title" id="notes-modal-label">Reviewing Quote Notes for Quote #<?php echo $qnbr." Line #".$linenbr; ?></h4>
+    <h4 class="modal-title" id="notes-modal-label">Reviewing Cart Notes <?php echo "Line #".$linenbr; ?></h4>
 </div>
 <div class="modal-body">
     <div class="panel panel-primary">
@@ -17,9 +16,9 @@
             </div>
         </div>
         <ul class="list-group">
-        	<?php $notes = get_dplusnotes(session_id(), $qnbr, $linenbr, 'QUOT', false); ?>
+        	<?php $notes = get_dplusnotes(session_id(), session_id(), $linenbr, 'CART', false); ?>
             <?php foreach ($notes as $note) : ?>
-				<?php $readnote = $config->pages->ajax."json/dplus-notes/?key1=".$qnbr."&key2=".$linenbr."&recnbr=".$note['recno']."&type=".$config->dplusnotes['quote']['type']; ?>
+				<?php $readnote = $config->pages->ajax."json/dplus-notes/?key1=".session_id()."&key2=".$linenbr."&recnbr=".$note['recno']."&type=".$config->dplusnotes['cart']['type']; ?>
                 <a href="<?php echo $readnote; ?>" class="list-group-item salesnote rec<?php echo $note['recno']; ?>" data-form="#notes-form">
                     <div class="row">
                         <div class="col-xs-2"><?php echo $note['form1']; ?></div> <div class="col-xs-2"><?php echo $note['form2']; ?></div>
@@ -54,10 +53,10 @@
                 <div class="col-xs-12 form-group">
                     <label for="notes" class="control-label">Note: <span class="which"></span></label>
                     <textarea class="form-control note" rows="3" cols="35" name="note" placeholder="Add a Note.." style="max-width: 35em;"></textarea>
-					<input type="hidden" name="action" class="action" value="write-quote-note">
-                    <input type="hidden" name="key1" class="key1"value="<?php echo $qnbr; ?>">
+					<input type="hidden" name="action" class="action" value="write-cart-note">
+                    <input type="hidden" name="key1" class="key1"value="<?php echo session_id(); ?>">
                     <input type="hidden" name="key2" class="key2" value="<?php echo $linenbr; ?>">
-                    <input type="hidden" class="type" value="<?php echo $config->dplusnotes['quote']['type']; ?>">
+                    <input type="hidden" class="type" value="<?php echo $config->dplusnotes['cart']['type']; ?>">
                     <input type="hidden" name="recnbr" class="recno" value="">
                     <input type="hidden" name="editorinsert" class="editorinsert" value="insert">
                     <input type="hidden" name="notepage" class="notepage" value="<?php echo $config->filename; ?>">
