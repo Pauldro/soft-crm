@@ -3,12 +3,13 @@
 ?>
 <table class="table table-bordered table-condensed table-striped">
 	<thead>
-    	<tr> <th>Due</th> <th>Note</th> <th>View Task</th>  <th>Mark as Complete</th>  </tr>
+    	<tr> <th>Due</th> <th>Type</th> <th>Note</th> <th>View Task</th>  <th>Mark as Complete</th>  </tr>
     </thead>
     <tbody>
     	<?php foreach ($tasks as $task) : ?>
             <tr <?php if ($task->isoverdue) {echo 'class="bg-warning"'; } ?>>
                 <td><?= date('m/d/Y', strtotime($task->duedate)); ?></td>
+				<td><?= $tasktypes[$task->tasktype]['icon'].' '.$tasktypes[$task->tasktype]['label']; ?></td>
                 <td><?= $task->textbody; ?></td>
                 <td>
                     <a href="<?= $task->generateviewtaskurl(); ?>" class="btn btn-primary btn-xs load-task-item" data-modal="<?= $taskpanel->modal; ?>" role="button" title="View Task">
