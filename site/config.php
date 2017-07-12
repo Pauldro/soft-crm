@@ -136,9 +136,9 @@
 
 	$config->pages = new Paths($rootURL);
 	$config->pages->index = $config->urls->root;
-	$config->pages->account = $config->urls->root . 'account/';
-	$config->pages->login = $config->urls->root . 'account/login/';
-	$config->pages->userscreens = $config->urls->root . 'account/user-screens/';
+	$config->pages->account = $config->urls->root . 'user/account/';
+	$config->pages->login = $config->urls->root . 'user/account/login/';
+	$config->pages->userscreens = $config->urls->root . 'user/user-screens/';
 	$config->pages->ajax = $config->urls->root . 'ajax/';
 	$config->pages->cart = $config->urls->root . 'cart/';
 	$config->pages->customer = $config->urls->root . 'customers/';
@@ -155,8 +155,9 @@
 	$config->pages->usertasks = $config->urls->root . 'user/tasks/';
 	$config->pages->tasks = $config->urls->root . 'tasks/';
 	$config->pages->taskschedule = $config->urls->root . 'tasks/schedule/';
-
+	$config->pages->userpage = $config->urls->root . 'user/';
 	$config->pages->dashboard = $config->urls->root . 'user/dashboard/';
+	$config->pages->userconfigs = $config->urls->root . 'user/user-config/';
 	$config->pages->orders = $config->urls->root . 'user/orders/';
 	$config->pages->quotes = $config->urls->root . 'user/quotes/';
 	$config->pages->documentation = $config->urls->root . "documentation/";
@@ -168,21 +169,23 @@
 		),
 		'quote' => array(
 			'width' => '35', 'type' => 'QUOT', 'forms' => 5, 'form1' => 'Quote', 'form2' => 'Pick Ticket', 'form3' => 'Pack Ticket', 'form4' => 'Invoice', 'form5' => 'Acknowledgement'
+		),
+		'cart' => array(
+			'width' => '35', 'type' => 'CART', 'forms' => 5, 'form1' => 'Quote', 'form2' => 'Pick Ticket', 'form3' => 'Pack Ticket', 'form4' => 'Invoice', 'form5' => 'Acknowledgement'
 		)
 	);
 	$config->phoneintl = false;
 	$config->textjustify = array('r' => 'text-right', 'c' => 'text-center', 'l' => 'text-left', 'u' => '');
 	$config->formattypes = array('N' => 'number', 'I' => 'integer', 'C' => 'text', 'D' => 'date');
+	$config->specialordertypes = array('S' => 'Special Order', 'N' => 'Normal', 'D' => 'Dropship');
 
 
 	/**
 	* CPTECH: Additional User fields
 	*
-	$user->loggedin Boolean
-	$user->username String
-	$user->loginid String
-	$user->hasrestrictions Boolean
-	$user->lockedordn Boolean
-
+	* $user->loggedin Boolean
+	* $user->username String
+	* $user->hasrestrictions Boolean
+	* $user->lockedordn Boolean
 	*
 	*/

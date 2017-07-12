@@ -614,7 +614,7 @@
 		$sql = wire('database')->prepare("SELECT * FROM quotdet WHERE sessionid = :sessionid AND quotenbr = :qnbr AND linenbr = :line");
 		$switching = array(':sessionid'=> $sessionid, ':qnbr' => $qnbr, ':line' => $line); $withquotes = array(true, true, true);
 		if ($debug) {
-			returnsqlquery($sql->queryString, $switching, $withquotes);
+			return	returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
 			$sql->execute($switching);
 			return $sql->fetch(PDO::FETCH_ASSOC);
@@ -622,17 +622,26 @@
 	}
 
 	function getquotelinedetail($sessionid, $qnbr, $line, $debug) {
-		$sql = wire('database')->prepare("SELECT * FROM quotdet WHERE sessionid = :sessionid AND quotenbr = :qnbr AND linenbr = :line");
-		$switching = array(':sessionid'=> $sessionid, ':qnbr' => $qnbr, ':line' => $line); $withquotes = array(true, true, true);
+		$sql = wire('database')->prepare("SELECT * FROM quotdet WHERE sessionid = :sessionid AND quotenbr = :qnbr AND linenbr = :linenbr");
+		$switching = array(':sessionid'=> $sessionid, ':qnbr' => $qnbr, ':linenbr' => $line); $withquotes = array(true, true, true);
 		if ($debug) {
-			returnsqlquery($sql->queryString, $switching, $withquotes);
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
 			$sql->execute($switching);
 			return $sql->fetch(PDO::FETCH_ASSOC);
 		}
 	}
 
+	function nextquotelinenbr($sessionid, $qnbr) {
+		$sql = wire('database')->prepare("SELECT MAX(linenbr) FROM quotdet WHERE sessionid = :sessionid AND quotenbr = :qnbr ");
+		$switching = array(':sessionid' => $sessionid, ':qnbr' => $qnbr); $withquotes = array(true, true);
+		$sql->execute($switching);
+		return intval($sql->fetchColumn()) + 1;
+	}
+
 	function edit_quotehead($sessionid, $qnbr, $quote, $debug) {
+		//FIXME $query = returnpreppedquery($originaldetail, $newdetails);
+		//LOOK AT edit_orderline(
 		$originalquote = get_quotehead(session_id(), $qnbr, false);
 		$columns = array_keys($originalquote);
 		$withquotes = $switching = array();
@@ -656,33 +665,19 @@
 		}
 	}
 
-	function edit_quoteline($sessionid, $qnbr, $linenbr, $detail, $debug) {
-		$originaldetail = getquotelinedetail(session_id(), $qnbr, $linenbr, false);
-		$withquotes = $switching = array();
-		$columns = array_keys($originaldetail);
-		$setstmt = '';
-		foreach ($columns as $column) {
-			if (strlen($detail[$column])) {
-				if ($originaldetail[$column] != $detail[$column]) {
-					$prepped = ':'.$column;
-					$setstmt .= $column." = ".$prepped.", ";
-					$switching[$prepped] = $detail[$column];
-					$withquotes[] = true;
-				}
-			}
-		}
-		if (empty($switching)) {
-			return;
-		}
-		$setstmt = rtrim($setstmt, ', ');
-		$sql = wire('database')->prepare("UPDATE quotdet SET $setstmt WHERE sessionid = :sessionid AND quotenbr = :qnbr AND linenbr = :linenbr");
-		$switching[':sessionid'] = $sessionid; $switching[':qnbr'] = $qnbr; $switching[':linenbr'] = $linenbr;
-		$withquotes[] = true; $withquotes[] = true; $withquotes[] = true;
+	function edit_quoteline($sessionid, $qnbr, $newdetails, $debug) {
+		$originaldetail = getquotelinedetail(session_id(), $qnbr, $newdetails['linenbr'], false);
+		$query = returnpreppedquery($originaldetail, $newdetails);
+		$sql = wire('database')->prepare("UPDATE quotdet SET ".$query['setstatement']." WHERE sessionid = :sessionid AND quotenbr = :qnbr AND linenbr = :linenbr");
+		$query['switching'][':sessionid'] = $sessionid; $query['switching'][':qnbr'] = $qnbr; $query['switching'][':linenbr'] = $newdetails['linenbr'];
+		$query['withquotes'][] = true; $query['withquotes'][]= true; $query['withquotes'][] = true;
 		if ($debug) {
-			return	returnsqlquery($sql->queryString, $switching, $withquotes);
+			return	returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
 		} else {
-			$sql->execute($switching);
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			if ($query['changecount'] > 0) {
+				$sql->execute($query['switching']);
+			}
+			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
 		}
 	}
 
@@ -714,6 +709,26 @@
 		}
 	}
 
+	function getdplusnotecount($sessionid, $key1, $key2, $type, $debug) {
+		$sql = wire('database')->prepare("SELECT COUNT(*) FROM qnote WHERE sessionid = :sessionid AND key1 = :key1 AND key2 = :key2 AND rectype = :type");
+		$switching = array(':sessionid'=> $sessionid, ':key1' => $key1, ':key2' => $key2, ':type' => $type);
+		$withquotes = array(true, true, true, true);
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
+		} else {
+			$sql->execute($switching);
+			return $sql->fetchColumn();
+		}
+	}
+
+	function hasdplusnote($sessionid, $key1, $key2, $type) {
+		if (getdplusnotecount($sessionid, $key1, $key2, $type, false)) {
+			return 'Y';
+		} else {
+			return 'N';
+		}
+	}
+
 	function get_dplusnote($sessionid, $key1, $key2, $type, $recnbr, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM qnote WHERE sessionid = :sessionid AND key1 = :key1 AND key2 = :key2 AND rectype = :type AND recno = :recnbr");
 		$switching = array(':sessionid'=> $sessionid, ':key1' => $key1, ':key2' => $key2, ':type' => $type, ':recnbr' => $recnbr);
@@ -726,10 +741,21 @@
 		}
 	}
 
-	function edit_note($session, $key1, $key2, $form1, $form2, $form3, $form4, $form5, $note, $recno, $date, $time, $width) {
-		$sql = "UPDATE qnote SET notefld = '$note' WHERE sessionid = '$session' AND key1 = '$key1' AND key2 = '$key2' AND recno = '$recno'";
-		wire('database')->query($sql);
-		return $sql;
+
+	function edit_note($session, $key1, $key2, $form1, $form2, $form3, $form4, $form5, $note, $recnbr, $date, $time, $width) {
+		$sql = wire('database')->prepare("UPDATE qnote SET notefld = :note  WHERE sessionid = :session AND key1 = :key1 AND key2 = :key2 AND form1 = :form1 AND form2 = :form2 AND form3 = :form3 AND form4 = :form4 AND form5 = :form5 AND recno = :recnbr");
+		$switching = array(':note' => $note, ':form1' => $form1, ':form2' => $form2, ':form3' => $form3, ':form4' => $form4, ':form5' => $form5, ':session' => $session, ':key1' => $key1, ':key2' => $key2, ':recnbr' => $recnbr);
+		$withquotes = array(true, true, true, true, true, true, true, true, true, true);
+		$sql->execute($switching);
+		return returnsqlquery($sql->queryString, $switching, $withquotes);
+	}
+
+	function deletenote($session, $key1, $key2, $form1, $form2, $form3, $form4, $form5, $rectype, $recnbr) {
+		$sql = wire('database')->prepare("DELETE FROM qnote WHERE sessionid = :session AND key1 = :key1 AND key2 = :key2 AND form1 = :form1 AND form2 = :form2 AND form3 = :form3 AND form4 = :form4 AND form5 = :form5 AND recno = :recnbr AND rectype = :rectype");
+		$switching = array(':session' => $session, ':key1' => $key1, ':key2' => $key2, ':form1' => $form1, ':form2' => $form2, ':form3' => $form3, ':form4' => $form4, ':form5' => $form5, ':recnbr' => $recnbr, ':rectype' => $rectype);
+		$withquotes = array(true, true, true, true, true, true, true, true, true, true);
+		$sql->execute($switching);
+		return returnsqlquery($sql->queryString, $switching, $withquotes);
 	}
 
 	function insert_note($session, $key1, $key2, $form1, $form2, $form3, $form4, $form5, $note, $rectype, $recno, $date, $time, $width) {
@@ -751,10 +777,12 @@
 	function get_next_note_recno($session, $key1, $key2, $rectype) {
 		$sql = "SELECT MAX(recno) as max FROM qnote WHERE sessionid = '$session' AND key1 = '$key1' AND key2 = '$key2' AND rectype = '$rectype'";
 		$res = wire('database')->query($sql);
-		$results = $res->fetch();
-		$nextrecnbr =  intval($results['max']) + 1;
+		$result = $res->fetchColumn();
+		$nextrecnbr =  intval($result) + 1;
 		return $nextrecnbr;
 	}
+
+
 
 
 /* =============================================================
@@ -883,8 +911,8 @@
 		}
 	}
 
-	function get_linked_task_count($user, $custid, $shipto, $contact, $ordn, $qnbr, $noteid, $complete, $debug) {
-		if ($complete) {$table = 'view_completed_tasks';} else {$table = 'view_incomplete_tasks';}
+	function get_linked_task_count($user, $custid, $shipto, $contact, $ordn, $qnbr, $noteid, $status, $debug) {
+		$table = returntaskstable($status);
 		$query = buildtaskquerylinks($user, $custid, $shipto, $contact, $ordn, $qnbr, $noteid, false);
 		$querylinks = $query['querylink'];
 		$sql = wire('database')->prepare("SELECT COUNT(*) FROM $table WHERE $querylinks");
@@ -899,8 +927,8 @@
 		}
 	}
 
-	function get_linked_tasks($user, $custid, $shipto, $contact, $ordn, $qnbr, $noteid, $complete, $limit, $page, $debug) {
-		if ($complete) {$table = 'view_completed_tasks';} else {$table = 'view_incomplete_tasks';}
+	function get_linked_tasks($user, $custid, $shipto, $contact, $ordn, $qnbr, $noteid, $status, $limit, $page, $debug) {
+		$table = returntaskstable($status);
 		$limiting = returnlimitstatement($limit, $page);
 		$query = buildtaskquerylinks($user, $custid, $shipto, $contact, $ordn, $qnbr, $noteid, false);
 		$querylinks = $query['querylink'];
@@ -957,10 +985,10 @@
 
 	}
 
-	function writetask($loginid, $date, $custid, $shipto, $contact, $ordn, $qnbr, $noteid, $textbody, $tasktype, $duedate, $assignedto) {
-		$sql = wire('database')->prepare("INSERT INTO crmtasks (textbody,datewritten,writtenby,customerlink,shiptolink,contactlink,salesorderlink,quotelink,notelink, tasktype, duedate, assignedto, updatedate) VALUES (:textbody, :date, :loginid, :custid, :shipto, :contact, :ordn, :qnbr, :noteid, :tasktype, :duedate, :assignedto, :updatedate)");
-		$switching = array(':textbody' => $textbody, ':date' => $date, ':loginid' => $loginid, ':custid' => $custid, ':shipto' => $shipto, ':contact' => $contact, ':ordn' => $ordn,':qnbr' => $qnbr, ':noteid' => $noteid, ':tasktype' => $tasktype, ':duedate' => $duedate, ':assignedto' => $assignedto, ':updatedate' => $date);
-		$withquotes = array(true, true, true, true, true, true, true, true, true, true, true, true, true);
+	function writetask($loginid, $date, $custid, $shipto, $contact, $ordn, $qnbr, $noteid, $taskid, $textbody, $tasktype, $duedate, $assignedto) {
+		$sql = wire('database')->prepare("INSERT INTO crmtasks (textbody,datewritten,writtenby,customerlink,shiptolink,contactlink,salesorderlink,quotelink,notelink, tasklink, tasktype, duedate, assignedto, updatedate) VALUES (:textbody, :date, :loginid, :custid, :shipto, :contact, :ordn, :qnbr, :noteid, :taskid, :tasktype, :duedate, :assignedto, :updatedate)");
+		$switching = array(':textbody' => $textbody, ':date' => $date, ':loginid' => $loginid, ':custid' => $custid, ':shipto' => $shipto, ':contact' => $contact, ':ordn' => $ordn,':qnbr' => $qnbr, ':noteid' => $noteid, ':taskid' => $taskid, ':tasktype' => $tasktype, ':duedate' => $duedate, ':assignedto' => $assignedto, ':updatedate' => $date);
+		$withquotes = array(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
 		$sql->execute($switching);
 		return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'insertedid' => wire('database')->lastInsertId());
 	}
@@ -1104,8 +1132,46 @@
 		}
 	}
 
+	function getcartline($sessionid, $linenbr, $debug) {
+		$sql = wire('database')->prepare("SELECT * FROM cartdet WHERE sessionid = :sessionid AND linenbr = :linenbr");
+		$switching = array(':sessionid' => $sessionid, ':linenbr' => $linenbr); $withquotes = array(true, true);
+		$sql->execute($switching);
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
+		} else {
+			return $sql->fetch(PDO::FETCH_ASSOC);
+		}
+	}
+
+	function getcartlinedetail($sessionid, $linenbr, $debug) {
+		return getcartline($sessionid, $linenbr, $debug);
+	}
+
+	function edit_cartline($sessionid, $newdetails, $debug) {
+		$originaldetail = getcartlinedetail($sessionid, $newdetails['linenbr'], false);
+		$query = returnpreppedquery($originaldetail, $newdetails);
+		$sql = wire('database')->prepare("UPDATE cartdet SET ".$query['setstatement']." WHERE sessionid = :sessionid AND linenbr = :linenbr");
+		$query['switching'][':sessionid'] = $sessionid; $query['switching'][':linenbr'] = $newdetails['linenbr'];
+		$query['withquotes'][] = true; $query['withquotes'][]= true; $query['withquotes'][] = true;
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
+		} else {
+			if ($query['changecount'] > 0) {
+				$sql->execute($query['switching']);
+			}
+			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
+		}
+	}
+
+	function nextcartlinenbr($sessionid) {
+		$sql = wire('database')->prepare("SELECT MAX(linenbr) FROM cartdet WHERE sessionid = :sessionid");
+		$switching = array(':sessionid' => $sessionid); $withquotes = array(true);
+		$sql->execute($switching);
+		return intval($sql->fetchColumn()) + 1;
+	}
+
 	function getcreatedordn($sessionid, $debug) {
-		$sql = wire('database')->prepare("SELECT orderno FROM carthed WHERE sessionid = :sessionid");
+		$sql = wire('database')->prepare("SELECT ordernbr FROM logperm WHERE sessionid = :sessionid");
 		$switching = array(':sessionid' => $sessionid); $withquotes = array(true);
 		$sql->execute($switching);
 		if ($debug) {
@@ -1114,6 +1180,8 @@
 			return $sql->fetchColumn();
 		}
 	}
+
+
 
 /* =============================================================
 	EDIT ORDER FUNCTIONS
@@ -1200,6 +1268,8 @@
 	}
 
 	function edit_orderhead($sessionid, $ordn, $order, $debug) {
+		//FIXME $query = returnpreppedquery($originaldetail, $newdetails);
+		//LOOK AT edit_orderline(
 		$orginalorder = get_orderhead(session_id(), $ordn, false);
 		$columns = array_keys($orginalorder);
 		$withquotes = $switching = array();
@@ -1233,30 +1303,19 @@
 		return returnsqlquery($sql->queryString, $switching, $withquotes);
 	}
 
-	function edit_orderline($sessionid, $ordn, $linenbr, $detail, $debug) {
-		$originaldetail = getorderlinedetail(session_id(), $ordn, $linenbr, false);
-		$columns = array_keys($originaldetail);
-		$withquotes = $switching = array();
-		$setstmt = '';
-		foreach ($columns as $column) {
-			if (strlen($detail[$column])) {
-				if ($originaldetail[$column] != $detail[$column]) {
-					$prepped = ':'.$column;
-					$setstmt .= $column." = ".$prepped.", ";
-					$switching[$prepped] = $detail[$column];
-					$withquotes[] = true;
-				}
-			}
-		}
-		$setstmt = rtrim($setstmt, ', ');
-		$sql = wire('database')->prepare("UPDATE ordrdet SET $setstmt WHERE sessionid = :sessionid AND orderno = :ordn AND linenbr = :linenbr");
-		$switching[':sessionid'] = $sessionid; $switching[':ordn'] = $ordn; $switching[':linenbr'] = $linenbr;
-		$withquotes[] = true; $withquotes[] = true; $withquotes[] = true;
+	function edit_orderline($sessionid, $ordn, $newdetails, $debug) {
+		$originaldetail = getorderlinedetail($sessionid, $ordn, $newdetails['linenbr'], false);
+		$query = returnpreppedquery($originaldetail, $newdetails);
+		$sql = wire('database')->prepare("UPDATE ordrdet SET ".$query['setstatement']." WHERE sessionid = :sessionid AND orderno = :ordn AND linenbr = :linenbr");
+		$query['switching'][':sessionid'] = $sessionid; $query['switching'][':ordn'] = $ordn; $query['switching'][':linenbr'] = $newdetails['linenbr'];
+		$query['withquotes'][] = true; $query['withquotes'][]= true; $query['withquotes'][] = true;
 		if ($debug) {
-			return	returnsqlquery($sql->queryString, $switching, $withquotes);
+			return	returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
 		} else {
-			$sql->execute($switching);
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			if ($query['changecount'] > 0) {
+				$sql->execute($query['switching']);
+			}
+			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
 		}
 	}
 
@@ -1287,19 +1346,6 @@
 		return $sql->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-/* =============================================================
-	EDIT PRICING FUNCTIONS
-============================================================ */
-	function getcartline($sessionid, $linenbr, $debug) {
-		$sql = wire('database')->prepare("SELECT * FROM cartdet WHERE sessionid = :sessionid AND linenbr = :linenbr");
-		$switching = array(':sessionid' => $sessionid, ':linenbr' => $linenbr); $withquotes = array(true, true);
-		$sql->execute($switching);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			return $sql->fetch(PDO::FETCH_ASSOC);
-		}
-	}
 
 
 /* =============================================================
@@ -1482,6 +1528,33 @@
 			return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'affectedrows' => $sql->rowCount() ? true : false);
 		}
 	}
+
+	/* =============================================================
+		USER CONFIGS FUNCTIONS
+	============================================================ */
+	function checkconfigifexists($user, $configuration, $debug) {
+		$sql = wire('database')->prepare("SELECT COUNT(*) FROM userconfigs WHERE user = :user AND configtype = :config");
+		$switching = array(':user' => $user, ':config' => $configuration); $withquotes = array(true, true);
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
+		} else {
+			$sql->execute($switching);
+			return $sql->fetchColumn();
+		}
+	}
+
+	function getconfiguration($user, $configuration, $debug) {
+		$sql = wire('database')->prepare("SELECT data FROM userconfigs WHERE user = :user AND configtype = :config LIMIT 1");
+		$switching = array(':user' => $user, ':config' => $configuration); $withquotes = array(true, true);
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
+		} else {
+			$sql->execute($switching);
+			return $sql->fetchColumn();
+		}
+	}
+
+
 
 
 

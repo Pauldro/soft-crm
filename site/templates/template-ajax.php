@@ -29,6 +29,9 @@
 			case 'ci':
 				include $config->paths->content."ajax/json/ci-json-router.php";
 				break;
+			case 'load-task';
+				include $config->paths->content."ajax/json/load-task.php";
+				break;
 			default:
 				throw new Wire404Exception();
 				break;

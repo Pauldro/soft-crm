@@ -1,6 +1,7 @@
 <?php
     $config->scripts->append($config->urls->templates.'scripts/libs/datatables.js');
     $config->scripts->append($config->urls->templates.'scripts/pages/dashboard.js');
+    $config->scripts->append($config->urls->templates.'scripts/dplusnotes/order-notes.js');
 ?>
 <?php include('./_head.php'); // include header markup ?>
     <div class="jumbotron pagetitle">

@@ -441,8 +441,12 @@ function show_requirements($field) {
 
 	function createmessage($message, $custID, $shipID, $contactID, $taskID, $noteID, $ordn, $qnbr) {
 		$regex = '/({replace})/i';
-		$replace = get_customer_name($custID)." ($custID)";
+		$replace = "";
 
+		if ($custID != '') {
+			$replace = get_customer_name($custID)." ($custID)";
+		}
+		
 		if ($shipID != '') {
 			$replace .= " Shipto: " . get_shipto_name($custID, $shipID, false)." ($shipID)";
 		}
@@ -453,8 +457,8 @@ function show_requirements($field) {
 
 		if ($ordn != '') {
 			$replace .= " Sales Order #" . $ordn;
-		} elseif($qnbr != '') {
-			$replace .= " Sales Order #" . $qnbr;
+		} elseif ($qnbr != '') {
+			$replace .= " Quote #" . $qnbr;
 		}
 
 		if ($taskID != '') {

@@ -17,11 +17,15 @@
 
 	include_once($config->paths->content."common/initialize.php");
 
-
+	include $config->paths->assets."classes/purl/vendor/autoload.php";
+	include_once($config->paths->assets.'classes/crm/src/utfport.php');
 
 	$config->sessionName = session_name();
-	$page->querystring = $querystring = "?".return_querystring($config->filename);
-	$page->PageURL = $page->httpUrl.$querystring;
+
+	$page->fullURL = new \Purl\Url($page->httpUrl);
+	$page->fullURL->join($config->filename);
+	$page->querystring = $querystring = $page->fullURL->query;
+	$page->PageURL = $page->httpUrl.'?'.$page->querystring;
 
 
 	$config->styles->append($config->urls->templates.'styles/bootstrap.min.css');

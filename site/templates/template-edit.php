@@ -15,7 +15,7 @@
                 $page->title = "Viewing Order #" . $editorder['ordn'] . ' for ' . get_customer_name_from_order(session_id(), $editorder['ordn']);
             }
             $editorder['unlock-url'] = $config->pages->orders."redir/?action=unlock-order&ordn=".$ordn;
-
+            $config->scripts->append($config->urls->templates.'scripts/dplusnotes/order-notes.js');
 			$config->scripts->append($config->urls->templates.'scripts/edit/card-validate.js');
 			$config->scripts->append($config->urls->templates.'scripts/edit/edit-orders.js');
 			$config->scripts->append($config->urls->templates.'scripts/edit/edit-pricing.js');
@@ -25,7 +25,7 @@
             $qnbr = $input->get->text('qnbr');
             $editquote['qnbr'] = $qnbr;
             $editquote['custID'] = getquotecustomer(session_id(), $qnbr, false); $custID = $editquote['custID'];
-            $editquote['canedit'] = caneditquote(session_id(), $qnbr);
+            $editquote['canedit'] = true; //caneditquote(session_id(), $qnbr);
             if ($editquote['canedit']) {
                 $page->title = "Editing Quote #" . $editquote['qnbr'] . ' for ' . get_customer_name($custID);
             } else {
@@ -34,7 +34,9 @@
             $editquote['unlock-url'] = $config->pages->quotes."redir/?action=unlock-quote&qnbr=".$qnbr;
 
             $includefile = $config->paths->content."edit/quotes/outline.php";
+            $config->scripts->append($config->urls->templates.'scripts/dplusnotes/quote-notes.js');
 			$config->scripts->append($config->urls->templates.'scripts/edit/edit-quotes.js');
+            $config->scripts->append($config->urls->templates.'scripts/edit/edit-pricing.js');
             break;
     }
  ?>

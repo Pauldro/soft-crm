@@ -18,13 +18,14 @@
 				</div>
 				<ul class="list-group">
 					<a href="<?= $config->pages->userscreens; ?>" class="list-group-item">Screen Configurations</a>
+					<a href="<?= $config->pages->userconfigs; ?>" class="list-group-item">User Configurations</a>
 					<a href="<?= $config->pages->account.'redir/?action=logout'; ?>" class="list-group-item logout">
 						<span class="glyphicon glyphicon-log-out"></span> Log Out
 					</a>
 				</ul>
 			</div>
 		</div>
-		
+
 	</div>
 	<?php $setequalheights = array('.featured-item .panel-body', '.featured-item .panel-header'); ?>
 <?php include('./_foot.php'); // include footer markup ?>
