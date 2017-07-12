@@ -12,8 +12,10 @@
 		public $shipID;
         public $contactID;
 
-
+        public $qnbr;
         public $count = 0;
+
+        public $links = array('writtenby' => false, 'customerlink' => false, 'shiptolink' => false, 'contactlink' => false, 'quotelink' => false);
 
 		public function __construct($type, $loadinto, $focus, $modal, $throughajax) {
 	   		$this->type = $type;
@@ -33,16 +35,24 @@
 			$this->shipID = $shipID;
 		}
 
+        function setupquotepanel($qnbr) {
+			$this->qnbr = $qnbr;
+		}
+
         function hascustomer() {
-            ($this->custID) ? false : true;
+            return ($this->custID) ? true : false;
         }
 
         function hasshipto() {
-            ($this->shipID) ? false : true;
+            return ($this->shipID) ? true : false;
         }
 
         function hascontact() {
-            ($this->contactID) ? false : true;
+            return ($this->contactID) ? true : false;
+        }
+
+        function hasquote() {
+            return ($this->qnbr) ? true : false;
         }
 
 		function getaddnotelink() {
@@ -52,6 +62,10 @@
 					$link = wire('config')->pages->notes."add/new/?custID=".urlencode($this->custID);
 					if ($this->shipID != '') {$link .= "&shipID=".urlencode($this->shipID);}
 					break;
+                case 'quote':
+					$link = wire('config')->pages->notes."add/new/?qnbr=".$this->qnbr;
+					break;
+
 			}
 			return $link;
 		}
@@ -68,6 +82,9 @@
                 case 'user':
 					$needsadd = false;
 					break;
+                case 'quote':
+					$needsadd = true;
+					break;
 			}
             return $needsadd;
         }
@@ -82,6 +99,9 @@
                 case 'user':
                     $link = wire('config')->pages->notes."load/list/user/";
                     break;
+                case 'quote':
+					$link = wire('config')->pages->notes."load/list/quote/?qnbr=".$this->qnbr;
+					break;
 			}
 			return $link;
 		}
@@ -93,6 +113,9 @@
 					break;
                 case 'user':
 					return 'user/';
+					break;
+                case 'quote':
+					return 'quote/';
 					break;
 			}
 		}
@@ -109,15 +132,18 @@
                 case 'user':
                     return 'Your Notes';
                     break;
+                case 'quote':
+                    return 'Notes for Quote #' . $this->qnbr;
+                    break;
 			}
 		}
 
         function buildarraylinks() {
-            $this->links = array('writtenby' => false, 'customerlink' => false, 'shiptolink' => false, 'contactlink' => false);
             $this->links['writtenby'] = wire('user')->loginid;
             if ($this->hascustomer()) { $this->links['customerlink'] = $this->custID; }
             if ($this->hasshipto()) { $this->links['shiptolink'] = $this->shipID; }
-            if ($this->hascontact()){  $this->links['contactlink'] = $this->contactID; }
+            if ($this->hascontact()) {  $this->links['contactlink'] = $this->contactID; }
+            if ($this->hasquote()) {  $this->links['quotelink'] = $this->qnbr; }
         }
 
         function getarraylinks() {
