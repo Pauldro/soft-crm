@@ -145,7 +145,6 @@ $(document).ready(function() {
 			if (ajax) {
 				var loadinto = form.data('loadinto');
 				var focuson = form.data('focus');
-				href = addtoquerystring(getpaginationurl(form), ["ajax"], ["true"]);
 				loadin(href, loadinto, function() { if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000);} });
 			} else {
 				window.location.href = href;
@@ -160,9 +159,9 @@ $(document).ready(function() {
 			e.preventDefault();
 			var loadinto = $(this).data('loadinto');
 			var focuson = $(this).data('focus');
-			var url = addtoquerystring($(this).attr('href'), ["ajax"], ["true"]);
+			var href = addtoquerystring($(this).attr('href'), ["ajax"], ["true"]);
 			console.log(loadinto);
-			loadin(url, loadinto, function() {
+			loadin(href, loadinto, function() {
 				if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
 				$('.check-toggle').bootstrapToggle({on: 'Yes', off: 'No', onstyle: 'info'});
 			});
@@ -299,24 +298,29 @@ $(document).ready(function() {
 			uri.addQuery('show', 'details');
 
 			$('#'+form.attr('id')).postform({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
-				$.getJSON(jsonurl, function(json) {
-					if (addto == 'order') {
-						linenumber = json.response.orderdetails.length+1;
-						editurl = config.urls.load.editdetail+"order/?ordn="+ordn+"&line="+linenumber;
-					} else if (addto == 'quote') {
-						linenumber = json.response.quotedetails.length+1;
-						editurl = config.urls.load.editdetail+"quote/?qnbr="+ordn+"&line="+linenumber;
-					}
-					loadin(uri.toString()+"#edit-page", '.page', function() {
-						edititempricing(itemid, custid,  function() {
-							loadin(editurl, loadinto, function() {
-								hideajaxloading();
-								$(config.modals.pricing).modal();
-								setchildheightequaltoparent('.row.row-bordered', '.grid-item');
+				wait(500, function() {
+					
+					$.getJSON(jsonurl, function(json) {
+						console.log(json);
+						if (addto == 'order') {
+							linenumber = json.response.orderdetails.length;
+							editurl = config.urls.load.editdetail+"order/?ordn="+ordn+"&line="+linenumber;
+						} else if (addto == 'quote') {
+							linenumber = json.response.quotedetails.length;
+							editurl = config.urls.load.editdetail+"quote/?qnbr="+qnbr+"&line="+linenumber;
+						}
+
+						loadin(uri.toString()+"#edit-page", '.page', function() {
+							edititempricing(itemid, custid,  function() {
+								loadin(editurl, loadinto, function() {
+									hideajaxloading();
+									$(config.modals.pricing).modal();
+									setchildheightequaltoparent('.row.row-bordered', '.grid-item');
+								});
 							});
 						});
-					});
 
+					});
 				});
 			});
 		});
@@ -336,14 +340,12 @@ $(document).ready(function() {
 					$('#'+modal.attr('id')+ " .custid").val(custid);
 					title = "Add item to Cart";
 					addonurl = "cart/?custID="+urlencode(custid);
-
 					break;
 				case 'order':
 					var ordn = button.data('ordn');
 					$('#'+modal.attr('id')+ " .custid").val(custid);
 					title = "Add item to Order #" + ordn;
 					addonurl = "order/?ordn="+ordn+"&custID="+urlencode(custid);
-
 					break;
 				case 'quote':
 					var qnbr = button.data('qnbr');
@@ -356,7 +358,6 @@ $(document).ready(function() {
 			addonurl += "&linenumber="+linenumber;
 			$('#'+modal.attr('id')+ " .addonurl").val(addonurl);
 			$('#'+modal.attr('id')+ " .linenumber").val(linenumber);
-
 		});
 
 		$('#add-item-modal').on('shown.bs.modal', function() {
@@ -389,11 +390,25 @@ $(document).ready(function() {
 			//}
 		});
 
+
+		$("body").on("submit", "#ci-search-item", function(e) {
+			e.preventDefault();
+		});
+
 		$("body").on("keyup", ".ci-item-search", function() {
 			//if ($(this).val().length > 3) {
-				var href = $(this).data('results')+'?q='+urlencode($(this).val());
-				console.log(href);
+				var input = $(this);
+				var thisform = input.parent('form');
+				var custid = thisform.find('input[name=custID]').val();
+				var shipid = thisform.find('input[name=shipID]').val();
+				var action = thisform.find('input[name=action]').val();
+				var href  = URI(thisform.attr('action')).addQuery('q', urlencode(input.val()))
+													   .addQuery('custID', urlencode(custid))
+													   .addQuery('shipID', urlencode(shipid))
+													   .addQuery('action', urlencode(action))
+													   .toString();
 				var loadinto = '#item-results';
+				console.log(href);
 				loadin(href, loadinto, function() {
 
 				});
@@ -403,7 +418,7 @@ $(document).ready(function() {
 		$("body").on("keyup", ".ci-cust-search", function() {
 			//if ($(this).val().length > 3) {
 				var thisform = $(this).closest('form');
-				var href = thisform.attr('action')+"?q="+urlencode($(this).val());
+				var href = URI(thisform.attr('action')).addQuery('q', urlencode($(this).val())).toString();
 				console.log(href);
 				var loadinto = '#cust-results';
 				loadin(href, loadinto, function() {
@@ -417,25 +432,30 @@ $(document).ready(function() {
 	=============================================================*/
 		$(".page").on("change", "#view-completed-tasks", function(e) {
 			e.preventDefault();
-			var element = $(this).data('loadinto');
+			var loadinto= $(this).data('loadinto');
 			var focuson = $(this).data('focus');
-			var url = '';
-			if ($(this).is(':checked')) {url = addtoquerystring($(this).data('url'), ["completed"], ["true"]); } else { url = $(this).data('url');}
+			var href = '';
+			if ($(this).is(':checked')) {
+				href = URI($(this).data('url').addQuery('completed', 'true')).toString();
+			} else {
+				href = $(this).data('url');
+			}
 			console.log(url);
-			loadin(addtoquerystring(url, ["ajax"], ["true"]), element, function() {
+			loadin(href, loadinto, function() {
 				if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
 				$('.check-toggle').bootstrapToggle({on: 'Yes', off: 'No', onstyle: 'info'});
 			});
 		});
 
-		$(".page").on("change", "#view-completed-tasks", function(e) {
+		$(".page").on("change", "#view-task-status", function(e) {
 			e.preventDefault();
-			var element = $(this).data('loadinto');
+			var status = $(this).val();
+			var loadinto= $(this).data('loadinto');
 			var focuson = $(this).data('focus');
-			var url = '';
-			if ($(this).is(':checked')) {url = addtoquerystring($(this).data('url'), ["completed"], ["true"]); } else { url = $(this).data('url');}
-			console.log(url);
-			loadin(addtoquerystring(url, ["ajax"], ["true"]), element, function() {
+			var href = URI($(this).data('url')).addQuery('tasks-status', status).toString();
+			// href = URI($(this).data('url').addQuery('completed', 'true')).toString();
+			console.log(href);
+			loadin(href, loadinto, function() {
 				if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
 				$('.check-toggle').bootstrapToggle({on: 'Yes', off: 'No', onstyle: 'info'});
 			});
@@ -455,8 +475,8 @@ $(document).ready(function() {
 			var button = $(this);
 			var url = button.attr('href');
 			var taskid = button.data('id');
-			console.log(config.urls.json.get_task+"?id="+taskid);
-			$.getJSON(config.urls.json.get_task+"?id="+taskid, function(json) {
+			console.log(config.urls.json.loadtask+"?id="+taskid);
+			$.getJSON(config.urls.json.loadtask+"?id="+taskid, function(json) {
 				swal({
 					title: "Would you like to confirm this task as complete?",
 					text: json.response.textbody,
@@ -466,9 +486,21 @@ $(document).ready(function() {
 					closeOnConfirm: true
 				},
 				function() {
-					$.get(url, function() { $('.tasks-refresh').click(); });
+					$.get(url, function() { $('.tasks-refresh').click(); $(config.modals.ajax).modal('hide'); });
 				});
 			});
+		});
+
+		$("body").on("click", ".reschedule-task", function(e) {
+			e.preventDefault();
+			var button = $(this);
+			var url = button.attr('href');
+			var modal = config.modals.ajax;
+			var loadinto = config.modals.ajax+" .modal-body";
+			$(loadinto).loadin(url, function() {
+				$(modal).resizemodal('lg').modal();
+			});
+
 		});
 
 		$("body").on("submit", "#new-task-form", function(e) {
@@ -476,6 +508,8 @@ $(document).ready(function() {
 			var form = $(this);
 			var modal = form.data('modal');
 			var formid = "#"+$(this).attr('id');
+			var action = form.attr('action');
+			console.log(action);
 			var elementreload = form.data('refresh');
 			var isformcomplete = form.formiscomplete('tr');
 			if (isformcomplete) {
@@ -517,20 +551,27 @@ $(document).ready(function() {
 			}
 		});
 
-		function loaditemdocument(doc) {
+		$('body').on('click', '.load-doc', function(e) {
+			e.preventDefault();
+			var button = $(this);
+			var doc = button.data('doc');
 			var href = config.urls.json.ii_moveitemdoc + "?docnumber="+doc;
+
 			$.getJSON(href, function(json) {
 				if (json.response.error) {
 
 				} else {
-					var td = $(".doc-"+doc).find('.load-doc').parent();
+
+
+
+					var td = button.parent();
 					td.find('.load-doc').remove();
 					var href = "<a href='"+config.urls.orderfiles+json.response.file+"' class='btn btn-sm btn-success' target='_blank'><i class='fa fa-file-text' aria-hidden='true'></i> View Document</a>";
 					$(href).appendTo(td);
 				}
 			});
-		}
 
+		});
 
 
 	/*==============================================================
@@ -543,6 +584,7 @@ $(document).ready(function() {
 			$.get(ajaxloader.url, function() {
 				showajaxloading();
 				generateurl(function(url) {
+					console.log(url);
 					wait(500, function() { loadin(url, ajaxloader.loadinto, function() { $(ajaxloader.modal).resizemodal('lg'); $(ajaxloader.modal).modal(); hideajaxloading(); }); });
 				});
 			});
@@ -617,14 +659,14 @@ $(document).ready(function() {
 
 			if ($.inArray(itemid, nonstockitems) > -1) {
 				console.log('skipping item get');
-				loadin(url, config.modals.pricing+" .modal-body", function() {
+				loadin(url, config.modals.pricing+" .modal-content", function() {
 					hideajaxloading();
 					$(config.modals.pricing).modal();
 				});
 			} else {
 				edititempricing(itemid, custid,  function() {
 					console.log(url);
-					loadin(url, config.modals.pricing+" .modal-body", function() {
+					loadin(url, config.modals.pricing+" .modal-content", function() {
 						hideajaxloading();
 						$(config.modals.pricing).modal();
 						setchildheightequaltoparent('.row.row-bordered', '.grid-item');
@@ -636,8 +678,6 @@ $(document).ready(function() {
 	/*==============================================================
  		CHANGE CUSTOMER MODAL
 	=============================================================*/
-
-
 		$("body").on("submit", "#cust-index-search", function(e) {
 			e.preventDefault();
 			var form = $(this);
@@ -652,7 +692,6 @@ $(document).ready(function() {
 
 			});
 		});
-
 
 });
 
@@ -688,6 +727,13 @@ $(document).ready(function() {
 
 	function removeshadow() {
 		$('body').find('.modal-backdrop').addClass(config.modals.gradients.default).removeClass('darkAmber').css({'z-index':'15'});;
+	}
+
+	jQuery.fn.loadin = function(href, callback) {
+		var element = $(this);
+		var parent = element.parent();
+		element.remove();
+		parent.load(href, function() { callback(); });
 	}
 
 	function loadin(url, element, callback) {
@@ -767,6 +813,8 @@ $(document).ready(function() {
 		var displaypage = form.attr('action');
 		return addtoquerystring(displaypage, ['display'], [showonpage]);
 	}
+
+
 
 /*==============================================================
  	TOOLBAR FUNCTIONS
@@ -855,20 +903,20 @@ $(document).ready(function() {
 	$(".page").on("click", ".view-item-details", function(e) {
 	   e.preventDefault();
 	   var button = $(this);
-	   var url = addtoquerystring(button.attr('href'), [], []);
+	   var href = URI(button.attr('href')).toString();
 
-	   console.log(url);
+	   console.log(href);
 	   if (button.data('kit') == 'Y') {
 		   var itemid = button.data('itemid');
 		   var qty = 1;
 		   ii_kitcomponents(itemid, qty, function() {
-			   loadin(url, config.modals.ajax+" .modal-body", function() {
+			   loadin(href, config.modals.ajax+" .modal-body", function() {
 				  $(config.modals.ajax).resizemodal('lg');
 				  $(config.modals.ajax).modal();
 			  })
 		   });
 	   } else {
-		   loadin(url, config.modals.ajax+" .modal-body", function() {
+		   loadin(href, config.modals.ajax+" .modal-body", function() {
 			   $(config.modals.ajax).resizemodal('lg');
 			   $(config.modals.ajax).modal();
 		   });
