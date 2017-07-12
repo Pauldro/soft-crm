@@ -9,6 +9,8 @@
 		$qtyo = $detail['qtyordered'] + 0;
 		$qtys = $detail['qtyshipped'] + 0;
 		$bo = $detail['qtybackord'] + 0;
+        $custID = $order['custid'];
+        $shipID = $order['shiptoid'];
 		$detailnoteurl = $config->pages->notes.'redir/?action=get-order-notes&ordn='.$on.'&linenbr='.$detail['linenbr'];
 
 
@@ -19,7 +21,7 @@
 		}
 
 		if ($detail['haveitemdoc'] == 'Y') {
-			$itemdocLink = '<a class="btn btn-primary" href="redir/cust-redir.php?action=get-documents&itemdoc='.$detail['itemid'].'&ordn='.$on.$linkaddon."&custID=".$cust.'">
+			$itemdocLink = '<a class="btn btn-primary" href="redir/cust-redir.php?action=get-order-documents&itemdoc='.$detail['itemid'].'&ordn='.$on.$linkaddon."&custID=".$cust.'">
 				<span class="sr-only">View Documents</span>
 				<span class="glyphicon glyphicon-folder-open" title="Click to view Documents"></span>
 		</a>';
@@ -30,6 +32,7 @@
 							</a>';
 
 		}
+
 		if ($detail['itemid'] != "") {
 			$thispage = $config->pages->customer."$custID/";
 			if (strlen($shipID) > 0) {
