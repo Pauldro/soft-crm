@@ -27,15 +27,15 @@
 						$column = $table['header']['rows'][$x]['columns'][$i];
 						$class = $config->textjustify[$fieldsjson['data']['header'][$column['id']]['datajustify']];
 						$colspan = $column['col-length'];
-						
+
 						if ($i == 1 && !empty($order['Order Number'])) {
-							  $ordn = $order['Ordn'];
-							  $onclick = 'loadorderdocuments("'.$ordn.'")';
-							  $extracelldata = "&nbsp; <a href='#' title='load order documents' data-load='#ajax-modal' onclick='$onclick'><i class='fa fa-folder-open' aria-hidden='true'></i></a>";
-							 $tb->cell('colspan='.$colspan.'|class='.$class, '<b>'.$column['label'].'</b>: '.generatecelldata($fieldsjson['data']['header'][$column['id']]['type'],$order, $column, $extracelldata ));
-						  } else {
-							  $tb->cell('colspan='.$colspan.'|class='.$class, '<b>'.$column['label'].'</b>: '.generatecelldata($fieldsjson['data']['header'][$column['id']]['type'],$order, $column, false));
-						  }
+							$ordn = $order['Ordn'];
+							$onclick = 'loadorderdocuments("'.$ordn.'")';
+							$extracelldata = "&nbsp; <a href='#' title='load order documents' data-load='#ajax-modal' onclick='$onclick'><i class='fa fa-folder-open' aria-hidden='true'></i></a>";
+							$tb->cell('colspan='.$colspan.'|class='.$class, generatecelldata($fieldsjson['data']['header'][$column['id']]['type'],$order, $column, $extracelldata ));
+						} else {
+							$tb->cell('colspan='.$colspan.'|class='.$class, generatecelldata($fieldsjson['data']['header'][$column['id']]['type'],$order, $column, false));
+						}
 
 						if ($colspan > 1) { $i = $i + ($colspan - 1); }
 					} else {

@@ -184,7 +184,7 @@ function custpo() { //CAN BE USED IF SHIPTO IS DEFINED
 	var href = URI(config.urls.customer.load.ci_custpo).addQuery("custID", custid).addQuery("shipID", shipid).toString();
 	swal({
 	  title: "Customer PO Inquiry",
-	  text: "Write something interesting:",
+	  text: "Enter a PO:",
 	  type: "input",
 	  showCancelButton: true,
 	  closeOnConfirm: false,
@@ -222,7 +222,7 @@ function quotes() {
 		loadin(href, loadinto, function() {
 			console.log(href);
 			hideajaxloading();
-			$(modal).resizemodal('lg').modal();
+			$(modal).resizemodal('xl').modal();
 		});
 	});
 }
@@ -249,10 +249,12 @@ function loadorderdocuments(ordn) {
 	var href = URI(config.urls.customer.load.ci_orderdocuments).addQuery("custID", custid).addQuery('ordn', ordn).toString();
 	showajaxloading();
 	ci_getorderdocuments(custid, ordn, function() {
-		loadin(href, loadinto, function() {
-			console.log(href);
-			hideajaxloading();
-			$(modal).resizemodal('lg').modal();
+		wait(500, function() {
+			loadin(href, loadinto, function() {
+				console.log(href);
+				hideajaxloading();
+				$(modal).resizemodal('lg').modal();
+			});
 		});
 	});
 }

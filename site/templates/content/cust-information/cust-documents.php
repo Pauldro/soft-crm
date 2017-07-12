@@ -24,7 +24,7 @@
 						<td class="<?= $config->textjustify[$docjson['columns'][$column]['datajustify']]; ?>"><?php echo $docjson['data'][$doc][$column]; ?></td>
 					<?php endforeach; ?>
 					<td>
-						<button type="button" class="btn btn-sm btn-primary load-doc" onclick="loaditemdocument(<?= $doc; ?>)"><i class="fa fa-file-o" aria-hidden="true"></i> Load</button>
+						<button type="button" class="btn btn-sm btn-primary load-doc" data-doc="<?= $doc; ?>"><i class="fa fa-file-o" aria-hidden="true"></i> Load</button>
 					</td>
 				</tr>
 			<?php endforeach; ?>

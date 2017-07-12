@@ -22,7 +22,8 @@
 	}
 
 	function ci_getorderdocuments(custid, ordn, callback) {
-		var url = config.urls.customer.redir.ci_orderdocuments+"&custID="+urlencode(custid)+"&ordn="+urlencode(ordn);
+		var url = config.urls.customer.redir.ci_orderdocuments+"&ordn="+urlencode(ordn);
+		console.log(url);
 		$.get(url, function() { callback();});
 	}
 
