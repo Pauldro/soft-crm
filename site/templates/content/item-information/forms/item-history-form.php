@@ -1,3 +1,11 @@
+<?php
+    if (trim($iiconfig['saleshistory']['date-options']['start-date']) != '') {
+        $date = date("m/d/y", strtotime($iiconfig['saleshistory']['date-options']['start-date']));
+    } else {
+        $date = date("m/d/y", strtotime("-".$iiconfig['saleshistory']['date-options']['days-back']." day"));
+    }
+
+?>
 <form action="<?php echo $config->pages->products."redir/"; ?>" id="ii-sales-history-form" method="post">
     <input type="hidden" name="action" value="ii-sales-history">
     <input type="hidden" name="itemid" value="<?php echo $itemid; ?>">
@@ -9,7 +17,7 @@
             <div class="form-group">
                 <label for="">Starting Invoice Date</label>
                 <div class="input-group date">
-                   	<?php $name = 'date'; $value = '';?>
+                   	<?php $name = 'date'; $value = $date;?>
 					<?php include $config->paths->content."common/date-picker.php"; ?>
                 </div>
             </div>

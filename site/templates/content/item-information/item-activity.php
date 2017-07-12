@@ -1,5 +1,5 @@
 <?php
-	$activityfile = $config->jsonfilepath.session_id()."iiactivity.json";
+	$activityfile = $config->jsonfilepath.session_id()."-iiactivity.json";
 	//$activityfile = $config->jsonfilepath."iiact-iiactivity.json";
 ?>
 <?php if ($config->ajax) : ?>

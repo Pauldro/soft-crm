@@ -38,7 +38,7 @@
 		$.get(url, function() { callback();});
 	}
 
-	
+
 
 	function ii_bom(itemid, qty, bomtype, callback) {
 		var url = config.urls.products.redir.ii_bom+"&itemid="+urlencode(itemid)+"&qty="+urlencode(qty)+"&bom="+bomtype;
@@ -92,5 +92,10 @@
 
 	function ii_documents(itemid, callback) {
 		var url = config.urls.products.redir.ii_documents+"&itemid="+urlencode(itemid);
+		$.get(url, function() {	callback(); });
+	}
+
+	function ii_order_documents(itemid, ordn, callback) {
+		var url = config.urls.products.redir.ii_order_documents+"&itemid="+urlencode(itemid)+"&ordn="+ordn;
 		$.get(url, function() {	callback(); });
 	}

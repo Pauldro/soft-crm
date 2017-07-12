@@ -1,7 +1,7 @@
 var itemlookupform = "#ii-item-lookup";
 
-	
-	
+
+
 $(function() {
     //listener.simple_combo("u", function() {iicust()});
     listener.simple_combo("c", function() {costing();});
@@ -22,25 +22,25 @@ $(function() {
     listener.simple_combo("w", function() {whereused();});
 	listener.simple_combo("pageup", function() {previousitem();});
 	listener.simple_combo("pagedown", function() {nextitem();});
-	
+
 	$("body").on("focus", ".sweet-alert.show-input input", function(event) {
         console.log('focused');
         listener.stop_listening();
     });
-	
+
 	$(config.modals.ajax).on('hide.bs.modal', function(event) {
         listener.listen();
     });
-	
+
     $(config.modals.ajax).on('shown.bs.modal', function(event) {
         listener.stop_listening();
 		hidetoolbar();
     });
-	
+
 	$("body").on("submit", "#ii-search-item", function(e) {
 		e.preventDefault();
 	});
-	
+
 	$("body").on("submit", itemlookupform, function(e) {
 		e.preventDefault();
 		var itemid = $(this).find('.itemid').val();
@@ -54,8 +54,8 @@ $(function() {
 			$(modal).resizemodal('lg').modal();
 		});
 	});
-	
-    
+
+
 	$("body").on("submit", "#ii-item-activity-form", function(e) {
         e.preventDefault();
         var formid = '#'+$(this).attr('id');
@@ -67,17 +67,16 @@ $(function() {
         showajaxloading();
         $(formid).postform({formdata: false, jsoncallback: false}, function() { //form, overwriteformdata, returnjson, callback
             $(modal).modal('hide');
-            loadin(href, loadinto, function() {
-                hideajaxloading();
-                wait(500, function() {
+            wait(500, function() {
+                loadin(href, loadinto, function() {
+                    hideajaxloading();
                     $(modal).resizemodal('lg').modal();
                     listener.listen();
                 });
-
             });
         });
     });
-	
+
 	$("body").on("submit", "#ii-sales-history-form", function(e) {
         e.preventDefault();
         var formid = '#'+$(this).attr('id');
@@ -99,8 +98,8 @@ $(function() {
             });
         });
     });
-	
-	
+
+
 });
 	function pricing() {
 		var custid = $(itemlookupform+' .custid').val();
@@ -143,7 +142,7 @@ $(function() {
         });
     }
 
-	
+
 
 	function quotes() {
 		var itemid = $(itemlookupform + " .itemid").val();
@@ -235,7 +234,7 @@ $(function() {
 			});
 		});
 	}
-	
+
 	function activity() {
 		var itemid = $(itemlookupform + " .itemid").val();
 		var custid = $(itemlookupform + " .custid").val();
@@ -265,7 +264,7 @@ $(function() {
 		ii_requirements(itemid, screentype, whse, function() {
 			if (refreshpage) {
 				hideajaxloading();
-				window.location.reload(false); 
+				window.location.reload(false);
 			} else {
 				loadin(href, loadinto, function() {
 					console.log(href);
@@ -274,7 +273,7 @@ $(function() {
 					$(modal).resizemodal('lg').modal();
 				});
 			}
-			
+
 		});
 	}
 
@@ -292,7 +291,7 @@ $(function() {
 			});
 		});
 	}
-	
+
 	function salesorder() {
 		var itemid = $(itemlookupform + " .itemid").val();
 		var modal = config.modals.ajax;
@@ -380,8 +379,8 @@ $(function() {
 			});
 		});
 	}
-		
-	
+
+
 
 
 /*==============================================================
@@ -546,7 +545,7 @@ $(function() {
 
 	function loadiipage(custid, shipid, itemid, callback) {
 		var loadinto = ".page";
-		var href = iiurl(config.urls.products.iteminfo, itemid, custid, shipid); 
+		var href = iiurl(config.urls.products.iteminfo, itemid, custid, shipid);
 		var msg = "Viewing item "+itemid+" info for " + custid;
 		loadreplace(href+" "+loadinto, loadinto, function() {
 			window.history.pushState({ id: 35 }, msg, href);
@@ -554,8 +553,8 @@ $(function() {
 		});
 	}
 
-	function iipricing(custid, shipid, itemid) { 
-		var href = iiurl(config.urls.load.ii_pricing, itemid, custid, shipid); 
+	function iipricing(custid, shipid, itemid) {
+		var href = iiurl(config.urls.load.ii_pricing, itemid, custid, shipid);
 		var modal = config.modals.ajax;
 		var loadinto = modal+" .modal-content";
 		$('.modal').modal('hide');
@@ -587,7 +586,17 @@ $(function() {
 		return uri.normalizeQuery().toString();
 	}
 
-	
-
-
-
+	function loadorderdocuments(ordn) {
+		var itemid = $(itemlookupform + " .itemid").val();
+		var modal = config.modals.ajax;
+		var loadinto =  modal+" .modal-content";
+		var href = URI(config.urls.load.ii_order_documents).addQuery("itemid", itemid).addQuery("ordn", ordn).toString();
+		showajaxloading();
+		ii_order_documents(itemid, ordn, function() {
+			loadin(href, loadinto, function() {
+				console.log(href);
+				hideajaxloading();
+				$(modal).resizemodal('lg').modal();
+			});
+		});
+	}
