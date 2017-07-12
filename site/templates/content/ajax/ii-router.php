@@ -1,4 +1,10 @@
 <?php
+    if (checkconfigifexists($user, 'iio', false)) {
+        $iiconfig = json_decode(getconfiguration($user->loginid, $configtype, false), true);
+    } else {
+        $iiconfig = json_decode(file_get_contents($config->paths->content."salesrep/configs/defaults/item-info-options.json"), true);
+    }
+
     $modal = false;
 	$modalbody = false;
     switch ($input->urlSegment(3)) { //Parts of order to load
@@ -127,7 +133,15 @@
             break;
 		case 'ii-documents':
             $itemid = $input->get->text('itemid');
-            $title = 'Viewing Item Documents for ' .$itemid;
+            switch ($input->urlSegment(4)) {
+                case 'order':
+                    $title = "Order #" . $input->get->text('ordn'). ' Documents';
+                    break;
+                default:
+                    $title = 'Viewing Item Documents for ' .$itemid;
+                    break;
+            }
+
             $modal = true;
             $modalcontent = $config->paths->content."item-information/item-documents.php";
             break;
