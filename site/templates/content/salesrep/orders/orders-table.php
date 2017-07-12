@@ -21,6 +21,10 @@
 			} else {
 				$orders = get_salesrep_orders(session_id(), $config->showonpage, $input->pageNum(), false);
 				$sql = get_salesrep_orders(session_id(), $config->showonpage, $input->pageNum(), true);
+
+				$sortrule = 'DESC'; $orderby = 'orderno';
+				$orders = get_salesrep_orders_orderby(session_id(), $config->showonpage, $input->pageNum(), $sortrule, $orderby, false);
+				$sql = get_salesrep_orders_orderby(session_id(), $config->showonpage, $input->pageNum(), $sortrule, $orderby, true);
 			}
 		?>
 
@@ -35,17 +39,23 @@
 				$sorting = false;
 				if ($on == $input->get->text('ordn')) {
 					$oni = ""; $rowclass = 'selected';
-					$orderlink = $ajax->path.querystring_replace($ajax->querystring, array('ordn', 'show', 'orderby'), array(false, false, false));
+					$orderlink = new \Purl\Url($page->httpUrl);
+					$orderlink->path = $ajax->path;
+					$orderlink->query->setData(array('ordn' => false, 'show' => false, 'orderby' => false));
 					$ordnjsdata = $ajax->data;
 				} else {
 					$oni = $on; $rowclass = ''; $title = "View Order Details";
 					if ($input->get->orderby) { $sorting = 	$orderby."-".$sortrule; } // just to set up the orderlink querystring replace
-					$orderlink = $config->pages->customer."redir/".querystring_replace("", array('action','ordn','page', 'orderby'), array('get-order-details',$on, $input->pageNum, $sorting));
+					$orderlink = new \Purl\Url($page->httpUrl);
+					$orderlink->path = $config->pages->orders."redir/";
+					$orderlink->query->setData(array('action' => 'get-order-details', 'ordn' => $on, 'page' => $input->pageNum, 'orderby' => $sorting));
 					$ordnjsdata = 'data-loadinto="'.$ajax->loadinto.'"  data-focus="#'.$on.'"';
 				}
 
 				//DOCUMENTS ICON
-				$docsurl = $config->pages->customer."redir/".querystring_replace("", array('action','ordn','linenbr','page', 'orderby'), array('get-order-documents',$on, '0',$input->pageNum, $sorting));
+				$docsurl = new \Purl\Url($page->httpUrl);
+				$docsurl->path = $config->pages->orders."redir/";
+				$docsurl->query->setData(array('action' => 'get-order-documents', 'ordn' => $on, 'linenbr' => '0', 'page' => $input->pageNum, 'orderby' => $sorting));
 
 				if ($order['havedoc'] == 'Y') {
 					$documentlink = '
@@ -62,7 +72,10 @@
 
 
 				//TRACKING ICON
-				$trackhref = $config->pages->customer."redir/".querystring_replace("", array('action','ordn','page','orderby'), array('get-order-tracking',$on, $input->pageNum, $sorting));
+				$trackhref = new \Purl\Url($page->httpUrl);
+				$trackhref->path = $config->pages->customer."redir/";
+				$trackhref->query->setData(array('action' => 'get-order-tracking','ordn' => $on,'page' => $input->pageNum,'orderby' => $sorting));
+
 				if ($order['havetrk'] == 'Y') {
 					$tracklink = '
 								<a href="'.$trackhref.'" class="h3 generate-load-link" '.$ajax->data.'>
@@ -117,7 +130,7 @@
                 <td align="right">$ <?php echo formatmoney($order['odrtotal']); ?></td>
                 <td align="right" ><?php echo $order['orderdate']; ?></td>
                 <td align="right"><?php echo $order['status']; ?></td>
-                <td colspan="2">
+                <td colspan="3">
                     <span class="col-xs-3"><?php echo $documentlink; ?></span>
                     <span class="col-xs-3"><?php echo $tracklink; ?></span>
                     <span class="col-xs-3"><?php echo $headnoteicon; ?> </span>
@@ -150,7 +163,12 @@
              	<td colspan="2">
 					<a href="<?= $config->pages->notes."load/modal/order/?ordn=".$on; ?>" class="h3 load-into-modal" data-loadinto="#ajax-modal" data-modal="#ajax-modal"><i class="fa fa-sticky-note" aria-hidden="true"></i></a>
 				</td>
-				<td colspan="3"><?php // TODO get_current_linked_tasks_count($user->loginid, $order['custid'], 'salesorderlink', $on, false); ?></td>
+				<td colspan="3">
+					<?php // TODO get_current_linked_tasks_count($user->loginid, $order['custid'], 'salesorderlink', $on, false); ?>
+					<a href="<?= $config->pages->orders."redir/?action=get-order-details&print=true&ordn=".$on; ?>" class="h3" target="_blank">
+						<i class="glyphicon glyphicon-print" aria-hidden="true"></i> <span class="sr-only">View Printable Order</span>
+					</a>
+				</td>
                 <td>
                 	<a class="btn btn-primary btn-sm" onClick="reorder()">
                     	<span class="glyphicon glyphicon-shopping-cart" title="re-order"></span> Reorder Order

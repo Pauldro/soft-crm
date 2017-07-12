@@ -5,11 +5,18 @@
 	$ajax->focus = "#orders-panel"; //WHERE TO FOCUS AFTER LOADED DATA IS LOADED
 	$ajax->searchlink = $config->pages->ajax.'load/order-search/';  //LINK TO THE SEARCH PAGE FOR THIS OBJECT
 	$ajax->data = 'data-loadinto="'.$ajax->loadinto.'" data-focus="'.$ajax->focus.'"'; //DATA FIELDS FOR JAVASCRIPT
-	$ajax->path = buildajaxpath($config->pages->ajax, "load/orders/salesrep/", $input->urlSegmentsStr); //MODAL TO LOAD INTO IF NEED BE
-	$ajax->querystring = querystring_replace($querystring, array("display", "ajax"), array(false, false)); //BASE QUERYSTRING NEEDED FOR AJAX
-	$ajax->link = $ajax->path.$ajax->querystring; //LINK TO THE AJAX FILE
-	
-	$insertafter = 'salesrep';
+
+	$ajax->url = $page->fullURL;
+	$ajax->url->path = $config->pages->ajax;
+	$ajax->url->path->setDplusPath("load/orders/salesrep/", $input->urlSegmentsStr."/");
+	$ajax->url->query->setData(array("display" => false, "ajax" => false));
+
+	$ajax->path = $ajax->url->path; //MODAL TO LOAD INTO IF NEED BE
+	$ajax->querystring = $ajax->url->query;//BASE QUERYSTRING NEEDED FOR AJAX
+	$ajax->link = $ajax->url; //LINK TO THE AJAX FILE
+
+
+	$ajax->insertafter = 'salesrep';
 
     if ($config->ajax) {$collapse = '';} else {$collapse = 'collapse'; }
 
@@ -28,7 +35,7 @@
     	<?php elseif ($ordercount > 0) : ?>
             <a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">Your Orders <span class="caret"></span></a> &nbsp; <span class="badge"><?php echo $ordercount; ?></span>  |
             <a href="<?php echo $config->pages->orders."redir/?action=load-orders"; ?>" class="generate-load-link" id="load-cust-orders" <?php echo $ajax->data; ?>>
-                Load Orders
+                <i class="fa fa-refresh" aria-hidden="true"></i> Refresh Orders
             </a>
         <?php else : ?>
         	<a href="<?php echo $config->pages->orders."redir/?action=load-orders"; ?>" class="generate-load-link" id="load-cust-orders"  <?php echo $ajax->data; ?>>

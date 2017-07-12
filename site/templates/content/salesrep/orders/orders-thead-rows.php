@@ -29,10 +29,10 @@
            Status:<?= $status_sym; ?>
        </a>
    </th>
-   <th colspan="2"> <a tabindex="0" <?= $legendiconcontent; ?> data-content="<?= $legendcontent; ?>">Icon Definitions</a>
+   <th colspan="3"> <a tabindex="0" <?= $legendiconcontent; ?> data-content="<?= $legendcontent; ?>">Icon Definitions</a>
        <?php if (isset($input->get->orderby)) : ?>
            <a class="btn btn-warning btn-sm load-link" href="<?= $ajax->path.querystring_replace($ajax->querystring, array("orderby"), array(false)); ?>" <?= $ajax->data; ?>> (Clear Sort) </a>
        <?php endif; ?>
    </th>
-   
+
 </tr>
