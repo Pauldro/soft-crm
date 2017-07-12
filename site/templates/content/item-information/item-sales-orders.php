@@ -44,7 +44,7 @@
        <?php foreach ($ordersjson['data'] as $whse) : ?>
       		<div>
       			<h3><?= $whse['Whse Name']; ?></h3>
-      			<?php include $config->paths->content."/item-information/tables/sales-order-formatted.php"; ?>
+      			<?php include $config->paths->content."/item-information/tables/sales-orders-formatted.php"; ?>
       		</div>
       	<?php endforeach; ?>
       	<?php if ($config->ajax) : ?>
