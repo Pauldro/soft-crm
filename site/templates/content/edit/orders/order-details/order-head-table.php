@@ -7,7 +7,7 @@
 			$shiptoaddress .= $order['scity'].", ". $order['sst'].' ' . $order['szip'];
 			$shiptopopover = 'data-toggle="popover" role="button" data-placement="top" data-trigger="focus" data-html="true" title="Ship-To Address"';
 
-			$docsurl = $config->pages->customer."redir/".querystring_replace("", array('action','ordn','linenbr','page'), array('get-documents',$ordn, '0',$input->pageNum));
+			$docsurl = $config->pages->customer."redir/".querystring_replace("", array('action','ordn','linenbr','page'), array('get-order-documents',$ordn, '0',$input->pageNum));
 
 			if ($order['havedoc'] == 'Y') {
 				$documentlink = '
@@ -21,7 +21,7 @@
 			}
 
 
-			$trackhref = $config->pages->customer."redir/".querystring_replace("", array('action','ordn','page'), array('get-order-tracking',$ordn, $input->pageNum)); 
+			$trackhref = $config->pages->customer."redir/".querystring_replace("", array('action','ordn','page'), array('get-order-tracking',$ordn, $input->pageNum));
 			if ($order['havetrk'] == 'Y') {
 				$tracklink = '
 							<a href="'.$trackhref.'" class="h3 load-detail" '.$ajax->data.'>

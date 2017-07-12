@@ -18,9 +18,7 @@ $(function() {
     $("body").on("click", '.remove-item', function() {
         var button = $(this);
         var form = button.closest('form');
-        console.log(button.attr('class'));
-        console.log(form.attr('id'));
-        form.find('.action').val('remove-line');
+        form.find('input[name=action]').val('remove-line');
         form.submit();
     });
 });
