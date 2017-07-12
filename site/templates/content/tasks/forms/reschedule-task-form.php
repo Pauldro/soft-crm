@@ -8,7 +8,7 @@
 	<br>
 	<div class="tab-content">
 		<div role="tabpanel" class="tab-pane active" id="task">
-			<form action="<?php echo $config->pages->tasks."add/"; ?>" class="fuel-ux" method="POST" id="new-task-form1" data-refresh="#tasks-panel" data-modal="#ajax-modal">
+			<form action="<?php echo $config->pages->tasks."add/"; ?>" class="fuel-ux" method="POST" id="new-task-form" data-refresh="#tasks-panel" data-modal="#ajax-modal">
 				<input type="hidden" name="action" value="reschedule-task">
 				<input type="hidden" name="custlink" value="<?= $custID; ?>">
 				<input type="hidden" name="shiptolink" value="<?= $shipID; ?>">

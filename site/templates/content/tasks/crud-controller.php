@@ -52,6 +52,9 @@
 									case 'user':
 										include $config->paths->content.'dashboard/tasks/tasks-panel.php';
 										break;
+									case 'quote':
+										include $config->paths->content.'edit/quotes/tasks/tasks-panel.php';
+										break;
 								}
 							}
 							break;

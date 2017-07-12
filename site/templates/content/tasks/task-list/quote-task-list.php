@@ -1,9 +1,9 @@
 <?php
-	$tasks = get_linked_tasks($user->loginid, $custID, $shipID, $contactID, '', '', '', $taskpanel->taskstatus, $config->showonpage, $input->pageNum(), false);
+	$tasks = get_linked_tasks($user->loginid, '', '', '', $qnbr, '', '', $taskpanel->taskstatus, $config->showonpage, $input->pageNum(), false);
 ?>
 <table class="table table-bordered table-condensed table-striped">
 	<thead>
-    	<tr> <th>Due</th> <th>Type</th> <th>Note</th> <th>View Task</th>  <th>Mark as Complete</th>  </tr>
+    	<tr> <th>Due</th> <th>Type</th> <th>Note</th> <th>View Task</th>  <th>Complete</th>  </tr>
     </thead>
     <tbody>
 		<?php if (!$taskpanel->count) : ?>
@@ -13,11 +13,11 @@
 				</td>
 			</tr>
 		<?php else : ?>
-			<?php foreach ($tasks as $task) : ?>
+	    	<?php foreach ($tasks as $task) : ?>
 	            <tr <?php if ($task->isoverdue) {echo 'class="bg-warning"'; } ?>>
 	                <td><?= date('m/d/Y', strtotime($task->duedate)); ?></td>
 					<td><?= $tasktypes[$task->tasktype]['icon'].' '.$tasktypes[$task->tasktype]['label']; ?></td>
-	                <td><?= $task->textbody; ?></td>
+	                <td><?= substr($task->textbody, 0, 21); ?></td>
 	                <td>
 	                    <a href="<?= $task->generateviewtaskurl(); ?>" class="btn btn-primary btn-xs load-task-item" data-modal="<?= $taskpanel->modal; ?>" role="button" title="View Task">
 	                       <i class="material-icons md-18">&#xE02F;</i>
