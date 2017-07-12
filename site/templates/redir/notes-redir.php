@@ -8,6 +8,59 @@
 	$filename = session_id();
 	$session->action = $action;
 
+	/**
+	* CART REDIRECT
+	* @param string $action
+	*
+	*
+	*
+	* switch ($action) {
+	*	case 'get-order-notes':
+	*		DBNAME=$config->DBNAME
+	*		LQNOTE=SORD
+	*		KEY1=$ordn
+	*		KEY2=$linenbr
+	*		break;
+	*	case 'get-quote-notes':
+	*		DBNAME=$config->DBNAME
+	*		LQNOTE=QUOT
+	*		KEY1=$qnbr
+	*		KEY2=$linenbr
+	*		break;
+	*	case 'get-cart-notes':
+	*		DBNAME=$config->DBNAME
+	*		LOAD CART NOTES
+	*		break;
+	*	case 'write-order-notes':
+	*		DBNAME=$config->DBNAME
+	*		RQNOTE=SORD
+	*		KEY1=$ordn
+	*		KEY2=$linenbr
+	*		FORM1=$form1
+	*		FORM2=$form2
+	*		FORM3=$form3
+	*		FORM4=$form4
+	*		FORM5=$form5
+	*		break;
+	*	case 'write-quote-notes':
+	*		DBNAME=$config->DBNAME
+	*		RQNOTE=QUOT
+	*		KEY1=$qnbr
+	*		KEY2=$linenbr
+	*		FORM1=$form1
+	*		FORM2=$form2
+	*		FORM3=$form3
+	*		FORM4=$form4
+	*		FORM5=$form5
+	*		break;
+	*	case 'write-cart-notes':
+	*		DBNAME=$config->DBNAME
+	*		WRITING CART NOTES
+	*		break;
+	* }
+	*
+	**/
+
 	switch ($action) {
 		case 'get-order-notes':
 			$ordn = $input->get->text('ordn');
@@ -26,7 +79,7 @@
 			$data = array('DBNAME' => $config->dbName, 'LOAD CART NOTES' => false);
 			$session->loc = $config->pages->ajax."load/notes/dplus/cart/?linenbr=".$linenbr;
 			break;
-		case 'write-sales-order-note':
+		case 'write-order-note':
 			$form1 = $input->post->form1 ? "Y": "N";  $form2 = $input->post->form2 ? "Y": "N";
 			$form3 = $input->post->form3 ? "Y": "N";  $form4 = $input->post->form4 ? "Y": "N";  $form5 = '';
 			$key1 = $input->post->text('key1'); $key2 = $input->post->text('key2');
@@ -67,7 +120,6 @@
 				$session->nextrec = $recnbr;
 				$session->sql = insertdplusnote(session_id(), $key1, $key2, $form1, $form2, $form3, $form4, $form5, $note, $notetype, $recnbr, $date, $time, $note_width);
 			}
-
 			break;
 		case 'write-cart-note':
 			$form1 = $input->post->form1 ? "Y": "N";  $form2 = $input->post->form2 ? "Y": "N";
@@ -89,22 +141,6 @@
 				$session->sql = insertdplusnote(session_id(), $key1, $key2, $form1, $form2, $form3, $form4, $form5, $note, $notetype, $recnbr, $date, $time, $note_width);
 			}
 			break;
-		case 'delete-quote-note':
-			$form1 = $input->post->form1 ? "Y": "N";  $form2 = $input->post->form2 ? "Y": "N";
-			$form3 = $input->post->form3 ? "Y": "N";  $form4 = $input->post->form4 ? "Y": "N";  $form5 = $input->post->form5 ? "Y": "N";
-			$key1 = $input->post->text('key1'); $key2 = $input->post->text('key2');
-			$notetype = $config->dplusnotes['quote']['type'];
-			$recnbr = $input->post->text('recnbr');
-			$data = array('DBNAME' => $config->dbName, 'RQNOTE' => 'QUOT', 'KEY1' => $key1, "KEY2" => $key2);
-			$data['FORM1'] = $form1; $data['FORM2'] = $form2; $data['FORM3'] = $form3; $data['FORM4'] = $form4; $data['FORM5'] = $form5;
-			$session->sql = deletenote(session_id(), $key1, $key2, $form1, $form2, $form3, $form4, $form5, $notetype, $recnbr);
-
-			$session->data = $data;
-
-			break;
-
-
-
 	}
 
 	writedplusfile($data, $filename);

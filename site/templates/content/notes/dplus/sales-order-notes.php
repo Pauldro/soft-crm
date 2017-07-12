@@ -50,7 +50,7 @@
                 <div class="col-xs-12 form-group">
                     <label for="notes" class="control-label">Note: <span class="which"></span></label>
                     <textarea class="form-control note" rows="3" cols="35" name="note" placeholder="Add a Note.." style="max-width: 35em;"></textarea>
-					<input type="hidden" name="action" class="action" value="write-sales-order-note">
+					<input type="hidden" name="action" class="action" value="write-order-note">
 					<input type="hidden" name="key1" class="key1"value="<?php echo $ordn; ?>">
                     <input type="hidden" name="key2" class="key2" value="<?php echo $linenbr; ?>">
                     <input type="hidden" class="type" value="<?php echo $config->dplusnotes['order']['type']; ?>">

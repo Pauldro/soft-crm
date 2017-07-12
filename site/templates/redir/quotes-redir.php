@@ -14,6 +14,7 @@
 	$session->remove('quote-search');
 	$filename = session_id();
 
+	//TODO merge get-quote-details and get-quote-details-print
 	/**
 	*  QUOTE REDIRECT
 	* @param string $action
@@ -21,7 +22,13 @@
 	*
 	*
 	* switch ($action) {
-	*	case 'get-quote-details':
+	* 	case 'load-cust-quotes':
+	*		DBNAME=$config->DBNAME
+	*		LOADCUSTQUOTEHEAD
+	*		TYPE=QUOTE
+	*		CUSTID=$custID
+	*		break;
+	*	case 'load-quote-details':
 	*		DBNAME=$config->DBNAME
 	*		LOADQUOTEDETAIL
 	*		QUOTENO=$qnbr
@@ -32,6 +39,11 @@
 	*		LOADQUOTEDETAIL
 	*		QUOTENO=$qnbr
 	*		CUSTID=$custID
+	*		break;
+	*	case 'edit-quote':
+	*		DBNAME=$config->DBNAME
+	*		EDITQUOTE=$qnbr
+	*		QUOTENO=$qnbr
 	*		break;
 	*	case 'save-quotehead':
 	*		DBNAME=$config->DBNAME
@@ -52,14 +64,15 @@
 	*		QUOTENO=$qnbr
 	*		LINENO=$linenbr
 	*		break;
-	*	case 'load-cust-quotes':
+	*	case 'remove-line':
 	*		DBNAME=$config->DBNAME
-	*		LOADCUSTQUOTEHEAD
-	*		TYPE=QUOTE
-	*		CUSTID=$custID
+	*		QUOTEDETAIL
+	*		QUOTENO=$qnbr
+	*		LINENO=$linenbr
+	*		QTY=0
 	*		break;
 	*	case 'unlock-quote':
-	*		$data = array('UNLOCKING QUOTE' => '');
+	*		UNLOCKING QUOTE
 	*		break;
 	*	default:
 	*		break;
@@ -69,17 +82,22 @@
 
 
 
-
-
 	switch ($action) {
-		case 'get-quote-details':
+		case 'load-cust-quotes':
+			$custID = $input->get->text('custID');
+			$data = array('DBNAME' => $config->dbName, 'LOADCUSTQUOTEHEAD' => false, 'TYPE' => 'QUOTE', 'CUSTID' => $custID);
+			$session->loc = $config->pages->ajax."load/quotes/cust/".urlencode($custID)."/?qnbr=".$link_addon;
+			$session->{'quotes-loaded-for'} = $custID;
+			$session->{'quotes-updated'} = date('m/d/Y h:i A');
+			break;
+		case 'load-quote-details':
 			$qnbr = $input->get->text('qnbr');
 			$custID = getquotecustomer(session_id(), $qnbr, false);
 			$data = array('DBNAME' => $config->dbName, 'LOADQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'CUSTID' => $custID);
 			if ($input->get->lock) {
 				$session->loc= $config->pages->editquote."?qnbr=".$qnbr;
 			} else {
-				$session->loc= $config->pages->editquote."?qnbr=".$qnbr; //TODO change to dashboard
+				$session->loc = $config->pages->ajax."load/quotes/cust/".urlencode($custID)."/?qnbr=".$qnbr.$link_addon;
 			}
 			break;
 		case 'get-quote-details-print':
@@ -87,6 +105,12 @@
 			$custID = getquotecustomer(session_id(), $qnbr, false);
 			$data = array('DBNAME' => $config->dbName, 'LOADQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'CUSTID' => $custID);
 			$session->loc = $config->pages->print."quote/?qnbr=".$qnbr;
+			break;
+		case 'edit-quote':
+			$qnbr = $input->get->text('qnbr');
+			$custID = getquotecustomer(session_id(), $qnbr, false);
+			$data = array('DBNAME' => $config->dbName, 'EDITQUOTE' => $qnbr, 'QUOTENO' => $qnbr);
+			$session->loc= $config->pages->editquote."?qnbr=".$qnbr;
 			break;
 		case 'save-quotehead':
 			$qnbr = $input->post->text('qnbr');
@@ -135,14 +159,31 @@
 			$qnbr = $input->post->text('qnbr');
 			$linenbr = $input->post->text('linenbr');
 			$quotedetail = getquotelinedetail(session_id(), $qnbr, $linenbr, false);
-			$quotedetail['price'] = $input->post->text('price');
+			$quotedetail['quotprice'] = $input->post->text('price');
 			$quotedetail['discpct'] =  $input->post->text('discount');
 			$quotedetail['quotunit'] = $input->post->text('qty');
-			$quotedetail['rshipdate'] = $input->post->text('rqst-date');
+			$quotedetail['rshipdate'] = $input->post->text('rqstdate');
 			$quotedetail['whse'] = $input->post->text('whse');
-
-			$session->sql = edit_quoteline(session_id(), $qnbr, $linenbr, $quotedetail, false);
-
+			$quotedetail['spcord'] = $input->post->text('specialorder');
+			$quotedetail['linenbr'] = $input->post->text('linenbr');
+			$session->sql = edit_quoteline(session_id(), $qnbr, $quotedetail, false);
+			$session->detail = $quotedetail;
+			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr);
+			if ($input->post->page) {
+				$session->loc = $input->post->text('page');
+			} else {
+				$session->loc = $config->pages->edit."quote/?qnbr=".$qnbr;
+			}
+			$session->editdetail = true;
+			break;
+		case 'remove-line':
+			$qnbr = $input->post->text('qnbr');
+			$linenbr = $input->post->text('linenbr');
+			$quotedetail = getquotelinedetail(session_id(), $qnbr, $linenbr, false);
+			$quotedetail['quotunit'] = '0';
+			$quotedetail['linenbr'] = $input->post->text('linenbr');
+			$session->sql = edit_quoteline(session_id(), $qnbr, $quotedetail, false);
+			$session->detail = $quotedetail;
 			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'QTY' => '0');
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
@@ -151,22 +192,13 @@
 			}
 			$session->editdetail = true;
 			break;
-		case 'load-cust-quotes':
-			$custID = $input->get->text('custID');
-			$data = array('DBNAME' => $config->dbName, 'LOADCUSTQUOTEHEAD' => false, 'TYPE' => 'QUOTE', 'CUSTID' => $custID);
-			$session->loc = $config->pages->ajax."load/quotes/cust/".urlencode($custID)."/?qnbr=".$link_addon;
-			$session->{'quotes-loaded-for'} = $custID;
-			$session->{'quotes-updated'} = date('m/d/Y h:i A');
-			break;
 		case 'unlock-quote':
 			$qnbr = $input->get->text('qnbr');
 			$custID = getquotecustomer(session_id(), $qnbr, false);
 			$shipID = getquoteshipto(session_id(), $qnbr, false);
-			$data = array('UNLOCKING QUOTE' => '');
+			$data = array('UNLOCKING QUOTE' => false);
 			$session->loc = $config->pages->customer.urlencode($custID)."/";
 			if ($shipID != '') { $session->loc .= "shipto-".urlencode($shipID)."/"; }
-			break;
-		default:
 			break;
 	}
 
