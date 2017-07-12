@@ -37,11 +37,11 @@
             </a>
     	<?php elseif ($ordercount > 0) : ?>
             <a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">Customer Orders <span class="caret"></span></a> <span class="badge"><?php echo $ordercount; ?></span>  |
-            <a href="<?php echo $config->pages->customer."redir/?custID=".urlencode($custID); ?>" class="load-cust-orders" data-custid="<?php echo $custID; ?>" <?php echo $ajax->data; ?>>
-                Load Orders
+            <a href="<?php echo $config->pages->orders."redir/?action=load-cust-orders&custID=".urlencode($custID); ?>" class="load-cust-orders" data-custid="<?php echo $custID; ?>" <?php echo $ajax->data; ?>>
+                <i class="fa fa-refresh" aria-hidden="true"></i> Refresh Orders
             </a>
         <?php else : ?>
-        	<a href="<?php echo $config->pages->customer."redir/?custID=".urlencode($custID); ?>" class="load-cust-orders" data-custid="<?php echo $custID; ?>" <?php echo $ajax->data; ?>>
+        	<a href="<?php echo $config->pages->orders."redir/?action=load-cust-orders&custID=".urlencode($custID); ?>" class="load-cust-orders" data-custid="<?php echo $custID; ?>" <?php echo $ajax->data; ?>>
                 Customer Orders
             </a>
         <?php endif; ?>

@@ -39,11 +39,11 @@
             </a>
     	<?php elseif ($quotecount > 0) : ?>
             <a href="#quotes-div" data-parent="#quotes-panel" data-toggle="collapse">Customer Quotes <span class="caret"></span></a> <span class="badge"><?php echo $quotecount; ?></span>  |
-            <a href="<?php echo $config->pages->customer."redir/?action=load-quotes&custID=".$custID;?>" class="generate-load-link" id="load-cust-quotes" data-custid="<?php echo $custID; ?>" <?php echo $ajax->data; ?>>
-                Load Quotes
+            <a href="<?php echo $config->pages->quotes."redir/?action=load-cust-quotes&custID=".$custID;?>" class="generate-load-link" id="load-cust-quotes" data-custid="<?php echo $custID; ?>" <?php echo $ajax->data; ?>>
+                <i class="fa fa-refresh" aria-hidden="true"></i> Refresh Quotes
             </a>
         <?php else : ?>
-        	<a href="<?php echo $config->pages->customer."redir/?action=load-quotes&custID=".$custID;?>" class="generate-load-link" id="load-cust-quotes" data-custid="<?php echo $custID; ?>" <?php echo $ajax->data; ?>>
+        	<a href="<?php echo $config->pages->quotes."redir/?action=load-cust-quotes&custID=".$custID;?>" class="generate-load-link" id="load-cust-quotes" data-custid="<?php echo $custID; ?>" <?php echo $ajax->data; ?>>
                 Customer Quotes
             </a>
         <?php endif; ?>
@@ -67,7 +67,7 @@
                 	<a href="<?php echo $ajax->searchlink; ?>" class="btn btn-default bordered search-orders" data-modal="#order-search-modal">Search Quotes</a>
                     &nbsp; &nbsp; &nbsp;
                     <?php if (isset($_SESSION['quote-search'])) : ?>
-                    <a href="<?php echo $config->pages->customer."redir/?action=load-quotes&custID=".$custID;?>" class="btn-warning btn" id="load-cust-quotes" data-custid="<?php echo $custID; ?>" <?php echo $ajax->data; ?>>
+                    <a href="<?php echo $config->pages->quotes."redir/?action=load-cust-quotes&custID=".$custID;?>" class="btn-warning btn" id="load-cust-quotes" data-custid="<?php echo $custID; ?>" <?php echo $ajax->data; ?>>
                         Clear Search
                     </a>
                     <?php endif; ?>

@@ -21,12 +21,15 @@
 			} else {
 				$orders = get_cust_orders(session_id(), $custID, $config->showonpage, $input->pageNum(), false);
 				$sql = get_cust_orders(session_id(), $custID, $config->showonpage, $input->pageNum(), true);
+				$sortrule = 'DESC'; $orderby = 'orderno';
+				$orders = get_cust_orders_orderby(session_id(), $custID, $config->showonpage, $input->pageNum(), $sortrule, $orderby, false);
+				$sql = get_cust_orders_orderby(session_id(), $custID, $config->showonpage, $input->pageNum(), $sortrule, $orderby, true);
 			}
 		?>
 
         <?php foreach($orders as $order) :
 				$on = $order['orderno'];
-				$editlink = $config->pages->customer."redir/?action=get-order-details&ordn=".$on."&lock=lock";
+				$editlink = $config->pages->orders."redir/?action=get-order-details&ordn=".$on."&lock=lock";
 				//$customer_link = $config->pages->customer.$custID."/";
 				//$customer_ship = $customer_link . "shipto-" . urlencode($order['shiptoid'])."/";
 
@@ -43,15 +46,15 @@
 					$oni = $on; $rowclass = ''; $title = "View Order Details";
 					if ($input->get->orderby) { $sorting = 	$orderby."-".$sortrule; } // just to set up the orderlink querystring replace
 					$orderlink = new \Purl\Url($page->httpUrl);
-					$orderlink->path = $config->pages->customer."redir/";
+					$orderlink->path = $config->pages->orders."redir/";
 					$orderlink->query->setData(array('action' => 'get-order-details', 'ordn' => $on, 'custID' => urlencode($custID), 'page' => $input->pageNum, 'orderby' => $sorting));
 					$ordnjsdata = 'data-loadinto="'.$ajax->loadinto.'"  data-focus="#'.$on.'"';
 				}
 
 				//DOCUMENTS ICON
 				$docsurl = new \Purl\Url($page->httpUrl);
-				$docsurl->path = $config->pages->customer."redir/";
-				$docsurl->query->setData(array('action' => 'get-order-documents', 'ordn' => $on, 'linenbr' => '0', 'page' => $input->pageNum, 'orderby' => $sorting));
+				$docsurl->path = $config->pages->orders."redir/";
+				$docsurl->query->setData(array('action' => 'get-order-documents', 'custID' => $custID, 'ordn' => $on, 'linenbr' => '0', 'page' => $input->pageNum, 'orderby' => $sorting));
 
 				if ($order['havedoc'] == 'Y') {
 					$documentlink = '
@@ -69,8 +72,8 @@
 
 				//TRACKING ICON
 				$trackhref = new \Purl\Url($page->httpUrl);
-				$trackhref->path = $config->pages->customer."redir/";
-				$trackhref->query->setData(array('action' => 'get-order-tracking','ordn' => $on,'page' => $input->pageNum,'orderby' => $sorting));
+				$trackhref->path = $config->pages->orders."redir/";
+				$trackhref->query->setData(array('action' => 'get-order-tracking','custID' => $custID,'ordn' => $on,'page' => $input->pageNum,'orderby' => $sorting));
 
 
 				if ($order['havetrk'] == 'Y') {
@@ -87,7 +90,11 @@
 				}
 
 				//ORDER NOTES
-				$noteurl = $config->pages->notes.'redir/?action=get-order-notes&ordn='.$on.'&linenbr=0';
+				$noteurl = new \Purl\Url($page->httpUrl);
+				$noteurl->path = $config->pages->notes."redir/";
+				$noteurl->query->setData(array('action' => 'get-order-notes','ordn' => $on, 'linenbr' => '0'));
+
+
 				if ($order['havenote'] != 'Y') {
 					$headnoteicon = '<a class="load-notes text-muted" href="'.$noteurl.'" data-modal="#ajax-modal"><i class="material-icons md-36" title="View order notes">&#xE0B9;</i></a>';
 				} else {
@@ -157,7 +164,7 @@
              <tr class="detail last-detail">
              	<td colspan="2">
 					<a href="<?= $config->pages->notes."load/modal/order/?ordn=".$on; ?>" class="h3 load-into-modal" data-loadinto="#ajax-modal" data-modal="#ajax-modal"><i class="fa fa-sticky-note" aria-hidden="true"></i></a> &nbsp; &nbsp;
-					<a href="<?= $config->pages->orders."redir/?action=get-order-details-print&ordn=".$on; ?>" class="h3" target="_blank">
+					<a href="<?= $config->pages->orders."redir/?action=get-order-details&print=true&ordn=".$on; ?>" class="h3" target="_blank">
 						<i class="glyphicon glyphicon-print" aria-hidden="true"></i> <span class="sr-only">View Printable Order</span>
 					</a>
 				</td>

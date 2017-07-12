@@ -19,7 +19,7 @@
 		}
 
 		if ($detail['haveitemdoc'] == 'Y') {
-			$itemdocLink = '<a class="btn btn-primary" href="redir/cust-redir.php?action=get-documents&itemdoc='.$detail['itemid'].'&ordn='.$on.$linkaddon."&custID=".$cust.'">
+			$itemdocLink = '<a class="btn btn-primary" href="redir/cust-redir.php?action=get-order-ocuments&itemdoc='.$detail['itemid'].'&ordn='.$on.$linkaddon."&custID=".$cust.'">
 				<span class="sr-only">View Documents</span>
 				<span class="glyphicon glyphicon-folder-open" title="Click to view Documents"></span>
 		</a>';

@@ -15,12 +15,16 @@
 				$qtnbr = $quote['quotnbr'];
 				if ($qtnbr == $input->get->text('qnbr')) {
 					$rowclass = 'selected';
-					$quotelink = $ajax->path.querystring_replace($ajax->querystring, array('qnbr', 'show', 'orderby'), array(false, false, false));
+					$quotelink = new \Purl\Url($page->httpUrl);
+					$quotelink->path = $ajax->path;
+					$quotelink->query->setData(array('qnbr' => false, 'show' => false, 'orderby' => false));
 					$quotejsdata = $ajax->data;
 				} else {
 					$rowclass = ''; $title = "View Quote Details";
 					if (isset($input->get->orderby)) { $sorting = 	$orderby."-".$sortrule; } else { $sorting = false; } // just to set up the orderlink querystring replace
-					$quotelink = $config->pages->customer."redir/".querystring_replace("", array('action','qnbr','custID','page', 'orderby'), array('load-quote-details',$qtnbr, $custID, $input->pageNum, $sorting));
+					$quotelink = new \Purl\Url($page->httpUrl);
+					$quotelink->path = $config->pages->quotes."redir/";
+					$quotelink->query->setData(array('action' => 'load-quote-details', 'qnbr' => $qtnbr, 'custID' => urlencode($custID), 'page' => $input->pageNum, 'orderby' => $sorting));
 					$quotejsdata = 'data-loadinto="'.$ajax->loadinto.'"  data-focus="#'.$qtnbr.'"';
 				}
 
@@ -33,16 +37,16 @@
 
 				if ($user->hasquotelocked) {
 					if ($qtnbr == $user->lockedquote) {
-						$editlink = $config->pages->quotes."redir/?action=get-quote-details&qnbr=".$qtnbr."&custID=".$quote['custid']."&lock=lock";
+						$editlink = $config->pages->quotes."redir/?action=edit-quote&qnbr=".$qtnbr."&custID=".$quote['custid']."&lock=lock";
 						$editicon = 'glyphicon glyphicon-wrench';
 						$atitle = "Continue editing this quote";
 					} else {
-						$editlink = $config->pages->quotes."redir/?action=get-quote-details&qnbr=".$qtnbr."&custID=".$quote['custid'];
+						$editlink = $config->pages->quotes."redir/?action=edit-quote&qnbr=".$qtnbr."&custID=".$quote['custid'];
 						$editicon = 'glyphicon glyphicon-eye-open';
 						$atitle = "Open Quote in Read Only Mode";
 					}
 				} else {
-					$editlink = $config->pages->quotes."redir/?action=get-quote-details&qnbr=".$qtnbr."&custID=".$quote['custid']."&lock=lock";
+					$editlink = $config->pages->quotes."redir/?action=edit-quote&qnbr=".$qtnbr."&custID=".$quote['custid']."&lock=lock";
 					$editicon = 'glyphicon glyphicon-pencil';
 					$atitle = "Edit Quote";
 				}

@@ -1,11 +1,10 @@
 <tr class="detail">
-    <th>Item ID</th>
-    <th>Description</th>
+    <th class="text-center">Item ID</th>
+    <th colspan="2">Description</th>
     <th>Price</th>
     <th>Qty</th>
     <th>Ext Price</th>
     <th>Notes</th>
-    <th></th>
     <th></th>
 </tr>
 
@@ -22,13 +21,12 @@
 
     ?>
     <tr class="detail">
-        <td><?php echo $quotedetail['itemid']; ?></td>
-        <td><?php echo $quotedetail['desc1']; ?></td>
+        <td class="text-center"><?php echo $quotedetail['itemid']; ?></td>
+        <td colspan="2"><?php echo $quotedetail['desc1']; ?></td>
         <td class="text-right">$ <?php echo $quotedetail['quotprice']; ?></td>
         <td class="text-right"><?php echo $quotedetail['quotunit']; ?></td>
         <td class="text-right">$ <?php echo formatmoney($quotedetail['quotprice'] * $quotedetail['quotunit']); ?></td>
         <td><?php echo $detnoteicon; ?></td>
-        <td></td>
         <td></td>
     </tr>
 <?php endforeach; ?>

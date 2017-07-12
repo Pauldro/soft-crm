@@ -6,10 +6,10 @@
 ?>
 <div class="row">
 	<div class="col-sm-4 form-group">
-		<a href="<?= $config->pages->customer; ?>" class="btn btn-primary"><i class="glyphicon glyphicon-share-alt fliphorizontal"></i> Back To Customer Index</a>
+		<a href="<?= $config->pages->customer; ?>" class="btn btn-primary"><i class="glyphicon glyphicon-share-alt fliphorizontal"></i>&nbsp; Back To Customer Index</a>
 	</div>
 	<div class="col-sm-4 form-group">
-		<a href="<?= $config->pages->customer.'redir/?action=ci-customer&custID='.$custID; ?>" class="btn btn-primary"><i class="fa fa-address-card" aria-hidden="true"></i> View in CI</a>
+		<a href="<?= $config->pages->customer.'redir/?action=ci-customer&custID='.$custID; ?>" class="btn btn-primary" target="_blank"><i class="fa fa-address-card" aria-hidden="true"></i> &nbsp; View in CI</a>
 	</div>
 </div>
 <div class="row">
