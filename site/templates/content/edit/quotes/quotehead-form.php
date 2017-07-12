@@ -19,7 +19,19 @@
 	        </div>
         </div>
     </div>
-	<div class="text-center">
-		<button type="submit" class="btn btn-success save-quotehead"><i class="glyphicon glyphicon-floppy-disk"></i> Save Changes</button>
+	<div class="text-center form-group">
+		<button type="submit" class="btn btn-success btn-block save-quotehead"><i class="glyphicon glyphicon-floppy-disk"></i> Save Changes</button>
+	</div>
+	<div class="row">
+		<div class="col-sm-6 form-group">
+			<div class="text-center">
+				<button type="button" class="btn btn-success btn-block save-unlock-quotehead"><i class="fa fa-unlock" aria-hidden="true"></i> Save and Unlock Quote</button>
+			</div>
+		</div>
+		<div class="col-sm-6 form-group">
+			<div class="text-center">
+				<button type="button" class="btn btn-success btn-block save-unlock-quotehead"><i class="fa fa-unlock" aria-hidden="true"></i> Save and Unlock Quote</button>
+			</div>
+		</div>
 	</div>
 </form>

@@ -33,7 +33,7 @@
     	<td class="control-label">Sales Person</td> <td> <p class="form-control-static"><?php echo $quote['sp1']; ?> - <?php echo $quote['sp1name']; ?></p> </td>
     </tr>
 	<tr>
-    	<td class="control-label">Cust PO<b class="text-danger">*</b></td> <td> <input type="text" name="custpo" class="form-control input-sm required" value="<?php echo $quote['custpo']; ?>"> </td>
+    	<td class="control-label">Cust PO<b class="text-danger">*</b></td> <td> <input type="text" name="custpo" class="form-control input-sm" value="<?php echo $quote['custpo']; ?>"> </td>
     </tr>
     <tr>
     	<td class="control-label">Reference</td> <td> <input type="text" name="reference" class="form-control input-sm" value="<?php echo $quote['custref']; ?>"> </td>

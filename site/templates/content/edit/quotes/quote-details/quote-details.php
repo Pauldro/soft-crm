@@ -2,7 +2,7 @@
     <table class="table-condensed cf order-details table-bordered">
         <thead class="cf">
             <tr>
-                <th>Item ID</th> <th width="300">Description</th> <th class="numeric" width="90">Price</th> <th class="numeric">Ordered</th> <th class="numeric" width="90">Total</th>
+                <th>Item ID</th> <th width="300">Description</th> <th class="numeric" width="90">Price</th> <th class="numeric">Quantity</th> <th class="numeric" width="90">Total</th>
                 <th>Whse</th>
                 <th>
                 	<div class="row">
@@ -15,24 +15,24 @@
        		<?php $quote_details = get_quote_details(session_id(), $qnbr, false); ?>
             <?php foreach ($quote_details as $detail) : ?>
             	<?php
-					//$detailnoteurl = $config->pages->notes.'redir/?action=get-order-notes&ordn='.$ordn.'&linenbr='.$detail['linenbr'];
-                    $detailnoteurl = ''; //TODO
-                    /*
+					$detailnoteurl = $config->pages->notes.'redir/?action=get-quote-notes&qnbr='.$qnbr.'&linenbr='.$detail['linenbr'];
+
+
 					if ($detail['notes'] != 'Y') {
 						$detnoteicon = '<a class="load-notes text-muted" href="'.$detailnoteurl.'" data-modal="#ajax-modal"><i class="material-icons md-36" title="View order notes">&#xE0B9;</i></a>';
 					} else {
 						$detnoteicon = '<a class="load-notes" href="'.$detailnoteurl.'" data-modal="#ajax-modal"> <i class="material-icons md-36" title="View order notes">&#xE0B9;</i></a>';
 					}
 
-
+                    /*
                     if ($detail['haveitemdoc'] != 'Y') {
-                        $detailnoteicon = '<a href="#" class="text-muted"><i class="material-icons md-36">&#xE873;</i></a> ';
+                        $detaildocumenticon = '<a href="#" class="text-muted"><i class="material-icons md-36">&#xE873;</i></a> ';
                     } else {
-                        $detailnoteicon = '<a href="'.$detailnoteurl.'"><i class="material-icons md-36">&#xE873;</i></a> ';
+                        $detaildocumenticon = '<a href="'.$detailnoteurl.'"><i class="material-icons md-36">&#xE873;</i></a> ';
                     }
                     */
-                    $detnoteicon = '';
-                    $detailnoteicon = '';
+
+                    $detaildocumenticon = '';
 
 				?>
             <tr>
@@ -48,11 +48,11 @@
                             <span class="visible-xs-block action-label">Details</span>
                             <a href="<?= $config->pages->ajax."load/view-detail/quote/?qnbr=".$detail['quotenbr']."&line=".$detail['linenbr']; ?>" class="btn btn-xs btn-primary view-item-details" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"> <i class="material-icons">&#xE8DE;</i><a>
                         </div>
-                        <div class="col-xs-3"> <span class="visible-xs-block action-label">Documents</span> <?= $detailnoteicon; ?></div>
+                        <div class="col-xs-3"> <span class="visible-xs-block action-label">Documents</span> <?= $detaildocumenticon; ?></div>
                         <div class="col-xs-3"> <span class="visible-xs-block action-label">Notes</span> <?= $detnoteicon; ?></div>
                         <div class="col-xs-3"> <span class="visible-xs-block action-label">Update</span>
                             <?php if ($editquote['canedit']) : ?>
-                                <a href="<?= $config->pages->ajax."load/edit-detail/quote/?qnbr=".$detail['quotenbr']."&line=".$detail['linenbr']; ?>" class="btn btn-xs btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $order['custid']; ?>">
+                                <a href="<?= $config->pages->ajax."load/edit-detail/quote/?qnbr=".$detail['quotenbr']."&line=".$detail['linenbr']; ?>" class="btn btn-xs btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
                                     <i class="material-icons">&#xE3C9;</i>
                                 </a>
                             <?php else : ?>

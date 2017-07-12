@@ -6,11 +6,6 @@
 
 <legend>Ship-To <?php echo $quote['shiptoid']; ?></legend>
 
-<div class="form-group">
-    <button type="button" class="btn btn-block btn-primary" id="load-shiptos">Load This Customer's Ship-tos</button>
-</div>
-
-
 <table class="table table-striped table-bordered table-condensed">
 	<tr>
     	<td class="control-label">Ship-To ID <b class="text-danger">*</b> <input type="hidden" id="shipto-id" value="<?php echo $quote['shiptoid']; ?>"></td>
@@ -61,5 +56,6 @@
     	<td class="control-label">Zip <b class="text-danger">*</b></td>
     	<td><input type="text" class="form-control input-sm required shipto-zip" name="shipto-zip" value="<?php echo $quote['stzip']; ?>"></td>
     </tr>
-
 </table>
+<?php include $config->paths->content."edit/quotes/tasks/tasks-panel.php"; ?>
+<?php include $config->paths->content."edit/quotes/notes/notes-panel.php"; ?>
