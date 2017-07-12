@@ -13,6 +13,9 @@
 				case 'quote':
 					$include = $config->paths->content.'notes/dplus/quote-notes.php';
 					break;
+				case 'cart':
+					$include = $config->paths->content.'notes/dplus/cart-notes.php';
+					break;
 			}
            break;
 		case 'crm':

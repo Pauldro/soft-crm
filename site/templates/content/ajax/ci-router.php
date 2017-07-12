@@ -61,13 +61,6 @@
 			$modalcontent = $config->paths->content."cust-information/cust-open-invoices.php";
 			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
 			break;
-        case 'ci-order-documents':
-			$custID = $input->get->text('custID');
-            $ordn = $input->get->text('ordn');
-			$title = 'Viewing Documents for Order #' . $ordn;
-			$modalcontent = $config->paths->content."cust-information/cust-order-documents.php";
-			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
-			break;
 		case 'ci-standing-orders':
 			$custID = $input->get->text('custID');
 			$title = get_customer_name($custID) . ' Standing Orders Inquiry';
@@ -82,7 +75,14 @@
 			break;
 		case 'ci-documents':
 			$custID = $input->get->text('custID');
-			$title = get_customer_name($custID) . ' Documents';
+            switch ($input->urlSegment(4)) {
+                case 'order':
+                    $title = "Order #" . $input->get->text('ordn'). ' Documents';
+                    break;
+                default:
+                    $title = get_customer_name($custID) . ' Documents';
+                    break;
+            }
 			$modalcontent = $config->paths->content."cust-information/cust-documents.php";
 			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
 			break;
