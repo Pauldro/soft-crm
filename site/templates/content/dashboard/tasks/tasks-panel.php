@@ -8,6 +8,7 @@
 			$taskpanel->setuprescheduledtasks();
 			break;
 	}
+	
 	$taskpanel->count = get_linked_task_count($user->loginid, '', '', '', '', '', '', $taskpanel->taskstatus, false);
 	include $config->paths->content."tasks/tasks-panel.php";
 
