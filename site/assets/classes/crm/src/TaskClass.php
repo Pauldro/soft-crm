@@ -21,6 +21,7 @@
         public $lastupdated;
 
         public $contactby;
+        public $tasklineage = array();
 
         public $hasshiptolink = false;
         public $hascontactlink = false;
@@ -65,6 +66,7 @@
             } elseif ($task->completed == 'R') {
                 $task->isrescheduled = true;
             }
+            $task->generatetasklineage();
             if (strtotime($task->duedate) < strtotime("now") ) { $task->isoverdue = true;}
             return $task;
         }
@@ -84,6 +86,7 @@
             if ($task->quotelink != '') { $task->hasquotelink = true; }
             if ($task->notelink != '') { $task->hasnotelink = true; }
             if ($task->tasklink != '') { $task->hastasklink = true; }
+            $task->generatetasklineage();
 			return $task;
 		}
 
@@ -99,6 +102,7 @@
             } elseif ($this->completed == 'R') {
                 $this->isrescheduled = true;
             }
+            $this->generatetasklineage();
             if (strtotime($this->duedate) < strtotime("now") && (!$this->hascompleted) ) { $this->isoverdue = true;}
             $contact = getcustcontact($this->customerlink, $this->shiptolink, $this->contactlink, false);
             switch ($this->tasktype) {
@@ -157,6 +161,16 @@
                     break;
             }
             return $href;
+        }
+
+        function generatetasklineage() {
+            if ($this->hastasklink) {
+                $parentid = getparenttaskid($this->id, false);
+                while ($parentid != '') {
+                    $this->tasklineage[] = $parentid;
+                    $parentid = getparenttaskid($parentid, false);
+                }
+            }
         }
 
 

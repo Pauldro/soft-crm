@@ -59,14 +59,26 @@
 							}
 							break;
 						default:
+						if ($config->ajax) {
 							include $config->paths->content."tasks/view-task.php";
+						} else {
+							$title = 'Task ID: ' . $input->get->text('id');
+							$modalbody = $config->paths->content."tasks/view-task.php";
+							include $config->paths->content."common/include-blank-page.php";
+						}
 							break;
 					}
 				} else {
-					include $config->paths->content."tasks/view-task.php";
+					if ($config->ajax) {
+						include $config->paths->content."tasks/view-task.php";
+					} else {
+						$title = 'Task ID: ' . $input->get->text('id');
+						$modalbody = $config->paths->content."tasks/view-task.php";
+						include $config->paths->content."common/include-blank-page.php";
+					}
+
 					break;
 				}
-
                 break;
             default:
                 throw new Wire404Exception();

@@ -42,6 +42,9 @@
 									case 'user':
 										include $config->paths->content.'dashboard/notes/notes-panel.php';
 										break;
+									case 'quote':
+										include $config->paths->content.'edit/quotes/notes/notes-panel.php';
+										break;
 								}
 							}
 							//include $config->paths->content."tasks/crud/load-task-panel.php"; // TODO

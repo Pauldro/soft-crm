@@ -1,12 +1,12 @@
 <?php
 
-	$custID = $input->get->text('custID'); 
-	if ($input->get->shipID) { $shipID = $input->get->text('shipID'); } 
-	if ($input->get->contactID) { $shipID = $input->get->text('contactID'); } 
-	if ($input->get->task) { $taskID = $input->get->text('task'); } 
+	$custID = $input->get->text('custID');
+	if ($input->get->shipID) { $shipID = $input->get->text('shipID'); }
+	if ($input->get->contactID) { $shipID = $input->get->text('contactID'); }
+	if ($input->get->task) { $taskID = $input->get->text('task'); }
 	if ($input->get->ordn) { $ordn = $input->get->text('ordn'); }
 	if ($input->get->qnbr) { $qnbr = $input->get->text('qnbr'); }
-	
+
 	$note = new Note();
 	$note->customerlink = $custID;
 	$note->shiptolink = $shipID;
@@ -27,7 +27,7 @@
 			$contactinfo = getshiptocontact($task->customerlink, $task->shiptolink, false);
 		}
 	}
-    
+
 ?>
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
@@ -46,7 +46,7 @@
         <div class="tab-content">
             <div role="tabpanel" class="tab-pane active" id="note"><?php include $config->paths->content."notes/crm/new-note-table.php"; ?></div>
             <?php if ($input->get->task) : ?>
-                <div role="tabpanel" class="tab-pane active" id="task"><?php include $config->paths->content."tasks/view-task/view-task-details.php"; ?></div>
+                <div role="tabpanel" class="tab-pane" id="task"><?php include $config->paths->content."tasks/view-task/view-task-details.php"; ?></div>
             <?php endif; ?>
         </div>
     </div>

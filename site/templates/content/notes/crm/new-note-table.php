@@ -1,6 +1,6 @@
 <table class="table table-bordered table-striped">
     <tr>  <td>Note Create Date:</td> <td><?php echo date('m/d/Y g:i A'); ?></td> </tr>
-    <?php include $config->paths->content."notes/crm/show-note-link-rows.php"; ?>
+    <?php include $config->paths->content."actions/notes/view/view-note-links.php"; ?>
     <tr>
         <td colspan="2">
             <label for="" class="control-label">Notes</label>
