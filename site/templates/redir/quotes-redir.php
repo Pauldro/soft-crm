@@ -45,6 +45,11 @@
 	*		EDITQUOTE=$qnbr
 	*		QUOTENO=$qnbr
 	*		break;
+	*	case 'edit-new-quote':
+	*		DBNAME=$config->DBNAME
+	*		EDITQUOTE=$qnbr
+	*		QUOTENO=$qnbr
+	*		break;
 	*	case 'save-quotehead':
 	*		DBNAME=$config->DBNAME
 	*		QUOTEHEAD
@@ -53,20 +58,20 @@
 	*		break;
 	*	case 'add-to-quote':
 	*		DBNAME=$config->DBNAME
-	*		QUOTEDETAIL
+	*		UPDATEQUOTEDETAIL
 	*		QUOTENO=$qnbr
 	*		ITEMID=$itemID
 	*		QTY=$qty
 	*		break;
 	*	case 'update-line':
 	*		DBNAME=$config->DBNAME
-	*		QUOTEDETAIL
+	*		UPDATEQUOTEDETAIL
 	*		QUOTENO=$qnbr
 	*		LINENO=$linenbr
 	*		break;
 	*	case 'remove-line':
 	*		DBNAME=$config->DBNAME
-	*		QUOTEDETAIL
+	*		UPDATEQUOTEDETAIL
 	*		QUOTENO=$qnbr
 	*		LINENO=$linenbr
 	*		QTY=0
@@ -74,7 +79,8 @@
 	*	case 'unlock-quote':
 	*		UNLOCKING QUOTE
 	*		break;
-	*	default:
+	*	case 'send-quote-to-order':
+	*		SETTING UP QUOTE TO ORDER
 	*		break;
 	* }
 	*
@@ -112,6 +118,11 @@
 			$data = array('DBNAME' => $config->dbName, 'EDITQUOTE' => $qnbr, 'QUOTENO' => $qnbr);
 			$session->loc= $config->pages->editquote."?qnbr=".$qnbr;
 			break;
+		case 'edit-new-quote':
+			$qnbr = getcreatedordn(session_id(), false);
+			$data = array('DBNAME' => $config->dbName, 'EDITQUOTE' => $qnbr, 'QUOTENO' => $qnbr);
+			$session->loc = $config->pages->editquote."?qnbr=".$qnbr;
+			break;
 		case 'save-quotehead':
 			$qnbr = $input->post->text('qnbr');
 			$quote = get_quotehead(session_id(), $qnbr, false);
@@ -140,7 +151,6 @@
 			$quote['custpo'] = $input->post->text('custpo');
 			$quote['custref'] = $input->post->text('reference');
 
-
 			$quote['telenbr'] = $input->post->text('contact-phone');
 			//$extension = $_POST["contact-extension"];
 			$quote['faxnbr'] = $input->post->text('contact-fax');
@@ -154,14 +164,22 @@
 			$itemid = $input->post->text('itemid');
 			$qty = $input->post->text('qty');
 			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'ITEMID' => $itemid, 'QTY' => $qty);
+			$session->editdetail = true;
 			break;
 		case 'update-line':
-			$qnbr = $input->post->text('qnbr');
-			$linenbr = $input->post->text('linenbr');
+			if ($input->post) {
+				$qnbr = $input->post->text('qnbr');
+				$linenbr = $input->post->text('linenbr');
+			} else {
+				$qnbr = $input->get->text('qnbr');
+				$linenbr = $input->get->text('linenbr');
+			}
+
 			$quotedetail = getquotelinedetail(session_id(), $qnbr, $linenbr, false);
 			$quotedetail['quotprice'] = $input->post->text('price');
 			$quotedetail['discpct'] =  $input->post->text('discount');
 			$quotedetail['quotunit'] = $input->post->text('qty');
+			$quotedetail['ordrqty'] = $input->post->text('qty');
 			$quotedetail['rshipdate'] = $input->post->text('rqstdate');
 			$quotedetail['whse'] = $input->post->text('whse');
 			$quotedetail['spcord'] = $input->post->text('specialorder');
@@ -200,12 +218,24 @@
 			$session->loc = $config->pages->customer.urlencode($custID)."/";
 			if ($shipID != '') { $session->loc .= "shipto-".urlencode($shipID)."/"; }
 			break;
+		case 'send-quote-to-order':
+			$qnbr = $input->post->text('qnbr');
+			$linenbrs = $input->post->linenbr;
+			foreach ($linenbrs as $linenbr) {
+				$quotedetail = getquotelinedetail(session_id(), $qnbr, $linenbr, false);
+				$quotedetail['ordrqty'] = $quotedetail['quotunit'];
+				edit_quoteline(session_id(), $qnbr, $quotedetail, false);
+			}
+			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => 'ALL');
+			writedplusfile($data, $filename);
+			curl_redir("127.0.0.1/cgi-bin/" . $config->cgi . "?fname=" . $filename);
+			$data = array('DBNAME' => $config->dbName, 'QUOTETOORDER' => false, 'QUOTENO' => $qnbr);
+			$session->loc = $config->pages->orders."redir/?action=edit-new-order";
+			//$session->loc = $config->pages->index;
+			break;
 	}
 
 	writedplusfile($data, $filename);
 	header("location: /cgi-bin/" . $config->cgi . "?fname=" . $filename);
-
  	exit;
-
-
-	?>
+?>
