@@ -1,8 +1,9 @@
 <?php
-
 	if ($input->urlSegment1) {
-		if ($input->urlSegment1 == 'load-index') {
+		if ($input->urlSegment1 == 'load-index' ) {
 
+		} elseif ($input->urlSegment1 == 'add') {
+			$page->title = "Add Customer";
 		} else {
 			$custID = $sanitizer->text($input->urlSegment1);
 			$shipID = '';
@@ -15,6 +16,7 @@
 		    $config->scripts->append($config->urls->templates.'scripts/dplusnotes/quote-notes.js');
 		}
 
+
 	} else {
 		if ($input->get->q) {
 			$page->title = "Searching for '".$input->get->q."'";
@@ -24,7 +26,7 @@
 	}
 
 	if ($input->urlSegment2) {
-		if ($input->urlSegment1 == 'load-index') {
+		if ($input->urlSegment1 == 'load-index' || $input->urlSegment1 == 'add') {
 
 		} else {
 			if (strpos($input->urlSegment2, 'contacts') !== FALSE) {
@@ -69,6 +71,8 @@
 			if ($input->urlSegment1) {
 				if ($input->urlSegment1 == 'load-index') {
 					include $config->paths->content.'customer/ajax/load/index/outline.php';
+				} elseif ($input->urlSegment1 == 'add') {
+					include $config->paths->content.'customer/add/outline.php';
 				} else {
 					if ($input->urlSegment2) {
 						if (strpos($input->urlSegment2, 'contacts') !== FALSE || strpos($input->urlSegment3, 'contacts') !== FALSE) {
@@ -91,8 +95,6 @@
 
 					}
 				}
-
-
 			} else {
 				include $config->paths->content.'customer/cust-index/customer-index.php';
 			}
