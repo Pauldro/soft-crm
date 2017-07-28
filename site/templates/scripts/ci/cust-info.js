@@ -183,33 +183,36 @@ function custpo() { //CAN BE USED IF SHIPTO IS DEFINED
 	var loadinto =  modal+" .modal-content";
 	var href = URI(config.urls.customer.load.ci_custpo).addQuery("custID", custid).addQuery("shipID", shipid).toString();
 	swal({
-	  title: "Customer PO Inquiry",
-	  text: "Enter a PO:",
-	  type: "input",
-	  showCancelButton: true,
-	  closeOnConfirm: false,
-	  animation: "slide-from-top",
-	  inputPlaceholder: "Write something"
-	},
-	function(inputValue){
-		if (inputValue === false) {
-			return false;
-		} else if (inputValue === "") {
-			swal.showInputError("You need to write something!");
-			return false
-		} else {
+		title: "Customer PO Inquiry",
+	 	text: "Enter a PO:",
+		input: 'text',
+		showCancelButton: true,
+		inputValidator: function (value) {
+			return new Promise(function (resolve, reject) {
+				if (value === false) {
+					reject("You need to write something!");
+				} else if (value === "") {
+					reject("You need to write something!");
+				} else {
+					resolve();
+				}
+			})
+		}
+	}).then(function (input) {
+		if (input) {
 			swal.close();
-			href = URI(href).addQuery("custpo", inputValue).toString();
-			ci_custpo(custid, shipid, inputValue, function() {
+			href = URI(href).addQuery("custpo", input).toString();
+			ci_custpo(custid, shipid, input, function() {
 				loadin(href, loadinto, function() {
 					console.log(href);
 					hideajaxloading();
 					$(modal).resizemodal('lg').modal();
 				});
 			});
+
+		} else {
+			listener.listen();
 		}
-
-
 	});
 }
 function quotes() {
