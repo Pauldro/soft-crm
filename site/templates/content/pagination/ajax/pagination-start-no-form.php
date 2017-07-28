@@ -6,7 +6,7 @@
 		$config->showonpage = $session->display;
 	}
 
-	$results_page_link = $page->httpUrl.querystring_replace($querystring, array('display'), array(false));
+	$results_page_link = $page->fullURL->query->remove('display');
 	if (strpos($results_page_link, '?') !== FALSE) {
 		$symbol = '&';
 	} else {
