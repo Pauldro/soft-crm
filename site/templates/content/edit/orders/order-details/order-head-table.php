@@ -6,9 +6,10 @@
 			if ($order['saddress2'] != '' ) { $shiptoaddress .= $order['saddress2']."<br>"; }
 			$shiptoaddress .= $order['scity'].", ". $order['sst'].' ' . $order['szip'];
 			$shiptopopover = 'data-toggle="popover" role="button" data-placement="top" data-trigger="focus" data-html="true" title="Ship-To Address"';
+            $ordersredirect = $page->fullURL;
+            $ordersredirect->setPath($config->pages->customer."redir/");
 
-			$docsurl = $config->pages->customer."redir/".querystring_replace("", array('action','ordn','linenbr','page'), array('get-order-documents',$ordn, '0',$input->pageNum));
-
+			$docsurl = $ordersredirect->setData(array('action' => 'get-order-documents', 'ordn' => $ordn, 'linenbr' => '0', 'page' => $input->pageNum));
 			if ($order['havedoc'] == 'Y') {
 				$documentlink = '
 							<a class="load-sales-docs" href="'.$docsurl.'" '.$ajax->data.'> <span class="sr-only">View Documents</span>
@@ -20,8 +21,7 @@
 								</a>';
 			}
 
-
-			$trackhref = $config->pages->customer."redir/".querystring_replace("", array('action','ordn','page'), array('get-order-tracking',$ordn, $input->pageNum));
+            $trackhref = $ordersredirect->setData(array('action' => 'get-order-tracking', 'ordn' => $ordn, 'page' => $input->pageNum));
 			if ($order['havetrk'] == 'Y') {
 				$tracklink = '
 							<a href="'.$trackhref.'" class="h3 load-detail" '.$ajax->data.'>
@@ -34,7 +34,6 @@
 							  </a>';
 
 			}
-
 			$noteurl = $config->pages->notes.'redir/?action=get-order-notes&ordn='.$ordn.'&linenbr=0';
 			if ($order['havenote'] != 'Y') {
 				$headnoteicon = '<a class="load-notes text-muted" href="'.$noteurl.'" data-modal="#notes-modal"><i class="material-icons md-36" title="View order notes">&#xE0B9;</i></a>';

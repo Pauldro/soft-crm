@@ -61,5 +61,19 @@
     	<td class="control-label">Zip <b class="text-danger">*</b></td>
     	<td><input type="text" class="form-control input-sm required shipto-zip" name="shipto-zip" value="<?php echo $billing['szip']; ?>"></td>
     </tr>
-
+	<tr>
+		<td class="control-label">Country</td>
+		<td>
+			<?php $countries = getcountries(); ?>
+			<select name="shipto-country" class="form-control input-sm">
+				<?php foreach ($countries as $country) : ?>
+					<?php if ($country['ccode'] == $billing['scountry']) : ?>
+						<option value="<?= $country['ccode']; ?>" selected><?= $country['name']; ?></option>
+					<?php else : ?>
+						<option value="<?= $country['ccode']; ?>"><?= $country['name']; ?></option>
+					<?php endif; ?>
+				<?php endforeach; ?>
+			</select>
+		</td>
+	</tr>
 </table>

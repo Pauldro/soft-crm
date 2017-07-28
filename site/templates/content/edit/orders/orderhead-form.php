@@ -15,7 +15,13 @@
 
 	if ($billing['rqstdate'] == '' || $billing['rqstdate'] == ' / / ') { $billing['rqstdate'] = date('m/d/Y'); }
 
-	$docsurl = $config->pages->customer."redir/".querystring_replace("", array('action','ordn','linenbr','page'), array('get-order-documents',$ordn, '0',$input->pageNum));
+	$ordersredirect = $page->fullURL;
+
+	$docsurl = new \Purl\Url($page->httpUrl);
+	$docsurl->path = $config->pages->orders."redir/";
+	$docsurl->query->setData(array('action' => 'get-order-documents', 'ordn' => $ordn, 'linenbr' => '0', 'page' => 'edit'));
+
+
 	$docsdata = "data-loadinto='.docs' data-focus='.docs' data-click='#documents-link'";
 	if ($billing['havedoc'] == 'Y') {
 		$documentlink = '
@@ -35,7 +41,7 @@
 		$headnoteicon = '<a class="btn btn-primary load-notes" role="button" href="'.$noteurl.'" data-modal="#notes-modal"> <i class="material-icons" title="View order notes">&#xE0B9;</i> View Order Notes</a>';
 	}
 
-	$trackhref = $config->pages->customer."redir/".querystring_replace("", array('action','ordn','page'), array('get-order-tracking',$ordn, $input->pageNum));
+	$trackhref = $docsurl->query->set('action', 'get-order-tracking');
 	$trackingdata = "data-loadinto='.tracking' data-focus='.tracking' data-click='#tracking-tab-link'";
 	if ($billing['havetrk'] == 'Y') {
 		$tracklink = '<a href="'.$trackhref.'" class="btn btn-primary load-sales-tracking" role="button" '.$trackingdata.' title="Click to view Tracking">
