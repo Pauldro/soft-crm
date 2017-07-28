@@ -1,5 +1,4 @@
 <?php
-
 	$contactscount = get_distinct_custindex_count($user->loginid, $user->hascontactrestrictions, false);
 	if ($input->get->q) {
 		$searchcount = get_custindex_keyword_count($user->loginid, $user->hascontactrestrictions, $input->get->text('q'), false);
@@ -9,9 +8,11 @@
 	}
 ?>
 
-
-
-
+<div class="row form-group">
+	<div class="col-xs-12">
+		<a href="<?php echo $config->pages->customer.'add/'; ?>" class="btn btn-primary"><i class="fa fa-user-plus" aria-hidden="true"></i> Add new Customer</a>
+	</div>
+</div>
 
 <div class="panel panel-primary not-round">
     <div class="panel-heading not-round">
