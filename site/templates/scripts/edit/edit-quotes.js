@@ -63,8 +63,6 @@ $(function() {
 
 
 
-
-
 function getquoteheadresults(qnbr, form, callback) {
 	console.log(config.urls.json.getquotehead+"?qnbr="+qnbr);
 	$.getJSON(config.urls.json.getquotehead+"?qnbr="+qnbr, function( json ) {
