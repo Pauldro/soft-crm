@@ -56,6 +56,16 @@
     	<td class="control-label">Zip <b class="text-danger">*</b></td>
     	<td><input type="text" class="form-control input-sm required shipto-zip" name="shipto-zip" value="<?php echo $quote['stzip']; ?>"></td>
     </tr>
+	<tr>
+		<td class="control-label">Country</td>
+		<td>
+			<?php $countries = getcountries(); ?>
+			<select name="shipto-country" class="form-control input-sm">
+				<option value="USA">United States</option>
+				<?php foreach ($countries as $country) : ?>
+					<option value="<?= $country['ccode']; ?>"><?= $country['name']; ?></option>
+				<?php endforeach; ?>
+			</select>
+		</td>
+	</tr>
 </table>
-<?php include $config->paths->content."edit/quotes/tasks/tasks-panel.php"; ?>
-<?php include $config->paths->content."edit/quotes/notes/notes-panel.php"; ?>

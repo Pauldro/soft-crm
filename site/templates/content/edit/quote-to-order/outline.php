@@ -3,8 +3,7 @@
     if ($input->get->show) { $activetab = $input->get->text('show'); }
     $tabs = array(
         'quotehead' => array('href' => 'quotehead', "id" => 'quotehead-link', 'text' => 'Quote Header', 'tabcontent' => 'edit/quotes/quotehead-form.php'),
-        'details' => array('href' => 'details', "id" => 'quotedetail-link', 'text' => 'Quote Details', 'tabcontent' => 'edit/quotes/quote-details/details-page.php')
-        //'documents' => array('href' => 'documents', "id" => 'documents-link', 'text' => 'View Documents', 'tabcontent' => 'edit/quotes/documents-page.php'),
+        'details' => array('href' => 'details', "id" => 'quotedetail-link', 'text' => 'Quote Details', 'tabcontent' => 'edit/quote-to-order/quote-details/details-page.php')
     );
 ?>
 <?php if (!$editquote['canedit']) : ?>
@@ -46,11 +45,11 @@
    <a href="<?php echo $editquote['unlock-url']; ?>" class="btn btn-block btn-warning">Discard Changes, unlock quote</a>
 <?php endif; ?>
 
-<?php if ($session->editdetail) : ?>
+<?php if ($session->{'edit-detail'}) : ?>
     <script>
         $(function() {
             $('#quotedetail-link').click();
         })
     </script>
-    <?php $session->remove('editdetail'); ?>
+    <?php $session->remove('edit-detail'); ?>
 <?php endif; ?>
