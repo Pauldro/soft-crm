@@ -1,4 +1,4 @@
-<form action="<?php echo $config->pages->customer."redir/"; ?>" method="post" id="order-search-form" data-loadinto="#orders-panel" data-focus="#orders-panel" data-modal="#ajax-modal" class="fuelux">
+<form action="<?php echo $config->pages->orders."redir/"; ?>" method="post" id="order-search-form" data-loadinto="#orders-panel" data-focus="#orders-panel" data-modal="#ajax-modal" class="fuelux">
    		<input type="hidden" name="custID" value="<?php echo $custID; ?>">  <input type="hidden" name="action" value="search-cust-orders">
         <input type="hidden" name="shipID" value="<?php echo $shipID; ?>">
         <div class="input-group form-group">

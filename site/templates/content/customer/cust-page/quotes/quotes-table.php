@@ -94,7 +94,11 @@
 							<i class="glyphicon glyphicon-print" aria-hidden="true"></i> <span class="sr-only">View Printable Quoter</span>
 						</a>
 					</td>
-					<td></td>
+					<td>
+					    <a href="<?= $config->pages->orderquote.'?qnbr='.$qtnbr; ?>" class="btn btn-sm btn-default">
+                            <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Send To Order
+                        </a>
+					</td>
 					<td></td>
 					<td></td>
 					<td></td>
