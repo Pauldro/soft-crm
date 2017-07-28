@@ -29,7 +29,6 @@
 	$cust_sym =  get_symbols($orderby, "custid", $sortrule);
 	$total_sym =  get_symbols($orderby, "subtotal", $sortrule);
 
-	$url_no_sort = $page->httpUrl.querystring_replace($querystring, array('orderby'), array(false));
 
 
 	$legendcontent = "<span class='glyphicon glyphicon-shopping-cart' title='re-order'></span> = Re-order whole order <br>";
