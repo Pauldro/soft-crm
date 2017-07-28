@@ -4,10 +4,9 @@
     if ($input->get->custID) { $custID = $input->get->text('custID'); }
     if ($custID != '') { $itemlink .= "&custID=".urlencode($custID); }
     if ($input->get->q) {
-        $items = searchitem_page($q, true, $config->showonpage, $input->pageNum, false);
-        $resultscount = searchitemcount($q, true, false);
+        $items = searchitem_page($q, false, $config->showonpage, $input->pageNum, false);
+        $resultscount = searchitemcount($q, false, false);
     }
-
 ?>
 
 
