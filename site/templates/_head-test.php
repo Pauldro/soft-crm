@@ -12,11 +12,11 @@
         <?php foreach($config->styles->unique() as $css) : ?>
         	<link rel="stylesheet" type="text/css" href="<?php echo $css; ?>" />
         <?php endforeach; ?>
-        
+
         <script src="<?php echo $config->urls->templates.'scripts/libs/jquery.js'; ?>"></script>
 		<script src="<?php echo $config->urls->templates.'scripts/libs/moment.js'; ?>"></script>
-		<script>moment().format();</script>
-		
+	
+
 	</head>
     <body>
 		<?php include ($config->paths->content.'nav/nav-test.php'); ?>
