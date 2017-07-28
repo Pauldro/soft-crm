@@ -23,7 +23,7 @@ $(function() {
 	listener.simple_combo("pageup", function() {previousitem();});
 	listener.simple_combo("pagedown", function() {nextitem();});
 
-	$("body").on("focus", ".sweet-alert.show-input input", function(event) {
+	$("body").on("focus", ".swal2-container .swal2-input", function(event) {
         console.log('focused');
         listener.stop_listening();
     });
@@ -193,27 +193,36 @@ $(function() {
         var itemid = $(itemlookupform + " .itemid").val();
         var loadinto =  config.modals.ajax+" .modal-content";
         swal({
-          title: "Component Inquiry Selection",
-          text: "Kit or BOM Inquiry (K/B)",
-          type: "input",
-          showCancelButton: true,
-          closeOnConfirm: false,
-          inputPlaceholder: "K or B"
-        }, function (input) {
+            title: "Component Inquiry Selection",
+            text: "Kit or BOM Inquiry (K/B)",
+            input: 'text',
+            showCancelButton: true,
+            closeOnConfirm: false,
+            inputValidator: function (value) {
+                return new Promise(function (resolve, reject) {
+                    if (value.toUpperCase() == 'K') {
+                        resolve();
+                    } else if (value.toUpperCase() == 'B') {
+                        resolve();
+                    } else {
+                        reject('You need to write something!');
+                    }
+                })
+            }
+        }).then(function (input) {
             if (input) {
                 if (input.toUpperCase() == 'K') {
                     askkitqtyneeded(itemid);
                 } else if (input.toUpperCase() == 'B') {
                     askbomqtyneed(itemid);
-                } else {
-                  swal.showInputError("The accepted values are K or B");
-                  return false
                 }
+
             } else {
                 listener.listen();
             }
-
         });
+
+
     }
 
 	function general() {
@@ -391,58 +400,63 @@ $(function() {
         var modal = config.modals.ajax;
         var loadinto =  modal+" .modal-content";
         swal({
-          title: "Kit Quantity",
-          text: "Enter the Kit Quantity Needed",
-          type: "input",
-          showCancelButton: true,
-          closeOnConfirm: false,
-          inputPlaceholder: "1"
-        }, function (input) {
+            title: "Kit Quantity",
+            text: "Enter the Kit Quantity Needed",
+            input: 'text',
+            showCancelButton: true,
+            closeOnConfirm: false,
+            inputValidator: function (value) {
+                return new Promise(function (resolve, reject) {
+                    if (!isNaN(value)) {
+                        resolve();
+                    } else {
+                        reject("Your input is not numeric");
+                    }
+                })
+            }
+        }).then(function (input) {
             if (input) {
-                if (!isNaN(input)) {
-                    var qty = input;
-                    swal.close();
-                    showajaxloading();
-                    ii_kitcomponents(itemid, qty, function() {
-                        loadin(href, loadinto, function() {
-                            console.log(href);
-                            hideajaxloading();
-                            $(modal).resizemodal('lg').modal();
-                            listener.listen();
-                        });
+                var qty = input;
+                swal.close();
+                showajaxloading();
+                ii_kitcomponents(itemid, qty, function() {
+                    loadin(href, loadinto, function() {
+                        console.log(href);
+                        hideajaxloading();
+                        $(modal).resizemodal('lg').modal();
+                        listener.listen();
                     });
-                } else {
-                    swal.showInputError("Your input is not numeric");
-                    return false
-                }
+                });
             } else {
                 listener.listen();
             }
-
         });
+
     }
 
     function askbomqtyneed(itemid) {
         swal({
-          title: "Bill of Material Inquiry",
-          text: "Enter the Bill of Material Qty Needed",
-          type: "input",
-          showCancelButton: true,
-          closeOnConfirm: false,
-          inputPlaceholder: "1"
-        }, function (input) {
+            title: "Bill of Material Inquiry",
+            text: "Enter the Bill of Material Qty Needed",
+            input: 'text',
+            showCancelButton: true,
+            closeOnConfirm: false,
+            inputValidator: function (value) {
+                return new Promise(function (resolve, reject) {
+                    if (!isNaN(value)) {
+                        resolve();
+                    } else {
+                        reject("Your input is not numeric");
+                    }
+                })
+            }
+        }).then(function (input) {
             if (input) {
-                if (!isNaN(input)) {
-                    var qty = input;
-                    askbomsingleconsolided(itemid, qty);
-                } else {
-                    swal.showInputError("Your input is not numeric");
-                    return false
-                }
+                var qty = input;
+                askbomsingleconsolided(itemid, qty);
             } else {
                 listener.listen();
             }
-
         });
     }
 
@@ -451,25 +465,33 @@ $(function() {
         var modal = config.modals.ajax;
         var loadinto =  modal+" .modal-content";
         swal({
-          title: "Bill of Material Inquiry",
-          text: "Single or Consolidated Inquiry (S/C)",
-          type: "input",
-          showCancelButton: true,
-          closeOnConfirm: false,
-          inputPlaceholder: "S or C"
-        }, function (input) {
+            title: "Bill of Material Inquiry",
+            text: "Single or Consolidated Inquiry (S/C)",
+            input: 'text',
+            showCancelButton: true,
+            closeOnConfirm: false,
+            inputValidator: function (value) {
+                return new Promise(function (resolve, reject) {
+                    if (value.toUpperCase() == 'S') { //Single
+                        resolve();
+                    } else if (value.toUpperCase() == 'C') { //Consolidated
+                        resolve();
+                    } else {
+                        reject("The accepted values are S or C");
+                    }
+
+                })
+            }
+        }).then(function (input) {
             if (input) {
                 var bom = "single";
                 if (input.toUpperCase() == 'S') { //Single
                     bom = "single";
                 } else if (input.toUpperCase() == 'C') { //Consolidated
                     bom = "consolidated";
-                } else {
-                  swal.showInputError("The accepted values are S or C");
-                  return false
                 }
                 href = URI(href).addQuery('bom', bom).normalizeQuery().toString();
-				ii_bom(itemid, qty, bom, function() {
+                ii_bom(itemid, qty, bom, function() {
                     swal.close();
                     showajaxloading();
                     loadin(href, loadinto, function() {
@@ -483,6 +505,7 @@ $(function() {
                 listener.listen();
             }
         });
+
     }
 
 	function ii_customer(custid) { //WAS ii_customer
