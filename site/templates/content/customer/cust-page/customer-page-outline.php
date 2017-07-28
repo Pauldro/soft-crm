@@ -21,11 +21,8 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-sm-6">
-    	<?php include $config->paths->content.'customer/cust-page/notes/notes-panel.php'; ?>
-    </div>
-    <div class="col-sm-6">
-    	<?php include $config->paths->content.'customer/cust-page/tasks/tasks-panel.php'; ?>
+    <div class="col-sm-12">
+    	<?php include $config->paths->content.'customer/cust-page/actions/actions-panel.php'; ?>
     </div>
 </div>
 <div class="row">
