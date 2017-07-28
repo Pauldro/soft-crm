@@ -68,6 +68,10 @@
 	*		DBNAME=$config->DBNAME
 	*		CREATESO
 	*		break;
+	*	case 'create-quote':
+	*		DBNAME=$config->DBNAME
+	*		CREATEQT
+	*		break;
 	* }
 	*
 	**/
@@ -78,6 +82,7 @@
 
 			if ($custID == '') {$custID = $config->defaultweb;}
 			$data['CUSTID'] = $custID; if ($shipID != '') {$data['SHIPTOID'] = $shipID; }
+
 
 			if ($input->post->whse) { if ($input->post->whse != '') { $data['WHSE'] = $input->post->whse; } }
 			$session->data = $data;
@@ -115,7 +120,6 @@
 			$linenbr = $input->post->text('linenbr');
 			$cartdetail = getcartline(session_id(), $linenbr, false);
 			$cartdetail['qtyordered'] = '0';
-
 			$session->sql = edit_cartline(session_id(), $cartdetail, false);
 			$session->loc = $config->pages->cart;
 			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'LINENO' => $input->post->linenbr);
@@ -126,6 +130,10 @@
         case 'create-sales-order':
 			$data = array('DBNAME' => $config->dbName, 'CREATESO' => false);
            	$session->loc = $config->pages->orders . "redir/?action=edit-new-order";
+            break;
+		case 'create-quote':
+			$data = array('DBNAME' => $config->dbName, 'CREATEQT' => false);
+           	$session->loc = $config->pages->quotes . "redir/?action=edit-new-quote";
             break;
 	}
 
