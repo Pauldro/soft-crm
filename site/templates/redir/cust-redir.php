@@ -17,6 +17,10 @@
 	*
 	*
 	* switch ($action) {
+	* 	case 'add-customer':
+	* 		DBNAME=$config->DBNAME
+	* 		NEWCUSTOMER
+	* 		break;
 	*	case 'load-customer':
 	*		DBNAME=$config->DBNAME
 	*		CUSTID=$custID
@@ -126,6 +130,85 @@
 
 
 	switch ($action) {
+		case 'add-customer':
+			$customer = get_first_custindex(false);
+			$custkeys = array_keys($customer);
+			$newcustomer = array_fill_keys($custkeys, ' ');
+			$newcustomer['custid'] = session_id();
+			$newcustomer['splogin1'] = $input->post->text('salesperson1');
+			$newcustomer['splogin2'] = $input->post->text('salesperson2');
+			$newcustomer['splogin3'] = $input->post->text('salesperson3');
+			$newcustomer['date'] = date('Ymd');
+			$newcustomer['time'] = date('His');
+			$newcustomershipto = $newcustomer;
+			$data = array(
+				'DBNAME' => $config->dbName,
+				'NEWCUSTOMER' => false,
+				'BILLTONAME' => $input->post->text('billto-name'),
+				'BILLTOADDRESS1' => $input->post->text('billto-address'),
+				'BILLTOADDRESS2' => $input->post->text('billto-address2'),
+				'BILLTOADDRESS3' => $input->post->text('billto-address3'),
+				'BILLTOCITY' => $input->post->text('billto-city'),
+				'BILLTOSTATE' => $input->post->text('billto-state'),
+				'BILLTOZIP' => $input->post->text('billto-zip'),
+				'BILLTOCOUNTRY' => $input->post->text('billto-country'),
+				'BILLTOPHONE' => str_replace('-', '', $input->post->text('billto-phone').$input->post->text('billto-ext')),
+				'BILLTOFAX' => str_replace('-', '',$input->post->text('billto-fax')),
+				'BILLTOEMAIL' => $input->post->text('billto-email'),
+				'SHIPTOID' => '1',
+				'SHIPTONAME' => $input->post->text('shipto-name'),
+				'SHIPTOADDRESS1' => $input->post->text('shipto-address'),
+				'SHIPTOADDRESS2' => $input->post->text('shipto-address2'),
+				'SHIPTOADDRESS3' => $input->post->text('shipto-address3'),
+				'SHIPTOCITY' => $input->post->text('shipto-city'),
+				'SHIPTOSTATE' => $input->post->text('shipto-state'),
+				'SHIPTOZIP' => $input->post->text('shipto-zip'),
+				'SHIPTOCOUNTRY' => $input->post->text('shipto-country'),
+				'SHIPTOPHONE' => str_replace('-', '', $input->post->text('shipto-phone').$input->post->text('shipto-ext')),
+				'SHIPTOFAX' => str_replace('-', '',$input->post->text('shipto-fax')),
+				'SHIPTOEMAIL' => $input->post->text('shipto-email'),
+				'SALESPERSON1' => $input->post->text('salesperson1'),
+				'SALESPERSON2' => $input->post->text('salesperson2'),
+				'SALESPERSON3' => $input->post->text('salesperson3'),
+				'PRICECODE' => $input->post->text('pricecode'),
+				'NOTES' => ''
+			);
+			$newcustomer['shiptoid'] = '';
+			$newcustomer['source'] = 'C';
+			$newcustomer['name'] = $data['BILLTONAME'];
+			$newcustomer['addr1'] = $data['BILLTOADDRESS1'];
+			$newcustomer['addr2'] = $data['BILLTOADDRESS2'];
+			$newcustomer['ccity'] = $data['BILLTOCITY'];
+			$newcustomer['cst'] = $data['BILLTOSTATE'];
+			$newcustomer['czip'] = $data['BILLTOZIP'];
+			$newcustomer['cphone'] = $input->post->text('billto-phone');
+			$newcustomer['cphext'] = $input->post->text('billto-ext');
+			$newcustomer['email'] = $data['BILLTOEMAIL'];
+			$newcustomer['recno'] = getmaxcustindexrecnbr() + 1;
+
+			$newcustomershipto['shiptoid'] = '1';
+			$newcustomershipto['source'] = 'CS';
+			$newcustomershipto['name'] = $data['SHIPTONAME'];
+			$newcustomershipto['addr1'] = $data['SHIPTOADDRESS1'];
+			$newcustomershipto['addr2'] = $data['SHIPTOADDRESS2'];
+			$newcustomershipto['ccity'] = $data['SHIPTOCITY'];
+			$newcustomershipto['cst'] = $data['SHIPTOSTATE'];
+			$newcustomershipto['czip'] = $data['SHIPTOZIP'];
+			$newcustomershipto['cphone'] = $input->post->text('shipto-phone');
+			$newcustomershipto['cphext'] = $input->post->text('shipto-ext');
+			$newcustomershipto['email'] = $data['SHIPTOEMAIL'];
+			$session->sql = insertnewcustomer($newcustomer, false);
+			$newcustomershipto['recno'] = getmaxcustindexrecnbr() + 1;
+			$session->sql = insertnewcustomer($newcustomershipto, false);
+			$session->loc = $config->pages->customer.'redir/?action=load-new-customer';
+			$session->loc = $config->pages->index;
+			break;
+		case 'load-new-customer':
+			$custID = getcreatedordn(session_id(), false);
+			changecustindexcustid(session_id(), $custID);
+			$session->loc = $config->pages->customer . urlencode($custID)."/shipto-1/";
+			$data = array('DBNAME' => $config->dbName, 'CUSTID' => $custID);
+			break;
 		case 'load-customer':
 			$session->loc = $config->pages->customer . urlencode($custID)."/";
 			if ($input->get->shipID) { $session->loc .= "shipto-".$input->get->shipID."/"; }
