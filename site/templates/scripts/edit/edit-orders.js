@@ -14,7 +14,7 @@ $(function() {
 			$(this).closest('tr').removeClass("has-success").addClass("has-error");
 		}
 	});
-	
+
 	$(".page").on("change", "#orderhead-form .shipto-select", function(e) {
 		e.preventDefault();
 		var custid = $(this).data('custid');
@@ -22,12 +22,12 @@ $(function() {
 		var jsonurl = config.urls.json.getshipto+"?custID="+urlencode(custid)+"&shipID="+urlencode(shiptoid);
 		$.get(jsonurl, function(json) {
 			var shipto = json.response.shipto;
-			$('.shipto-select').val(shiptoid); $('.shipto-name').val(shipto.name); $('.shipto-address').val(shipto.addr1); 
+			$('.shipto-select').val(shiptoid); $('.shipto-name').val(shipto.name); $('.shipto-address').val(shipto.addr1);
 			$('.shipto-address2').val(shipto.addr2);
 			$('.shipto-city').val(shipto.ccity); $('.shipto-state').val(shipto.cst); $('.shipto-zip').val(shipto.czip);
 		});
 	});
-	
+
 	$(".page").on("submit", "#orderhead-form", function(e) {
 		e.preventDefault();
 		var formid = '#'+$(this).attr('id');
@@ -99,12 +99,13 @@ $(expirefields.date).change(function() {
 		var focuson = $(this).data('focus');
 		var geturl = $(this).attr('href');
 		var clickon = $(this).data('click');
-		$.get(addtoquerystring(geturl, ["ajax"], ["true"]), function() {
+		$.get(geturl, function() {
 			generateurl(function(url) {
-				console.log('url = ' + addtoquerystring(url, ["ajax"], ["true"]));
-				loadin(addtoquerystring(url, ["ajax"], ["true"]), loadinto, function() {
-					if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
+				console.log(url);
+				loadin(url, loadinto, function() {
 					$(clickon).click();
+					if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
+
 				} );
 			});
 		});
@@ -149,7 +150,7 @@ $(expirefields.date).change(function() {
 		}
 	}
 
-	
+
 
 	function getorderheadresults(ordn, form) {
 		console.log(config.urls.json.getorderhead+"?ordn="+ordn);
@@ -171,4 +172,3 @@ $(expirefields.date).change(function() {
 
 		});
 	}
-
