@@ -69,5 +69,7 @@
     </div>
 </div>
 <script>
-	$('.check-toggle').bootstrapToggle({on: 'Yes', off: 'No', onstyle: 'info' });
+	$(function() {
+		$('.check-toggle').bootstrapToggle({on: 'Yes', off: 'No', onstyle: 'info' });
+	});
 </script>
