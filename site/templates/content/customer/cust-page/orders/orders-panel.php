@@ -34,9 +34,12 @@
     	<?php if ($session->ordersearch) : ?>
         	<a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">
 				Searching for <?php echo $session->ordersearch; ?> <span class="caret"></span> <span class="badge"><?php echo $ordercount; ?></span>
+            </a>  |
+			<a href="<?php echo $config->pages->orders."redir/?action=load-cust-orders&custID=".urlencode($custID); ?>" class="load-cust-orders" data-custid="<?php echo $custID; ?>" <?php echo $ajax->data; ?>>
+                <i class="fa fa-refresh" aria-hidden="true"></i> Refresh Orders
             </a>
     	<?php elseif ($ordercount > 0) : ?>
-            <a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">Customer Orders <span class="caret"></span></a> <span class="badge"><?php echo $ordercount; ?></span>  |
+            <a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">Customer Orders <span class="caret"></span></a> <span class="badge"> <?php echo $ordercount; ?></span> &nbsp; | &nbsp; 
             <a href="<?php echo $config->pages->orders."redir/?action=load-cust-orders&custID=".urlencode($custID); ?>" class="load-cust-orders" data-custid="<?php echo $custID; ?>" <?php echo $ajax->data; ?>>
                 <i class="fa fa-refresh" aria-hidden="true"></i> Refresh Orders
             </a>
@@ -65,7 +68,7 @@
                 	<a href="<?php echo $ajax->searchlink; ?>" class="btn btn-default bordered search-orders" data-modal="#ajax-modal">Search Orders</a>
                     &nbsp; &nbsp; &nbsp;
                     <?php if ($session->ordersearch) : ?>
-						<a href="<?php echo $config->pages->customer."redir/?custID=".urlencode($custID); ?>" class="btn-warning btn load-cust-orders" data-custid="<?php echo $custID; ?>" <?php echo $ajax->data; ?>>
+						<a href="<?php echo $config->pages->orders."redir/?action=load-cust-orders&custID=".urlencode($custID); ?>" class="btn-warning btn load-cust-orders" data-custid="<?php echo $custID; ?>" <?php echo $ajax->data; ?>>
 							Clear Search
 						</a>
                     <?php endif; ?>
