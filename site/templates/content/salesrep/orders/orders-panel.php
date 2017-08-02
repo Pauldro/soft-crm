@@ -33,7 +33,7 @@
 				Searching for <?php echo $_SESSION['order-search']; ?> <span class="caret"></span> <span class="badge"><?php echo $ordercount; ?></span>
             </a>
     	<?php elseif ($ordercount > 0) : ?>
-            <a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">Your Orders <span class="caret"></span></a> &nbsp; <span class="badge"><?php echo $ordercount; ?></span>  |
+            <a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">Your Orders <span class="caret"></span></a> &nbsp; <span class="badge"> <?php echo $ordercount; ?></span> &nbsp; | &nbsp; 
             <a href="<?php echo $config->pages->orders."redir/?action=load-orders"; ?>" class="generate-load-link" id="load-cust-orders" <?php echo $ajax->data; ?>>
                 <i class="fa fa-refresh" aria-hidden="true"></i> Refresh Orders
             </a>

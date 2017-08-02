@@ -161,12 +161,13 @@
 
              <tr class="detail last-detail">
              	<td colspan="2">
-					<a href="<?= $config->pages->notes."load/modal/order/?ordn=".$on; ?>" class="h3 load-into-modal" data-loadinto="#ajax-modal" data-modal="#ajax-modal"><i class="fa fa-sticky-note" aria-hidden="true"></i></a>
-				</td>
+             		<a href="<?= $config->pages->orders."redir/?action=get-order-details&print=true&ordn=".$on; ?>" target="_blank">
+						<span class="h3"><i class="glyphicon glyphicon-print" aria-hidden="true"></i></span> <span>View Printable Order</span>
+					</a>
+             	</td>
 				<td colspan="3">
-					<?php // TODO get_current_linked_tasks_count($user->loginid, $order['custid'], 'salesorderlink', $on, false); ?>
-					<a href="<?= $config->pages->orders."redir/?action=get-order-details&print=true&ordn=".$on; ?>" class="h3" target="_blank">
-						<i class="glyphicon glyphicon-print" aria-hidden="true"></i> <span class="sr-only">View Printable Order</span>
+					<a href="<?= $config->pages->actions.'all/load/list/order/?ordn='.$on.'&modal=modal'; ?>" class="load-into-modal" data-modal="#ajax-modal">
+						<span class="h3"><i class="glyphicon glyphicon-check" aria-hidden="true"></i></span> <span>View Associated Actions</span>
 					</a>
 				</td>
                 <td>
