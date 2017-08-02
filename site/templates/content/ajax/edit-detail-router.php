@@ -33,7 +33,7 @@
 			$formaction = $config->pages->quotes."redir/";
             $title = 'Edit Pricing for '. $linedetail['itemid'];
             $linedetail['can-edit'] = true;
-			$body = $config->paths->content."edit/pricing/quotes/simple-pricing-form.php";
+			$body = $config->paths->content."edit/pricing/quotes/edit-pricing-form.php";
     }
 	if ($config->ajax) {
 		$modalbody = $body;
