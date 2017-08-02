@@ -7,7 +7,7 @@
                 <th>Whse</th>
                 <th>
                 	<div class="row">
-                    	<div class="col-xs-3">Details</div><div class="col-xs-3">Documents</div> <div class="col-xs-3">Notes</div> <div class="col-xs-3">Item Info</div>
+                    	<div class="col-xs-3">Details</div><div class="col-xs-3">Documents</div> <div class="col-xs-3">Notes</div> <div class="col-xs-3">Edit</div>
                     </div>
                 </th>
             </tr>

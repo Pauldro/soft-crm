@@ -1,6 +1,7 @@
 <?php
     if (!isset($actiontype)) {$actiontype = 'all';}
-    $actionpanel = new UserActionPanel('quote', $actiontype, '#actions-panel', '#actions-panel', '#ajax-modal', $config->ajax);
+	if (!isset($partialid)) {$partialid = 'actions';}
+    $actionpanel = new UserActionPanel('quote', $actiontype, $partialid, '#ajax-modal', $config->ajax, $config->modal);
     $actionpanel->setupquotepanel($qnbr);
     $actionpanel->setuptasks($input->get->text('action-status'));
     $actionpanel->querylinks = UserAction::getlinkarray();
