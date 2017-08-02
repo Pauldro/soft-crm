@@ -1,4 +1,4 @@
--<?php
+<?php
     $activetab = 'orderhead';
     if ($input->get->show) {
         $activetab = $input->get->text('show');
@@ -25,8 +25,8 @@
             <li><a href="<?= '#'.$tab['href']; ?>" id="<?=$tab['id']; ?>" data-toggle="tab"><?=$tab['text']; ?></a></li>
         <?php endif; ?>
     <?php endforeach; ?>
-
 </ul>
+
 <div id="order-tabs" class="tab-content">
     <?php foreach ($tabs as $tab) : ?>
         <?php if ($tab == $tabs[$activetab]) : ?>
