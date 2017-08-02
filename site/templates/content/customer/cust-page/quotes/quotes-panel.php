@@ -38,7 +38,7 @@
 				Searching for <?php echo $_SESSION['quote-search']; ?> <span class="caret"></span> <span class="badge"><?php echo $quotecount; ?></span>
             </a>
     	<?php elseif ($quotecount > 0) : ?>
-            <a href="#quotes-div" data-parent="#quotes-panel" data-toggle="collapse">Customer Quotes <span class="caret"></span></a> <span class="badge"><?php echo $quotecount; ?></span>  |
+            <a href="#quotes-div" data-parent="#quotes-panel" data-toggle="collapse">Customer Quotes <span class="caret"></span></a> <span class="badge"><?php echo $quotecount; ?></span> &nbsp; | &nbsp; 
             <a href="<?php echo $config->pages->quotes."redir/?action=load-cust-quotes&custID=".$custID;?>" class="generate-load-link" id="load-cust-quotes" data-custid="<?php echo $custID; ?>" <?php echo $ajax->data; ?>>
                 <i class="fa fa-refresh" aria-hidden="true"></i> Refresh Quotes
             </a>

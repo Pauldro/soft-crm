@@ -11,5 +11,5 @@
     <td></td> <td></td> <td></td> <td>Misc:</td> <td></td> <td class="text-right">$ <?php echo $quote['miscellaneous']; ?></td> <td></td> <td></td>
 </tr>
 <tr class="detail">
-    <td></td> <td></td> <td></td> <td>Total:</td> <td></td> <td class="text-right">$ <?php echo $quote['order_total']; ?></td> <td></td> 
+    <td></td> <td></td> <td></td> <td>Total:</td> <td></td> <td class="text-right">$ <?php echo $quote['order_total']; ?></td> <td></td> <td></td> 
 </tr>
