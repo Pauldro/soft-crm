@@ -53,6 +53,7 @@
 	* 		break;
 	*	case 'update-line':
 	*		DBNAME=$config->DBNAME
+	*		SALEDET
 	*		ORDERNO=$ordn
 	*		LINENO=$linenbr
 	* 		break;
@@ -323,11 +324,11 @@
 			$session->loc = $input->post->page;
 			break;
 		case 'edit-new-order':
-			if ($session->custID) { $custID = $session->custID; } else { $custID = $default_web; }
+			if ($session->custID) { $custID = $session->custID; } else { $custID = $config->defaultweb; }
 			$ordn = getcreatedordn(session_id(), false);
 			$data = array('DBNAME' => $config->dbName, 'ORDRDET' => $ordn, 'CUSTID' => $custID, 'LOCK' => false);
-			$session->loc  = $config->pages->edit.'order/?ordn=' . $ordn;
-			sleep(2);
+			$session->loc = $config->pages->edit.'order/?ordn=' . $ordn;
+			sleep(5);
 			break;
 		case 'load-orders':
 			$data = array('DBNAME' => $config->dbName, 'REPORDRHED' => false, 'TYPE' => 'O');

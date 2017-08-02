@@ -221,17 +221,21 @@
 		case 'send-quote-to-order':
 			$qnbr = $input->post->text('qnbr');
 			$linenbrs = $input->post->linenbr;
-			foreach ($linenbrs as $linenbr) {
-				$quotedetail = getquotelinedetail(session_id(), $qnbr, $linenbr, false);
-				$quotedetail['ordrqty'] = $quotedetail['quotunit'];
-				edit_quoteline(session_id(), $qnbr, $quotedetail, false);
+			$session->linecount = $linecount = nextquotelinenbr(session_id(), $qnbr);
+			for ($i = 1; $i < $linecount; $i++) {
+				$quotedetail = getquotelinedetail(session_id(), $qnbr, $i, false);
+				if (in_array($i, $linenbrs)) {
+					$quotedetail['ordrqty'] = $quotedetail['quotunit'];
+				} else {
+					$quotedetail['ordrqty'] = '0';
+				}
+				
+				$session->sql = edit_quoteline(session_id(), $qnbr, $quotedetail, false);
 			}
-			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => 'ALL');
-			writedplusfile($data, $filename);
-			curl_redir("127.0.0.1/cgi-bin/" . $config->cgi . "?fname=" . $filename);
-			$data = array('DBNAME' => $config->dbName, 'QUOTETOORDER' => false, 'QUOTENO' => $qnbr);
+			
+			$session->custID = $custID = getquotecustomer(session_id(), $qnbr, false);
+			$data = array('DBNAME' => $config->dbName, 'QUOTETOORDER' => false, 'QUOTENO' => $qnbr, 'LINENO' => 'ALL');
 			$session->loc = $config->pages->orders."redir/?action=edit-new-order";
-			//$session->loc = $config->pages->index;
 			break;
 	}
 
