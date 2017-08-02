@@ -2,13 +2,18 @@
     class UserActionPanel {
         public $type = 'cust';
         public $actiontype;
+		public $partialid;
 		public $loadinto;
+		public $panelid;
+		public $panelbody;
 		public $focus;
 		public $data;
 		public $modal;
 		public $collapse;
 		public $completed = false;
         public $rescheduled = false;
+		
+		public $loadmodal = false;
 
         public $taskstatus = 'N';
 		public $custID;
@@ -20,12 +25,16 @@
 
         public $count = 0;
 
-		public function __construct($type, $actiontype, $loadinto, $focus, $modal, $throughajax) {
-            $this->actiontype = $actiontype;
+		public function __construct($type, $actiontype, $partialid, $modal, $throughajax, $modalTF) {
 	   		$this->type = $type;
-			$this->loadinto = $loadinto;
-			$this->focus = $focus;
+			$this->actiontype = $actiontype;
+			$this->partialid = $partialid;
+			$this->loadinto = '#'.$this->partialid.'-panel';
+			$this->focus = '#'.$this->partialid.'-panel';
+			$this->panelid = $this->partialid.'-panel';
+			$this->panelbody = $this->partialid.'-div';
 			$this->modal = $modal;
+			$this->loadmodal = $modalTF;
 			$this->data = 'data-loadinto="'.$this->loadinto.'" data-focus="'.$this->focus.'"';
 			if ($throughajax) {
 				$this->collapse = '';
@@ -83,7 +92,7 @@
                         return $this->taskstatus;
                 }
             } else {
-                return false;
+                return ' ';
             }
 
         }
@@ -152,7 +161,7 @@
 					if ($this->shipID != '') {$link .= "&shipID=".urlencode($this->shipID);}
 					break;
 				case 'contact':
-					$link = wire('config')->pages->tasks."load/list/contact/?custID=".urlencode($this->custID);
+					$link = wire('config')->pages->actions.$this->getactiontypepage()."/load/list/contact/?custID=".urlencode($this->custID);
 					if ($this->shipID != '') {$link .= "&shipID=".urlencode($this->shipID);}
 					$link .= "&contactID=".urlencode($this->contactID);
 					break;
@@ -166,6 +175,7 @@
 					$link = wire('config')->pages->actions.$this->getactiontypepage()."/load/list/quote/?qnbr=".$this->qnbr;
 					break;
 			}
+			if ($this->loadmodal) {$link .= "&modal=modal";}
 			return $link;
 		}
 
@@ -212,7 +222,7 @@
 					return 'Order #'.$this->ordn.' Actions';;
 					break;
                 case 'quote':
-					return 'Quote '.$this->qnbr.' Actionss';;
+					return 'Quote '.$this->qnbr.' Actions';;
 					break;
 			}
 		}
