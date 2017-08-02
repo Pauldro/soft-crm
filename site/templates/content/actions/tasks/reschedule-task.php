@@ -1,11 +1,11 @@
 <?php
-    $taskID = $input->get->text('id');
-    $originaltask = loaduseraction($taskID, true, false);
+    $actionID = $input->get->text('id');
+    $originaltask = loaduseraction($actionID, true, false);
     $tasklinks = UserAction::getlinkarray();
 	$tasklinks['actiontype'] = 'task';
 	$tasklinks['customerlink'] = $originaltask->customerlink;
 	$tasklinks['shiptolink'] = $originaltask->shiptolink;
-	$tasklinks['contactlink'] =$originaltask->contactlink;
+	$tasklinks['contactlink'] = $originaltask->contactlink;
 	$tasklinks['salesorderlink'] = $originaltask->salesorderlink;
 	$tasklinks['quotelink'] = $originaltask->quotelink;
 	$tasklinks['notelink'] = $originaltask->notelink;

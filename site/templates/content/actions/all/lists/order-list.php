@@ -3,7 +3,7 @@
 ?>
 <table class="table table-bordered table-condensed table-striped">
 	<thead>
-    	<tr> <th>Due</th> <th>Type</th> <th>Subtype</th> <th>CustID</th> <th>Regarding</th> <th>Note</th> <th>View action</th>  </tr>
+    	<tr> <th>Due</th> <th>Type</th> <th>Subtype</th> <th>Regarding</th> <th>Note</th> <th>View action</th>  </tr>
     </thead>
     <tbody>
 		<?php if (!sizeof($actions)) : ?>
@@ -19,7 +19,6 @@
 	                <td><?= $action->displayduedate('m/d/Y'); ?></td>
 					<td><?= $action->actiontype; ?></td>
 					<td><?= $action->getactionsubtypedescription(); ?></td>
-					<td><?= $action->customerlink; ?></td>
 					<td><?= $action->regardinglink; ?></td>
 	                <td><?= $action->title; ?></td>
 					<td>

@@ -20,7 +20,7 @@
 
         $tasklinks['datecreated'] = date("Y-m-d H:i:s");
         $tasklinks['duedate'] = date("Y-m-d H:i:s", strtotime($input->post->text('duedate')));
-		$notelinks['assignedto'] = $input->post->text('assignedto');
+		$tasklinks['assignedto'] = $input->post->text('assignedto');
         $tasklinks['createdby'] = $user->loginid;
         $tasklinks['assignedby'] = $user->loginid;
 

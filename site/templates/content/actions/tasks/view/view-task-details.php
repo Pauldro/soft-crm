@@ -91,6 +91,11 @@
     <tr>
         <td colspan="2"><b>Notes</b><br><?php echo $task->textbody; ?></td>
     </tr>
+    <?php if ($task->hascompleted) : ?>
+        <tr>
+            <td colspan="2"><b>Completion Notes</b><br><?= $task->reflectnote; ?></td>
+        </tr>
+    <?php endif; ?>
 </table>
 
 <?php if (!$task->hascompleted && !$task->isrescheduled) : ?>

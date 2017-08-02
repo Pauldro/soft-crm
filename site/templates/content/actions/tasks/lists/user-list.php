@@ -1,5 +1,6 @@
 <?php
 	$tasks = getuseractions($user->loginid, $actionpanel->querylinks, $config->showonpage, $input->pageNum(), false);
+	echo getuseractions($user->loginid, $actionpanel->querylinks, $config->showonpage, $input->pageNum(), true);
 ?>
 
 <div class="panel-body">
@@ -26,7 +27,7 @@
     <tbody>
 		<?php if (!sizeof($tasks)) : ?>
 			<tr>
-				<td colspan="6" class="text-center h4">
+				<td colspan="7" class="text-center h4">
 					No related tasks found
 				</td>
 			</tr>

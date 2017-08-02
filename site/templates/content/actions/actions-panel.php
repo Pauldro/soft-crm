@@ -6,30 +6,27 @@
 
 	$totalcount = $actionpanel->count;
 
-	//$popover_content = "<div class='form-group'><a href='".$actionpanel->getpanelnewtaskschedulelink()."' class='btn btn-info load-task-item' data-modal='".$actionpanel->modal."'  role='button' title='Schedule Task'> <i class='material-icons md-18'>&#xE192;</i> Create a New Scheduled Task</a></div>";
-	
-	//$$popover_content .= "<div class='form-group'><a href='".$actionpanel->getpanelloadtaskschedulelink()."' class='btn btn-info load-task-item' data-modal='".$actionpanel->modal."' role='button' title='View Scheduled Tasks'> <i class='material-icons md-18'>&#xE85D;</i> View List of Scheduled Tasks</a></div>";
 ?>
 
-<div class="panel panel-primary not-round" id="actions-panel">
-    <div class="panel-heading not-round" id="action-panel-heading">
-    	<a href="#actions-div" class="panel-link" data-parent="#actions-panel" data-toggle="collapse">
+<div class="panel panel-primary not-round" id="<?= $actionpanel->panelid; ?>">
+    <div class="panel-heading not-round" id="<?= $actionpanel->panelid.'-heading'; ?>">
+    	<a href="<?= '#'.$actionpanel->panelbody; ?>" class="panel-link" data-parent="<?= $actionpanel->panelid; ?>" data-toggle="collapse">
         	<span class="glyphicon glyphicon-check"></span> &nbsp; <?php echo $actionpanel->getpaneltitle(); ?> <span class="caret"></span>  &nbsp;&nbsp;<span class="badge"><?= $actionpanel->count; ?></span>
         </a>
 
 		<?php if ($actionpanel->needsaddactionlink()) : ?>
-			<a href="<?= $actionpanel->getaddactiontypelink(); ?>" class="btn btn-info btn-xs add-action pull-right hidden-print" data-modal="<?= $actionpanel->modal; ?>" role="button" title="Add Task">
+			<a href="<?= $actionpanel->getaddactiontypelink(); ?>" class="btn btn-info btn-xs add-action pull-right hidden-print" data-modal="<?= $actionpanel->modal; ?>" role="button" title="Add Action">
 	            <i class="material-icons md-18">&#xE146;</i>
 	        </a>
 		<?php endif; ?>
 
         <span class="pull-right">&nbsp; &nbsp;&nbsp; &nbsp;</span>
-        <a href="<?= $actionpanel->getpanelrefreshlink(); ?>" class="btn btn-info btn-xs load-link actions-refresh pull-right hidden-print" <?= $ajax->data; ?> role="button" title="Refresh Tasks">
+        <a href="<?= $actionpanel->getpanelrefreshlink(); ?>" class="btn btn-info btn-xs load-link actions-refresh pull-right hidden-print" <?= $ajax->data; ?> role="button" title="Refresh Actions">
             <i class="material-icons md-18">&#xE86A;</i>
         </a>
         <span class="pull-right"><?php if ($input->pageNum > 1 ) {echo 'Page '.$input->pageNum;} ?> &nbsp; &nbsp;</span>
     </div>
-    <div id="actions-div" class="<?= $actionpanel->collapse; ?>">
+    <div id="<?= $actionpanel->panelbody; ?>" class="<?= $actionpanel->collapse; ?>">
         <div>
         	<div class="panel-body">
 				<div class="row">
