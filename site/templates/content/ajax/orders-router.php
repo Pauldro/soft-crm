@@ -1,5 +1,6 @@
 <?php
     $filteron = $input->urlSegment(3);
+    if ($input->get->ordn) { $ordn = $input->get->text('ordn'); } else { $ordn = NULL; }
     switch ($filteron) {
         case 'cust':
             $custID = $sanitizer->text($input->urlSegment(4));
@@ -16,21 +17,18 @@
             break;
 		case 'search':
 			$include = $config->paths->content.'recent-orders/ajax/load/order-search-modal.php';
+
 			break;
 
     }
 
-	if ($input->get->ordn) { $ordn = $input->get->text('ordn'); } else { $ordn = NULL; }
-	
-	if (!$config->ajax) {
-        include($config->paths->templates.'_head.php'); // include header markup
-        echo '<div class="container page">';
+
+    if ($config->ajax) {
+        include($include);
+    } else {
+        $title = ''; $modalbody = $include;
+        include $config->paths->content."common/include-blank-page.php";
     }
 
-    include($include);
 
-    if (!$config->ajax) {
-        echo '</div>';
-    	include($config->paths->templates.'_foot.php'); // include footer markup
-    }
 ?>
