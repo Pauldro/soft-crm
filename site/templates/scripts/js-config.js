@@ -5,6 +5,11 @@ if (sitedirectory.length > 0) {
 }
 
 var config = {
+    edit: {
+        pricing: {
+            show_minprice_error: false
+        }
+    },
 	urls: {
 		index: sitepath,
 		cart: sitepath + "cart/",
@@ -87,6 +92,7 @@ var config = {
 			getloadurl: sitepath + "ajax/json/get-load-url/",
 			dplusnotes: sitepath + "ajax/json/dplus-notes/",
 			loadtask: sitepath + "ajax/json/load-task/",
+            loadaction: sitepath + "ajax/json/load-action/",
 			getshipto: sitepath + "ajax/json/get-shipto/",
 			getorderhead: sitepath + "ajax/json/order/orderhead/",
 			getorderdetails: sitepath + "ajax/json/order/details/",
