@@ -1,5 +1,11 @@
 <?php
     $actiontype = "note";
+	if ($input->get->modal) {
+		$partialid = 'actions-modal';
+		$config->modal = true;
+	} else {
+		$partialid = 'actions';
+	}
     switch ($input->urlSegment1) {
         case 'add':
             switch($input->urlSegment2) {
@@ -21,7 +27,7 @@
             switch ($input->urlSegment2) {
                 case 'list':
                     if (!$config->ajax) {
-                        $actionpanel = new UserActionPanel($input->urlSegment3, 'note', '#actions-panel', '#actions-panel', '#ajax-modal', $config->ajax);
+    					$actionpanel = new UserActionPanel($input->urlSegment3, 'note', $partialid, '#ajax-modal', $config->ajax, $config->modal);
                         $actionpanel->querylinks = UserAction::getlinkarray();
                         $actionpanel->querylinks['assignedto'] = $user->loginid;
                         $actionpanel->querylinks['actiontype'] = 'note';
@@ -46,6 +52,19 @@
                                 $actionpanel->querylinks['shiptolink'] = $shipID;
         						$title = 'Viewing Customer Note List';
         						$modalbody = $config->paths->content.'actions/notes/lists/cust-list.php';
+        						include $config->paths->content."common/include-blank-page.php";
+        					}
+                            break;
+						case 'contact':
+                            if ($config->ajax) {
+        						include $config->paths->content.'customer/contact/actions-panel.php';
+        					} else {
+                                $actionpanel->setupcontactpanel($custID, $shipID, $contactID);
+                                $actionpanel->querylinks['customerlink'] = $custID;
+                                $actionpanel->querylinks['shiptolink'] = $shipID;
+								$actionpanel->querylinks['contactlink'] = $contactID;
+        						$title = 'Viewing User Actions List';
+        						$modalbody = $config->paths->content.'actions/notes/lists/contact-list.php';
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;

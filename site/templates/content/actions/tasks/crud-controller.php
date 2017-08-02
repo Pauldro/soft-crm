@@ -1,5 +1,11 @@
 <?php
     $actiontype = "task";
+	if ($input->get->modal) {
+		$partialid = 'actions-modal';
+		$config->modal = true;
+	} else {
+		$partialid = 'actions';
+	}
     switch ($input->urlSegment1) {
         case 'add':
             switch($input->urlSegment2) {
@@ -21,11 +27,12 @@
             switch ($input->urlSegment2) {
                 case 'list':
                     if (!$config->ajax) {
-                        $actionpanel = new UserActionPanel($input->urlSegment3, 'task', '#actions-panel', '#actions-panel', '#ajax-modal', $config->ajax);
+    					$actionpanel = new UserActionPanel($input->urlSegment3, 'task', $partialid, '#ajax-modal', $config->ajax, $config->modal);
                         $actionpanel->setuptasks($input->get->text('action-status'));
                         $actionpanel->querylinks = UserAction::getlinkarray();
                         $actionpanel->querylinks['assignedto'] = $user->loginid;
                         $actionpanel->querylinks['actiontype'] = 'task';
+                        $actionpanel->querylinks['completed'] = $actionpanel->databasetaskstatus();
                     }
 
                     switch($input->urlSegment3) {
@@ -47,6 +54,19 @@
                                 $actionpanel->querylinks['shiptolink'] = $shipID;
         						$title = 'Viewing User Task List';
         						$modalbody = $config->paths->content.'actions/tasks/lists/cust-list.php';
+        						include $config->paths->content."common/include-blank-page.php";
+        					}
+                            break;
+						case 'contact':
+                            if ($config->ajax) {
+        						include $config->paths->content.'customer/contact/actions-panel.php';
+        					} else {
+                                $actionpanel->setupcontactpanel($custID, $shipID, $contactID);
+                                $actionpanel->querylinks['customerlink'] = $custID;
+                                $actionpanel->querylinks['shiptolink'] = $shipID;
+								$actionpanel->querylinks['contactlink'] = $contactID;
+        						$title = 'Viewing User Actions List';
+        						$modalbody = $config->paths->content.'actions/tasks/lists/contact-list.php';
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;

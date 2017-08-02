@@ -1,5 +1,11 @@
 <?php
     $actiontype = "action";
+	if ($input->get->modal) {
+		$partialid = 'actions-modal';
+		$config->modal = true;
+	} else {
+		$partialid = 'actions';
+	}
     switch ($input->urlSegment1) {
         case 'add':
             switch($input->urlSegment2) {
@@ -21,7 +27,7 @@
             switch ($input->urlSegment2) {
                 case 'list':
                     if (!$config->ajax) {
-                        $actionpanel = new UserActionPanel($input->urlSegment3, 'action', '#actions-panel', '#actions-panel', '#ajax-modal', $config->ajax);
+    					$actionpanel = new UserActionPanel($input->urlSegment3, 'action', $partialid, '#ajax-modal', $config->ajax, $config->modal);
                         $actionpanel->setuptasks($input->get->text('action-status'));
                         $actionpanel->querylinks = UserAction::getlinkarray();
                         $actionpanel->querylinks['assignedto'] = $user->loginid;
@@ -47,6 +53,19 @@
                                 $actionpanel->querylinks['shiptolink'] = $shipID;
         						$title = 'Viewing User Actions List';
         						$modalbody = $config->paths->content.'actions/actions/lists/cust-list.php';
+        						include $config->paths->content."common/include-blank-page.php";
+        					}
+                            break;
+						case 'contact':
+                            if ($config->ajax) {
+        						include $config->paths->content.'customer/contact/actions-panel.php';
+        					} else {
+                                $actionpanel->setupcontactpanel($custID, $shipID, $contactID);
+                                $actionpanel->querylinks['customerlink'] = $custID;
+                                $actionpanel->querylinks['shiptolink'] = $shipID;
+								$actionpanel->querylinks['contactlink'] = $contactID;
+        						$title = 'Viewing User Actions List';
+        						$modalbody = $config->paths->content.'actions/actions/lists/contact-list.php';
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;
