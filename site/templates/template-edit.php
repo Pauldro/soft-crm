@@ -38,6 +38,13 @@
 			$config->scripts->append($config->urls->templates.'scripts/edit/edit-quotes.js');
             $config->scripts->append($config->urls->templates.'scripts/edit/edit-pricing.js');
             break;
+        case 'quote-to-order':
+            $qnbr = $input->get->text('qnbr');
+            $editquote['custID'] = getquotecustomer(session_id(), $qnbr, false); $custID = $editquote['custID'];
+            $editquote['canedit'] = true;
+            $page->title = "Creating a Sales Order from Quote #" . $qnbr;
+            $includefile = $config->paths->content."edit/quote-to-order/outline.php";
+            break;
     }
  ?>
  <?php include('./_head.php'); // include header markup ?>
