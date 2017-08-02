@@ -7,20 +7,20 @@ $(document).ready(function() {
 	// LISTENER
 	$('input[type=text]').bind("focus", function() { listener.stop_listening(); }).bind("blur", function() { listener.listen(); });
 
-	new Clipboard('.btn');
+
 
 	/*==============================================================
 	   INITIALIZE BOOTSTRAP FUNCTIONS
 	=============================================================*/
 		$('body').popover({selector: '[data-toggle="popover"]', placement: 'top'});
 
-
 		initializedatepicker();
 
-
+		$('.phone-input').keyup(function() {
+	    	$(this).val(formatphone($(this).val()));
+	    });
 
 		$('.check-toggle').bootstrapToggle({on: 'Yes', off: 'No', onstyle: 'info'});
-
 
 		$('body').on('click', function (e) {
 			$('[data-toggle="popover"]').each(function () {
@@ -159,20 +159,22 @@ $(document).ready(function() {
 			e.preventDefault();
 			var loadinto = $(this).data('loadinto');
 			var focuson = $(this).data('focus');
-			var href = addtoquerystring($(this).attr('href'), ["ajax"], ["true"]);
+			var href = $(this).attr('href');
 			console.log(loadinto);
 			loadin(href, loadinto, function() {
-				if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
+				if (focuson.length > 0) {
+					$('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000);
+				}
 				$('.check-toggle').bootstrapToggle({on: 'Yes', off: 'No', onstyle: 'info'});
 			});
 		});
 
-		$(".page").on("click", ".load-into-modal", function(e) {
+		$("body").on("click", ".load-into-modal", function(e) {
 			e.preventDefault();
 			var button = $(this);
 			var ajaxloader = new ajaxloadedmodal(button);
-			var url = addtoquerystring(ajaxloader.url, ["ajax"], ["true"]);
-			loadin(url, ajaxloader.loadinto, function() {
+			$(this).closest('.modal').modal('hide');
+			loadin(ajaxloader.url, ajaxloader.loadinto, function() {
 				$(ajaxloader.modal).modal();
 			});
 		});
@@ -192,6 +194,20 @@ $(document).ready(function() {
 				});
 			});
 		});
+	
+	
+	$("body").on("click", ".load-notes", function(e) {
+        e.preventDefault();
+        var button = $(this);
+        var ajaxloader = new ajaxloadedmodal(button);
+        $.get(ajaxloader.url, function() {
+            showajaxloading();
+            generateurl(function(url) {
+                console.log(url);
+                wait(500, function() { loadin(url, ajaxloader.loadinto, function() { $(ajaxloader.modal).resizemodal('lg'); $(ajaxloader.modal).modal(); hideajaxloading(); }); });
+            });
+        });
+    });
 
 
 
@@ -299,7 +315,7 @@ $(document).ready(function() {
 
 			$('#'+form.attr('id')).postform({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
 				wait(500, function() {
-					
+
 					$.getJSON(jsonurl, function(json) {
 						console.log(json);
 						if (addto == 'order') {
@@ -335,11 +351,12 @@ $(document).ready(function() {
 			var modal = $(this);
 			var title = ''; var addonurl = '';
 			var custid = button.data('custid');
+			var shipid = button.data('shipid');
 			switch (addtype) {
 				case 'cart':
 					$('#'+modal.attr('id')+ " .custid").val(custid);
 					title = "Add item to Cart";
-					addonurl = "cart/?custID="+urlencode(custid);
+					addonurl = "cart/?custID="+urlencode(custid)+"&shipID="+urlencode(shipid);
 					break;
 				case 'order':
 					var ordn = button.data('ordn');
@@ -427,89 +444,177 @@ $(document).ready(function() {
 			//}
 		});
 
-	/*==============================================================
-	  TASK FUNCTIONS
-	=============================================================*/
-		$(".page").on("change", "#view-completed-tasks", function(e) {
+
+
+		$('body').on('click', '.load-doc', function(e) {
 			e.preventDefault();
-			var loadinto= $(this).data('loadinto');
-			var focuson = $(this).data('focus');
-			var href = '';
-			if ($(this).is(':checked')) {
-				href = URI($(this).data('url').addQuery('completed', 'true')).toString();
-			} else {
-				href = $(this).data('url');
-			}
-			console.log(url);
-			loadin(href, loadinto, function() {
-				if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
-				$('.check-toggle').bootstrapToggle({on: 'Yes', off: 'No', onstyle: 'info'});
+			var button = $(this);
+			var doc = button.data('doc');
+			var href = config.urls.json.ii_moveitemdoc + "?docnumber="+doc;
+
+			$.getJSON(href, function(json) {
+				if (json.response.error) {
+
+				} else {
+					var td = button.parent();
+					td.find('.load-doc').remove();
+					var href = "<a href='"+config.urls.orderfiles+json.response.file+"' class='btn btn-sm btn-success' target='_blank'><i class='fa fa-file-text' aria-hidden='true'></i> View Document</a>";
+					$(href).appendTo(td);
+				}
 			});
+
 		});
 
-		$(".page").on("change", "#view-task-status", function(e) {
+
+		/*==============================================================
+		  ACTION FUNCTIONS
+		=============================================================*/
+
+		$("body").on("change", "#actions-panel .change-action-type, #actions-modal-panel .change-action-type", function() {
+			var select = $(this);
+			var actiontype = select.val();
+			var regexhref = select.data('link');
+			var href = regexhref.replace(/{replace}/g, actiontype);
+			var loadinto = $(this).data('loadinto');
+			var focuson = $(this).data('focus');
+			console.log(href);
+			loadin(href, loadinto, function() { });
+		});
+
+		$("body").on("change", "#view-action-task-status", function(e) {
 			e.preventDefault();
 			var status = $(this).val();
-			var loadinto= $(this).data('loadinto');
+			var loadinto = $(this).data('loadinto');
 			var focuson = $(this).data('focus');
 			var href = URI($(this).data('url')).addQuery('tasks-status', status).toString();
-			// href = URI($(this).data('url').addQuery('completed', 'true')).toString();
-			console.log(href);
 			loadin(href, loadinto, function() {
 				if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
 				$('.check-toggle').bootstrapToggle({on: 'Yes', off: 'No', onstyle: 'info'});
 			});
 		});
 
-		$(".page").on("click", ".load-task-item", function(e) {
+		$("body").on("click", ".add-action", function(e) {
+			e.preventDefault();
+			var button = $(this);
+			swal({
+				title: 'What type of Action would you like to make?',
+				input: 'select',
+				buttonsStyling: false,
+				type: 'question',
+				confirmButtonClass: 'btn btn-sm btn-success',
+				cancelButtonClass: 'btn btn-sm btn-danger',
+				inputClass: 'form-control',
+				inputOptions: {
+					'tasks': 'Task',
+					'notes': 'Note',
+					'actions': 'Action'
+				},
+				inputPlaceholder: 'Select Action Type',
+				showCancelButton: true
+			}).then(function (result) {
+				var regexhref = button.attr('href');
+				var href = regexhref.replace(/{replace}/g, result);
+				var modal = button.data('modal');
+				var loadinto =  modal+" .modal-content";
+				console.log(href);
+				$(loadinto).loadin(href, function() {
+					$(modal).resizemodal('lg').modal();
+				});
+			}).catch(swal.noop);
+		});
+
+		$("body").on("click", ".load-action", function(e) {
 			e.preventDefault();
 			var button = $(this);
 			var ajaxloader = new ajaxloadedmodal(button);
 			showajaxloading();
 			console.log(ajaxloader.url);
-			wait(500, function() { loadin(ajaxloader.url, ajaxloader.loadinto, function() { $(ajaxloader.modal).resizemodal('lg'); hideajaxloading(); $(ajaxloader.modal).modal(); $('.task-popover').popover('hide');}); });
-		});
-
-		$("body").on("click", ".complete-task", function(e) {
-			e.preventDefault();
-			var button = $(this);
-			var url = button.attr('href');
-			var taskid = button.data('id');
-			console.log(config.urls.json.loadtask+"?id="+taskid);
-			$.getJSON(config.urls.json.loadtask+"?id="+taskid, function(json) {
-				swal({
-					title: "Would you like to confirm this task as complete?",
-					text: json.response.textbody,
-					type: "success",
-					showCancelButton: true,
-					confirmButtonText: "Yes",
-					closeOnConfirm: true
-				},
-				function() {
-					$.get(url, function() { $('.tasks-refresh').click(); $(config.modals.ajax).modal('hide'); });
+			ajaxloader.modal = config.modals.ajax;
+			console.log(ajaxloader.modal);
+			wait(500, function() {
+				$(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
+					hideajaxloading();
+					$(ajaxloader.modal).resizemodal('lg').modal();
 				});
 			});
 		});
 
-		$("body").on("click", ".reschedule-task", function(e) {
+		$("body").on("click", ".complete-action", function(e) {
 			e.preventDefault();
 			var button = $(this);
 			var url = button.attr('href');
-			var modal = config.modals.ajax;
-			var loadinto = config.modals.ajax+" .modal-body";
-			$(loadinto).loadin(url, function() {
-				$(modal).resizemodal('lg').modal();
-			});
+			var taskid = button.data('id');
+			$.getJSON(url, function(json) {
+				if (json.response.error) {
+					swal({
+						title: 'Error',
+						text: json.response.message,
+						type: 'error',
+					}).catch(swal.noop);
+				} else {
+					swal({
+						title: 'Confirm task as complete?',
+						html:
+							'<b>ID:</b> ' + json.response.action.id + '<br>' +
+							'<b>description:</b> ' + json.response.action.textbody,
+						type: 'question',
+						showCancelButton: true,
+						confirmButtonText: 'Confirm as complete'
+					}).then(function() {
+						swal({
+						  title: "Leave Reflection Note?",
+						  text: "Enter note or leave blank",
+						  input: 'textarea',
+						  showCancelButton: true
+						}).then(function (text) {
+						  if (text) {
+						    $.post(json.response.action.urls.completion, {reflectnote: text})
+								.done(function(json) {
+									console.log(json.sql);
+									$('.actions-refresh').click(); $(config.modals.ajax).modal('hide');
+								});
+						} else {
+							$.get(json.response.action.urls.completion, function() { $('.actions-refresh').click(); $(config.modals.ajax).modal('hide'); });
+						}
+						swal.close();
+						}).catch(swal.noop);
+					}).catch(swal.noop); //FOR CANCEL
+				}
 
+			});
 		});
 
-		$("body").on("submit", "#new-task-form", function(e) {
+		$("body").on("click", ".reschedule-task", function(e) {
+	        e.preventDefault();
+	        var button = $(this);
+	        var url = button.attr('href');
+	        var modal = config.modals.ajax;
+	        var loadinto = config.modals.ajax+" .modal-content";
+	        $(loadinto).loadin(url, function() {
+	            $(modal).resizemodal('lg').modal();
+	        });
+
+	    });
+
+		$("body").on("change", "#view-action-completion-status", function(e) {
+			e.preventDefault();
+			var select = $(this);
+			var url = select.data('url');
+			var completionstatus = select.val();
+			var loadinto = select.data('loadinto');
+			var focuson = select.data('focuson');
+			var href = URI(url).addQuery('action-status', completionstatus).toString();
+			console.log(href);
+			$(loadinto).loadin(href, function() {
+			});
+		});
+
+		$("body").on("submit", "#new-action-form", function(e) {
 			e.preventDefault();
 			var form = $(this);
 			var modal = form.data('modal');
 			var formid = "#"+$(this).attr('id');
 			var action = form.attr('action');
-			console.log(action);
 			var elementreload = form.data('refresh');
 			var isformcomplete = form.formiscomplete('tr');
 			if (isformcomplete) {
@@ -526,22 +631,22 @@ $(document).ready(function() {
 						},
 						onClose: function() {
 							wait(500, function() {
-								$(elementreload + " .tasks-refresh").click();
+								$(elementreload + " .actions-refresh").click();
 								$(modal).modal('hide');
 								swal({
-									title: "Your task was created!",
-									text: "Would you like to create a note for this task?",
+									title: "Your "+json.response.actiontype+" was created!",
+									text: "Would you like to create an action for this "+json.response.actiontype+"?",
 									type: "success",
 									showCancelButton: true,
-									confirmButtonText: "Yes, create Note",
-									closeOnConfirm: true
-								},
-								function() {
-									var href = addtoquerystring($('#notes-panel .add-note').attr('href'), ['task'], [json.response.taskid]);
-									$('#notes-panel .load-crm-note').attr('href', href).click();
-									var url = URI($('#tasks-panel .add-new-task').attr('href')).removeSearch("noteID").normalizeQuery();
-									$('#tasks-panel .add-new-task').attr('href', url.toString());
-								});
+									confirmButtonText: "Yes, Create Action",
+								}).then(function () {
+									swal.close();
+									var href = new URI($('#actions-panel .add-action').attr('href')).addQuery('actionID', json.response.actionid).toString();
+									console.log(href);
+									$('#actions-panel .add-action').attr('href', href).click();
+									href = URI(href).removeQuery('actionID').toString();
+									$('#actions-panel .add-action').attr('href', href);
+								}).catch(swal.noop);
 							});
 						}
 					});
@@ -551,100 +656,11 @@ $(document).ready(function() {
 			}
 		});
 
-		$('body').on('click', '.load-doc', function(e) {
-			e.preventDefault();
-			var button = $(this);
-			var doc = button.data('doc');
-			var href = config.urls.json.ii_moveitemdoc + "?docnumber="+doc;
-
-			$.getJSON(href, function(json) {
-				if (json.response.error) {
-
-				} else {
-
-
-
-					var td = button.parent();
-					td.find('.load-doc').remove();
-					var href = "<a href='"+config.urls.orderfiles+json.response.file+"' class='btn btn-sm btn-success' target='_blank'><i class='fa fa-file-text' aria-hidden='true'></i> View Document</a>";
-					$(href).appendTo(td);
-				}
-			});
-
+		$('body').on("change", ".change-assignedto", function() {
+			var select = $(this);
+			$('#new-action-form').find('input[name="assignedto"]').val(select.val());
 		});
 
-
-	/*==============================================================
-	  CRM NOTE FUNCTIONS
-	=============================================================*/
-		$(".page").on("click", ".load-notes", function(e) {
-			e.preventDefault();
-			var button = $(this);
-			var ajaxloader = new ajaxloadedmodal(button);
-			$.get(ajaxloader.url, function() {
-				showajaxloading();
-				generateurl(function(url) {
-					console.log(url);
-					wait(500, function() { loadin(url, ajaxloader.loadinto, function() { $(ajaxloader.modal).resizemodal('lg'); $(ajaxloader.modal).modal(); hideajaxloading(); }); });
-				});
-			});
-		});
-
-		$(".page").on("click", ".load-crm-note", function(e) {
-			e.preventDefault();
-			var button = $(this);
-			var ajaxloader = new ajaxloadedmodal(button);
-			showajaxloading();
-			console.log(ajaxloader.url);
-			wait(500, function() {
-				loadin(ajaxloader.url, ajaxloader.loadinto, function() {
-					$(ajaxloader.modal).resizemodal('lg'); $(ajaxloader.modal).modal(); hideajaxloading(); $(ajaxloader.modal).find('.note').focus();
-				});
-			});
-		});
-
-		$("body").on("submit", "#crm-note-form", function(e) {
-			e.preventDefault();
-			var form = $(this);
-			var modal = form.data('modal');
-			var formid = "#"+$(this).attr('id');
-			var elementreload = form.data('refresh');
-			$(formid).postform({formdata: false, jsoncallback: true}, function(json) {
-				$.notify({
-					icon: json.response.icon,
-					message: json.response.message,
-				},{
-					element: modal + " .modal-body",
-					type: "success",
-					url_target: '_self',
-					placement: {
-						from: "top",
-						align: "center"
-					},
-					onClose: function() {
-						wait(200, function() {
-							$(elementreload + " .notes-refresh").click();
-							$(modal).modal('hide');
-							swal({
-								title: "Your note was created!",
-								text: "Would you like to create a task for this note?",
-								type: "success",
-								showCancelButton: true,
-								confirmButtonText: "Yes, create task",
-								closeOnConfirm: true
-							},
-							function() {
-								newnoteurl = URI($('#notes-panel .add-note').attr('href')).removeSearch("task").normalizeQuery();
-								$('#notes-panel .add-note').attr('href', newnoteurl.toString());
-								var url = URI($('#tasks-panel .add-new-task').attr('href')).addSearch("noteID", json.response.noteid).normalizeQuery();
-								$('#tasks-panel .add-new-task').attr('href', url.toString());
-								$('#tasks-panel .add-new-task').click();
-							});
-						});
-					}
-				});
-			});
-		});
 
 
 	/*==============================================================
@@ -732,7 +748,7 @@ $(document).ready(function() {
 	jQuery.fn.loadin = function(href, callback) {
 		var element = $(this);
 		var parent = element.parent();
-		element.remove();
+		//element.remove();
 		parent.load(href, function() { callback(); });
 	}
 
@@ -986,6 +1002,27 @@ $(document).ready(function() {
 		    j = (j = i.length) > 3 ? j % 3 : 0;
 		   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 	 };
+
+	 function formatphone(input) {
+        // Strip all characters from the input except digits
+        input = input.replace(/\D/g,'');
+
+        // Trim the remaining input to ten characters, to preserve phone number format
+        input = input.substring(0,10);
+
+        // Based upon the length of the string, we add formatting as necessary
+        var size = input.length;
+        if (size == 0){
+                input = input;
+        } else if(size < 4){
+                input = input;
+        } else if(size < 7){
+                input = input.substring(0,3)+'-'+input.substring(3,6);
+        } else{
+                input = input.substring(0,3)+'-'+input.substring(3,6)+'-'+input.substring(6,10);
+        }
+        return input;
+}
 
 /*==============================================================
  	FORM FUNCTIONS

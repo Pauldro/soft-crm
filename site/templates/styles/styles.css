@@ -202,7 +202,7 @@
    RECENT ORDERS TABLE
  =============================================================*/
  	#orders-table tr.selected, #quotes-table tr.selected { background: #FCF894; font-weight: bold; border-top: 3px solid black; }
-	#orders-table tr.detail, #quotess-table tr.detail {font-size: 90%; }
+	#orders-table tr.detail, #quotes-table tr.detail {font-size: 90%; }
 	#orders-table tr.document-header, #quotes-table tr.document-header { background-color: #3498db; color: #FFF; }
 	#orders-table tr.last-detail, #quotes-table tr.last-detail {border-bottom: 3px solid black;}
 	#orders-table tr.tracking { background: #5FEACF; }
@@ -213,9 +213,11 @@
 	#orders-table .item-header { font-weight: lighter; background-color: #e5e4e2; }
 
 	#recent-orders .tracking { background-color: #AEFF08; }
-	.order-details#last { border-bottom: 3px solid black; }
+	.order-details#last {border-bottom: 3px solid black; }
 	.order-actions a { font-size: 24px; }
 
+	.text-muted.h3 {color: #b4bcc2;}
+	.numeric {font-family: 'Source Code Pro';}
 /*==============================================================
    CART / ORDER DETAIL LINES
  =============================================================*/
@@ -251,6 +253,10 @@
 	.cf tr {
 		border-top: 1px solid #ddd;
 	}
+
+	@media screen and (min-width: 800px) {
+		.action-padding {padding-left: 10px; padding-right: 10px;}
+	 }
 
 /*==============================================================
    EDIT PRICING STYLES
@@ -291,7 +297,9 @@
 	.last-section-row {border-top: 2px solid black;}
 	.last-row-bottom {border-bottom: 2px solid black;}
 
-hr.dark {border-top: 1px solid #242F40;}
+	hr.dark {border-top: 1px solid #242F40;}
+	a.h1, a.h2, a.h3, a.h4, a.h5, a.h6 {color: #18bc9c;}
+
 /*==============================================================
    lIGHTBOX STYLES
  =============================================================*/
@@ -319,3 +327,7 @@ hr.dark {border-top: 1px solid #242F40;}
    DOCUMENTATION MENU
  =============================================================*/
 	ul.docs.nav ul.docs.nav {margin-left: 15px;}
+/*==============================================================
+   DOCUMENTATION MENU
+ =============================================================*/
+ 	.item-not-selected {background: #f7f7f9;}
