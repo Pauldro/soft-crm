@@ -7,22 +7,31 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <form action="<?php echo $config->pages->products."redir/"; ?>" id="add-item-search-form">
-                        <input type="hidden" name="action" value="item-search">
-                        <input type="hidden" class="custid" name="custID">
-                        <input type="hidden" class="addonurl" name="addonurl">
-                        <input type="hidden" class="linenumber" name="linenumber">
-                        <div class="row form-group">
-                            <div class="col-xs-12">
-                                <div class="input-group add-item-search-form">
-                                    <input type="text" class="form-control not-round searchfield" name="q" placeholder="Search itemID, X-ref, UPC">
-                                    <span class="input-group-btn">
-                                    	<button type="submit" class="btn btn-default not-round"> <span class="glyphicon glyphicon-search"></span> </button>
-                                    </span>
-                                </div>
-                            </div>
+                    <div class="row">
+                        <div class="col-xs-2">
+                            <a href="<?= $config->pages->ajax.'load/products/non-stock/form/'; ?>" class="btn btn-primary load-into-modal" data-modal="#ajax-modal">
+                                <i class="fa fa-cube" aria-hidden="true"></i> Non-stock
+                            </a>
                         </div>
-                    </form>
+                        <div class="col-xs-10">
+                            <form action="<?php echo $config->pages->products."redir/"; ?>" id="add-item-search-form">
+                                <input type="hidden" name="action" value="item-search">
+                                <input type="hidden" class="custid" name="custID">
+                                <input type="hidden" class="addonurl" name="addonurl">
+                                <input type="hidden" class="linenumber" name="linenumber">
+                                <div class="row form-group">
+                                    <div class="col-xs-12">
+                                        <div class="input-group add-item-search-form">
+                                            <input type="text" class="form-control not-round searchfield" name="q" placeholder="Search itemID, X-ref, UPC">
+                                            <span class="input-group-btn">
+                                            	<button type="submit" class="btn btn-default not-round"> <span class="glyphicon glyphicon-search"></span> </button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
                 <div class="row">
                     <div class="col-xs-12"> <div class="results"> </div> </div>
