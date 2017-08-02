@@ -10,13 +10,24 @@
                     $shipID = str_replace('shipto-', '', $input->urlSegment5);
                 }
             }
-            $include = $config->paths->content.'customer/cust-page/orders/orders-panel.php';
+            $page->body = $config->paths->content.'customer/cust-page/orders/orders-panel.php';
             break;
         case 'salesrep':
-            $include = $config->paths->content.'salesrep/orders/orders-panel.php';
+            $page->body = $config->paths->content.'salesrep/orders/orders-panel.php';
             break;
 		case 'search':
-			$include = $config->paths->content.'recent-orders/ajax/load/order-search-modal.php';
+			$searchtype = $sanitizer->text($input->urlSegment(4));
+			switch ($searchtype) {
+				case 'cust':
+					$custID = $input->get->text('custID');
+					$shipID = $input->get->text('shipID');
+					$page->body = $config->paths->content.'customer/cust-page/orders/order-search-form.php';
+					$page->title = $modaltitle = "Searching through ".get_customer_name($custID)." orders";
+					break;
+				case 'salesrep':
+					//FIX
+					break;
+			}
 
 			break;
 
@@ -24,9 +35,15 @@
 
 
     if ($config->ajax) {
-        include($include);
+		if ($config->modal) {
+			$modalbody = $page->body;
+			include $config->paths->content.'common/modals/include-ajax-modal.php';
+		} else {
+			include($page->body);
+		}
+        
     } else {
-        $title = ''; $modalbody = $include;
+        $title = ''; $modalbody = $page->body;
         include $config->paths->content."common/include-blank-page.php";
     }
 

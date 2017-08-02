@@ -3,7 +3,7 @@
 	$ajax = new stdClass();
 	$ajax->loadinto = "#orders-panel"; //WHERE TO LOAD AJAX LOADED DATA
 	$ajax->focus = "#orders-panel"; //WHERE TO FOCUS AFTER LOADED DATA IS LOADED
-	$ajax->searchlink = $config->pages->ajax.'load/orders/search/cust/?custID='.urlencode($custID);  //LINK TO THE SEARCH PAGE FOR THIS OBJECT
+	$ajax->searchlink = $config->pages->ajax.'load/orders/search/cust/?custID='.urlencode($custID);  //LINK TO THE SEARCH PAGE
 	$ajax->data = 'data-loadinto="'.$ajax->loadinto.'" data-focus="'.$ajax->focus.'"'; //DATA FIELDS FOR JAVASCRIPT
 	$ajax->url = $page->fullURL;
 	$ajax->url->path = $config->pages->ajax;
@@ -16,10 +16,11 @@
 
 	if ($shipID != '') {
 		$ajax->insertafter = 'shipto-'.$shipID;
-		$ajax->searchlink .=	"&shipID=".urlencode($shipID);
+		$ajax->searchlink .= "&shipID=".urlencode($shipID);
 	} else {
 		$ajax->insertafter = $custID;
 	}
+	$ajax->searchlink .= "&modal=modal";
 
     if ($config->ajax) {$collapse = '';} else {$collapse = 'collapse'; }
 
@@ -30,7 +31,7 @@
 ?>
 
 <div class="panel panel-primary not-round" id="orders-panel">
-    <div class="panel-heading not-round" id="order-panel-heading">
+    <div class="panel-heading not-round" id="orders-panel-heading">
     	<?php if ($session->ordersearch) : ?>
         	<a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">
 				Searching for <?php echo $session->ordersearch; ?> <span class="caret"></span> <span class="badge"><?php echo $ordercount; ?></span>
