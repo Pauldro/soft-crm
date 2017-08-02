@@ -1,12 +1,12 @@
 <div id="no-more-tables">
-    <table class="table-condensed cf order-details table-bordered">
+    <table class="table-condensed cf order-details table-bordered numeric">
         <thead class="cf">
             <tr>
-                <th>Item ID</th> <th width="300">Description</th> <th class="numeric" width="90">Price</th> <th class="numeric">Quantity</th> <th class="numeric" width="90">Total</th>
+                <th>Item / Description</th> <th class="numeric" width="90">Price</th> <th class="numeric">Quantity</th> <th class="numeric" width="90">Total</th>
                 <th>Whse</th>
                 <th>
                 	<div class="row">
-                    	<div class="col-xs-3">Details</div><div class="col-xs-3">Documents</div> <div class="col-xs-3">Notes</div> <div class="col-xs-3">Item Info</div>
+                    	<div class="col-xs-3">Details</div><div class="col-xs-3">Documents</div> <div class="col-xs-3">Notes</div> <div class="col-xs-3">Edit</div>
                     </div>
                 </th>
             </tr>
@@ -16,7 +16,6 @@
             <?php foreach ($quote_details as $detail) : ?>
             	<?php
 					$detailnoteurl = $config->pages->notes.'redir/?action=get-quote-notes&qnbr='.$qnbr.'&linenbr='.$detail['linenbr'];
-
 
 					if ($detail['notes'] != 'Y') {
 						$detnoteicon = '<a class="load-notes text-muted" href="'.$detailnoteurl.'" data-modal="#ajax-modal"><i class="material-icons md-36" title="View order notes">&#xE0B9;</i></a>';
@@ -36,8 +35,7 @@
 
 				?>
             <tr>
-                <td data-title="ItemID"><?= $detail['itemid']; ?> </td>
-                <td data-title="Description"><?= $detail['desc1']; ?></td>
+                <td data-title="Item"><?= $detail['itemid']; ?> <br> <?= $detail['desc1']; ?> </td>
                 <td data-title="Price" class="text-right">$ <?= formatMoney($detail['quotprice']); ?></td>
                 <td data-title="Ordered" class="text-right"><?= $detail['quotunit'] + 0; ?></td>
                 <td data-title="Total" class="text-right">$ <?= formatMoney($detail['quotprice'] * $detail['quotunit']); ?></td>

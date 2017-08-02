@@ -10,7 +10,7 @@
 	<div class="row">
 		<div class="col-xs-6 col-sm-7"></div>
 	    <div class="col-xs-6 col-sm-5">
-	    	<table class="table-condensed table table-striped">
+	    	<table class="table-condensed table table-striped numeric">
 	        	<tr>
 	        		<td>Subtotal</td>
 	        		<td class="text-right">$ <?php echo formatmoney($quote['subtotal']); ?></td>
