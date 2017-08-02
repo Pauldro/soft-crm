@@ -18,8 +18,7 @@
 <file name="_foot-blank.php" server="192.168.1.2//var/www/html/dpluso/" local="131363083791256298" remote="131363263800000000" Dst="2" />
 <file name="template-test.php" server="192.168.1.2//var/www/html/dpluso/" local="131369153410000000" remote="131369333400000000" Dst="2" />
 <file name="template-customer.php" server="192.168.1.2//var/www/html/dpluso/" local="131340700430856605" remote="131340880200000000" Dst="2" />
-<file name="template-ajax.php" server="192.168.1.2//var/www/html/dpluso/" local="131354606387892321" remote="131354786400000000" Dst="2" />
-<file name="template-crud-controller.php" server="192.168.1.2//var/www/html/dpluso/" local="131321802275608883" remote="131322018000000000" Dst="1" />
+<file name="template-ajax.php" server="192.168.1.2//var/www/html/dpluso/" local="131461791363947689" remote="131461971600000000" Dst="2" />
 <file name="template-cart.php" server="192.168.1.2//var/www/html/dpluso/" local="131363089861449539" remote="131363269800000000" Dst="2" />
 <file name="_head-test.php" server="192.168.1.2//var/www/html/dpluso/" local="131365872632248507" remote="131366052600000000" Dst="2" />
 <file name="template-edit.php" server="192.168.1.2//var/www/html/dpluso/" local="131333154222914510" remote="131333370000000000" Dst="1" />
