@@ -18,6 +18,7 @@
 	include_once($config->paths->content."common/initialize.php");
 
 	include $config->paths->assets."classes/purl/vendor/autoload.php";
+	include $config->paths->assets."classes/dsql/vendor/autoload.php";
 	include_once($config->paths->assets.'classes/crm/src/utfport.php');
 
 	$config->sessionName = session_name();
@@ -33,6 +34,7 @@
 	$config->styles->append($config->urls->templates.'styles/libraries.css');
 	$config->styles->append($config->urls->templates.'styles/styles.css');
 	$config->styles->append($config->urls->templates.'styles/libs/fuelux.css');
+	$config->styles->append($config->urls->templates.'styles/libs/sweetalert.css');
 
 	$config->scripts->append($config->urls->templates.'scripts/js-config.js');
 	$config->scripts->append($config->urls->templates.'scripts/libraries.js');
