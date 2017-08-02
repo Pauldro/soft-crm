@@ -1,5 +1,5 @@
-site/templates/scripts/_notes/dwsync.xml
 site/templates/content/ajax/json/test-json.php
 custpricecodetbl.json
 salespersontbl.json
-*/dwsync.xml
+_notes
+dwsync.xml

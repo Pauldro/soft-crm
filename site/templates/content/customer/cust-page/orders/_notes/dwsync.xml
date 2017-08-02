@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <dwsync>
-<file name="orders-panel.php" server="192.168.1.2//var/www/html/dpluso/" local="131330659730143043" remote="131330875200000000" Dst="1" />
-<file name="orders-table.php" server="192.168.1.2//var/www/html/dpluso/" local="131360499694529831" remote="131360679600000000" Dst="2" />
-<file name="orders-thead-rows.php" server="192.168.1.2//var/www/html/dpluso/" local="131299421281200280" remote="131299636800000000" Dst="1" />
-<file name="order-totals.php" server="192.168.1.2//var/www/html/dpluso/" local="131299421706348048" remote="131299638000000000" Dst="1" />
-<file name="order-detail-rows.php" server="192.168.1.2//var/www/html/dpluso/" local="131358931788273318" remote="131359111800000000" Dst="2" />
-<file name="order-search-form.php" server="192.168.1.2//var/www/html/dpluso/" local="131340705141928934" remote="131340885000000000" Dst="2" />
-<file name="order-documents-rows.php" server="192.168.1.2//var/www/html/dpluso/" local="131317390106241151" remote="131317605600000000" Dst="1" />
-<file name="order-tracking-rows.php" server="192.168.1.2//var/www/html/dpluso/" local="131330723166217698" remote="131330938800000000" Dst="1" />
-<file name="orders-total.php" server="192.168.1.2//var/www/html/dpluso/" local="131333068161371058" remote="131299637400000000" Dst="1" />
+<file name="orders-panel.php" server="192.168.1.2//var/www/html/dpluso/" local="131461666518547368" remote="131461846800000000" Dst="2" />
+<file name="orders-table.php" server="192.168.1.2//var/www/html/dpluso/" local="131461661788523201" remote="131461842000000000" Dst="2" />
+<file name="orders-thead-rows.php" server="192.168.1.2//var/www/html/dpluso/" local="131457377234584556" remote="131461928400000000" Dst="2" />
+<file name="order-totals.php" server="192.168.1.2//var/www/html/dpluso/" local="131299421706348048" remote="131461928400000000" Dst="2" />
+<file name="order-detail-rows.php" server="192.168.1.2//var/www/html/dpluso/" local="131441950897469164" remote="131461928400000000" Dst="2" />
+<file name="order-search-form.php" server="192.168.1.2//var/www/html/dpluso/" local="131457261824059811" remote="131461928400000000" Dst="2" />
+<file name="order-documents-rows.php" server="192.168.1.2//var/www/html/dpluso/" local="131317390106241151" remote="131461928400000000" Dst="2" />
+<file name="order-tracking-rows.php" server="192.168.1.2//var/www/html/dpluso/" local="131330723166217698" remote="131461928400000000" Dst="2" />
+<file name="orders-total.php" server="192.168.1.2//var/www/html/dpluso/" local="131459961183931412" remote="131461928400000000" Dst="2" />
 </dwsync>
