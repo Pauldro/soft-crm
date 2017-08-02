@@ -1,6 +1,7 @@
 <?php
     if (!isset($actiontype)) {$actiontype = 'all';}
-    $actionpanel = new UserActionPanel('order', $actiontype, '#actions-panel', '#actions-panel', '#ajax-modal', $config->ajax);
+	if (!isset($partialid)) {$partialid = 'actions';}
+    $actionpanel = new UserActionPanel('order', $actiontype, $partialid, '#ajax-modal', $config->ajax, $config->modal);
     $actionpanel->setuporderpanel($ordn);
     $actionpanel->setuptasks($input->get->text('action-status'));
     $actionpanel->querylinks = UserAction::getlinkarray();
@@ -12,4 +13,5 @@
         $actionpanel->querylinks['actiontype'] = $actiontype;
     }
     $actionpanel->count = getuseractionscount($user->loginid, $actionpanel->querylinks, false);
+	
     include $config->paths->content."actions/actions-panel.php";
