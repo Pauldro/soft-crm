@@ -108,9 +108,9 @@
 	*
 	*/
 	if ($config->debug) {
-	 $config->cgi = "DPLUSO";
+		$config->cgi = "DPLUSO";
 	} else {
-	 $config->cgi = "CRMTEST";
+		$config->cgi = "CRMTEST";
 	}
 
 	$config->COMPANY = '3';
@@ -121,7 +121,7 @@
 	$config->directory = "";
 	$config->filename = $_SERVER['REQUEST_URI'];
 	$config->script = str_replace($config->urls->root, '', $_SERVER['SCRIPT_NAME']);
-	$config->imagedirectory  = '/img/product/';
+	$config->imagedirectory = '/img/product/';
 	$config->imagefiledirectory  = '/var/www/html/img/product/';
 	$config->imagenotfound = 'notavailable.png';
 	$config->siteassets = $config->urls->root . 'assets/files/';
@@ -146,6 +146,7 @@
 	$config->pages->edit = $config->urls->root . 'edit/';
 	$config->pages->editorder = $config->urls->root . 'edit/order/';
 	$config->pages->editquote = $config->urls->root . 'edit/quote/';
+	$config->pages->orderquote = $config->urls->root . 'edit/quote-to-order/';
     $config->pages->print = $config->urls->root."print/";
 	$config->pages->products = $config->urls->root . 'products/';
 	$config->pages->iteminfo = $config->urls->root . 'products/item-info/';
@@ -160,6 +161,7 @@
 	$config->pages->userconfigs = $config->urls->root . 'user/user-config/';
 	$config->pages->orders = $config->urls->root . 'user/orders/';
 	$config->pages->quotes = $config->urls->root . 'user/quotes/';
+	$config->pages->actions = $config->urls->root . 'activity/';
 	$config->pages->documentation = $config->urls->root . "documentation/";
 
 
@@ -174,10 +176,12 @@
 			'width' => '35', 'type' => 'CART', 'forms' => 5, 'form1' => 'Quote', 'form2' => 'Pick Ticket', 'form3' => 'Pack Ticket', 'form4' => 'Invoice', 'form5' => 'Acknowledgement'
 		)
 	);
+
 	$config->phoneintl = false;
 	$config->textjustify = array('r' => 'text-right', 'c' => 'text-center', 'l' => 'text-left', 'u' => '');
 	$config->formattypes = array('N' => 'number', 'I' => 'integer', 'C' => 'text', 'D' => 'date');
 	$config->specialordertypes = array('S' => 'Special Order', 'N' => 'Normal', 'D' => 'Dropship');
+
 
 
 	/**
