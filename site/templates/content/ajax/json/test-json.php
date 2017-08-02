@@ -1,12 +1,11 @@
 <?php
 
-
 header('Content-Type: application/json');
 
-//$json = file_get_contents($config->paths->templates.'test.json');
-//echo $json;
+$json = convertfiletojson($config->jsonfilepath.session_id()."-cisalesordr.json");
+echo $json;
 
-	$ip = 'http://192.168.1.20:9000';
+/*	$ip = 'http://192.168.1.20:9000';
 
 	$requestbody = array();
 	$requestbody['DeviceID'] = '';
@@ -38,6 +37,8 @@ header('Content-Type: application/json');
 		curl_setopt( $curl, CURLOPT_HTTPHEADER, array('Content-Type:application/json'));
 
 			$result = curl_exec($curl);
-		$information = curl_getinfo($curl); 
+		$information = curl_getinfo($curl);
 
 	echo $result;
+
+	*/

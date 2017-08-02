@@ -1,5 +1,5 @@
 <div id="no-more-tables" class="form-group">
-    <table class="table-condensed cf order-details">
+    <table class="table-condensed cf order-details numeric">
         <thead class="cf">
             <tr>
                 <th>Item</th> <th class="numeric">Price</th> <th class="numeric">Qty</th> <th class="numeric">Total</th>
