@@ -12,8 +12,8 @@
 <file name="cart-redir.php" server="192.168.1.2//var/www/html/dpluso/" local="131330455832749523" remote="131330671800000000" Dst="1" />
 <file name="cust-redir.php" server="192.168.1.2//var/www/html/dpluso/" local="131370220416656286" remote="131370400200000000" Dst="2" />
 <file name="notes-redir.php" server="192.168.1.2//var/www/html/dpluso/" local="131327679831364585" remote="131327895600000000" Dst="1" />
-<file name="orders-redir.php" server="192.168.1.2//var/www/html/dpluso/" local="131360496598998278" remote="131360676600000000" Dst="2" />
+<file name="orders-redir.php" server="192.168.1.2//var/www/html/dpluso/" local="131461779456289550" remote="131461959600000000" Dst="2" />
 <file name="products-redir.php" server="192.168.1.2//var/www/html/dpluso/" local="131358927416609678" remote="131359107000000000" Dst="2" />
 <file name="redirect.php" server="192.168.1.2//var/www/html/dpluso/" local="131327699059217221" remote="131327914800000000" Dst="1" />
-<file name="quotes-redir.php" server="192.168.1.2//var/www/html/dpluso/" local="131461703292709924" remote="131461883400000000" Dst="2" />
+<file name="quotes-redir.php" server="192.168.1.2//var/www/html/dpluso/" local="131461780341892379" remote="131461960200000000" Dst="2" />
 </dwsync>

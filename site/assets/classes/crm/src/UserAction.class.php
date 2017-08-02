@@ -10,6 +10,7 @@
         public $assignedby;
         public $title;
         public $textbody;
+        public $reflectnote;
         public $completed;
         public $datecompleted;
         public $dateupdated;
@@ -259,6 +260,17 @@
                     return '';
                     break;
             }
+        }
+
+        public function getactionlineage() {
+            if ($this->actionlink) {
+                $parentid = getparentaction($this->id, false);
+                while ($parentid != '') {
+                    $this->actionlineage[] = $parentid;
+                    $parentid = getparentaction($parentid, false);
+                }
+            }
+            return $this->actionlineage;
         }
 
 
