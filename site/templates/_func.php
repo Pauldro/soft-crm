@@ -314,6 +314,52 @@ function show_requirements($field) {
 		);
 	}
 
+	function returnwherelinks($linkarray) {
+		$withquotes = $switching = array();
+		$wherestmt = '';
+		$columns = array_keys($linkarray);
+		foreach ($linkarray as $key => $val) {
+			if (strlen($val)) {
+				$prepped = ':'.$key;
+				$wherestmt .= $key." = ".$prepped." AND ";
+				$switching[$prepped] = $val;
+				$withquotes[] = true;
+			}
+		}
+		$wherestmt = rtrim($wherestmt, ' AND ');
+		return array(
+			'switching' => $switching,
+			'withquotes' => $withquotes,
+			'wherestatement' => $wherestmt,
+			'changecount' => sizeof($switching)
+		);
+	}
+
+	function returninsertlinks($linkarray) {
+		$withquotes = $switching = array();
+		$columnlist = $valueslist = '';
+		$columns = array_keys($linkarray);
+		foreach ($linkarray as $key => $val) {
+			if (strlen($val)) {
+				$prepped = ':'.$key;
+				$columnlist .= $key.", ";
+				$valueslist .= $prepped.", ";
+				$switching[$prepped] = $val;
+				$withquotes[] = true;
+			}
+		}
+		$columnlist = rtrim($columnlist, ', ');
+		$valueslist = rtrim($valueslist, ', ');
+
+		return array(
+			'switching' => $switching,
+			'withquotes' => $withquotes,
+			'valuelist' => $valueslist,
+			'columnlist' => $columnlist,
+			'changecount' => sizeof($switching)
+		);
+	}
+
 	function returncustindextable($distincton) {
 		if ($distincton) {
 			if ($distincton == 'shipto') {
@@ -446,7 +492,7 @@ function show_requirements($field) {
 		if ($custID != '') {
 			$replace = get_customer_name($custID)." ($custID)";
 		}
-		
+
 		if ($shipID != '') {
 			$replace .= " Shipto: " . get_shipto_name($custID, $shipID, false)." ($shipID)";
 		}
@@ -468,6 +514,17 @@ function show_requirements($field) {
 		}
 
 		return preg_replace($regex, $replace, $message);
+	}
+
+	function curl_redir($url) {
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+			CURLOPT_RETURNTRANSFER => 1,
+			CURLOPT_URL => $url,
+			CURLOPT_FOLLOWLOCATION => true
+		));
+		sleep(2);
+		return curl_exec($curl);
 	}
 
 

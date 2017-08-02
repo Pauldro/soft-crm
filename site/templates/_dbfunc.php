@@ -102,12 +102,22 @@
 
 	function get_customer_info($session, $custID, $debug) {
 		$sql = wire('database')->prepare("SELECT custindex.*, customer.dateentered FROM custindex JOIN customer ON custindex.custid = customer.custid WHERE custindex.custid = :custID AND customer.sessionid = :sessionid LIMIT 1");
-		$switching = array(':sessionid'=> $session, ':custID'=> $custID);
-		$withquotes = array(true, true, true);
+		$switching = array(':sessionid'=> $session, ':custID'=> $custID); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
 			$sql->execute($switching);
+			return $sql->fetch(PDO::FETCH_ASSOC);
+		}
+	}
+
+	function get_first_custindex($debug) {
+		$sql = wire('database')->prepare("SELECT * FROM custindex LIMIT 1");
+		$switching = array(); $withquotes = array();
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
+		} else {
+			$sql->execute();
 			return $sql->fetch(PDO::FETCH_ASSOC);
 		}
 	}
@@ -364,12 +374,10 @@
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
 			$sql = wire('database')->prepare("SELECT custid, name, amountsold, timesold, lastsaledate FROM custindex WHERE splogin1 IN (:login, :sharedaccounts) OR splogin2 = :login OR splogin3 = :login GROUP BY custid ORDER BY CAST(amountsold as Decimal(10,8)) DESC LIMIT 25");
-			$switching = array(':login' => $login, ':sharedaccounts' => $SHARED_ACCOUNTS);
-			$withquotes = array(true);
+			$switching = array(':login' => $login, ':sharedaccounts' => $SHARED_ACCOUNTS); $withquotes = array(true);
 		} else {
 			$sql = wire('database')->prepare("SELECT custid, name, amountsold, timesold, lastsaledate FROM custindex GROUP BY custid ORDER BY CAST(amountsold as Decimal(10,8)) DESC LIMIT 25 ");
-			$switching = array();
-			$withquotes = array();
+			$switching = array(); $withquotes = array();
 		}
 		$sql->execute($switching);
 		if ($debug) {
@@ -377,6 +385,31 @@
 		} else {
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
+	}
+
+	function insertnewcustomer($customer, $debug) {
+		$query = returninsertlinks($customer);
+		$sql = wire('database')->prepare("INSERT INTO custindex (".$query['columnlist'].") VALUES (".$query['valuelist'].")");
+		$switching = $query['switching']; $withquotes = $query['withquotes'];
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
+		} else {
+			$sql->execute($switching);
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
+		}
+	}
+
+	function getmaxcustindexrecnbr() {
+		$sql = wire('database')->prepare("SELECT MAX(recno) FROM custindex");
+		$sql->execute();
+		return $sql->fetchColumn();
+	}
+
+	function changecustindexcustid($originalcustID, $newcustID) {
+		$sql = wire('database')->prepare("UPDATE custindex SET custid = :newcustid WHERE custid = :originalcustid");
+		$switching = array(':newcustid' => $newcustID, ':originalcustid' => $originalcustID); $withquotes = array(true, true);
+		$sql->execute($switching);
+		return returnsqlquery($sql->queryString, $switching, $withquotes);
 	}
 
 /* =============================================================
@@ -783,81 +816,6 @@
 	}
 
 
-
-
-/* =============================================================
-	CRM NOTES FUNCTIONS
-============================================================ */
-	function getlinkednotescount($linkarray, $debug) {
-		$query = buildlinkquery($linkarray);
-		$sql = wire('database')->prepare("SELECT COUNT(*) FROM crmnotes WHERE ".$query['querylinks']."");
-		$switching = $query['switching'];
-		$withquotes = $query['withquotes'];
-		$sql->execute($switching);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			return $sql->fetchColumn();
-		}
-	}
-
-	function buildlinkquery($linkarray) {
-		$querylinks = ''; $switching = $withquotes = array();
-		foreach ($linkarray as $link => $value) {
-			if ($value) {
-				$querylinks .= $link . ' = :'.$link . ' AND ';
-				$switching[':'.$link] = $value;
-				$withquotes[] = true;
-			}
-		}
-		return array('querylinks' => rtrim($querylinks, ' AND '), 'switching' => $switching, 'withquotes' => $withquotes);
-	}
-
-	function getlinkednotes($linkarray, $limit, $page, $debug) {
-		$limiting = returnlimitstatement($limit, $page);
-		$query = buildlinkquery($linkarray);
-		$sql = wire('database')->prepare("SELECT *FROM crmnotes WHERE ".$query['querylinks']. " ". $limiting);
-		$switching = $query['switching'];
-		$withquotes = $query['withquotes'];
-		$sql->execute($switching);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-
-	function loadcrmnote($noteid, $debug) {
-		$sql = wire('database')->prepare("SELECT * FROM crmnotes WHERE id = :noteid");
-		$switching = array(':noteid'=> $noteid);
-		$withquotes = array(true);
-		$sql->execute($switching);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->setFetchMode(PDO::FETCH_CLASS, 'Note');
-			return $sql->fetch();
-		}
-	}
-
-	function get_user_note_maxrec($loginid) {
-		$sql = wire('database')->prepare("SELECT MAX(id) AS id FROM crmnotes WHERE writtenby = :login ");
-		$switching = array(':login' => $loginid);
-		$withquotes = array(true, true);
-		$sql->execute($switching);
-		return $sql->fetchColumn();
-	}
-
-	function writecrmnote($loginid, $date, $custid, $shipto, $contact, $ordn, $qnbr, $textbody) {
-		$sql = wire('database')->prepare("INSERT INTO crmnotes (textbody,datecreated,writtenby,customerlink,shiptolink,contactlink,salesorderlink,quotelink) VALUES (:textbody, :date, :loginid, :custid, :shipto, :contact, :ordn, :qnbr)");
-		$switching = array(':textbody' => $textbody, ':date' => $date, ':loginid' => $loginid, ':custid' => $custid, ':shipto' => $shipto, ':contact' => $contact, ':ordn' => $ordn,':qnbr' => $qnbr);
-		$withquotes = array(true, true, true, true, true, true, true, true);
-		$sql->execute($switching);
-		return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'insertedid' => wire('database')->lastInsertId());
-	}
-
-
 /* =============================================================
 	PRODUCT FUNCTIONS
 ============================================================ */
@@ -895,30 +853,32 @@
 		}
 	}
 
+	/* =============================================================
+		USER ACTION FUNCTIONS
+	============================================================ */
 
-/* =============================================================
-	TASK FUNCTIONS
-============================================================ */
-	function loadtask($id, $debug) {
-		$sql = wire('database')->prepare("SELECT * FROM crmtasks WHERE id = :taskid");
-		$switching = array(':taskid' => $id); $withquotes = array(true);
-		$sql->execute($switching);
+	function getuseractions($user, $querylinks, $limit, $page, $debug) {
+		$limiting = returnlimitstatement($limit, $page);
+		$query = returnwherelinks($querylinks);
+		$andlinks = $query['wherestatement'];
+		$sql = wire('database')->prepare("SELECT * FROM useractions WHERE $andlinks $limiting");
+		$switching = $query['switching'];
+		$withquotes = $query['withquotes'];
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
-			$sql->setFetchMode(PDO::FETCH_CLASS, 'Task');
-			return $sql->fetch();
+			$sql->execute($switching);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'UserAction');
+			return $sql->fetchAll();
 		}
 	}
 
-	function get_linked_task_count($user, $custid, $shipto, $contact, $ordn, $qnbr, $noteid, $status, $debug) {
-		$table = returntaskstable($status);
-		$query = buildtaskquerylinks($user, $custid, $shipto, $contact, $ordn, $qnbr, $noteid, false);
-		$querylinks = $query['querylink'];
-		$sql = wire('database')->prepare("SELECT COUNT(*) FROM $table WHERE $querylinks");
+	function getuseractionscount($user, $querylinks, $debug) {
+		$query = returnwherelinks($querylinks);
+		$andlinks = $query['wherestatement'];
+		$sql = wire('database')->prepare("SELECT COUNT(*) FROM useractions WHERE $andlinks");
 		$switching = $query['switching'];
 		$withquotes = $query['withquotes'];
-
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -927,150 +887,70 @@
 		}
 	}
 
-	function get_linked_tasks($user, $custid, $shipto, $contact, $ordn, $qnbr, $noteid, $status, $limit, $page, $debug) {
-		$table = returntaskstable($status);
-		$limiting = returnlimitstatement($limit, $page);
-		$query = buildtaskquerylinks($user, $custid, $shipto, $contact, $ordn, $qnbr, $noteid, false);
-		$querylinks = $query['querylink'];
-		$sql = wire('database')->prepare("SELECT * FROM $table WHERE $querylinks $limiting");
-		$switching = $query['switching'];
-		$withquotes = $query['withquotes'];
-
+	function loaduseraction($id, $fetchclass, $debug) {
+		$sql = wire('database')->prepare("SELECT * FROM useractions WHERE id = :id");
+		$switching = array(':id' => $id); $withquotes = array(true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
 			$sql->execute($switching);
-			$sql->setFetchMode(PDO::FETCH_CLASS, 'Task');
-			return $sql->fetchAll();
+			if ($fetchclass) {
+				$sql->setFetchMode(PDO::FETCH_CLASS, 'UserAction');
+			}
+			return $sql->fetch();
 		}
 	}
 
-
-	function buildtaskquerylinks($user, $custid, $shipto, $contact, $ordn, $qnbr, $noteid, $schedule) {
-		if ($schedule) {
-			$query = array('user' => ':user', 'customerlink' => ':custid', 'shiptolink' => ':shipto', 'contactlink' => ':contact');
-		$switching = array(':user' => $user, ':custid'=> $custid, ':shipto' => $shipto, ':contact' => $contact);
+	function updateaction($actionID, $action, $debug) {
+		$originalaction = loaduseraction($actionID, false, false); // (id, bool fetchclass, bool debug)
+		$query = returnpreppedquery($originalaction, $action);
+		$sql = wire('database')->prepare("UPDATE useractions SET ".$query['setstatement']." WHERE id = :actionid");
+		$query['switching'][':actionid'] = $actionID;$query['withquotes'][] = true;
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
 		} else {
-			$query = array('assignedto' => ':user', 'customerlink' => ':custid', 'shiptolink' => ':shipto', 'contactlink' => ':contact', 'salesorderlink' => ':ordn', 'quotelink' => ':quote',' notelink' => ':note');
-		$switching = array(':user' => $user, ':custid'=> $custid, ':shipto' => $shipto, ':contact' => $contact, ':ordn' => $ordn, ':quote' => $qnbr, ':note' => $noteid);
-		}
-		$querylinks = '';
-		$switchingarray = array();
-		$withquotes = array();
-		foreach ($query as $column => $val) {
-			if ($switching[$val] != '') {
-				$querylinks .= $column .' = '. $val." AND ";
-				$switchingarray[$val] = $switching[$val];
-				$withquotes[] = true;
+			$sql->execute($query['switching']);
+			$success = $sql->rowCount();
+			if ($success) {
+				return array("error" => false,  "sql" => returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']));
+			} else {
+				return array("error" => true,  "sql" => returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']));
 			}
 		}
 
-
-		return array('querylink' => rtrim($querylinks, ' AND '), 'switching' => $switchingarray, 'withquotes' => $withquotes);
-
-
 	}
 
-	function updatetaskcompletion($taskid, $completedate, $updatedate, $completed) {
-		$sql = wire('database')->prepare("UPDATE crmtasks SET completedate = :completedate, updatedate = :updatedate, completed = :completed WHERE id = :taskid");
-		$switching = array(':completedate' => $completedate, ':updatedate' => $updatedate, ':completed' => $completed, ':taskid' => $taskid);
-		$withquotes = array(true, true, true, true);
-		$sql->execute($switching);
-		$success = $sql->rowCount();
-		if ($success) {
-			return array("error" => false,  "sql" => returnsqlquery($sql->queryString, $switching, $withquotes));
-		} else {
-			return array("error" => true,  "sql" => returnsqlquery($sql->queryString, $switching, $withquotes));
-		}
-
-	}
-
-	function writetask($loginid, $date, $custid, $shipto, $contact, $ordn, $qnbr, $noteid, $taskid, $textbody, $tasktype, $duedate, $assignedto) {
-		$sql = wire('database')->prepare("INSERT INTO crmtasks (textbody,datewritten,writtenby,customerlink,shiptolink,contactlink,salesorderlink,quotelink,notelink, tasklink, tasktype, duedate, assignedto, updatedate) VALUES (:textbody, :date, :loginid, :custid, :shipto, :contact, :ordn, :qnbr, :noteid, :taskid, :tasktype, :duedate, :assignedto, :updatedate)");
-		$switching = array(':textbody' => $textbody, ':date' => $date, ':loginid' => $loginid, ':custid' => $custid, ':shipto' => $shipto, ':contact' => $contact, ':ordn' => $ordn,':qnbr' => $qnbr, ':noteid' => $noteid, ':taskid' => $taskid, ':tasktype' => $tasktype, ':duedate' => $duedate, ':assignedto' => $assignedto, ':updatedate' => $date);
-		$withquotes = array(true, true, true, true, true, true, true, true, true, true, true, true, true, true);
-		$sql->execute($switching);
-		return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'insertedid' => wire('database')->lastInsertId());
-	}
-
-
-	function get_user_task_maxrec($loginid) {
-		$sql = wire('database')->prepare("SELECT MAX(id) AS id FROM crmtasks WHERE writtenby = :login");
-		$switching = array(':login' => $loginid);
-		$withquotes = array(true, true);
-		$sql->execute($switching);
-		return $sql->fetchColumn();
-	}
-
-
-	function createtaskschedule($date, $startdate, $loginid, $repeatlogic, $desc, $customerlink, $shiptolink, $contactlink, $tasktype, $debug) {
-		$active = 'Y';
-		$sql = wire('database')->prepare("INSERT INTO taskscheduler (datecreated, startdate, user, active, description, repeatlogic, customerlink, shiptolink, contactlink, tasktype) VALUES (:datecreated, :startdate, :user, :active, :description, :repeatlogic, :custid, :shiptoid, :contactid, :taskstype)");
-		$switching = array(':datecreated' => $date,':startdate' => $startdate, ':user' => $loginid, ':active' => $active, ':description' => $desc, ':repeatlogic' => $repeatlogic, ':custid' => $customerlink, ':shiptoid' => $shiptolink, ':contactid' => $contactlink, ':taskstype' => $tasktype);
-		$withquotes = array(true, true, true, true, true, true, true, true, true, true);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'insertedid' => wire('database')->lastInsertId());
-		}
-
-	}
-
-	function change_taskschedule_active($scheduleid, $activate, $debug) {
-		if ($activate) { $active = 'Y'; } else { $active = 'N'; }
-		$sql = wire('database')->prepare("UPDATE taskscheduler SET active = :active WHERE id = :id");
-		$switching = array(':active' => $active, ':id' => $scheduleid);
-		$withquotes = array(true, true);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		}
-	}
-
-	function get_user_taskscheduler_maxrec($loginid) {
-		$sql = wire('database')->prepare("SELECT MAX(id) FROM taskscheduler WHERE user = :login");
-		$switching = array(':login' => $loginid);
-		$withquotes = array(true, true);
-		$sql->execute($switching);
-		return $sql->fetchColumn();
-	}
-
-	function get_user_scheduled_tasks($user, $customerlink, $shiptolink, $contactlink, $debug) {
-		$query = buildtaskquerylinks($user, $custid, $shipto, $contact, $ordn, $qnbr, $noteid, false);
-		$querylinks = $query['querylink'];
-		$sql = wire('database')->prepare("SELECT * FROM taskscheduler WHERE $querylinks");
+	function insertaction($action, $debug) {
+		$query = returninsertlinks($action);
+		$sql = wire('database')->prepare("INSERT INTO useractions (".$query['columnlist'].") VALUES (".$query['valuelist'].")");
 		$switching = $query['switching'];
 		$withquotes = $query['withquotes'];
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
 			$sql->execute($switching);
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	function get_current_taskschedules() {
-		$sql = wire('database')->prepare("SELECT * FROM taskscheduler WHERE active = 'Y' AND DATE_FORMAT(startdate, '%Y-%m-%e') >= CURDATE()");
-		$sql->execute();
-		return $sql->fetchAll(PDO::FETCH_ASSOC);
-	}
-
-	function scheduletask($user, $date, $duedate, $text, $customerlink, $shiptolink, $contactlink, $debug) {
-		$sql = wire('database')->prepare("INSERT INTO crmtasks (datewritten, duedate, writtenby, assignedto, assignedby, textbody, customerlink, shiptolink, contactlink) VALUES (:datewritten, :duedate, 'task-scheduler', :user, 'task-scheduler', :text, :custid, :shiptoid, :contactid)");
-		$switching = array(':datewritten' => $date, ':duedate', $duedate, ':user' => $user, ':text' => $text, ':custid' => $customerlink, ':shiptoid' => $shiptolink, ':contactid' => $contactlink);
-		$withquotes = array(true, true, true, true, true, true, true);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
 			return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'insertedid' => wire('database')->lastInsertId());
 		}
 	}
 
+	function get_useractions_maxrec($loginid) {
+		$sql = wire('database')->prepare("SELECT MAX(id) AS id FROM useractions WHERE createdby = :login");
+		$switching = array(':login' => $loginid);
+		$withquotes = array(true, true);
+		$sql->execute($switching);
+		return $sql->fetchColumn();
+	}
 
+	function getparentaction($actionID, $debug) {
+		$sql = wire('database')->prepare("SELECT actionlink FROM useractions WHERE id = :id");
+		$switching = array(':id' => $actionID); $withquotes = array(true);
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
+		} else {
+			$sql->execute($switching);
+			return $sql->fetchColumn();
+		}
+	}
 
 /* =============================================================
 	CART FUNCTIONS
@@ -1108,6 +988,21 @@
 		}
 	}
 
+	function editcarthead($sessionid, $carthead, $debug) {
+		$orginalcarthead = getcarthead($sessionid, false);
+		$query = returnpreppedquery($originalcarthead, $carthead);
+		$sql = wire('database')->prepare("UPDATE carthed SET ".$query['setstatement']." WHERE sessionid = :sessionid");
+		$query['switching'][':sessionid'] = $sessionid; $query['withquotes'][] = true;
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
+		} else {
+			if ($query['changecount'] > 0) {
+				$sql->execute($query['switching']);
+			}
+			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
+		}
+	}
+
 	function getcart($sessionid, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM cartdet WHERE sessionid = :sessionid");
 		$switching = array(':sessionid' => $sessionid); $withquotes = array(true);
@@ -1122,7 +1017,7 @@
 
 	function insertcarthead($sessionid, $custID, $shipID, $debug) {
 		$sql = wire('database')->prepare("INSERT INTO carthed (sessionid, custid, shiptoid, date, time) VALUES (:sessionid, :custid, :shipid, :date, :time)");
-		$switching = array(':sessionid' => $sessionid, ':custid' => $custID, ':shipid' =>$shipID, ':date' => date('Ymd'), ':time' =>date('His')); $withquotes = array(true, true, true, false, false);
+		$switching = array(':sessionid' => $sessionid, ':custid' => $custID, ':shipid' => $shipID, ':date' => date('Ymd'), ':time' =>date('His')); $withquotes = array(true, true, true, false, false);
 
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -1342,6 +1237,12 @@
 ============================================================ */
 	function getstates() {
 		$sql = wire('database')->prepare("SELECT abbreviation as state, name FROM states");
+		$sql->execute();
+		return $sql->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	function getcountries() {
+		$sql = wire('database')->prepare("SELECT * FROM countries");
 		$sql->execute();
 		return $sql->fetchAll(PDO::FETCH_ASSOC);
 	}
