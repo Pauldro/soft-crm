@@ -1,7 +1,25 @@
+<h4>Current Price</h4>
 <table class="table table-bordered table-striped table-condensed">
-    <?php if ($soconfig['config']['show_margin'] == 'Y') : ?>
+    <tr> <td>Price </td> <td class="text-right">$ <?= formatmoney($linedetail['quotprice']); ?></td> </tr>
+    <tr> <td>Unit of Measurement</td> <td> <?= $linedetail['uom'] ?></td> </tr>
+    <tr> <td>Qty</td> <td class="text-right"><?= $linedetail['quotunit']+0; ?></td> </tr>
+    <tr> <td>Original Ext. Amt.</td> <td class="text-right">$ <?= formatmoney($linedetail['quotprice'] * $linedetail['quotunit']); ?></td> </tr>
+    <?php if ($soconfig['config']['show_originalprice']) : ?>
+        <tr> <td>Original Price</td> <td class="text-right">$ <?= formatmoney($linedetail['quotprice']); ?></td> </tr>
+    <?php endif; ?>
+    <?php if ($soconfig['config']['show_listprice']) : ?>
+        <tr> <td>List Price</td> <td class="text-right">$ <?= formatmoney($linedetail['listprice']); ?></td> </tr>
+    <?php endif; ?>
+    <?php if ($soconfig['config']['show_cost']) : ?>
+        <tr> <td>Cost</td> <td class="text-right">$ <?= formatmoney($linedetail['cost']); ?></td> </tr>
+    <?php endif; ?>
+    <tr><td>Kit:</td><td><?php echo $linedetail['kititemflag']; ?></td></tr>
+</table>
+
+<table class="table table-bordered table-striped table-condensed">
+    <?php if ($soconfig['config']['show_margin']) : ?>
         <tr>
-            <td>Margin </td>
+            <td class="control-label">Margin </td>
             <td>
                 <div class="input-group">
                     <input type="text" class="form-control input-sm text-right margin"> <div class="input-group-addon input-sm">%</div>
@@ -9,9 +27,9 @@
             </td>
         </tr>
     <?php endif; ?>
-    <tr> <td>Qty</td> <td><input type="text" class="form-control pull-right input-sm text-right qty" name="qty" value="<?= $linedetail['quotunit']+0; ?>"></td> </tr>
+    <tr> <td class="control-label">Qty</td> <td><input type="text" class="form-control pull-right input-sm text-right qty" name="qty" value="<?= $linedetail['quotunit']+0; ?>"></td> </tr>
     <tr>
-        <td>Price</td>
+        <td class="control-label">Price</td>
         <td>
             <div class="input-group">
                 <div class="input-group-addon input-sm">$ </div>
@@ -19,10 +37,10 @@
             </div>
         </td>
     </tr>
-    
-    <?php if ($soconfig['config']['use_discount'] == 'Y') : ?>
+
+    <?php if ($soconfig['config']['use_discount']) : ?>
         <tr>
-            <td>Discount Amt.</td>
+            <td class="control-label">Discount Amt.</td>
             <td>
                 <div class="input-group">
                     <div class="input-group-addon input-sm">$</div>
@@ -31,7 +49,7 @@
             </td>
         </tr>
         <tr>
-            <td>Discount %</td>
+            <td class="control-label">Discount %</td>
             <td>
                 <div class="input-group">
                     <input type="text" class="form-control input-sm text-right discount-percent" name="discount" value="<?= formatmoney($linedetail['discpct']); ?>">
@@ -41,7 +59,7 @@
         </tr>
     <?php endif; ?>
     <tr>
-        <td>Extended Amount</td>
+        <td class="control-label">Extended Amount</td>
         <td>
             <div class="input-group">
                 <div class="input-group-addon input-sm">$</div>
