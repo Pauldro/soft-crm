@@ -94,10 +94,16 @@
                     }
                     break;
                 default:
+					$noteID = $input->get->id;
+					$fetchclass = true;
+					$note = loaduseraction($noteID, $fetchclass, false);
+					$messagetemplate = "Viewing Note for {replace}";
+					$page->title = $modaltitle = $title = $note->createmessage($messagetemplate);
+					
                     if ($config->ajax) {
-                        include $config->paths->content.'actions/notes/view-note.php';
+                        $modalbody = $config->paths->content.'actions/notes/view-note.php';
+						include $config->paths->content.'common/modals/include-ajax-modal.php';
                     } else {
-                        $title = 'Note ID: ' . $input->get->text('id');
                         $modalbody = $config->paths->content.'actions/notes/view-note.php';
                         include $config->paths->content."common/include-blank-page.php";
                     }

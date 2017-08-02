@@ -94,10 +94,16 @@
                     }
                     break;
                 default:
+					$actionid = $input->get->id;
+					$fetchclass = true;
+					$action = loaduseraction($actionid, $fetchclass, false);
+					$messagetemplate = "Viewing Action for {replace}";
+					$page->title = $modaltitle = $title = $action->createmessage($messagetemplate);
+					
                     if ($config->ajax) {
-                        include $config->paths->content.'actions/actions/view-action.php';
+                        $modalbody = $config->paths->content.'actions/actions/view-action.php';
+						include $config->paths->content.'common/modals/include-ajax-modal.php';
                     } else {
-                        $title = 'Action ID: ' . $input->get->text('id');
                         $modalbody = $config->paths->content.'actions/actions/view-action.php';
                         include $config->paths->content."common/include-blank-page.php";
                     }

@@ -95,10 +95,16 @@
                     }
                     break;
                 default:
+					$taskid = $input->get->id;
+					$fetchclass = true;
+					$task = loaduseraction($taskid, $fetchclass, false);
+					$messagetemplate = "Viewing Action for {replace}";
+					$page->title = $modaltitle = $title = $task->createmessage($messagetemplate);
+					
                     if ($config->ajax) {
-                        include $config->paths->content.'actions/tasks/view-task.php';
+                        $modalbody = $config->paths->content.'actions/tasks/view-task.php';
+						include $config->paths->content.'common/modals/include-ajax-modal.php';
                     } else {
-                        $title = 'Task ID: ' . $input->get->text('id');
                         $modalbody = $config->paths->content.'actions/tasks/view-task.php';
                         include $config->paths->content."common/include-blank-page.php";
                     }
