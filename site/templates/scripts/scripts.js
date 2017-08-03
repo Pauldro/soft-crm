@@ -204,7 +204,11 @@ $(document).ready(function() {
             showajaxloading();
             generateurl(function(url) {
                 console.log(url);
-                wait(500, function() { loadin(url, ajaxloader.loadinto, function() { $(ajaxloader.modal).resizemodal('lg'); $(ajaxloader.modal).modal(); hideajaxloading(); }); });
+                wait(500, function() { 
+					$(ajaxloader.loadinto).loadin(url, function() { 
+						$(ajaxloader.modal).resizemodal('lg').modal(); hideajaxloading(); 
+					}); 
+				});
             });
         });
     });
@@ -247,7 +251,9 @@ $(document).ready(function() {
 			console.log('clicked');
 			var button = $(this);
 			var ajaxloader = new ajaxloadedmodal(button);
-			loadin(ajaxloader.url, ajaxloader.loadinto, function() { $(ajaxloader.modal).modal(); });
+			$(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
+				 $(ajaxloader.modal).modal();
+			});
 		});
 
 		$("body").on("submit", "#order-search-form", function(e)  {
@@ -259,8 +265,11 @@ $(document).ready(function() {
 			postform(form, false, false, function() { //form, overwriteformdata, returnjson, callback
 				wait(500, function() {
 					generateurl(function(url) {
-						loadin(addtoquerystring(url, ["ajax"], ["true"]), loadinto, function() {
-							$(modal).modal('hide');  if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
+						loadin(url, loadinto, function() {
+							$(modal).modal('hide');  
+							if (focuson.length > 0) { 
+								$('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); 
+							}
 						});
 					 });
 				});
