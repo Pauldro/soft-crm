@@ -9,7 +9,7 @@
 		$qtyo = $detail['qtyordered'] + 0;
 		$qtys = $detail['qtyshipped'] + 0;
 		$bo = $detail['qtybackord'] + 0;
-		$detailnoteurl = $config->pages->notes.'redir/?action=get-order-notes&ordn='.$on.'&linenbr='.$detail['linenbr'];
+		$detailnoteurl = $config->pages->notes.'redir/?action=get-order-notes&ordn='.$on.'&linenbr='.$detail['linenbr'].'&modal=modal';
 
 
 		if ($detail['havenote'] != 'Y') {

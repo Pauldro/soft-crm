@@ -15,7 +15,7 @@
        		<?php $order_details = getorderdetails(session_id(), $ordn, false); ?>
             <?php foreach ($order_details as $detail) : ?>
             	<?php
-					$detailnoteurl = $config->pages->notes.'redir/?action=get-order-notes&ordn='.$ordn.'&linenbr='.$detail['linenbr'];
+					$detailnoteurl = $config->pages->notes.'redir/?action=get-order-notes&ordn='.$ordn.'&linenbr='.$detail['linenbr'].'&modal=modal';
 
 					if ($detail['havenote'] != 'Y') {
 						$detnoteicon = '<a class="load-notes text-muted" href="'.$detailnoteurl.'" data-modal="#ajax-modal"><i class="material-icons md-36" title="View order notes">&#xE0B9;</i></a>';

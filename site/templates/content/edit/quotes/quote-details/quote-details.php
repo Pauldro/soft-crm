@@ -15,7 +15,7 @@
        		<?php $quote_details = get_quote_details(session_id(), $qnbr, false); ?>
             <?php foreach ($quote_details as $detail) : ?>
             	<?php
-					$detailnoteurl = $config->pages->notes.'redir/?action=get-quote-notes&qnbr='.$qnbr.'&linenbr='.$detail['linenbr'];
+					$detailnoteurl = $config->pages->notes.'redir/?action=get-quote-notes&qnbr='.$qnbr.'&linenbr='.$detail['linenbr'].'&modal=modal';
 
 					if ($detail['notes'] != 'Y') {
 						$detnoteicon = '<a class="load-notes text-muted" href="'.$detailnoteurl.'" data-modal="#ajax-modal"><i class="material-icons md-36" title="View order notes">&#xE0B9;</i></a>';

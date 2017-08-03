@@ -34,7 +34,7 @@
 						</a>';
 	}
 
-	$noteurl = $config->pages->notes.'redir/?action=get-order-notes&ordn='.$ordn.'&linenbr=0';
+	$noteurl = $config->pages->notes.'redir/?action=get-order-notes&ordn='.$ordn.'&linenbr=0&modal=modal';;
 	if ($billing['havenote'] != 'Y') {
 		$headnoteicon = '<a class="btn btn-default load-notes" role="button" href="'.$noteurl.'" data-modal="#notes-modal"><i class="material-icons" title="View order notes">&#xE0B9;</i> Add Order Notes</a>';
 	} else {

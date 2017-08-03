@@ -16,7 +16,7 @@
             <?php foreach ($orderdetails as $detail) : ?>
             	<?php
                     $detail['havenote'] = hasdplusnote(session_id(), session_id(), $detail['linenbr'], $config->dplusnotes['cart']['type']);
-                    $detailnoteurl = $config->pages->notes.'redir/?action=get-cart-notes&linenbr='.$detail['linenbr'];
+                    $detailnoteurl = $config->pages->notes.'redir/?action=get-cart-notes&linenbr='.$detail['linenbr'].'&modal=modal';
     				if ($detail['havenote'] != 'Y') {
     					$detnoteicon = '<a class="load-notes text-muted" href="'.$detailnoteurl.'" data-modal="#ajax-modal"><i class="material-icons md-36" title="View order notes">&#xE0B9;</i></a>';
     				} else {

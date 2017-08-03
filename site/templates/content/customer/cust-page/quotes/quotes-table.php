@@ -28,7 +28,7 @@
 					$quotejsdata = 'data-loadinto="'.$ajax->loadinto.'"  data-focus="#'.$qtnbr.'"';
 				}
 
-				$noteurl = $config->pages->notes.'redir/?action=get-quote-notes&qnbr='.$qtnbr.'&linenbr=0'; //TODO
+				$noteurl = $config->pages->notes.'redir/?action=get-quote-notes&qnbr='.$qtnbr.'&linenbr=0&modal=modal'; //TODO
 				if ($quote['notes'] != 'Y') {
 					$headnoteicon = '<a class="load-notes text-muted" href="'.$noteurl.'" data-modal="#ajax-modal"><i class="material-icons md-36" title="View quote notes">&#xE0B9;</i></a>';
 				} else {

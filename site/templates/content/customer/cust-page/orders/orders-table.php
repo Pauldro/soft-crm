@@ -92,13 +92,13 @@
 				//ORDER NOTES
 				$noteurl = new \Purl\Url($page->httpUrl);
 				$noteurl->path = $config->pages->notes."redir/";
-				$noteurl->query->setData(array('action' => 'get-order-notes','ordn' => $on, 'linenbr' => '0'));
+				$noteurl->query->setData(array('action' => 'get-order-notes','ordn' => $on, 'linenbr' => '0', 'modal' => 'modal'));
 
 
 				if ($order['havenote'] != 'Y') {
-					$headnoteicon = '<a class="load-notes text-muted" href="'.$noteurl.'" data-modal="#ajax-modal"><i class="material-icons md-36" title="View order notes">&#xE0B9;</i></a>';
+					$headnoteicon = '<a href="'.$noteurl.'" class="load-notes text-muted" data-modal="#ajax-modal"><i class="material-icons md-36" title="View order notes">&#xE0B9;</i></a>';
 				} else {
-					$headnoteicon = '<a class="load-notes" href="'.$noteurl.'" data-modal="#ajax-modal"> <i class="material-icons md-36" title="View order notes">&#xE0B9;</i></a>';
+					$headnoteicon = '<a href="'.$noteurl.'" class="load-notes" data-modal="#ajax-modal"> <i class="material-icons md-36" title="View order notes">&#xE0B9;</i></a>';
 				}
 
 

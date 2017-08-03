@@ -67,17 +67,20 @@
 			$linenbr = $input->get->text('linenbr');
 			$data = array('DBNAME' => $config->dbName, 'LQNOTE' => 'SORD', 'KEY1' => $ordn, 'KEY2' => $linenbr);
 			$session->loc = $config->pages->ajax."load/notes/dplus/order/?ordn=".$ordn."&linenbr=".$linenbr;
+			if ($config->modal) {$session->loc .= "&modal=modal";}
 			break;
 		case 'get-quote-notes':
 			$qnbr = $input->get->text('qnbr');
 			$linenbr = $input->get->text('linenbr');
 			$data = array('DBNAME' => $config->dbName, 'LQNOTE' => 'QUOT', 'KEY1' => $qnbr, 'KEY2' => $linenbr);
 			$session->loc = $config->pages->ajax."load/notes/dplus/quote/?qnbr=".$qnbr."&linenbr=".$linenbr;
+			if ($config->modal) {$session->loc .= "&modal=modal";}
 			break;
 		case 'get-cart-notes':
 			$linenbr = $input->get->text('linenbr');
 			$data = array('DBNAME' => $config->dbName, 'LOAD CART NOTES' => false);
 			$session->loc = $config->pages->ajax."load/notes/dplus/cart/?linenbr=".$linenbr;
+			if ($config->modal) {$session->loc .= "&modal=modal";}
 			break;
 		case 'write-order-note':
 			$form1 = $input->post->form1 ? "Y": "N";  $form2 = $input->post->form2 ? "Y": "N";

@@ -6,49 +6,39 @@
     switch ($filteron) {
         case 'dplus':
 			$notetype = $sanitizer->text($input->urlSegment(4));
+			$linenbr = $input->get->text('linenbr');
 			switch ($notetype) {
 				case 'order':
-					$include = $config->paths->content.'notes/dplus/sales-order-notes.php';
+					$ordn = $input->get->text('ordn');
+					$page->title = 'Reviewing Sales Order Notes for Order #' . $ordn . ' Line #' . $linenbr;
+					$page->body = $config->paths->content.'notes/dplus/sales-order-notes.php';
 					break;
 				case 'quote':
-					$include = $config->paths->content.'notes/dplus/quote-notes.php';
+					$qnbr = $input->get->text('qnbr');
+					$page->title = 'Reviewing Quote Notes for Quote #' . $qnbr . ' Line #' . $linenbr;
+					$page->body = $config->paths->content.'notes/dplus/quote-notes.php';
 					break;
 				case 'cart':
-					$include = $config->paths->content.'notes/dplus/cart-notes.php';
+					$page->title = 'Reviewing Cart Notes for Line #' . $linenbr;
+					$page->body = $config->paths->content.'notes/dplus/cart-notes.php';
 					break;
 			}
            break;
-		case 'crm':
-			$notetype = $sanitizer->text($input->urlSegment(4));
-			$custID = ''; $shipID = ''; $contactID = ''; $ordn = ''; $qnbr = ''; $taskID = ''; $noteID = '';
-			switch ($notetype) {
-				case 'cust':
-					$custID = $input->get->text('custID');
-					if ($input->get->shipID) { $shipID = $input->get->text('shipID'); }
-					if ($input->get->contactID) { $shipID = $input->get->text('contactID'); }
-					if ($input->get->id) {
-						if ($input->get->id == 'new') {
-							if ($input->get->task) { $taskID = $sanitizer->text($input->get->task); }
-							$include = $config->paths->content.'notes/crm/new-note.php';
-						} else {
-							$notetitle = "Viewing Note for " . get_customer_name($custID);
-							$include = $config->paths->content."notes/crm/load/modal/read-note.php";
-						}
-					} else {
-						$include = $config->paths->content.'customer/cust-page/notes/notes-panel.php';
-					}
-					break;
-			}
-			break;
     }
 
 
 
 	if ($config->ajax) {
-		include($include);
+		if ($config->modal) {
+			$modalbody = $page->body;
+			$modaltitle = $page->title;
+			include $config->paths->content.'common/modals/include-ajax-modal.php';
+		} else {
+			include($page->body);
+		}
 	} else {
-		$modalbody = $include;
-		$title = '';
+		$modalbody = $page->body;
+		$modaltitle = $title = '';
 		include $config->paths->content.'common/include-blank-page.php';
 	}
 
