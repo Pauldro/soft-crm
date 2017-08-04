@@ -299,7 +299,7 @@
 			break;
 		case 'ci-sales-history':
 			$shipID = $input->get->text('shipID');
-			$itemid = $input->get->text('q');
+			$itemid = $input->get->text('itemid');
 			$date = $input->get->text('startdate');
 			$session->date = $date;
 			$startdate = date('Ymd', strtotime($date));
