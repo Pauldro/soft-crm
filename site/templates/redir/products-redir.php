@@ -52,7 +52,7 @@
 	*		IIPURCHORDR
 	*		ITEMID=$itemid
 	*		break;
-	*	case 'ii-quotesr':
+	*	case 'ii-quotes':
 	*		DBNAME=$config->DBNAME
 	*		IIQUOTE
 	*		ITEMID=$itemid
