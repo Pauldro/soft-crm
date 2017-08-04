@@ -54,3 +54,8 @@
 		header('location: ' . $config->pages->login);
 		exit;
 	}
+
+	
+	if ($input->get->modal) {
+		$config->modal = true;
+	}

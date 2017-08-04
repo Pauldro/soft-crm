@@ -2,7 +2,6 @@
     $actiontype = "action";
 	if ($input->get->modal) {
 		$partialid = 'actions-modal';
-		$config->modal = true;
 	} else {
 		$partialid = 'actions';
 	}
