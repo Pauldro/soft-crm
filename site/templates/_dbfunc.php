@@ -951,7 +951,19 @@
 			return $sql->fetchColumn();
 		}
 	}
-
+/* =============================================================
+	VENDOR FUNCTIONS
+============================================================ */
+	function getvendors($debug) {
+		$sql = wire('database')->prepare("SELECT * from vendors");
+		$switching = array(); $withquotes = array();
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
+		} else {
+			$sql->execute();
+			return $sql->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}
 /* =============================================================
 	CART FUNCTIONS
 ============================================================ */
