@@ -1,7 +1,7 @@
 function ajaxloadedmodal(button) {
     this.modal = button.data('modal');
     this.url = button.attr('href');
-    this.loadinto = button.data('modal')+" .modal-body";
+    this.loadinto = button.data('modal')+" .modal-content";
 }
 
 function itemform(thisform) {
