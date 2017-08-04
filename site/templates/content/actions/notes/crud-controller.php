@@ -13,8 +13,8 @@
                     if ($config->ajax) {
                 		include $config->paths->content."actions/notes/new-note.php";
                     } else {
-                        $title = 'Viewing User Note List';
-                        $modalbody = $config->paths->content."actions/notes/new-note.php";
+                        $page->title = 'Viewing User Note List';
+                        $page->modalbody = $config->paths->content."actions/notes/new-note.php";
                         include $config->paths->content."common/include-blank-page.php";
                     }
                     break;
@@ -38,8 +38,8 @@
                             if ($config->ajax) {
         						include $config->paths->content.'dashboard/actions/actions-panel.php';
         					} else {
-        						$title = 'Viewing User Note List';
-        						$modalbody = $config->paths->content.'actions/notes/lists/user-list.php';
+        						$page->title = 'Viewing User Note List';
+        						$page->body = $config->paths->content.'actions/notes/lists/user-list.php';
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;
@@ -50,8 +50,8 @@
                                 $actionpanel->setupcustomerpanel($custID, $shipID);
                                 $actionpanel->querylinks['customerlink'] = $custID;
                                 $actionpanel->querylinks['shiptolink'] = $shipID;
-        						$title = 'Viewing Customer Note List';
-        						$modalbody = $config->paths->content.'actions/notes/lists/cust-list.php';
+        						$page->title = 'Viewing Customer Note List';
+        						$page->body = $config->paths->content.'actions/notes/lists/cust-list.php';
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;
@@ -63,8 +63,8 @@
                                 $actionpanel->querylinks['customerlink'] = $custID;
                                 $actionpanel->querylinks['shiptolink'] = $shipID;
 								$actionpanel->querylinks['contactlink'] = $contactID;
-        						$title = 'Viewing User Actions List';
-        						$modalbody = $config->paths->content.'actions/notes/lists/contact-list.php';
+        						$page->title = 'Viewing User Actions List';
+        						$page->body = $config->paths->content.'actions/notes/lists/contact-list.php';
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;
@@ -74,8 +74,8 @@
         					} else {
                                 $actionpanel->setuporderpanel($ordn);
                                 $actionpanel->querylinks['salesorderlink'] = $ordn;
-        						$title = 'Viewing Order #'.$ordn.' Notes List';
-        						$modalbody = $config->paths->content.'actions/notes/lists/order-list.php';
+        						$page->title = 'Viewing Order #'.$ordn.' Notes List';
+        						$page->body = $config->paths->content.'actions/notes/lists/order-list.php';
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;
@@ -85,8 +85,8 @@
         					} else {
                                 $actionpanel->setupquotepanel($qnbr);
                                 $actionpanel->querylinks['quotelink'] = $qnbr;
-        						$title = 'Viewing Quote #'.$qnbr.' Notes List';
-        						$modalbody = $config->paths->content.'actions/notes/lists/order-list.php';
+        						$page->title = 'Viewing Quote #'.$qnbr.' Notes List';
+        						$page->body = $config->paths->content.'actions/notes/lists/order-list.php';
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;
@@ -98,13 +98,13 @@
 					$fetchclass = true;
 					$note = loaduseraction($noteID, $fetchclass, false);
 					$messagetemplate = "Viewing Note for {replace}";
-					$page->title = $modaltitle = $title = $note->createmessage($messagetemplate);
+					$page->title = $note->createmessage($messagetemplate);
 					
                     if ($config->ajax) {
-                        $modalbody = $config->paths->content.'actions/notes/view-note.php';
+                        $page->body = $config->paths->content.'actions/notes/view-note.php';
 						include $config->paths->content.'common/modals/include-ajax-modal.php';
                     } else {
-                        $modalbody = $config->paths->content.'actions/notes/view-note.php';
+                        $page->body = $config->paths->content.'actions/notes/view-note.php';
                         include $config->paths->content."common/include-blank-page.php";
                     }
                     break;

@@ -1,4 +1,4 @@
-<form action="<?php echo $config->pages->ajax."load/ci/search-results/modal/"; ?>" method="POST" id="ci-cust-lookup">
+<form action="<?php echo $config->pages->ajax."load/ci/search-results/?modal=modal"; ?>" method="POST" id="ci-cust-lookup">
     <input type="hidden" name="action" value="ci-item-lookup">
     <input type="hidden" name="shipID" class="shipid" value="<?php echo $shipID; ?>">
     <input type="hidden" name="nextshipID" class="nextshipid" value="<?php echo $nextshipid; ?>">

@@ -11,16 +11,15 @@
 	$tasklinks['actionlink'] = $taskID;
 	$task = UserAction::blankuseraction($tasklinks);
 
+	$message = "Creating a task for {replace} ";
+	$page->title = $task->createmessage($message);
 
 	if ($config->ajax) {
-		$message = "Creating a task for {replace} ";
-		// TODO FIX CREATE MESSAGE TO HAVE IT COME FROM USERACTION
-    	$modaltitle = createmessage($message, $custID, $shipID, $contactID, $taskID, $noteID, $ordn, $qnbr);
-		$modalbody = $config->paths->content."actions/tasks/forms/new-task-form.php";
+		$page->body = $config->paths->content."actions/tasks/forms/new-task-form.php";
 		include $config->paths->content."common/modals/include-ajax-modal.php";
-
 	} else {
-		include $config->paths->content."actions/tasks/forms/new-task-form.php";
+		$page->body = $config->paths->content."actions/tasks/forms/new-task-form.php";
+		include $config->paths->content."common/include-blank-page.php";
 	}
 
 ?>

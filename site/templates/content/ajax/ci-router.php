@@ -4,180 +4,150 @@
     $shipID = '';
     switch ($input->urlSegment(3)) { //Parts of order to load
         case 'search-results':
-            if ($input->get->q) {$q = $input->get->text('q'); $title = "Searching for '$q'";}
-			switch ($input->urlSegment(4)) {
-				case 'modal':
-					$modal = true;
-					$modalcontent = $config->paths->content."cust-information/forms/cust-search-form.php";
-					break;
-				default:
-					$modalbody = $config->paths->content."cust-information/cust-search-results.php";
-					break;
+            if ($input->get->q) {$q = $input->get->text('q'); $page->title = "Searching for '$q'";}
+			
+			if ($config->modal) {
+				$page->body = $config->paths->content."cust-information/forms/cust-search-form.php";
+			} else {
+				$page->body = $config->paths->content."cust-information/cust-search-results.php";
 			}
+			
             break;
         case 'item-search-results':
-            $title = "Searching items for " . $input->get->text('q');
+            $page->title = "Searching items for " . $input->get->text('q');
             $q = $input->get->text('q');
-            $modalbody = $config->paths->content."cust-information/item-search-results.php";
+            $page->body = $config->paths->content."cust-information/item-search-results.php";
             break;
 		case 'ci-shiptos':
 			$custID = $input->get->text('custID');
-			$title = 'Viewing ' . get_customer_name($custID) . ' shiptos';
-			$modalcontent = $config->paths->content."cust-information/cust-shiptos.php";
-			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
+			$page->title = 'Viewing ' . get_customer_name($custID) . ' shiptos';
+			$page->body = $config->paths->content."cust-information/cust-shiptos.php";
 			break;
 		case 'ci-shipto-info':
 			$custID = $input->get->text('custID');
 			$shipID = $input->get->text('shipID');
-			$title = 'Viewing ' . get_customer_name($custID) . ' shipto ' . $shipID;
-			$modalcontent = $config->paths->content."cust-information/cust-shipto-info.php";
-			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
+			$page->title = 'Viewing ' . get_customer_name($custID) . ' shipto ' . $shipID;
+			$page->content = $config->paths->content."cust-information/cust-shipto-info.php";
 			break;
         case 'ci-pricing-search':
-            $title = 'Search for an Item';
+            $page->title = 'Search for an Item';
             $action = 'ci-pricing';
             $custID = $input->get->text('custID');
-            if ($input->get->q) {$q = $input->get->text('q'); $title = "Searching for '$q'";}
-			switch ($input->urlSegment(4)) {
-				case 'modal':
-					$modal = true;
-					$modalcontent = $config->paths->content."cust-information/forms/item-search-form.php";
-					break;
-				default:
-					$modalbody = $config->paths->content."cust-information/item-search-results.php";
-					break;
+            if ($input->get->q) {$q = $input->get->text('q'); $page->title = "Searching for '$q'";}
+			
+			if ($config->modal) {
+				$page->body = $config->paths->content."cust-information/forms/item-search-form.php";
+			} else {
+				$page->body = $config->paths->content."cust-information/item-search-results.php";
 			}
             break;
         case 'ci-pricing':
             $custID = $input->get->text('custID');
             $itemid = $input->get->text('itemid');
-            $title = 'Viewing Pricing for ' . $itemid;
-			$modalcontent = $config->paths->content."cust-information/item-pricing.php";
-            if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
+            $page->title = 'Viewing Pricing for ' . $itemid;
+			$page->body = $config->paths->content."cust-information/item-pricing.php";
             break;
 		case 'ci-open-invoices':
 			$custID = $input->get->text('custID');
-			$title = get_customer_name($custID) . ' Open Invoice Inquiry';
-			$modalcontent = $config->paths->content."cust-information/cust-open-invoices.php";
-			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
+			$page->title = get_customer_name($custID) . ' Open Invoice Inquiry';
+			$page->body = $config->paths->content."cust-information/cust-open-invoices.php";
 			break;
 		case 'ci-standing-orders':
 			$custID = $input->get->text('custID');
-			$title = get_customer_name($custID) . ' Standing Orders Inquiry';
-			$modalcontent = $config->paths->content."cust-information/cust-standing-orders.php";
-			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
+			$page->title = get_customer_name($custID) . ' Standing Orders Inquiry';
+			$page->body = $config->paths->content."cust-information/cust-standing-orders.php";
 			break;
 		case 'ci-payment-history':
 			$custID = $input->get->text('custID');
-			$title = get_customer_name($custID) . ' Payment History Inquiry';
-			$modalcontent = $config->paths->content."cust-information/cust-payment-history.php";
-			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
+			$page->title = get_customer_name($custID) . ' Payment History Inquiry';
+			$page->body = $config->paths->content."cust-information/cust-payment-history.php";
 			break;
 		case 'ci-documents':
 			$custID = $input->get->text('custID');
             switch ($input->urlSegment(4)) {
                 case 'order':
-                    $title = "Order #" . $input->get->text('ordn'). ' Documents';
+                    $page->title = "Order #" . $input->get->text('ordn'). ' Documents';
                     break;
                 default:
-                    $title = get_customer_name($custID) . ' Documents';
+                    $page->title = get_customer_name($custID) . ' Documents';
                     break;
             }
-			$modalcontent = $config->paths->content."cust-information/cust-documents.php";
-			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
+			$page->body = $config->paths->content."cust-information/cust-documents.php";
 			break;
 		case 'ci-quotes':
 			$custID = $input->get->text('custID');
-			$title = get_customer_name($custID) . ' Quote Inquiry';
-			$modalcontent = $config->paths->content."cust-information/cust-quotes.php";
-			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
+			$page->title = get_customer_name($custID) . ' Quote Inquiry';
+			$page->body = $config->paths->content."cust-information/cust-quotes.php";
 			break;
 		case 'ci-contacts':
 			$custID = $input->get->text('custID');
-			$title = get_customer_name($custID) . ' Contacts Inquiry';
-			$modalcontent = $config->paths->content."cust-information/cust-contacts.php";
-			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
+			$page->title = get_customer_name($custID) . ' Contacts Inquiry';
+			$page->body = $config->paths->content."cust-information/cust-contacts.php";
 			break;
 		case 'ci-contacts':
 			$custID = $input->get->text('custID');
-			$title = get_customer_name($custID) . ' Contacts Inquiry';
-			$modalcontent = $config->paths->content."cust-information/cust-contacts.php";
-			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
+			$page->title = get_customer_name($custID) . ' Contacts Inquiry';
+			$page->body = $config->paths->content."cust-information/cust-contacts.php";
 			break;
 		case 'ci-credit':
 			$custID = $input->get->text('custID');
-			$title = get_customer_name($custID) . ' Credit Inquiry';
-			$modalcontent = $config->paths->content."cust-information/cust-credit.php";
-			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
+			$page->title = get_customer_name($custID) . ' Credit Inquiry';
+			$page->body = $config->paths->content."cust-information/cust-credit.php";
 			break;
 		case 'ci-payments':
 			$custID = $input->get->text('custID');
-			$title = get_customer_name($custID) . ' Credit Inquiry';
-			$modalcontent = $config->paths->content."cust-information/cust-credit.php";
-			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
+			$page->title = get_customer_name($custID) . ' Credit Inquiry';
+			$page->body = $config->paths->content."cust-information/cust-credit.php";
 			break;
         case 'ci-sales-orders':
 			$custID = $input->get->text('custID');
-			$title = get_customer_name($custID) . ' Sales Order Inquiry';
-			$modalcontent = $config->paths->content."cust-information/cust-sales-orders.php";
-			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
+			$page->title = get_customer_name($custID) . ' Sales Order Inquiry';
+			$page->body = $config->paths->content."cust-information/cust-sales-orders.php";
 			break;
         case 'ci-sales-history':
 			$custID = $input->get->text('custID');
             if ($input->urlSegment4 == 'form') {
                 $action = 'ci-sales-history';
-                $title = get_customer_name($custID) . ' Choose a Starting Date';
-    			$modalbody = $config->paths->content."cust-information/forms/cust-sales-history-form.php";
+                $page->title = get_customer_name($custID) . ' Choose a Starting Date';
+    			$page->body = $config->paths->content."cust-information/forms/cust-sales-history-form.php";
             } else {
-                $title = get_customer_name($custID) . ' Sales History Inquiry';
-    			$modalcontent = $config->paths->content."cust-information/cust-sales-history.php";
+                $page->title = get_customer_name($custID) . ' Sales History Inquiry';
+    			$page->body = $config->paths->content."cust-information/cust-sales-history.php";
             }
-
-			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
 			break;
         case 'ci-custpo':
 			$custID = $input->get->text('custID');
-			$title = get_customer_name($custID) . ' Customer PO Inquiry';
-			$modalcontent = $config->paths->content."cust-information/cust-po.php";
-			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
+			$page->title = get_customer_name($custID) . ' Customer PO Inquiry';
+			$page->body = $config->paths->content."cust-information/cust-po.php";
 			break;
         case 'ci-53weeks':
 			$custID = $input->get->text('custID');
-			$title = get_customer_name($custID) . ' 52 Week Sales Data';
-			$modalcontent = $config->paths->content."cust-information/cust-sales-data.php";
-			if ($config->ajax) { $modal = true; } else {$modalbody = $modalcontent;}
+			$page->title = get_customer_name($custID) . ' 52 Week Sales Data';
+			$page->body = $config->paths->content."cust-information/cust-sales-data.php";
 			break;
         default:
-            $title = 'Search for a customer';
+            $page->title = 'Search for a customer';
             if ($input->get->q) {$q = $input->get->text('q');}
-            $modal = true;
-            $modalbody = $config->paths->content."cust-information/forms/cust-search-form.php";
+            $page->body = $config->paths->content."cust-information/forms/cust-search-form.php";
             break;
-
     }
 
-
-	if ($modal) {
-        $modaltitle = $title;
-		if (!$modalbody) {
-			$modalbody = $config->paths->content."item-information/modal-result.php";
-		}
-        include $config->paths->content."common/modals/include-ajax-modal.php";
-    } else {
-		if ($config->ajax) {
-			include $modalbody;
+	if ($config->ajax) {
+		if ($config->modal) {
+			include $config->paths->content."common/modals/include-ajax-modal.php";
 		} else {
-			$page->title = $title;
-			$config->styles->append('//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css');
-			$config->scripts->append('//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js');
-			$config->scripts->append('//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js');
-			$config->scripts->append($config->urls->templates.'scripts/libs/datatables.js');
-			$config->scripts->append($config->urls->templates.'scripts/ci/cust-functions.js');
-			$config->scripts->append($config->urls->templates.'scripts/ci/cust-info.js');
-			include $config->paths->content."common/include-blank-page.php";
+			include $page->body;
 		}
-
-    }
+	} else {
+		$config->styles->append('//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css');
+		$config->scripts->append('//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js');
+		$config->scripts->append('//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js');
+		$config->scripts->append($config->urls->templates.'scripts/libs/datatables.js');
+		$config->scripts->append($config->urls->templates.'scripts/ci/cust-functions.js');
+		$config->scripts->append($config->urls->templates.'scripts/ci/cust-info.js');
+		include $config->paths->content."common/include-blank-page.php";
+	}
+	
 
 
 

@@ -46,11 +46,11 @@ $(function() {
 		var itemid = $(this).find('.itemid').val();
 		var modal = config.modals.ajax;
         var loadinto =  modal+" .modal-content";
-		var href = URI($(this).attr('action')).addQuery('q', itemid).normalizeQuery().toString();
+		var href = URI($(this).attr('action')).addQuery('q', itemid).addQuery("modal", "modal").normalizeQuery().toString();
 		showajaxloading();
-		loadin(href, loadinto, function() {
-			console.log(href);
-			hideajaxloading();
+		$(loadinto).loadin(href, function() {
+			hideajaxloading(); console.log(href);
+			$(modal).find('.modal-body').addClass('modal-results');
 			$(modal).resizemodal('lg').modal();
 		});
 	});
@@ -63,13 +63,18 @@ $(function() {
         var loadinto =  modal+" .modal-content";
         var itemid = $(itemlookupform + " .itemid").val();
         var custid = $(itemlookupform + " .custid").val();
-        var href = URI(config.urls.load.ii_activity).addQuery("itemid", itemid).addQuery("custID", custid).addQuery("shipID", "").query(cleanparams).toString();
+        var href = URI(config.urls.load.ii_activity).addQuery("itemid", itemid)
+													.addQuery("custID", custid)
+													.addQuery("modal", "modal")
+													.query(cleanparams)
+													.toString();
         showajaxloading();
         $(formid).postform({formdata: false, jsoncallback: false}, function() { //form, overwriteformdata, returnjson, callback
             $(modal).modal('hide');
             wait(500, function() {
-                loadin(href, loadinto, function() {
-                    hideajaxloading();
+                $(loadinto).loadin(href, function() {
+                    hideajaxloading(); console.log(href);
+					$(modal).find('.modal-body').addClass('modal-results');
                     $(modal).resizemodal('lg').modal();
                     listener.listen();
                 });
@@ -81,16 +86,21 @@ $(function() {
         e.preventDefault();
         var formid = '#'+$(this).attr('id');
         var modal = config.modals.ajax;
-        var loadinto =  modal+" .modal-content";
+        var loadinto = modal+" .modal-content";
         var itemid = $(itemlookupform + " .itemid").val();
         var custid = $(itemlookupform + " .custid").val();
-        var href = URI(config.urls.load.ii_saleshistory).addQuery("itemid", itemid).addQuery("custID", custid).query(cleanparams).toString();
+        var href = URI(config.urls.load.ii_saleshistory).addQuery("itemid", itemid)
+														.addQuery("custID", custid)
+														.addQuery("modal", "modal")
+														.query(cleanparams)
+														.toString();
         showajaxloading();
         $(formid).postform({formdata: false, jsoncallback: false}, function() { //form, overwriteformdata, returnjson, callback
             $(modal).modal('hide');
-            loadin(href, loadinto, function() {
-                hideajaxloading();
+            $(loadinto).loadin(href, function() {
+                hideajaxloading(); console.log(href);
                 wait(500, function() {
+					$(modal).find('.modal-body').addClass('modal-results');
                     $(modal).resizemodal('lg').modal();
                     listener.listen();
                 });
@@ -98,9 +108,11 @@ $(function() {
             });
         });
     });
-
-
 });
+
+/*==============================================================
+   ITEM INFO FUNCTIONS
+ =============================================================*/
 	function pricing() {
 		var custid = $(itemlookupform+' .custid').val();
 		var shiptoid = $(itemlookupform+' .shipid').val();
@@ -111,84 +123,81 @@ $(function() {
 			iicust('ii-pricing');
 		}
 	}
-
     function costing() {
         var itemid = $(itemlookupform + " .itemid").val();
         var modal = config.modals.ajax;
         var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_costing).addQuery("itemid", itemid).addQuery("custID", "").addQuery("shipID", "").query(cleanparams).toString();
+		var href = URI(config.urls.load.ii_costing).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
         showajaxloading();
         ii_costing(itemid, function() {
-            loadin(href, loadinto, function() {
-                console.log(href);
-                hideajaxloading();
+            $(loadinto).loadin(href, function() {
+                hideajaxloading(); console.log(href);
+				$(modal).find('.modal-body').addClass('modal-results');
                 $(modal).resizemodal('lg').modal();
             });
         });
     }
-
     function purchorder() {
         var itemid = $(itemlookupform + " .itemid").val();
         var modal = config.modals.ajax;
         var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_purchaseorder).addQuery("itemid", itemid).addQuery("custID", "").addQuery("shipID", "").query(cleanparams).toString();
+		var href = URI(config.urls.load.ii_purchaseorder).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
         showajaxloading();
         ii_purchaseorder(itemid, function() {
-            loadin(href, loadinto, function() {
-                console.log(href);
-                hideajaxloading();
+            $(loadinto).loadin(href, function() {
+                hideajaxloading(); console.log(href);
+				$(modal).find('.modal-body').addClass('modal-results');
                 $(modal).resizemodal('xl').modal();
             });
         });
     }
-
-
-
 	function quotes() {
 		var itemid = $(itemlookupform + " .itemid").val();
+		var custid = $(itemlookupform+' .custid').val();
 		var modal = config.modals.ajax;
 		var loadinto = modal+" .modal-content";
-		var href = URI(config.urls.load.ii_quotes).addQuery("itemid", itemid).addQuery("custID", "").addQuery("shipID", "").query(cleanparams).toString();
+		var href = URI(config.urls.load.ii_quotes).addQuery("itemid", itemid)
+												  .addQuery("custID", custid)
+												  .addQuery("modal", "modal")
+												  .query(cleanparams)
+												  .toString();
 		showajaxloading();
 		ii_quotes(itemid, function() {
-			loadin(href, loadinto, function() {
-				console.log(href);
-				hideajaxloading();
+			$(loadinto).loadin(href, function() {
+				hideajaxloading(); console.log(href);
+				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('xl').modal();
 			});
 		});
 	}
-
 	function purchhist() {
 		var itemid = $(itemlookupform + " .itemid").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_purchasehistory).addQuery("itemid", itemid).addQuery("custID", "").addQuery("shipID", "").query(cleanparams).toString();
+		var href = URI(config.urls.load.ii_purchasehistory).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
 		showajaxloading();
 		ii_purchasehistory(itemid, function() {
-			loadin(href, loadinto, function() {
-				console.log(href);
-				hideajaxloading();
+			$(loadinto).loadin(href, function() {
+				hideajaxloading(); console.log(href);
+				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('xl').modal();
 			});
 		});
 	}
-
 	function whereused() {
 		var itemid = $(itemlookupform + " .itemid").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_whereused).addQuery("itemid", itemid).addQuery("custID", "").addQuery("shipID", "").query(cleanparams).toString();
+		var href = URI(config.urls.load.ii_whereused).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
 		showajaxloading();
 		ii_whereused(itemid, function() {
-			loadin(href, loadinto, function() {
-				console.log(href);
-				hideajaxloading();
+			$(loadinto).loadin(href, function() {
+				hideajaxloading(); console.log(href);
+				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('lg').modal();
 			});
 		});
 	}
-
     function compinq() {
         var itemid = $(itemlookupform + " .itemid").val();
         var loadinto =  config.modals.ajax+" .modal-content";
@@ -197,7 +206,6 @@ $(function() {
             text: "Kit or BOM Inquiry (K/B)",
             input: 'text',
             showCancelButton: true,
-            closeOnConfirm: false,
             inputValidator: function (value) {
                 return new Promise(function (resolve, reject) {
                     if (value.toUpperCase() == 'K') {
@@ -220,44 +228,44 @@ $(function() {
             } else {
                 listener.listen();
             }
-        });
-
-
+        }).catch(swal.noop);
     }
-
 	function general() {
 		var itemid = $(itemlookupform + " .itemid").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_general).addQuery("itemid", itemid).addQuery("custID", "").addQuery("shipID", "").query(cleanparams).toString();
+		var href = URI(config.urls.load.ii_general).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
 		showajaxloading();
 		ii_notes(itemid, function() {
 			ii_misc(itemid, function() {
 				ii_usage(itemid, function() {
-					loadin(href, loadinto, function() {
-						console.log(href);
-						hideajaxloading();
+					$(loadinto).loadin(href, function() {
+						hideajaxloading(); console.log(href);
+						$(modal).find('.modal-body').addClass('modal-results');
 						$(modal).resizemodal('lg').modal();
 					});
 				});
 			});
 		});
 	}
-
 	function activity() {
 		var itemid = $(itemlookupform + " .itemid").val();
 		var custid = $(itemlookupform + " .custid").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_activityform).addQuery("itemid", itemid).addQuery("custID", custid).addQuery("shipID", "").query(cleanparams).toString();
+		var href = URI(config.urls.load.ii_activityform).addQuery("itemid", itemid)
+														.addQuery("custID", custid)
+														.addQuery("modal", "modal")
+														.query(cleanparams)
+														.toString();
 		console.log(href);
-		loadin(href, loadinto, function() {
+		$(loadinto).loadin(href, function() {
 			listener.stop_listening();
-			 $(modal).resizemodal('sm').modal();
-			 setTimeout(function (){ $(modal).find('.datepicker').focus();}, 500);
+			$(modal).find('.modal-body').addClass('modal-results');
+			$(modal).resizemodal('sm').modal();
+			setTimeout(function (){ $(modal).find('.datepicker').focus();}, 500);
 		});
 	}
-
 	function requirements(screentype, whse, refreshpage) {
 		if (typeof screentype === 'undefined' || screentype === false) { screentype = ''; } else {whse = $('.item-requirements-whse').val();}
 		if (typeof whse === 'undefined' || whse === false) { whse = ''; } else {screentype = $('.item-requirements-screentype').val();}
@@ -268,16 +276,16 @@ $(function() {
 		}
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_requirements).addQuery("itemid", itemid).addQuery("custID", "").addQuery("shipID", "").query(cleanparams).toString();
+		var href = URI(config.urls.load.ii_requirements).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
 		showajaxloading();
 		ii_requirements(itemid, screentype, whse, function() {
 			if (refreshpage) {
 				hideajaxloading();
 				window.location.reload(false);
 			} else {
-				loadin(href, loadinto, function() {
-					console.log(href);
-					hideajaxloading();
+				$(loadinto).loadin(href, function() {
+					hideajaxloading(); console.log(href);
+					$(modal).find('.modal-body').addClass('modal-results');
 					listener.stop_listening();
 					$(modal).resizemodal('lg').modal();
 				});
@@ -285,118 +293,109 @@ $(function() {
 
 		});
 	}
-
 	function seriallot() {
 		var itemid = $(itemlookupform + " .itemid").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_lotserial).addQuery("itemid", itemid).addQuery("custID", "").addQuery("shipID", "").query(cleanparams).toString();
+		var href = URI(config.urls.load.ii_lotserial).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
 		showajaxloading();
 		ii_lotserial(itemid, function() {
-			loadin(href, loadinto, function() {
-				console.log(href);
-				hideajaxloading();
+			$(loadinto).loadin(href, function() {
+				hideajaxloading(); console.log(href);
+				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('lg').modal();
 			});
 		});
 	}
-
 	function salesorder() {
 		var itemid = $(itemlookupform + " .itemid").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_salesorder).addQuery("itemid", itemid).addQuery("custID", "").addQuery("shipID", "").query(cleanparams).toString();
-		console.log(href);
+		var href = URI(config.urls.load.ii_salesorder).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
 		showajaxloading();
 		ii_salesorder(itemid, function() {
-			loadin(href, loadinto, function() {
-				console.log(href);
-				hideajaxloading();
+			$(loadinto).loadin(href, function() {
+				hideajaxloading(); console.log(href);
+				$(modal).find('.modal-body').addClass('modal-results');
 				listener.stop_listening();
 				$(modal).resizemodal('xl').modal();
 			});
 		});
 	}
-
 	function saleshist() {
 		var itemid = $(itemlookupform + " .itemid").val();
 		var custid = $(itemlookupform + " .custid").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_saleshistoryform).addQuery("itemid", itemid).addQuery("custID", custid).addQuery("shipID", "").query(cleanparams).toString();
+		var href = URI(config.urls.load.ii_saleshistoryform).addQuery("itemid", itemid).addQuery("custID", custid).addQuery("modal", "modal").toString();
 		console.log(href);
-		loadin(href, loadinto, function() {
+		$(loadinto).loadin(href, function() {
 			listener.stop_listening();
+			$(modal).find('.modal-body').addClass('modal-results');
 			$(modal).resizemodal('sm').modal();
 			setTimeout(function (){ $(modal).find('.datepicker').focus();}, 500);
 		});
 	}
-
 	function whsestock() {
 		var itemid = $(itemlookupform + " .itemid").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_stock).addQuery("itemid", itemid).addQuery("custID", "").addQuery("shipID", "").query(cleanparams).toString();
+		var href = URI(config.urls.load.ii_stock).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
 		showajaxloading();
 		ii_stock(itemid, function() {
-			loadin(href, loadinto, function() {
-				console.log(href);
-				hideajaxloading();
+			$(loadinto).loadin(href, function() {
+				hideajaxloading(); console.log(href);
+				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('lg').modal();
 			});
 		})
 	}
-
 	function substitute() {
 		var itemid = $(itemlookupform + " .itemid").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_substitutes).addQuery("itemid", itemid).addQuery("custID", "").addQuery("shipID", "").query(cleanparams).toString();
+		var href = URI(config.urls.load.ii_substitutes).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
 		showajaxloading();
 		ii_substitutes(itemid, function() {
-			loadin(href, loadinto, function() {
-				console.log(href);
-				hideajaxloading();
+			$(loadinto).loadin(href, function() {
+				hideajaxloading(); console.log(href);
+				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('xl').modal();
 			});
 		});
 	}
-
 	function iicust(dplusfunction) {
 		if (typeof dplusfunction === 'undefined' || dplusfunction === false) { dplusfunction = 'ii'; }
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.customer.load.loadindex).addQuery('function', dplusfunction).normalizeQuery().toString();
+		var href = URI(config.urls.customer.load.loadindex).addQuery('function', dplusfunction).addQuery("modal", "modal").normalizeQuery().toString();
 		$('.modal').modal('hide');
-		loadin(href, loadinto, function() {
+		$(loadinto).loadin(href, function() {
+			$(modal).find('.modal-body').addClass('modal-results');
 			$(modal).resizemodal('lg').modal();
 			setTimeout(function (){ $(modal).find('.query').focus();}, 500);
 		});
 	}
-
 	function docview() {
 		var itemid = $(itemlookupform + " .itemid").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_documents).addQuery("itemid", itemid).toString();
+		var href = URI(config.urls.load.ii_documents).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
 		showajaxloading();
 		ii_documents(itemid, function() {
-			loadin(href, loadinto, function() {
-				console.log(href);
-				hideajaxloading();
+			$(loadinto).loadin(href, function() {
+				hideajaxloading(); console.log(href);
+				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('xl').modal();
 			});
 		});
 	}
-
-
-
 
 /*==============================================================
    EXTENSION FUNCTIONS
  =============================================================*/
      function askkitqtyneeded(itemid) {
-        var href = iiurl(config.urls.load.ii_kitcomponents, itemid, false, false);
+        var href = URI(iiurl(config.urls.load.ii_kitcomponents, itemid, false, false)).addQuery("modal", "modal").toString();
         var modal = config.modals.ajax;
         var loadinto =  modal+" .modal-content";
         swal({
@@ -404,7 +403,6 @@ $(function() {
             text: "Enter the Kit Quantity Needed",
             input: 'text',
             showCancelButton: true,
-            closeOnConfirm: false,
             inputValidator: function (value) {
                 return new Promise(function (resolve, reject) {
                     if (!isNaN(value)) {
@@ -420,9 +418,9 @@ $(function() {
                 swal.close();
                 showajaxloading();
                 ii_kitcomponents(itemid, qty, function() {
-                    loadin(href, loadinto, function() {
-                        console.log(href);
-                        hideajaxloading();
+                    $(loadinto).loadin(href, function() {
+                        hideajaxloading(); console.log(href);
+						$(modal).find('.modal-body').addClass('modal-results');
                         $(modal).resizemodal('lg').modal();
                         listener.listen();
                     });
@@ -430,17 +428,15 @@ $(function() {
             } else {
                 listener.listen();
             }
-        });
+        }).catch(swal.noop);
 
     }
-
     function askbomqtyneed(itemid) {
         swal({
             title: "Bill of Material Inquiry",
             text: "Enter the Bill of Material Qty Needed",
             input: 'text',
             showCancelButton: true,
-            closeOnConfirm: false,
             inputValidator: function (value) {
                 return new Promise(function (resolve, reject) {
                     if (!isNaN(value)) {
@@ -457,9 +453,8 @@ $(function() {
             } else {
                 listener.listen();
             }
-        });
+        }).catch(swal.noop);
     }
-
     function askbomsingleconsolided(itemid, qty) {
         var href = iiurl(config.urls.load.ii_bom, itemid, false, false);
         var modal = config.modals.ajax;
@@ -469,7 +464,6 @@ $(function() {
             text: "Single or Consolidated Inquiry (S/C)",
             input: 'text',
             showCancelButton: true,
-            closeOnConfirm: false,
             inputValidator: function (value) {
                 return new Promise(function (resolve, reject) {
                     if (value.toUpperCase() == 'S') { //Single
@@ -490,13 +484,13 @@ $(function() {
                 } else if (input.toUpperCase() == 'C') { //Consolidated
                     bom = "consolidated";
                 }
-                href = URI(href).addQuery('bom', bom).normalizeQuery().toString();
+                href = URI(href).addQuery('bom', bom).addQuery("modal", "modal").normalizeQuery().toString();
                 ii_bom(itemid, qty, bom, function() {
                     swal.close();
                     showajaxloading();
-                    loadin(href, loadinto, function() {
-                        console.log(href);
-                        hideajaxloading();
+                    $(loadinto).loadin(href, function() {
+                        hideajaxloading(); console.log(href);
+						$(modal).find('.modal-body').addClass('modal-results');
                         $(modal).resizemodal('lg').modal();
                         listener.listen();
                     });
@@ -504,10 +498,9 @@ $(function() {
             } else {
                 listener.listen();
             }
-        });
+        }).catch(swal.noop);
 
     }
-
 	function ii_customer(custid) { //WAS ii_customer
 		var itemid = $(itemlookupform+' .itemid').val();
 		showajaxloading();
@@ -517,11 +510,9 @@ $(function() {
 			window.location.href = iiurl(config.urls.products.iteminfo, itemid, custid, false);
 		});
 	}
-
 	function choosecust() {
 		iicust();
 	}
-
 	function previousitem() {
 		var itemid = $(itemlookupform+' .prev-itemid').val();
 		var custid = $(itemlookupform+' .custid').val();
@@ -531,7 +522,6 @@ $(function() {
 			window.location.href = iiurl(config.urls.products.iteminfo, itemid, custid, false);
 		});
 	}
-
 	function nextitem() {
 		var itemid = $(itemlookupform+' .next-itemid').val();
 		var custid = $(itemlookupform+' .custid').val();
@@ -541,7 +531,6 @@ $(function() {
 			window.location.href = iiurl(config.urls.products.iteminfo, itemid, custid, false);
 		});
 	}
-
 	function chooseiihistorycust(custid, shipid) {
 		var itemid = $(itemlookupform+' .itemid').val();
 		$('.modal').modal('hide');
@@ -553,7 +542,6 @@ $(function() {
 			});
 		});
 	}
-
 	function chooseiipricingcust(custid, shipid) {
 		var itemid = $(itemlookupform+' .itemid').val();
 		$('.modal').modal('hide');
@@ -565,7 +553,6 @@ $(function() {
 			});
 		});
 	}
-
 	function loadiipage(custid, shipid, itemid, callback) {
 		var loadinto = ".page";
 		var href = iiurl(config.urls.products.iteminfo, itemid, custid, shipid);
@@ -575,23 +562,21 @@ $(function() {
 			callback();
 		});
 	}
-
 	function iipricing(custid, shipid, itemid) {
-		var href = iiurl(config.urls.load.ii_pricing, itemid, custid, shipid);
+		var href = URI(iiurl(config.urls.load.ii_pricing, itemid, custid, shipid)).addQuery("modal", "modal").toString();
 		var modal = config.modals.ajax;
 		var loadinto = modal+" .modal-content";
 		$('.modal').modal('hide');
 		showajaxloading();
 		ii_pricing(itemid, custid, shipid, function() {
 			hideajaxloading();
-			loadin(href, loadinto, function() {
-				console.log(href);
-				hideajaxloading();
+			$(loadinto).loadin(href, function() {
+				hideajaxloading(); console.log(href);
+				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('lg').modal();
 			});
 		});
 	}
-
 	function iiurl(url, itemid, custid, shipid) {
 		var uri = URI(url).addSearch("itemid", itemid);
 		uri.search(function(data){
@@ -608,17 +593,16 @@ $(function() {
 		});
 		return uri.normalizeQuery().toString();
 	}
-
 	function loadorderdocuments(ordn) {
 		var itemid = $(itemlookupform + " .itemid").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_order_documents).addQuery("itemid", itemid).addQuery("ordn", ordn).toString();
+		var href = URI(config.urls.load.ii_order_documents).addQuery("itemid", itemid).addQuery("ordn", ordn).addQuery("modal", "modal").toString();
 		showajaxloading();
 		ii_order_documents(itemid, ordn, function() {
-			loadin(href, loadinto, function() {
-				console.log(href);
-				hideajaxloading();
+			$(loadinto).loadin(href, function() {
+				hideajaxloading(); console.log(href);
+				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('lg').modal();
 			});
 		});

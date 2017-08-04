@@ -6,6 +6,7 @@
 	} else {
 		$partialid = 'actions';
 	}
+
     switch ($input->urlSegment1) {
         case 'load':
             switch ($input->urlSegment2) {
@@ -19,15 +20,15 @@
                         case 'user':
                             if ($config->ajax) {
 								if ($input->get->modal) {
-									$modaltitle = '';
-									$modalbody = $config->paths->content.'dashboard/actions/actions-panel.php';
-									include $config->paths->content."common/modals/include-ajax-modal-content.php";
+									$page->title = '';
+									$page->body = $config->paths->content.'dashboard/actions/actions-panel.php';
+									include $config->paths->content."common/modals/include-ajax-modal.php";
 								} else {
 									include $config->paths->content.'dashboard/actions/actions-panel.php';
 								}
         					} else {
-        						$title = 'User Action List';
-        						$modalbody = $config->paths->content.'actions/all/lists/user-list.php';
+        						$page->title = 'User Action List';
+        						$page->body = $config->paths->content.'actions/all/lists/user-list.php';
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;
@@ -38,8 +39,8 @@
                                 $actionpanel->setupcustomerpanel($custID, $shipID);
                                 $actionpanel->querylinks['customerlink'] = $custID;
                                 $actionpanel->querylinks['shiptolink'] = $shipID;
-        						$title = 'User Action List';
-        						$modalbody = $config->paths->content.'actions/all/lists/cust-list.php';
+        						$page->title = 'User Action List';
+        						$page->modalbody = $config->paths->content.'actions/all/lists/cust-list.php';
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;
@@ -51,17 +52,17 @@
                                 $actionpanel->querylinks['customerlink'] = $custID;
                                 $actionpanel->querylinks['shiptolink'] = $shipID;
 								$actionpanel->querylinks['contactlink'] = $contactID;
-        						$title = 'Viewing User Actions List';
-        						$modalbody = $config->paths->content.'actions/all/lists/contact-list.php';
+        						$page->title = 'Viewing User Actions List';
+        						$page->body = $config->paths->content.'actions/all/lists/contact-list.php';
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;
                         case 'order':
                             if ($config->ajax) {
 								if ($config->modal) {
-									$modaltitle = 'Viewing actions for Order #'.$ordn;
-									$modalbody = $config->paths->content.'edit/orders/actions/actions-panel.php';
-									include $config->paths->content."common/modals/include-ajax-modal-content.php";
+									$page->title = 'Viewing actions for Order #'.$ordn;
+									$page->body = $config->paths->content.'edit/orders/actions/actions-panel.php';
+									include $config->paths->content."common/modals/include-ajax-modal.php";
 								} else {
 									include $config->paths->content.'edit/orders/actions/actions-panel.php';
 								}
@@ -69,9 +70,8 @@
         					} else {
                                 $actionpanel->setuporderpanel($ordn);
                                 $actionpanel->querylinks['salesorderlink'] = $ordn;
-        						$title = 'User Actions for Order #' . $ordn;
-								$page->title = $title;
-        						$modalbody = $config->paths->content.'actions/all/lists/order-list.php';
+								$page->title = 'User Actions for Order #' . $ordn;
+        						$page->body = $config->paths->content.'actions/all/lists/order-list.php';
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;
@@ -81,8 +81,8 @@
         					} else {
                                 $actionpanel->setupquotepanel($qnbr);
                                 $actionpanel->querylinks['quotelink'] = $qnbr;
-        						$title = 'User Actions for Quote #' . $qnbr;
-        						$modalbody = $config->paths->content.'actions/all/lists/quote-list.php';
+        						$page->title = 'User Actions for Quote #' . $qnbr;
+        						$page->body = $config->paths->content.'actions/all/lists/quote-list.php';
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;
@@ -92,8 +92,8 @@
                     if ($config->ajax) {
                         include $config->paths->content.'actions/tasks/view-task.php';
                     } else {
-                        $title = 'Task ID: ' . $input->get->text('id');
-                        $modalbody = $config->paths->content.'actions/tasks/view-task.php';
+                        $page->title = 'Task ID: ' . $input->get->text('id');
+                        $page->body = $config->paths->content.'actions/tasks/view-task.php';
                         include $config->paths->content."common/include-blank-page.php";
                     }
                     break;

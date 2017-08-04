@@ -22,7 +22,7 @@
 
         <div class="form-group">
             <label for="">Search Item</label>
-            <input type="text" class="form-control input-sm ci-item-search" name="q" data-results="<?= $config->pages->ajax.'load/ci/item-search-results/'; ?>">
+            <input type="text" class="form-control input-sm ci-history-item-search" name="itemid" data-results="<?= $config->pages->ajax.'load/ci/item-search-results/'; ?>">
         </div>
 
 

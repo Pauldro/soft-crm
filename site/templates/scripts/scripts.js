@@ -174,7 +174,8 @@ $(document).ready(function() {
 			var button = $(this);
 			var ajaxloader = new ajaxloadedmodal(button);
 			$(this).closest('.modal').modal('hide');
-			loadin(ajaxloader.url, ajaxloader.loadinto, function() {
+			
+			$(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
 				$(ajaxloader.modal).modal();
 			});
 		});
@@ -429,6 +430,26 @@ $(document).ready(function() {
 				var shipid = thisform.find('input[name=shipID]').val();
 				var action = thisform.find('input[name=action]').val();
 				var href  = URI(thisform.attr('action')).addQuery('q', urlencode(input.val()))
+													   .addQuery('custID', urlencode(custid))
+													   .addQuery('shipID', urlencode(shipid))
+													   .addQuery('action', urlencode(action))
+													   .toString();
+				var loadinto = '#item-results';
+				console.log(href);
+				loadin(href, loadinto, function() {
+
+				});
+			//}
+		});
+	
+		$("body").on("keyup", ".ci-history-item-search", function() {
+			//if ($(this).val().length > 3) {
+				var input = $(this);
+				var thisform = input.closest('form');
+				var custid = thisform.find('input[name=custID]').val();
+				var shipid = thisform.find('input[name=shipID]').val();
+				var action = thisform.find('input[name=action]').val();
+				var href  = URI(input.data('results')).addQuery('q', urlencode(input.val()))
 													   .addQuery('custID', urlencode(custid))
 													   .addQuery('shipID', urlencode(shipid))
 													   .addQuery('action', urlencode(action))

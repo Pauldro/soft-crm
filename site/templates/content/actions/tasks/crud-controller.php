@@ -13,8 +13,8 @@
                     if ($config->ajax) {
                         include $config->paths->content."actions/tasks/new-task.php";
                     } else {
-                        $title = 'Add New Task';
-                        $modalbody = $config->paths->content."actions/tasks/new-task.php";
+                        $page->title = 'Add New Task';
+                        $page->body = $config->paths->content."actions/tasks/new-task.php";
                         include $config->paths->content."common/include-blank-page.php";
                     }
                     break;
@@ -40,8 +40,8 @@
                             if ($config->ajax) {
         						include $config->paths->content.'dashboard/actions/actions-panel.php';
         					} else {
-        						$title = 'Viewing User Task List';
-        						$modalbody = $config->paths->content.'actions/tasks/lists/user-list.php';
+        						$page->title = 'Viewing User Task List';
+        						$page->body = $config->paths->content.'actions/tasks/lists/user-list.php';
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;
@@ -52,8 +52,8 @@
                                 $actionpanel->setupcustomerpanel($custID, $shipID);
                                 $actionpanel->querylinks['customerlink'] = $custID;
                                 $actionpanel->querylinks['shiptolink'] = $shipID;
-        						$title = 'Viewing User Task List';
-        						$modalbody = $config->paths->content.'actions/tasks/lists/cust-list.php';
+        						$page->title = 'Viewing User Task List';
+        						$page->body = $config->paths->content.'actions/tasks/lists/cust-list.php';
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;
@@ -65,8 +65,8 @@
                                 $actionpanel->querylinks['customerlink'] = $custID;
                                 $actionpanel->querylinks['shiptolink'] = $shipID;
 								$actionpanel->querylinks['contactlink'] = $contactID;
-        						$title = 'Viewing User Actions List';
-        						$modalbody = $config->paths->content.'actions/tasks/lists/contact-list.php';
+        						$page->title = 'Viewing User Actions List';
+        						$page->body = $config->paths->content.'actions/tasks/lists/contact-list.php';
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;
@@ -76,8 +76,8 @@
         					} else {
                                 $actionpanel->setuporderpanel($ordn);
                                 $actionpanel->querylinks['salesorderlink'] = $ordn;
-        						$title = 'Viewing Order #'.$ordn.' Task List';
-        						$modalbody = $config->paths->content.'actions/tasks/lists/order-list.php';
+        						$page->title = 'Viewing Order #'.$ordn.' Task List';
+        						$page->body = $config->paths->content.'actions/tasks/lists/order-list.php';
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;
@@ -87,8 +87,8 @@
         					} else {
                                 $actionpanel->setupquotepanel($qnbr);
                                 $actionpanel->querylinks['quotelink'] = $qnbr;
-        						$title = 'Viewing Quote #'.$qnbr.' Task List';
-        						$modalbody = $config->paths->content.'actions/tasks/lists/quote-list.php';
+        						$page->title = 'Viewing Quote #'.$qnbr.' Task List';
+        						$page->body = $config->paths->content.'actions/tasks/lists/quote-list.php';
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;
@@ -99,13 +99,13 @@
 					$fetchclass = true;
 					$task = loaduseraction($taskid, $fetchclass, false);
 					$messagetemplate = "Viewing Action for {replace}";
-					$page->title = $modaltitle = $title = $task->createmessage($messagetemplate);
+					$page->title = $task->createmessage($messagetemplate);
 					
                     if ($config->ajax) {
-                        $modalbody = $config->paths->content.'actions/tasks/view-task.php';
+                        $page->body = $config->paths->content.'actions/tasks/view-task.php';
 						include $config->paths->content.'common/modals/include-ajax-modal.php';
                     } else {
-                        $modalbody = $config->paths->content.'actions/tasks/view-task.php';
+                        $page->body = $config->paths->content.'actions/tasks/view-task.php';
                         include $config->paths->content."common/include-blank-page.php";
                     }
                     break;

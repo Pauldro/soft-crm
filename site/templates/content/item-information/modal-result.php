@@ -1,3 +1,3 @@
 <div id="ii-results">
-    <?php include $modalcontent; ?>
+    <?php include $body; ?>
 </div>
