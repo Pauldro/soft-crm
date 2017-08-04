@@ -293,6 +293,7 @@
 	#ii-stock-results { max-height: 600px; overflow-y: scroll; }
 
 	#ii-results { max-height: 600px; overflow-y: scroll; min-height: 400px;}
+	.modal-body.modal-results {max-height: 600px; overflow-y: scroll; min-height: 400px;}
 	.table .no-bottom { margin-bottom: 0px; }
 	.last-section-row {border-top: 2px solid black;}
 	.last-row-bottom {border-bottom: 2px solid black;}
@@ -331,3 +332,8 @@
    DOCUMENTATION MENU
  =============================================================*/
  	.item-not-selected {background: #f7f7f9;}
+
+/*==============================================================
+   CUSTOM DATE MENU
+ =============================================================*/
+	.modal-body.modal-results .dropdown-menu.datepicker-calendar-wrapper { position: fixed; top: inherit; }
