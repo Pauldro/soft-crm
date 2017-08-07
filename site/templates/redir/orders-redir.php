@@ -1,6 +1,4 @@
 <?php
-
-
 	if ($input->post->action) { $action = $input->post->text('action'); } else { $action = $input->get->text('action'); }
 	if ($input->get->page) { $pagenumber = $input->get->int('page'); } else { $pagenumber = 1; }
 	if ($input->get->orderby) { $sortaddon = '&orderby=' . $input->get->text('orderby'); } else { $sortaddon = ''; }
@@ -67,7 +65,7 @@
 	* 		DBNAME=$config->DBNAME
 	* 		SALEDET
 	*		ORDERNO=$ordn
-	*		ITEMID=$itemid
+	*		ITEMID=$itemID
 	*		QTY=$qty
 	* 		break;
 	* 	case 'edit-new-order':
@@ -317,10 +315,10 @@
 			}
 			break;
 		case 'add-to-order':
-			$itemid = $input->post->text('itemid');
+			$itemID = $input->post->text('itemID');
 			$qty = $input->post->text('qty'); if ($qty == '') {$qty = 1; }
 			$ordn = $input->post->text('ordn');
-			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'ITEMID' => $itemid, 'QTY' => $qty);
+			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'ITEMID' => $itemID, 'QTY' => $qty);
 			$session->loc = $input->post->page;
 			break;
 		case 'edit-new-order':

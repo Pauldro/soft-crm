@@ -174,7 +174,7 @@ $(document).ready(function() {
 			var button = $(this);
 			var ajaxloader = new ajaxloadedmodal(button);
 			$(this).closest('.modal').modal('hide');
-			
+
 			$(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
 				$(ajaxloader.modal).modal();
 			});
@@ -195,8 +195,8 @@ $(document).ready(function() {
 				});
 			});
 		});
-	
-	
+
+
 	$("body").on("click", ".load-notes", function(e) {
         e.preventDefault();
         var button = $(this);
@@ -205,10 +205,10 @@ $(document).ready(function() {
             showajaxloading();
             generateurl(function(url) {
                 console.log(url);
-                wait(500, function() { 
-					$(ajaxloader.loadinto).loadin(url, function() { 
-						$(ajaxloader.modal).resizemodal('lg').modal(); hideajaxloading(); 
-					}); 
+                wait(500, function() {
+					$(ajaxloader.loadinto).loadin(url, function() {
+						$(ajaxloader.modal).resizemodal('lg').modal(); hideajaxloading();
+					});
 				});
             });
         });
@@ -267,9 +267,9 @@ $(document).ready(function() {
 				wait(500, function() {
 					generateurl(function(url) {
 						loadin(url, loadinto, function() {
-							$(modal).modal('hide');  
-							if (focuson.length > 0) { 
-								$('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); 
+							$(modal).modal('hide');
+							if (focuson.length > 0) {
+								$('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000);
 							}
 						});
 					 });
@@ -283,7 +283,7 @@ $(document).ready(function() {
 			e.preventDefault();
 			var form = new itemform($(this));
 			var msg = "You added " + form.qty + " of " + form.desc + " to the cart";
-			postformsync(form.formid, function() {
+			postformsync(form.formID, function() {
 				$.notify({
 					icon: "glyphicon glyphicon-shopping-cart",
 					message: msg +"<br> (Click this Message to go to the cart.)" ,
@@ -304,7 +304,7 @@ $(document).ready(function() {
 			e.preventDefault();
 			var form = $(this);
 			var addto = form.data('addto');
-			var itemid = form.find('input[name="itemid"]').val();
+			var itemID = form.find('input[name="itemID"]').val();
 			var custid = form.find('input[name="custID"]').val();
 			var loadinto = config.modals.pricing+" .modal-body";
 			var parentmodal = $(this).closest('.modal');
@@ -337,7 +337,7 @@ $(document).ready(function() {
 						}
 
 						loadin(uri.toString()+"#edit-page", '.page', function() {
-							edititempricing(itemid, custid,  function() {
+							edititempricing(itemID, custid,  function() {
 								loadin(editurl, loadinto, function() {
 									hideajaxloading();
 									$(config.modals.pricing).modal();
@@ -441,7 +441,7 @@ $(document).ready(function() {
 				});
 			//}
 		});
-	
+
 		$("body").on("keyup", ".ci-history-item-search", function() {
 			//if ($(this).val().length > 3) {
 				var input = $(this);
@@ -700,17 +700,17 @@ $(document).ready(function() {
 			e.preventDefault();
 			showajaxloading();
 			var url = addtoquerystring($(this).attr('href'), [], []);
-			var itemid = $(this).data('itemid');
+			var itemID = $(this).data('itemid');
 			var custid = $(this).data('custid');
 
-			if ($.inArray(itemid, nonstockitems) > -1) {
+			if ($.inArray(itemID, nonstockitems) > -1) {
 				console.log('skipping item get');
 				loadin(url, config.modals.pricing+" .modal-content", function() {
 					hideajaxloading();
 					$(config.modals.pricing).modal();
 				});
 			} else {
-				edititempricing(itemid, custid,  function() {
+				edititempricing(itemID, custid,  function() {
 					console.log(url);
 					loadin(url, config.modals.pricing+" .modal-content", function() {
 						hideajaxloading();
@@ -930,9 +930,9 @@ $(document).ready(function() {
 /*==============================================================
    ITEM FUNCTIONS
 =============================================================*/
-	function chooseitemwhse(itemid, whse) { // TODO
-		var form = '#'+itemid+"-form";
-		var whsefield = '.'+itemid+'-whse';
+	function chooseitemwhse(itemID, whse) { // TODO
+		var form = '#'+itemID+"-form";
+		var whsefield = '.'+itemID+'-whse';
 		var whserow = '.'+whse+"-row";
 		$(form+" .item-whse-val").text(whse).parent().show();
 		$(whsefield).val(whse);
@@ -940,8 +940,8 @@ $(document).ready(function() {
 		$(whserow).addClass('warning');
 	}
 
-	function edititempricing(itemid, custid, callback) {
-		var url = config.urls.products.redir.getitempricing+"&itemid="+urlencode(itemid)+"&custID="+urlencode(custid);
+	function edititempricing(itemID, custid, callback) {
+		var url = config.urls.products.redir.getitempricing+"&itemID="+urlencode(itemID)+"&custID="+urlencode(custid);
 		console.log(url);
 		$.get(url, function() { callback(); });
 	}
@@ -953,9 +953,9 @@ $(document).ready(function() {
 
 	   console.log(href);
 	   if (button.data('kit') == 'Y') {
-		   var itemid = button.data('itemid');
+		   var itemID = button.data('itemid');
 		   var qty = 1;
-		   ii_kitcomponents(itemid, qty, function() {
+		   ii_kitcomponents(itemID, qty, function() {
 			   loadin(href, config.modals.ajax+" .modal-body", function() {
 				  $(config.modals.ajax).resizemodal('lg');
 				  $(config.modals.ajax).modal();
@@ -970,8 +970,8 @@ $(document).ready(function() {
 
 	 });
 
-	 function ii_kitcomponents(itemid, qty, callback) {
- 		var url = config.urls.products.redir.ii_kitcomponents+"&itemid="+urlencode(itemid)+"&qty="+urlencode(qty);
+	 function ii_kitcomponents(itemID, qty, callback) {
+ 		var url = config.urls.products.redir.ii_kitcomponents+"&itemID="+urlencode(itemID)+"&qty="+urlencode(qty);
  		$.get(url, function() { callback(); });
  	}
 
@@ -996,7 +996,7 @@ $(document).ready(function() {
 				$.notify({
 					// options
 					title: '<strong>Success</strong>',
-					message: 'You added ' + form.qty + ' of ' + form.itemid + ' to the cart'
+					message: 'You added ' + form.qty + ' of ' + form.itemID + ' to the cart'
 				},{
 					element: "body",
 					type: "warning",

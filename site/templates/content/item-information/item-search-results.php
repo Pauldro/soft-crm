@@ -15,7 +15,7 @@
         <?php if ($resultscount) : ?>
             <?php foreach ($items as $item) : ?>
             	<?php if (!file_exists($config->imagefiledirectory.$item['image'])) {$item['image'] = 'notavailable.png'; } ?>
-                <a href="<?= $itemlink."&itemid=".urlencode($item['itemid']); ?>" class="list-group-item item-master-result">
+                <a href="<?= $itemlink."&itemID=".urlencode($item['itemid']); ?>" class="list-group-item item-master-result">
                     <div class="row">
                         <div class="col-xs-2"><img src="<?php echo $config->imagedirectory.$item['image']; ?>" alt=""></div>
                         <div class="col-xs-10"><h4 class="list-group-item-heading"><?php echo $item['itemid']; ?></h4>

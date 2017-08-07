@@ -1,5 +1,5 @@
-<?php 
-	$stockfile = $config->jsonfilepath.session_id()."-iistkstat.json"; 
+<?php
+	$stockfile = $config->jsonfilepath.session_id()."-iistkstat.json";
 	$itemlink = $config->pages->products."redir/?action=ii-select&custID=".urlencode($custID);
 ?>
 
@@ -26,7 +26,7 @@
                             <?php foreach($columns as $column) : ?>
                                 <?php if ($column == "Item ID") : ?>
                                     <td class="<?= $config->textjustify[$jsonstock['columns'][$column]['datajustify']]; ?>">
-                                        <a href="<?= $itemlink."&itemid=".$warehouse[$column]; ?>"><?php echo $warehouse[$column]; ?></a>
+                                        <a href="<?= $itemlink."&itemID=".$warehouse[$column]; ?>"><?php echo $warehouse[$column]; ?></a>
                                     </td>
                                 <?php else :?>
                                     <td class="<?= $config->textjustify[$jsonstock['columns'][$column]['datajustify']]; ?>"><?php echo $warehouse[$column]; ?></td>

@@ -43,10 +43,10 @@ $(function() {
 
 	$("body").on("submit", itemlookupform, function(e) {
 		e.preventDefault();
-		var itemid = $(this).find('.itemid').val();
+		var itemID = $(this).find('.itemID').val();
 		var modal = config.modals.ajax;
         var loadinto =  modal+" .modal-content";
-		var href = URI($(this).attr('action')).addQuery('q', itemid).addQuery("modal", "modal").normalizeQuery().toString();
+		var href = URI($(this).attr('action')).addQuery('q', itemID).addQuery("modal", "modal").normalizeQuery().toString();
 		showajaxloading();
 		$(loadinto).loadin(href, function() {
 			hideajaxloading(); console.log(href);
@@ -61,9 +61,9 @@ $(function() {
         var formid = '#'+$(this).attr('id');
         var modal = config.modals.ajax;
         var loadinto =  modal+" .modal-content";
-        var itemid = $(itemlookupform + " .itemid").val();
+        var itemID = $(itemlookupform + " .itemID").val();
         var custid = $(itemlookupform + " .custid").val();
-        var href = URI(config.urls.load.ii_activity).addQuery("itemid", itemid)
+        var href = URI(config.urls.load.ii_activity).addQuery("itemID", itemID)
 													.addQuery("custID", custid)
 													.addQuery("modal", "modal")
 													.query(cleanparams)
@@ -87,9 +87,9 @@ $(function() {
         var formid = '#'+$(this).attr('id');
         var modal = config.modals.ajax;
         var loadinto = modal+" .modal-content";
-        var itemid = $(itemlookupform + " .itemid").val();
+        var itemID = $(itemlookupform + " .itemID").val();
         var custid = $(itemlookupform + " .custid").val();
-        var href = URI(config.urls.load.ii_saleshistory).addQuery("itemid", itemid)
+        var href = URI(config.urls.load.ii_saleshistory).addQuery("itemID", itemID)
 														.addQuery("custID", custid)
 														.addQuery("modal", "modal")
 														.query(cleanparams)
@@ -116,20 +116,20 @@ $(function() {
 	function pricing() {
 		var custid = $(itemlookupform+' .custid').val();
 		var shiptoid = $(itemlookupform+' .shipid').val();
-		var itemid = $(itemlookupform+' .itemid').val();
+		var itemID = $(itemlookupform+' .itemID').val();
 		if (custid.length > 0) {
-			iipricing(custid, shiptoid, itemid);
+			iipricing(custid, shiptoid, itemID);
 		} else {
 			iicust('ii-pricing');
 		}
 	}
     function costing() {
-        var itemid = $(itemlookupform + " .itemid").val();
+        var itemID = $(itemlookupform + " .itemID").val();
         var modal = config.modals.ajax;
         var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_costing).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
+		var href = URI(config.urls.load.ii_costing).addQuery("itemID", itemID).addQuery("modal", "modal").toString();
         showajaxloading();
-        ii_costing(itemid, function() {
+        ii_costing(itemID, function() {
             $(loadinto).loadin(href, function() {
                 hideajaxloading(); console.log(href);
 				$(modal).find('.modal-body').addClass('modal-results');
@@ -138,12 +138,12 @@ $(function() {
         });
     }
     function purchorder() {
-        var itemid = $(itemlookupform + " .itemid").val();
+        var itemID = $(itemlookupform + " .itemID").val();
         var modal = config.modals.ajax;
         var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_purchaseorder).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
+		var href = URI(config.urls.load.ii_purchaseorder).addQuery("itemID", itemID).addQuery("modal", "modal").toString();
         showajaxloading();
-        ii_purchaseorder(itemid, function() {
+        ii_purchaseorder(itemID, function() {
             $(loadinto).loadin(href, function() {
                 hideajaxloading(); console.log(href);
 				$(modal).find('.modal-body').addClass('modal-results');
@@ -152,17 +152,17 @@ $(function() {
         });
     }
 	function quotes() {
-		var itemid = $(itemlookupform + " .itemid").val();
+		var itemID = $(itemlookupform + " .itemID").val();
 		var custid = $(itemlookupform+' .custid').val();
 		var modal = config.modals.ajax;
 		var loadinto = modal+" .modal-content";
-		var href = URI(config.urls.load.ii_quotes).addQuery("itemid", itemid)
+		var href = URI(config.urls.load.ii_quotes).addQuery("itemID", itemID)
 												  .addQuery("custID", custid)
 												  .addQuery("modal", "modal")
 												  .query(cleanparams)
 												  .toString();
 		showajaxloading();
-		ii_quotes(itemid, function() {
+		ii_quotes(itemID, function() {
 			$(loadinto).loadin(href, function() {
 				hideajaxloading(); console.log(href);
 				$(modal).find('.modal-body').addClass('modal-results');
@@ -171,12 +171,12 @@ $(function() {
 		});
 	}
 	function purchhist() {
-		var itemid = $(itemlookupform + " .itemid").val();
+		var itemID = $(itemlookupform + " .itemID").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_purchasehistory).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
+		var href = URI(config.urls.load.ii_purchasehistory).addQuery("itemID", itemID).addQuery("modal", "modal").toString();
 		showajaxloading();
-		ii_purchasehistory(itemid, function() {
+		ii_purchasehistory(itemID, function() {
 			$(loadinto).loadin(href, function() {
 				hideajaxloading(); console.log(href);
 				$(modal).find('.modal-body').addClass('modal-results');
@@ -185,12 +185,12 @@ $(function() {
 		});
 	}
 	function whereused() {
-		var itemid = $(itemlookupform + " .itemid").val();
+		var itemID = $(itemlookupform + " .itemID").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_whereused).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
+		var href = URI(config.urls.load.ii_whereused).addQuery("itemID", itemID).addQuery("modal", "modal").toString();
 		showajaxloading();
-		ii_whereused(itemid, function() {
+		ii_whereused(itemID, function() {
 			$(loadinto).loadin(href, function() {
 				hideajaxloading(); console.log(href);
 				$(modal).find('.modal-body').addClass('modal-results');
@@ -199,7 +199,7 @@ $(function() {
 		});
 	}
     function compinq() {
-        var itemid = $(itemlookupform + " .itemid").val();
+        var itemID = $(itemlookupform + " .itemID").val();
         var loadinto =  config.modals.ajax+" .modal-content";
         swal({
             title: "Component Inquiry Selection",
@@ -220,9 +220,9 @@ $(function() {
         }).then(function (input) {
             if (input) {
                 if (input.toUpperCase() == 'K') {
-                    askkitqtyneeded(itemid);
+                    askkitqtyneeded(itemID);
                 } else if (input.toUpperCase() == 'B') {
-                    askbomqtyneed(itemid);
+                    askbomqtyneed(itemID);
                 }
 
             } else {
@@ -231,14 +231,14 @@ $(function() {
         }).catch(swal.noop);
     }
 	function general() {
-		var itemid = $(itemlookupform + " .itemid").val();
+		var itemID = $(itemlookupform + " .itemID").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_general).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
+		var href = URI(config.urls.load.ii_general).addQuery("itemID", itemID).addQuery("modal", "modal").toString();
 		showajaxloading();
-		ii_notes(itemid, function() {
-			ii_misc(itemid, function() {
-				ii_usage(itemid, function() {
+		ii_notes(itemID, function() {
+			ii_misc(itemID, function() {
+				ii_usage(itemID, function() {
 					$(loadinto).loadin(href, function() {
 						hideajaxloading(); console.log(href);
 						$(modal).find('.modal-body').addClass('modal-results');
@@ -249,11 +249,11 @@ $(function() {
 		});
 	}
 	function activity() {
-		var itemid = $(itemlookupform + " .itemid").val();
+		var itemID = $(itemlookupform + " .itemID").val();
 		var custid = $(itemlookupform + " .custid").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_activityform).addQuery("itemid", itemid)
+		var href = URI(config.urls.load.ii_activityform).addQuery("itemID", itemID)
 														.addQuery("custID", custid)
 														.addQuery("modal", "modal")
 														.query(cleanparams)
@@ -270,15 +270,15 @@ $(function() {
 		if (typeof screentype === 'undefined' || screentype === false) { screentype = ''; } else {whse = $('.item-requirements-whse').val();}
 		if (typeof whse === 'undefined' || whse === false) { whse = ''; } else {screentype = $('.item-requirements-screentype').val();}
 		if (typeof refreshpage === 'undefined' || refreshpage === false) { refreshpage = false; } else {refreshpage = true;}
-		var itemid = $(itemlookupform + " .itemid").val();
+		var itemID = $(itemlookupform + " .itemID").val();
 		if (refreshpage) {
-			itemid = $("#itemid-req").val();
+			itemID = $("#itemid-req").val();
 		}
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_requirements).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
+		var href = URI(config.urls.load.ii_requirements).addQuery("itemID", itemID).addQuery("modal", "modal").toString();
 		showajaxloading();
-		ii_requirements(itemid, screentype, whse, function() {
+		ii_requirements(itemID, screentype, whse, function() {
 			if (refreshpage) {
 				hideajaxloading();
 				window.location.reload(false);
@@ -294,12 +294,12 @@ $(function() {
 		});
 	}
 	function seriallot() {
-		var itemid = $(itemlookupform + " .itemid").val();
+		var itemID = $(itemlookupform + " .itemID").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_lotserial).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
+		var href = URI(config.urls.load.ii_lotserial).addQuery("itemID", itemID).addQuery("modal", "modal").toString();
 		showajaxloading();
-		ii_lotserial(itemid, function() {
+		ii_lotserial(itemID, function() {
 			$(loadinto).loadin(href, function() {
 				hideajaxloading(); console.log(href);
 				$(modal).find('.modal-body').addClass('modal-results');
@@ -308,12 +308,12 @@ $(function() {
 		});
 	}
 	function salesorder() {
-		var itemid = $(itemlookupform + " .itemid").val();
+		var itemID = $(itemlookupform + " .itemID").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_salesorder).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
+		var href = URI(config.urls.load.ii_salesorder).addQuery("itemID", itemID).addQuery("modal", "modal").toString();
 		showajaxloading();
-		ii_salesorder(itemid, function() {
+		ii_salesorder(itemID, function() {
 			$(loadinto).loadin(href, function() {
 				hideajaxloading(); console.log(href);
 				$(modal).find('.modal-body').addClass('modal-results');
@@ -323,11 +323,11 @@ $(function() {
 		});
 	}
 	function saleshist() {
-		var itemid = $(itemlookupform + " .itemid").val();
+		var itemID = $(itemlookupform + " .itemID").val();
 		var custid = $(itemlookupform + " .custid").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_saleshistoryform).addQuery("itemid", itemid).addQuery("custID", custid).addQuery("modal", "modal").toString();
+		var href = URI(config.urls.load.ii_saleshistoryform).addQuery("itemID", itemID).addQuery("custID", custid).addQuery("modal", "modal").toString();
 		console.log(href);
 		$(loadinto).loadin(href, function() {
 			listener.stop_listening();
@@ -337,12 +337,12 @@ $(function() {
 		});
 	}
 	function whsestock() {
-		var itemid = $(itemlookupform + " .itemid").val();
+		var itemID = $(itemlookupform + " .itemID").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_stock).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
+		var href = URI(config.urls.load.ii_stock).addQuery("itemID", itemID).addQuery("modal", "modal").toString();
 		showajaxloading();
-		ii_stock(itemid, function() {
+		ii_stock(itemID, function() {
 			$(loadinto).loadin(href, function() {
 				hideajaxloading(); console.log(href);
 				$(modal).find('.modal-body').addClass('modal-results');
@@ -351,12 +351,12 @@ $(function() {
 		})
 	}
 	function substitute() {
-		var itemid = $(itemlookupform + " .itemid").val();
+		var itemID = $(itemlookupform + " .itemID").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_substitutes).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
+		var href = URI(config.urls.load.ii_substitutes).addQuery("itemID", itemID).addQuery("modal", "modal").toString();
 		showajaxloading();
-		ii_substitutes(itemid, function() {
+		ii_substitutes(itemID, function() {
 			$(loadinto).loadin(href, function() {
 				hideajaxloading(); console.log(href);
 				$(modal).find('.modal-body').addClass('modal-results');
@@ -377,12 +377,12 @@ $(function() {
 		});
 	}
 	function docview() {
-		var itemid = $(itemlookupform + " .itemid").val();
+		var itemID = $(itemlookupform + " .itemID").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_documents).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
+		var href = URI(config.urls.load.ii_documents).addQuery("itemID", itemID).addQuery("modal", "modal").toString();
 		showajaxloading();
-		ii_documents(itemid, function() {
+		ii_documents(itemID, function() {
 			$(loadinto).loadin(href, function() {
 				hideajaxloading(); console.log(href);
 				$(modal).find('.modal-body').addClass('modal-results');
@@ -394,8 +394,8 @@ $(function() {
 /*==============================================================
    EXTENSION FUNCTIONS
  =============================================================*/
-     function askkitqtyneeded(itemid) {
-        var href = URI(iiurl(config.urls.load.ii_kitcomponents, itemid, false, false)).addQuery("modal", "modal").toString();
+     function askkitqtyneeded(itemID) {
+        var href = URI(iiurl(config.urls.load.ii_kitcomponents, itemID, false, false)).addQuery("modal", "modal").toString();
         var modal = config.modals.ajax;
         var loadinto =  modal+" .modal-content";
         swal({
@@ -417,7 +417,7 @@ $(function() {
                 var qty = input;
                 swal.close();
                 showajaxloading();
-                ii_kitcomponents(itemid, qty, function() {
+                ii_kitcomponents(itemID, qty, function() {
                     $(loadinto).loadin(href, function() {
                         hideajaxloading(); console.log(href);
 						$(modal).find('.modal-body').addClass('modal-results');
@@ -431,7 +431,7 @@ $(function() {
         }).catch(swal.noop);
 
     }
-    function askbomqtyneed(itemid) {
+    function askbomqtyneed(itemID) {
         swal({
             title: "Bill of Material Inquiry",
             text: "Enter the Bill of Material Qty Needed",
@@ -449,14 +449,14 @@ $(function() {
         }).then(function (input) {
             if (input) {
                 var qty = input;
-                askbomsingleconsolided(itemid, qty);
+                askbomsingleconsolided(itemID, qty);
             } else {
                 listener.listen();
             }
         }).catch(swal.noop);
     }
-    function askbomsingleconsolided(itemid, qty) {
-        var href = iiurl(config.urls.load.ii_bom, itemid, false, false);
+    function askbomsingleconsolided(itemID, qty) {
+        var href = iiurl(config.urls.load.ii_bom, itemID, false, false);
         var modal = config.modals.ajax;
         var loadinto =  modal+" .modal-content";
         swal({
@@ -485,7 +485,7 @@ $(function() {
                     bom = "consolidated";
                 }
                 href = URI(href).addQuery('bom', bom).addQuery("modal", "modal").normalizeQuery().toString();
-                ii_bom(itemid, qty, bom, function() {
+                ii_bom(itemID, qty, bom, function() {
                     swal.close();
                     showajaxloading();
                     $(loadinto).loadin(href, function() {
@@ -502,73 +502,73 @@ $(function() {
 
     }
 	function ii_customer(custid) { //WAS ii_customer
-		var itemid = $(itemlookupform+' .itemid').val();
+		var itemID = $(itemlookupform+' .itemID').val();
 		showajaxloading();
-		ii_select(itemid, custid, function() {
+		ii_select(itemID, custid, function() {
 			hideajaxloading();
 			$(this).closest('.modal').modal('hide');
-			window.location.href = iiurl(config.urls.products.iteminfo, itemid, custid, false);
+			window.location.href = iiurl(config.urls.products.iteminfo, itemID, custid, false);
 		});
 	}
 	function choosecust() {
 		iicust();
 	}
 	function previousitem() {
-		var itemid = $(itemlookupform+' .prev-itemid').val();
+		var itemID = $(itemlookupform+' .prev-itemID').val();
 		var custid = $(itemlookupform+' .custid').val();
 		showajaxloading();
-		ii_select(itemid, custid, function() {
+		ii_select(itemID, custid, function() {
 			hideajaxloading();
-			window.location.href = iiurl(config.urls.products.iteminfo, itemid, custid, false);
+			window.location.href = iiurl(config.urls.products.iteminfo, itemID, custid, false);
 		});
 	}
 	function nextitem() {
-		var itemid = $(itemlookupform+' .next-itemid').val();
+		var itemID = $(itemlookupform+' .next-itemID').val();
 		var custid = $(itemlookupform+' .custid').val();
 		showajaxloading();
-		ii_select(itemid, custid, function() {
+		ii_select(itemID, custid, function() {
 			hideajaxloading();
-			window.location.href = iiurl(config.urls.products.iteminfo, itemid, custid, false);
+			window.location.href = iiurl(config.urls.products.iteminfo, itemID, custid, false);
 		});
 	}
 	function chooseiihistorycust(custid, shipid) {
-		var itemid = $(itemlookupform+' .itemid').val();
+		var itemID = $(itemlookupform+' .itemID').val();
 		$('.modal').modal('hide');
 		showajaxloading();
-		ii_select(itemid, custid, function() {
+		ii_select(itemID, custid, function() {
 			hideajaxloading();
-			loadiipage(custid, shipid, itemid, function() {
+			loadiipage(custid, shipid, itemID, function() {
 				saleshist();
 			});
 		});
 	}
 	function chooseiipricingcust(custid, shipid) {
-		var itemid = $(itemlookupform+' .itemid').val();
+		var itemID = $(itemlookupform+' .itemID').val();
 		$('.modal').modal('hide');
 		showajaxloading();
-		ii_select(itemid, custid, function() {
+		ii_select(itemID, custid, function() {
 			hideajaxloading();
-			loadiipage(custid, shipid, itemid, function() {
-				iipricing(custid, shipid, itemid);
+			loadiipage(custid, shipid, itemID, function() {
+				iipricing(custid, shipid, itemID);
 			});
 		});
 	}
-	function loadiipage(custid, shipid, itemid, callback) {
+	function loadiipage(custid, shipid, itemID, callback) {
 		var loadinto = ".page";
-		var href = iiurl(config.urls.products.iteminfo, itemid, custid, shipid);
-		var msg = "Viewing item "+itemid+" info for " + custid;
+		var href = iiurl(config.urls.products.iteminfo, itemID, custid, shipid);
+		var msg = "Viewing item "+itemID+" info for " + custid;
 		loadreplace(href+" "+loadinto, loadinto, function() {
 			window.history.pushState({ id: 35 }, msg, href);
 			callback();
 		});
 	}
-	function iipricing(custid, shipid, itemid) {
-		var href = URI(iiurl(config.urls.load.ii_pricing, itemid, custid, shipid)).addQuery("modal", "modal").toString();
+	function iipricing(custid, shipid, itemID) {
+		var href = URI(iiurl(config.urls.load.ii_pricing, itemID, custid, shipid)).addQuery("modal", "modal").toString();
 		var modal = config.modals.ajax;
 		var loadinto = modal+" .modal-content";
 		$('.modal').modal('hide');
 		showajaxloading();
-		ii_pricing(itemid, custid, shipid, function() {
+		ii_pricing(itemID, custid, shipid, function() {
 			hideajaxloading();
 			$(loadinto).loadin(href, function() {
 				hideajaxloading(); console.log(href);
@@ -577,8 +577,8 @@ $(function() {
 			});
 		});
 	}
-	function iiurl(url, itemid, custid, shipid) {
-		var uri = URI(url).addSearch("itemid", itemid);
+	function iiurl(url, itemID, custid, shipid) {
+		var uri = URI(url).addSearch("itemID", itemID);
 		uri.search(function(data){
 			if (custid) {
 				if (custid != "") {
@@ -594,12 +594,12 @@ $(function() {
 		return uri.normalizeQuery().toString();
 	}
 	function loadorderdocuments(ordn) {
-		var itemid = $(itemlookupform + " .itemid").val();
+		var itemID = $(itemlookupform + " .itemID").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_order_documents).addQuery("itemid", itemid).addQuery("ordn", ordn).addQuery("modal", "modal").toString();
+		var href = URI(config.urls.load.ii_order_documents).addQuery("itemID", itemID).addQuery("ordn", ordn).addQuery("modal", "modal").toString();
 		showajaxloading();
-		ii_order_documents(itemid, ordn, function() {
+		ii_order_documents(itemID, ordn, function() {
 			$(loadinto).loadin(href, function() {
 				hideajaxloading(); console.log(href);
 				$(modal).find('.modal-body').addClass('modal-results');

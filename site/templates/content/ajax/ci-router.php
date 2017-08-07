@@ -5,13 +5,13 @@
     switch ($input->urlSegment(3)) { //Parts of order to load
         case 'search-results':
             if ($input->get->q) {$q = $input->get->text('q'); $page->title = "Searching for '$q'";}
-			
+
 			if ($config->modal) {
 				$page->body = $config->paths->content."cust-information/forms/cust-search-form.php";
 			} else {
 				$page->body = $config->paths->content."cust-information/cust-search-results.php";
 			}
-			
+
             break;
         case 'item-search-results':
             $page->title = "Searching items for " . $input->get->text('q');
@@ -34,7 +34,7 @@
             $action = 'ci-pricing';
             $custID = $input->get->text('custID');
             if ($input->get->q) {$q = $input->get->text('q'); $page->title = "Searching for '$q'";}
-			
+
 			if ($config->modal) {
 				$page->body = $config->paths->content."cust-information/forms/item-search-form.php";
 			} else {
@@ -43,8 +43,8 @@
             break;
         case 'ci-pricing':
             $custID = $input->get->text('custID');
-            $itemid = $input->get->text('itemid');
-            $page->title = 'Viewing Pricing for ' . $itemid;
+            $itemID = $input->get->text('itemID');
+            $page->title = 'Viewing Pricing for ' . $itemID;
 			$page->body = $config->paths->content."cust-information/item-pricing.php";
             break;
 		case 'ci-open-invoices':
@@ -147,7 +147,7 @@
 		$config->scripts->append($config->urls->templates.'scripts/ci/cust-info.js');
 		include $config->paths->content."common/include-blank-page.php";
 	}
-	
+
 
 
 

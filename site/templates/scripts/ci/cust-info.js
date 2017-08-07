@@ -25,7 +25,7 @@ $(function() {
 		var href = URI($(this).attr('action')).addQuery('q', custid).normalizeQuery().toString();
 		showajaxloading();
 		$(loadinto).loadin(href, function() {
-			hideajaxloading(); console.log(href); 
+			hideajaxloading(); console.log(href);
 			$(modal).find('.modal-body').addClass('modal-results');
 			$(modal).resizemodal('lg').modal();
 		});
@@ -69,7 +69,7 @@ $(function() {
 	        var loadinto =  modal+" .modal-content";
 			showajaxloading();
 			loadin(href, loadinto, function() {
-				hideajaxloading(); console.log(href); 
+				hideajaxloading(); console.log(href);
 				$(modal).resizemodal('lg').modal();
 			});
 		} else {
@@ -132,12 +132,12 @@ function pricing() {
 		$(modal).resizemodal('lg').modal();
 	});
 }
-function choosecipricingitem(itemid) {
+function choosecipricingitem(itemID) {
 	var custid = $(custlookupform + " .custid").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_pricing).addQuery("custID", custid).addQuery("itemid", itemid).addQuery("modal", "modal").toString();
-	ci_pricing(custid, itemid, function() {
+	var href = URI(config.urls.customer.load.ci_pricing).addQuery("custID", custid).addQuery("itemID", itemID).addQuery("modal", "modal").toString();
+	ci_pricing(custid, itemID, function() {
 		$(loadinto).loadin(href, function() {
 			hideajaxloading(); console.log(href);
 			$(modal).find('.modal-body').addClass('modal-results');
@@ -225,7 +225,7 @@ function quotes() {
 	showajaxloading();
 	ci_quotes(custid, function() {
 		loadin(href, loadinto, function() {
-			hideajaxloading(); console.log(href); 
+			hideajaxloading(); console.log(href);
 			$(modal).find('.modal-body').addClass('modal-results');
 			$(modal).resizemodal('xl').modal();
 		});
@@ -284,7 +284,7 @@ function custcredit() {
 	showajaxloading();
 	ci_credit(custid, function() {
 		loadin(href, loadinto, function() {
-			hideajaxloading(); console.log(href); 
+			hideajaxloading(); console.log(href);
 			$(modal).find('.modal-body').addClass('modal-results');
 			$(modal).resizemodal('lg').modal();
 		});
@@ -302,7 +302,7 @@ function standorders() { //CAN BE USED IF SHIPTO IS DEFINED
 	showajaxloading();
 	ci_standingorders(custid, shipid, function() {
 		loadin(href, loadinto, function() {
-			hideajaxloading(); console.log(href); 
+			hideajaxloading(); console.log(href);
 			$(modal).find('.modal-body').addClass('modal-results');
 			$(modal).resizemodal('lg').modal();
 		});
@@ -359,14 +359,14 @@ function loadshiptoinfo(custid, shiptoid) {
 	showajaxloading();
 	ci_shiptoinfo(custid, shiptoid, function() {
 		loadin(href, loadinto, function() {
-			hideajaxloading(); console.log(href); 
+			hideajaxloading(); console.log(href);
 			$(modal).resizemodal('lg').modal();
 		});
 	});
 }
 
-function choosecisaleshistoryitem(itemid) {
-	var row = $('[href=#'+itemid+']');
+function choosecisaleshistoryitem(itemID) {
+	var row = $('[href=#'+itemID+']');
 	row.siblings().remove();
-	$('.ci-history-item-search').val(itemid);
+	$('.ci-history-item-search').val(itemID);
 }

@@ -6,8 +6,8 @@ function ajaxloadedmodal(button) {
 
 function itemform(thisform) {
 	this.thisform = thisform;
-	this.formid = '#'+thisform.attr('id');
-	this.itemid = thisform.find('input[name="itemid"]').val();
+	this.formID = '#'+thisform.attr('id');
+	this.itemID = thisform.find('input[name="itemID"]').val();
 	this.qty = parseInt(thisform.find('input[name="qty"]').val());
 	this.desc = thisform.find('input[name="desc"]').val();
 }

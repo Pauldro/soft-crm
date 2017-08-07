@@ -2,11 +2,11 @@
 	$custID = $shipID = '';
 	if ($input->post->action) {
 		$action = $input->post->text('action');
-		$itemid = $input->post->text('itemid');
+		$itemID = $input->post->text('itemID');
 		$qty = $input->post->text('qty');
 	} else {
 		$action = $input->get->text('action');
-		$itemid = $input->get->text('itemid');
+		$itemID = $input->get->text('itemID');
 		$qty = $input->get->text('qty');
 	}
 
@@ -29,7 +29,7 @@
 	*	case 'add-to-cart':
 	*		DBNAME=$config->DBNAME
 	*		CARTDET
-	*		ITEMID=$itemid
+	*		ITEMID=$itemID
 	*		CUSTID=$custID
 	*		SHIPTOID=$shipID
 	*		WHSE=$whse  **OPTIONAL
@@ -37,7 +37,7 @@
 	*	case 'reorder':
 	*		DBNAME=$config->DBNAME
 	*		CARTDET
-	*		ITEMID=$itemid
+	*		ITEMID=$itemID
 	*		CUSTID=$custID
 	*		SHIPTOID=$shipID
 	*		WHSE=$whse  **OPTIONAL
@@ -45,7 +45,7 @@
 	*	case 'reorder':
 	*		DBNAME=$config->DBNAME
 	*		CARTDET
-	*		ITEMID=$itemid
+	*		ITEMID=$itemID
 	*		CUSTID=$custID
 	*		SHIPTOID=$shipID
 	*		WHSE=$whse  **OPTIONAL
@@ -78,7 +78,7 @@
 
     switch ($action) {
         case 'add-to-cart':
-			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'ITEMID' => $itemid, 'QTY' => $qty);
+			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'ITEMID' => $itemID, 'QTY' => $qty);
 
 			if ($custID == '') {$custID = $config->defaultweb;}
 			$data['CUSTID'] = $custID; if ($shipID != '') {$data['SHIPTOID'] = $shipID; }
@@ -86,15 +86,15 @@
 
 			if ($input->post->whse) { if ($input->post->whse != '') { $data['WHSE'] = $input->post->whse; } }
 			$session->data = $data;
-            $session->addtocart = 'You added ' . $qty . ' of ' . $itemid . ' to your cart';
+            $session->addtocart = 'You added ' . $qty . ' of ' . $itemID . ' to your cart';
             $session->loc = $input->post->page;
             break;
 		case 'reorder':
-			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'ITEMID' => $itemid, 'QTY' => $qty);
+			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'ITEMID' => $itemID, 'QTY' => $qty);
 			if ($custID == '') {$custID = $config->defaultweb;}
 			$data['CUSTID'] = $custID; if ($shipID != '') {$data['SHIPTOID'] = $shipID; }
 			if ($input->post->whse) { if ($input->post->whse != '') { $data['WHSE'] = $input->post->whse; } }
-            $session->addtocart = 'You added ' . $qty . ' of ' . $itemid . ' to your cart';
+            $session->addtocart = 'You added ' . $qty . ' of ' . $itemID . ' to your cart';
             $session->loc = $input->post->page;
 			break;
 		case 'update-line':

@@ -161,9 +161,9 @@
 			break;
 		case 'add-to-quote':
 			$qnbr = $input->post->text('qnbr');
-			$itemid = $input->post->text('itemid');
+			$itemID = $input->post->text('itemID');
 			$qty = $input->post->text('qty');
-			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'ITEMID' => $itemid, 'QTY' => $qty);
+			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'ITEMID' => $itemID, 'QTY' => $qty);
 			$session->editdetail = true;
 			break;
 		case 'update-line':
@@ -229,10 +229,10 @@
 				} else {
 					$quotedetail['ordrqty'] = '0';
 				}
-				
+
 				$session->sql = edit_quoteline(session_id(), $qnbr, $quotedetail, false);
 			}
-			
+
 			$session->custID = $custID = getquotecustomer(session_id(), $qnbr, false);
 			$data = array('DBNAME' => $config->dbName, 'QUOTETOORDER' => false, 'QUOTENO' => $qnbr, 'LINENO' => 'ALL');
 			$session->loc = $config->pages->orders."redir/?action=edit-new-order";

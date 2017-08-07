@@ -5,6 +5,10 @@
         $iiconfig = json_decode(file_get_contents($config->paths->content."salesrep/configs/defaults/item-info-options.json"), true);
     }
 
+    if ($input->get->itemID) {
+        $itemID = $input->get->text('itemID');
+    }
+
     switch ($input->urlSegment(3)) { //Parts of order to load
         case 'search-results':
             if ($input->get->q) {$q = $input->get->text('q'); $page->title = "Searching for '$q'";}
@@ -17,109 +21,91 @@
 					break;
 			}
             break;
-		case 'ii-pricing':
-            $itemid = $input->get->text('itemid');
+		case 'ii-pricing': // $itemID provided by $input->get
 			$custID = $input->get->text('custID');
-            $page->title = $itemid. ' Price Inquiry for ' . $custID;
+            $page->title = $itemID. ' Price Inquiry for ' . $custID;
             $page->body = $config->paths->content."item-information/item-pricing.php";
             break;
-        case 'ii-costing':
-            $itemid = $input->get->text('itemid');
-            $page->title = $itemid .' Cost Inquiry';
+        case 'ii-costing': // $itemID provided by $input->get
+            $page->title = $itemID .' Cost Inquiry';
             $page->body = $config->paths->content."item-information/item-costing.php";
             break;
-        case 'ii-purchase-order':
-            $itemid = $input->get->text('itemid');
-            $page->title = $itemid. ' Purchase Order Inquiry';
+        case 'ii-purchase-order': // $itemID provided by $input->get
+            $page->title = $itemID. ' Purchase Order Inquiry';
             $page->body = $config->paths->content."item-information/item-purchase-orders.php";
             break;
-		case 'ii-quotes':
-            $itemid = $input->get->text('itemid');
-            $page->title = 'Viewing ' .$itemid . ' Quotes';
+		case 'ii-quotes': // $itemID provided by $input->get
+            $page->title = 'Viewing ' .$itemID . ' Quotes';
             $page->body = $config->paths->content."item-information/item-quotes.php";
             break;
-		 case 'ii-purchase-history':
-            $itemid = $input->get->text('itemid');
-            $page->title = $itemid.'Purchase History Inquiry';
+		 case 'ii-purchase-history': // $itemID provided by $input->get
+            $page->title = $itemID.'Purchase History Inquiry';
             $page->body = $config->paths->content."item-information/item-purchase-history.php";
             break;
-		case 'ii-where-used':
-            $itemid = $input->get->text('itemid');
-            $page->title = $itemid.' Where Used Inquiry';
+		case 'ii-where-used': // $itemID provided by $input->get
+            $page->title = $itemID.' Where Used Inquiry';
             $page->body = $config->paths->content."item-information/item-where-used.php";
             break;
-		case 'ii-kit-components':
-            $itemid = $input->get->text('itemid');
-            $page->title = $itemid.' Kit Component Inquiry ';
+		case 'ii-kit-components': // $itemID provided by $input->get
+            $page->title = $itemID.' Kit Component Inquiry ';
             $page->body = $config->paths->content."item-information/item-kit-components.php";
             break;
-		case 'ii-bom':
-            $itemid = $input->get->text('itemid');
+		case 'ii-bom': // $itemID provided by $input->get
 			$bom = $input->get->text('bom');
-            $page->title = $itemid.' BOM Item Inquiry ';
+            $page->title = $itemID.' BOM Item Inquiry ';
             $page->body = $config->paths->content."item-information/item-bom-".$bom.".php";
             break;
-		case 'ii-general':
-            $itemid = $input->get->text('itemid');
-            $page->title = $itemid . ' General Item Inquiry';
+		case 'ii-general': // $itemID provided by $input->get
+            $page->title = $itemID . ' General Item Inquiry';
             $page->body = $config->paths->content."item-information/item-general.php";
             break;
-		case 'ii-activity':
-            $itemid = $input->get->text('itemid');
+		case 'ii-activity': // $itemID provided by $input->get
 			if ($input->urlSegment4 == 'form') {
 				$page->title = 'Enter the Starting Report Date ';
 				$page->body = $config->paths->content."item-information/forms/item-activity-form.php";
 			} else {
-				$page->title = $itemid.' Activity Inquiry';
+				$page->title = $itemID.' Activity Inquiry';
 				$page->body = $config->paths->content."item-information/item-activity.php";
 			}
             break;
-		case 'ii-requirements':
-            $itemid = $input->get->text('itemid');
-            $page->title = $itemid. ' Requirements Inquiry';
+		case 'ii-requirements': // $itemID provided by $input->get
+            $page->title = $itemID. ' Requirements Inquiry';
             $page->body = $config->paths->content."item-information/item-requirements.php";
             break;
-		case 'ii-lot-serial':
-            $itemid = $input->get->text('itemid');
-            $page->title = 'Viewing ' .$itemid. ' Lot/Serial Inquiry';
+		case 'ii-lot-serial': // $itemID provided by $input->get
+            $page->title = 'Viewing ' .$itemID. ' Lot/Serial Inquiry';
             $page->body = $config->paths->content."item-information/item-lot-serial.php";
             break;
-		case 'ii-sales-orders':
-            $itemid = $input->get->text('itemid');
-            $page->title = $itemid . ' Sales Order Inquiry';
+		case 'ii-sales-orders': // $itemID provided by $input->get
+            $page->title = $itemID . ' Sales Order Inquiry';
             $page->body = $config->paths->content."item-information/item-sales-orders.php";
             break;
-		case 'ii-sales-history':
-			$itemid = $input->get->text('itemid');
-
+		case 'ii-sales-history': // $itemID provided by $input->get
 			if ($input->urlSegment4 == 'form') {
 				if ($input->get->custID) { $custID = $input->get->text('custID'); } else { $custID = ''; }
 				$page->title = 'Search Item History';
 				$page->body = $config->paths->content."item-information/forms/item-history-form.php";
 			} else {
 				if ($input->get->custID) { $custID = $input->get->text('custID'); } else { $custID = ''; }
-				$page->title = $itemid. ' Sales History Inquiry';
+				$page->title = $itemID. ' Sales History Inquiry';
 				$page->body = $config->paths->content."item-information/item-history.php";
 			}
 			break;
-		case 'ii-stock':
-            $itemid = $input->get->text('itemid');
-            $page->title = $itemid. ' Stock by Warehouse Inquiry';
+		case 'ii-stock': // $itemID provided by $input->get
+            $page->title = $itemID. ' Stock by Warehouse Inquiry';
             $page->body = $config->paths->content."item-information/item-stock-by-whse.php";
             break;
-		case 'ii-substitutes':
-            $itemid = $input->get->text('itemid');
-            $page->title = 'Viewing Item Substitutes for ' .$itemid;
+		case 'ii-substitutes': // $itemID provided by $input->get
+            $page->title = 'Viewing Item Substitutes for ' .$itemID;
             $page->body = $config->paths->content."item-information/item-substitutes.php";
             break;
-		case 'ii-documents':
-            $itemid = $input->get->text('itemid');
+		case 'ii-documents': // $itemID provided by $input->get
             switch ($input->urlSegment(4)) {
                 case 'order':
                     $page->title = "Order #" . $input->get->text('ordn'). ' Documents';
                     break;
                 default:
-                    $page->title = 'Viewing Item Documents for ' .$itemid;
+                    $page->title = 'Viewing Item Documents for ' .$itemID;
                     break;
             }
             $page->body = $config->paths->content."item-information/item-documents.php";

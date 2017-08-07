@@ -37,7 +37,7 @@
 
 			}
 			$reorder = '<form method="post" action="'.$config->pages->cart.'redir/" id="'.$on.'-'.$detail['itemid'].'-form" class="item-reorder">
-							<input type="hidden" name="itemid" value="'.$detail['itemid'].'"> <input type="hidden" name="ordn" value="'.$on.'">
+							<input type="hidden" name="itemID" value="'.$detail['itemid'].'"> <input type="hidden" name="ordn" value="'.$on.'">
 							<input type="hidden" name="qty" class="qty" value="'.$qtyo .'"> <input type="hidden" name="page" value="'.$thispage.'">
 							<input type="hidden" name="action" value="reorder">
 							<input type="hidden" name="desc" class="desc" value="'.$detail['desc1'].'">

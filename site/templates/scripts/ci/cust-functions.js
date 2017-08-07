@@ -11,8 +11,8 @@
 		$.get(url, function() { callback();});
 	}
 
-	function ci_pricing(custid, itemid, callback) {
-		var url = config.urls.customer.redir.ci_pricing+"&custID="+urlencode(custid)+"&itemid="+urlencode(itemid);
+	function ci_pricing(custid, itemID, callback) {
+		var url = config.urls.customer.redir.ci_pricing+"&custID="+urlencode(custid)+"&itemID="+urlencode(itemID);
 		$.get(url, function() { callback();});
 	}
 

@@ -1,101 +1,97 @@
 /* =============================================================
    II ITEM FUNCTIONS
  ============================================================ */
-
-
-	function ii_pricing(itemid, custid, shipid, callback) {
-		var url = config.urls.products.redir.ii_pricing+"&itemid="+urlencode(itemid)+"&custID="+urlencode(custid)+"&shipID="+urlencode(shipid);
+	function ii_pricing(itemID, custid, shipid, callback) {
+		var url = config.urls.products.redir.ii_pricing+"&itemID="+urlencode(itemID)+"&custID="+urlencode(custid)+"&shipID="+urlencode(shipid);
 		$.get(url, function() { callback();});
 	}
 
-	function ii_select(itemid, custid, callback) {
-		var url = config.urls.products.redir.ii_select+"&itemid="+urlencode(itemid)+"&custID="+urlencode(custid);
+	function ii_select(itemID, custid, callback) {
+		var url = config.urls.products.redir.ii_select+"&itemID="+urlencode(itemID)+"&custID="+urlencode(custid);
 		$.get(url, function() { callback(); });
 	}
 
-	function ii_costing(itemid, callback) {
-		var url = config.urls.products.redir.ii_costing+"&itemid="+urlencode(itemid);
+	function ii_costing(itemID, callback) {
+		var url = config.urls.products.redir.ii_costing+"&itemID="+urlencode(itemID);
 		$.get(url, function() { callback();});
 	}
 
-	function ii_purchaseorder(itemid, callback) {
-		var url = config.urls.products.redir.ii_purchaseorder+"&itemid="+urlencode(itemid);
+	function ii_purchaseorder(itemID, callback) {
+		var url = config.urls.products.redir.ii_purchaseorder+"&itemID="+urlencode(itemID);
 		$.get(url, function() { callback(); });
 	}
 
-	function ii_quotes(itemid, callback) {
-		var url = config.urls.products.redir.ii_quotes+"&itemid="+urlencode(itemid);
+	function ii_quotes(itemID, callback) {
+		var url = config.urls.products.redir.ii_quotes+"&itemID="+urlencode(itemID);
 		$.get(url, function() { callback();});
 	}
 
-	function ii_purchasehistory(itemid, callback) {
-		var url = config.urls.products.redir.ii_purchasehistory+"&itemid="+urlencode(itemid);
+	function ii_purchasehistory(itemID, callback) {
+		var url = config.urls.products.redir.ii_purchasehistory+"&itemID="+urlencode(itemID);
 		$.get(url, function() { callback(); });
 	}
 
-	function ii_whereused(itemid, callback) {
-		var url = config.urls.products.redir.ii_whereused+"&itemid="+urlencode(itemid);
+	function ii_whereused(itemID, callback) {
+		var url = config.urls.products.redir.ii_whereused+"&itemID="+urlencode(itemID);
 		$.get(url, function() { callback();});
 	}
 
-
-
-	function ii_bom(itemid, qty, bomtype, callback) {
-		var url = config.urls.products.redir.ii_bom+"&itemid="+urlencode(itemid)+"&qty="+urlencode(qty)+"&bom="+bomtype;
+	function ii_bom(itemID, qty, bomtype, callback) {
+		var url = config.urls.products.redir.ii_bom+"&itemID="+urlencode(itemID)+"&qty="+urlencode(qty)+"&bom="+bomtype;
 		$.get(url, function() { callback();});
 	}
 
-	function ii_general(itemid, callback) {
-		var url = config.urls.products.redir.ii_general+"&itemid="+urlencode(itemid);
+	function ii_general(itemID, callback) {
+		var url = config.urls.products.redir.ii_general+"&itemID="+urlencode(itemID);
 		$.get(url, function() { callback();});
 	}
 
-	function ii_usage(itemid, callback) {
-		var url = config.urls.products.redir.ii_usage+"&itemid="+urlencode(itemid);
+	function ii_usage(itemID, callback) {
+		var url = config.urls.products.redir.ii_usage+"&itemID="+urlencode(itemID);
 		$.get(url, function() { callback();});
 	}
 
-	function ii_misc(itemid, callback) {
-		var url = config.urls.products.redir.ii_misc+"&itemid="+urlencode(itemid);
+	function ii_misc(itemID, callback) {
+		var url = config.urls.products.redir.ii_misc+"&itemID="+urlencode(itemID);
 		$.get(url, function() { callback();});
 	}
 
-	function ii_notes(itemid, callback) {
-		var url = config.urls.products.redir.ii_notes+"&itemid="+urlencode(itemid);
+	function ii_notes(itemID, callback) {
+		var url = config.urls.products.redir.ii_notes+"&itemID="+urlencode(itemID);
 		$.get(url, function() { callback();});
 	}
 
-	function ii_requirements(itemid, screentype, whse, callback) {
-		var url = config.urls.products.redir.ii_requirements+"&itemid="+urlencode(itemid)+"&screentype="+urlencode(screentype)+"&whse="+urlencode(whse);
+	function ii_requirements(itemID, screentype, whse, callback) {
+		var url = config.urls.products.redir.ii_requirements+"&itemID="+urlencode(itemID)+"&screentype="+urlencode(screentype)+"&whse="+urlencode(whse);
 		$.get(url, function() {	callback(); });
 	}
 
-	function ii_lotserial(itemid, callback) {
-		var url = config.urls.products.redir.ii_lotserial+"&itemid="+urlencode(itemid);
+	function ii_lotserial(itemID, callback) {
+		var url = config.urls.products.redir.ii_lotserial+"&itemID="+urlencode(itemID);
 		$.get(url, function() { callback();	});
 	}
 
-	function ii_salesorder(itemid, callback) {
-		var url = config.urls.products.redir.ii_salesorder+"&itemid="+urlencode(itemid);
+	function ii_salesorder(itemID, callback) {
+		var url = config.urls.products.redir.ii_salesorder+"&itemID="+urlencode(itemID);
 		$.get(url, function() { callback(); });
 	}
 
-	function ii_stock(itemid, callback) {
-		var url = config.urls.products.redir.ii_stock+"&itemid="+urlencode(itemid);
+	function ii_stock(itemID, callback) {
+		var url = config.urls.products.redir.ii_stock+"&itemID="+urlencode(itemID);
 		$.get(url, function() { callback(); });
 	}
 
-	function ii_substitutes(itemid, callback) {
-		var url = config.urls.products.redir.ii_substitutes+"&itemid="+urlencode(itemid);
+	function ii_substitutes(itemID, callback) {
+		var url = config.urls.products.redir.ii_substitutes+"&itemID="+urlencode(itemID);
 		$.get(url, function() {	callback(); });
 	}
 
-	function ii_documents(itemid, callback) {
-		var url = config.urls.products.redir.ii_documents+"&itemid="+urlencode(itemid);
+	function ii_documents(itemID, callback) {
+		var url = config.urls.products.redir.ii_documents+"&itemID="+urlencode(itemID);
 		$.get(url, function() {	callback(); });
 	}
 
-	function ii_order_documents(itemid, ordn, callback) {
-		var url = config.urls.products.redir.ii_order_documents+"&itemid="+urlencode(itemid)+"&ordn="+ordn;
+	function ii_order_documents(itemID, ordn, callback) {
+		var url = config.urls.products.redir.ii_order_documents+"&itemID="+urlencode(itemID)+"&ordn="+ordn;
 		$.get(url, function() {	callback(); });
 	}

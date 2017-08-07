@@ -11,7 +11,7 @@
 	<?php $refresh = 'false'; ?>
 	<p> <a href="<?php echo $config->filename; ?>" class="h4" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a> </p>
 <?php else : ?>
-	<input type="hidden" id="itemid-req" value="<?php echo $itemid; ?>">
+	<input type="hidden" id="itemid-req" value="<?php echo $itemID; ?>">
 <?php endif; ?>
 
 <?php if (file_exists($requirementsfile)) : ?>

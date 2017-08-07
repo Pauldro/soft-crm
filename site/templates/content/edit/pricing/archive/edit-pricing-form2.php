@@ -2,7 +2,7 @@
 	<p>
 		<a href="<?php echo $config->filename; ?>" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a>
 		&nbsp; &nbsp;
-		<a href="<?= $config->pages->products.'redir/?action=ii-select&itemid='.urlencode($linedetail['itemid']); ?>" target="_blank"><i class="material-icons" aria-hidden="true">&#xE051;</i> View In II</a>
+		<a href="<?= $config->pages->products.'redir/?action=ii-select&itemID='.urlencode($linedetail['itemid']); ?>" target="_blank"><i class="material-icons" aria-hidden="true">&#xE051;</i> View In II</a>
 	</p>
 <?php endif; ?>
 <form action="<?php echo $formaction; ?>" method="post" id="<?= $linedetail['itemid'].'-form'; ?>">

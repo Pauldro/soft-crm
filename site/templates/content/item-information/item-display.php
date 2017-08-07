@@ -1,7 +1,7 @@
-<?php 
-	$item = getitemfromim($itemid, false); 
-	$specs = $pricing = $item; 
-	if (!file_exists($config->imagefiledirectory.$item['image'])) {$item['image'] = 'notavailable.png'; } 
+<?php
+	$item = getitemfromim($itemID, false); 
+	$specs = $pricing = $item;
+	if (!file_exists($config->imagefiledirectory.$item['image'])) {$item['image'] = 'notavailable.png'; }
 ?>
 <div class="row item-result">
     <div class="col-md-3">

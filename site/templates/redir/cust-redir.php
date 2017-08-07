@@ -58,7 +58,7 @@
 	* 	case 'ci-pricing':
 	*		DBNAME=$config->DBNAME
 	*		CIPRICE
-	*		ITEMID=$itemid
+	*		ITEMID=$itemID
 	*		CUSTID=$custID
 	* 		break;
 	* 	case 'ci-contacts':
@@ -112,7 +112,7 @@
 	*		SHIPID=$shipID
 	*		DATE=$startdate
 	*		SALESORDRNBR=''
-	*		ITEMID=$itemid
+	*		ITEMID=$itemID
 	* 		break;
 	* 	case 'ci-custpo':
 	* 		CICUSTPO
@@ -185,6 +185,7 @@
 			$newcustomer['cphext'] = $input->post->text('billto-ext');
 			$newcustomer['email'] = $data['BILLTOEMAIL'];
 			$newcustomer['recno'] = getmaxcustindexrecnbr() + 1;
+			$session->sql = insertnewcustomer($newcustomer, false);
 
 			$newcustomershipto['shiptoid'] = '1';
 			$newcustomershipto['source'] = 'CS';
@@ -197,11 +198,9 @@
 			$newcustomershipto['cphone'] = $input->post->text('shipto-phone');
 			$newcustomershipto['cphext'] = $input->post->text('shipto-ext');
 			$newcustomershipto['email'] = $data['SHIPTOEMAIL'];
-			$session->sql = insertnewcustomer($newcustomer, false);
 			$newcustomershipto['recno'] = getmaxcustindexrecnbr() + 1;
 			$session->sql = insertnewcustomer($newcustomershipto, false);
 			$session->loc = $config->pages->customer.'redir/?action=load-new-customer';
-			$session->loc = $config->pages->index;
 			break;
 		case 'load-new-customer':
 			$custID = getcreatedordn(session_id(), false);
@@ -252,8 +251,8 @@
 			$session->loc = $config->pages->index;
 			break;
 		case 'ci-pricing':
-			$itemid = $input->get->text('itemid');
-			$data = array('DBNAME' => $config->dbName, 'CIPRICE' => false, 'ITEMID' => $itemid, 'CUSTID' => $custID);
+			$itemID = $input->get->text('itemID');
+			$data = array('DBNAME' => $config->dbName, 'CIPRICE' => false, 'ITEMID' => $itemID, 'CUSTID' => $custID);
 			$session->loc = $config->pages->index;
 			break;
 		case 'ci-contacts':
@@ -299,11 +298,11 @@
 			break;
 		case 'ci-sales-history':
 			$shipID = $input->get->text('shipID');
-			$itemid = $input->get->text('itemid');
+			$itemID = $input->get->text('itemID');
 			$date = $input->get->text('startdate');
 			$session->date = $date;
 			$startdate = date('Ymd', strtotime($date));
-			$data = array('DBNAME' => $config->dbName, 'CISALESHIST' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID, 'DATE' => $startdate, 'SALESORDRNBR' => '', 'ITEMID' => $itemid);
+			$data = array('DBNAME' => $config->dbName, 'CISALESHIST' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID, 'DATE' => $startdate, 'SALESORDRNBR' => '', 'ITEMID' => $itemID);
 			$session->loc = $config->pages->index;
 			break;
 		case 'ci-custpo':

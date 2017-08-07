@@ -1,9 +1,8 @@
 <?php
     $custID = $shipID = '';
-    if ($input->get->itemid) {
-		
-        $itemid = $input->get->text('itemid');
-		$page->title = 'II: ' . $itemid;
+    if ($input->get->itemID) {
+        $itemID = $input->get->text('itemID');
+		$page->title = 'II: ' . $itemID;
         $itemjson = json_decode(file_get_contents($config->jsonfilepath.session_id()."-iiitem.json"), true);
         $buttonsjson = json_decode(file_get_contents($config->jsonfilepath.session_id()."-iibuttons.json"), true);
 		$toolbar = $config->paths->content."item-information/toolbar.php";
@@ -25,7 +24,7 @@
 	$config->scripts->append($config->urls->templates.'scripts/ii/item-functions.js');
 	$config->scripts->append($config->urls->templates.'scripts/ii/item-info.js');
 
-	
+
 ?>
 <?php include('./_head.php'); // include header markup ?>
     <div class="jumbotron pagetitle">
@@ -35,9 +34,9 @@
     </div>
     <div class="container page">
     	<?php if ($input->urlSegment1) : ?>
-    	
+
     	<?php else : ?>
-    		<?php if ($input->get->itemid) : ?>
+    		<?php if ($input->get->itemID) : ?>
     			<div class="col-sm-2 hidden-print"> <?php include $config->paths->content."item-information/ii-buttons.php"; ?> </div>
     			<div class="col-sm-10 print"><?php include $config->paths->content."item-information/item-info-outline.php";  ?></div>
     		<?php else : ?>
@@ -47,6 +46,6 @@
 				</script>
     		<?php endif; ?>
     	<?php endif; ?>
-   		
+
     </div>
 <?php include('./_foot-with-toolbar.php'); // include footer markup ?>
