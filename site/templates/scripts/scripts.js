@@ -305,7 +305,7 @@ $(document).ready(function() {
 			var form = $(this);
 			var addto = form.data('addto');
 			var itemID = form.find('input[name="itemID"]').val();
-			var custid = form.find('input[name="custID"]').val();
+			var custID = form.find('input[name="custID"]').val();
 			var loadinto = config.modals.pricing+" .modal-body";
 			var parentmodal = $(this).closest('.modal');
 			var editurl = '';
@@ -337,7 +337,7 @@ $(document).ready(function() {
 						}
 
 						loadin(uri.toString()+"#edit-page", '.page', function() {
-							edititempricing(itemID, custid,  function() {
+							edititempricing(itemID, custID,  function() {
 								loadin(editurl, loadinto, function() {
 									hideajaxloading();
 									$(config.modals.pricing).modal();
@@ -360,25 +360,25 @@ $(document).ready(function() {
 			}
 			var modal = $(this);
 			var title = ''; var addonurl = '';
-			var custid = button.data('custid');
-			var shipid = button.data('shipid');
+			var custID = button.data('custid');
+			var shipID = button.data('shipid');
 			switch (addtype) {
 				case 'cart':
-					$('#'+modal.attr('id')+ " .custid").val(custid);
+					$('#'+modal.attr('id')+ " .custID").val(custID);
 					title = "Add item to Cart";
-					addonurl = "cart/?custID="+urlencode(custid)+"&shipID="+urlencode(shipid);
+					addonurl = "cart/?custID="+urlencode(custID)+"&shipID="+urlencode(shipID);
 					break;
 				case 'order':
 					var ordn = button.data('ordn');
-					$('#'+modal.attr('id')+ " .custid").val(custid);
+					$('#'+modal.attr('id')+ " .custID").val(custID);
 					title = "Add item to Order #" + ordn;
-					addonurl = "order/?ordn="+ordn+"&custID="+urlencode(custid);
+					addonurl = "order/?ordn="+ordn+"&custID="+urlencode(custID);
 					break;
 				case 'quote':
 					var qnbr = button.data('qnbr');
-					$('#'+modal.attr('id')+ " .custid").val(custid);
+					$('#'+modal.attr('id')+ " .custID").val(custID);
 					title = "Add item to Quote #" + qnbr;
-					addonurl = "quote/?qnbr="+qnbr+"&custID="+urlencode(custid);
+					addonurl = "quote/?qnbr="+qnbr+"&custID="+urlencode(custID);
 					break;
 			}
 			$('#add-item-modal-label').text(title);
@@ -426,12 +426,12 @@ $(document).ready(function() {
 			//if ($(this).val().length > 3) {
 				var input = $(this);
 				var thisform = input.parent('form');
-				var custid = thisform.find('input[name=custID]').val();
-				var shipid = thisform.find('input[name=shipID]').val();
+				var custID = thisform.find('input[name=custID]').val();
+				var shipID = thisform.find('input[name=shipID]').val();
 				var action = thisform.find('input[name=action]').val();
 				var href  = URI(thisform.attr('action')).addQuery('q', urlencode(input.val()))
-													   .addQuery('custID', urlencode(custid))
-													   .addQuery('shipID', urlencode(shipid))
+													   .addQuery('custID', urlencode(custID))
+													   .addQuery('shipID', urlencode(shipID))
 													   .addQuery('action', urlencode(action))
 													   .toString();
 				var loadinto = '#item-results';
@@ -446,12 +446,12 @@ $(document).ready(function() {
 			//if ($(this).val().length > 3) {
 				var input = $(this);
 				var thisform = input.closest('form');
-				var custid = thisform.find('input[name=custID]').val();
-				var shipid = thisform.find('input[name=shipID]').val();
+				var custID = thisform.find('input[name=custID]').val();
+				var shipID = thisform.find('input[name=shipID]').val();
 				var action = thisform.find('input[name=action]').val();
 				var href  = URI(input.data('results')).addQuery('q', urlencode(input.val()))
-													   .addQuery('custID', urlencode(custid))
-													   .addQuery('shipID', urlencode(shipid))
+													   .addQuery('custID', urlencode(custID))
+													   .addQuery('shipID', urlencode(shipID))
 													   .addQuery('action', urlencode(action))
 													   .toString();
 				var loadinto = '#item-results';
@@ -701,7 +701,7 @@ $(document).ready(function() {
 			showajaxloading();
 			var url = addtoquerystring($(this).attr('href'), [], []);
 			var itemID = $(this).data('itemid');
-			var custid = $(this).data('custid');
+			var custID = $(this).data('custid');
 
 			if ($.inArray(itemID, nonstockitems) > -1) {
 				console.log('skipping item get');
@@ -710,7 +710,7 @@ $(document).ready(function() {
 					$(config.modals.pricing).modal();
 				});
 			} else {
-				edititempricing(itemID, custid,  function() {
+				edititempricing(itemID, custID,  function() {
 					console.log(url);
 					loadin(url, config.modals.pricing+" .modal-content", function() {
 						hideajaxloading();
@@ -912,9 +912,9 @@ $(document).ready(function() {
 /*==============================================================
  	CUST INDEX FUNCTIONS
 =============================================================*/
-	function pickcustomer(custid, row, sourcepage) {
+	function pickcustomer(custID, row, sourcepage) {
 		var loadinto = config.modals.ajax + ' .modal-content';
-        var url = config.urls.customer.load.loadindex+urlencode(custid)+'/?source='+urlencode(sourcepage);
+        var url = config.urls.customer.load.loadindex+urlencode(custID)+'/?source='+urlencode(sourcepage);
 		console.log(url);
         loadin(url, loadinto, function() {  });
     }
@@ -940,8 +940,8 @@ $(document).ready(function() {
 		$(whserow).addClass('warning');
 	}
 
-	function edititempricing(itemID, custid, callback) {
-		var url = config.urls.products.redir.getitempricing+"&itemID="+urlencode(itemID)+"&custID="+urlencode(custid);
+	function edititempricing(itemID, custID, callback) {
+		var url = config.urls.products.redir.getitempricing+"&itemID="+urlencode(itemID)+"&custID="+urlencode(custID);
 		console.log(url);
 		$.get(url, function() { callback(); });
 	}

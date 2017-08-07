@@ -1,13 +1,13 @@
 /* =============================================================
    II ITEM FUNCTIONS
  ============================================================ */
-	function ii_pricing(itemID, custid, shipid, callback) {
-		var url = config.urls.products.redir.ii_pricing+"&itemID="+urlencode(itemID)+"&custID="+urlencode(custid)+"&shipID="+urlencode(shipid);
+	function ii_pricing(itemID, custID, shipID, callback) {
+		var url = config.urls.products.redir.ii_pricing+"&itemID="+urlencode(itemID)+"&custID="+urlencode(custID)+"&shipID="+urlencode(shipID);
 		$.get(url, function() { callback();});
 	}
 
-	function ii_select(itemID, custid, callback) {
-		var url = config.urls.products.redir.ii_select+"&itemID="+urlencode(itemID)+"&custID="+urlencode(custid);
+	function ii_select(itemID, custID, callback) {
+		var url = config.urls.products.redir.ii_select+"&itemID="+urlencode(itemID)+"&custID="+urlencode(custID);
 		$.get(url, function() { callback(); });
 	}
 

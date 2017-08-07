@@ -1,12 +1,10 @@
 <?php
-    $ordn = $custid = '';
     $addtype = $input->urlSegment4; // cart|order|quote
     $linenumber = $input->get->text('linenumber');
     $pathtoajax = "load/products/item-search-results/";
     switch($addtype) {
         case 'cart':
             $ordn = '';
-            $shipID = $input->get->text('shipID');
             $pathtoajax .= "cart/";
             $formaction = $config->pages->cart."redir/";
             $rediraction = 'add-to-cart';
@@ -14,7 +12,6 @@
             break;
 		case 'order':
             $ordn = $sanitizer->text($input->get->ordn);
-            $shipID = $input->get->text('shipID');
             $pathtoajax .= "order/";
             $formaction = $config->pages->orders."redir/";
             $rediraction = 'add-to-order';
@@ -22,7 +19,6 @@
             break;
 		case 'quote':
             $qnbr = $sanitizer->text($input->get->qnbr);
-            $shipID = $input->get->text('shipID');
             $pathtoajax .= "quote/";
             $formaction = $config->pages->quotes."redir/";
             $rediraction = 'add-to-quote';

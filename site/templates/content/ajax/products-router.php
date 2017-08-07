@@ -4,7 +4,7 @@
     switch ($filteron) {
         case 'item-search-results':
             $custID = $input->get->text('custID');
-            $shipID = '';
+            $shipID = $input->get->text('shipID');
             $page->body = $config->paths->content.'products/ajax/load/product-results/product-results.php';
 			switch($input->urlSegment4) {
 				case 'cart':
@@ -35,7 +35,7 @@
 		} else {
 			include($page->body);
 		}
-        
+
     } else {
         $title = $page->title; $modalbody = $page->body;
         include $config->paths->content."common/include-blank-page.php";

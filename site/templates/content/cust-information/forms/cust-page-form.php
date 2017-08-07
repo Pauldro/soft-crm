@@ -1,7 +1,7 @@
 <form action="<?php echo $config->pages->ajax."load/ci/search-results/?modal=modal"; ?>" method="POST" id="ci-cust-lookup">
     <input type="hidden" name="action" value="ci-item-lookup">
-    <input type="hidden" name="shipID" class="shipid" value="<?php echo $shipID; ?>">
-    <input type="hidden" name="nextshipID" class="nextshipid" value="<?php echo $nextshipid; ?>">
+    <input type="hidden" name="shipID" class="shipID" value="<?php echo $shipID; ?>">
+    <input type="hidden" name="nextshipID" class="nextshipID" value="<?php echo $nextshipid; ?>">
     <input type="hidden" name="shiptocount" class="shiptocount" value="<?php echo $custjson['shiptocount']; ?>">
     <div class="form-group">
         <div class="input-group custom-search-form">

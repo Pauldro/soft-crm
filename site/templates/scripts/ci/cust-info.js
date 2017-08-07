@@ -19,10 +19,10 @@ $(function() {
 
 	$("body").on("submit", custlookupform, function(e) {
 		e.preventDefault();
-		var custid = $(this).find('.custid').val();
+		var custID = $(this).find('.custID').val();
 		var modal = config.modals.ajax;
         var loadinto =  modal+" .modal-content";
-		var href = URI($(this).attr('action')).addQuery('q', custid).normalizeQuery().toString();
+		var href = URI($(this).attr('action')).addQuery('q', custID).normalizeQuery().toString();
 		showajaxloading();
 		$(loadinto).loadin(href, function() {
 			hideajaxloading(); console.log(href);
@@ -35,21 +35,21 @@ $(function() {
 	$("body").on("submit", "#cust-sales-history-form", function(event) {
 		event.preventDefault();
 		var form = $(this);
-		var custid = form.find('input[name=custID]').val();
-		var shipid = form.find('input[name=shipID]').val();
+		var custID = form.find('input[name=custID]').val();
+		var shipID = form.find('input[name=shipID]').val();
 		var startdate = form.find('input[name=date]').val();
 		var shownotes = 'N';
 		if (form.find('input[name=shownotes]').is(':checked')) { shownotes = 'Y'; }
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.customer.load.ci_saleshistory).addQuery("custID", custid)
-																 .addQuery("shipID", shipid)
+		var href = URI(config.urls.customer.load.ci_saleshistory).addQuery("custID", custID)
+																 .addQuery("shipID", shipID)
 																 .addQuery("startdate", startdate)
 																 .addQuery("shownotes", shownotes)
 																 .addQuery("modal", "modal")
 																 .toString();
 		showajaxloading();
-		ci_saleshistory(custid, shipid, startdate, function() {
+		ci_saleshistory(custID, shipID, startdate, function() {
 			loadin(href, loadinto, function() {
 				hideajaxloading(); console.log(href);
 				$(modal).find('.modal-body').addClass('modal-results');
@@ -83,12 +83,12 @@ $(function() {
 
 
 function shipto() { //CAN BE USED IF SHIPTO IS DEFINED
-	var custid = $(custlookupform + " .custid").val();
-	var shipid = $(custlookupform + " .shipid").val();
+	var custID = $(custlookupform + " .custID").val();
+	var shipID = $(custlookupform + " .shipID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_shiptos).addQuery("custID", custid)
-														.addQuery("shipID", shipid)
+	var href = URI(config.urls.customer.load.ci_shiptos).addQuery("custID", custID)
+														.addQuery("shipID", shipID)
 														.addQuery("modal", "modal")
 														.query(cleanparams)
 														.toString();
@@ -96,7 +96,7 @@ function shipto() { //CAN BE USED IF SHIPTO IS DEFINED
 	$.getJSON(config.urls.json.ci_shiptolist, function( json ) {
 		console.log(json.data.length);
 		if (json.data.length == 1) {
-			loadshipto(custid, json.data[0].shipid);
+			loadshipto(custID, json.data[0].shipid);
 		} else {
 			loadin(href, loadinto, function() {
 				hideajaxloading(); console.log(href);
@@ -107,12 +107,12 @@ function shipto() { //CAN BE USED IF SHIPTO IS DEFINED
 	});
 }
 function contact() {
-	var custid = $(custlookupform + " .custid").val();
+	var custID = $(custlookupform + " .custID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_contacts).addQuery("custID", custid).addQuery("modal", "modal").toString();
+	var href = URI(config.urls.customer.load.ci_contacts).addQuery("custID", custID).addQuery("modal", "modal").toString();
 	showajaxloading();
-	ci_contacts(custid, function() {
+	ci_contacts(custID, function() {
 		loadin(href, loadinto, function() {
 			hideajaxloading(); console.log(href);
 			$(modal).find('.modal-body').addClass('modal-results');
@@ -121,8 +121,8 @@ function contact() {
 	});
 }
 function pricing() {
-	var custid = $(custlookupform + " .custid").val();
-	var href = URI(config.urls.customer.load.ci_pricingform).addQuery("custID", custid).addQuery("modal", "modal").toString();
+	var custID = $(custlookupform + " .custID").val();
+	var href = URI(config.urls.customer.load.ci_pricingform).addQuery("custID", custID).addQuery("modal", "modal").toString();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
 	showajaxloading();
@@ -133,11 +133,11 @@ function pricing() {
 	});
 }
 function choosecipricingitem(itemID) {
-	var custid = $(custlookupform + " .custid").val();
+	var custID = $(custlookupform + " .custID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_pricing).addQuery("custID", custid).addQuery("itemID", itemID).addQuery("modal", "modal").toString();
-	ci_pricing(custid, itemID, function() {
+	var href = URI(config.urls.customer.load.ci_pricing).addQuery("custID", custID).addQuery("itemID", itemID).addQuery("modal", "modal").toString();
+	ci_pricing(custID, itemID, function() {
 		$(loadinto).loadin(href, function() {
 			hideajaxloading(); console.log(href);
 			$(modal).find('.modal-body').addClass('modal-results');
@@ -146,13 +146,13 @@ function choosecipricingitem(itemID) {
 	});
 }
 function salesorder() { //CAN BE USED IF SHIPTO IS DEFINED
-	var custid = $(custlookupform + " .custid").val();
-	var shipid = $(custlookupform + " .shipid").val();
+	var custID = $(custlookupform + " .custID").val();
+	var shipID = $(custlookupform + " .shipID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_salesorders).addQuery("custID", custid).addQuery("shipID", shipid).addQuery("modal", "modal").toString();
+	var href = URI(config.urls.customer.load.ci_salesorders).addQuery("custID", custID).addQuery("shipID", shipID).addQuery("modal", "modal").toString();
 	showajaxloading();
-	ci_salesorder(custid, shipid, function() {
+	ci_salesorder(custID, shipID, function() {
 		$(loadinto).loadin(href, function() {
 			hideajaxloading(); console.log(href);
 			$(modal).find('.modal-body').addClass('modal-results');
@@ -161,12 +161,12 @@ function salesorder() { //CAN BE USED IF SHIPTO IS DEFINED
 	});
 }
 function saleshist() { //CAN BE USED IF SHIPTO IS DEFINED
-	var custid = $(custlookupform + " .custid").val();
-	var shipid = $(custlookupform + " .shipid").val();
+	var custID = $(custlookupform + " .custID").val();
+	var shipID = $(custlookupform + " .shipID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_saleshistory+"form/").addQuery("custID", custid)
-																	 .addQuery("shipID", shipid)
+	var href = URI(config.urls.customer.load.ci_saleshistory+"form/").addQuery("custID", custID)
+																	 .addQuery("shipID", shipID)
 																	 .addQuery("modal", "modal")
 																	 .toString();
 	showajaxloading();
@@ -178,11 +178,11 @@ function saleshist() { //CAN BE USED IF SHIPTO IS DEFINED
 
 }
 function custpo() { //CAN BE USED IF SHIPTO IS DEFINED
-	var custid = $(custlookupform + " .custid").val();
-	var shipid = $(custlookupform + " .shipid").val();
+	var custID = $(custlookupform + " .custID").val();
+	var shipID = $(custlookupform + " .shipID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_custpo).addQuery("custID", custid).addQuery("shipID", shipid).toString();
+	var href = URI(config.urls.customer.load.ci_custpo).addQuery("custID", custID).addQuery("shipID", shipID).toString();
 	swal({
 		title: "Customer PO Inquiry",
 	 	text: "Enter a PO:",
@@ -203,7 +203,7 @@ function custpo() { //CAN BE USED IF SHIPTO IS DEFINED
 		if (input) {
 			swal.close();
 			href = URI(href).addQuery("custpo", input).addQuery("modal", "modal").toString();
-			ci_custpo(custid, shipid, input, function() {
+			ci_custpo(custID, shipID, input, function() {
 				loadin(href, loadinto, function() {
 					hideajaxloading(); console.log(href);
 					$(modal).find('.modal-body').addClass('modal-results');
@@ -218,12 +218,12 @@ function custpo() { //CAN BE USED IF SHIPTO IS DEFINED
 }
 
 function quotes() {
-	var custid = $(custlookupform + " .custid").val();
+	var custID = $(custlookupform + " .custID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_quotes).addQuery("custID", custid).addQuery("modal", "modal").toString();
+	var href = URI(config.urls.customer.load.ci_quotes).addQuery("custID", custID).addQuery("modal", "modal").toString();
 	showajaxloading();
-	ci_quotes(custid, function() {
+	ci_quotes(custID, function() {
 		loadin(href, loadinto, function() {
 			hideajaxloading(); console.log(href);
 			$(modal).find('.modal-body').addClass('modal-results');
@@ -233,12 +233,12 @@ function quotes() {
 }
 
 function openinv() {
-	var custid = $(custlookupform + " .custid").val();
+	var custID = $(custlookupform + " .custID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_openinvoices).addQuery("custID", custid).addQuery("modal", "modal").toString();
+	var href = URI(config.urls.customer.load.ci_openinvoices).addQuery("custID", custID).addQuery("modal", "modal").toString();
 	showajaxloading();
-	ci_openinvoices(custid, function() {
+	ci_openinvoices(custID, function() {
 		$(loadinto).loadin(href, function() {
 			hideajaxloading(); console.log(href);
 			$(modal).find('.modal-body').addClass('modal-results');
@@ -247,12 +247,12 @@ function openinv() {
 	});
 }
 function loadorderdocuments(ordn) {
-	var custid = $(custlookupform + " .custid").val();
+	var custID = $(custlookupform + " .custID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_orderdocuments).addQuery("custID", custid).addQuery('ordn', ordn).addQuery("modal", "modal").toString();
+	var href = URI(config.urls.customer.load.ci_orderdocuments).addQuery("custID", custID).addQuery('ordn', ordn).addQuery("modal", "modal").toString();
 	showajaxloading();
-	ci_getorderdocuments(custid, ordn, function() {
+	ci_getorderdocuments(custID, ordn, function() {
 		wait(500, function() {
 			loadin(href, loadinto, function() {
 				console.log(href); hideajaxloading();
@@ -263,12 +263,12 @@ function loadorderdocuments(ordn) {
 	});
 }
 function payment() {
-	var custid = $(custlookupform + " .custid").val();
+	var custID = $(custlookupform + " .custID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_paymenthistory).addQuery("custID", custid).addQuery("modal", "modal").toString();
+	var href = URI(config.urls.customer.load.ci_paymenthistory).addQuery("custID", custID).addQuery("modal", "modal").toString();
 	showajaxloading();
-	ci_paymenthistory(custid, function() {
+	ci_paymenthistory(custID, function() {
 		loadin(href, loadinto, function() {
 			hideajaxloading(); console.log(href);
 			$(modal).find('.modal-body').addClass('modal-results');
@@ -277,12 +277,12 @@ function payment() {
 	});
 }
 function custcredit() {
-	var custid = $(custlookupform + " .custid").val();
+	var custID = $(custlookupform + " .custID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_credit).addQuery("custID", custid).addQuery("modal", "modal").toString();
+	var href = URI(config.urls.customer.load.ci_credit).addQuery("custID", custID).addQuery("modal", "modal").toString();
 	showajaxloading();
-	ci_credit(custid, function() {
+	ci_credit(custID, function() {
 		loadin(href, loadinto, function() {
 			hideajaxloading(); console.log(href);
 			$(modal).find('.modal-body').addClass('modal-results');
@@ -291,16 +291,16 @@ function custcredit() {
 	});
 }
 function standorders() { //CAN BE USED IF SHIPTO IS DEFINED
-	var custid = $(custlookupform + " .custid").val();
-	var shipid = $(custlookupform + " .shipid").val();
+	var custID = $(custlookupform + " .custID").val();
+	var shipID = $(custlookupform + " .shipID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_standingorders).addQuery("custID", custid)
-															   .addQuery("shipID", shipid)
+	var href = URI(config.urls.customer.load.ci_standingorders).addQuery("custID", custID)
+															   .addQuery("shipID", shipID)
 															   .addQuery("modal", "modal")
 															   .toString();
 	showajaxloading();
-	ci_standingorders(custid, shipid, function() {
+	ci_standingorders(custID, shipID, function() {
 		loadin(href, loadinto, function() {
 			hideajaxloading(); console.log(href);
 			$(modal).find('.modal-body').addClass('modal-results');
@@ -315,12 +315,12 @@ function notes() { //CAN BE USED IF SHIPTO IS DEFINED
 	//TODO
 }
 function docview() {
-	var custid = $(custlookupform + " .custid").val();
+	var custID = $(custlookupform + " .custID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_documents).addQuery("custID", custid).addQuery("modal", "modal").toString();
+	var href = URI(config.urls.customer.load.ci_documents).addQuery("custID", custID).addQuery("modal", "modal").toString();
 	showajaxloading();
-	ci_documents(custid, function() {
+	ci_documents(custID, function() {
 		loadin(href, loadinto, function() {
 			console.log(href); hideajaxloading();
 			$(modal).find('.modal-body').addClass('modal-results');
@@ -336,13 +336,13 @@ function docview() {
 
 function toggleshipto() {
 	showajaxloading();
-	var custid = $(custlookupform + " .custid").val();
-	var nextshipid = '';
-	if (!$(custlookupform + " .shipid").val() != '') { nextshipid = $(custlookupform + " .nextshipid").val(); }
-	ci_shiptoinfo(custid, nextshipid, function() {
-		var href = config.urls.customer.ci + "/"+urlencode(custid)+"/";
-		if (nextshipid != '') {
-			href += 'shipto-'+nextshipid+'/';
+	var custID = $(custlookupform + " .custID").val();
+	var nextshipID = '';
+	if (!$(custlookupform + " .shipID").val() != '') { nextshipID = $(custlookupform + " .nextshipID").val(); }
+	ci_shiptoinfo(custID, nextshipID, function() {
+		var href = config.urls.customer.ci + "/"+urlencode(custID)+"/";
+		if (nextshipID != '') {
+			href += 'shipto-'+nextshipID+'/';
 		}
 		hideajaxloading();
 		window.location.href = href;
@@ -350,14 +350,14 @@ function toggleshipto() {
 }
 
 
-function loadshiptoinfo(custid, shiptoid) {
-	var href = URI(config.urls.customer.load.ci_shiptoinfo).addQuery("custID", custid)
-														   .addQuery('shipID', shiptoid)
+function loadshiptoinfo(custID, shipID) {
+	var href = URI(config.urls.customer.load.ci_shiptoinfo).addQuery("custID", custID)
+														   .addQuery('shipID', shipID)
 														   .toString();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
 	showajaxloading();
-	ci_shiptoinfo(custid, shiptoid, function() {
+	ci_shiptoinfo(custID, shipID, function() {
 		loadin(href, loadinto, function() {
 			hideajaxloading(); console.log(href);
 			$(modal).resizemodal('lg').modal();

@@ -12,10 +12,10 @@
 		<?php if (sizeof($shiptojson['data']) > 0) : ?>
 			<?php $columns = array_keys($shiptojson['columns']); ?>
 			<?php $link = $config->pages->customer.'redir/?action=ci-customer&custID='.$custID; ?>
-			<?php if ($input->get->shipid) : ?>
-				<a href="<?= $link; ?>" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-remove"></i> Clear Shipto</a>
+			<?php if ($input->get->shipID) : ?>
+				<a href="<?= $link; ?>" class="btn btn-sm btn-primary"><i class="glyphicon glyphicon-remove"></i> Clear Ship-to</a>
 			<?php endif; ?>
-			
+
 			<table class="table table-striped table-bordered table-condensed table-excel" id="shiptolist">
 				<thead>
 					<tr>
@@ -58,7 +58,7 @@
 			 <div class="alert alert-warning" role="alert">Customer has no Shiptos</div>
 		<?php endif; ?>
 		<?php $columns = array_keys($shiptojson['columns']); ?>
-		
+
     <?php endif; ?>
 <?php else : ?>
     <div class="alert alert-warning" role="alert">Information Not Available</div>

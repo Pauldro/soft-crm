@@ -16,7 +16,7 @@
                         <div class="col-xs-10">
                             <form action="<?php echo $config->pages->products."redir/"; ?>" id="add-item-search-form">
                                 <input type="hidden" name="action" value="item-search">
-                                <input type="hidden" class="custid" name="custID">
+                                <input type="hidden" class="custID" name="custID">
                                 <input type="hidden" class="addonurl" name="addonurl">
                                 <input type="hidden" class="linenumber" name="linenumber">
                                 <div class="row form-group">

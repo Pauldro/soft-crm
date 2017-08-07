@@ -57,7 +57,7 @@
 <form id="orderhead-form" action="<?php echo $config->pages->orders."redir/"; ?>" class="form-group" data-ordn="<?php echo $ordn; ?>">
 	<input type="hidden" name="action" value="submit-order-head">
 	<input type="hidden" name="ordn" id="ordn" value="<?php echo $ordn; ?>">
-    <input type="hidden" name="custid" id="custID" value="<?php echo $billing['custid']; ?>">
+    <input type="hidden" name="custID" id="custID" value="<?php echo $billing['custid']; ?>">
     <div class="row"> <div class="col-xs-10 col-xs-offset-1"> <div class="response"></div> </div> </div>
 
     <div class="row">

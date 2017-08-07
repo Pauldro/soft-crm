@@ -62,9 +62,9 @@ $(function() {
         var modal = config.modals.ajax;
         var loadinto =  modal+" .modal-content";
         var itemID = $(itemlookupform + " .itemID").val();
-        var custid = $(itemlookupform + " .custid").val();
+        var custID = $(itemlookupform + " .custID").val();
         var href = URI(config.urls.load.ii_activity).addQuery("itemID", itemID)
-													.addQuery("custID", custid)
+													.addQuery("custID", custID)
 													.addQuery("modal", "modal")
 													.query(cleanparams)
 													.toString();
@@ -88,9 +88,9 @@ $(function() {
         var modal = config.modals.ajax;
         var loadinto = modal+" .modal-content";
         var itemID = $(itemlookupform + " .itemID").val();
-        var custid = $(itemlookupform + " .custid").val();
+        var custID = $(itemlookupform + " .custID").val();
         var href = URI(config.urls.load.ii_saleshistory).addQuery("itemID", itemID)
-														.addQuery("custID", custid)
+														.addQuery("custID", custID)
 														.addQuery("modal", "modal")
 														.query(cleanparams)
 														.toString();
@@ -114,11 +114,11 @@ $(function() {
    ITEM INFO FUNCTIONS
  =============================================================*/
 	function pricing() {
-		var custid = $(itemlookupform+' .custid').val();
-		var shiptoid = $(itemlookupform+' .shipid').val();
+		var custID = $(itemlookupform+' .custID').val();
+		var shipID = $(itemlookupform+' .shipID').val();
 		var itemID = $(itemlookupform+' .itemID').val();
-		if (custid.length > 0) {
-			iipricing(custid, shiptoid, itemID);
+		if (custID.length > 0) {
+			iipricing(custID, shipID, itemID);
 		} else {
 			iicust('ii-pricing');
 		}
@@ -153,11 +153,11 @@ $(function() {
     }
 	function quotes() {
 		var itemID = $(itemlookupform + " .itemID").val();
-		var custid = $(itemlookupform+' .custid').val();
+		var custID = $(itemlookupform+' .custID').val();
 		var modal = config.modals.ajax;
 		var loadinto = modal+" .modal-content";
 		var href = URI(config.urls.load.ii_quotes).addQuery("itemID", itemID)
-												  .addQuery("custID", custid)
+												  .addQuery("custID", custID)
 												  .addQuery("modal", "modal")
 												  .query(cleanparams)
 												  .toString();
@@ -250,11 +250,11 @@ $(function() {
 	}
 	function activity() {
 		var itemID = $(itemlookupform + " .itemID").val();
-		var custid = $(itemlookupform + " .custid").val();
+		var custID = $(itemlookupform + " .custID").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
 		var href = URI(config.urls.load.ii_activityform).addQuery("itemID", itemID)
-														.addQuery("custID", custid)
+														.addQuery("custID", custID)
 														.addQuery("modal", "modal")
 														.query(cleanparams)
 														.toString();
@@ -324,10 +324,10 @@ $(function() {
 	}
 	function saleshist() {
 		var itemID = $(itemlookupform + " .itemID").val();
-		var custid = $(itemlookupform + " .custid").val();
+		var custID = $(itemlookupform + " .custID").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI(config.urls.load.ii_saleshistoryform).addQuery("itemID", itemID).addQuery("custID", custid).addQuery("modal", "modal").toString();
+		var href = URI(config.urls.load.ii_saleshistoryform).addQuery("itemID", itemID).addQuery("custID", custID).addQuery("modal", "modal").toString();
 		console.log(href);
 		$(loadinto).loadin(href, function() {
 			listener.stop_listening();
@@ -501,13 +501,13 @@ $(function() {
         }).catch(swal.noop);
 
     }
-	function ii_customer(custid) { //WAS ii_customer
+	function ii_customer(custID) { //WAS ii_customer
 		var itemID = $(itemlookupform+' .itemID').val();
 		showajaxloading();
-		ii_select(itemID, custid, function() {
+		ii_select(itemID, custID, function() {
 			hideajaxloading();
 			$(this).closest('.modal').modal('hide');
-			window.location.href = iiurl(config.urls.products.iteminfo, itemID, custid, false);
+			window.location.href = iiurl(config.urls.products.iteminfo, itemID, custID, false);
 		});
 	}
 	function choosecust() {
@@ -515,60 +515,60 @@ $(function() {
 	}
 	function previousitem() {
 		var itemID = $(itemlookupform+' .prev-itemID').val();
-		var custid = $(itemlookupform+' .custid').val();
+		var custID = $(itemlookupform+' .custID').val();
 		showajaxloading();
-		ii_select(itemID, custid, function() {
+		ii_select(itemID, custID, function() {
 			hideajaxloading();
-			window.location.href = iiurl(config.urls.products.iteminfo, itemID, custid, false);
+			window.location.href = iiurl(config.urls.products.iteminfo, itemID, custID, false);
 		});
 	}
 	function nextitem() {
 		var itemID = $(itemlookupform+' .next-itemID').val();
-		var custid = $(itemlookupform+' .custid').val();
+		var custID = $(itemlookupform+' .custID').val();
 		showajaxloading();
-		ii_select(itemID, custid, function() {
+		ii_select(itemID, custID, function() {
 			hideajaxloading();
-			window.location.href = iiurl(config.urls.products.iteminfo, itemID, custid, false);
+			window.location.href = iiurl(config.urls.products.iteminfo, itemID, custID, false);
 		});
 	}
-	function chooseiihistorycust(custid, shipid) {
+	function chooseiihistorycust(custID, shipID) {
 		var itemID = $(itemlookupform+' .itemID').val();
 		$('.modal').modal('hide');
 		showajaxloading();
-		ii_select(itemID, custid, function() {
+		ii_select(itemID, custID, function() {
 			hideajaxloading();
-			loadiipage(custid, shipid, itemID, function() {
+			loadiipage(custID, shipID, itemID, function() {
 				saleshist();
 			});
 		});
 	}
-	function chooseiipricingcust(custid, shipid) {
+	function chooseiipricingcust(custID, shipID) {
 		var itemID = $(itemlookupform+' .itemID').val();
 		$('.modal').modal('hide');
 		showajaxloading();
-		ii_select(itemID, custid, function() {
+		ii_select(itemID, custID, function() {
 			hideajaxloading();
-			loadiipage(custid, shipid, itemID, function() {
-				iipricing(custid, shipid, itemID);
+			loadiipage(custID, shipID, itemID, function() {
+				iipricing(custID, shipID, itemID);
 			});
 		});
 	}
-	function loadiipage(custid, shipid, itemID, callback) {
+	function loadiipage(custID, shipID, itemID, callback) {
 		var loadinto = ".page";
-		var href = iiurl(config.urls.products.iteminfo, itemID, custid, shipid);
-		var msg = "Viewing item "+itemID+" info for " + custid;
+		var href = iiurl(config.urls.products.iteminfo, itemID, custID, shipID);
+		var msg = "Viewing item "+itemID+" info for " + custID;
 		loadreplace(href+" "+loadinto, loadinto, function() {
 			window.history.pushState({ id: 35 }, msg, href);
 			callback();
 		});
 	}
-	function iipricing(custid, shipid, itemID) {
-		var href = URI(iiurl(config.urls.load.ii_pricing, itemID, custid, shipid)).addQuery("modal", "modal").toString();
+	function iipricing(custID, shipID, itemID) {
+		var href = URI(iiurl(config.urls.load.ii_pricing, itemID, custID, shipID)).addQuery("modal", "modal").toString();
 		var modal = config.modals.ajax;
 		var loadinto = modal+" .modal-content";
 		$('.modal').modal('hide');
 		showajaxloading();
-		ii_pricing(itemID, custid, shipid, function() {
+		ii_pricing(itemID, custID, shipID, function() {
 			hideajaxloading();
 			$(loadinto).loadin(href, function() {
 				hideajaxloading(); console.log(href);
@@ -577,17 +577,17 @@ $(function() {
 			});
 		});
 	}
-	function iiurl(url, itemID, custid, shipid) {
+	function iiurl(url, itemID, custID, shipID) {
 		var uri = URI(url).addSearch("itemID", itemID);
 		uri.search(function(data){
-			if (custid) {
-				if (custid != "") {
-					data.custID = custid;
+			if (custID) {
+				if (custID != "") {
+					data.custID = custID;
 				}
 			}
-			if (shipid) {
-				if (shipid != "") {
-					data.shipID = shipid;
+			if (shipID) {
+				if (shipID != "") {
+					data.shipID = shipID;
 				}
 			}
 		});

@@ -22,9 +22,9 @@ $(function() {
 
 	$(".page").on("change", "#quotehead-form .shipto-select", function(e) {
 		e.preventDefault();
-		var custid = $(this).data('custid');
+		var custID = $(this).data('custid');
 		var shiptoid = $(this).val();
-		var jsonurl = config.urls.json.getshipto+"?custID="+urlencode(custid)+"&shipID="+urlencode(shiptoid);
+		var jsonurl = URI(config.urls.json.getshipto).addQuery("custID", custID).addQuery("shipID", shipID).toString();
 		$.get(jsonurl, function(json) {
 			var shipto = json.response.shipto;
 			$('.shipto-select').val(shiptoid); $('.shipto-name').val(shipto.name); $('.shipto-address').val(shipto.addr1);
@@ -41,7 +41,7 @@ $(function() {
 		var qnbr = form.find('#qnbr').val();
 		console.log(formid);
 		console.log(qnbr);
-		var custid = form.find('.shipto-select').data('custid');
+		var custID = form.find('.shipto-select').data('custid');
 		if (form.formiscomplete('tr')) {
 			$(formid).postform({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
 				$.notify({
@@ -51,7 +51,7 @@ $(function() {
 					type: "info",
 					onClose: function() {
 						getquoteheadresults(qnbr, formid, function() {
-							window.location.href = config.urls.customer.page + urlencode(custid) + "/";
+							window.location.href = config.urls.customer.page + urlencode(custID) + "/";
 						});
 					}
 				});

@@ -17,12 +17,12 @@ $(function() {
 
 	$(".page").on("change", "#orderhead-form .shipto-select", function(e) {
 		e.preventDefault();
-		var custid = $(this).data('custid');
-		var shiptoid = $(this).val();
-		var jsonurl = config.urls.json.getshipto+"?custID="+urlencode(custid)+"&shipID="+urlencode(shiptoid);
+		var custID = $(this).data('custid');
+		var shipID = $(this).val();
+		var jsonurl = URI(config.urls.json.getshipto).addQuery("custID", custID).addQuery("shipID", shipID).toString();
 		$.get(jsonurl, function(json) {
 			var shipto = json.response.shipto;
-			$('.shipto-select').val(shiptoid); $('.shipto-name').val(shipto.name); $('.shipto-address').val(shipto.addr1);
+			$('.shipto-select').val(shipID); $('.shipto-name').val(shipto.name); $('.shipto-address').val(shipto.addr1);
 			$('.shipto-address2').val(shipto.addr2);
 			$('.shipto-city').val(shipto.ccity); $('.shipto-state').val(shipto.cst); $('.shipto-zip').val(shipto.czip);
 		});

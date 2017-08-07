@@ -34,9 +34,9 @@ $(function() {
 
 
 
-function refreshshipto(shipid, custID) {
-	if (shipid.trim() != '') {
-		location.href = config.urls.customer.page+custID+'/shipto-'+shipid+'/';
+function refreshshipto(shipID, custID) {
+	if (shipID.trim() != '') {
+		location.href = config.urls.customer.page+custID+'/shipto-'+shipID+'/';
 	} else {
 		location.href = config.urls.customer.page+custID+'/';
 	}

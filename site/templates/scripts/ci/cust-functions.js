@@ -1,73 +1,73 @@
 /* =============================================================
    CI ITEM FUNCTIONS
  ============================================================ */
-	function ci_shiptos(custid, callback) {
-		var url = config.urls.customer.redir.ci_shiptos+"&custID="+urlencode(custid);
+	function ci_shiptos(custID, callback) {
+		var url = config.urls.customer.redir.ci_shiptos+"&custID="+urlencode(custID);
 		$.get(url, function() { callback();});
 	}
 
-	function ci_shiptoinfo(custid, shiptoid, callback) {
-		var url = config.urls.customer.redir.ci_shiptoinfo+"&custID="+urlencode(custid)+"&shipID="+urlencode(shiptoid);
+	function ci_shiptoinfo(custID, shiptoid, callback) {
+		var url = config.urls.customer.redir.ci_shiptoinfo+"&custID="+urlencode(custID)+"&shipID="+urlencode(shiptoid);
 		$.get(url, function() { callback();});
 	}
 
-	function ci_pricing(custid, itemID, callback) {
-		var url = config.urls.customer.redir.ci_pricing+"&custID="+urlencode(custid)+"&itemID="+urlencode(itemID);
+	function ci_pricing(custID, itemID, callback) {
+		var url = config.urls.customer.redir.ci_pricing+"&custID="+urlencode(custID)+"&itemID="+urlencode(itemID);
 		$.get(url, function() { callback();});
 	}
 
-	function ci_openinvoices(custid, callback) {
-		var url = config.urls.customer.redir.ci_openinvoices+"&custID="+urlencode(custid);
+	function ci_openinvoices(custID, callback) {
+		var url = config.urls.customer.redir.ci_openinvoices+"&custID="+urlencode(custID);
 		$.get(url, function() { callback();});
 	}
 
-	function ci_getorderdocuments(custid, ordn, callback) {
+	function ci_getorderdocuments(custID, ordn, callback) {
 		var url = config.urls.customer.redir.ci_orderdocuments+"&ordn="+urlencode(ordn);
 		console.log(url);
 		$.get(url, function() { callback();});
 	}
 
-	function ci_standingorders(custid, shiptoid, callback) {
-		var url = config.urls.customer.redir.ci_standingorders+"&custID="+urlencode(custid)+"&shipID="+urlencode(shiptoid);
+	function ci_standingorders(custID, shiptoid, callback) {
+		var url = config.urls.customer.redir.ci_standingorders+"&custID="+urlencode(custID)+"&shipID="+urlencode(shiptoid);
 		$.get(url, function() { callback();});
 	}
 
-	function ci_paymenthistory(custid, callback) {
-		var url = config.urls.customer.redir.ci_paymenthistory+"&custID="+urlencode(custid);
+	function ci_paymenthistory(custID, callback) {
+		var url = config.urls.customer.redir.ci_paymenthistory+"&custID="+urlencode(custID);
 		$.get(url, function() { callback();});
 	}
 
-	function ci_documents(custid, callback) {
-		var url = config.urls.customer.redir.ci_documents+"&custID="+urlencode(custid);
+	function ci_documents(custID, callback) {
+		var url = config.urls.customer.redir.ci_documents+"&custID="+urlencode(custID);
 		$.get(url, function() { callback();});
 	}
 
-	function ci_quotes(custid, callback) {
-		var url = config.urls.customer.redir.ci_quotes+"&custID="+urlencode(custid);
+	function ci_quotes(custID, callback) {
+		var url = config.urls.customer.redir.ci_quotes+"&custID="+urlencode(custID);
 		$.get(url, function() { callback();});
 	}
 
-	function ci_contacts(custid, callback) {
-		var url = config.urls.customer.redir.ci_contacts+"&custID="+urlencode(custid);
+	function ci_contacts(custID, callback) {
+		var url = config.urls.customer.redir.ci_contacts+"&custID="+urlencode(custID);
 		$.get(url, function() { callback();});
 	}
 
-	function ci_credit(custid, callback) {
-		var url = config.urls.customer.redir.ci_credit+"&custID="+urlencode(custid);
+	function ci_credit(custID, callback) {
+		var url = config.urls.customer.redir.ci_credit+"&custID="+urlencode(custID);
 		$.get(url, function() { callback();});
 	}
 
-	function ci_salesorder(custid, shipid, callback) {
-		var url = config.urls.customer.redir.ci_salesorders+"&custID="+urlencode(custid)+"&shipID="+urlencode(shipid);
+	function ci_salesorder(custID, shipID, callback) {
+		var url = config.urls.customer.redir.ci_salesorders+"&custID="+urlencode(custID)+"&shipID="+urlencode(shipID);
 		$.get(url, function() { callback();});
 	}
 
-	function ci_saleshistory(custid, shipid, startdate, callback) {
-		var url = config.urls.customer.redir.ci_saleshistory+"&custID="+urlencode(custid)+"&shipID="+urlencode(shipid)+"&startdate="+urlencode(startdate);
+	function ci_saleshistory(custID, shipID, startdate, callback) {
+		var url = config.urls.customer.redir.ci_saleshistory+"&custID="+urlencode(custID)+"&shipID="+urlencode(shipID)+"&startdate="+urlencode(startdate);
 		$.get(url, function() { callback();});
 	}
 
-	function ci_custpo(custid, shipid, custpo, callback) {
-		var url = config.urls.customer.redir.ci_custpo+"&custID="+urlencode(custid)+"&shipID="+urlencode(shipid)+"&custpo="+urlencode(custpo);
+	function ci_custpo(custID, shipID, custpo, callback) {
+		var url = config.urls.customer.redir.ci_custpo+"&custID="+urlencode(custID)+"&shipID="+urlencode(shipID)+"&custpo="+urlencode(custpo);
 		$.get(url, function() { callback();});
 	}
