@@ -99,7 +99,8 @@ var config = {
 			getquotehead: sitepath + "ajax/json/quote/quotehead/",
             getquotedetails: sitepath + "ajax/json/quote/details/",
 			ii_moveitemdoc: sitepath + "ajax/json/ii/ii-move-document/",
-			ci_shiptolist: sitepath + "ajax/json/ci/ci-shipto-list/"
+			ci_shiptolist: sitepath + "ajax/json/ci/ci-shipto-list/",
+            vendorshipfrom: sitepath + "ajax/json/vendor-shipfrom/"
 		},
 		load: {
 			productresults: sitepath + "ajax/load/products/item-search-results/",

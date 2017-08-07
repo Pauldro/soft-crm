@@ -1,5 +1,4 @@
 <?php
-
 	if ($input->urlSegment1 == 'json') {
 		switch ($input->urlSegment2) {
 			case 'get-load-url':
@@ -31,6 +30,9 @@
 				break;
 			case 'load-action';
 				include $config->paths->content."actions/load-action-json.php";
+				break;
+			case 'vendor-shipfrom':
+				include $config->paths->content."ajax/json/vendor-shipfrom.php";
 				break;
 			default:
 				throw new Wire404Exception();

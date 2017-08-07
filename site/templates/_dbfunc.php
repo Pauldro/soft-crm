@@ -951,7 +951,7 @@
 	VENDOR FUNCTIONS
 ============================================================ */
 	function getvendors($debug) {
-		$sql = wire('database')->prepare("SELECT * from vendors AND shipfrom != ''");
+		$sql = wire('database')->prepare("SELECT * from vendors WHERE shipfrom = ''");
 		$switching = array(); $withquotes = array();
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
