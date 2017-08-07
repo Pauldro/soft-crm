@@ -40,13 +40,39 @@ $(function() {
 				},{
 					type: "info",
 					onClose: function() {
-						getorderheadresults(ordn, formid);
+						getorderheadresults(ordn, formid, function() {
+							$('#salesdetail-link').click();
+						});
+					}
+				});
+			});
+		}
+	});
+
+	$('.page').on('click', '.save-unlock-order', function(e) {
+		e.preventDefault();
+		var href = $(this).attr('href');
+		var formid = $(this).data('form');
+		var ordn = $('#ordn').val();
+		if ($(formid).formiscomplete('tr')) {
+			$(formid).postform({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
+				$.notify({
+					icon: "glyphicon glyphicon-floppy-disk",
+					message: "Your orderhead changes have been submitted",
+				},{
+					type: "info",
+					onClose: function() {
+						getorderheadresults(ordn, formid, function() {
+							window.location.href = href;
+						});
 					}
 				});
 			});
 		}
 	});
 });
+
+
 
 $(cardfields.number).validateCreditCard(function(result) {
 	if (result.card_type !== null && $(cardfields.number).val().length > 3) {
@@ -152,8 +178,7 @@ $(expirefields.date).change(function() {
 
 
 
-	function getorderheadresults(ordn, form) {
-		console.log(config.urls.json.getorderhead+"?ordn="+ordn);
+	function getorderheadresults(ordn, form, callback) {
 		$.getJSON(config.urls.json.getorderhead+"?ordn="+ordn, function( json ) {
 			if (json.response.order.error === 'Y') {
 				createalertpanel(form + ' .response', json.response.order.errormsg, "<i span='glyphicon glyphicon-floppy-remove'> </i> Error! ", "danger");
@@ -165,7 +190,7 @@ $(expirefields.date).change(function() {
 				},{
 					type: "success",
 					onShow: function() {
-						$('#salesdetail-link').click();
+						callback();
 					}
 				});
 			}

@@ -34,11 +34,11 @@
 						</a>';
 	}
 
-	$noteurl = $config->pages->notes.'redir/?action=get-order-notes&ordn='.$ordn.'&linenbr=0&modal=modal';;
+	$noteurl = $config->pages->notes.'redir/?action=get-order-notes&ordn='.$ordn.'&linenbr=0&modal=modal';
 	if ($billing['havenote'] != 'Y') {
-		$headnoteicon = '<a class="btn btn-default load-notes" role="button" href="'.$noteurl.'" data-modal="#notes-modal"><i class="material-icons" title="View order notes">&#xE0B9;</i> Add Order Notes</a>';
+		$headnotelink = '<a class="btn btn-default load-notes" role="button" href="'.$noteurl.'" data-modal="#ajax-modal"><i class="material-icons" title="View order notes">&#xE0B9;</i> Add Order Notes</a>';
 	} else {
-		$headnoteicon = '<a class="btn btn-primary load-notes" role="button" href="'.$noteurl.'" data-modal="#notes-modal"> <i class="material-icons" title="View order notes">&#xE0B9;</i> View Order Notes</a>';
+		$headnotelink = '<a class="btn btn-primary load-notes" role="button" href="'.$noteurl.'" data-modal="#ajax-modal"> <i class="material-icons" title="View order notes">&#xE0B9;</i> View Order Notes</a>';
 	}
 
 	$trackhref = $docsurl->query->set('action', 'get-order-tracking');

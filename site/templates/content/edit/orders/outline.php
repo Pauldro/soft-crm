@@ -47,7 +47,7 @@
 
 <br>
 <?php if ($editorder['canedit']) : ?>
-   <a href="<?php echo $editorder['unlock-url']; ?>" class="btn btn-block btn-success save-unlock-order">Finished with order</a>
+   <a href="<?php echo $editorder['unlock-url']; ?>" class="btn btn-block btn-success save-unlock-order" data-form="#orderhead-form">Finished with order</a>
    <br>
    <a href="<?php echo $editorder['unlock-url']; ?>" class="btn btn-block btn-warning">Discard Changes, unlock order</a>
 <?php endif; ?>
