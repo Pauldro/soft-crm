@@ -1,3 +1,10 @@
+<?php
+	if ($input->get->vendorID) {
+		$linedetail['vendorid'] = $vendorID;
+		$linedetail['shipfrom'] = '';
+	}
+?>
+
 <?php if ($config->ajax) : ?>
 	<p>
 		<a href="<?php echo $config->filename; ?>" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a>
@@ -23,7 +30,7 @@
         <input type="hidden" name="price" value="<?= formatmoney($linedetail['price']); ?>">
     <?php endif; ?>
     <div class="row">
-    	<div class="col-sm-8">
+    	<div class="col-sm-8 item-information">
     		<div class="jumbotron item-detail-heading"> <div> <h4>Item Info</h4> </div> </div>
             <?php include $config->paths->content."edit/pricing/item-info.php"; ?>
 
@@ -42,7 +49,7 @@
             <div class="jumbotron item-detail-heading"> <div class=""> <h4>Item Availability</h4> </div> </div>
             <?php include $config->paths->content."edit/pricing/item-stock.php"; ?>
     	</div>
-    	<div class="col-sm-4">
+    	<div class="col-sm-4 item-form">
     		<h4>Current Price</h4>
             <?php
                 if ($soconfig['config']['change_price']) {
@@ -67,9 +74,7 @@
 					<td>Warehouse</td><td><input type="text" class="form-control input-sm qty <?= $linedetail['itemid']."-whse"; ?>" name="whse" value="<?= $linedetail['whse']; ?>"></td>
 				</tr>
                 <tr>
-					<td>
-						Special Order
-					</td>
+					<td>Special Order </td>
 					<td>
 						<select name="specialorder" class="form-control input-sm">
 							<?php foreach ($config->specialordertypes as $spectype => $specdesc) : ?>
@@ -81,6 +86,47 @@
 							<?php endforeach; ?>
 						</select>
 					</td>
+				</tr>
+			</table>
+
+			<h4>Special Order Details</h4>
+			<table class="table table-bordered table-striped table-condensed">
+				<tr>
+					<td>VendorID</td>
+					<td>
+						<input type="hidden" name="vendorID" value="<?= $linedetail['vendorid']; ?>">
+						<?= $linedetail['vendorid']; ?>
+						<a href="<?= $config->pages->ajax.'load/products/choose-vendor/?returnpage='.$page->fullURL; ?>" class="btn btn-sm btn-warning load-into-modal" data-modal="#ajax-modal">
+							<i class="fa fa-pencil" aria-hidden="true"></i> Change Vendor
+						</a>
+					</td>
+				</tr>
+				<tr>
+					<td>Ship-from</td>
+					<td>
+						<select name="shipfromid" class="form-control input-sm" id="">
+							<?php $shipfroms = getvendorshipfroms($linedetail['vendorid'], false); ?>
+							<?php foreach ($shipfroms as $shipfrom) : ?>
+								<option value="<?= $shipfrom['shipfromid']; ?>" <?php if ($shipfrom['shipfromid'] == $linedetail['shipfromid']) {echo 'selected';} ?>><?= $shipfrom['shipfromid'].' - '.$shipfrom['name']; ?></option>
+							<?php endforeach; ?>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>Vendor ItemID</td>
+					<td><input type="text" name="shipfrom" class="form-control input-sm" value="<?= $linedetail['vendoritemid']; ?>"></td>
+				</tr>
+				<tr>
+					<td>Group</td>
+					<td><input type="text" name="group" class="form-control input-sm" value="<?= $linedetail['nsitemgroup']; ?>"></td>
+				</tr>
+				<tr>
+					<td>PO Nbr</td>
+					<td><input type="text" name="ponbr" class="form-control input-sm" value="<?= $linedetail['ponbr']; ?>"></td>
+				</tr>
+				<tr>
+					<td>Reference</td>
+					<td><input type="text" name="poref" class="form-control input-sm" value="<?= $linedetail['poref']; ?>"></td>
 				</tr>
 			</table>
 
