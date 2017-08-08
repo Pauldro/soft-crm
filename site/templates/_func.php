@@ -62,7 +62,7 @@ function paginate($url, $page, $insertafter, $hash) {
 	return $newurl . $hash;
  }
 
-function querystring_replace($querystring, $replacing, $values) {
+function querystring_replace($querystring, $replacing, $values) { // DEPRECATED 8/8/2017 DELETE BY 9/1/2017
 	$querystring = str_replace("?", "&", $querystring);
 	for ($i = 0; $i < sizeof($replacing); $i++) {
 		$regex = getregex($replacing[$i]);
@@ -88,7 +88,7 @@ function querystring_replace($querystring, $replacing, $values) {
 
 }
 
-function buildlink($url, $replacing, $values, $hash) {
+function buildlink($url, $replacing, $values, $hash) { // DEPRECATED 8/8/2017 DELETE BY 9/1/2017
 	if (strpos($url, '?') !== false) {
 		$url_arr = explode("?", $url);
 		$querystring = $url_arr[1];
@@ -99,7 +99,7 @@ function buildlink($url, $replacing, $values, $hash) {
 }
 
 
-	function getregex($replacing) {
+	function getregex($replacing) { // DEPRECATED 8/8/2017 DELETE BY 9/1/2017
 		 $regex = '';
 		 switch ($replacing) {
 			case 'orderby':
@@ -113,7 +113,7 @@ function buildlink($url, $replacing, $values, $hash) {
 		 return $regex;
 	 }
 
-	 function querystringreplacevalue($replacing, $value) {
+	 function querystringreplacevalue($replacing, $value) { // DEPRECATED 8/8/2017 DELETE BY 9/1/2017
 		 if ($value == 'remove-me' || (!$value)) {
 			 return '';
 		 } else {
@@ -121,14 +121,14 @@ function buildlink($url, $replacing, $values, $hash) {
 		 }
 	 }
 
-	function buildajaxpath($baseurl, $destinationsegments, $pagesegments) {
+	function buildajaxpath($baseurl, $destinationsegments, $pagesegments) { // DEPRECATED 8/8/2017 DELETE BY 9/1/2017
 		if (strpos($pagesegments, $destinationsegments) !== false) { // IF PAGE SEGMENTS IS IN SEGMENTS
 			$pagesegments = str_replace($destinationsegments, '', $pagesegments); //GET RID OF SAME SEGMENTS FROM PAGE SEGMENTS
 		}
 		return rtrim($baseurl . $destinationsegments . $pagesegments, "/") ."/"; //CONCATENATE ALL SEGMENTS
 	}
 
-	function buildpath($url, $replacing, $replacements) {
+	function buildpath($url, $replacing, $replacements) { // DEPRECATED 8/8/2017 DELETE BY 9/1/2017
 		for ($i = 0; $i < sizeof($replacements); $i++) {
 			$regex = "/$replacing[$i]\//";
 			if (preg_match($regex, $url)) {
@@ -141,7 +141,7 @@ function buildlink($url, $replacing, $values, $hash) {
 		return $url;
 	}
 
-	function getpathreplacevalue($replacement) {
+	function getpathreplacevalue($replacement) { // DEPRECATED 8/8/2017 DELETE BY 9/1/2017
 		if ($replacement== 'remove-me' || (!$replacement)) {
 			return '';
 		} else {
@@ -555,7 +555,7 @@ function show_requirements($field) {
 	}
 
 	function cleanforjs($str) {
-		return urlencode(str_replace(' ', '-', str_replace('#', '-', $str)));
+		return urlencode(str_replace(' ', '-', str_replace('#', '', $str)));
 	}
 
  /* =============================================================
