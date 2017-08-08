@@ -44,6 +44,11 @@
 	*		ALL|PON|SON|ITM|TRK=$searchterm
 	*		TYPE=O|AS|B|S **OPEN ORDERS|OPEN ORDERS|BOOKED ORDER|SHIPPED
 	* 		break;
+	* 	case 'submit-order-head'
+	* 		DBNAME=$config->DBNAME
+	*		SALESHEAD
+	*		ORDERNO=$ordn
+	* 		break;
 	*	case 'unlock-order':
 	*		DBNAME=$config->DBNAME
 	*		UNLOCK
@@ -79,8 +84,6 @@
 	*		REPORDRHED
 	*		TYPE=O
 	*		break;
-	*
-	*
 	* }
 	*
 	**/
@@ -344,8 +347,5 @@
 
 	writedplusfile($data, $filename);
 	header("location: /cgi-bin/" . $config->cgi . "?fname=" . $filename);
-
  	exit;
-
-
 	?>
