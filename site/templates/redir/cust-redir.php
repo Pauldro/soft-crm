@@ -219,7 +219,7 @@
 			$data = array('DBNAME' => $config->dbName, 'CARTCUST' => false, 'CUSTID' => $custID);
 			$session->{'new-shopping-customer'} = get_customer_name($custID);
             if ($shipID != '') {$data['SHIPID'] = $shipID; $session->shipID = $shipID; get_customer_name($custID) . " Ship-to: " . $shipID;}
-			if (getcartheadcount(session_id(), false) == 0) { $session->sql = insertcarthead(session_id(), $custID, $shipID, false);}
+			if (!getcartheadcount(session_id(), false)) { $session->sql = insertcarthead(session_id(), $custID, $shipID, false);}
 			if ($input->post->page) {
 				$session->loc = urldecode($input->post->page);
 			} elseif ($input->get->page) {
