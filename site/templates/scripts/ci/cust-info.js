@@ -46,7 +46,7 @@ $(function() {
 																 .addQuery("shipID", shipID)
 																 .addQuery("startdate", startdate)
 																 .addQuery("shownotes", shownotes)
-																 .addQuery("modal", "modal")
+																 .addQuery('modal', 'modal')
 																 .toString();
 		showajaxloading();
 		ci_saleshistory(custID, shipID, startdate, function() {
@@ -89,7 +89,7 @@ function shipto() { //CAN BE USED IF SHIPTO IS DEFINED
 	var loadinto =  modal+" .modal-content";
 	var href = URI(config.urls.customer.load.ci_shiptos).addQuery("custID", custID)
 														.addQuery("shipID", shipID)
-														.addQuery("modal", "modal")
+														.addQuery('modal', 'modal')
 														.query(cleanparams)
 														.toString();
 	showajaxloading();
@@ -110,7 +110,7 @@ function contact() {
 	var custID = $(custlookupform + " .custID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_contacts).addQuery("custID", custID).addQuery("modal", "modal").toString();
+	var href = URI(config.urls.customer.load.ci_contacts).addQuery("custID", custID).addQuery('modal', 'modal').toString();
 	showajaxloading();
 	ci_contacts(custID, function() {
 		loadin(href, loadinto, function() {
@@ -122,7 +122,7 @@ function contact() {
 }
 function pricing() {
 	var custID = $(custlookupform + " .custID").val();
-	var href = URI(config.urls.customer.load.ci_pricingform).addQuery("custID", custID).addQuery("modal", "modal").toString();
+	var href = URI(config.urls.customer.load.ci_pricingform).addQuery("custID", custID).addQuery('modal', 'modal').toString();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
 	showajaxloading();
@@ -136,7 +136,7 @@ function choosecipricingitem(itemID) {
 	var custID = $(custlookupform + " .custID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_pricing).addQuery("custID", custID).addQuery("itemID", itemID).addQuery("modal", "modal").toString();
+	var href = URI(config.urls.customer.load.ci_pricing).addQuery("custID", custID).addQuery("itemID", itemID).addQuery('modal', 'modal').toString();
 	ci_pricing(custID, itemID, function() {
 		$(loadinto).loadin(href, function() {
 			hideajaxloading(); console.log(href);
@@ -150,7 +150,7 @@ function salesorder() { //CAN BE USED IF SHIPTO IS DEFINED
 	var shipID = $(custlookupform + " .shipID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_salesorders).addQuery("custID", custID).addQuery("shipID", shipID).addQuery("modal", "modal").toString();
+	var href = URI(config.urls.customer.load.ci_salesorders).addQuery("custID", custID).addQuery("shipID", shipID).addQuery('modal', 'modal').toString();
 	showajaxloading();
 	ci_salesorder(custID, shipID, function() {
 		$(loadinto).loadin(href, function() {
@@ -167,7 +167,7 @@ function saleshist() { //CAN BE USED IF SHIPTO IS DEFINED
 	var loadinto =  modal+" .modal-content";
 	var href = URI(config.urls.customer.load.ci_saleshistory+"form/").addQuery("custID", custID)
 																	 .addQuery("shipID", shipID)
-																	 .addQuery("modal", "modal")
+																	 .addQuery('modal', 'modal')
 																	 .toString();
 	showajaxloading();
 	$(loadinto).loadin(href, function() {
@@ -202,7 +202,7 @@ function custpo() { //CAN BE USED IF SHIPTO IS DEFINED
 	}).then(function (input) {
 		if (input) {
 			swal.close();
-			href = URI(href).addQuery("custpo", input).addQuery("modal", "modal").toString();
+			href = URI(href).addQuery("custpo", input).addQuery('modal', 'modal').toString();
 			ci_custpo(custID, shipID, input, function() {
 				loadin(href, loadinto, function() {
 					hideajaxloading(); console.log(href);
@@ -221,7 +221,7 @@ function quotes() {
 	var custID = $(custlookupform + " .custID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_quotes).addQuery("custID", custID).addQuery("modal", "modal").toString();
+	var href = URI(config.urls.customer.load.ci_quotes).addQuery("custID", custID).addQuery('modal', 'modal').toString();
 	showajaxloading();
 	ci_quotes(custID, function() {
 		loadin(href, loadinto, function() {
@@ -236,7 +236,7 @@ function openinv() {
 	var custID = $(custlookupform + " .custID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_openinvoices).addQuery("custID", custID).addQuery("modal", "modal").toString();
+	var href = URI(config.urls.customer.load.ci_openinvoices).addQuery("custID", custID).addQuery('modal', 'modal').toString();
 	showajaxloading();
 	ci_openinvoices(custID, function() {
 		$(loadinto).loadin(href, function() {
@@ -250,7 +250,7 @@ function loadorderdocuments(ordn) {
 	var custID = $(custlookupform + " .custID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_orderdocuments).addQuery("custID", custID).addQuery('ordn', ordn).addQuery("modal", "modal").toString();
+	var href = URI(config.urls.customer.load.ci_orderdocuments).addQuery("custID", custID).addQuery('ordn', ordn).addQuery('modal', 'modal').toString();
 	showajaxloading();
 	ci_getorderdocuments(custID, ordn, function() {
 		wait(500, function() {
@@ -266,7 +266,7 @@ function payment() {
 	var custID = $(custlookupform + " .custID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_paymenthistory).addQuery("custID", custID).addQuery("modal", "modal").toString();
+	var href = URI(config.urls.customer.load.ci_paymenthistory).addQuery("custID", custID).addQuery('modal', 'modal').toString();
 	showajaxloading();
 	ci_paymenthistory(custID, function() {
 		loadin(href, loadinto, function() {
@@ -280,7 +280,7 @@ function custcredit() {
 	var custID = $(custlookupform + " .custID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_credit).addQuery("custID", custID).addQuery("modal", "modal").toString();
+	var href = URI(config.urls.customer.load.ci_credit).addQuery("custID", custID).addQuery('modal', 'modal').toString();
 	showajaxloading();
 	ci_credit(custID, function() {
 		loadin(href, loadinto, function() {
@@ -297,7 +297,7 @@ function standorders() { //CAN BE USED IF SHIPTO IS DEFINED
 	var loadinto =  modal+" .modal-content";
 	var href = URI(config.urls.customer.load.ci_standingorders).addQuery("custID", custID)
 															   .addQuery("shipID", shipID)
-															   .addQuery("modal", "modal")
+															   .addQuery('modal', 'modal')
 															   .toString();
 	showajaxloading();
 	ci_standingorders(custID, shipID, function() {
@@ -318,7 +318,7 @@ function docview() {
 	var custID = $(custlookupform + " .custID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.customer.load.ci_documents).addQuery("custID", custID).addQuery("modal", "modal").toString();
+	var href = URI(config.urls.customer.load.ci_documents).addQuery("custID", custID).addQuery('modal', 'modal').toString();
 	showajaxloading();
 	ci_documents(custID, function() {
 		loadin(href, loadinto, function() {
