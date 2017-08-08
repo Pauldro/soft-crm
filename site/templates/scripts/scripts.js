@@ -188,8 +188,8 @@ $(document).ready(function() {
 			console.log(geturl);
 			$.get(geturl, function() {
 				generateurl(function(url) {
-					console.log('url = ' + addtoquerystring(url, [],[]));
-					loadin(addtoquerystring(url, [], []), loadinto, function() {
+					console.log('url = ' + url);
+					loadin(url, loadinto, function() {
 						if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
 					});
 				});
@@ -240,7 +240,7 @@ $(document).ready(function() {
 			$.get(geturl, function() {
 				generateurl(function(url) {
 				console.log(url);
-					loadin(addtoquerystring(url, ["ajax"], ["true"]), loadinto, function() {
+					loadin(url), loadinto, function() {
 						if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
 					});
 				});
@@ -399,7 +399,7 @@ $(document).ready(function() {
 			console.log(url+addonurl);
 			$(formid).postform({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
 				wait(500, function() {
-					loadin(addtoquerystring(url+addonurl, ["ajax"], ["true"]), '#add-item-modal .results', function() {
+					loadin(url+addonurl, '#add-item-modal .results', function() {
 					});
 				});
 			});
@@ -699,23 +699,25 @@ $(document).ready(function() {
 		$(".page").on("click", ".update-line", function(e) {
 			e.preventDefault();
 			showajaxloading();
-			var url = addtoquerystring($(this).attr('href'), [], []);
+			var url = URI($(this).attr('href')).addQuery('modal', 'modal').toString();
 			var itemID = $(this).data('itemid');
 			var custID = $(this).data('custid');
-
+			var modal = config.modals.ajax;
+			var loadinto = modal + " .modal-content";
 			if ($.inArray(itemID, nonstockitems) > -1) {
 				console.log('skipping item get');
-				loadin(url, config.modals.pricing+" .modal-content", function() {
+				$(loadinto).loadin(url, function() {
 					hideajaxloading();
-					$(config.modals.pricing).modal();
+					$(modal).modal();
 				});
 			} else {
 				edititempricing(itemID, custID,  function() {
 					console.log(url);
-					loadin(url, config.modals.pricing+" .modal-content", function() {
+					$(loadinto).loadin(url, function() {
 						hideajaxloading();
-						$(config.modals.pricing).modal();
+						$(modal).modal();
 						setchildheightequaltoparent('.row.row-bordered', '.grid-item');
+						$('.item-form').height($('.item-information').actual('height'));
 					});
 				});
 			}
@@ -732,9 +734,9 @@ $(document).ready(function() {
 			var query = $(formid + " .query").val();
 			var sourcepage = $(formid + " .sourcepage").val();
 			var dplusfunction = $(formid + " .function").val();
-			var action = form.attr('action');
+			var action = URI(form.attr('action')).addQuery('q', query).addQuery('source', sourcepage).addQuery('function', dplusfunction).toString();
 			var loadinto = modal+" .modal-content";
-			loadin(addtoquerystring(action, ["q", "source", "function"], [urlencode(query), urlencode(sourcepage), dplusfunction]), loadinto, function() {
+			loadin(action, loadinto, function() {
 
 			});
 		});
@@ -857,7 +859,7 @@ $(document).ready(function() {
 	function getpaginationurl(form) {
 		var showonpage = form.find('.results-per-page').val();
 		var displaypage = form.attr('action');
-		return addtoquerystring(displaypage, ['display'], [showonpage]);
+		return URI(displaypage).addQuery('display', showonpage).toString();
 	}
 
 
@@ -885,7 +887,7 @@ $(document).ready(function() {
 		return encodeURIComponent(str);
 	}
 
-	function addtoquerystring(url, keys, values) {
+	function addtoquerystring(url, keys, values) { //DEPRECATED 8/8/2017 //DELETE BY 9/1/2017
 		var uri = new URI(url);
 		for (var i = 0; i < keys.length; i++) {
 			if (values[i]) {
