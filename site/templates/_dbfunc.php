@@ -962,7 +962,7 @@
 	}
 
 	function getvendorshipfroms($vendorID, $debug) {
-		$sql = wire('database')->prepare("SELECT * from vendors WHERE id = :vendor AND shipfrom != ''");
+		$sql = wire('database')->prepare("SELECT * from vendors WHERE vendid = :vendor AND shipfrom != ''");
 		$switching = array(':vendor' => $vendorID); $withquotes = array(true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
