@@ -1,7 +1,7 @@
 <?php
 	$config->scripts->append($config->urls->templates.'scripts/dplusnotes/cart-notes.js');
 	$config->scripts->append($config->urls->templates.'scripts/edit/edit-pricing.js');
-    if (getcartheadcount(session_id(), false) > 0) {
+    if (getcartheadcount(session_id(), false)) {
         $carthead = getcarthead(session_id(), false);
         $custID = $carthead['custid'];
         $shipID = $carthead['shiptoid'];
