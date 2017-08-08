@@ -19,11 +19,15 @@
         case 'non-stock':
             switch($input->urlSegment4) {
 				default:
-					$page->title  = 'Add Non-stock Item';
+					$page->title = 'Add Non-stock Item';
 					$page->body = $config->paths->content.'products/non-stock/non-stock-item-form.php';
 					break;
             }
             break;
+		case 'choose-vendor':
+			$page->title = 'Choose a Vendor';
+			$page->body = $config->paths->content.'products/vendor/choose-vendor.php';
+			break;
     }
 
 
