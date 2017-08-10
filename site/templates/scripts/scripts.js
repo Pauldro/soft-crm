@@ -174,7 +174,7 @@ $(document).ready(function() {
 			var button = $(this);
 			var ajaxloader = new ajaxloadedmodal(button);
 			$(this).closest('.modal').modal('hide');
-
+			ajaxloader.url = URI(ajaxloader.url).addQuery('modal', 'modal').normalizeQuery().toString();
 			$(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
 				$(ajaxloader.modal).modal();
 			});
@@ -240,7 +240,7 @@ $(document).ready(function() {
 			$.get(geturl, function() {
 				generateurl(function(url) {
 				console.log(url);
-					loadin(url), loadinto, function() {
+					$(loadinto).loadin(url, function() {
 						if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
 					});
 				});
@@ -306,41 +306,30 @@ $(document).ready(function() {
 			var addto = form.data('addto');
 			var itemID = form.find('input[name="itemID"]').val();
 			var custID = form.find('input[name="custID"]').val();
-			var loadinto = config.modals.pricing+" .modal-body";
-			var parentmodal = $(this).closest('.modal');
+			var loadinto = config.modals.ajax+" .modal-content";
+			var parentmodal = $(this).closest('.modal').modal('hide');
 			var editurl = '';
-			var jsonurl = '';
-			$(parentmodal).modal('hide');
+			var jsonurl = jsonurl = form.find('input[name="jsondetailspage"]').val();
+			var pageurl = new URI().addQuery('show', 'details').hash('#edit-page').toString();
 			showajaxloading();
-
-			if (addto == 'order') {
-				var ordn = form.find('input[name="ordn"]').val();
-				jsonurl = config.urls.json.getorderdetails+"?ordn="+ordn;
-			} else if (addto == 'quote') {
-				var qnbr = form.find('input[name="qnbr"]').val();
-				jsonurl = config.urls.json.getquotedetails+"?qnbr="+qnbr;
-			}
-			var uri = new URI();
-			uri.addQuery('show', 'details');
 
 			$('#'+form.attr('id')).postform({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
 				wait(500, function() {
 
 					$.getJSON(jsonurl, function(json) {
-						console.log(json);
-						if (addto == 'order') {
+						console.log(jsonurl);
+						if (addto === 'order') {
 							linenumber = json.response.orderdetails.length;
-							editurl = config.urls.load.editdetail+"order/?ordn="+ordn+"&line="+linenumber;
-						} else if (addto == 'quote') {
+						} else if (addto === 'quote') {
 							linenumber = json.response.quotedetails.length;
-							editurl = config.urls.load.editdetail+"quote/?qnbr="+qnbr+"&line="+linenumber;
 						}
+						editurl = URI(json.response.editurl).addQuery('line', linenumber).addQuery('modal', 'modal').normalizeQuery().toString();
 
-						loadin(uri.toString()+"#edit-page", '.page', function() {
+						$('.page').loadin(pageurl, function() {
 							edititempricing(itemID, custID,  function() {
-								loadin(editurl, loadinto, function() {
+								$(loadinto).loadin(editurl, function() {
 									hideajaxloading();
-									$(config.modals.pricing).modal();
+									$(config.modals.ajax).resizemodal('xl').modal();
 									setchildheightequaltoparent('.row.row-bordered', '.grid-item');
 								});
 							});
@@ -354,37 +343,30 @@ $(document).ready(function() {
 		$('#add-item-modal').on('show.bs.modal', function(event) {
 			var button = $(event.relatedTarget);
 			var addtype = button.data('addtype'); // order|cart|quote
-			var linenumber = 1;
-			if (button.attr('data-linenumber')) {
-				linenumber = button.data('linenumber');
-			}
 			var modal = $(this);
-			var title = ''; var addonurl = '';
-			var custID = button.data('custid');
-			var shipID = button.data('shipid');
+			var title = '';
+			var resultsurl = URI(button.data('resultsurl')).toString();
+			var querystring = URI.parseQuery(URI(resultsurl).search());
+			var custID = querystring.custID;
+			var shipID = querystring.shipID;
 			switch (addtype) {
 				case 'cart':
 					$('#'+modal.attr('id')+ " .custID").val(custID);
 					title = "Add item to Cart";
-					addonurl = "cart/?custID="+urlencode(custID)+"&shipID="+urlencode(shipID);
 					break;
 				case 'order':
-					var ordn = button.data('ordn');
+					var ordn = querystring.ordn;
 					$('#'+modal.attr('id')+ " .custID").val(custID);
 					title = "Add item to Order #" + ordn;
-					addonurl = "order/?ordn="+ordn+"&custID="+urlencode(custID);
 					break;
 				case 'quote':
-					var qnbr = button.data('qnbr');
+					var qnbr = querystring.qnbr;
 					$('#'+modal.attr('id')+ " .custID").val(custID);
 					title = "Add item to Quote #" + qnbr;
-					addonurl = "quote/?qnbr="+qnbr+"&custID="+urlencode(custID);
 					break;
 			}
 			$('#add-item-modal-label').text(title);
-			addonurl += "&linenumber="+linenumber;
-			$('#'+modal.attr('id')+ " .addonurl").val(addonurl);
-			$('#'+modal.attr('id')+ " .linenumber").val(linenumber);
+			$('#'+modal.attr('id')+ " .resultsurl").val(resultsurl);
 		});
 
 		$('#add-item-modal').on('shown.bs.modal', function() {
@@ -393,13 +375,14 @@ $(document).ready(function() {
 
 		$("body").on("submit", "#add-item-search-form", function(e) {
 			e.preventDefault();
-			var formid = "#add-item-search-form";
-			var url = config.urls.load.productresults;
+			var formid = '#'+$(this).attr('id');
+			var resultsurl = $(formid+ " .resultsurl").val();
 			var addonurl = $(formid+ " .addonurl").val();
-			console.log(url+addonurl);
+			var loadinto = '#' + $(this).closest('.modal').attr('id') + ' .results';
 			$(formid).postform({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
 				wait(500, function() {
-					loadin(url+addonurl, '#add-item-modal .results', function() {
+					$(loadinto).loadin(resultsurl, function() {
+
 					});
 				});
 			});
@@ -708,14 +691,14 @@ $(document).ready(function() {
 				console.log('skipping item get');
 				$(loadinto).loadin(url, function() {
 					hideajaxloading();
-					$(modal).modal();
+					$(modal).resizemodal('xl').modal();
 				});
 			} else {
 				edititempricing(itemID, custID,  function() {
 					console.log(url);
 					$(loadinto).loadin(url, function() {
 						hideajaxloading();
-						$(modal).modal();
+						$(modal).resizemodal('xl').modal();
 						setchildheightequaltoparent('.row.row-bordered', '.grid-item');
 						$('.item-form').height($('.item-information').actual('height'));
 					});
@@ -736,7 +719,7 @@ $(document).ready(function() {
 			var dplusfunction = $(formid + " .function").val();
 			var action = URI(form.attr('action')).addQuery('q', query).addQuery('source', sourcepage).addQuery('function', dplusfunction).toString();
 			var loadinto = modal+" .modal-content";
-			loadin(action, loadinto, function() {
+			$(loadinto).loadin(action, function() {
 
 			});
 		});

@@ -32,11 +32,11 @@
 				<input type="hidden" name="itemID" value="<?= $item['itemid']; ?>">
 				<input type="hidden" name="whse" id="<?= cleanforjs($item['itemid'])."-whse"; ?>" value="">
 				<input type="hidden" name="custID" value="<?= $custID; ?>">
+				<input type="hidden" name="jsondetailspage" value="<?= $config->pages->ajax.'json/quote/details/?qnbr='.$qnbr; ?>">
 				<?php if ($custID != '') : ?>
 					<input type="hidden" name="shipID" value="<?= $shipID; ?>">
 				<?php endif; ?>
 				<input type="hidden" name="qnbr" value="<?= $qnbr; ?>">
-				<input type="hidden" name="linenumber" value="<?= $linenumber; ?>">
 				<table class="table table-condensed no-bottom ">
 					<tr> <td>UoM</td> <td><?= $item['unit']; ?></td> </tr>
 					<?php if ($soconfig['config']['show_listprice'] == 'Y') : ?>

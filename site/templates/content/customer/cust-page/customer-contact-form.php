@@ -57,7 +57,8 @@
 	 </tr>
 	 <tr>
 	 	<td>
-			<button class="btn btn-primary" data-toggle="modal" data-target="#add-item-modal" data-addtype="cart" data-custid="<?= $custID; ?>" data-shipid="<?= $shipID; ?>">
+			<?php $resultsurl = $config->pages->ajax.'load/products/item-search-results/cart/?custID='.urlencode($custID).'&shipID='.urlencode($shipID); ?>
+			<button class="btn btn-primary" data-toggle="modal" data-target="#add-item-modal" data-addtype="cart" data-resultsurl="<?= $resultsurl; ?>">
 			    <span class="glyphicon glyphicon-plus"></span> Add Item
 			</button>
 		</td>
