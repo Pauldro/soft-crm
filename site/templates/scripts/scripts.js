@@ -296,6 +296,26 @@ $(document).ready(function() {
 			});
 		});
 
+		$("body").on("click", ".view-item-details", function(e) {
+		   e.preventDefault();
+		   var button = $(this);
+		   var ajaxloader = new ajaxloadedmodal(button);
+		   if (button.data('kit') == 'Y') {
+			   var itemID = button.data('itemid');
+			   var qty = 1;
+			   ii_kitcomponents(itemID, qty, function() {
+				   $(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
+					  $(ajaxloader.modal).resizemodal('lg').modal();
+				  })
+			   });
+		   } else {
+			   $(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
+				    $(ajaxloader.modal).resizemodal('lg').modal();
+			   });
+		   }
+
+		 });
+
 	/*==============================================================
 	  ADD ITEM MODAL FUNCTIONS
 	=============================================================*/
@@ -445,17 +465,22 @@ $(document).ready(function() {
 			//}
 		});
 
-		$("body").on("keyup", ".ci-cust-search", function() {
+		$("body").on("keyup", ".cust-index-search", function() {
 			//if ($(this).val().length > 3) {
 				var thisform = $(this).closest('form');
-				var href = URI(thisform.attr('action')).addQuery('q', urlencode($(this).val())).toString();
-				console.log(href);
+				var pagefunction = thisform.find('[name=function]').val();
 				var loadinto = '#cust-results';
-				loadin(href, loadinto, function() {
+				var href = URI(thisform.attr('action')).addQuery('q', $(this).val())
+													   .addQuery('function', pagefunction)
+													   .toString();
+				console.log(href);
+
+				loadin(href+' '+loadinto, loadinto, function() {
 
 				});
 			//}
 		});
+
 
 
 
@@ -706,24 +731,6 @@ $(document).ready(function() {
 			}
 		});
 
-	/*==============================================================
- 		CHANGE CUSTOMER MODAL
-	=============================================================*/
-		$("body").on("submit", "#cust-index-search", function(e) {
-			e.preventDefault();
-			var form = $(this);
-			var modal = form.data('modal');
-			var formid = "#"+$(this).attr('id');
-			var query = $(formid + " .query").val();
-			var sourcepage = $(formid + " .sourcepage").val();
-			var dplusfunction = $(formid + " .function").val();
-			var action = URI(form.attr('action')).addQuery('q', query).addQuery('source', sourcepage).addQuery('function', dplusfunction).toString();
-			var loadinto = modal+" .modal-content";
-			$(loadinto).loadin(action, function() {
-
-			});
-		});
-
 });
 
 /*==============================================================
@@ -897,19 +904,12 @@ $(document).ready(function() {
 /*==============================================================
  	CUST INDEX FUNCTIONS
 =============================================================*/
-	function pickcustomer(custID, row, sourcepage) {
+	function pickcustomer(custID, sourcepage) {
 		var loadinto = config.modals.ajax + ' .modal-content';
-        var url = config.urls.customer.load.loadindex+urlencode(custID)+'/?source='+urlencode(sourcepage);
+		var url = URI(config.urls.customer.load.loadindex).addQuery('custID', custID).addQuery('source', sourcepage).toString();
 		console.log(url);
-        loadin(url, loadinto, function() {  });
+        $(loadinto).loadin(url, function() {  });
     }
-
-	function opencustindexmodal(dplusfunction, source) {
-		var loadinto = config.modals.ajax + ' .modal-content';
-		var url = config.urls.customer.load.loadindex+'?function='+dplusfunction+'&source='+urlencode(source);
-		console.log(url);
-		loadin(url, loadinto, function() { $(config.modals.ajax).modal();  });
-	}
 
 
 /*==============================================================
@@ -930,30 +930,6 @@ $(document).ready(function() {
 		console.log(url);
 		$.get(url, function() { callback(); });
 	}
-
-	$(".page").on("click", ".view-item-details", function(e) {
-	   e.preventDefault();
-	   var button = $(this);
-	   var href = URI(button.attr('href')).toString();
-
-	   console.log(href);
-	   if (button.data('kit') == 'Y') {
-		   var itemID = button.data('itemid');
-		   var qty = 1;
-		   ii_kitcomponents(itemID, qty, function() {
-			   loadin(href, config.modals.ajax+" .modal-body", function() {
-				  $(config.modals.ajax).resizemodal('lg');
-				  $(config.modals.ajax).modal();
-			  })
-		   });
-	   } else {
-		   loadin(href, config.modals.ajax+" .modal-body", function() {
-			   $(config.modals.ajax).resizemodal('lg');
-			   $(config.modals.ajax).modal();
-		   });
-	   }
-
-	 });
 
 	 function ii_kitcomponents(itemID, qty, callback) {
  		var url = config.urls.products.redir.ii_kitcomponents+"&itemID="+urlencode(itemID)+"&qty="+urlencode(qty);
