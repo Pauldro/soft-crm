@@ -1,9 +1,12 @@
+
 <?php
+    include $config->paths->content."customer/ajax/load/index/search-index-form.php";
     $custID = '';
     $custlink = $config->pages->customer."redir/?action=ci-select";
     if ($input->get->q) {
         $custresults = get_custindex_keyword_paged($user->loginid, $config->showonpage, $input->pageNum, $user->hascontactrestrictions, $input->get->text('q'),  false);
-        $resultscount = get_custindex_keyword_count($user->loginid, $user->hascontactrestrictions, $q, false);
+        //$custresults = search_custindex_keyword_paged($user->loginid, $config->showonpage, $input->pageNum, $user->hascontactrestrictions, $input->get->text('q'),  false);
+        $resultscount = get_custindex_keyword_count($user->loginid, $user->hascontactrestrictions, $input->get->text('q'), false);
 
     }
 
@@ -23,8 +26,9 @@
                     <?php foreach ($custresults as $cust) : ?>
                        <tr>
                            <td>
+
    							<a href="<?= $cust->generateciloadurl(); ?>">
-   								<?= highlight($cust->custid, $input->get->q,'<span class="highlight">{ele}</span>');?>
+   								<?= highlight($cust->custid, $input->get->text('q'),'<span class="highlight">{ele}</span>');?>
    							</a> &nbsp; <span class="glyphicon glyphicon-share"></span>
    						</td>
                            <td><?= highlight($cust->name, $input->get->q,'<span class="highlight">{ele}</span>'); ?></td>
