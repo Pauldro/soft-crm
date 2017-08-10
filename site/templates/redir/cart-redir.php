@@ -108,6 +108,13 @@
 			$cartdetail['spcord'] = $input->post->text('specialorder');
 			$cartdetail['linenbr'] = $input->post->text('linenbr');
 
+			$cartdetail['vendorid'] = $input->post->text('vendorID');
+			$cartdetail['shipfromid'] = $input->post->text('shipfromid');
+			$cartdetail['vendoritemid'] = $input->post->text('itemID');
+			$cartdetail['nsitemgroup'] = $input->post->text('group');
+			$cartdetail['ponbr'] = $input->post->text('ponbr');
+			$cartdetail['poref'] = $input->post->text('poref');
+
 			$session->sql = edit_cartline(session_id(), $cartdetail, false);
 			$session->loc = $input->post->text('page');
 			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'LINENO' => $input->post->linenbr);

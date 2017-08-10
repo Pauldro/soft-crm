@@ -114,7 +114,7 @@
 				</tr>
 				<tr>
 					<td>Vendor ItemID</td>
-					<td><input type="text" name="shipfrom" class="form-control input-sm" value="<?= $linedetail['vendoritemid']; ?>"></td>
+					<td><input type="text" name="itemID" class="form-control input-sm" value="<?= $linedetail['vendoritemid']; ?>"></td>
 				</tr>
 				<tr>
 					<td>Group</td>

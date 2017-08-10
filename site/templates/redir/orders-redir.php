@@ -293,6 +293,14 @@
 			$orderdetail['whse'] = $input->post->text('whse');
 			$orderdetail['spcord'] = $input->post->text('specialorder');
 			$orderdetail['linenbr'] = $input->post->text('linenbr');
+
+			$orderdetail['vendorid'] = $input->post->text('vendorID');
+			$orderdetail['shipfromid'] = $input->post->text('shipfromid');
+			$orderdetail['vendoritemid'] = $input->post->text('itemID');
+			$orderdetail['nsitemgroup'] = $input->post->text('group');
+			$orderdetail['ponbr'] = $input->post->text('ponbr');
+			$orderdetail['poref'] = $input->post->text('poref');
+
 			$session->sql = edit_orderline(session_id(), $ordn, $orderdetail, false);
 			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr);
 			if ($input->post->page) {

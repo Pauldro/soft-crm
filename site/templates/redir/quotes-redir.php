@@ -184,6 +184,14 @@
 			$quotedetail['whse'] = $input->post->text('whse');
 			$quotedetail['spcord'] = $input->post->text('specialorder');
 			$quotedetail['linenbr'] = $input->post->text('linenbr');
+
+			$quotedetail['vendorid'] = $input->post->text('vendorID');
+			// $quotedetail['shipfromid'] = $input->post->text('shipfromid');
+			$quotedetail['vendoritemid'] = $input->post->text('itemID');
+			// $quotedetail['nsitemgroup'] = $input->post->text('group');
+			// $quotedetail['ponbr'] = $input->post->text('ponbr');
+			// $quotedetail['poref'] = $input->post->text('poref');
+
 			$session->sql = edit_quoteline(session_id(), $qnbr, $quotedetail, false);
 			$session->detail = $quotedetail;
 			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr);
