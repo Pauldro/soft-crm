@@ -37,7 +37,7 @@ var config = {
                 ci_custpo: sitepath + "customers/redir/?action=ci-custpo"
 			},
 			load: {
-				loadindex:  sitepath + "customers/load-index/",
+				loadindex:  sitepath + "ajax/load/customers/cust-index/",
 				ci_customer: sitepath + "",
 				ci_buttons: sitepath + "",
 				ci_shiptos: sitepath + "ajax/load/ci/ci-shiptos/",
@@ -104,7 +104,7 @@ var config = {
 		},
 		load: {
 			productresults: sitepath + "ajax/load/products/item-search-results/",
-			editdetail: sitepath + "ajax/load/edit-detail/",
+			editdetail: sitepath + "ajax/load/edit-detail/", //DEPRECATED
             ii_productresults: sitepath + "ajax/load/ii/search-results/",
 			ii_select: sitepath + "", // NOT USED
 			ii_pricing: sitepath + "ajax/load/ii/ii-pricing/",
