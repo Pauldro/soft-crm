@@ -17,8 +17,7 @@
                             <form action="<?php echo $config->pages->products."redir/"; ?>" id="add-item-search-form">
                                 <input type="hidden" name="action" value="item-search">
                                 <input type="hidden" class="custID" name="custID">
-                                <input type="hidden" class="addonurl" name="addonurl">
-                                <input type="hidden" class="linenumber" name="linenumber">
+                                <input type="hidden" class="resultsurl" name="resultsurl">
                                 <div class="row form-group">
                                     <div class="col-xs-12">
                                         <div class="input-group add-item-search-form">
