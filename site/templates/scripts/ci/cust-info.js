@@ -22,7 +22,7 @@ $(function() {
 		var custID = $(this).find('.custID').val();
 		var modal = config.modals.ajax;
         var loadinto =  modal+" .modal-content";
-		var href = URI($(this).attr('action')).addQuery('q', custID).normalizeQuery().toString();
+		var href = URI($(this).attr('action')).addQuery('q', custID).addQuery('function', 'ci').addQuery('modal', 'modal').normalizeQuery().toString();
 		showajaxloading();
 		$(loadinto).loadin(href, function() {
 			hideajaxloading(); console.log(href);
