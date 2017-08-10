@@ -254,6 +254,7 @@
 /* =============================================================
 	CUST INDEX FUNCTIONS
 ============================================================ */
+
 	function get_distinct_custindex_paged($loginid, $limit = 10, $page = 1, $restrictions, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		$limiting = returnlimitstatement($limit, $page);
@@ -340,6 +341,7 @@
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
 			$sql->execute($switching);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'Contact');
 			return $sql->fetchAll();
 		}
 	}
