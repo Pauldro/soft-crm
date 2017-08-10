@@ -74,6 +74,20 @@
             }
 		}
 
+        function generateiifunction($function) {
+            switch ($function) {
+                case 'ii':
+                    return "ii_customer('".$this->custid."')";
+                    break;
+                case 'ii-pricing':
+                    return "chooseiipricingcust('".$this->custid."', '')";
+                    break;
+                case 'ii-item-hist':
+                    return "chooseiihistorycust('".$this->custid."', '')";
+                    break;
+            }
+        }
+
 		public function generatephonedisplay() {
 			if ($this->hasphoneextension) {
 				return $this->cphone . ' &nbsp; ' . $this->cphext;
