@@ -55,7 +55,8 @@
 					include $config->paths->content."cust-information/cust-info-outline.php";
 				}
 			} else {
-				include $config->paths->content."cust-information/forms/cust-search-form.php";
+                $input->get->function = 'ci';
+                include $config->paths->content."customer/ajax/load/cust-index/search-form.php";
 			}
 		?>
 
