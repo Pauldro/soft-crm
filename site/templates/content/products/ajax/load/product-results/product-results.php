@@ -1,5 +1,5 @@
 <?php
-    $addtype = $input->urlSegment4; // cart|order|quote
+    $addtype = $input->urlSegment(3); // cart|order|quote
     $linenumber = $input->get->text('linenumber');
     $pathtoajax = "load/products/item-search-results/";
     switch($addtype) {
