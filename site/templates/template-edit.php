@@ -19,7 +19,7 @@
 			$config->scripts->append($config->urls->templates.'scripts/edit/card-validate.js');
 			$config->scripts->append($config->urls->templates.'scripts/edit/edit-orders.js');
 			$config->scripts->append($config->urls->templates.'scripts/edit/edit-pricing.js');
-			$includefile = $config->paths->content."edit/orders/outline.php";
+			$page->body = $config->paths->content."edit/orders/outline.php";
             break;
         case 'quote':
             $qnbr = $input->get->text('qnbr');
@@ -33,7 +33,7 @@
             }
             $editquote['unlock-url'] = $config->pages->quotes."redir/?action=unlock-quote&qnbr=".$qnbr;
 
-            $includefile = $config->paths->content."edit/quotes/outline.php";
+            $page->body = $config->paths->content."edit/quotes/outline.php";
             $config->scripts->append($config->urls->templates.'scripts/dplusnotes/quote-notes.js');
 			$config->scripts->append($config->urls->templates.'scripts/edit/edit-quotes.js');
             $config->scripts->append($config->urls->templates.'scripts/edit/edit-pricing.js');
@@ -43,7 +43,7 @@
             $editquote['custID'] = getquotecustomer(session_id(), $qnbr, false); $custID = $editquote['custID'];
             $editquote['canedit'] = true;
             $page->title = "Creating a Sales Order from Quote #" . $qnbr;
-            $includefile = $config->paths->content."edit/quote-to-order/outline.php";
+            $page->body = $config->paths->content."edit/quote-to-order/outline.php";
             break;
     }
  ?>
@@ -54,6 +54,6 @@
  		</div>
  	</div>
      <div class="container page" id="edit-page">
-        <?php include ($includefile); ?>
+        <?php include ($page->body); ?>
      </div>
  <?php include('./_foot.php'); // include footer markup ?>
