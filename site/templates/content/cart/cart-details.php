@@ -33,12 +33,12 @@
                 <td class="action">
                     <div class="row">
                         <div class="col-xs-3"> <span class="visible-xs-block action-label">Details</span>
-                            <a href="<?= $config->pages->ajax."load/view-detail/cart/?line=".$detail['linenbr']; ?>" class="btn btn-sm btn-primary view-item-details" data-itemid="<?php echo $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"><i class="material-icons">&#xE8DE;</i></a>
+                            <a href="<?= $config->pages->ajax."load/view-detail/cart/?line=".$detail['linenbr']; ?>" class="btn btn-sm btn-primary view-item-details" data-itemid="<?php echo $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>" data-modal="#ajax-modal"><i class="material-icons">&#xE8DE;</i></a>
                         </div>
                         <div class="col-xs-3"> <span class="visible-xs-block action-label">Documents</span> <i class="material-icons md-36">&#xE873;</i> </div>
                         <div class="col-xs-3"> <span class="visible-xs-block action-label">Notes</span> <?= $detnoteicon; ?></div>
                         <div class="col-xs-3"> <span class="visible-xs-block action-label">Update</span>
-                            <a href="<?php echo $config->pages->ajax."load/edit-detail/cart/?line=".$detail['recno']; ?>" class="btn btn-sm btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-custid="<?php echo $carthead['custid']; ?>"data-kit="<?php echo $detail['kititemflag']; ?>">
+                            <a href="<?php echo $config->pages->ajax."load/edit-detail/cart/?line=".$detail['recno']; ?>" class="btn btn-sm btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-custid="<?php echo $carthead['custid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>">
                                 <i class="material-icons">&#xE3C9;</i>
                             </a>
                         </div>
