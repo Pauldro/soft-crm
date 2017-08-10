@@ -3,7 +3,7 @@
     $ordn = $input->get->text('ordn');
 
 
-	switch ($input->urlSegment3) {
+	switch ($input->urlSegment(2)) {
 		case 'orderhead':
 			$order = get_orderhead(session_id(), $ordn, false);
 			echo json_encode(array("response" => array("order" => $order)));

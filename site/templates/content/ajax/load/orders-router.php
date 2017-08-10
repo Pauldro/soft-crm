@@ -1,13 +1,13 @@
 <?php
-    $filteron = $input->urlSegment(3);
+    $filteron = $input->urlSegment(2);
     if ($input->get->ordn) { $ordn = $input->get->text('ordn'); } else { $ordn = NULL; }
     switch ($filteron) {
         case 'cust':
-            $custID = $sanitizer->text($input->urlSegment(4));
+            $custID = $sanitizer->text($input->urlSegment(3));
             $shipID = '';
-            if ($input->urlSegment5) {
-                if (strpos($input->urlSegment5, 'shipto') !== false) {
-                    $shipID = str_replace('shipto-', '', $input->urlSegment5);
+            if ($input->urlSegment(4)) {
+                if (strpos($input->urlSegment(4), 'shipto') !== false) {
+                    $shipID = str_replace('shipto-', '', $input->urlSegment(4));
                 }
             }
             $page->body = $config->paths->content.'customer/cust-page/orders/orders-panel.php';
@@ -16,7 +16,7 @@
             $page->body = $config->paths->content.'salesrep/orders/orders-panel.php';
             break;
 		case 'search':
-			$searchtype = $sanitizer->text($input->urlSegment(4));
+			$searchtype = $sanitizer->text($input->urlSegment(3));
 			switch ($searchtype) {
 				case 'cust':
 					$custID = $input->get->text('custID');
@@ -34,14 +34,11 @@
 
     if ($config->ajax) {
 		if ($config->modal) {
-			$modalbody = $page->body;
 			include $config->paths->content.'common/modals/include-ajax-modal.php';
 		} else {
 			include($page->body);
 		}
-        
     } else {
-        $title = ''; $modalbody = $page->body;
         include $config->paths->content."common/include-blank-page.php";
     }
 

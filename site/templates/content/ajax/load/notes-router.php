@@ -2,10 +2,10 @@
 	if ($input->get->ordn) { $ordn = $input->get->text('ordn'); } else { $ordn = NULL; }
 	if ($input->get->qnbr) { $qnbr = $input->get->text('qnbr'); } else { $qnbr = NULL; }
 
-    $filteron = $input->urlSegment(3);
+    $filteron = $input->urlSegment(2);
     switch ($filteron) {
         case 'dplus':
-			$notetype = $sanitizer->text($input->urlSegment(4));
+			$notetype = $sanitizer->text($input->urlSegment(3));
 			$linenbr = $input->get->text('linenbr');
 			switch ($notetype) {
 				case 'order':
@@ -26,19 +26,13 @@
            break;
     }
 
-
-
 	if ($config->ajax) {
 		if ($config->modal) {
-			$modalbody = $page->body;
-			$modaltitle = $page->title;
 			include $config->paths->content.'common/modals/include-ajax-modal.php';
 		} else {
 			include($page->body);
 		}
 	} else {
-		$modalbody = $page->body;
-		$modaltitle = $title = '';
 		include $config->paths->content.'common/include-blank-page.php';
 	}
 

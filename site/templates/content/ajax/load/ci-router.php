@@ -1,18 +1,6 @@
 <?php
-    $modal = false;
-	$modalbody = false;
     $shipID = '';
-    switch ($input->urlSegment(3)) { //Parts of order to load
-        case 'search-results':
-            if ($input->get->q) {$q = $input->get->text('q'); $page->title = "Searching for '$q'";}
-
-			if ($config->modal) {
-				$page->body = $config->paths->content."cust-information/forms/cust-search-form.php";
-			} else {
-				$page->body = $config->paths->content."cust-information/cust-search-results.php";
-			}
-
-            break;
+    switch ($input->urlSegment(2)) { 
         case 'item-search-results':
             $page->title = "Searching items for " . $input->get->text('q');
             $q = $input->get->text('q');
@@ -64,7 +52,7 @@
 			break;
 		case 'ci-documents':
 			$custID = $input->get->text('custID');
-            switch ($input->urlSegment(4)) {
+            switch ($input->urlSegment(3)) {
                 case 'order':
                     $page->title = "Order #" . $input->get->text('ordn'). ' Documents';
                     break;

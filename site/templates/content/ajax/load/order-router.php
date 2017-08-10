@@ -1,7 +1,7 @@
 <?php
-	$ordn = $input->get->text('ordn'); 
-    
-    switch ($input->urlSegment(3)) { //Parts of order to load
+	$ordn = $input->get->text('ordn');
+
+    switch ($input->urlSegment(2)) { //Parts of order to load
         case 'documents':
             include $config->paths->content.'edit/orders/documents-page.php';
             break;

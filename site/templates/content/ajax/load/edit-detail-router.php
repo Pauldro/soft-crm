@@ -1,5 +1,5 @@
 <?php
-    $edittype = $input->urlSegment3; // CART || SALE
+    $edittype = $input->urlSegment(2); // CART || SALE
     $linenbr = $sanitizer->text($input->get->line);
     if ($input->get->vendorID) {
         $vendorID = $input->get->text('vendorID');
@@ -38,6 +38,7 @@
             $linedetail['can-edit'] = true;
 			$page->body = $config->paths->content."edit/pricing/quotes/edit-pricing-form.php";
     }
+
 	if ($config->ajax) {
         if ($config->modal) {
             include $config->paths->content."common/modals/include-ajax-modal.php";

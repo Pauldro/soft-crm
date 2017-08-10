@@ -9,10 +9,10 @@
         $itemID = $input->get->text('itemID');
     }
 
-    switch ($input->urlSegment(3)) { //Parts of order to load
+    switch ($input->urlSegment(2)) { //Parts of order to load
         case 'search-results':
             if ($input->get->q) {$q = $input->get->text('q'); $page->title = "Searching for '$q'";}
-			switch ($input->urlSegment(4)) {
+			switch ($input->urlSegment(3)) {
 				case 'modal':
 					$page->body = $config->paths->content."item-information/forms/item-search-form.php";
 					break;
@@ -60,7 +60,7 @@
             $page->body = $config->paths->content."item-information/item-general.php";
             break;
 		case 'ii-activity': // $itemID provided by $input->get
-			if ($input->urlSegment4 == 'form') {
+			if ($input->$input->urlSegment(3) == 'form') {
 				$page->title = 'Enter the Starting Report Date ';
 				$page->body = $config->paths->content."item-information/forms/item-activity-form.php";
 			} else {
@@ -81,7 +81,7 @@
             $page->body = $config->paths->content."item-information/item-sales-orders.php";
             break;
 		case 'ii-sales-history': // $itemID provided by $input->get
-			if ($input->urlSegment4 == 'form') {
+			if ($input->urlSegment(3) == 'form') {
 				if ($input->get->custID) { $custID = $input->get->text('custID'); } else { $custID = ''; }
 				$page->title = 'Search Item History';
 				$page->body = $config->paths->content."item-information/forms/item-history-form.php";
@@ -100,7 +100,7 @@
             $page->body = $config->paths->content."item-information/item-substitutes.php";
             break;
 		case 'ii-documents': // $itemID provided by $input->get
-            switch ($input->urlSegment(4)) {
+            switch ($input->urlSegment(3)) {
                 case 'order':
                     $page->title = "Order #" . $input->get->text('ordn'). ' Documents';
                     break;
