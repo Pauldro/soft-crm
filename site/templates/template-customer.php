@@ -10,7 +10,6 @@
 			$customer = get_customer_name($input->urlSegment(1));
 			$page->title = $input->urlSegment1 . ' - ' . $customer;
 			$user->hascustomeraccess = has_access_to_customer($user->loginid, $user->hascontactrestrictions, $custID, false);
-			$config->scripts->append($config->urls->templates.'scripts/libs/datatables.js');
 			$config->scripts->append($config->urls->templates.'scripts/pages/customer-page.js');
 			$config->scripts->append($config->urls->templates.'scripts/dplusnotes/order-notes.js');
 		    $config->scripts->append($config->urls->templates.'scripts/dplusnotes/quote-notes.js');
