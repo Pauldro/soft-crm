@@ -1,6 +1,5 @@
 <?php
 	$tasks = getuseractions($user->loginid, $actionpanel->querylinks, $config->showonpage, $input->pageNum(), false);
-	echo getuseractions($user->loginid, $actionpanel->querylinks, $config->showonpage, $input->pageNum(), true);
 ?>
 
 <div class="panel-body">
