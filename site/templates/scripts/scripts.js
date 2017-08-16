@@ -369,23 +369,33 @@ $(document).ready(function() {
 			var querystring = URI.parseQuery(URI(resultsurl).search());
 			var custID = querystring.custID;
 			var shipID = querystring.shipID;
+			var addnonstockURI = URI(modal.find('.nonstock-btn').attr('href')).addQuery('custID', custID).addQuery('shipID', shipID);
 			switch (addtype) {
 				case 'cart':
 					$('#'+modal.attr('id')+ " .custID").val(custID);
 					title = "Add item to Cart";
+					addnonstockURI.segment('cart');
 					break;
 				case 'order':
 					var ordn = querystring.ordn;
 					$('#'+modal.attr('id')+ " .custID").val(custID);
 					title = "Add item to Order #" + ordn;
+					addnonstockURI.addQuery('ordn', ordn);
+					addnonstockURI.segment('order');
 					break;
 				case 'quote':
 					var qnbr = querystring.qnbr;
 					$('#'+modal.attr('id')+ " .custID").val(custID);
 					title = "Add item to Quote #" + qnbr;
+					addnonstockURI.addQuery('qnbr', qnbr);
+					addnonstockURI.segment('quote');
 					break;
 			}
+			addnonstockURI.segment('');
+			addnonstockURI.addQuery('modal', 'modal');
+			addnonstockurl = addnonstockURI.toString();
 			$('#add-item-modal-label').text(title);
+			$('#add-item-modal .nonstock-btn').attr('href', addnonstockurl);
 			$('#'+modal.attr('id')+ " .resultsurl").val(resultsurl);
 		});
 
