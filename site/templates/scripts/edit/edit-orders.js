@@ -49,7 +49,7 @@ $(function() {
 		}
 	});
 
-	$('.page').on('click', '.save-unlock-order', function(e) {
+	$('body').on('click', '.save-unlock-order', function(e) {
 		e.preventDefault();
 		var href = $(this).attr('href');
 		var formid = $(this).data('form');
@@ -68,6 +68,8 @@ $(function() {
 					}
 				});
 			});
+		} else {
+			$('#orderhead-link').click();
 		}
 	});
 });
