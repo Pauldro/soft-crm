@@ -58,7 +58,7 @@
 	 <tr>
 	 	<td>
 			<?php $resultsurl = $config->pages->ajax.'load/products/item-search-results/cart/?custID='.urlencode($custID).'&shipID='.urlencode($shipID); ?>
-			<button class="btn btn-primary" data-toggle="modal" data-target="#add-item-modal" data-addtype="cart" data-resultsurl="<?= $resultsurl; ?>">
+			<button class="btn btn-primary" data-toggle="modal" data-target="#add-item-modal" data-addtype="cart" data-resultsurl="<?= $resultsurl; ?>" data-nonstock>
 			    <span class="glyphicon glyphicon-plus"></span> Add Item
 			</button>
 		</td>
