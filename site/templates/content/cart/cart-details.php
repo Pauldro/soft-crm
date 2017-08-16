@@ -50,7 +50,7 @@
     </table>
 </div>
 <br>
-<?php $resultsurl = $config->pages->ajax.'load/products/item-search-results/cart/?custID='.urlencode($custID).'&shipID='.urlencode($shipID); ?>
+<?php $resultsurl = $config->pages->ajax.'load/products/item-search-results/cart/?custID='.urlencode($carthead['custid']).'&shipID='.urlencode($carthead['shiptoid']); ?>
 <?php if (isset($custID)) : ?>
     <button class="btn btn-primary" data-toggle="modal" data-target="#add-item-modal" data-addtype="cart" data-resultsurl="<?= $resultsurl; ?>">
         <span class="glyphicon glyphicon-plus"></span> Add Item
