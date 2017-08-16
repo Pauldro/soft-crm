@@ -158,6 +158,7 @@
  =============================================================*/
 	.form-control.qty { width: 80px; }
 	.form-control.qty-sm { width: 50px; }
+	.form-control.price {width: 200px;}
 	form.inline-block{display: inline-block;}
 
 /*==============================================================
@@ -252,6 +253,7 @@
 		@media screen and (min-width: 600px) { .no-padding-left {padding-left: 0px;} .no-padding-right {padding-right: 0px;} }
 	 .row.row-bordered { border-top: 1px solid black; border-bottom: 1px solid black; }
 		.grid-item { border-right: 1px solid black; border-left: 1px solid black; }
+	.item-form {overflow-y: scroll;}
 
 /*==============================================================
    EDIT ORDER STYLES
