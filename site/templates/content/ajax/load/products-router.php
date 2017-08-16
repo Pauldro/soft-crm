@@ -23,6 +23,23 @@
             switch($input->urlSegment(3)) {
 				default:
 					$page->title = 'Add Non-stock Item';
+					$addtype = $input->urlSegment(4);
+					switch ($addtype) {
+						case 'cart':
+				            $custID = getcartcustomer(session_id(), false);
+				            $formaction = $config->pages->cart."redir/";
+				            $ordn = '';
+				            break;
+				        case 'order':
+				            $ordn = $input->get->text('ordn');
+				            $custID = get_custid_from_order(session_id(), $ordn);
+							$formaction = $config->pages->orders."redir/";
+				            break;
+						case 'quote':
+							$qnbr = $input->get->text('qnbr');
+							$custID = getquotecustomer(session_id(), $qnbr, false);
+							$formaction = $config->pages->quotes."redir/";
+					}
 					$page->body = $config->paths->content.'products/non-stock/non-stock-item-form.php';
 					break;
             }
