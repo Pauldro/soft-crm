@@ -88,47 +88,61 @@
 					</td>
 				</tr>
 			</table>
+			<div class="<?php if (!in_array($linedetail['spcord'], $soconfig['config']['special_orders'])) {echo 'hidden';} ?>">
+				<h4>Special Order Details</h4>
+				<table class="table table-bordered table-striped table-condensed">
+					<tr>
+						<td>VendorID</td>
+						<td>
+							<input type="hidden" name="vendorID" value="<?= $linedetail['vendorid']; ?>">
+							<?= $linedetail['vendorid']; ?>
+							<a href="<?= $config->pages->ajax.'load/products/choose-vendor/?returnpage='.$page->fullURL; ?>" class="btn btn-sm btn-warning load-into-modal" data-modal="#ajax-modal">
+								<i class="fa fa-pencil" aria-hidden="true"></i> Change Vendor
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td>Ship-from</td>
+						<td>
+							<select name="shipfromid" class="form-control input-sm" id="">
+								<?php $shipfroms = getvendorshipfroms($linedetail['vendorid'], false); ?>
+								<?php foreach ($shipfroms as $shipfrom) : ?>
+									<option value="<?= $shipfrom['shipfromid']; ?>" <?php if ($shipfrom['shipfromid'] == $linedetail['shipfromid']) {echo 'selected';} ?>><?= $shipfrom['shipfromid'].' - '.$shipfrom['name']; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Vendor ItemID</td>
+						<td><input type="text" name="itemID" class="form-control input-sm" value="<?= $linedetail['vendoritemid']; ?>"></td>
+					</tr>
+					<tr>
+						<td>Group</td>
+						<td>
+							<?php $groups = getitemgroups(false); ?>
+                            <select name="group" class="form-control input-sm">
+                                <option value="">None</option>
+                                <?php foreach ($groups as $group) : ?>
+									<?php if ($group['code'] == $linedetail['nsitemgroup']) : ?>
+										<option value="<?= $group['code']; ?>" selected><?= $group['desc']; ?></option>
+									<?php else: ?>
+										<option value="<?= $group['code']; ?>"><?= $group['desc']; ?></option>
+									<?php endif; ?>
+                                <?php endforeach; ?>
+                            </select>
+						</td>
+					</tr>
+					<tr>
+						<td>PO Nbr</td>
+						<td><input type="text" name="ponbr" class="form-control input-sm" value="<?= $linedetail['ponbr']; ?>" disabled></td>
+					</tr>
+					<tr>
+						<td>Reference</td>
+						<td><input type="text" name="poref" class="form-control input-sm" value="<?= $linedetail['poref']; ?>"></td>
+					</tr>
+				</table>
+			</div>
 
-			<h4>Special Order Details</h4>
-			<table class="table table-bordered table-striped table-condensed">
-				<tr>
-					<td>VendorID</td>
-					<td>
-						<input type="hidden" name="vendorID" value="<?= $linedetail['vendorid']; ?>">
-						<?= $linedetail['vendorid']; ?>
-						<a href="<?= $config->pages->ajax.'load/products/choose-vendor/?returnpage='.$page->fullURL; ?>" class="btn btn-sm btn-warning load-into-modal" data-modal="#ajax-modal">
-							<i class="fa fa-pencil" aria-hidden="true"></i> Change Vendor
-						</a>
-					</td>
-				</tr>
-				<tr>
-					<td>Ship-from</td>
-					<td>
-						<select name="shipfromid" class="form-control input-sm" id="">
-							<?php $shipfroms = getvendorshipfroms($linedetail['vendorid'], false); ?>
-							<?php foreach ($shipfroms as $shipfrom) : ?>
-								<option value="<?= $shipfrom['shipfromid']; ?>" <?php if ($shipfrom['shipfromid'] == $linedetail['shipfromid']) {echo 'selected';} ?>><?= $shipfrom['shipfromid'].' - '.$shipfrom['name']; ?></option>
-							<?php endforeach; ?>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>Vendor ItemID</td>
-					<td><input type="text" name="itemID" class="form-control input-sm" value="<?= $linedetail['vendoritemid']; ?>"></td>
-				</tr>
-				<tr>
-					<td>Group</td>
-					<td><input type="text" name="group" class="form-control input-sm" value="<?= $linedetail['nsitemgroup']; ?>"></td>
-				</tr>
-				<tr>
-					<td>PO Nbr</td>
-					<td><input type="text" name="ponbr" class="form-control input-sm" value="<?= $linedetail['ponbr']; ?>"></td>
-				</tr>
-				<tr>
-					<td>Reference</td>
-					<td><input type="text" name="poref" class="form-control input-sm" value="<?= $linedetail['poref']; ?>"></td>
-				</tr>
-			</table>
 
 			<?php if ($linedetail['can-edit']) :?>
 		    	<button type="submit" class="btn btn-success btn-block"><i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Save Changes</button>

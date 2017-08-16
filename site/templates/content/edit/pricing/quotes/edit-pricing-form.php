@@ -96,35 +96,37 @@
 					</td>
 				</tr>
 			</table>
+			<div class="<?php if (!in_array($linedetail['spcord'], $soconfig['config']['special_orders'])) {echo 'hidden';} ?>">
+				<h4>Special Order Details</h4>
+				<table class="table table-bordered table-striped table-condensed">
+					<tr>
+						<td>VendorID</td>
+						<td>
+							<input type="hidden" name="vendorID" value="<?= $linedetail['vendorid']; ?>">
+							<?= $linedetail['vendorid']; ?>
+							<a href="<?= $config->pages->ajax.'load/products/choose-vendor/?returnpage='.$page->fullURL; ?>" class="btn btn-sm btn-warning load-into-modal" data-modal="#ajax-modal">
+								<i class="fa fa-pencil" aria-hidden="true"></i> Change Vendor
+							</a>
+						</td>
+					</tr>
+					<tr>
+						<td>Ship-from</td>
+						<td>
+							<select name="shipfromid" class="form-control input-sm" id="">
+								<?php $shipfroms = getvendorshipfroms($linedetail['vendorid'], false); ?>
+								<?php foreach ($shipfroms as $shipfrom) : ?>
+									<option value="<?= $shipfrom['shipfromid']; ?>" <?php if ($shipfrom['shipfromid'] == $linedetail['shipfromid']) {echo 'selected';} ?>><?= $shipfrom['shipfromid'].' - '.$shipfrom['name']; ?></option>
+								<?php endforeach; ?>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>Vendor ItemID</td>
+						<td><input type="text" name="itemID" class="form-control input-sm" value="<?= $linedetail['vendoritemid']; ?>"></td>
+					</tr>
+				</table>
+			</div>
 
-			<h4>Special Order Details</h4>
-			<table class="table table-bordered table-striped table-condensed">
-				<tr>
-					<td>VendorID</td>
-					<td>
-						<input type="hidden" name="vendorID" value="<?= $linedetail['vendorid']; ?>">
-						<?= $linedetail['vendorid']; ?>
-						<a href="<?= $config->pages->ajax.'load/products/choose-vendor/?returnpage='.$page->fullURL; ?>" class="btn btn-sm btn-warning load-into-modal" data-modal="#ajax-modal">
-							<i class="fa fa-pencil" aria-hidden="true"></i> Change Vendor
-						</a>
-					</td>
-				</tr>
-				<tr>
-					<td>Ship-from</td>
-					<td>
-						<select name="shipfromid" class="form-control input-sm" id="">
-							<?php $shipfroms = getvendorshipfroms($linedetail['vendorid'], false); ?>
-							<?php foreach ($shipfroms as $shipfrom) : ?>
-								<option value="<?= $shipfrom['shipfromid']; ?>" <?php if ($shipfrom['shipfromid'] == $linedetail['shipfromid']) {echo 'selected';} ?>><?= $shipfrom['shipfromid'].' - '.$shipfrom['name']; ?></option>
-							<?php endforeach; ?>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>Vendor ItemID</td>
-					<td><input type="text" name="itemID" class="form-control input-sm" value="<?= $linedetail['vendoritemid']; ?>"></td>
-				</tr>
-			</table>
 			<?php if ($linedetail['can-edit']) :?>
 		    	<button type="submit" class="btn btn-success btn-block"><i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Save Changes</button>
 				<br>
