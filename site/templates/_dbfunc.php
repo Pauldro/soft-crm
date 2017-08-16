@@ -953,7 +953,7 @@
 	VENDOR FUNCTIONS
 ============================================================ */
 	function getvendors($debug) {
-		$sql = wire('database')->prepare("SELECT * from vendors WHERE shipfrom = ''");
+		$sql = wire('database')->prepare("SELECT * FROM vendors WHERE shipfrom = ''");
 		$switching = array(); $withquotes = array();
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -964,12 +964,32 @@
 	}
 
 	function getvendorshipfroms($vendorID, $debug) {
-		$sql = wire('database')->prepare("SELECT * from vendors WHERE vendid = :vendor AND shipfrom != ''");
+		$sql = wire('database')->prepare("SELECT * FROM vendors WHERE vendid = :vendor AND shipfrom != ''");
 		$switching = array(':vendor' => $vendorID); $withquotes = array(true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
 			$sql->execute($switching);
+			return $sql->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}
+
+	function getunitofmeasurements($debug) {
+		$sql = wire('database')->prepare("SELECT * FROM unitofmeasure");
+		if ($debug) {
+			return $sql->queryString;
+		} else {
+			$sql->execute();
+			return $sql->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}
+
+	function getitemgroups($debug) {
+		$sql = wire('database')->prepare("SELECT * FROM itemgroup");
+		if ($debug) {
+			return $sql->queryString;
+		} else {
+			$sql->execute();
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
