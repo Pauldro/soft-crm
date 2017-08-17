@@ -17,9 +17,9 @@
 
 	include_once($config->paths->content."common/initialize.php");
 
-	include $config->paths->templates."libs/purl/vendor/autoload.php";
-	include $config->paths->templates."libs/dsql/vendor/autoload.php";
-	include $config->paths->templates."libs/crm/src/utfport.php";
+	include $config->paths->vendor."cptech/src/UserAction.class.php";
+	include $config->paths->vendor."cptech/src/UserActionPanel.class.php";
+	include $config->paths->vendor."cptech/src/Contact.class.php";
 
 	$config->sessionName = session_name();
 
