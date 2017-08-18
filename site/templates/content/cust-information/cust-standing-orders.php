@@ -1,5 +1,4 @@
 <?php
-	include $config->paths->assets."classes/Table.php"; 
     $standfile = $config->jsonfilepath.session_id()."-cistandordr.json";
     //$standfile = $config->jsonfilepath."cistand-cistandordr.json";
  ?>
@@ -12,7 +11,7 @@
     <?php else : ?>
 		<?php $custcolumns = array_keys($standingjson['columns']['custinfo']); ?>
 		<?php $itemcolumns = array_keys($standingjson['columns']['iteminfo']); ?>
-		
+
 		<div class="row">
 			<div class="col-xs-12">
 				<?php foreach ($standingjson['data'] as $order) : ?>
@@ -20,7 +19,7 @@
 				<?php endforeach; ?>
 			</div>
 		</div>
-		
+
     <?php endif; ?>
 <?php else : ?>
     <div class="alert alert-warning" role="alert">Information Not Available</div>

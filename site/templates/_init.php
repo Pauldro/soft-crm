@@ -20,6 +20,7 @@
 	include $config->paths->vendor."cptech/src/UserAction.class.php";
 	include $config->paths->vendor."cptech/src/UserActionPanel.class.php";
 	include $config->paths->vendor."cptech/src/Contact.class.php";
+	include $config->paths->vendor."cptech/src/Table.php";
 
 	$config->sessionName = session_name();
 

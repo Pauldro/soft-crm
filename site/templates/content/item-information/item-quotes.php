@@ -1,6 +1,5 @@
 <?php
 	//WAS item-quotes-formatted
-	include $config->paths->assets."classes/Table.php";
 	include $config->paths->content."item-information/functions/ii-functions.php";
 	$quotesfile = $config->jsonfilepath.session_id()."-iiquote.json";
 	//$quotesfile = $config->jsonfilepath."iiqt-iiquote.json";

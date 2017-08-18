@@ -1,6 +1,4 @@
 <?php
-
-	include $config->paths->assets."classes/Table.php";
 	include $config->paths->content."item-information/functions/ii-functions.php";
 	$invoicefile = $config->jsonfilepath.session_id()."-ciopeninv.json";
 	//$invoicefile = $config->jsonfilepath."cioi-ciopeninv.json";

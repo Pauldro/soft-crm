@@ -28,9 +28,9 @@
     <h3>Item Details</h3>
     <div class="row">
         <div class="col-sm-10">
-            <form action="<?= $formaction; ?>">
-                <input type="hidden" name="action" value="add-nonstock">
-                <input type="hidden" name="custID" value="custID">
+            <form action="<?= $formaction; ?>" method="post">
+                <input type="hidden" name="action" value="add-nonstock-item">
+                <input type="hidden" name="custID" value="<?= $input->get->text('custID'); ?>">
                 <?php if ($addtype == 'order') : ?>
                     <input type="hidden" name="ordn" value="<?= $ordn; ?>">
                 <?php elseif ($addtype == 'quote') : ?>
@@ -46,11 +46,19 @@
                     </tr>
                     <tr>
                         <td class="control-label">Ship From</td>
-                        <td> <select class="form-control input-sm" id="shipfrom"> <option value="n/a">Choose a Vendor</option> </select> </td>
+                        <td> <select class="form-control input-sm" name="shipfromid" id="shipfrom"> <option value="n/a">Choose a Vendor</option> </select> </td>
                     </tr>
                     <tr>
                         <td class="control-label">Item ID</td>
                         <td> <input type="text" class="form-control input-sm required" name="itemID"> </td>
+                    </tr>
+                    <tr>
+                        <td class="control-label">Description1</td>
+                        <td> <input type="text" class="form-control input-sm required" name="desc1"> </td>
+                    </tr>
+                    <tr>
+                        <td class="control-label">Description2</td>
+                        <td> <input type="text" class="form-control input-sm" name="desc2"> </td>
                     </tr>
                     <tr>
                         <td class="control-label">Qty</td>
@@ -104,7 +112,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="control-label">PO Nbr</td> <td><input type="text" class="form-control input-sm" name="ponumberr"></td>
+                        <td class="control-label">PO Nbr</td> <td><input type="text" class="form-control input-sm" name="ponbr"></td>
                     </tr>
                     <tr>
                         <td class="control-label">Reference</td> <td><input type="text" class="form-control input-sm" name="poref"></td>
@@ -122,15 +130,17 @@
         $('#vendorID').change(function(){
             var vendorID = $(this).val();
             var url = config.urls.json.vendorshipfrom + '?vendorID=' + urlencode(vendorID);
+            console.log(url);
             $('#shipfrom option').remove();
             $.getJSON(url, function( json ) {
                 if (json.response.shipfroms.length) {
                     $('<option value="n/a">Choose A Ship-from</option>').appendTo('#shipfrom');
-                        $('<option value="n/a">None</option>').appendTo('#shipfrom');
+                    $('<option value="n/a">None</option>').appendTo('#shipfrom');
                     $.each( json.response.shipfroms, function( key, shipfrom ) {
                         $('<option value="'+shipfrom.shipfrom+'">'+shipfrom.name+'</option>').appendTo('#shipfrom');
                     });
                 } else {
+                    console.log('none');
                     $('<option value="N/A">No Ship-froms found</option>').appendTo('#shipfrom');
                 }
             });

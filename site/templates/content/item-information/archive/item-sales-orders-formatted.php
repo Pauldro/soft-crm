@@ -1,18 +1,16 @@
 <?php 
-	include $config->paths->assets."classes/Table.php"; 
-
 	$salesfile = $config->jsonfilepath.session_id()."-iisalesordr.json";
-	//$salesfile = $config->jsonfilepath."iiso-iisalesordr.json"; 
-	
+	//$salesfile = $config->jsonfilepath."iiso-iisalesordr.json";
+
 
 
 	if (checkformatterifexists($user->loginid, 'ii-sales-order', false)) {
 		$defaultjson = json_decode(getformatter($user->loginid, 'ii-sales-order', false), true);
 	} else {
 		$default = $config->paths->content."item-information/screen-formatters/default/ii-sales-order.json";
-		$defaultjson = json_decode(file_get_contents($default), true); 
+		$defaultjson = json_decode(file_get_contents($default), true);
 	}
-	
+
 	$columns = array_keys($defaultjson['columns']);
 	$fieldsjson = json_decode(file_get_contents($config->companyfiles."json/iisofmattbl.json"), true);
 
@@ -28,7 +26,7 @@
 		}
 	}
 
-	
+
 ?>
 
 <?php if (file_exists($salesfile)) : ?>
@@ -38,8 +36,8 @@
     <?php if ($ordersjson['error']) : ?>
         <div class="alert alert-warning" role="alert"><?php echo $ordersjson['errormsg']; ?></div>
     <?php else : ?>
-       
-       
+
+
         <?php foreach ($ordersjson['data'] as $whse) : ?>
 
             <?php if ($whse != $ordersjson['data']['zz']) : ?>
@@ -56,7 +54,7 @@
                            			<?php else : ?>
                            				<th></th>
                            			<?php endif; ?>
-                           			
+
                            		<?php endfor; ?>
                            		</tr>
                            <?php endfor; ?>
@@ -83,13 +81,13 @@
 										<?php else : ?>
 											<td></td>
 										<?php endif; ?>
-										
+
 									<?php endfor; ?>
 									</tr>
 							   <?php endfor; ?>
                           		<?php endif; ?>
                            	<?php endforeach; ?>
-                            
+
                         </tbody>
                     </table>
 

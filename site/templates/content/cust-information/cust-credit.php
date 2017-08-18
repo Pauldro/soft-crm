@@ -1,23 +1,21 @@
 <?php
-	include $config->paths->assets."classes/Table.php";
-    $creditfile = $config->jsonfilepath.session_id()."-cicredit.json";
     //$creditfile = $config->jsonfilepath."cicred-credit.json";
 
 	if ($config->ajax) {
 		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
 	}
-	
+
 	if (file_exists($creditfile)) {
-		$creditjson = json_decode(file_get_contents($creditfile), true); 
+		$creditjson = json_decode(file_get_contents($creditfile), true);
 		if (!$creditjson) { $creditjson = array('error' => true, 'errormsg' => 'The Customer Credit JSON contains errors'); }
-		
+
 		if ($creditjson['error']) {
 			createalert('warning', $creditjson['errormsg']);
 		} else {
 			$leftcolumns = array_keys($creditjson['columns']['left']);
 			$rightcolumns = array_keys($creditjson['columns']['right']);
 			$notescolumns = array_keys($creditjson['columns']['notes']);
-			
+
 			if (sizeof($creditjson['data']) > 0) {
 				echo '<div class="row">';
 					echo '<div class="col-sm-6">';
@@ -27,7 +25,7 @@
 							$heading = '<b> '.$creditjson['columns']['left'][$column]['heading'].' &nbsp;</b>';
 							$cell =  $creditjson['data']['left'][$column] . ' &nbsp;';
 							$tb->cell('class='.$config->textjustify[$creditjson['columns']['left'][$column]['headingjustify']], $heading);
-							$tb->cell('class='.$config->textjustify[$creditjson['columns']['left'][$column]['datajustify']], $cell); 
+							$tb->cell('class='.$config->textjustify[$creditjson['columns']['left'][$column]['datajustify']], $cell);
 						}
 						echo $tb->close();
 					echo '</div>';
@@ -36,7 +34,7 @@
 						foreach ($rightcolumns as $column) {
 							$tb->row('');
 							$tb->cell('class='.$config->textjustify[$creditjson['columns']['right'][$column]['headingjustify']], $creditjson['columns']['right'][$column]['heading']);
-							$tb->cell('class='.$config->textjustify[$creditjson['columns']['right'][$column]['datajustify']], $creditjson['data']['right'][$column]); 
+							$tb->cell('class='.$config->textjustify[$creditjson['columns']['right'][$column]['datajustify']], $creditjson['data']['right'][$column]);
 						}
 						echo $tb->close();
 					echo '</div>';
@@ -71,4 +69,3 @@
 	}
 
  ?>
-

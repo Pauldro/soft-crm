@@ -1,6 +1,5 @@
 <?php
 	//WAS item-sales-orders-formatted
-	include $config->paths->assets."classes/Table.php";
 	include $config->paths->content."item-information/functions/ii-functions.php";
 	$salesfile = $config->jsonfilepath.session_id()."-iisalesordr.json";
 	//$salesfile = $config->jsonfilepath."iiso-iisalesordr.json";

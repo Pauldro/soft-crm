@@ -1,6 +1,5 @@
 <?php
 	//WAS item-purchase-history-formatted
-	include $config->paths->assets."classes/Table.php";
 	include $config->paths->content."item-information/functions/ii-functions.php";
 	$historyfile = $config->jsonfilepath.session_id()."-iipurchhist.json";
 	//$historyfile = $config->jsonfilepath."iish-iipurchhist.json";

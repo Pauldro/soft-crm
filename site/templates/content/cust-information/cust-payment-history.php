@@ -1,6 +1,4 @@
 <?php
-
-	include $config->paths->assets."classes/Table.php";
 	include $config->paths->content."item-information/functions/ii-functions.php";
 	$historyfile = $config->jsonfilepath.session_id()."-cipayment.json";
 	//$historyfile = $config->jsonfilepath."cioi-cipayment.json";
