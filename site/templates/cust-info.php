@@ -1,17 +1,17 @@
 <?php
     $custID = $shipID = '';
 
-    if ($input->urlSegment1) {
-        $custID = $input->urlSegment1;
+    if ($input->urlSegment(1)) {
+        $custID = $input->urlSegment(1);
 		$page->title = 'CI: ' . get_customer_name($custID);
 		$custjson = json_decode(file_get_contents($config->jsonfilepath.session_id()."-cicustomer.json"), true);
 	    $custshiptos = json_decode(file_get_contents($config->jsonfilepath.session_id()."-cishiptolist.json"), true);
 		$buttonsjson = json_decode(file_get_contents($config->jsonfilepath.session_id()."-cibuttons.json"), true);
 		$toolbar = $config->paths->content."cust-information/toolbar.php";
 
-		if ($input->urlSegment2) {
+		if ($input->urlSegment(2)) {
 			$shiptojson = json_decode(file_get_contents($config->jsonfilepath.session_id()."-cishiptoinfo.json"), true);
-			$shipID = urldecode(str_replace('shipto-', '', $input->urlSegment2));
+			$shipID = urldecode(str_replace('shipto-', '', $input->urlSegment(2)));
 			$page->title .= ' - ' . $shipID;
 			for ($i = 1; $i < sizeof($custshiptos['data']) + 1; $i++) {
 				if ($custshiptos['data']["$i"]['shipid'] == $shipID) {
@@ -24,7 +24,17 @@
 			}
 			$nextshipid = $custshiptos['data']["$i"]['shipid'];
 		} else {
-			$nextshipid = $custshiptos['data']["1"]['shipid'];
+			if (isset($custshiptos['data'])) {
+					if (sizeof($custshiptos['data'])) {
+					$nextshipid = $custshiptos['data']["1"]['shipid'];
+				} else {
+					$nextshipid = false;
+				}
+			} else {
+				$nextshipid = false;
+			}
+
+
 		}
 
 
@@ -47,8 +57,8 @@
     </div>
     <div class="container page">
         <?php
-			if ($input->urlSegment1) {
-				if ($input->urlSegment2) {
+			if ($input->urlSegment(1)) {
+				if ($input->urlSegment(2)) {
 					include $config->paths->content."cust-information/shipto-info-outline.php";
 				} else {
 					include $config->paths->content."cust-information/cust-info-outline.php";
