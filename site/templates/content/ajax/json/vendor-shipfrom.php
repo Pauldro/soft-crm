@@ -4,7 +4,7 @@
 
     $shipFrom = getvendorshipfroms($vendorID, false);
     if (empty($shipFrom)) {
-        echo json_encode(array("response" => array("error" => true, 'shipfroms' => array())));
+        echo json_encode(array("response" => array("error" => false, 'shipfroms' => array())));
     } else {
         echo json_encode(array("response" => array("error" => false, "shipfroms" => $shipFrom)));
     }
