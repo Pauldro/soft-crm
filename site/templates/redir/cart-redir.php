@@ -34,13 +34,12 @@
 	*		SHIPTOID=$shipID
 	*		WHSE=$whse  **OPTIONAL
 	*		break;
-	*	case 'reorder':
+	*	case 'add-non-stock-to-cart':
 	*		DBNAME=$config->DBNAME
 	*		CARTDET
-	*		ITEMID=$itemID
+	*		ITEMID=N
+	*		QTY=$qty
 	*		CUSTID=$custID
-	*		SHIPTOID=$shipID
-	*		WHSE=$whse  **OPTIONAL
 	*		break;
 	*	case 'reorder':
 	*		DBNAME=$config->DBNAME
@@ -79,16 +78,33 @@
     switch ($action) {
         case 'add-to-cart':
 			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'ITEMID' => $itemID, 'QTY' => $qty);
-
 			if ($custID == '') {$custID = $config->defaultweb;}
 			$data['CUSTID'] = $custID; if ($shipID != '') {$data['SHIPTOID'] = $shipID; }
-
-
 			if ($input->post->whse) { if ($input->post->whse != '') { $data['WHSE'] = $input->post->whse; } }
 			$session->data = $data;
             $session->addtocart = 'You added ' . $qty . ' of ' . $itemID . ' to your cart';
             $session->loc = $input->post->page;
             break;
+		case 'add-nonstock-item':
+			insertcartline(session_id(), false);
+			$cartdetail = getcartline(session_id(), '0', false);
+			$cartdetail['orderno'] = session_id();
+			$cartdetail['recno'] = '0';
+			$cartdetail['price'] = $input->post->text('price');
+			$cartdetail['desc1'] = $input->post->text('desc1');
+			$cartdetail['desc2'] = $input->post->text('desc2');
+			$cartdetail['vendorid'] = $input->post->text('vendorID');
+			$cartdetail['shipfromid'] = $input->post->text('shipfromid');
+			$cartdetail['vendoritemid'] = $input->post->text('itemID');
+			$cartdetail['nsitemgroup'] = $input->post->text('group');
+			$cartdetail['ponbr'] = $input->post->text('ponbr');
+			$cartdetail['poref'] = $input->post->text('poref');
+			$cartdetail['uom'] = $input->post->text('uofm');
+			$cartdetail['spcord'] = 'S';
+			$session->sql = edit_cartline(session_id(), $cartdetail, false);
+			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'LINENO' => '0', 'ITEMID' => 'N', 'QTY' => $qty, 'CUSTID' => $custID);
+			$session->loc = $config->pages->cart;
+			break;
 		case 'reorder':
 			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'ITEMID' => $itemID, 'QTY' => $qty);
 			if ($custID == '') {$custID = $config->defaultweb;}
