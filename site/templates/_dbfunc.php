@@ -1076,6 +1076,17 @@
 		}
 	}
 
+	function insertcartline($sessionid, $debug) {
+		$sql = wire('database')->prepare("INSERT INTO cartdet (sessionid, linenbr) VALUES (:sessionid, '0')");
+		$switching = array(':sessionid' => $sessionid); $withquotes = array(true);
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
+		} else {
+			$sql->execute($switching);
+			return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'insertedid' => wire('database')->lastInsertId());
+		}
+	}
+
 	function getcartlinedetail($sessionid, $linenbr, $debug) {
 		return getcartline($sessionid, $linenbr, $debug);
 	}
