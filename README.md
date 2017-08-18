@@ -8,9 +8,10 @@ https://github.com/processwire/processwire/blob/master/README.md
 
 ## Table of Contents
 
-1. [About](#about-distribution)
-2. [Server Preparation](#Prepare-the)
-3. [Installation](#Install-DPlus)
+1. [About](#about-distribution-plus-crm)
+2. [Installation](#installing-dplus-crm)
+3. [Create Issue Requests](#issues)
+4. [Developer](#developer)
 
 
 ## About Distribution Plus CRM
@@ -41,6 +42,14 @@ and log in to the Processwire, click on Setup -> Export. Name it dpluso, get a z
     * Follow the steps use cptecomm login as the database credentials, name the database dpluso
     * For the admin link use manage, and the color scheme warm
     * For the admin credentials use the rcapsys login
+
+## Issues
+* Issues can be reported in our [github](https://github.com/cptechinc/soft-crm/issues)
+* You can also include emojis on your issues https://gist.github.com/rxaviers/7360908
+* Include screenshots if you can, and then we can issue fixes based on those issues and track issues
+
+## Developer
+    For git commits use this [guide](https://github.com/sparkbox/standard/tree/master/style/git)
 
 
 
