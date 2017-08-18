@@ -285,9 +285,8 @@
 			$switching = array(':loginid' => $loginid, ':shared' => $SHARED_ACCOUNTS, ':loginid' => $loginid, ':loginid' => $loginid);
 			$withquotes = array(true, true, true, true);
 		} else {
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE shiptoid = ''" . $limiting);
-			$switching = array();
-			$withquotes = array();
+			$sql = wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE shiptoid = ''");
+			$switching = array(); $withquotes = array();
 		}
 
 		if ($debug) {
