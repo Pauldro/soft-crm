@@ -370,6 +370,9 @@ $(document).ready(function() {
 			var custID = querystring.custID;
 			var shipID = querystring.shipID;
 			var addnonstockURI = URI(modal.find('.nonstock-btn').attr('href')).addQuery('custID', custID).addQuery('shipID', shipID);
+			if (addnonstockURI.segment(-2) == addtype) {
+				addnonstockURI.segment(-2, "");
+			}
 			switch (addtype) {
 				case 'cart':
 					$('#'+modal.attr('id')+ " .custID").val(custID);
