@@ -40,7 +40,7 @@
                     <tr>
                         <td class="control-label">Vend ID:</td>
                         <td>
-                            <input type="hidden" class="required" id="vendorID">
+                            <input type="hidden" class="required" id="vendorID" name="vendorID">
                             <p class="form-control-static" id="vendortext"></p>
                         </td>
                     </tr>
