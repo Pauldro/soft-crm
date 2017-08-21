@@ -5,7 +5,7 @@
 	<br>
 	<div class="tab-content">
 		<div role="tabpanel" class="tab-pane active" id="task">
-			<form action="<?php echo $config->pages->actions."tasks/add/"; ?>"  method="POST" id="new-task-form" data-refresh="#tasks-panel" data-modal="#ajax-modal">
+			<form action="<?php echo $config->pages->actions."tasks/add/"; ?>"  method="POST" id="new-task-form" data-refresh="#actions-panel" data-modal="#ajax-modal">
 				<input type="hidden" name="action" value="reschedule-task">
 				<input type="hidden" name="custlink" value="<?= $custID; ?>">
 				<input type="hidden" name="shiptolink" value="<?= $shipID; ?>">

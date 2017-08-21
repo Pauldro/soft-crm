@@ -2,7 +2,7 @@
 	$salespersonjson = json_decode(file_get_contents($config->companyfiles."json/salespersontbl.json"), true);
 	$salespersoncodes = array_keys($salespersonjson['data']);
 ?>
-<form action="<?php echo $config->pages->actions."notes/add/"; ?>" method="post" id="new-action-form" data-refresh="#notes-panel" data-modal="#ajax-modal">
+<form action="<?php echo $config->pages->actions."notes/add/"; ?>" method="post" id="new-action-form" data-refresh="#actions-panel" data-modal="#ajax-modal">
 	<input type="hidden" name="action" value="write-crm-note">
 	<input type="hidden" name="custlink" value="<?php echo $custID; ?>">
 	<input type="hidden" name="shiptolink" value="<?php echo $shipID; ?>">
@@ -34,7 +34,7 @@
 				<?php include $config->paths->content."actions/notes/forms/select-note-type.php"; ?>
 			</td>
 		</tr>
-	    <?php include $config->paths->content."notes/crm/show-note-link-rows.php"; ?>
+	    <?php include $config->paths->content."actions/notes/view/view-note-links.php"; ?>
 		<tr>
 			<td class="control-label">Title</td>
 			<td>
@@ -49,5 +49,4 @@
 	        </td>
 	    </tr>
 	</table>
-
 </form>

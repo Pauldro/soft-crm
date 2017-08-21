@@ -9,7 +9,7 @@
 	<br>
 	<div class="tab-content">
 		<div role="tabpanel" class="tab-pane active" id="task">
-			<form action="<?php echo $config->pages->actions."tasks/add/"; ?>" method="POST" id="new-action-form" data-refresh="#tasks-panel" data-modal="#ajax-modal">
+			<form action="<?php echo $config->pages->actions."tasks/add/"; ?>" method="POST" id="new-action-form" data-refresh="#actions-panel" data-modal="#ajax-modal">
 				<input type="hidden" name="action" value="write-task">
 				<input type="hidden" name="custlink" value="<?php echo $custID; ?>">
 				<input type="hidden" name="shiptolink" value="<?php echo $shipID; ?>">
