@@ -12,7 +12,6 @@
 		public $collapse;
 		public $completed = false;
         public $rescheduled = false;
-		
 		public $loadmodal = false;
 
         public $taskstatus = 'N';
@@ -129,8 +128,8 @@
 					if ($this->shipID != '') {$link .= "&shipID=".urlencode($this->shipID);}
 					break;
 				case 'contact':
-					$link = wire('config')->pages->tasks."add/new/?custID=".urlencode($this->custID);
-					if ($this->shipID != '') {$link .= "&shipID=".urlencode($this->shipID);}
+                    $link = wire('config')->pages->actions.$this->actiontype."/add/new/?custID=".urlencode($this->custID);
+                    if ($this->shipID != '') {$link .= "&shipID=".urlencode($this->shipID);}
 					$link .= "&contactID=".urlencode($this->contactID);
 					break;
                 case 'user':
