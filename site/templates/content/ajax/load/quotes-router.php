@@ -9,7 +9,7 @@
                     $shipID = str_replace('shipto-', '', $input->urlSegment(4));
                 }
             }
-            $include = $config->paths->content.'customer/cust-page/quotes/quotes-panel.php';
+            $page->body = $config->paths->content.'customer/cust-page/quotes/quotes-panel.php';
             break;
         case 'salesrep': //TODO
             //$include = $config->paths->content.'salesrep/orders/orders-panel.php'; //FIX
