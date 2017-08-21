@@ -9,7 +9,7 @@
                 <div>
                     <div class="row">
                         <div class="col-xs-2">
-                            <a href="<?= $config->pages->ajax.'load/products/non-stock/form/'; ?>" class="btn btn-primary load-into-modal nonstock-btn" data-modal="#ajax-modal">
+                            <a href="<?= $config->pages->ajax.'load/products/non-stock/form/'; ?>" class="btn btn-primary load-into-modal nonstock-btn" data-modal="#ajax-modal" data-modalsize="xl">
                                 <i class="fa fa-cube" aria-hidden="true"></i> Non-stock
                             </a>
                         </div>
