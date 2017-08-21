@@ -1,5 +1,4 @@
 <?php $quote = get_quotehead(session_id(), $qnbr, false); ?>
-<?php $nextquotedetail = nextquotelinenbr(session_id(), $qnbr); ?>
 <div id="sales-order-details">
 	<form action="<?= $config->pages->quotes.'redir/'; ?>" method="post" id="select-items-form">
 		<input type="hidden" name="action" value="send-quote-to-order">

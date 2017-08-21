@@ -1,5 +1,4 @@
 <?php $quote = get_quotehead(session_id(), $qnbr, false); ?>
-<?php $nextquotedetail = nextquotelinenbr(session_id(), $qnbr); ?>
 <div id="sales-order-details">
 	<div class="form-group"><?php include $config->paths->content.'edit/quotes/quote-details/quote-details.php'; ?></div>
 	<div class="text-center">
