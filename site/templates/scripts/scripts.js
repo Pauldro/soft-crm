@@ -297,24 +297,26 @@ $(document).ready(function() {
 		});
 
 		$("body").on("click", ".view-item-details", function(e) {
-		   e.preventDefault();
-		   var button = $(this);
-		   var ajaxloader = new ajaxloadedmodal(button);
-		   if (button.data('kit') == 'Y') {
-			   var itemID = button.data('itemid');
-			   var qty = 1;
-			   ii_kitcomponents(itemID, qty, function() {
-				   $(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
-					  $(ajaxloader.modal).resizemodal('lg').modal();
-				  })
-			   });
-		   } else {
-			   $(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
-				    $(ajaxloader.modal).resizemodal('lg').modal();
-			   });
-		   }
+			e.preventDefault();
+			var button = $(this);
+			var ajaxloader = new ajaxloadedmodal(button);
+			if (button.data('kit') == 'Y') {
+				var itemID = button.data('itemid');
+				var qty = 1;
+				showajaxloading();
+				ii_kitcomponents(itemID, qty, function() {
+					$(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
+						hideajaxloading();
+						$(ajaxloader.modal).resizemodal('lg').modal();
+					});
+				});
+			} else {
+				$(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
+					$(ajaxloader.modal).resizemodal('lg').modal();
+				});
+			}
 
-		 });
+		});
 
 	/*==============================================================
 	  ADD ITEM MODAL FUNCTIONS

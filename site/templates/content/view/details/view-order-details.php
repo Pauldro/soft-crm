@@ -12,7 +12,7 @@
 	</div>
 	<div class="col-sm-6">
 		<?php if ($linedetail['kititemflag'] == 'Y') : ?>
-			<?php include $config->paths->content."view/kit-item-table.php"; ?>
+			<?php include $config->paths->content."view/details/kit-item-table.php"; ?>
 		<?php endif; ?>
 	</div>
 </div>
