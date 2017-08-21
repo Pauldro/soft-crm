@@ -10,6 +10,7 @@
 			break;
 		case 'details':
 			$orderdetails = getorderdetails(session_id(), $ordn, false);
-    		echo json_encode(array("response" => array("orderdetails" => $orderdetails)));
+            $editurl = $config->pages->ajax.'load/edit-detail/order/?ordn='.$ordn.'&line=';
+    		echo json_encode(array("response" => array("orderdetails" => $orderdetails, "editurl" => $editurl)));
 			break;
 	}
