@@ -115,7 +115,7 @@
 							<select name="shipfromid" class="form-control input-sm" id="">
 								<?php $shipfroms = getvendorshipfroms($linedetail['vendorid'], false); ?>
 								<?php foreach ($shipfroms as $shipfrom) : ?>
-									<option value="<?= $shipfrom['shipfromid']; ?>" <?php if ($shipfrom['shipfromid'] == $linedetail['shipfromid']) {echo 'selected';} ?>><?= $shipfrom['shipfromid'].' - '.$shipfrom['name']; ?></option>
+									<option value="<?= $shipfrom['shipfrom']; ?>" <?php if ($shipfrom['shipfrom'] == $linedetail['shipfromid']) {echo 'selected';} ?>><?= $shipfrom['shipfrom'].' - '.$shipfrom['name']; ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>
@@ -123,6 +123,22 @@
 					<tr>
 						<td>Vendor ItemID</td>
 						<td><input type="text" name="itemID" class="form-control input-sm" value="<?= $linedetail['vendoritemid']; ?>"></td>
+					</tr>
+					<tr>
+						<td>Group</td>
+						<td>
+							<?php $groups = getitemgroups(false); ?>
+                            <select name="group" class="form-control input-sm">
+                                <option value="">None</option>
+                                <?php foreach ($groups as $group) : ?>
+									<?php if ($group['code'] == $linedetail['nsitemgroup']) : ?>
+										<option value="<?= $group['code']; ?>" selected><?= $group['desc']; ?></option>
+									<?php else: ?>
+										<option value="<?= $group['code']; ?>"><?= $group['desc']; ?></option>
+									<?php endif; ?>
+                                <?php endforeach; ?>
+                            </select>
+						</td>
 					</tr>
 				</table>
 			</div>

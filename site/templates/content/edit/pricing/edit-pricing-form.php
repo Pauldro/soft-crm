@@ -107,7 +107,7 @@
 							<select name="shipfromid" class="form-control input-sm" id="">
 								<?php $shipfroms = getvendorshipfroms($linedetail['vendorid'], false); ?>
 								<?php foreach ($shipfroms as $shipfrom) : ?>
-									<option value="<?= $shipfrom['shipfromid']; ?>" <?php if ($shipfrom['shipfromid'] == $linedetail['shipfromid']) {echo 'selected';} ?>><?= $shipfrom['shipfromid'].' - '.$shipfrom['name']; ?></option>
+									<option value="<?= $shipfrom['shipfrom']; ?>" <?php if ($shipfrom['shipfrom'] == $linedetail['shipfromid']) {echo 'selected';} ?>><?= $shipfrom['shipfrom'].' - '.$shipfrom['name']; ?></option>
 								<?php endforeach; ?>
 							</select>
 						</td>
