@@ -182,15 +182,16 @@
 			$quotedetail['ordrqty'] = $input->post->text('qty');
 			$quotedetail['rshipdate'] = $input->post->text('rqstdate');
 			$quotedetail['whse'] = $input->post->text('whse');
-			$quotedetail['spcord'] = $input->post->text('specialorder');
 			$quotedetail['linenbr'] = $input->post->text('linenbr');
 
+			$quotedetail['spcord'] = $input->post->text('specialorder');
 			$quotedetail['vendorid'] = $input->post->text('vendorID');
-			// $quotedetail['shipfromid'] = $input->post->text('shipfromid');
+			$quotedetail['shipfromid'] = $input->post->text('shipfromid');
 			$quotedetail['vendoritemid'] = $input->post->text('itemID');
-			// $quotedetail['nsitemgroup'] = $input->post->text('group');
-			// $quotedetail['ponbr'] = $input->post->text('ponbr');
-			// $quotedetail['poref'] = $input->post->text('poref');
+			$quotedetail['nsitemgroup'] = $input->post->text('group');
+			$quotedetail['ponbr'] = $input->post->text('ponbr');
+			$quotedetail['poref'] = $input->post->text('poref');
+			$quotedetail['uom'] = $input->post->text('uofm');
 
 			$session->sql = edit_quoteline(session_id(), $qnbr, $quotedetail, false);
 			$session->detail = $quotedetail;

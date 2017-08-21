@@ -49,14 +49,14 @@
 	*		SHIPTOID=$shipID
 	*		WHSE=$whse  **OPTIONAL
 	*		break;
-	*	case 'remove':
+	*	case 'update-line':
 	*		DBNAME=$config->DBNAME
 	*		CARTDET
 	*		LINENO=$linenbr
 	*		CUSTID=$custID
 	*		SHIPTOID=$shipID
 	*		break;
-	*	case 'update-line':
+	*	case 'remove':
 	*		DBNAME=$config->DBNAME
 	*		CARTDET
 	*		LINENO=$linenbr
@@ -105,14 +105,6 @@
 			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'LINENO' => '0', 'ITEMID' => 'N', 'QTY' => $qty, 'CUSTID' => $custID);
 			$session->loc = $config->pages->cart;
 			break;
-		case 'reorder':
-			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'ITEMID' => $itemID, 'QTY' => $qty);
-			if ($custID == '') {$custID = $config->defaultweb;}
-			$data['CUSTID'] = $custID; if ($shipID != '') {$data['SHIPTOID'] = $shipID; }
-			if ($input->post->whse) { if ($input->post->whse != '') { $data['WHSE'] = $input->post->whse; } }
-            $session->addtocart = 'You added ' . $qty . ' of ' . $itemID . ' to your cart';
-            $session->loc = $input->post->page;
-			break;
 		case 'update-line':
 			$linenbr = $input->post->text('linenbr');
 			$cartdetail = getcartline(session_id(), $linenbr, false);
@@ -124,12 +116,14 @@
 			$cartdetail['spcord'] = $input->post->text('specialorder');
 			$cartdetail['linenbr'] = $input->post->text('linenbr');
 
+			$cartdetail['spcord'] = $input->post->text('specialorder');
 			$cartdetail['vendorid'] = $input->post->text('vendorID');
 			$cartdetail['shipfromid'] = $input->post->text('shipfromid');
 			$cartdetail['vendoritemid'] = $input->post->text('itemID');
 			$cartdetail['nsitemgroup'] = $input->post->text('group');
 			$cartdetail['ponbr'] = $input->post->text('ponbr');
 			$cartdetail['poref'] = $input->post->text('poref');
+			$cartdetail['uom'] = $input->post->text('uofm');
 
 			$session->sql = edit_cartline(session_id(), $cartdetail, false);
 			$session->loc = $input->post->text('page');
@@ -138,6 +132,14 @@
 			if ($custID == '') {$custID = $config->defaultweb;}
 			$data['CUSTID'] = $custID; if ($shipID != '') {$data['SHIPTOID'] = $shipID; }
 			$session->loc = $config->pages->cart;
+			break;
+		case 'reorder':
+			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'ITEMID' => $itemID, 'QTY' => $qty);
+			if ($custID == '') {$custID = $config->defaultweb;}
+			$data['CUSTID'] = $custID; if ($shipID != '') {$data['SHIPTOID'] = $shipID; }
+			if ($input->post->whse) { if ($input->post->whse != '') { $data['WHSE'] = $input->post->whse; } }
+            $session->addtocart = 'You added ' . $qty . ' of ' . $itemID . ' to your cart';
+            $session->loc = $input->post->page;
 			break;
 		case 'remove-line':
 			$linenbr = $input->post->text('linenbr');
