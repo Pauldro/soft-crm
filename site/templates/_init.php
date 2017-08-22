@@ -22,12 +22,16 @@
 	include $config->paths->vendor."cptech/src/Table.php";
 	include $config->paths->vendor."cptech/src/utfport.php";
 
-	$config->sessionName = session_name();
+	$session->sessionName = session_name();
 
 	$page->fullURL = new \Purl\Url($page->httpUrl);
 	$page->fullURL->join($config->filename);
 	$page->querystring = $querystring = $page->fullURL->query;
 	$page->PageURL = $page->httpUrl.'?'.$page->querystring;
+
+	if (!empty($config->filename) && $config->filename != '/') {
+		$page->fullURL->join($config->filename);
+	}
 
 	$config->styles->append($config->urls->templates.'styles/bootstrap.min.css');
 	$config->styles->append('https://fonts.googleapis.com/icon?family=Material+Icons');
@@ -42,6 +46,7 @@
 	$config->scripts->append($config->urls->templates.'scripts/scripts.js');
 
 	$user->loggedin = is_valid_login(session_id());
+
 	if ($user->loggedin) {
 		setupuser(session_id());
 	} elseif (strtolower($page->title) != 'login' && strtolower($page->title) != 'redir' ) {
