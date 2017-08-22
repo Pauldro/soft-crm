@@ -80,16 +80,12 @@ $(document).ready(function() {
 			e.preventDefault();
 			$('#yt-menu').toggle();
 			$(this).toggleClass('menu-open');
-			if ($(this).data('function') === 'show') {
-				$(this).data('function', "hide").css({"background-color":"#242F40", "color": "#f8f8f8"});
 			} else {
-				$(this).data('function', "show").removeClass('menu-open').css({"background-color":"", "color": ""});
 			}
 		});
 
 		$('.slide-menu-open').on('click', function(e) { //Youtube-esque navigation
 			e.preventDefault();
-
 			$('#slide-menu').toggle().animatecss('fadeInLeft');
 			$(this).toggleClass('menu-open');
 			if ($(this).data('function') === 'show') {
@@ -316,7 +312,6 @@ $(document).ready(function() {
 					$(ajaxloader.modal).resizemodal('lg').modal();
 				});
 			}
-
 		});
 
 	/*==============================================================

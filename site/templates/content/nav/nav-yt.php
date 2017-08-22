@@ -15,7 +15,7 @@
 <nav class="navbar <?php echo $navbar; ?> navbar-fixed-top" id="nav-yt">
 	<div class="container">
 		<div class="navbar-header">
-			<a href="#" class=" navbar-brand yt-menu-open" data-function="show">
+			<a href="#" class=" navbar-brand yt-menu-open">
             	<i class="material-icons">&#xE5D2;</i>
             </a>
 			<?php if (!$config->debug) : ?>
