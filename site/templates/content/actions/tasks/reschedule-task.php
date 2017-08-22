@@ -17,9 +17,8 @@
 
 
     if ($config->ajax) {
-        $message = "Rescheduling a task for {replace} ";
-        $modaltitle = createmessage($message, $custID, $shipID, $contactID, $taskID, $noteID, $ordn, $qnbr);
-        $modalbody = $config->paths->content."actions/tasks/forms/reschedule-task-form.php";
+        $page->title = "Rescheduling task " . $tasklinks['actionlink'];
+        $page->body = $config->paths->content."actions/tasks/forms/reschedule-task-form.php";
         include $config->paths->content."common/modals/include-ajax-modal.php";
     } else {
         include $config->paths->content."actions/tasks/forms/reschedule-task-form.php";
