@@ -94,7 +94,7 @@
 			break;
         case 'ci-sales-history':
 			$custID = $input->get->text('custID');
-            if ($input->urlSegment4 == 'form') {
+            if ($input->urlSegment(3) == 'form') {
                 $action = 'ci-sales-history';
                 $page->title = get_customer_name($custID) . ' Choose a Starting Date';
     			$page->body = $config->paths->content."cust-information/forms/cust-sales-history-form.php";
