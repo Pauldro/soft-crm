@@ -19,6 +19,7 @@
 					break;
 				}
 			}
+            
 			if ($i > sizeof($custshiptos['data'])) {
 				$i = 1;
 			}
@@ -33,16 +34,13 @@
 			} else {
 				$nextshipid = false;
 			}
-
-
 		}
-
 
 		$config->scripts->append($config->urls->templates.'scripts/ci/cust-functions.js');
 		$config->scripts->append($config->urls->templates.'scripts/ci/cust-info.js');
+        $config->scripts->append($config->urls->templates.'scripts/libs/raphael.js');
+        $config->scripts->append($config->urls->templates.'scripts/libs/morris.js');
 
-
-        $config->scripts->append($config->urls->templates.'scripts/libs/morrisraphael.js');
     } else {
 		$toolbar = false;
 	}
