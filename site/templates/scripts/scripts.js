@@ -1,26 +1,24 @@
 var loadingwheel = "<div class='la-ball-spin la-light la-3x'><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>";
 var togglearray = {Y: 'on', N: 'off'};
-
 var listener = new window.keypress.Listener();
 
 $(document).ready(function() {
 	// LISTENER
 	$('input[type=text]').bind("focus", function() { listener.stop_listening(); }).bind("blur", function() { listener.listen(); });
 
-
-
 	/*==============================================================
 	   INITIALIZE BOOTSTRAP FUNCTIONS
 	=============================================================*/
 		$('body').popover({selector: '[data-toggle="popover"]', placement: 'top'});
 
-		initializedatepicker();
+		init_datepicker();
+		init_bootstraptoggle();
 
 		$('.phone-input').keyup(function() {
 	    	$(this).val(formatphone($(this).val()));
 	    });
 
-		$('.check-toggle').bootstrapToggle({on: 'Yes', off: 'No', onstyle: 'info'});
+
 
 		$('body').on('click', function (e) {
 			$('[data-toggle="popover"]').each(function () {
@@ -42,12 +40,12 @@ $(document).ready(function() {
 		});
 
 		$(config.modals.ajax).on('shown.bs.modal', function (event) {
-			initializedatepicker();
+			init_datepicker();
 		});
 
-		$(config.modals.pricing).on('shown.bs.modal', function (event) {
-			initializedatepicker();
-			$('.check-toggle').bootstrapToggle({on: 'Yes', off: 'No', onstyle: 'info'});
+		$(config.modals.pricing).on('shown.bs.modal', function (event) { // DEPRECATED 8/22/2017 DELETE ON 9/1
+			init_datepicker();
+			init_bootstraptoggle();
 		});
 
 		$(config.modals.lightbox).on('shown.bs.modal', function (event) {
@@ -56,8 +54,6 @@ $(document).ready(function() {
 		$(config.modals.lightbox).on('hide.bs.modal', function (event) {
 			removeshadow();
 		});
-
-
 
 	/*==============================================================
 	   PAGE SCROLLING FUNCTIONS
@@ -80,7 +76,10 @@ $(document).ready(function() {
 			e.preventDefault();
 			$('#yt-menu').toggle();
 			$(this).toggleClass('menu-open');
+			if ($(this).hasClass('menu-open')) {
+				$(this).css({"background-color":"#242F40", "color": "#f8f8f8"});
 			} else {
+				$(this).removeClass('menu-open').css({"background-color":"", "color": ""});
 			}
 		});
 
@@ -97,6 +96,14 @@ $(document).ready(function() {
 			}
 		});
 
+		$(config.toolbar.button).click(function() {
+			if ($(config.toolbar.toolbar).is(":hidden")) {
+				showtoolbar();
+			} else {
+				hidetoolbar();
+			}
+		});
+
 		$(document).mouseup(function (e) {
 			var container = $("#yt-menu");
 			if (!container.is(e.target) && container.has(e.target).length === 0) {
@@ -105,13 +112,7 @@ $(document).ready(function() {
 			}
 		});
 
-		$(config.toolbar.button).click(function() {
-			if ($(config.toolbar.toolbar).is(":hidden")) {
-				showtoolbar();
-			} else {
-				hidetoolbar();
-			}
-		});
+
 
 	/*==============================================================
 	  FORM FUNCTIONS
@@ -137,11 +138,12 @@ $(document).ready(function() {
 			var form = $(this).closest("form");
 			var ajax = form.hasClass('ajax-load');
 			var href = getpaginationurl(form);
-			console.log(href);
 			if (ajax) {
 				var loadinto = form.data('loadinto');
 				var focuson = form.data('focus');
-				loadin(href, loadinto, function() { if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000);} });
+				loadin(href, loadinto, function() {
+					if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000);}
+				});
 			} else {
 				window.location.href = href;
 			}
@@ -156,12 +158,11 @@ $(document).ready(function() {
 			var loadinto = $(this).data('loadinto');
 			var focuson = $(this).data('focus');
 			var href = $(this).attr('href');
-			console.log(loadinto);
-			loadin(href, loadinto, function() {
+			$(loadinto).loadin(href, function() {
 				if (focuson.length > 0) {
 					$('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000);
 				}
-				$('.check-toggle').bootstrapToggle({on: 'Yes', off: 'No', onstyle: 'info'});
+				init_bootstraptoggle();
 			});
 		});
 
@@ -169,9 +170,9 @@ $(document).ready(function() {
 			e.preventDefault();
 			var button = $(this);
 			var ajaxloader = new ajaxloadedmodal(button);
-
 			$(this).closest('.modal').modal('hide');
 			ajaxloader.url = URI(ajaxloader.url).addQuery('modal', 'modal').normalizeQuery().toString();
+
 			$(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
 				$(ajaxloader.modal).resizemodal(ajaxloader.modalsize).modal();
 			});
@@ -182,11 +183,11 @@ $(document).ready(function() {
 			var loadinto = $(this).data('loadinto');
 			var focuson = $(this).data('focus');
 			var geturl = $(this).attr('href');
-			console.log(geturl);
+			showajaxloading();
 			$.get(geturl, function() {
 				generateurl(function(url) {
-					console.log('url = ' + url);
-					loadin(url, loadinto, function() {
+					$(loadinto).loadin(url, function() {
+						hideajaxloading();
 						if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
 					});
 				});
@@ -201,7 +202,6 @@ $(document).ready(function() {
         $.get(ajaxloader.url, function() {
             showajaxloading();
             generateurl(function(url) {
-                console.log(url);
                 wait(500, function() {
 					$(ajaxloader.loadinto).loadin(url, function() {
 						$(ajaxloader.modal).resizemodal('lg').modal(); hideajaxloading();
@@ -219,7 +219,6 @@ $(document).ready(function() {
 		$(".page").on("click", ".edit-order", function(e) {
 			e.preventDefault();
 			var href = $(this).attr('href');
-			console.log(href);
 			$.get(href, function() {
 				generateurl(function(url) {
 					console.log(url);
@@ -233,10 +232,8 @@ $(document).ready(function() {
 			var loadinto = $(this).data('loadinto');
 			var geturl = $(this).attr('href');
 			var focuson = $(this).data('focus');
-			console.log(geturl);
 			$.get(geturl, function() {
 				generateurl(function(url) {
-				console.log(url);
 					$(loadinto).loadin(url, function() {
 						if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
 					});
@@ -254,7 +251,7 @@ $(document).ready(function() {
 			});
 		});
 
-		$("body").on("submit", "#order-search-form", function(e)  {
+		$("body").on("submit", "#order-search-form", function(e)  { //FIXME
 			e.preventDefault();
 			var form = "#"+$(this).attr('id');
 			var loadinto = $(this).data('loadinto');
@@ -263,7 +260,7 @@ $(document).ready(function() {
 			postform(form, false, false, function() { //form, overwriteformdata, returnjson, callback
 				wait(500, function() {
 					generateurl(function(url) {
-						loadin(url, loadinto, function() {
+						$(loadinto).loadin(url, function() {
 							$(modal).modal('hide');
 							if (focuson.length > 0) {
 								$('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000);
@@ -419,15 +416,12 @@ $(document).ready(function() {
 		});
 
 		$("body").on("keyup", ".ii-item-search", function() {
-			//if ($(this).val().length > 3) {
-				var thisform = $(this).closest('form');
-				var href = thisform.attr('action')+"?q="+urlencode($(this).val());
-				console.log(href);
-				var loadinto = '#item-results';
-				loadin(href, loadinto, function() {
+			var thisform = $(this).closest('form');
+			var href = thisform.attr('action')+"?q="+urlencode($(this).val());
+			var loadinto = '#item-results';
+			$(loadinto).loadin(href, function() {
 
-				});
-			//}
+			});
 		});
 
 
@@ -436,43 +430,37 @@ $(document).ready(function() {
 		});
 
 		$("body").on("keyup", ".ci-item-search", function() {
-			//if ($(this).val().length > 3) {
-				var input = $(this);
-				var thisform = input.parent('form');
-				var custID = thisform.find('input[name=custID]').val();
-				var shipID = thisform.find('input[name=shipID]').val();
-				var action = thisform.find('input[name=action]').val();
-				var href  = URI(thisform.attr('action')).addQuery('q', urlencode(input.val()))
-													   .addQuery('custID', urlencode(custID))
-													   .addQuery('shipID', urlencode(shipID))
-													   .addQuery('action', urlencode(action))
-													   .toString();
-				var loadinto = '#item-results';
-				console.log(href);
-				loadin(href, loadinto, function() {
+			var input = $(this);
+			var thisform = input.parent('form');
+			var custID = thisform.find('input[name=custID]').val();
+			var shipID = thisform.find('input[name=shipID]').val();
+			var action = thisform.find('input[name=action]').val();
+			var href  = URI(thisform.attr('action')).addQuery('q', urlencode(input.val()))
+												   .addQuery('custID', urlencode(custID))
+												   .addQuery('shipID', urlencode(shipID))
+												   .addQuery('action', urlencode(action))
+												   .toString();
+			var loadinto = '#item-results';
+			$(loadinto).loadin(href, function() {
 
-				});
-			//}
+			});
 		});
 
 		$("body").on("keyup", ".ci-history-item-search", function() {
-			//if ($(this).val().length > 3) {
 				var input = $(this);
 				var thisform = input.closest('form');
 				var custID = thisform.find('input[name=custID]').val();
 				var shipID = thisform.find('input[name=shipID]').val();
 				var action = thisform.find('input[name=action]').val();
+				var loadinto = '#item-results';
 				var href  = URI(input.data('results')).addQuery('q', urlencode(input.val()))
 													   .addQuery('custID', urlencode(custID))
 													   .addQuery('shipID', urlencode(shipID))
 													   .addQuery('action', urlencode(action))
 													   .toString();
-				var loadinto = '#item-results';
-				console.log(href);
-				loadin(href, loadinto, function() {
+				$(loadinto).loadin(href, function() {
 
 				});
-			//}
 		});
 
 		$("body").on("submit", "#cust-index-search-form", function(e) {
@@ -480,19 +468,15 @@ $(document).ready(function() {
 		});
 
 		$("body").on("keyup", ".cust-index-search", function() {
-			//if ($(this).val().length > 3) {
 				var thisform = $(this).closest('form');
 				var pagefunction = thisform.find('[name=function]').val();
 				var loadinto = '#cust-results';
 				var href = URI(thisform.attr('action')).addQuery('q', $(this).val())
 													   .addQuery('function', pagefunction)
 													   .toString();
-				console.log(href);
-
-				loadin(href+' '+loadinto, loadinto, function() {
+				$(loadinto).loadin(href+' '+loadinto, function() {
 
 				});
-			//}
 		});
 
 
@@ -505,16 +489,13 @@ $(document).ready(function() {
 			var href = config.urls.json.ii_moveitemdoc + "?docnumber="+doc;
 
 			$.getJSON(href, function(json) {
-				if (json.response.error) {
-
-				} else {
+				if (!json.response.error) {
 					var td = button.parent();
 					td.find('.load-doc').remove();
 					var href = "<a href='"+config.urls.orderfiles+json.response.file+"' class='btn btn-sm btn-success' target='_blank'><i class='fa fa-file-text' aria-hidden='true'></i> View Document</a>";
 					$(href).appendTo(td);
 				}
 			});
-
 		});
 
 
@@ -529,8 +510,7 @@ $(document).ready(function() {
 			var href = regexhref.replace(/{replace}/g, actiontype);
 			var loadinto = $(this).data('loadinto');
 			var focuson = $(this).data('focus');
-			console.log(href);
-			loadin(href, loadinto, function() { });
+			$(loadinto).loadin(href, function() { });
 		});
 
 		$("body").on("change", "#view-action-task-status", function(e) {
@@ -539,9 +519,9 @@ $(document).ready(function() {
 			var loadinto = $(this).data('loadinto');
 			var focuson = $(this).data('focus');
 			var href = URI($(this).data('url')).addQuery('tasks-status', status).toString();
-			loadin(href, loadinto, function() {
+			loadin(href, loadinto, function() { //ON PURPOSE to know it was reloaded
 				if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
-				$('.check-toggle').bootstrapToggle({on: 'Yes', off: 'No', onstyle: 'info'});
+				init_bootstraptoggle();
 			});
 		});
 
@@ -568,7 +548,6 @@ $(document).ready(function() {
 				var href = regexhref.replace(/{replace}/g, result);
 				var modal = button.data('modal');
 				var loadinto =  modal+" .modal-content";
-				console.log(href);
 				$(loadinto).loadin(href, function() {
 					$(modal).resizemodal('lg').modal();
 				});
@@ -580,9 +559,7 @@ $(document).ready(function() {
 			var button = $(this);
 			var ajaxloader = new ajaxloadedmodal(button);
 			showajaxloading();
-			console.log(ajaxloader.url);
 			ajaxloader.modal = config.modals.ajax;
-			console.log(ajaxloader.modal);
 			wait(500, function() {
 				$(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
 					hideajaxloading();
@@ -656,9 +633,7 @@ $(document).ready(function() {
 			var loadinto = select.data('loadinto');
 			var focuson = select.data('focuson');
 			var href = URI(url).addQuery('action-status', completionstatus).toString();
-			console.log(href);
-			$(loadinto).loadin(href, function() {
-			});
+			$(loadinto).loadin(href, function() { });
 		});
 
 		$("body").on("submit", "#new-action-form", function(e) {
@@ -734,7 +709,6 @@ $(document).ready(function() {
 				});
 			} else {
 				edititempricing(itemID, custID,  function() {
-					console.log(url);
 					$(loadinto).loadin(url, function() {
 						hideajaxloading();
 						$(modal).resizemodal('xl').modal();
@@ -784,7 +758,7 @@ $(document).ready(function() {
 	jQuery.fn.loadin = function(href, callback) {
 		var element = $(this);
 		var parent = element.parent();
-		//element.remove();
+		console.log('loading ' + element + " from " + href);
 		parent.load(href, function() { callback(); });
 	}
 
@@ -794,22 +768,9 @@ $(document).ready(function() {
 		parent.load(url, function() { callback(); });
 	}
 
-	function loadreplace(url, element, callback) {
-		$(element).load(url, function() {
-			callback();
-		});
-	}
-
-	/*function postform(form, callback) {
-		console.log('submitting ' + form);
-		var action = $(form).attr('action');
-		$.post(action, $(form).serialize()).done(callback());
-	}
-*/
 	function postform(form, formdata, returnjson, callback) {
 		console.log('submitting ' + form);
 		$(form).postform({formdata: formdata, jsoncallback: returnjson}, callback);
-
 	}
 
 	jQuery.fn.postform = function(options, callback) { //{formdata: data/false, jsoncallback: true/false}
@@ -891,19 +852,6 @@ $(document).ready(function() {
 		return encodeURIComponent(str);
 	}
 
-	function addtoquerystring(url, keys, values) { //DEPRECATED 8/8/2017 //DELETE BY 9/1/2017
-		var uri = new URI(url);
-		for (var i = 0; i < keys.length; i++) {
-			if (values[i]) {
-				uri.addQuery(keys[i], values[i]);
-			} else {
-				uri.removeQuery(keys[i]);
-			}
-		}
-		uri.normalizeQuery();
-		return uri.toString();
-	}
-
 	var cleanparams = function(data) {
 		var result = {};
 		Object.keys(data).filter(function(key) {
@@ -921,7 +869,6 @@ $(document).ready(function() {
 	function pickcustomer(custID, sourcepage) {
 		var loadinto = config.modals.ajax + ' .modal-content';
 		var url = URI(config.urls.customer.load.loadindex).addQuery('custID', custID).addQuery('source', sourcepage).toString();
-		console.log(url);
         $(loadinto).loadin(url, function() {  });
     }
 
@@ -941,7 +888,6 @@ $(document).ready(function() {
 
 	function edititempricing(itemID, custID, callback) {
 		var url = config.urls.products.redir.getitempricing+"&itemID="+urlencode(itemID)+"&custID="+urlencode(custID);
-		console.log(url);
 		$.get(url, function() { callback(); });
 	}
 
@@ -983,7 +929,6 @@ $(document).ready(function() {
 				});
 			});
 		}
-
 	}
 
 /*==============================================================
@@ -1018,13 +963,13 @@ $(document).ready(function() {
         // Based upon the length of the string, we add formatting as necessary
         var size = input.length;
         if (size == 0){
-                input = input;
+            input = input;
         } else if(size < 4){
-                input = input;
+            input = input;
         } else if(size < 7){
-                input = input.substring(0,3)+'-'+input.substring(3,6);
+            input = input.substring(0,3)+'-'+input.substring(3,6);
         } else{
-                input = input.substring(0,3)+'-'+input.substring(3,6)+'-'+input.substring(6,10);
+            input = input.substring(0,3)+'-'+input.substring(3,6)+'-'+input.substring(6,10);
         }
         return input;
 }
@@ -1032,27 +977,15 @@ $(document).ready(function() {
 /*==============================================================
  	FORM FUNCTIONS
 =============================================================*/
-
-
 	function comparefieldvalues(field1, field2) {
 		if ($(field1).val() == $(field2).val()) { return true; } else { return false; }
 	}
-
-
-/*==============================================================
- 	CONTENT FUNCTIONS
-=============================================================*/
-	jQuery.fn.resizemodal = function(size) {
-		$(this).children('.modal-dialog').removeClass('modal-xl').removeClass('modal-lg').removeClass('modal-sm').removeClass('modal-md').removeClass('modal-xs').addClass('modal-'+size);
-		return $(this);
-	};
 
 	jQuery.fn.formiscomplete = function(highightelement) {
 		var form = $(this);
 		var missingfields = new Array();
 		form.find('.has-error').removeClass('has-error');
 		form.find('.response').empty();
-
 		form.find('.required').each(function() {
 			if ($(this).val() === '') {
 				var row = $(this).closest(highightelement);
@@ -1060,13 +993,12 @@ $(document).ready(function() {
 				missingfields.push(row.find('.control-label').text());
 			}
 		});
-
 		if (missingfields.length > 0) {
 			var message = 'Please Check the following fields: <br>';
 			for (var i = 0; i < missingfields.length; i++) {
 				message += missingfields[i] + "<br>";
 			}
-			createalertpanel('#'+form.attr('id') + ' .response', message, "<span class='glyphicon glyphicon-warning-sign'></span> Error! ", "danger");
+			$('#'+form.attr('id') + ' .response').createalertpanel(message, "<span class='glyphicon glyphicon-warning-sign'></span> Error! ", "danger");
 			$('html, body').animate({scrollTop: $('#'+form.attr('id') + ' .response').offset().top - 120}, 1000);
 			return false;
 		} else {
@@ -1076,6 +1008,9 @@ $(document).ready(function() {
 
 	};
 
+/*==============================================================
+ 	CONTENT FUNCTIONS
+=============================================================*/
 	$.fn.extend({
 		animatecss: function (animationName) {
 			var animationEnd = 'webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
@@ -1083,17 +1018,20 @@ $(document).ready(function() {
 				$(this).removeClass('animated ' + animationName);
 			});
 			return $(this);
+		},
+		resizemodal: function (size) {
+			$(this).children('.modal-dialog').removeClass('modal-xl').removeClass('modal-lg').removeClass('modal-sm').removeClass('modal-md').removeClass('modal-xs').addClass('modal-'+size);
+			return $(this);
+		},
+		createalertpanel(alert, alert_message, exclamation, alert_type) {
+			var alertheader = '<div class="alert alert-'+alert_type+' alert-dismissible" role="alert">';
+			var closebutton = '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>';
+			var message = '<strong>'+exclamation+'</strong> ' + alert_message
+			var closeheader = '</div>';
+			var thealert = alertheader + closebutton + message + closeheader;
+			$(this).html(thealert);
 		}
 	});
-
-	function createalertpanel(location, alert_message, exclamation, alert_type) {
-		var alertheader = '<div class="alert alert-'+alert_type+' alert-dismissible" role="alert">';
-		var closebutton = '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>';
-		var message = '<strong>'+exclamation+'</strong> ' + alert_message
-		var closeheader = '</div>';
-		var thealert = alertheader + closebutton + message + closeheader;
-		$(location).html(thealert);
-	}
 
 	function setequalheight(container) {
 		var height = 0;
@@ -1116,11 +1054,15 @@ $(document).ready(function() {
 		return '<div class="close"><a href="#" onclick="'+onclick+'"><i class="material-icons md-48 md-light"></i></a></div>';
 	}
 
-	function initializedatepicker() {
+	function init_datepicker() {
 		$('.datepicker').each(function(index) {
 			$(this).datepicker({
 				date: $(this).find('.date-input').val(),
-				 allowPastDates: true,
+				allowPastDates: true,
 			});
-		})
+		});
+	}
+
+	function init_bootstraptoggle() {
+		$('.check-toggle').bootstrapToggle({on: 'Yes', off: 'No', onstyle: 'info'});
 	}
