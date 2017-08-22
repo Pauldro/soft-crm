@@ -58,7 +58,6 @@
 			 <div class="alert alert-warning" role="alert">Customer has no Shiptos</div>
 		<?php endif; ?>
 		<?php $columns = array_keys($shiptojson['columns']); ?>
-
     <?php endif; ?>
 <?php else : ?>
     <div class="alert alert-warning" role="alert">Information Not Available</div>

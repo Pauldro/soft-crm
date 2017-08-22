@@ -3,8 +3,6 @@
 	$quotesfile = $config->jsonfilepath.session_id()."-ciquote.json";
 	//$quotesfile = $config->jsonfilepath."ciqt-ciquote.json";
 
-
-
 	if (checkformatterifexists($user->loginid, 'ci-quote', false)) {
 		$defaultjson = json_decode(getformatter($user->loginid, 'ci-quote', false), true);
 	} else {
@@ -50,7 +48,7 @@
 <?php if (file_exists($quotesfile)) : ?>
     <?php $quotejson = json_decode(file_get_contents($quotesfile), true);  ?>
     <?php if (!$quotejson) { $quotejson = array('error' => true, 'errormsg' => 'The quote JSON contains errors');} ?>
-
+	
     <?php if ($quotejson['error']) : ?>
         <div class="alert alert-warning" role="alert"><?php echo $quotejson['errormsg']; ?></div>
     <?php else : ?>
@@ -60,9 +58,7 @@
       			<?php include $config->paths->content."/cust-information/tables/quote-formatted.php"; ?>
       		</div>
       	<?php endforeach; ?>
-
     <?php endif; ?>
-
 <?php else : ?>
     <div class="alert alert-warning" role="alert">Information Not Available</div>
 <?php endif; ?>

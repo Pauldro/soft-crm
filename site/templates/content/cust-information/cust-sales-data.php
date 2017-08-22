@@ -4,7 +4,6 @@
 
     $href = $config->pages->ajax.'load/ci/ci-53weeks/?custID='.urlencode($custID);
 	echo '<p>' . makeprintlink($href, 'View Printable Version') . '</p>';
-
 ?>
 
 <?php if (file_exists($salesfile)) : ?>

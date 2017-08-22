@@ -3,8 +3,6 @@
 	$historyfile = $config->jsonfilepath.session_id()."-cipayment.json";
 	//$historyfile = $config->jsonfilepath."cioi-cipayment.json";
 
-
-
 	if (checkformatterifexists($user->loginid, 'ci-payment-history', false)) {
 		$defaultjson = json_decode(getformatter($user->loginid, 'ci-payment-history', false), true);
 	} else {
@@ -45,7 +43,6 @@
 			})
 		</script>
     <?php endif; ?>
-
 <?php else : ?>
     <div class="alert alert-warning" role="alert">Information Not Available</div>
 <?php endif; ?>

@@ -81,7 +81,6 @@
 
 							$tb->headercell('class='.$config->textjustify[$contactjson['columns']['contact'][$column]['headingjustify']], $contactjson['columns']['contact'][$column]['heading']);
 						}
-
 					$tb->closesection('thead');
 					$tb->section('tbody');
 						foreach ($contactjson['data']['contact'] as $contact) {

@@ -19,7 +19,6 @@
 				<?php endforeach; ?>
 			</div>
 		</div>
-
     <?php endif; ?>
 <?php else : ?>
     <div class="alert alert-warning" role="alert">Information Not Available</div>

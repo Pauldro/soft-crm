@@ -1,6 +1,4 @@
 <?php
-
-	include_once $config->paths->assets."classes/Table.php";
 	include_once $config->paths->content."item-information/functions/ii-functions.php";
 	$historyfile = $config->jsonfilepath.session_id()."-cisaleshist.json";
 	//$historyfile = $config->jsonfilepath."cishist-cisaleshist.json";
