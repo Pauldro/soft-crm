@@ -14,13 +14,13 @@
 	include_once("./_func.php"); // include our shared functions
 	include_once("./_dbfunc.php");
 
-
 	include_once($config->paths->content."common/initialize.php");
 
 	include $config->paths->vendor."cptech/src/UserAction.class.php";
 	include $config->paths->vendor."cptech/src/UserActionPanel.class.php";
 	include $config->paths->vendor."cptech/src/Contact.class.php";
 	include $config->paths->vendor."cptech/src/Table.php";
+	include $config->paths->vendor."cptech/src/utfport.php";
 
 	$config->sessionName = session_name();
 
@@ -28,7 +28,6 @@
 	$page->fullURL->join($config->filename);
 	$page->querystring = $querystring = $page->fullURL->query;
 	$page->PageURL = $page->httpUrl.'?'.$page->querystring;
-
 
 	$config->styles->append($config->urls->templates.'styles/bootstrap.min.css');
 	$config->styles->append('https://fonts.googleapis.com/icon?family=Material+Icons');
@@ -42,8 +41,6 @@
 	$config->scripts->append($config->urls->templates.'scripts/classes.js');
 	$config->scripts->append($config->urls->templates.'scripts/scripts.js');
 
-
-
 	$user->loggedin = is_valid_login(session_id());
 	if ($user->loggedin) {
 		setupuser(session_id());
@@ -51,7 +48,6 @@
 		header('location: ' . $config->pages->login);
 		exit;
 	}
-
 
 	if ($input->get->modal) {
 		$config->modal = true;

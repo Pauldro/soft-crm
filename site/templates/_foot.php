@@ -15,7 +15,6 @@
         </footer>
 		<?php include $config->paths->content."common/modals/ajax-modal.php"; ?>
 		<?php include $config->paths->content."common/modals/lightbox-modal.php"; ?>
-		<?php include $config->paths->content."common/modals/edit-pricing-modal.php"; ?>
 		<?php include $config->paths->content."common/modals/add-item-modal.php"; ?>
         <?php foreach($config->scripts->unique() as $script) : ?>
         	<script src="<?php echo $script; ?>"></script>
