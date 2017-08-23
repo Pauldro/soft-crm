@@ -1,7 +1,5 @@
 var itemlookupform = "#ii-item-lookup";
 
-
-
 $(function() {
     //listener.simple_combo("u", function() {iicust()});
     listener.simple_combo("c", function() {costing();});
@@ -49,7 +47,7 @@ $(function() {
 		var href = URI($(this).attr('action')).addQuery('q', itemID).addQuery('modal', 'modal').normalizeQuery().toString();
 		showajaxloading();
 		$(loadinto).loadin(href, function() {
-			hideajaxloading(); console.log(href);
+			hideajaxloading();
 			$(modal).find('.modal-body').addClass('modal-results');
 			$(modal).resizemodal('lg').modal();
 		});
@@ -73,7 +71,7 @@ $(function() {
             $(modal).modal('hide');
             wait(500, function() {
                 $(loadinto).loadin(href, function() {
-                    hideajaxloading(); console.log(href);
+                    hideajaxloading();
 					$(modal).find('.modal-body').addClass('modal-results');
                     $(modal).resizemodal('lg').modal();
                     listener.listen();
@@ -98,7 +96,7 @@ $(function() {
         $(formid).postform({formdata: false, jsoncallback: false}, function() { //form, overwriteformdata, returnjson, callback
             $(modal).modal('hide');
             $(loadinto).loadin(href, function() {
-                hideajaxloading(); console.log(href);
+                hideajaxloading();
                 wait(500, function() {
 					$(modal).find('.modal-body').addClass('modal-results');
                     $(modal).resizemodal('lg').modal();
@@ -123,6 +121,7 @@ $(function() {
 			iicust('ii-pricing');
 		}
 	}
+
     function costing() {
         var itemID = $(itemlookupform + " .itemID").val();
         var modal = config.modals.ajax;
@@ -131,12 +130,13 @@ $(function() {
         showajaxloading();
         ii_costing(itemID, function() {
             $(loadinto).loadin(href, function() {
-                hideajaxloading(); console.log(href);
+                hideajaxloading();
 				$(modal).find('.modal-body').addClass('modal-results');
                 $(modal).resizemodal('lg').modal();
             });
         });
     }
+
     function purchorder() {
         var itemID = $(itemlookupform + " .itemID").val();
         var modal = config.modals.ajax;
@@ -145,12 +145,13 @@ $(function() {
         showajaxloading();
         ii_purchaseorder(itemID, function() {
             $(loadinto).loadin(href, function() {
-                hideajaxloading(); console.log(href);
+                hideajaxloading();
 				$(modal).find('.modal-body').addClass('modal-results');
                 $(modal).resizemodal('xl').modal();
             });
         });
     }
+
 	function quotes() {
 		var itemID = $(itemlookupform + " .itemID").val();
 		var custID = $(itemlookupform+' .custID').val();
@@ -164,12 +165,13 @@ $(function() {
 		showajaxloading();
 		ii_quotes(itemID, function() {
 			$(loadinto).loadin(href, function() {
-				hideajaxloading(); console.log(href);
+				hideajaxloading();
 				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('xl').modal();
 			});
 		});
 	}
+
 	function purchhist() {
 		var itemID = $(itemlookupform + " .itemID").val();
 		var modal = config.modals.ajax;
@@ -178,12 +180,13 @@ $(function() {
 		showajaxloading();
 		ii_purchasehistory(itemID, function() {
 			$(loadinto).loadin(href, function() {
-				hideajaxloading(); console.log(href);
+				hideajaxloading();
 				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('xl').modal();
 			});
 		});
 	}
+
 	function whereused() {
 		var itemID = $(itemlookupform + " .itemID").val();
 		var modal = config.modals.ajax;
@@ -192,12 +195,13 @@ $(function() {
 		showajaxloading();
 		ii_whereused(itemID, function() {
 			$(loadinto).loadin(href, function() {
-				hideajaxloading(); console.log(href);
+				hideajaxloading();
 				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('lg').modal();
 			});
 		});
 	}
+
     function compinq() {
         var itemID = $(itemlookupform + " .itemID").val();
         var loadinto =  config.modals.ajax+" .modal-content";
@@ -224,12 +228,12 @@ $(function() {
                 } else if (input.toUpperCase() == 'B') {
                     askbomqtyneed(itemID);
                 }
-
             } else {
                 listener.listen();
             }
         }).catch(swal.noop);
     }
+
 	function general() {
 		var itemID = $(itemlookupform + " .itemID").val();
 		var modal = config.modals.ajax;
@@ -240,7 +244,7 @@ $(function() {
 			ii_misc(itemID, function() {
 				ii_usage(itemID, function() {
 					$(loadinto).loadin(href, function() {
-						hideajaxloading(); console.log(href);
+						hideajaxloading();
 						$(modal).find('.modal-body').addClass('modal-results');
 						$(modal).resizemodal('lg').modal();
 					});
@@ -248,6 +252,7 @@ $(function() {
 			});
 		});
 	}
+
 	function activity() {
 		var itemID = $(itemlookupform + " .itemID").val();
 		var custID = $(itemlookupform + " .custID").val();
@@ -258,7 +263,6 @@ $(function() {
 														.addQuery('modal', 'modal')
 														.query(cleanparams)
 														.toString();
-		console.log(href);
 		$(loadinto).loadin(href, function() {
 			listener.stop_listening();
 			$(modal).find('.modal-body').addClass('modal-results');
@@ -266,6 +270,7 @@ $(function() {
 			setTimeout(function (){ $(modal).find('.datepicker').focus();}, 500);
 		});
 	}
+
 	function requirements(screentype, whse, refreshpage) {
 		if (typeof screentype === 'undefined' || screentype === false) { screentype = ''; } else {whse = $('.item-requirements-whse').val();}
 		if (typeof whse === 'undefined' || whse === false) { whse = ''; } else {screentype = $('.item-requirements-screentype').val();}
@@ -284,7 +289,7 @@ $(function() {
 				window.location.reload(false);
 			} else {
 				$(loadinto).loadin(href, function() {
-					hideajaxloading(); console.log(href);
+					hideajaxloading();
 					$(modal).find('.modal-body').addClass('modal-results');
 					listener.stop_listening();
 					$(modal).resizemodal('lg').modal();
@@ -293,6 +298,7 @@ $(function() {
 
 		});
 	}
+
 	function seriallot() {
 		var itemID = $(itemlookupform + " .itemID").val();
 		var modal = config.modals.ajax;
@@ -301,12 +307,13 @@ $(function() {
 		showajaxloading();
 		ii_lotserial(itemID, function() {
 			$(loadinto).loadin(href, function() {
-				hideajaxloading(); console.log(href);
+				hideajaxloading();
 				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('lg').modal();
 			});
 		});
 	}
+
 	function salesorder() {
 		var itemID = $(itemlookupform + " .itemID").val();
 		var modal = config.modals.ajax;
@@ -315,20 +322,20 @@ $(function() {
 		showajaxloading();
 		ii_salesorder(itemID, function() {
 			$(loadinto).loadin(href, function() {
-				hideajaxloading(); console.log(href);
+				hideajaxloading();
 				$(modal).find('.modal-body').addClass('modal-results');
 				listener.stop_listening();
 				$(modal).resizemodal('xl').modal();
 			});
 		});
 	}
+
 	function saleshist() {
 		var itemID = $(itemlookupform + " .itemID").val();
 		var custID = $(itemlookupform + " .custID").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
 		var href = URI(config.urls.load.ii_saleshistoryform).addQuery("itemID", itemID).addQuery("custID", custID).addQuery('modal', 'modal').toString();
-		console.log(href);
 		$(loadinto).loadin(href, function() {
 			listener.stop_listening();
 			$(modal).find('.modal-body').addClass('modal-results');
@@ -336,6 +343,7 @@ $(function() {
 			setTimeout(function (){ $(modal).find('.datepicker').focus();}, 500);
 		});
 	}
+
 	function whsestock() {
 		var itemID = $(itemlookupform + " .itemID").val();
 		var modal = config.modals.ajax;
@@ -344,7 +352,7 @@ $(function() {
 		showajaxloading();
 		ii_stock(itemID, function() {
 			$(loadinto).loadin(href, function() {
-				hideajaxloading(); console.log(href);
+				hideajaxloading();
 				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('lg').modal();
 			});
@@ -358,12 +366,13 @@ $(function() {
 		showajaxloading();
 		ii_substitutes(itemID, function() {
 			$(loadinto).loadin(href, function() {
-				hideajaxloading(); console.log(href);
+				hideajaxloading();
 				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('xl').modal();
 			});
 		});
 	}
+
 	function iicust(dplusfunction) {
 		if (typeof dplusfunction === 'undefined' || dplusfunction === false) { dplusfunction = 'ii'; }
 		var modal = config.modals.ajax;
@@ -376,6 +385,7 @@ $(function() {
 			setTimeout(function (){ $(modal).find('.query').focus();}, 500);
 		});
 	}
+
 	function docview() {
 		var itemID = $(itemlookupform + " .itemID").val();
 		var modal = config.modals.ajax;
@@ -384,7 +394,7 @@ $(function() {
 		showajaxloading();
 		ii_documents(itemID, function() {
 			$(loadinto).loadin(href, function() {
-				hideajaxloading(); console.log(href);
+				hideajaxloading();
 				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('xl').modal();
 			});
@@ -419,7 +429,7 @@ $(function() {
                 showajaxloading();
                 ii_kitcomponents(itemID, qty, function() {
                     $(loadinto).loadin(href, function() {
-                        hideajaxloading(); console.log(href);
+                        hideajaxloading();
 						$(modal).find('.modal-body').addClass('modal-results');
                         $(modal).resizemodal('lg').modal();
                         listener.listen();
@@ -431,6 +441,7 @@ $(function() {
         }).catch(swal.noop);
 
     }
+
     function askbomqtyneed(itemID) {
         swal({
             title: "Bill of Material Inquiry",
@@ -455,6 +466,7 @@ $(function() {
             }
         }).catch(swal.noop);
     }
+
     function askbomsingleconsolided(itemID, qty) {
         var href = iiurl(config.urls.load.ii_bom, itemID, false, false);
         var modal = config.modals.ajax;
@@ -489,7 +501,7 @@ $(function() {
                     swal.close();
                     showajaxloading();
                     $(loadinto).loadin(href, function() {
-                        hideajaxloading(); console.log(href);
+                        hideajaxloading();
 						$(modal).find('.modal-body').addClass('modal-results');
                         $(modal).resizemodal('lg').modal();
                         listener.listen();
@@ -501,6 +513,7 @@ $(function() {
         }).catch(swal.noop);
 
     }
+
 	function ii_customer(custID) { //WAS ii_customer
 		var itemID = $(itemlookupform+' .itemID').val();
 		showajaxloading();
@@ -510,9 +523,11 @@ $(function() {
 			window.location.href = iiurl(config.urls.products.iteminfo, itemID, custID, false);
 		});
 	}
+
 	function choosecust() {
 		iicust();
 	}
+
 	function previousitem() {
 		var itemID = $(itemlookupform+' .prev-itemID').val();
 		var custID = $(itemlookupform+' .custID').val();
@@ -522,6 +537,7 @@ $(function() {
 			window.location.href = iiurl(config.urls.products.iteminfo, itemID, custID, false);
 		});
 	}
+
 	function nextitem() {
 		var itemID = $(itemlookupform+' .next-itemID').val();
 		var custID = $(itemlookupform+' .custID').val();
@@ -531,6 +547,7 @@ $(function() {
 			window.location.href = iiurl(config.urls.products.iteminfo, itemID, custID, false);
 		});
 	}
+
 	function chooseiihistorycust(custID, shipID) {
 		var itemID = $(itemlookupform+' .itemID').val();
 		$('.modal').modal('hide');
@@ -542,6 +559,7 @@ $(function() {
 			});
 		});
 	}
+
 	function chooseiipricingcust(custID, shipID) {
 		var itemID = $(itemlookupform+' .itemID').val();
 		$('.modal').modal('hide');
@@ -553,6 +571,7 @@ $(function() {
 			});
 		});
 	}
+
 	function loadiipage(custID, shipID, itemID, callback) {
 		var loadinto = ".page";
 		var href = iiurl(config.urls.products.iteminfo, itemID, custID, shipID);
@@ -562,6 +581,7 @@ $(function() {
 			callback();
 		});
 	}
+
 	function iipricing(custID, shipID, itemID) {
 		var href = URI(iiurl(config.urls.load.ii_pricing, itemID, custID, shipID)).addQuery('modal', 'modal').toString();
 		var modal = config.modals.ajax;
@@ -571,12 +591,13 @@ $(function() {
 		ii_pricing(itemID, custID, shipID, function() {
 			hideajaxloading();
 			$(loadinto).loadin(href, function() {
-				hideajaxloading(); console.log(href);
+				hideajaxloading();
 				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('lg').modal();
 			});
 		});
 	}
+
 	function iiurl(url, itemID, custID, shipID) {
 		var uri = URI(url).addQuery("itemID", itemID);
 		uri.search(function(data){
@@ -593,15 +614,16 @@ $(function() {
 		});
 		return uri.normalizeQuery().toString();
 	}
+
 	function loadorderdocuments(ordn) {
 		var itemID = $(itemlookupform + " .itemID").val();
 		var modal = config.modals.ajax;
-		var loadinto =  modal+" .modal-content";
+		var loadinto = modal+" .modal-content";
 		var href = URI(config.urls.load.ii_order_documents).addQuery("itemID", itemID).addQuery("ordn", ordn).addQuery('modal', 'modal').toString();
 		showajaxloading();
 		ii_order_documents(itemID, ordn, function() {
 			$(loadinto).loadin(href, function() {
-				hideajaxloading(); console.log(href);
+				hideajaxloading();
 				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('lg').modal();
 			});
