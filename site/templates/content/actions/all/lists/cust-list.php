@@ -14,7 +14,7 @@
 			</tr>
 		<?php else : ?>
 			<?php foreach ($actions as $action) : ?>
-				<?php if ($action->isoverdue && $action->actiontype == 'task') {$class="bg-warning";} else {$class="";} ?>
+				<?php if ($action->isoverdue && $action->actiontype == 'task' && (!$action->isrescheduled)) {$class="bg-warning";} else {$class="";} ?>
 	            <tr class="<?= $class; ?>">
 	                <td><?= $action->displayduedate('m/d/Y'); ?></td>
 					<td><?= $action->actiontype; ?></td>

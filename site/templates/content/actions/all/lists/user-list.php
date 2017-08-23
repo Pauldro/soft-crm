@@ -8,13 +8,13 @@
     <tbody>
 		<?php if (!sizeof($actions)) : ?>
 			<tr>
-				<td colspan="6" class="text-center h4">
+				<td colspan="7" class="text-center h4">
 					No related actions found
 				</td>
 			</tr>
 		<?php else : ?>
 			<?php foreach ($actions as $action) : ?>
-				<?php if ($action->isoverdue && $action->actiontype == 'task') {$class="bg-warning";} else {$class="";} ?>
+				<?php if ($action->isoverdue && $action->actiontype == 'task' && (!$action->isrescheduled)) {$class="bg-warning";} else {$class="";} ?>
 	            <tr class="<?= $class; ?>">
 	                <td><?= $action->displayduedate('m/d/Y'); ?></td>
 					<td><?= $action->actiontype; ?></td>
