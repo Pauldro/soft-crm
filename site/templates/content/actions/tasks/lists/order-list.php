@@ -1,5 +1,5 @@
 <?php
-	$tasks = getuseractions($user->loginid, $actionpanel->querylinks, $config->showonpage, $input->pageNum(), false); 
+	$tasks = getuseractions($user->loginid, $actionpanel->querylinks, $config->showonpage, $input->pageNum(), false);
 ?>
 
 <div class="panel-body">
@@ -32,7 +32,7 @@
 			</tr>
 		<?php else : ?>
 			<?php foreach ($tasks as $task) : ?>
-				<?php if ($task->isoverdue) {$class="bg-warning";} else {$class = "";} ?>
+				<?php if ($task->isoverdue && (!$task->isrescheduled)) {$class="bg-warning";} else {$class = "";} ?>
 	            <tr class="<?= $class; ?>">
 					<td><?= $task->displayduedate('m/d/Y'); ?></td>
 					<td><?= $task->actiontype; ?></td>
