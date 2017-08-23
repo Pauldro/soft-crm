@@ -62,7 +62,7 @@
 	.nav>li>a.logout:hover, .nav>li>a.logout:hover, .nav>li>a.logout:active, .nav>li>a.logout:active, a.logout.list-group-item:hover { background-color: #d43f3a; color: white; }
 
 	.navbar-brand.yt-menu-open span {background-color: transparent; }
-	.header-logo {display: inline-block; max-width: 250px;  margin-top: 10px;}
+	.header-logo {display: inline-block; max-width: 250px;  margin-top: 10px; float:left;}
 	#show-toolbar {position: fixed; bottom: 20px; left: 20px; z-index: 16; }
 	#back-to-top {position: fixed; bottom: 20px; right: 20px; z-index: 12; display: none;}
 	@media screen and (max-width: 768px) {
