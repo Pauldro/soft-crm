@@ -40,7 +40,7 @@
 					$originaltask['datecompleted'] = '0000-00-00 00:00:00';
 					$originaltask['dateupdated'] = date("Y-m-d H:i:s");
 					$originaltask['completed'] = 'R';
-					$originaltask['rescheduledlink'] = $tasklinks['actionlink'];
+					$originaltask['rescheduledlink'] = $results['insertedid'];
 					$response = updateaction($tasklinks['actionlink'], $originaltask, false);
 					$session->sql = $response['sql'];
 					$error = false;

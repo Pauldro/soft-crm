@@ -514,7 +514,7 @@ $(document).ready(function() {
 				showCancelButton: true
 			}).then(function (result) {
 				var regexhref = button.attr('href');
-				var href = regexhref.replace(/{replace}/g, result);
+				var href = URI(regexhref.replace(/{replace}/g, result)).addQuery('modal', 'modal').toString();
 				var modal = button.data('modal');
 				var loadinto =  modal+" .modal-content";
 				$(loadinto).loadin(href, function() {
