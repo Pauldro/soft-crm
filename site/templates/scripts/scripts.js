@@ -205,7 +205,7 @@ $(document).ready(function() {
 		$(".page").on("click", ".edit-order", function(e) {
 			e.preventDefault();
 			var href = $(this).attr('href');
-			dplusrequesturl(href, function() {
+			dplusrequesturl(href, function(url) {
 				window.location.href = url;
 			});
 		});
@@ -238,7 +238,7 @@ $(document).ready(function() {
 			var loadinto = $(this).data('loadinto');
 			var focuson = $(this).data('focus');
 			var modal = $(this).data('modal');
-			$(form).postform(false, false, function() { //form, overwriteformdata, returnjson, callback
+			$(form).postform({formdata: false, jsoncallback: false}, function() { //form, overwriteformdata, returnjson, callback
 				wait(500, function() {
 					generateurl(function(url) {
 						$(loadinto).loadin(url, function() {
