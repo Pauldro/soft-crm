@@ -18,8 +18,6 @@ $(document).ready(function() {
 	    	$(this).val(formatphone($(this).val()));
 	    });
 
-
-
 		$('body').on('click', function (e) {
 			$('[data-toggle="popover"]').each(function () {
 				//the 'is' for buttons that trigger popups
@@ -88,10 +86,8 @@ $(document).ready(function() {
 			$('#slide-menu').toggle().animatecss('fadeInLeft');
 			$(this).toggleClass('menu-open');
 			if ($(this).data('function') === 'show') {
-				//$("<div class='modal-backdrop fade in'></div>").appendTo('body');
 				$(this).data('function', "hide").css({"background-color":"#242F40", "color": "#f8f8f8"});
 			} else {
-				//$('body').find('.modal-backdrop.fade.in').remove();
 				$(this).data('function', "show").removeClass('menu-open').css({"background-color":"", "color": ""});
 			}
 		});
@@ -111,8 +107,6 @@ $(document).ready(function() {
 				 $('.yt-menu-open').data('function', "show").removeClass('menu-open').css({"background-color":"", "color": ""});
 			}
 		});
-
-
 
 	/*==============================================================
 	  FORM FUNCTIONS
@@ -147,7 +141,6 @@ $(document).ready(function() {
 			} else {
 				window.location.href = href;
 			}
-
 		});
 
 	/*==============================================================
@@ -184,34 +177,27 @@ $(document).ready(function() {
 			var focuson = $(this).data('focus');
 			var geturl = $(this).attr('href');
 			showajaxloading();
-			$.get(geturl, function() {
-				generateurl(function(url) {
-					$(loadinto).loadin(url, function() {
-						hideajaxloading();
-						if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
-					});
+			dplusrequesturl(geturl, function(url) {
+				$(loadinto).loadin(url, function() {
+					hideajaxloading();
+					if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
 				});
 			});
 		});
 
-
-	$("body").on("click", ".load-notes", function(e) {
-        e.preventDefault();
-        var button = $(this);
-        var ajaxloader = new ajaxloadedmodal(button);
-        $.get(ajaxloader.url, function() {
-            showajaxloading();
-            generateurl(function(url) {
-                wait(500, function() {
+		$("body").on("click", ".load-notes", function(e) {
+		    e.preventDefault();
+		    var button = $(this);
+		    var ajaxloader = new ajaxloadedmodal(button);
+			showajaxloading();
+			dplusrequesturl(ajaxloader.url, function(url) {
+				wait(500, function() {
 					$(ajaxloader.loadinto).loadin(url, function() {
 						$(ajaxloader.modal).resizemodal('lg').modal(); hideajaxloading();
 					});
 				});
-            });
-        });
-    });
-
-
+			});
+		});
 
 	/*==============================================================
 	  ORDER LIST FUNCTIONS
@@ -219,11 +205,8 @@ $(document).ready(function() {
 		$(".page").on("click", ".edit-order", function(e) {
 			e.preventDefault();
 			var href = $(this).attr('href');
-			$.get(href, function() {
-				generateurl(function(url) {
-					console.log(url);
-					window.location.href = url;
-				});
+			dplusrequesturl(href, function() {
+				window.location.href = url;
 			});
 		});
 
@@ -232,11 +215,9 @@ $(document).ready(function() {
 			var loadinto = $(this).data('loadinto');
 			var geturl = $(this).attr('href');
 			var focuson = $(this).data('focus');
-			$.get(geturl, function() {
-				generateurl(function(url) {
-					$(loadinto).loadin(url, function() {
-						if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
-					});
+			dplusrequesturl(geturl, function(url) {
+				$(loadinto).loadin(url, function() {
+					if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
 				});
 			});
 		});
@@ -257,7 +238,7 @@ $(document).ready(function() {
 			var loadinto = $(this).data('loadinto');
 			var focuson = $(this).data('focus');
 			var modal = $(this).data('modal');
-			postform(form, false, false, function() { //form, overwriteformdata, returnjson, callback
+			$(form).postform(false, false, function() { //form, overwriteformdata, returnjson, callback
 				wait(500, function() {
 					generateurl(function(url) {
 						$(loadinto).loadin(url, function() {
@@ -268,16 +249,14 @@ $(document).ready(function() {
 						});
 					 });
 				});
-
 			});
-
 		});
 
 		$("body").on("submit", ".item-reorder", function(e) {
 			e.preventDefault();
 			var form = new itemform($(this));
 			var msg = "You added " + form.qty + " of " + form.desc + " to the cart";
-			postformsync(form.formID, function() {
+			$(form.formID).postformsync(function() {
 				$.notify({
 					icon: "glyphicon glyphicon-shopping-cart",
 					message: msg +"<br> (Click this Message to go to the cart.)" ,
@@ -330,7 +309,6 @@ $(document).ready(function() {
 
 			$('#'+form.attr('id')).postform({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
 				wait(500, function() {
-
 					$.getJSON(jsonurl, function(json) {
 						console.log(jsonurl);
 						if (addto === 'order') {
@@ -348,7 +326,6 @@ $(document).ready(function() {
 								});
 							});
 						});
-
 					});
 				});
 			});
@@ -364,9 +341,11 @@ $(document).ready(function() {
 			var custID = querystring.custID;
 			var shipID = querystring.shipID;
 			var addnonstockURI = URI(modal.find('.nonstock-btn').attr('href')).addQuery('custID', custID).addQuery('shipID', shipID);
+
 			if (addnonstockURI.segment(-2) == addtype) {
 				addnonstockURI.segment(-2, "");
 			}
+
 			switch (addtype) {
 				case 'cart':
 					$('#'+modal.attr('id')+ " .custID").val(custID);
@@ -408,9 +387,7 @@ $(document).ready(function() {
 			var loadinto = '#' + $(this).closest('.modal').attr('id') + ' .results';
 			$(formid).postform({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
 				wait(500, function() {
-					$(loadinto).loadin(resultsurl, function() {
-
-					});
+					$(loadinto).loadin(resultsurl, function() { });
 				});
 			});
 		});
@@ -419,9 +396,7 @@ $(document).ready(function() {
 			var thisform = $(this).closest('form');
 			var href = thisform.attr('action')+"?q="+urlencode($(this).val());
 			var loadinto = '#item-results';
-			$(loadinto).loadin(href, function() {
-
-			});
+			$(loadinto).loadin(href, function() { });
 		});
 
 
@@ -441,9 +416,7 @@ $(document).ready(function() {
 												   .addQuery('action', urlencode(action))
 												   .toString();
 			var loadinto = '#item-results';
-			$(loadinto).loadin(href, function() {
-
-			});
+			$(loadinto).loadin(href, function() { });
 		});
 
 		$("body").on("keyup", ".ci-history-item-search", function() {
@@ -458,9 +431,7 @@ $(document).ready(function() {
 													   .addQuery('shipID', urlencode(shipID))
 													   .addQuery('action', urlencode(action))
 													   .toString();
-				$(loadinto).loadin(href, function() {
-
-				});
+				$(loadinto).loadin(href, function() { });
 		});
 
 		$("body").on("submit", "#cust-index-search-form", function(e) {
@@ -474,9 +445,7 @@ $(document).ready(function() {
 				var href = URI(thisform.attr('action')).addQuery('q', $(this).val())
 													   .addQuery('function', pagefunction)
 													   .toString();
-				$(loadinto).loadin(href+' '+loadinto, function() {
-
-				});
+				$(loadinto).loadin(href+' '+loadinto, function() { });
 		});
 
 
@@ -609,7 +578,6 @@ $(document).ready(function() {
 						}).catch(swal.noop);
 					}).catch(swal.noop); //FOR CANCEL
 				}
-
 			});
 		});
 
@@ -622,7 +590,6 @@ $(document).ready(function() {
 	        $(loadinto).loadin(url, function() {
 	            $(modal).resizemodal('lg').modal();
 	        });
-
 	    });
 
 		$("body").on("change", "#view-action-completion-status", function(e) {
@@ -678,8 +645,6 @@ $(document).ready(function() {
 						}
 					});
 				});
-			} else {
-
 			}
 		});
 
@@ -687,8 +652,6 @@ $(document).ready(function() {
 			var select = $(this);
 			$('#new-action-form').find('input[name="assignedto"]').val(select.val());
 		});
-
-
 
 	/*==============================================================
  		EDIT LINE ITEM FUNCTIONS
@@ -718,7 +681,6 @@ $(document).ready(function() {
 				});
 			}
 		});
-
 });
 
 /*==============================================================
@@ -726,6 +688,14 @@ $(document).ready(function() {
 =============================================================*/
 	function wait(time, callback) {
 		var timeoutID = window.setTimeout(callback, time);
+	}
+
+	function dplusrequesturl(geturl, callback) {
+		$.get(geturl, function() {
+			generateurl(function(url) {
+				callback(url);
+			});
+		});
 	}
 
 	function generateurl(callback) {
@@ -755,79 +725,61 @@ $(document).ready(function() {
 		$('body').find('.modal-backdrop').addClass(config.modals.gradients.default).removeClass('darkAmber').css({'z-index':'15'});;
 	}
 
-	jQuery.fn.loadin = function(href, callback) {
-		var element = $(this);
-		var parent = element.parent();
-		console.log('loading ' + element + " from " + href);
-		parent.load(href, function() { callback(); });
-	}
-
 	function loadin(url, element, callback) {
 		var parent = $(element).parent();
 		$(element).remove();
 		parent.load(url, function() { callback(); });
 	}
 
-	function postform(form, formdata, returnjson, callback) {
-		console.log('submitting ' + form);
-		$(form).postform({formdata: formdata, jsoncallback: returnjson}, callback);
-	}
-
-	jQuery.fn.postform = function(options, callback) { //{formdata: data/false, jsoncallback: true/false}
-		var form = $(this);
-		var action = form.attr('action');
-		console.log('submitting ' + form.attr('id'));
-		if (!options.formdata) {options.formdata = form.serialize(); }
-		if (options.jsoncallback) {
-			$.post(action, options.formdata, function(json){callback(json);});
-		} else {
-			$.post(action, options.formdata).done(callback());
-		}
-	}
-
-	function postformsync(form, callback) {
-		console.log('submitting ' + form);
-		var action = $(form).attr('action');
-		$.ajax({async: false, url: action, method: "POST", data: $(form).serialize()}).done(callback());
-	}
-
-	(function ( $ ) {
-		// Pass an object of key/vals to override
-		$.fn.serializeform = function(overrides) {
-			// Get the parameters as an array
-			var newParams = this.serializeArray();
-
-			for(var key in overrides) {
-				var newVal = overrides[key]
-				// Find and replace `content` if there
-				for (index = 0; index < newParams.length; ++index) {
-					if (newParams[index].name == key) {
-						newParams[index].value = newVal;
-						break;
-					}
+	$.fn.extend({
+		postform: function(options, callback) { //{formdata: data/false, jsoncallback: true/false}
+			var form = $(this);
+			var action = form.attr('action');
+			console.log('submitting ' + form.attr('id'));
+			if (!options.formdata) {options.formdata = form.serialize(); }
+			if (options.jsoncallback) {
+				$.post(action, options.formdata, function(json) {callback(json);});
+			} else {
+				$.post(action, options.formdata).done(callback());
+			}
+		},
+		postformsync: function(callback) {
+			var form = $(this);
+			var action = form.attr('action');
+			$.ajax({async: false, url: action, method: "POST", data: $(form).serialize()}).done(callback());
+		},
+		loadin: function(href, callback) {
+			var element = $(this);
+			var parent = element.parent();
+			console.log('loading ' + element.returnelementdescription() + " from " + href);
+			parent.load(href, function() { callback(); });
+		},
+		returnelementdescription: function() {
+			var element = $(this);
+			var tag = element[0].tagName.toLowerCase();
+			var classes = element.attr('class').replace(' ', '.');
+			var id = element.attr('id');
+			var string = tag;
+			if (classes) {
+				if (classes.length) {
+					string += '.'+classes;
 				}
-
-				// Add it if it wasn't there
-				if (index >= newParams.length) {
-					newParams.push({
-						name: key,
-						value: newVal
-					});
+			}
+			if (id) {
+				if (id.length) {
+					string += '#'+id;
 				}
 			}
 
-			// Convert to URL-encoded string
-			return $.param(newParams);
+			return string;
 		}
-	}( jQuery ));
+	});
 
 	function getpaginationurl(form) {
 		var showonpage = form.find('.results-per-page').val();
 		var displaypage = form.attr('action');
 		return URI(displaypage).addQuery('display', showonpage).toString();
 	}
-
-
 
 /*==============================================================
  	TOOLBAR FUNCTIONS
@@ -872,7 +824,6 @@ $(document).ready(function() {
         $(loadinto).loadin(url, function() {  });
     }
 
-
 /*==============================================================
    ITEM FUNCTIONS
 =============================================================*/
@@ -913,7 +864,7 @@ $(document).ready(function() {
 
 		for (var i = 0; i < forms.length; i++) {
 			var form = new itemform($("#"+forms[i]));
-			postformsync(form.formid, function(){
+			$(form.formid).postformsync(function(){
 				$.notify({
 					// options
 					title: '<strong>Success</strong>',
@@ -981,32 +932,33 @@ $(document).ready(function() {
 		if ($(field1).val() == $(field2).val()) { return true; } else { return false; }
 	}
 
-	jQuery.fn.formiscomplete = function(highightelement) {
-		var form = $(this);
-		var missingfields = new Array();
-		form.find('.has-error').removeClass('has-error');
-		form.find('.response').empty();
-		form.find('.required').each(function() {
-			if ($(this).val() === '') {
-				var row = $(this).closest(highightelement);
-				row.addClass('has-error');
-				missingfields.push(row.find('.control-label').text());
+	$.fn.extend({
+		formiscomplete: function(highightelement) {
+			var form = $(this);
+			var missingfields = new Array();
+			form.find('.has-error').removeClass('has-error');
+			form.find('.response').empty();
+			form.find('.required').each(function() {
+				if ($(this).val() === '') {
+					var row = $(this).closest(highightelement);
+					row.addClass('has-error');
+					missingfields.push(row.find('.control-label').text());
+				}
+			});
+			if (missingfields.length > 0) {
+				var message = 'Please Check the following fields: <br>';
+				for (var i = 0; i < missingfields.length; i++) {
+					message += missingfields[i] + "<br>";
+				}
+				$('#'+form.attr('id') + ' .response').createalertpanel(message, "<span class='glyphicon glyphicon-warning-sign'></span> Error! ", "danger");
+				$('html, body').animate({scrollTop: $('#'+form.attr('id') + ' .response').offset().top - 120}, 1000);
+				return false;
+			} else {
+				return true;
 			}
-		});
-		if (missingfields.length > 0) {
-			var message = 'Please Check the following fields: <br>';
-			for (var i = 0; i < missingfields.length; i++) {
-				message += missingfields[i] + "<br>";
-			}
-			$('#'+form.attr('id') + ' .response').createalertpanel(message, "<span class='glyphicon glyphicon-warning-sign'></span> Error! ", "danger");
-			$('html, body').animate({scrollTop: $('#'+form.attr('id') + ' .response').offset().top - 120}, 1000);
-			return false;
-		} else {
-			return true;
 		}
+	});
 
-
-	};
 
 /*==============================================================
  	CONTENT FUNCTIONS
