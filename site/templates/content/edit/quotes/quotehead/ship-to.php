@@ -59,11 +59,11 @@
 	<tr>
 		<td class="control-label">Country</td>
 		<td>
-			<?php $countries = getcountries(); ?>
+			<?php $countries = getcountries(); if (empty($quote['stctry'])) {$quote['stctry'] = 'USA';}?>
 			<select name="shipto-country" class="form-control input-sm">
-				<option value="USA">United States</option>
 				<?php foreach ($countries as $country) : ?>
-					<option value="<?= $country['ccode']; ?>"><?= $country['name']; ?></option>
+					<?php if ($country['ccode'] == $quote['stctry'] ) { $selected = 'selected'; } else { $selected = ''; } ?>
+					<option value="<?= $country['ccode']; ?>" <?= $selected; ?>><?= $country['name']; ?></option>
 				<?php endforeach; ?>
 			</select>
 		</td>

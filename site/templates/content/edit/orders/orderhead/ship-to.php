@@ -64,14 +64,11 @@
 	<tr>
 		<td class="control-label">Country</td>
 		<td>
-			<?php $countries = getcountries(); ?>
+			<?php $countries = getcountries(); if (empty($quote['scountry'])) {$quote['scountry'] = 'USA';}?>
 			<select name="shipto-country" class="form-control input-sm">
 				<?php foreach ($countries as $country) : ?>
-					<?php if ($country['ccode'] == $billing['scountry']) : ?>
-						<option value="<?= $country['ccode']; ?>" selected><?= $country['name']; ?></option>
-					<?php else : ?>
-						<option value="<?= $country['ccode']; ?>"><?= $country['name']; ?></option>
-					<?php endif; ?>
+					<?php if ($country['ccode'] == $quote['scountry'] ) { $selected = 'selected'; } else { $selected = ''; } ?>
+					<option value="<?= $country['ccode']; ?>" <?= $selected; ?>><?= $country['name']; ?></option>
 				<?php endforeach; ?>
 			</select>
 		</td>
