@@ -1,9 +1,15 @@
+# DW Dreamweaver added files
+_notes
+_compareTemp
+configs/
+dwsync.xml
+dw_php_codehinting.config
+*.mno
+
 site/templates/content/ajax/json/test-json.php
 custpricecodetbl.json
 salespersontbl.json
 site/templates/content/ajax/json/test-json.php
 site/templates/template-test.php
-_notes/
-dwsync.xml
-site/templates/template-test.php
-site/templates/template-test.php
+
+
