@@ -11,7 +11,7 @@
 <?php $quotedetails = get_quote_details(session_id(), $qtnbr, false); ?>
 <?php foreach ($quotedetails as $quotedetail) : ?>
     <?php
-        $detailnoteurl = $config->pages->notes.'redir/?action=get-quote-notes&qnbr='.$qtnbr.'&linenbr='.$quotedetail['linenbr'].'&modal=modal'; 
+        $detailnoteurl = $config->pages->notes.'redir/?action=get-quote-notes&qnbr='.$qtnbr.'&linenbr='.$quotedetail['linenbr'].'&modal=modal';
         if ($quotedetail['notes'] == 'Y') {
             $detnoteicon = '<a class="h3 load-notes" href="'.$detailnoteurl.'" data-modal="#ajax-modal"> <i class="material-icons" title="View quote notes">&#xE0B9;</i></a>';
         } else {
@@ -22,7 +22,10 @@
     ?>
     <tr class="detail">
         <td class="text-center"><?= $quotedetail['itemid']; ?></td>
-        <td colspan="2"><?= $quotedetail['desc1']; ?></td>
+        <td colspan="2">
+            <?php if (strlen($quotedetail['vendoritemid'])) { echo ' '.$quotedetail['vendoritemid']."<br>";} ?>
+            <?= $quotedetail['desc1']; ?>
+        </td>
         <td class="text-right">$ <?= $quotedetail['quotprice']; ?></td>
         <td class="text-right"><?= $quotedetail['quotunit']; ?></td>
         <td class="text-right">$ <?= formatmoney($quotedetail['quotprice'] * $quotedetail['quotunit']); ?></td>

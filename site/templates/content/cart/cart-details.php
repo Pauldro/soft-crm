@@ -24,7 +24,11 @@
     				}
 				?>
             <tr>
-                <td data-title="ItemID/Desc"><?= $detail['itemid']; ?> <br> <small><?= $detail['desc1']; ?></small></td>
+                <td data-title="ItemID/Desc">
+                    <?= $detail['itemid']; ?>
+                    <?php if (strlen($detail['vendoritemid'])) { echo ' '.$detail['vendoritemid'];} ?>
+                    <br> <small><?= $detail['desc1']; ?></small>
+                </td>
                 <td data-title="Price" class="text-right">$ <?= formatMoney($detail['price']); ?></td>
                 <td data-title="Ordered" class="text-right"><?= $detail['qtyordered'] + 0; ?></td>
                 <td data-title="Total" class="text-right">$ <?= formatMoney($detail['extamt']); ?></td>

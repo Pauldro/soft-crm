@@ -35,7 +35,11 @@
 
 				?>
             <tr>
-                <td data-title="Item"><?= $detail['itemid']; ?> <br> <?= $detail['desc1']; ?> </td>
+                <td data-title="Item">
+                    <?= $detail['itemid']; ?>
+                    <?php if (strlen($detail['vendoritemid'])) { echo ' '.$detail['vendoritemid'];} ?>
+                    <br> <?= $detail['desc1']; ?>
+                </td>
                 <td data-title="Price" class="text-right">$ <?= formatMoney($detail['quotprice']); ?></td>
                 <td data-title="Ordered" class="text-right"><?= $detail['quotunit'] + 0; ?></td>
                 <td data-title="Total" class="text-right">$ <?= formatMoney($detail['quotprice'] * $detail['quotunit']); ?></td>

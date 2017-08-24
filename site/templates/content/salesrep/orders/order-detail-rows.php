@@ -60,7 +60,11 @@
                 <?php echo $detail['itemid']; ?>
             </a>
         </td>
-        <td colspan="2"> <?php echo $detail['desc1']. ' ' . $detail['desc2'] ; ?></td> <td class="text-right"> <?php echo $qtyo ; ?> </td>
+        <td colspan="2">
+            <?php if (strlen($detail['vendoritemid'])) { echo ' '.$detail['vendoritemid']."<br>";} ?>
+            <?php echo $detail['desc1']. ' ' . $detail['desc2'] ; ?>
+        </td>
+        <td class="text-right"> <?php echo $qtyo ; ?> </td>
         <td class="text-right">$ <?php echo formatmoney($detail['price']); ?></td><td class="text-right"> <?php echo $bo; ?></td>  <td class="text-right"><?php echo $qtys; ?></td>
         <td><?php echo $detnoteicon; ?></td> <td><?php echo $reorder; ?></td> <td><div><?php echo $itemdocLink; ?></div></td>
     </tr>
