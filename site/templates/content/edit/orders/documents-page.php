@@ -8,9 +8,9 @@
         	<?php $documents = getallorderdocs(session_id(), $ordn, false); ?>
             <?php foreach ($documents as $document) : ?>
             	<td><?php echo $document['itemnbr']; ?></td>
-            	<td><a href="<?php echo $config->documentstorage.$document['pathname']; ?>" target="_blank"><?php echo $document['title']; ?></a></td>
+            	<td><a href="<?= $config->documentstorage.$document['pathname']; ?>" target="_blank"><?php echo $document['title']; ?></a></td>
             	<td><?php echo $document['createdate']; ?></td>
-            	<td><?php echo  get_time($document['time']); ?></td>
+            	<td><?= DplusDateTime::formatdplustime($document['time']); ?></td>
             <?php endforeach; ?>
         </tbody>
     </table>

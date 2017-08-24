@@ -29,7 +29,7 @@
 						<td><a href="tel:<?= $cust->cphone; ?>" title="Click To Call"><?= highlight($cust->cphone, $input->get->q,'<span class="highlight">{ele}</span>'); ?></a></td>
 						<td class="text-right">$ <?= formatmoney($cust->amountsold); ?></td>
 						<td class="text-right"> <?= $cust->timesold; ?></td>
-						<td> <?= dplusdate($cust->lastsaledate); ?></td>
+						<td> <?= DplusDateTime::formatdate($cust->lastsaledate); ?></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php else : ?>

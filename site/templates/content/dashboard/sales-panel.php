@@ -14,10 +14,9 @@
                         <tr>
                             <td>
                                 <a href="<?php echo $config->pages->customer.'redir/?action=load-customer&custID='.$customer['custid']; ?>" class="btn btn-primary btn-sm"><?php echo $customer['custid']; ?></a>
-
                             </td>
-                            <td><?php echo $customer['name']; ?></td> <td class="text-right">$ <?php echo $customer['amountsold']; ?></td>
-                            <td class="text-right"><?php echo $customer['timesold']; ?></td> <td><?php echo dplusdate($customer['lastsaledate']); ?></td>
+                            <td><?php echo $customer['name']; ?></td> <td class="text-right">$ <?= $customer['amountsold']; ?></td>
+                            <td class="text-right"><?php echo $customer['timesold']; ?></td> <td><?= DplusDateTime::formatdate($customer['lastsaledate']); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 </tbody>
