@@ -5,6 +5,7 @@
 			$page->body = $config->paths->content.'customer/add/outline.php';
 		} else {
 			$page->contact = false; //WHETHER OR NOT TO LOAD CONTACT PAGE
+			$page->editcontact = false;
 			$custID = $sanitizer->text($input->urlSegment(1));
 			$shipID = '';
 			$customer = get_customer_name($input->urlSegment(1));
@@ -22,6 +23,9 @@
 					$shipID = "";
 					$user->hasshiptoaccess = false;
 					$page->contact = true;
+					if ($input->urlSegment(3) == 'edit') {
+						$page->editcontact = true;
+					}
 				} elseif (strpos($input->urlSegment(2), 'shipto-') !== FALSE) {
 					$shipID = urldecode(str_replace('shipto-', '', $input->urlSegment(2)));
 					$user->hasshiptoaccess = has_access_to_customer_shipto($user->loginid, $user->hascontactrestrictions, $custID, $shipID, false);
@@ -32,10 +36,17 @@
 					$page->title = $contactID .", " . $customer;
 					$shipID = urldecode(str_replace('shipto-', '', $input->urlSegment(2)));
 					$page->contact = true;
+					if ($input->urlSegment(4) == 'edit') {
+						$page->editcontact = true;
+					}
 				}
 
 				if ($page->contact) {
-					$page->body = $config->paths->content.'customer/contact/contact-page.php';
+					if ($page->editcontact) {
+						$page->body = $config->paths->content.'customer/contact/edit-contact.php';
+					} else {
+						$page->body = $config->paths->content.'customer/contact/contact-page.php';
+					}
 				} else {
 					if (!empty($shipID)) {
 						if ($user->hasshiptoaccess) {

@@ -4,7 +4,6 @@
 	<?php include $config->paths->content.'customer/contact/contact-address.php'; ?>
 	<div class="row">
 		<div class="col-sm-6"> <?php include $config->paths->content.'customer/contact/contact-card.php'; ?> </div>
-		
 	</div>
 	<div class="row">
 		<div class="col-sm-8">

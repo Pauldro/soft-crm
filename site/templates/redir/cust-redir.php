@@ -21,6 +21,10 @@
 	* 		DBNAME=$config->DBNAME
 	* 		NEWCUSTOMER
 	* 		break;
+	* 	case 'load-new-customer':
+	*		DBNAME=$config->DBNAME
+	*		CUSTID=$custID
+	*		break;
 	*	case 'load-customer':
 	*		DBNAME=$config->DBNAME
 	*		CUSTID=$custID
@@ -31,6 +35,18 @@
 	*		CUSTID=$custID
 	*		SHIPID=$shipID
 	*		break;
+	*	case 'edit-contact':
+	*		DBNAME=$config->DBNAME
+	*		EDITCONTACT
+	*		CUSTID=$custID
+	*		SHIPID=$shipID
+	*		CONTACT=$contactID
+	*		NAME=$name
+	*		PHONE=$phone
+	*		EXTENSION=$extension
+	*		CELLPHONE=$cellphone
+	*		EMAIL=$email
+	* 		break;
 	* 	case 'ci-buttons':
 	* 		DBNAME=$config->DBNAME
 	*		CIBUTTONS
@@ -227,6 +243,22 @@
 			} else {
 				$session->loc = $config->pages->index;
 			}
+			break;
+		case 'edit-contact':
+			$custID = $input->post->text('custID');
+			$shipID = $input->post->text('shipID');
+			$contactID = $input->post->text('contactID');
+			$contact = getcustcontact($custID, $shipID, $contactID, false);
+			$contact['contact'] = $input->post->text('name');
+			$contact['cphone'] = $input->post->text('phone');
+			$contact['cphext'] = $input->post->text('extension');
+			$contact['ccellphone'] = $input->post->text('cellphone');
+			$contact['email'] = $input->post->text('email');
+			$session->sql = edit_customercontact($custID, $shipID, $contactID, $contact, false);
+			$data = array('DBNAME' => $config->dbName, 'EDITCONTACT' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID, 'CONTACT' => $contactID, 'NAME' => $contact['contact'], 'PHONE' => $contact['cphone'], 'EXTENSION' => $contact['cphext'], 'CELLPHONE' => $contact['ccellphone'], 'EMAIL' => $contact['email']);
+			$returnpage = new \Purl\Url($input->post->text('page'));
+			$returnpage->query->set('id', $contact['contact']);
+			$session->loc = $returnpage->getUrl();
 			break;
 		case 'ci-buttons':
 			$data = array('DBNAME' => $config->dbName, 'CIBUTTONS' => false);
