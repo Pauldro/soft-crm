@@ -47,11 +47,11 @@
 /* =============================================================
 	CUSTOMER FUNCTIONS
 ============================================================ */
-	function has_access_to_customer($loginid, $restrictions, $custID, $debug) {
+	function has_access_to_customer($loginID, $restrictions, $custID, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custindex WHERE custid = :custID AND source = 'CS') t WHERE splogin1 IN (:loginid, :shared) OR splogin2 = :loginid OR splogin3 = :loginid");
-			$switching = array(':custID' => $custID, ':loginid' => $loginid, ':shared' => $SHARED_ACCOUNTS, ':loginid' => $loginid, ':loginid' => $loginid);
+			$sql = wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custindex WHERE custid = :custID AND source = 'CS') t WHERE splogin1 IN (:loginID, :shared) OR splogin2 = :loginID OR splogin3 = :loginID");
+			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':loginID' => $loginID, ':loginID' => $loginID);
 			$withquotes = array(true, true, true, true, true);
 			if ($debug) {
 				return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -64,11 +64,11 @@
 		}
 	}
 
-	function has_access_to_customer_shipto($loginid, $restrictions, $custID, $shipID, $debug) {
+	function has_access_to_customer_shipto($loginID, $restrictions, $custID, $shipID, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custindex WHERE custid = :custID AND shiptoid = :shipID AND source = 'CS') t WHERE splogin1 IN (:loginid, :shared) OR splogin2 = :loginid OR splogin3 = :loginid");
-			$switching = array(':custID' => $custID, ':shipID' => $shipID, ':loginid' => $loginid, ':shared' => $SHARED_ACCOUNTS, ':loginid' => $loginid, ':loginid' => $loginid);
+			$sql = wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custindex WHERE custid = :custID AND shiptoid = :shipID AND source = 'CS') t WHERE splogin1 IN (:loginID, :shared) OR splogin2 = :loginID OR splogin3 = :loginID");
+			$switching = array(':custID' => $custID, ':shipID' => $shipID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':loginID' => $loginID, ':loginID' => $loginID);
 			$withquotes = array(true, true, true, true, true);
 			if ($debug) {
 				return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -125,8 +125,8 @@
 	function get_shipto_count($login, $restrictions, $custID, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM view_distinct_cust_shiptos WHERE recno IN (SELECT recno FROM view_distinct_cust_shiptos WHERE splogin1 IN (:loginid, :shared)  OR splogin2 = :loginid  OR splogin3 = :loginid) AND custid = :custID");
-			$switching = array(':loginid' => $loginid, ':shared' => $SHARED_ACCOUNTS, ':loginid' => $loginid, ':loginid' => $loginid, ':custID' => $custID);
+			$sql = wire('database')->prepare("SELECT COUNT(*) FROM view_distinct_cust_shiptos WHERE recno IN (SELECT recno FROM view_distinct_cust_shiptos WHERE splogin1 IN (:loginID, :shared)  OR splogin2 = :loginID  OR splogin3 = :loginID) AND custid = :custID");
+			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':loginID' => $loginID, ':loginID' => $loginID, ':custID' => $custID);
 			$withquotes = array(true, true, true, true);
 		} else {
 			$sql = wire('database')->prepare("SELECT COUNT(*) FROM view_distinct_cust_shiptos WHERE custid = :custID");
@@ -151,11 +151,11 @@
 		}
 	}
 
-	function getcustomershiptos($custID, $loginid, $restrictions, $debug) {
+	function getcustomershiptos($custID, $loginID, $restrictions, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT * FROM view_distinct_cust_shiptos WHERE custid = :custID AND recno IN (SELECT recno FROM view_distinct_cust_shiptos WHERE splogin1 IN (:loginid, :shared) OR splogin2 = :loginid  OR splogin3 = :loginid)");
-			$switching = array(':custID' => $custID, ':loginid' => $loginid, ':shared' => $SHARED_ACCOUNTS, ':loginid' => $loginid, ':loginid' => $loginid);
+			$sql = wire('database')->prepare("SELECT * FROM view_distinct_cust_shiptos WHERE custid = :custID AND recno IN (SELECT recno FROM view_distinct_cust_shiptos WHERE splogin1 IN (:loginID, :shared) OR splogin2 = :loginID  OR splogin3 = :loginID)");
+			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':loginID' => $loginID, ':loginID' => $loginID);
 			$withquotes = array(true, true, true, true);
 		} else {
 			$sql = wire('database')->prepare("SELECT * FROM view_distinct_cust_shiptos WHERE custid = :custID");
@@ -170,10 +170,10 @@
 		}
 	}
 
-	function get_allowed_shiptos($custID, $loginid, $restrictions, $debug) { //DEPRECATE
+	function get_allowed_shiptos($custID, $loginID, $restrictions, $debug) { //DEPRECATE
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid != '' AND recno IN (SELECT recno FROM custindex WHERE (splogin1 IN (:loginid, :sharedaccounts) OR splogin2 = :loginid OR splogin3 = :loginid)) GROUP BY shiptoid");
-			$switching = array(':custID'=> $custID, ':loginid' => $loginid, ':sharedaccounts' => wire('config')->sharedaccounts, ':loginid' => $loginid, ':loginid' => $loginid);
+			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid != '' AND recno IN (SELECT recno FROM custindex WHERE (splogin1 IN (:loginID, :sharedaccounts) OR splogin2 = :loginID OR splogin3 = :loginID)) GROUP BY shiptoid");
+			$switching = array(':custID'=> $custID, ':loginID' => $loginID, ':sharedaccounts' => wire('config')->sharedaccounts, ':loginID' => $loginID, ':loginID' => $loginID);
 			$withquotes = array(true, true, true, true, true);
 		} else {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid != '' GROUP BY shiptoid");
@@ -188,12 +188,11 @@
 		}
 	}
 
-
-	function get_contacts($loginid, $restrictions, $custID, $debug) {
+	function get_contacts($loginID, $restrictions, $custID, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND recno IN (SELECT recno FROM custindex WHERE splogin1 IN (:loginid, :shared) OR splogin2 = :loginid  OR splogin3 = :loginid)");
-			$switching = array(':custID' => $custID, ':loginid' => $loginid, ':shared' => $SHARED_ACCOUNTS, ':loginid' => $loginid, ':loginid' => $loginid);
+			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND recno IN (SELECT recno FROM custindex WHERE splogin1 IN (:loginID, :shared) OR splogin2 = :loginID  OR splogin3 = :loginID)");
+			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':loginID' => $loginID, ':loginID' => $loginID);
 			$withquotes = array(true, true, true, true);
 		} else {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID");
@@ -209,11 +208,11 @@
 		}
 	}
 
-	function does_user_have_access_contact($login, $restrictions, $custID, $shipID, $contact, $debug) {
+	function does_user_have_access_contact($loginID, $restrictions, $custID, $shipID, $contact, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE (splogin1 IN (:loginid, :shared) OR splogin2 = :loginid OR splogin3 = :loginid) AND custid = :custID AND shiptoid = :shipID AND contact = :contact");
-			$switching = array(':loginid' => $login, ':shared' => $SHARED_ACCOUNTS, ':custID' => $custID, ':shipID' => $shipID, ':contact' => $contact);
+			$sql = wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE (splogin1 IN (:loginID, :shared) OR splogin2 = :loginID OR splogin3 = :loginID) AND custid = :custID AND shiptoid = :shipID AND contact = :contact");
+			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':custID' => $custID, ':shipID' => $shipID, ':contact' => $contact);
 			$withquotes = array(true, true, true, true, true);
 		} else {
 			$sql = wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE custid = :custID AND shiptoid = :shipID AND contact = :contact");
@@ -224,10 +223,10 @@
 		if ($debug) { return returnsqlquery($sql->queryString, $switching, $withquotes); } else { if ($sql->fetchColumn() > 0){return true;} else {return false; } }
 	}
 
-	function getcustcontact($custID, $shipID, $contactid, $debug) {
-		if (strlen($contactid) > 0) {
+	function getcustcontact($custID, $shipID, $contactID, $debug) {
+		if (!empty($contactID)) {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid = :shipID AND contact = :contactid LIMIT 1");
-			$switching = array(':custID' => $custID, ':shipID' => $shipID, ':contactid' => $contactid);
+			$switching = array(':custID' => $custID, ':shipID' => $shipID, ':contactid' => $contactID);
 			$withquotes = array(true, true, true);
 		} else {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid = :shipID LIMIT 1");
@@ -251,17 +250,32 @@
 		if ($debug) { return returnsqlquery($sql->queryString, $switching, $withquotes); } else { return $sql->fetch(PDO::FETCH_ASSOC); }
 	}
 
+	function edit_customercontact($custID, $shipID, $contactID, $contact, $debug) {
+		$originalcontact = getcustcontact($custID, $shipID, $contactID, false);
+		$query = returnpreppedquery($originalcontact, $contact);
+		$sql = wire('database')->prepare("UPDATE custindex SET ".$query['setstatement']." WHERE custid = :custID AND shiptoid = :shipID AND contact = :contactID");
+		$query['switching'][':custID'] = $custID; $query['switching'][':shipID'] = $shipID; $query['switching'][':contactID'] = $contactID;
+		$query['withquotes'][] = true; $query['withquotes'][]= true; $query['withquotes'][] = true;
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
+		} else {
+			if ($query['changecount'] > 0) {
+				$sql->execute($query['switching']);
+			}
+			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
+		}
+	}
+
 /* =============================================================
 	CUST INDEX FUNCTIONS
 ============================================================ */
-
-	function get_distinct_custindex_paged($loginid, $limit = 10, $page = 1, $restrictions, $debug) {
+	function get_distinct_custindex_paged($loginID, $limit = 10, $page = 1, $restrictions, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		$limiting = returnlimitstatement($limit, $page);
 
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid IN (SELECT DISTINCT(custid) FROM custperm WHERE loginid = :loginid OR loginid = :shared) GROUP BY custid ".$limiting);
-			$switching = array(':loginid' => $loginid, ':shared' => $SHARED_ACCOUNTS, ':loginid' => $loginid, ':loginid' => $loginid);
+			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid IN (SELECT DISTINCT(custid) FROM custperm WHERE loginid = :loginID OR loginid = :shared) GROUP BY custid ".$limiting);
+			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':loginID' => $loginID, ':loginID' => $loginID);
 			$withquotes = array(true, true, true, true);
 		} else {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE shiptoid = '' GROUP BY custid " . $limiting);
@@ -278,11 +292,11 @@
 		}
 	}
 
-	function get_distinct_custindex_count($loginid, $restrictions, $debug) {
+	function get_distinct_custindex_count($loginID, $restrictions, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE custid IN (SELECT DISTINCT(custid) FROM custperm WHERE loginid = :loginid OR loginid = :shared)");
-			$switching = array(':loginid' => $loginid, ':shared' => $SHARED_ACCOUNTS, ':loginid' => $loginid, ':loginid' => $loginid);
+			$sql = wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE custid IN (SELECT DISTINCT(custid) FROM custperm WHERE loginid = :loginID OR loginid = :shared)");
+			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':loginID' => $loginID, ':loginID' => $loginID);
 			$withquotes = array(true, true, true, true);
 		} else {
 			$sql = wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE shiptoid = ''");
@@ -297,14 +311,14 @@
 		}
 	}
 
-	function get_custindex_keyword_paged($loginid, $limit = 10, $page = 1, $restrictions, $keyword, $debug) {
+	function get_custindex_keyword_paged($loginID, $limit = 10, $page = 1, $restrictions, $keyword, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		$limiting = returnlimitstatement($limit, $page);
 		$search = '%'.str_replace(' ', '%',$keyword).'%';
 
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginid OR loginid = :shared) AND UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) ".$limiting);
-			$switching = array(':loginid' => $loginid, ':shared' => $SHARED_ACCOUNTS, ':loginid' => $loginid, ':search' => $search);
+			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) ".$limiting);
+			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':loginID' => $loginID, ':search' => $search);
 			$withquotes = array(true, true, true, true);
 		} else {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) " . $limiting);
@@ -320,14 +334,14 @@
 		}
 	}
 
-	function search_custindex_keyword_paged($loginid, $limit = 10, $page = 1, $restrictions, $keyword, $debug) {
+	function search_custindex_keyword_paged($loginID, $limit = 10, $page = 1, $restrictions, $keyword, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		$limiting = returnlimitstatement($limit, $page);
 		$search = '%'.str_replace(' ', '%',$keyword).'%';
 
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginid OR loginid = :shared) AND UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) ".$limiting);
-			$switching = array(':loginid' => $loginid, ':shared' => $SHARED_ACCOUNTS, ':loginid' => $loginid, ':search' => $search);
+			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) ".$limiting);
+			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':loginID' => $loginID, ':search' => $search);
 			$withquotes = array(true, true, true, true);
 		} else {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) " . $limiting);
@@ -343,13 +357,13 @@
 		}
 	}
 
-	function get_custindex_keyword_count($loginid, $restrictions, $keyword, $debug) {
+	function get_custindex_keyword_count($loginID, $restrictions, $keyword, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		$search = '%'.str_replace(' ', '%',$keyword).'%';
 
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginid OR loginid = :shared) AND UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search)");
-			$switching = array(':loginid' => $loginid, ':shared' => $SHARED_ACCOUNTS, ':search' => $search);
+			$sql = wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search)");
+			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':search' => $search);
 			$withquotes = array(true, true, true, true);
 		} else {
 			$sql = wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search)");
@@ -364,19 +378,20 @@
 		}
 	}
 
-	function get_top_25_selling_customers($login, $restrictions, $debug) {
+	function get_top_25_selling_customers($loginID, $restrictions, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
 			$sql = wire('database')->prepare("SELECT custid, name, amountsold, timesold, lastsaledate FROM custindex WHERE splogin1 IN (:login, :sharedaccounts) OR splogin2 = :login OR splogin3 = :login GROUP BY custid ORDER BY CAST(amountsold as Decimal(10,8)) DESC LIMIT 25");
-			$switching = array(':login' => $login, ':sharedaccounts' => $SHARED_ACCOUNTS); $withquotes = array(true);
+			$switching = array(':login' => $loginID, ':sharedaccounts' => $SHARED_ACCOUNTS); $withquotes = array(true);
 		} else {
 			$sql = wire('database')->prepare("SELECT custid, name, amountsold, timesold, lastsaledate FROM custindex GROUP BY custid ORDER BY CAST(amountsold as Decimal(10,8)) DESC LIMIT 25 ");
 			$switching = array(); $withquotes = array();
 		}
-		$sql->execute($switching);
+
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
+			$sql->execute($switching);
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
@@ -409,15 +424,17 @@
 /* =============================================================
 	ORDERS FUNCTIONS
 ============================================================ */
-	function get_salesrep_order_count($session, $debug) {
-		$sql = "SELECT IF(COUNT(DISTINCT(custid)) > 1,COUNT(*),0) as count FROM ordrhed WHERE sessionid = '$session' AND type = 'O'";
+	function get_salesrep_order_count($sessionid, $debug) {
+		$sql = wire('database')->prepare("SELECT IF(COUNT(DISTINCT(custid)) > 1,COUNT(*),0) as count FROM ordrhed WHERE sessionid = :sessionid AND type = :type");
+		$switching = array(':sessionid'=> $sessionid, ':type'=> 'O'); $withquotes = array(true, true);
 		if ($debug) {
-			return $sql;
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
-			$results = wire('database')->query($sql);
-			return $results->fetchColumn();
+			$sql->execute($switching);
+			return $sql->fetchColumn();
 		}
 	}
+
 	function get_salesrep_orders_orderdate($sessionid, $limit = 10, $page = 1, $sortrule, $debug) {
 		$limiting = returnlimitstatement($limit, $page);
 		$sql = wire('database')->prepare("SELECT orderdate, STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder, orderno, custpo, shiptoid, sname, saddress, saddress2, scity, sst, szip, havenote,
@@ -428,8 +445,7 @@
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
 			$sql->execute($switching);
-			$results = $sql->fetchAll(PDO::FETCH_ASSOC);
-			return $results;
+			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
 
@@ -458,6 +474,7 @@
 			return $results;
 		}
 	}
+
 	function get_cust_order_count($sessionid, $custID, $debug) {
 		$sql = wire('database')->prepare("SELECT COUNT(*) as count FROM ordrhed WHERE sessionid = :sessionid AND custid = :custID AND type = 'O'");
 		$switching = array(':sessionid' => $sessionid, ':custID' => $custID); $withquotes = array(true, true);
@@ -656,6 +673,17 @@
 		} else {
 			$sql->execute($switching);
 			return $sql->fetch(PDO::FETCH_ASSOC);
+		}
+	}
+
+	function insertquoteline($sessionid, $qnbr, $linenbr, $debug) {
+		$sql = wire('database')->prepare("INSERT INTO quotdet (sessionid, quotenbr, linenbr) VALUES (:sessionid, :qnbr, :linenbr)");
+		$switching = array(':sessionid' => $sessionid, ':qnbr' => $qnbr, ':linenbr' => $linenbr); $withquotes = array(true, true, true);
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
+		} else {
+			$sql->execute($switching);
+			return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'insertedid' => wire('database')->lastInsertId());
 		}
 	}
 
@@ -927,9 +955,9 @@
 		}
 	}
 
-	function get_useractions_maxrec($loginid) {
+	function get_useractions_maxrec($loginID) {
 		$sql = wire('database')->prepare("SELECT MAX(id) AS id FROM useractions WHERE createdby = :login");
-		$switching = array(':login' => $loginid);
+		$switching = array(':login' => $loginID);
 		$withquotes = array(true, true);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
@@ -1076,9 +1104,9 @@
 		}
 	}
 
-	function insertcartline($sessionid, $debug) {
-		$sql = wire('database')->prepare("INSERT INTO cartdet (sessionid, linenbr) VALUES (:sessionid, '0')");
-		$switching = array(':sessionid' => $sessionid); $withquotes = array(true);
+	function insertcartline($sessionid, $linenbr, $debug) {
+		$sql = wire('database')->prepare("INSERT INTO cartdet (sessionid, linenbr) VALUES (:sessionid, :linenbr)");
+		$switching = array(':sessionid' => $sessionid, ':linenbr' => $linenbr); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -1260,6 +1288,17 @@
 				$sql->execute($query['switching']);
 			}
 			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
+		}
+	}
+
+	function insertorderline($sessionid, $ordn, $linenbr, $debug) {
+		$sql = wire('database')->prepare("INSERT INTO ordrdet (sessionid, orderno, linenbr) VALUES (:sessionid, :ordn, :linenbr)");
+		$switching = array(':sessionid' => $sessionid, ':ordn' => $ordn, ':linenbr' => $linenbr); $withquotes = array(true, true, true);
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
+		} else {
+			$sql->execute($switching);
+			return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'insertedid' => wire('database')->lastInsertId());
 		}
 	}
 
