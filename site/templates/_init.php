@@ -21,6 +21,7 @@
 	include $config->paths->vendor."cptech/src/Contact.class.php";
 	include $config->paths->vendor."cptech/src/Table.php";
 	include $config->paths->vendor."cptech/src/utfport.php";
+	include $config->paths->vendor."cptech/src/DplusDateTime.class.php";
 
 	$session->sessionName = session_name();
 
