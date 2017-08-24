@@ -6,7 +6,7 @@
 	$ajax->searchlink = $config->pages->ajax.'load/orders/search/cust/?custID='.urlencode($custID);  //LINK TO THE SEARCH PAGE
 	$ajax->data = 'data-loadinto="'.$ajax->loadinto.'" data-focus="'.$ajax->focus.'"'; //DATA FIELDS FOR JAVASCRIPT
 	$ajax->url = $page->fullURL;
-	$ajax->url->path = $config->pages->ajax;
+
 	$ajax->url->path->setDplusPath("load/orders/cust/", $input->urlSegmentsStr."/");
 	$ajax->url->query->setData(array("display" => false, "ajax" => false));
 
@@ -28,8 +28,8 @@
 	$ordercount =  get_cust_order_count(session_id(), $custID, false);
 	$totalcount = $ordercount;
 
-?>
 
+?>
 <div class="panel panel-primary not-round" id="orders-panel">
     <div class="panel-heading not-round" id="orders-panel-heading">
     	<?php if ($session->ordersearch) : ?>
@@ -40,7 +40,7 @@
                 <i class="fa fa-refresh" aria-hidden="true"></i> Refresh Orders
             </a>
     	<?php elseif ($ordercount > 0) : ?>
-            <a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">Customer Orders <span class="caret"></span></a> <span class="badge"> <?php echo $ordercount; ?></span> &nbsp; | &nbsp; 
+            <a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">Customer Orders <span class="caret"></span></a> <span class="badge"> <?php echo $ordercount; ?></span> &nbsp; | &nbsp;
             <a href="<?php echo $config->pages->orders."redir/?action=load-cust-orders&custID=".urlencode($custID); ?>" class="load-cust-orders" data-custid="<?php echo $custID; ?>" <?php echo $ajax->data; ?>>
                 <i class="fa fa-refresh" aria-hidden="true"></i> Refresh Orders
             </a>

@@ -39,7 +39,7 @@
 				if ($on == $input->get->text('ordn')) {
 					$oni = ""; $rowclass = 'selected';
 					$orderlink = new \Purl\Url($page->httpUrl);
-					$orderlink->path = $ajax->path;
+					$orderlink->path = $ajax->url->path;
 					$orderlink->query->setData(array('ordn' => false, 'show' => false, 'orderby' => false));
 					$ordnjsdata = $ajax->data;
 				} else {

@@ -7,7 +7,6 @@
 	$ajax->data = 'data-loadinto="'.$ajax->loadinto.'" data-focus="'.$ajax->focus.'"'; //DATA FIELDS FOR JAVASCRIPT
 
 	$ajax->url = $page->fullURL;
-	$ajax->url->path = $config->pages->ajax;
 	$ajax->url->path->setDplusPath("load/quotes/cust/", $input->urlSegmentsStr."/");
 	$ajax->url->query->setData(array("display" => false, "ajax" => false));
 
@@ -38,7 +37,7 @@
 				Searching for <?php echo $_SESSION['quote-search']; ?> <span class="caret"></span> <span class="badge"><?php echo $quotecount; ?></span>
             </a>
     	<?php elseif ($quotecount > 0) : ?>
-            <a href="#quotes-div" data-parent="#quotes-panel" data-toggle="collapse">Customer Quotes <span class="caret"></span></a> <span class="badge"><?php echo $quotecount; ?></span> &nbsp; | &nbsp; 
+            <a href="#quotes-div" data-parent="#quotes-panel" data-toggle="collapse">Customer Quotes <span class="caret"></span></a> <span class="badge"><?php echo $quotecount; ?></span> &nbsp; | &nbsp;
             <a href="<?php echo $config->pages->quotes."redir/?action=load-cust-quotes&custID=".$custID;?>" class="generate-load-link" id="load-cust-quotes" data-custid="<?php echo $custID; ?>" <?php echo $ajax->data; ?>>
                 <i class="fa fa-refresh" aria-hidden="true"></i> Refresh Quotes
             </a>

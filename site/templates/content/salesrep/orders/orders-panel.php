@@ -7,7 +7,6 @@
 	$ajax->data = 'data-loadinto="'.$ajax->loadinto.'" data-focus="'.$ajax->focus.'"'; //DATA FIELDS FOR JAVASCRIPT
 
 	$ajax->url = $page->fullURL;
-	$ajax->url->path = $config->pages->ajax;
 	$ajax->url->path->setDplusPath("load/orders/salesrep/", $input->urlSegmentsStr."/");
 	$ajax->url->query->setData(array("display" => false, "ajax" => false));
 
@@ -33,7 +32,7 @@
 				Searching for <?php echo $_SESSION['order-search']; ?> <span class="caret"></span> <span class="badge"><?php echo $ordercount; ?></span>
             </a>
     	<?php elseif ($ordercount > 0) : ?>
-            <a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">Your Orders <span class="caret"></span></a> &nbsp; <span class="badge"> <?php echo $ordercount; ?></span> &nbsp; | &nbsp; 
+            <a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">Your Orders <span class="caret"></span></a> &nbsp; <span class="badge"> <?php echo $ordercount; ?></span> &nbsp; | &nbsp;
             <a href="<?php echo $config->pages->orders."redir/?action=load-orders"; ?>" class="generate-load-link" id="load-cust-orders" <?php echo $ajax->data; ?>>
                 <i class="fa fa-refresh" aria-hidden="true"></i> Refresh Orders
             </a>

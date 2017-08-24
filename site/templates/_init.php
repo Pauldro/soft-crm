@@ -26,13 +26,15 @@
 	$session->sessionName = session_name();
 
 	$page->fullURL = new \Purl\Url($page->httpUrl);
-	$page->fullURL->join($config->filename);
-	$page->querystring = $querystring = $page->fullURL->query;
-	$page->PageURL = $page->httpUrl.'?'.$page->querystring;
-
+	$page->fullURL->path = '';
 	if (!empty($config->filename) && $config->filename != '/') {
 		$page->fullURL->join($config->filename);
 	}
+
+	$page->querystring = $querystring = $page->fullURL->query;
+	$page->PageURL = $page->httpUrl.'?'.$page->querystring;
+
+
 
 	$config->styles->append($config->urls->templates.'styles/bootstrap.min.css');
 	$config->styles->append('https://fonts.googleapis.com/icon?family=Material+Icons');
