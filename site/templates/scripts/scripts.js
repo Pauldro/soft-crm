@@ -341,9 +341,11 @@ $(document).ready(function() {
 			var custID = querystring.custID;
 			var shipID = querystring.shipID;
 			var addnonstockURI = URI(modal.find('.nonstock-btn').attr('href')).addQuery('custID', custID).addQuery('shipID', shipID);
+			var addmultipleURI = URI(modal.find('.add-multiple-items').attr('href')).addQuery('custID', custID).addQuery('shipID', shipID);
 
 			if (addnonstockURI.segment(-2) == addtype) {
 				addnonstockURI.segment(-2, "");
+				addmultipleURI.segment(-2, "");
 			}
 
 			switch (addtype) {
@@ -351,6 +353,7 @@ $(document).ready(function() {
 					$('#'+modal.attr('id')+ " .custID").val(custID);
 					title = "Add item to Cart";
 					addnonstockURI.segment('cart');
+					addmultipleURI.segment('cart');
 					break;
 				case 'order':
 					var ordn = querystring.ordn;
@@ -358,6 +361,8 @@ $(document).ready(function() {
 					title = "Add item to Order #" + ordn;
 					addnonstockURI.addQuery('ordn', ordn);
 					addnonstockURI.segment('order');
+					addmultipleURI.addQuery('ordn', ordn);
+					addmultipleURI.segment('order');
 					break;
 				case 'quote':
 					var qnbr = querystring.qnbr;
@@ -365,13 +370,17 @@ $(document).ready(function() {
 					title = "Add item to Quote #" + qnbr;
 					addnonstockURI.addQuery('qnbr', qnbr);
 					addnonstockURI.segment('quote');
+					addmultipleURI.addQuery('qnbr', qnbr);
+					addmultipleURI.segment('quote');
 					break;
 			}
 			addnonstockURI.segment('');
 			addnonstockURI.addQuery('modal', 'modal');
-			addnonstockurl = addnonstockURI.toString();
+			addmultipleURI.segment('');
+			addmultipleURI.addQuery('modal', 'modal');
 			$('#add-item-modal-label').text(title);
-			$('#add-item-modal .nonstock-btn').attr('href', addnonstockurl);
+			$('#add-item-modal .nonstock-btn').attr('href', addnonstockURI.toString());
+			$('#add-item-modal .add-multiple-items').attr('href', addmultipleURI.toString());
 			$('#'+modal.attr('id')+ " .resultsurl").val(resultsurl);
 		});
 
@@ -1017,4 +1026,11 @@ $(document).ready(function() {
 
 	function init_bootstraptoggle() {
 		$('.check-toggle').bootstrapToggle({on: 'Yes', off: 'No', onstyle: 'info'});
+	}
+
+	function duplicateitem(list) {
+		$('.duplicable-item:last').clone()
+                          .find("input:text").val("").end()
+                          .appendTo(list);
+		$('.duplicable-item:last input:first').focus();
 	}

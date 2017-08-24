@@ -13,7 +13,12 @@
                                 <i class="fa fa-cube" aria-hidden="true"></i> Non-stock
                             </a>
                         </div>
-                        <div class="col-xs-10">
+                        <div class="col-xs-2">
+                            <a href="<?= $config->pages->ajax.'load/add-detail/'; ?>" class="btn btn-primary load-into-modal add-multiple-items" data-modal="#ajax-modal" data-modalsize="md">
+                                <i class="fa fa-cube" aria-hidden="true"></i> Add Multiple
+                            </a>
+                        </div>
+                        <div class="col-xs-8">
                             <form action="<?php echo $config->pages->products."redir/"; ?>" id="add-item-search-form">
                                 <input type="hidden" name="action" value="item-search">
                                 <input type="hidden" class="custID" name="custID">

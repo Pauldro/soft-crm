@@ -18,6 +18,9 @@
         case 'edit-detail':
             include $config->paths->content . 'ajax/load/edit-detail-router.php';
             break;
+        case 'add-detail':
+            include $config->paths->content . 'ajax/load/add-detail-router.php';
+            break;
         case 'view-detail':
             include $config->paths->content . 'ajax/load/view-detail-router.php';
             break;
