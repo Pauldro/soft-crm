@@ -19,14 +19,14 @@
 
 	function get_login_name($sessionid) {
 		$sql = wire('database')->prepare("SELECT salespername FROM logperm WHERE sessionid = :sessionid");
-		$switching = array(':sessionid'=> $sessionid);
+		$switching = array(':sessionid' => $sessionid);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
 
 	function get_login_id($sessionid) {
 		$sql = wire('database')->prepare("SELECT loginid FROM logperm WHERE sessionid = :sessionid");
-		$switching = array(':sessionid'=> $sessionid);
+		$switching = array(':sessionid' => $sessionid);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
@@ -40,7 +40,7 @@
 
 	function get_login_record($sessionid) {
 		$sql = wire('database')->prepare("SELECT IF(restrictaccess = 'Y',1,0) as restrictedaccess, logperm.* FROM logperm WHERE sessionid = :sessionid");
-		$switching = array(':sessionid'=> $sessionid);
+		$switching = array(':sessionid' => $sessionid);
 		$sql->execute($switching);
 		return $sql->fetch(PDO::FETCH_ASSOC);
 	}
@@ -102,7 +102,7 @@
 
 	function get_customer_info($session, $custID, $debug) {
 		$sql = wire('database')->prepare("SELECT custindex.*, customer.dateentered FROM custindex JOIN customer ON custindex.custid = customer.custid WHERE custindex.custid = :custID AND customer.sessionid = :sessionid LIMIT 1");
-		$switching = array(':sessionid'=> $session, ':custID'=> $custID); $withquotes = array(true, true);
+		$switching = array(':sessionid' => $session, ':custID' => $custID); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -122,7 +122,7 @@
 		}
 	}
 
-	function get_shipto_count($login, $restrictions, $custID, $debug) {
+	function get_shipto_count($loginID, $restrictions, $custID, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
 			$sql = wire('database')->prepare("SELECT COUNT(*) FROM view_distinct_cust_shiptos WHERE recno IN (SELECT recno FROM view_distinct_cust_shiptos WHERE splogin1 IN (:loginID, :shared)  OR splogin2 = :loginID  OR splogin3 = :loginID) AND custid = :custID");
@@ -173,11 +173,11 @@
 	function get_allowed_shiptos($custID, $loginID, $restrictions, $debug) { //DEPRECATE
 		if ($restrictions) {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid != '' AND recno IN (SELECT recno FROM custindex WHERE (splogin1 IN (:loginID, :sharedaccounts) OR splogin2 = :loginID OR splogin3 = :loginID)) GROUP BY shiptoid");
-			$switching = array(':custID'=> $custID, ':loginID' => $loginID, ':sharedaccounts' => wire('config')->sharedaccounts, ':loginID' => $loginID, ':loginID' => $loginID);
+			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':sharedaccounts' => wire('config')->sharedaccounts, ':loginID' => $loginID, ':loginID' => $loginID);
 			$withquotes = array(true, true, true, true, true);
 		} else {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid != '' GROUP BY shiptoid");
-			$switching = array(':custID'=> $custID);
+			$switching = array(':custID' => $custID);
 			$withquotes = array(true);
 		}
 		$sql->execute($switching);
@@ -381,8 +381,8 @@
 	function get_top_25_selling_customers($loginID, $restrictions, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT custid, name, amountsold, timesold, lastsaledate FROM custindex WHERE splogin1 IN (:login, :sharedaccounts) OR splogin2 = :login OR splogin3 = :login GROUP BY custid ORDER BY CAST(amountsold as Decimal(10,8)) DESC LIMIT 25");
-			$switching = array(':login' => $loginID, ':sharedaccounts' => $SHARED_ACCOUNTS); $withquotes = array(true);
+			$sql = wire('database')->prepare("SELECT custid, name, amountsold, timesold, lastsaledate FROM custindex WHERE splogin1 IN (:loginID, :sharedaccounts) OR splogin2 = :loginID OR splogin3 = :loginID GROUP BY custid ORDER BY CAST(amountsold as Decimal(10,8)) DESC LIMIT 25");
+			$switching = array(':loginID' => $loginID, ':sharedaccounts' => $SHARED_ACCOUNTS); $withquotes = array(true);
 		} else {
 			$sql = wire('database')->prepare("SELECT custid, name, amountsold, timesold, lastsaledate FROM custindex GROUP BY custid ORDER BY CAST(amountsold as Decimal(10,8)) DESC LIMIT 25 ");
 			$switching = array(); $withquotes = array();
@@ -426,7 +426,7 @@
 ============================================================ */
 	function get_salesrep_order_count($sessionid, $debug) {
 		$sql = wire('database')->prepare("SELECT IF(COUNT(DISTINCT(custid)) > 1,COUNT(*),0) as count FROM ordrhed WHERE sessionid = :sessionid AND type = :type");
-		$switching = array(':sessionid'=> $sessionid, ':type'=> 'O'); $withquotes = array(true, true);
+		$switching = array(':sessionid' => $sessionid, ':type' => 'O'); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -440,7 +440,7 @@
 		$sql = wire('database')->prepare("SELECT orderdate, STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder, orderno, custpo, shiptoid, sname, saddress, saddress2, scity, sst, szip, havenote,
 					status, havetrk, havedoc, odrsubtot, odrtax, odrfrt, odrmis, odrtotal, error, errormsg, shipdate, custid, custname, invdate, editord FROM ordrhed
 					WHERE sessionid = :sessionid AND type = :type ORDER BY dateoforder $sortrule " . $limiting);
-		$switching = array(':sessionid'=> $sessionid, ':type'=> 'O'); $withquotes = array(true, true);
+		$switching = array(':sessionid' => $sessionid, ':type' => 'O'); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -452,7 +452,7 @@
 	function get_salesrep_orders_orderby($sessionid, $limit = 10, $page = 1, $sortrule, $orderby, $debug) {
 		$limiting = returnlimitstatement($limit, $page);
 		$sql = wire('database')->prepare("SELECT ordrhed.*, CAST(odrsubtot AS DECIMAL(8,2)) AS subtotal FROM ordrhed WHERE sessionid = :sessionid  AND type = :type ORDER BY $orderby $sortrule " . $limiting);
-		$switching = array(':sessionid'=> $sessionid, ':type'=> 'O'); $withquotes = array(true, true);
+		$switching = array(':sessionid' => $sessionid, ':type' => 'O'); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -465,7 +465,7 @@
 	function get_salesrep_orders($sessionid, $limit = 10, $page = 1, $debug) {
 		$limiting = returnlimitstatement($limit, $page);
 		$sql = wire('database')->prepare("SELECT * FROM ordrhed WHERE sessionid = :sessionid AND type = :type ".$limiting);
-		$switching = array(':sessionid'=> $sessionid, ':type'=> 'O'); $withquotes = array(true, true);
+		$switching = array(':sessionid' => $sessionid, ':type' => 'O'); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -524,14 +524,14 @@
 
 	function get_custid_from_order($sessionid, $ordn) {
 		$sql = wire('database')->prepare("SELECT custid FROM ordrhed WHERE sessionid = :sessionid AND orderno = :ordn LIMIT 1");
-		$switching = array(':sessionid'=> $sessionid, ':ordn' => $ordn);
+		$switching = array(':sessionid' => $sessionid, ':ordn' => $ordn);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
 
 	function get_order_details($sessionid, $ordn, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM ordrdet WHERE sessionid = :sessionid AND orderno = :ordn");
-		$switching = array(':sessionid'=> $sessionid, ':ordn' => $ordn); $withquotes = array(true, true);
+		$switching = array(':sessionid' => $sessionid, ':ordn' => $ordn); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -542,14 +542,14 @@
 
 	function hasanorderlocked($sessionid) {
 		$sql = wire('database')->prepare("SELECT COUNT(*) FROM ordlock WHERE sessionid = :sessionid");
-		$switching = array(':sessionid'=> $sessionid);
+		$switching = array(':sessionid' => $sessionid);
 		$sql->execute($switching);
 		return $sql->fetchColumn() > 0 ? true : false;
 	}
 
 	function getlockedordn($sessionid) {
 		$sql = wire('database')->prepare("SELECT orderno FROM ordlock WHERE sessionid = :sessionid");
-		$switching = array(':sessionid'=> $sessionid);
+		$switching = array(':sessionid' => $sessionid);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
@@ -568,28 +568,28 @@
 ============================================================ */
 	function hasaquotelocked($session) {
 		$sql = wire('database')->prepare("SELECT COUNT(*) FROM quotelock WHERE sessionid = :session");
-		$switching = array(':session'=> $session); $withquotes = array(true);
+		$switching = array(':session' => $session); $withquotes = array(true);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
 
 	function getlockedquotenbr($session) {
 		$sql = wire('database')->prepare("SELECT quotenbr FROM quotelock WHERE sessionid = :session");
-		$switching = array(':session'=> $session); $withquotes = array(true);
+		$switching = array(':session' => $session); $withquotes = array(true);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
 
 	function caneditquote($sessionid, $qnbr) {
 		$sql = wire('database')->prepare("SELECT COUNT(*) FROM quotelock WHERE sessionid = :sessionid AND quotenbr = :qnbr");
-		$switching = array(':sessionid'=> $sessionid, ':qnbr' => $qnbr);
+		$switching = array(':sessionid' => $sessionid, ':qnbr' => $qnbr);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
 
 	function get_cust_quote_count($sessionid, $custID, $debug) {
 		$sql = wire('database')->prepare("SELECT COUNT(*) as count FROM quothed WHERE sessionid = :sessionid AND custid = :custID");
-		$switching = array(':sessionid'=> $sessionid, ':custID' => $custID); $withquotes = array(true,true);
+		$switching = array(':sessionid' => $sessionid, ':custID' => $custID); $withquotes = array(true,true);
 		if ($debug) {
 			returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -601,7 +601,7 @@
 	function get_cust_quotes($sessionid, $custID, $limit, $page, $debug) {
 		$limiting = returnlimitstatement($limit, $page);
 		$sql = wire('database')->prepare("SELECT * FROM quothed WHERE sessionid = :sessionid AND custid = :custID $limiting");
-		$switching = array(':sessionid'=> $sessionid, ':custID' => $custID); $withquotes = array(true, true);
+		$switching = array(':sessionid' => $sessionid, ':custID' => $custID); $withquotes = array(true, true);
 		if ($debug) {
 			returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -612,7 +612,7 @@
 
 	function getquotecustomer($sessionid, $qnbr, $debug) {
 		$sql = wire('database')->prepare("SELECT custid FROM quothed WHERE sessionid = :sessionid AND quotnbr = :qnbr");
-		$switching = array(':sessionid'=> $sessionid, ':qnbr' => $qnbr); $withquotes = array(true, true);
+		$switching = array(':sessionid' => $sessionid, ':qnbr' => $qnbr); $withquotes = array(true, true);
 		if ($debug) {
 			returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -623,7 +623,7 @@
 
 	function getquoteshipto($sessionid, $qnbr, $debug) {
 		$sql = wire('database')->prepare("SELECT shiptoid FROM quothed WHERE sessionid = :sessionid AND quotnbr = :qnbr");
-		$switching = array(':sessionid'=> $sessionid, ':qnbr' => $qnbr); $withquotes = array(true, true);
+		$switching = array(':sessionid' => $sessionid, ':qnbr' => $qnbr); $withquotes = array(true, true);
 		if ($debug) {
 			returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -634,7 +634,7 @@
 
 	function get_quotehead($sessionid, $qnbr, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM quothed WHERE sessionid = :sessionid AND quotnbr = :qnbr");
-		$switching = array(':sessionid'=> $sessionid, ':qnbr' => $qnbr); $withquotes = array(true, true);
+		$switching = array(':sessionid' => $sessionid, ':qnbr' => $qnbr); $withquotes = array(true, true);
 		if ($debug) {
 			returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -645,7 +645,7 @@
 
 	function get_quote_details($sessionid, $qnbr, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM quotdet WHERE sessionid = :sessionid AND quotenbr = :qnbr");
-		$switching = array(':sessionid'=> $sessionid, ':qnbr' => $qnbr); $withquotes = array(true, true);
+		$switching = array(':sessionid' => $sessionid, ':qnbr' => $qnbr); $withquotes = array(true, true);
 		if ($debug) {
 			returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -656,7 +656,7 @@
 
 	function get_quoteline($sessionid, $qnbr, $line, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM quotdet WHERE sessionid = :sessionid AND quotenbr = :qnbr AND linenbr = :line");
-		$switching = array(':sessionid'=> $sessionid, ':qnbr' => $qnbr, ':line' => $line); $withquotes = array(true, true, true);
+		$switching = array(':sessionid' => $sessionid, ':qnbr' => $qnbr, ':line' => $line); $withquotes = array(true, true, true);
 		if ($debug) {
 			return	returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -667,7 +667,7 @@
 
 	function getquotelinedetail($sessionid, $qnbr, $line, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM quotdet WHERE sessionid = :sessionid AND quotenbr = :qnbr AND linenbr = :linenbr");
-		$switching = array(':sessionid'=> $sessionid, ':qnbr' => $qnbr, ':linenbr' => $line); $withquotes = array(true, true, true);
+		$switching = array(':sessionid' => $sessionid, ':qnbr' => $qnbr, ':linenbr' => $line); $withquotes = array(true, true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -695,28 +695,19 @@
 	}
 
 	function edit_quotehead($sessionid, $qnbr, $quote, $debug) {
-		//FIXME $query = returnpreppedquery($originaldetail, $newdetails);
-		//LOOK AT edit_orderline(
 		$originalquote = get_quotehead(session_id(), $qnbr, false);
-		$columns = array_keys($originalquote);
-		$withquotes = $switching = array();
-		$setstmt = '';
-		foreach ($columns as $column) {
-			if ($originalquote[$column] != $quote[$column]) {
-				$prepped = ':'.$column;
-				$setstmt .= $column." = ".$prepped.", ";
-				$switching[$prepped] = $quote[$column];
-				$withquotes[] = true;
-			}
-		}
-		$setstmt = rtrim($setstmt, ', ');
-		$sql = wire('database')->prepare("UPDATE quothed SET $setstmt WHERE sessionid = :sessionid AND quotnbr = :quotnbr");
-		$switching[':sessionid'] = $sessionid; $switching[':quotnbr'] = $qnbr; $withquotes[] =true; $withquotes[] = true;
+		$query = returnpreppedquery($originalquote, $quote);
+		$sql = wire('database')->prepare("UPDATE quothed SET ".$query['setstatement']." WHERE sessionid = :sessionid AND quotnbr = :quotnbr");
+		$query['switching'][':sessionid'] = $sessionid; $query['switching'][':quotnbr'] = $qnbr;
+		$query['withquotes'][]= true; $query['withquotes'][] = true;
+
 		if ($debug) {
-			return	returnsqlquery($sql->queryString, $switching, $withquotes);
+			return	returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
 		} else {
-			$sql->execute($switching);
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			if ($query['changecount'] > 0) {
+				$sql->execute($query['switching']);
+			}
+			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
 		}
 	}
 
@@ -742,7 +733,7 @@
 ============================================================ */
 	function can_write_sales_note($sessionid, $ordn) {
 		$sql = wire('database')->prepare("SELECT status FROM ordrhed WHERE sessionid = :sessionid AND orderno = :ordn LIMIT 1 ");
-		$switching = array(':sessionid'=> $sessionid, ':ordn' => $ordn);
+		$switching = array(':sessionid' => $sessionid, ':ordn' => $ordn);
 		$sql->execute($switching);
 		$status = $sql->fetchColumn();
 		if (strtolower($status) == "open" || strtolower($status) == "new") {
@@ -754,7 +745,7 @@
 
 	function get_dplusnotes($sessionid, $key1, $key2, $type, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM qnote WHERE sessionid = :sessionid AND key1 = :key1 AND key2 = :key2 AND rectype = :type");
-		$switching = array(':sessionid'=> $sessionid, ':key1' => $key1, ':key2' => $key2, ':type' => $type);
+		$switching = array(':sessionid' => $sessionid, ':key1' => $key1, ':key2' => $key2, ':type' => $type);
 		$withquotes = array(true, true, true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -766,7 +757,7 @@
 
 	function getdplusnotecount($sessionid, $key1, $key2, $type, $debug) {
 		$sql = wire('database')->prepare("SELECT COUNT(*) FROM qnote WHERE sessionid = :sessionid AND key1 = :key1 AND key2 = :key2 AND rectype = :type");
-		$switching = array(':sessionid'=> $sessionid, ':key1' => $key1, ':key2' => $key2, ':type' => $type);
+		$switching = array(':sessionid' => $sessionid, ':key1' => $key1, ':key2' => $key2, ':type' => $type);
 		$withquotes = array(true, true, true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -786,7 +777,7 @@
 
 	function get_dplusnote($sessionid, $key1, $key2, $type, $recnbr, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM qnote WHERE sessionid = :sessionid AND key1 = :key1 AND key2 = :key2 AND rectype = :type AND recno = :recnbr");
-		$switching = array(':sessionid'=> $sessionid, ':key1' => $key1, ':key2' => $key2, ':type' => $type, ':recnbr' => $recnbr);
+		$switching = array(':sessionid' => $sessionid, ':key1' => $key1, ':key2' => $key2, ':type' => $type, ':recnbr' => $recnbr);
 		$withquotes = array(true, true, true, true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -1160,7 +1151,7 @@
 ============================================================ */
 	function caneditorder($session, $ordn, $debug) {
 		$sql = wire('database')->prepare("SELECT editord FROM ordrhed WHERE sessionid = :session AND orderno = :ordn LIMIT 1");
-		$switching = array(':session'=> $session, ':ordn' => $ordn); $withquotes = array(true, true);
+		$switching = array(':session' => $session, ':ordn' => $ordn); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -1172,21 +1163,21 @@
 
 	function get_customer_name_from_order($session, $ordn) {
 		$sql = wire('database')->prepare("SELECT custname FROM ordrhed WHERE sessionid = :session AND orderno = :ordn LIMIT 1");
-		$switching = array(':session'=> $session, ':ordn' => $ordn);
+		$switching = array(':session' => $session, ':ordn' => $ordn);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
 
 	function get_shiptoid_from_order($session, $ordn) {
 		$sql = wire('database')->prepare("SELECT shiptoid FROM ordrhed WHERE sessionid = :session AND orderno = :ordn LIMIT 1");
-		$switching = array(':session'=> $session, ':ordn' => $ordn);
+		$switching = array(':session' => $session, ':ordn' => $ordn);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
 
 	function get_orderhead($session, $ordn, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM ordrhed WHERE sessionid = :session AND orderno = :ordn AND type = 'O'");
-		$switching = array(':session'=> $session, ':ordn' => $ordn); $withquotes = array(true, true);
+		$switching = array(':session' => $session, ':ordn' => $ordn); $withquotes = array(true, true);
 		$sql->execute($switching);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -1197,7 +1188,7 @@
 
 	function getorderdetails($sessionid, $ordn, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM ordrdet WHERE sessionid = :sessionid AND orderno = :ordn");
-		$switching = array(':sessionid'=> $sessionid, ':ordn' => $ordn); $withquotes = array(true, true);
+		$switching = array(':sessionid' => $sessionid, ':ordn' => $ordn); $withquotes = array(true, true);
 		$sql->execute($switching);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -1208,7 +1199,7 @@
 
 	function getorderlinedetail($session, $ordn, $linenumber, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM ordrdet WHERE sessionid = :session AND orderno = :ordn AND linenbr = :linenbr");
-		$switching = array(':session'=> $session, ':ordn' => $ordn, ':linenbr' => $linenumber); $withquotes = array(true, true, true);
+		$switching = array(':session' => $session, ':ordn' => $ordn, ':linenbr' => $linenumber); $withquotes = array(true, true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -1219,7 +1210,7 @@
 
 	function getallorderdocs($session, $ordn, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM orddocs WHERE sessionid = :session AND orderno = :ordn ORDER BY itemnbr ASC");
-		$switching = array(':session'=> $session, ':ordn' => $ordn); $withquotes = array(true, true);
+		$switching = array(':session' => $session, ':ordn' => $ordn); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -1230,7 +1221,7 @@
 
 	function getordertracking($sessionid, $ordn, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM ordrtrk WHERE sessionid = :sessionid AND orderno = :ordn");
-		$switching = array(':sessionid'=> $sessionid, ':ordn' => $ordn); $withquotes = array(true, true);
+		$switching = array(':sessionid' => $sessionid, ':ordn' => $ordn); $withquotes = array(true, true);
 		$sql->execute($switching);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -1240,30 +1231,19 @@
 	}
 
 	function edit_orderhead($sessionid, $ordn, $order, $debug) {
-		//FIXME $query = returnpreppedquery($originaldetail, $newdetails);
-		//LOOK AT edit_orderline(
 		$orginalorder = get_orderhead(session_id(), $ordn, false);
-		$columns = array_keys($orginalorder);
-		$withquotes = $switching = array();
-		$setstmt = '';
-		foreach ($columns as $column) {
-			if (strlen($order[$column])) {
-				if ($orginalorder[$column] != $order[$column]) {
-					$prepped = ':'.$column;
-					$setstmt .= $column." = ".$prepped.", ";
-					$switching[$prepped] = $order[$column];
-					$withquotes[] = true;
-				}
-			}
-		}
-		$setstmt = rtrim($setstmt, ', ');
-		$sql = wire('database')->prepare("UPDATE ordrhed SET $setstmt WHERE sessionid = :sessionid AND orderno = :ordn");
-		$switching[':sessionid'] = $sessionid; $switching[':ordn'] = $ordn; $withquotes[] =true; $withquotes[] = true;
+		$query = returnpreppedquery($orginalorder, $order);
+		$sql = wire('database')->prepare("UPDATE ordrhed SET ".$query['setstatement']." WHERE sessionid = :sessionid AND orderno = :ordn");
+		$query['switching'][':sessionid'] = $sessionid; $query['switching'][':ordn'] = $ordn;
+		$query['withquotes'][] = true; $query['withquotes'][]= true;
+
 		if ($debug) {
-			return	returnsqlquery($sql->queryString, $switching, $withquotes);
+			return	returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
 		} else {
-			$sql->execute($switching);
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			if ($query['changecount'] > 0) {
+				$sql->execute($query['switching']);
+			}
+			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
 		}
 	}
 
@@ -1304,7 +1284,7 @@
 
 	function getordercreditcard($session, $ordn, $debug) {
 		$sql = wire('database')->prepare("SELECT AES_DECRYPT(ccno , HEX(sessionid)) AS cardnumber, AES_DECRYPT(ccvalidcode , HEX(sessionid)) AS validation, AES_DECRYPT(xpdate, HEX(sessionid)) AS expiredate FROM ordrhed WHERE sessionid = :session AND orderno = :ordn AND type = 'O'");
-		$switching = array(':session'=> $session, ':ordn' => $ordn); $withquotes = array(true, true);
+		$switching = array(':session' => $session, ':ordn' => $ordn); $withquotes = array(true, true);
 		$sql->execute($switching);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -1315,7 +1295,7 @@
 
 	function getshipvias($session) {
 		$sql = wire('database')->prepare("SELECT code, via FROM shipvia WHERE sessionid = :session");
-		$switching = array(':session'=> $session); $withquotes = array(true);
+		$switching = array(':session' => $session); $withquotes = array(true);
 		$sql->execute($switching);
 		return $sql->fetchAll(PDO::FETCH_ASSOC);
 	}
