@@ -524,15 +524,13 @@ function show_requirements($field) {
 
 	function writedataformultitems($data, $items, $qtys) {
 		for ($i = 0; $i < sizeof($items); $i++) {
-			$itemID = str_pad($sanitizer->text($items[$i]), 30, ' ');
-			$qty = $sanitizer->text($qtys[$i]);
+			$itemID = str_pad(wire('sanitizer')->text($items[$i]), 30, ' ');
+			$qty = wire('sanitizer')->text($qtys[$i]);
 			if (empty($qty)) {$qty = "1"; }
 			$data[] = "ITEMID=".$itemID."QTY=".$qty;
 		}
 		return $data;
 	}
-
-
 
 	/**
 	 * [convertfiletojson description]
