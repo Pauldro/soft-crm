@@ -397,25 +397,7 @@ function show_requirements($field) {
    DATE FUNCTIONS
  ============================================================ */
 
- 	function getweekdays() {
-		for ($i = 2; $i < 7; $i++) {
-			$weekdays [] = date("l",mktime(0,0,0,3,28,2009)+$i * (3600*24));
-		}
-		return $weekdays;
-	}
 
-	function makecalendarpicker() {
-		$table = "<table class='table-condensed table-bordered'>";
-		for ($i = 1; $i < 29; $i++) {
-			if ($i == 1) {$table .= "<tr>";}
-			if ($i < 10) {$show = "0".$i;} else {$show = $i; }
-			$table .= "<td><button type='button' class='btn btn-default btn-sm day-number'>".$show."</button></td>";
-			if ($i % 7 == 0) { $table .= "</tr><tr>";}
-		}
-		if ($i % 7 != 0) {$table .= "</tr>";}
-		$table .= "</table>";
-		return $table;
-	}
 
 	function get_time($timeString) {
 		$partofDay = ""; $colon = ":";
@@ -439,7 +421,7 @@ function show_requirements($field) {
 		return $time;
 	}
 
-	function dplusdate($date) {
+	function dplusdate($date) { // DEPRECATED 8/23/2017 DELETE IN A MONTH
 		if (date('m/d/Y', strtotime($date)) == "12/31/1969") {
 			return '';
 		} else {
@@ -476,13 +458,6 @@ function show_requirements($field) {
 				return 'fourth';
 				break;
 		}
-	}
-
-	function subtract_days($date1, $date2) {
-		$firstdate = strtotime($date1);
-		$seconddate = strtotime($date2);
-		$datediff = abs($firstdate - $seconddate);
-		return floor($datediff / (60 * 60 * 24));
 	}
 
 	function createmessage($message, $custID, $shipID, $contactID, $taskID, $noteID, $ordn, $qnbr) {
@@ -527,21 +502,38 @@ function show_requirements($field) {
 		return curl_exec($curl);
 	}
 
-
 	function writedplusfile($data, $filename) {
 		$file = '';
 		foreach ($data as $key => $value) {
-			if (is_string($value)) {
-				$file .= $key . "=" . $value . "\n";
+			if (is_string($key)) {
+				if (is_string($value)) {
+					$file .= $key . "=" . $value . "\n";
+				} else {
+					$file .= $key . "\n";
+				}
 			} else {
-				$file .= $key . "\n";
+				$file .= $value . "\n";
 			}
+
 		}
 		$vard = "/usr/capsys/ecomm/" . $filename;
 		$handle = fopen($vard, "w") or die("cant open file");
 		fwrite($handle, $file);
 		fclose($handle);
 	}
+
+	function writedataformultitems($data, $items, $qtys) {
+		for ($i = 0; $i < sizeof($items); $i++) {
+			$itemID = str_pad($sanitizer->text($items[$i]), 30, ' ');
+			$qty = $sanitizer->text($qtys[$i]);
+			if (empty($qty)) {$qty = "1"; }
+			$data[] = "ITEMID=".$itemID."QTY=".$qty;
+		}
+		return $data;
+	}
+
+
+
 	/**
 	 * [convertfiletojson description]
 	 * @param  [string] $file [String that contains file location]
