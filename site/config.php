@@ -163,6 +163,7 @@
 	$config->pages->quotes = $config->urls->root . 'user/quotes/';
 	$config->pages->actions = $config->urls->root . 'activity/';
 	$config->pages->documentation = $config->urls->root . "documentation/";
+	$config->pages->documentstorage = $config->documentstorage;
 
 
 	$config->dplusnotes = array (
