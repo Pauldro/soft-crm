@@ -120,8 +120,8 @@
                      </td>
                 <?php endif; ?>
 
-                <td><?php echo $order['orderno'];?></td>
-                <td><?php echo $order['custid'];?></td>
+                <td><?php echo $order['orderno']; ?></td>
+                <td><?= $order['custid']; ?><br><?= get_customer_name_from_order(session_id(), $on); ?></td>
                 <td><?php echo $order['custpo']; ?></td>
                 <td>
                     <a href="<?php echo $config->pages->customer.$order['custid']."/shipto-".$order['shiptoid']."/"; ?>"><?php echo $shipID = $order['shiptoid']; ?></a>
