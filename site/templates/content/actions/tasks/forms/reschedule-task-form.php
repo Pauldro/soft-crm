@@ -11,14 +11,14 @@
 		<div role="tabpanel" class="tab-pane active" id="task">
 			<form action="<?php echo $config->pages->actions."tasks/add/"; ?>"  method="POST" id="new-action-form" data-refresh="#actions-panel" data-modal="#ajax-modal">
 				<input type="hidden" name="action" value="reschedule-task">
-				<input type="hidden" name="custlink" value="<?= $custID; ?>">
-				<input type="hidden" name="shiptolink" value="<?= $shipID; ?>">
-				<input type="hidden" name="contactlink" value="<?= $contactID; ?>">
-				<input type="hidden" name="salesorderlink" value="<?= $ordn; ?>">
-				<input type="hidden" name="quotelink" value="<?= $qnbr; ?>">
-				<input type="hidden" name="notelink" value="<?= $noteID; ?>">
-                <input type="hidden" name="tasklink" value="<?= $taskID; ?>">
-				<input type="hidden" name="actionlink" value="<?= $actionID; ?>">
+				<input type="hidden" name="custlink" value="<?= $originaltask->customerlink; ?>">
+				<input type="hidden" name="shiptolink" value="<?= $originaltask->shiptolink; ?>">
+				<input type="hidden" name="contactlink" value="<?= $originaltask->contactlink; ?>">
+				<input type="hidden" name="salesorderlink" value="<?= $originaltask->salesorderlink; ?>">
+				<input type="hidden" name="quotelink" value="<?= $originaltask->quotelink; ?>">
+				<input type="hidden" name="notelink" value="<?= $originaltask->notelink; ?>">
+                <input type="hidden" name="tasklink" value="<?= $originaltask->tasklink; ?>">
+				<input type="hidden" name="actionlink" value="<?=  $originaltask->id; ?>">
 				<div class="response"></div>
 				<table class="table table-bordered table-striped">
 					<tr>  <td>Task Date:</td> <td><?php echo date('m/d/Y g:i A'); ?></td> </tr>

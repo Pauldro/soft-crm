@@ -520,7 +520,16 @@ $(document).ready(function() {
 					'actions': 'Action'
 				},
 				inputPlaceholder: 'Select Action Type',
-				showCancelButton: true
+				showCancelButton: true,
+				inputValidator: function (value) {
+			    return new Promise(function (resolve, reject) {
+			      if (value.length) {
+			        resolve();
+			      } else {
+			        reject('You need to select an Action Type')
+			      }
+			    })
+			  }
 			}).then(function (result) {
 				var regexhref = button.attr('href');
 				var href = URI(regexhref.replace(/{replace}/g, result)).addQuery('modal', 'modal').toString();
