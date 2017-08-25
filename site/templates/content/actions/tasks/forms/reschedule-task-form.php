@@ -26,6 +26,21 @@
 						</td>
 					</tr>
 					<tr>
+						<td class="control-label">Assigned To:</td>
+						<td>
+							<select name="assignedto" class="form-control input-sm" style="width: 200px;">
+                                <?php foreach ($salespersoncodes as $salespersoncode) : ?>
+									<?php if ($salespersonjson['data'][$salespersoncode]['splogin'] == $user->loginid) : ?>
+										<option value="<?= $salespersonjson['data'][$salespersoncode]['splogin']; ?>" selected><?= $salespersoncode.' - '.$salespersonjson['data'][$salespersoncode]['spname']; ?></option>
+									<?php else : ?>
+										<option value="<?= $salespersonjson['data'][$salespersoncode]['splogin']; ?>"><?= $salespersoncode.' - '.$salespersonjson['data'][$salespersoncode]['spname']; ?></option>
+									<?php endif; ?>
+
+                                <?php endforeach; ?>
+                            </select>
+						</td>
+					</tr>
+					<tr>
 						<td class="control-label">Due Date</td>
 						<td>
 							<div class="input-group date" style="width: 180px;">
