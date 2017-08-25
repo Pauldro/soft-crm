@@ -161,7 +161,7 @@
             if ($input->post->q) { $query = $input->post->q; } else { $query = $input->get->text('q'); }
 			if ($input->post->custID) { $custID = $input->post->custID; } else { $custID = $input->get->text('custID'); }
 			if ($custID == '') { $custID == $config->defaultweb; }
-			$data = array('DBNAME' => $config->dbName, 'ITNOSRCH' => $query, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dbName, 'ITNOSRCH' => strtoupper($query), 'CUSTID' => $custID);
             $session->loc = $config->page->index;
             break;
 		case 'ii-select':
