@@ -68,10 +68,12 @@ class Path extends AbstractPart
 		} else {
             $this->path .= $path;
         }
-        if (strpos($this->path, $path2) !== false) { // IF Path1 is in Path2
-			//DO Nothing
-		} else {
-            $this->path .= $path2;
+        if (!empty($path2)) {
+            if (strpos($this->path, $path2) !== false) { // IF Path1 is in Path2
+    			//DO Nothing
+    		} else {
+                $this->path .= $path2;
+            }
         }
     }
 
