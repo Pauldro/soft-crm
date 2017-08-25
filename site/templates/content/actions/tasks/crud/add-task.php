@@ -24,6 +24,15 @@
         $tasklinks['createdby'] = $user->loginid;
         $tasklinks['assignedby'] = $user->loginid;
 
+		//FOR QUOTES AND orders
+		if (empty($tasklinks['customerlink'])) {
+			if (!empty($tasklinks['salesorderlink'])) {
+				$tasklinks['customerlink'] = get_custid_from_order(session_id(), $tasklinks['salesorderlink']);
+			} elseif (!empty($tasklinks['quotelink'])) {
+				$tasklinks['customerlink'] = getquotecustomer(session_id(), $tasklinks['quotelink']);
+			}
+		}
+
         $maxrec = get_useractions_maxrec($user->loginid);
 
         $results = insertaction($tasklinks, false);

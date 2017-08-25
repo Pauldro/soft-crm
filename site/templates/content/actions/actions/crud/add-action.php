@@ -23,6 +23,14 @@
         $actionlinks['createdby'] = $user->loginid;
         $actionlinks['assignedby'] = $user->loginid;
 
+        if (empty($actionlinks['customerlink'])) {
+			if (!empty($actionlinks['salesorderlink'])) {
+				$actionlinks['customerlink'] = get_custid_from_order(session_id(), $actionlinks['salesorderlink']);
+			} elseif (!empty($actionlinks['quotelink'])) {
+				$actionlinks['customerlink'] = getquotecustomer(session_id(), $actionlinks['quotelink']);
+			}
+		}
+
         $maxrec = get_useractions_maxrec($user->loginid);
 
         $results = insertaction($actionlinks, false);

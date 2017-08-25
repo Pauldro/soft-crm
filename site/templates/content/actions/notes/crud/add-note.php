@@ -23,6 +23,14 @@
         $notelinks['createdby'] = $user->loginid;
         $notelinks['assignedby'] = $user->loginid;
 
+		if (empty($notelinks['customerlink'])) {
+			if (!empty($notelinks['salesorderlink'])) {
+				$notelinks['customerlink'] = get_custid_from_order(session_id(), $notelinks['salesorderlink']);
+			} elseif (!empty($notelinks['quotelink'])) {
+				$notelinks['customerlink'] = getquotecustomer(session_id(), $notelinks['quotelink']);
+			}
+		}
+
         $maxrec = get_useractions_maxrec($user->loginid);
 
         $results = insertaction($notelinks, false);
@@ -31,7 +39,7 @@
         $session->sql = $results['sql'];
 		$newnoteID = $results['insertedid'];
 		$newnote = loaduseraction($newnoteID, true, false); // (id, bool fetchclass, bool debug)
-		
+
 		if ($results['insertedid'] > $maxrec) {
             $error = false;
             $message = "<strong>Success!</strong><br> Your note for {replace} has been created";
