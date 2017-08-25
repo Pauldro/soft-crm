@@ -1,3 +1,7 @@
+<?php
+	$salespersonjson = json_decode(file_get_contents($config->companyfiles."json/salespersontbl.json"), true);
+	$salespersoncodes = array_keys($salespersonjson['data']);
+?>
 <div>
 	<ul class="nav nav-tabs" role="tablist">
 		<li role="presentation" class="active"><a href="#task" aria-controls="task" role="tab" data-toggle="tab">Task</a></li>
