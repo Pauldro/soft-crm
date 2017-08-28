@@ -1,5 +1,12 @@
+<?php
+    $editpage = new \Purl\Url($page->fullURL->getUrl());
+    $editpage->path->setDplusPath('contacts/', 'contacts/edit/');
+?>
+
 <div class="panel panel-primary not-round">
-    <div class="panel-heading not-round"> <h3 class="panel-title"><?php echo $contact['contact']; ?></h3> </div>
+    <div class="panel-heading not-round">
+        <h3 class="panel-title"><?php echo $contact['contact']; ?></h3>
+     </div>
     <div class="panel-body">
         <div class="row">
             <div class="col-xs-8 ">
@@ -31,10 +38,6 @@
         </div>
     </div>
     <div class="panel-footer">
-        <form action="editcontact.php" method="post" class="hidden">
-            <input type="hidden" name="custID" value="<?php echo $custID; ?>"> <input type="hidden" name="shipID" value="<?php echo $shipID; ?>">
-            <input type="hidden" name="contact" value="<?php echo $contact['contact']; ?>">
-            <button type="submit" class="btn btn-warning"> <span class="glyphicon glyphicon-edit"></span> Edit Contact</button>
-        </form>
+        <a href="<?= $editpage; ?>" class="btn btn-warning btn-sm"> <i class="fa fa-pencil" aria-hidden="true"></i> Edit Contact</a>
     </div>
 </div>
