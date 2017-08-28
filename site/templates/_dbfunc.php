@@ -174,6 +174,7 @@
 		if ($restrictions) {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid != '' AND recno IN (SELECT recno FROM custindex WHERE (splogin1 IN (:loginID, :sharedaccounts) OR splogin2 = :loginID OR splogin3 = :loginID)) GROUP BY shiptoid");
 			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':sharedaccounts' => wire('config')->sharedaccounts, ':loginID' => $loginID, ':loginID' => $loginID);
+
 			$withquotes = array(true, true, true, true, true);
 		} else {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid != '' GROUP BY shiptoid");
