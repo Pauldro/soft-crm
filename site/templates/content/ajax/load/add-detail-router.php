@@ -1,10 +1,10 @@
 <?php
     $addtype = $input->urlSegment(2); // CART || ORDER | QUOTE
     $qnbr = $ordn = '';
+    $custID = $input->get->text('custID');
     switch ($addtype) {
         case 'cart':
             $page->title = 'Add multiple items for your Cart';
-            $custID = getcartcustomer(session_id(), false);
             $formaction = $config->pages->cart."redir/";
             break;
         case 'order':

@@ -33,6 +33,9 @@
         case 'vendor-shipfrom':
             include $config->paths->content."ajax/json/vendor-shipfrom.php";
             break;
+        case 'products':
+            include $config->paths->content."ajax/json/products-json-router.php";
+            break;
         default:
             throw new Wire404Exception();
             break;

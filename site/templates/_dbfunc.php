@@ -1383,6 +1383,23 @@
 		}
 	}
 
+	function validateitemid($itemID, $custID, $debug) {
+		if (empty($custID)) {
+			$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE UCASE(itemid) = UCASE(:itemID) AND originid = ''");
+			$switching = array(':itemID' => $itemID); $withquotes = array(true);
+		} else {
+			$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE UCASE(itemid) = UCASE(:itemID) AND originid IN (:custID)");
+			$switching = array(':itemID' => $itemID, ':custID' => $custID); $withquotes = array(true, true);
+		}
+
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
+		} else {
+			$sql->execute($switching);
+			return $sql->fetchColumn();
+		}
+	}
+
 
 	function searchitemcount($q, $byitemid, $debug) {
 		$search = '%'.str_replace(' ', '%', $q).'%';
