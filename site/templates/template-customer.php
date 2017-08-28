@@ -25,6 +25,7 @@
 					$page->contact = true;
 					if ($input->urlSegment(3) == 'edit') {
 						$page->editcontact = true;
+						$config->scripts->append($config->urls->templates.'scripts/pages/contact-page.js');
 					}
 				} elseif (strpos($input->urlSegment(2), 'shipto-') !== FALSE) {
 					$shipID = urldecode(str_replace('shipto-', '', $input->urlSegment(2)));
@@ -79,7 +80,6 @@
 			include $config->paths->content."common/modals/include-ajax-modal.php";
 		} else {
 			include $page->body;
-
 		}
 	} else {
 		include $config->paths->content."common/include-page.php";
