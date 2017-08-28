@@ -1,13 +1,19 @@
 <?php
+	/**
+	* PRODUCT REDIRECT
+	* @param string $action
+	*
+	*
+	*/
 	$custID = $shipID = '';
-    if ($input->post->action) { $action = $input->post->text('action'); } else { $action = $input->get->text('action'); }
-	if ($input->post->itemID) { $itemID = $input->post->text('itemID'); } else { $itemID = $input->get->text('itemID'); }
+    $action = ($input->post->action ? $input->text('action') : $input->get->text('action'));
+	$itemID = ($input->post->itemID ? $input->text('itemID') : $input->get->text('itemID'));
 
 	$filename = session_id();
 
 	/**
 	* PRODUCT REDIRECT
-	* @param string $action
+	*
 	*
 	*
 	*
@@ -158,10 +164,10 @@
 	**/
     switch ($action) {
         case 'item-search':
-            if ($input->post->q) { $query = $input->post->q; } else { $query = $input->get->text('q'); }
-			if ($input->post->custID) { $custID = $input->post->custID; } else { $custID = $input->get->text('custID'); }
-			if ($custID == '') { $custID == $config->defaultweb; }
-			$data = array('DBNAME' => $config->dbName, 'ITNOSRCH' => strtoupper($query), 'CUSTID' => $custID);
+            $q = ($input->post->q ? $input->text('q') : $input->get->text('q'));
+			$custID = ($input->post->custID ? $input->text('custID') : $input->get->text('custID'));
+			if (empty($custID)) { $custID == $config->defaultweb; }
+			$data = array('DBNAME' => $config->dbName, 'ITNOSRCH' => strtoupper($q), 'CUSTID' => $custID);
             $session->loc = $config->page->index;
             break;
 		case 'ii-select':
@@ -174,23 +180,23 @@
 			if ($shipID != '') {$data['SHIPID'] = $shipID; $session->loc .= "&shipID=".urlencode($shipID); }
             break;
         case 'item-info':
-            if ($input->post->q) { $query = $input->post->q; } else { $query = $input->get->text('q'); }
-			if ($input->post->custID) { $custID = $input->post->custID; } else { $custID = $input->get->text('custID'); }
-			if ($custID == '') { $custID == $config->defaultweb; }
-			$data = array('DBNAME' => $config->dbName, 'ITNOSRCH' => $query, 'ITEMID' => $itemID, 'CUSTID' => $custID);
+            $q = ($input->post->q ? $input->text('q') : $input->get->text('q'));
+			$custID = ($input->post->custID ? $input->text('custID') : $input->get->text('custID'));
+			if (empty($custID)) { $custID == $config->defaultweb; }
+			$data = array('DBNAME' => $config->dbName, 'ITNOSRCH' => $q, 'ITEMID' => $itemID, 'CUSTID' => $custID);
             $session->loc = $config->page->index;
             break;
         case 'get-item-price':
-			if ($input->post->custID) { $custID = $input->post->custID; } else { $custID = $input->get->text('custID'); }
-			if ($custID == '') { $custID == $config->defaultweb; }
+			$custID = ($input->post->custID ? $input->text('custID') : $input->get->text('custID'));
+			if (empty($custID)) { $custID == $config->defaultweb; }
 			$data = array('DBNAME' => $config->dbName, 'IIPRICING' => false, 'ITEMID' => $itemID, 'CUSTID' => $custID);
             $session->loc = $config->page->index;
             break;
 		case 'ii-pricing': //II INFORMATION
 			$data = array('DBNAME' => $config->dbName, 'IIPRICE' => false, 'ITEMID' => $itemID);
-            if ($input->post->custID) { $custID = $input->post->custID; } else { $custID = $input->get->text('custID'); }
-            if ($input->post->shipID) { $shipID = $input->post->shipID; } else { $shipID = $input->get->text('shipID'); }
-			if ($custID != '') {$data['CUSTID'] = $custID; } if ($shipID != '') {$data['SHIPID'] = $shipID; }
+			$custID = ($input->post->custID ? $input->text('custID') : $input->get->text('custID'));
+			$shipID = ($input->post->shipID ? $input->text('shipID') : $input->get->text('shipID'));
+			if (!empty($custID))  {$data['CUSTID'] = $custID; } if (!empty($shipID)) {$data['SHIPID'] = $shipID; }
 			$session->loc = $config->page->index;
             break;
 		case 'ii-costing':
@@ -203,8 +209,8 @@
             break;
 		case 'ii-quotes':
 			$data = array('DBNAME' => $config->dbName, 'IIQUOTE' => false, 'ITEMID' => $itemID);
-			if ($input->post->custID) { $custID = $input->post->custID; } else { $custID = $input->get->text('custID'); }
-			if ($custID != '') {$data['CUSTID'] = $custID; }
+			$custID = ($input->post->custID ? $input->text('custID') : $input->get->text('custID'));
+			if (!empty($custID))  {$data['CUSTID'] = $custID; }
             $session->loc = $config->page->index;
             break;
 		case 'ii-purchase-history':
@@ -216,13 +222,13 @@
             $session->loc = $config->page->index;
             break;
 		case 'ii-kit-components':
-			if ($input->post->qty) { $qty = $input->post->qty; } else { $qty = $input->get->text('qty'); }
+			$qty = ($input->post->qty ? $input->text('qty') : $input->get->text('qty'));
 			$data = array('DBNAME' => $config->dbName, 'IIKIT' => false, 'ITEMID' => $itemID, 'QTYNEEDED' => $qty);
             $session->loc = $config->page->index;
             break;
 		case 'ii-item-bom':
-            if ($input->post->qty) { $qty = $input->post->qty; } else { $qty = $input->get->text('qty'); }
-            if ($input->post->bom) { $bom = $input->post->bom; } else { $bom = $input->get->text('bom'); }
+            $qty = ($input->post->qty ? $input->text('qty') : $input->get->text('qty'));
+            $bom = ($input->post->bom ? $input->text('bom') : $input->get->text('bom'));
             if ($bom == 'single') {
 				$data = array('DBNAME' => $config->dbName, 'IIBOMSINGLE' => false, 'ITEMID' => $itemID, 'QTYNEEDED' => $qty);
             } elseif ($bom == 'consolidated') {
@@ -248,13 +254,13 @@
 		case 'ii-activity':
             $custID = $shipID = $date = '';
 			$data = array('DBNAME' => $config->dbName, 'IIACTIVITY' => false, 'ITEMID' => $itemID);
-            if ($input->post->date) { $date = $input->post->date; } else { $date = $input->get->text('date'); }
-            if ($date != '') {$data['DATE'] = date('Ymd', strtotime($date)); }
+            $date = ($input->post->date ? $input->text('date') : $input->get->text('date'));
+            if (!empty($date)) {$data['DATE'] = date('Ymd', strtotime($date)); }
 			$session->loc = $config->page->index;
             break;
 		case 'ii-requirements':
-            if ($input->post->whse) { $whse = $input->post->whse; } else { $whse = $input->get->text('whse'); }
-            if ($input->post->screentype) { $screentype = $input->post->screentype; } else { $screentype = $input->get->text('screentype'); }
+            $whse = ($input->post->whse ? $input->text('whse') : $input->get->text('whse'));
+            $screentype = ($input->post->screentype ? $input->text('screentype') : $input->get->text('screentype'));
             //screen type would be REQ or AVL
 			$data = array('DBNAME' => $config->dbName, 'IIREQUIRE' => false, 'ITEMID' => $itemID, 'WHSE' => $whse, 'REQAVL' => $screentype);
             $session->loc = $config->page->index;
@@ -270,11 +276,11 @@
 		case 'ii-sales-history':
             $date = '';
 			$data = array('DBNAME' => $config->dbName, 'IISALESHIST' => false, 'ITEMID' => $itemID);
-            if ($input->post->custID) { $custID = $input->post->custID; } else { $custID = $input->get->text('custID'); }
-            if ($input->post->shipID) { $shipID = $input->post->shipID; } else { $shipID = $input->get->text('shipID'); }
-			if ($input->post->date) { $date = $input->post->date; } else { $date = $input->get->text('date'); }
-            if ($custID != '') {$data['CUSTID'] = $custID; } if ($shipID != '') {$data['SHIPID'] = $shipID; }
-            if ($date != '') { $data['DATE'] = date('Ymd', strtotime($date)); }
+			$custID = ($input->post->custID ? $input->text('custID') : $input->get->text('custID'));
+			$shipID = ($input->post->shipID ? $input->text('shipID') : $input->get->text('shipID'));
+			$date = ($input->post->date ? $input->text('date') : $input->get->text('date'));
+            if (!empty($custID)) {$data['CUSTID'] = $custID; } if (!empty($shipID)) {$data['SHIPID'] = $shipID; }
+            if (!empty($date)) { $data['DATE'] = date('Ymd', strtotime($date)); }
             $session->loc = $config->page->index;
             break;
        case 'ii-stock':

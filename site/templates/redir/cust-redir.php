@@ -1,15 +1,18 @@
 <?php
-	$custID = $input->get->text('custID');
-	if ($input->post->action) { $action = $input->post->text('action'); } else { $action = $input->get->text('action'); }
-	if ($input->get->page) { $pagenumber = $input->get->int('page'); } else { $pagenumber = 1; }
-	if ($input->get->orderby) { $sortaddon = '&orderby=' . $input->get->text('orderby'); } else { $sortaddon = ''; }
+	/**
+	* CUSTOMER REDIRECT
+	* @param string $action
+	*
+	*/
 
+	$action = ($input->post->action ? $input->text('action') : $input->get->text('action'));
+	$custID = ($input->post->custID ? $input->text('custID') : $input->get->text('custID'));
+	$shipID = ($input->post->shipID ? $input->text('shipID') : $input->get->text('shipID'));
 
 	$session->{'from-redirect'} = $page->url;
-	$session->remove('order-search');
-	$link_addon = $sortaddon;
 
 	$filename = session_id();
+
 	/**
 	* CUSTOMER REDIRECT
 	* @param string $action
@@ -136,10 +139,6 @@
 	*		SHIPID=$shipID
 	*		CUSTPO=$custpo
 	* 		break;
-	*
-	*
-	*
-	*
 	* }
 	*
 	**/
@@ -226,23 +225,16 @@
 			break;
 		case 'load-customer':
 			$session->loc = $config->pages->customer . urlencode($custID)."/";
-			if ($input->get->shipID) { $session->loc .= "shipto-".$input->get->shipID."/"; }
+			if (!empty($shipID)) { $session->loc .= "shipto-".$input->get->shipID."/"; }
 			$data = array('DBNAME' => $config->dbName, 'CUSTID' => $custID);
 			break;
 		case 'shop-as-customer':
-			if ($input->post->custID) { $custID = $input->post->custID; } $session->custID = $custID;
-			if ($input->post->shipID) { $shipID = $input->post->shipID; } else { $shipID = $input->get->text('shipID'); }
+			$session->custID = $custID;
 			$data = array('DBNAME' => $config->dbName, 'CARTCUST' => false, 'CUSTID' => $custID);
 			$session->{'new-shopping-customer'} = get_customer_name($custID);
-            if ($shipID != '') {$data['SHIPID'] = $shipID; $session->shipID = $shipID; get_customer_name($custID) . " Ship-to: " . $shipID;}
+            if (!empty($shipID)) {$data['SHIPID'] = $shipID; $session->shipID = $shipID; }
 			if (!getcartheadcount(session_id(), false)) { $session->sql = insertcarthead(session_id(), $custID, $shipID, false);}
-			if ($input->post->page) {
-				$session->loc = urldecode($input->post->page);
-			} elseif ($input->get->page) {
-				$session->loc = urldecode($input->get->text('page'));
-			} else {
-				$session->loc = $config->pages->index;
-			}
+			$session->loc = ($input->post->page ? $input->post->page : $input->get->text('page'));
 			break;
 		case 'edit-contact':
 			$custID = $input->post->text('custID');
@@ -347,5 +339,4 @@
 
 	writedplusfile($data, $filename);
 	header("location: /cgi-bin/" . $config->cgi . "?fname=" . $filename);
-
  	exit;

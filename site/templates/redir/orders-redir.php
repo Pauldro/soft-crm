@@ -3,7 +3,6 @@
 	* ORDERS REDIRECT
 	* @param string $action
 	*
-	*
 	* */
 
 	$action = ($input->post->action ? $input->text('action') : $input->get->text('action'));
@@ -419,4 +418,3 @@
 	writedplusfile($data, $filename);
 	header("location: /cgi-bin/" . $config->cgi . "?fname=" . $filename);
  	exit;
-	?>

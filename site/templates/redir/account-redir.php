@@ -1,11 +1,16 @@
 <?php
+	/**
+	* ACCOUNT REDIRECT
+	* @param string $action
+	*
+	*/
+	$action = ($input->post->action ? $input->text('action') : $input->get->text('action'));
 
-	if ($input->post->action) { $action = $input->post->action; } else { $action = $input->get->text('action'); }
 	$filename = session_id();
 
 	/**
 	* ACCOUNT REDIRECT
-	* @param string $action
+	*
 	*
 	*
 	*
@@ -47,6 +52,4 @@
 
 	writedplusfile($data, $filename);
 	header("location: /cgi-bin/" . $config->cgi . "?fname=" . $filename);
-
  	exit;
-?>

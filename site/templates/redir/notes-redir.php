@@ -1,16 +1,21 @@
 <?php
+	/**
+	* NOTES REDIRECT
+	* @param string $action
+	*
+	*/
 	$date = date('Ymd');
 	$time = date('His');
 
-	if ($input->post->action) { $action = $input->post->text('action'); } else { $action = $input->get->text('action'); }
+	$action = ($input->post->action ? $input->text('action') : $input->get->text('action'));
 
 	$session->{'from-redirect'} = $page->url;
 	$filename = session_id();
 	$session->action = $action;
 
 	/**
-	* CART REDIRECT
-	* @param string $action
+	* NOTES REDIRECT
+	*
 	*
 	*
 	*
@@ -148,6 +153,4 @@
 
 	writedplusfile($data, $filename);
 	header("location: /cgi-bin/" . $config->cgi . "?fname=" . $filename);
-
  	exit;
-?>

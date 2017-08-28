@@ -3,7 +3,6 @@
 	* CART REDIRECT
 	*  @param string $action
 	*
-	*
 	*/
 
 	$custID = $shipID = '';
@@ -185,5 +184,4 @@
 
 	writedplusfile($data, $filename);
 	header("location: /cgi-bin/" . $config->cgi . "?fname=" . $filename);
-
  	exit;
