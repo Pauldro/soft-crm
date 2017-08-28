@@ -38,7 +38,7 @@
 		return $sql->fetchColumn();
 	}
 
-	function get_login_record($sessionID) {
+	function get_loginrecord($sessionID) {
 		$sql = wire('database')->prepare("SELECT IF(restrictaccess = 'Y',1,0) as restrictedaccess, logperm.* FROM logperm WHERE sessionid = :sessionID");
 		$switching = array(':sessionID' => $sessionID);
 		$sql->execute($switching);
