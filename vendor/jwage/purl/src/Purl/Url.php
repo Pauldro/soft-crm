@@ -377,7 +377,7 @@ class Url extends AbstractPart
             //$parts['user'] ? sprintf('%s%s@', $parts['user'], $parts['pass'] ? sprintf(':%s', $parts['pass']) : '') : '',
             //$parts['host'],
             $parts['port'] ? sprintf(':%d', $parts['port']) : '',
-            $parts['path'] ? $parts['path'] : '',
+            $parts['path'] ? $parts['path'] . '/' : '',
             $parts['query'] ? '?'.$parts['query'] : '',
             $parts['fragment'] ? '#'.$parts['fragment'] : ''
         );

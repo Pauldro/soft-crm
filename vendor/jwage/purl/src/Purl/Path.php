@@ -65,6 +65,9 @@ class Path extends AbstractPart
         }
         if (strpos($this->path, $path) !== false) { // IF Path1 is in $this->path
             // Do Nothing
+             if (strpos($path2, $path) !== false) {
+                 $path2 = str_replace($path, '', $path2);
+             }
 		} else {
             $this->path .= $path;
         }
@@ -101,6 +104,6 @@ class Path extends AbstractPart
      */
     protected function doInitialize()
     {
-        $this->data = explode('/', $this->path);
+        $this->data = explode('/', rtrim($this->path, '/'));
     }
 }
