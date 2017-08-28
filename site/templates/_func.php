@@ -551,8 +551,8 @@ function show_requirements($field) {
  /* =============================================================
    PROCESSWIRE USER FUNCTIONS
  ============================================================ */
-	function setupuser($sessionid) {
-		$loginrecord = get_loginrecord($sessionid);
+	function setupuser($sessionID) {
+		$loginrecord = get_loginrecord($sessionID);
 		wire('user')->fullname = $loginrecord['loginname'];
 		wire('user')->loginid = $loginrecord['loginid'];
 		wire('user')->hascontactrestrictions = $loginrecord['restrictedaccess'];

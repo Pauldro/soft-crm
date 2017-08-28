@@ -7,7 +7,7 @@
                		<p class="text-center"><img src="<?php echo $config->urls->files."images/dplus.png"; ?>" alt="Distribution Plus logo"></p>
                		<h2 class="text-center">Sign In</h2>
                		<?php if (!$user->loggedin) : ?>
-						<?php $errormsg = get_login_error_msg(session_id()); ?>
+						<?php $errormsg = get_loginerrormsg(session_id()); ?>
 						<?php if (strlen($errormsg) > 0 ) : ?>
 							<div class="alert alert-danger alert-dismissible not-round" role="alert">
 							  <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -38,5 +38,5 @@
             </div>
         </div>
     </div>
-    
+
 <?php include('./_foot-blank.php'); // include footer markup ?>

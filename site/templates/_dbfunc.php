@@ -10,7 +10,7 @@
 		return $sql->fetchColumn();
 	}
 
-	function get_login_error_msg($sessionID) {
+	function get_loginerrormsg($sessionID) {
 		$sql = wire('database')->prepare("SELECT errormsg FROM logperm WHERE sessionid = :sessionID");
 		$switching = array(':sessionID' => $sessionID);
 		$sql->execute($switching);
