@@ -1,6 +1,5 @@
 <?php if (does_user_have_access_contact($user->loginid, $user->hasrestrictions, $custID, $shipID, $contactID, false)) : ?>
 	<?php $contact = getcustcontact($custID, $shipID, $contactID, false); ?>
-	<?= $contactID;  ?>
 	<h3 class="text-muted"><?php echo $contact['contact']; ?></h3>
 	<?php include $config->paths->content.'customer/contact/contact-address.php'; ?>
 	<div class="row">
@@ -24,7 +23,7 @@
                         </tr>
                         <tr>
                             <td class="control-label">Phone</td>
-                            <td><input class="form-control input-sm required" name="phone" value="<?= $contact['cphone']; ?>"></td>
+                            <td><input class="form-control input-sm phone-input required" name="phone" value="<?= formatphone($contact['cphone']); ?>"></td>
                         </tr>
                         <tr>
                             <td class="control-label">Ext.</td>
@@ -32,7 +31,7 @@
                         </tr>
                         <tr>
                             <td class="control-label">Cell</td>
-                            <td><input class="form-control input-sm" name="cellphone" value="<?= $contact['ccellphone']; ?>"></td>
+                            <td><input class="form-control input-sm phone-input " name="cellphone" value="<?= formatphone($contact['ccellphone']); ?>"></td>
                         </tr>
                         <tr>
                             <td class="control-label">Email</td>

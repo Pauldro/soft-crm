@@ -194,6 +194,10 @@ function formatnumber($number, $beforedecimal, $afterdecimal) {
 	return str_pad($array[0], $beforedecimal, '0', STR_PAD_LEFT) . '.' . str_pad($array[1], $afterdecimal, '0', STR_PAD_RIGHT);
 }
 
+function formatphone($number) {
+	return preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '$1-$2-$3', $number);
+}
+
 function returntracklink($carrier, $tracknbr, $on) {
 	$link = '';
 	if (strpos(strtolower($carrier), 'fed') !== false) {

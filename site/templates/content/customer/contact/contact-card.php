@@ -24,12 +24,12 @@
                         <tr>
                             <td>Office Phone:</td>
                             <td>
-                                <a href="tel:<?php echo $contact['cphone']; ?>"><?php echo $contact['cphone']; ?></a><b> &nbsp;
+                                <a href="tel:<?php echo $contact['cphone']; ?>"><?= formatphone($contact['cphone']); ?></a><b> &nbsp;
                                 <?php if (strlen($contact['cphext']) > 0) { echo 'Ext. ' . $contact['cphext'];} ?></b>
                             </td>
                         </tr>
                         <tr>
-                            <td>Cell Phone:</td> <td><a href="tel:<?php echo $contact['ccellphone']; ?>"> <?php echo $contact['ccellphone']; ?></a></td>
+                            <td>Cell Phone:</td> <td><a href="tel:<?= $contact['ccellphone']; ?>"> <?= formatphone($contact['ccellphone']); ?></a></td>
                         </tr>
                         <!--<tr> <td>Fax:</td> <td><?php //echo $contact['faxnumber']; ?></td> </tr>     -->
                     </tbody>

@@ -242,9 +242,9 @@
 			$contactID = $input->post->text('contactID');
 			$contact = getcustcontact($custID, $shipID, $contactID, false);
 			$contact['contact'] = $input->post->text('name');
-			$contact['cphone'] = $input->post->text('phone');
+			$contact['cphone'] = str_replace('-', '', $input->post->text('phone'));
 			$contact['cphext'] = $input->post->text('extension');
-			$contact['ccellphone'] = $input->post->text('cellphone');
+			$contact['ccellphone'] = str_replace('-', '', $input->post->text('cellphone'));
 			$contact['email'] = $input->post->text('email');
 			$session->sql = edit_customercontact($custID, $shipID, $contactID, $contact, false);
 			$data = array('DBNAME' => $config->dbName, 'EDITCONTACT' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID, 'CONTACT' => $contactID, 'NAME' => $contact['contact'], 'PHONE' => $contact['cphone'], 'EXTENSION' => $contact['cphext'], 'CELLPHONE' => $contact['ccellphone'], 'EMAIL' => $contact['email']);
