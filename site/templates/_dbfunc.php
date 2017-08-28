@@ -1346,36 +1346,26 @@
 	/* =============================================================
 		ITEM MASTER FUNCTIONS
 	============================================================ */
-
-	function searchitem($q, $byitemid, $debug) {
-		$search = '%'.str_replace(' ', '%', $q).'%';
-		if ($byitemid){
-			$sql = wire('database')->prepare("SELECT * FROM itemsearch WHERE UCASE(itemid) LIKE UCASE(:search) GROUP BY itemid");
-		} else {
-			$sql = wire('database')->prepare("SELECT * FROM itemsearch WHERE UCASE(CONCAT(itemid, ' ', originid, ' ', refitemid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) GROUP BY itemid");
-		}
-
-		$switching = array(':search' => $search); $withquotes = array(true);
-
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	function searchitem_page($q, $byitemid, $limit, $page, $debug) {
+	function search_itm($q, $onlyitemid, $custID, $limit, $page, $debug) {
 		$limiting = returnlimitstatement($limit, $page);
 		$search = '%'.str_replace(' ', '%', $q).'%';
-		if ($byitemid){
-			$sql = wire('database')->prepare("SELECT * FROM itemsearch WHERE UCASE(itemid) LIKE UCASE(:search) GROUP BY itemid $limiting");
+		if (empty($custID)) {
+			if ($onlyitemid) {
+				$sql = wire('database')->prepare("SELECT * FROM itemsearch WHERE UCASE(itemid) LIKE UCASE(:search) AND origintype = 'I' GROUP BY itemid $limiting");
+				$switching = array(':search' => $search); $withquotes = array(true);
+			} else {
+				$sql = wire('database')->prepare("SELECT * FROM itemsearch WHERE UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND origintype = 'I' GROUP BY itemid $limiting");
+				$switching = array(':search' => $search); $withquotes = array(true);
+			}
 		} else {
-			$sql = wire('database')->prepare("SELECT * FROM itemsearch WHERE UCASE(CONCAT(itemid, ' ', originid, ' ', refitemid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) GROUP BY itemid $limiting");
+			if ($onlyitemid) {
+				$sql = wire('database')->prepare("SELECT * FROM itemsearch WHERE (originid = (:custID) AND UCASE(refitemid) LIKE UCASE(:search)) OR (UCASE(itemid) like UCASE(:search)) GROUP BY itemid $limiting ");
+				$switching = array(':search' => $search, ':custID' => $custID); $withquotes = array(true, true);
+			} else {
+				$sql = wire('database')->prepare("SELECT * FROM itemsearch WHERE (UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND origintype = 'I') OR (UCASE(CONCAT(itemid, ' ', refitemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND originid = :custID) GROUP BY itemid $limiting");
+				$switching = array(':search' => $search, ':custID' => $custID); $withquotes = array(true, true);
+			}
 		}
-
-		$switching = array(':search' => $search); $withquotes = array(true);
-
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -1386,10 +1376,10 @@
 
 	function validateitemid($itemID, $custID, $debug) {
 		if (empty($custID)) {
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE UCASE(itemid) = UCASE(:itemID) AND originid = ''");
+			$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE UCASE(itemid) = UCASE(:itemID) AND originid = 'I'");
 			$switching = array(':itemID' => $itemID); $withquotes = array(true);
 		} else {
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE UCASE(itemid) = UCASE(:itemID) AND originid IN (:custID)");
+			$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE (originid = (:custID) AND UCASE(refitemid) = UCASE(:itemID)) OR (UCASE(itemid) = UCASE(:itemID) AND origintype = 'I')");
 			$switching = array(':itemID' => $itemID, ':custID' => $custID); $withquotes = array(true, true);
 		}
 
@@ -1401,16 +1391,25 @@
 		}
 	}
 
-
-	function searchitemcount($q, $byitemid, $debug) {
+	function search_itmcount($q, $onlyitemid, $custID, $debug) {
 		$search = '%'.str_replace(' ', '%', $q).'%';
-		if ($byitemid){
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE UCASE(itemid) LIKE UCASE(:search) GROUP BY itemid");
+		if (empty($custID)) {
+			if ($onlyitemid) {
+				$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE UCASE(itemid) LIKE UCASE(:search) AND origintype = 'I' GROUP BY itemid $limiting");
+				$switching = array(':search' => $search); $withquotes = array(true);
+			} else {
+				$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND origintype = 'I'");
+				$switching = array(':search' => $search); $withquotes = array(true);
+			}
 		} else {
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE UCASE(CONCAT(itemid, ' ', originid, ' ', refitemid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) GROUP BY itemid");
+			if ($onlyitemid) {
+				$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE (originid = (:custID) AND UCASE(refitemid) LIKE UCASE(:search)) OR (UCASE(itemid) like UCASE(:search))");
+				$switching = array(':search' => $search, ':custID' => $custID); $withquotes = array(true, true);
+			} else {
+				$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE (UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND origintype = 'I') OR (UCASE(CONCAT(itemid, ' ', refitemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND originid = :custID)");
+				$switching = array(':search' => $search, ':custID' => $custID); $withquotes = array(true, true);
+			}
 		}
-		$switching = array(':search' => $search); $withquotes = array(true);
-
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {

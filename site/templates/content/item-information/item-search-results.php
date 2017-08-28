@@ -2,13 +2,13 @@
     $custID = '';
     $itemlink = $config->pages->products."redir/?action=ii-select";
     if ($input->get->custID) { $custID = $input->get->text('custID'); }
-    if ($custID != '') { $itemlink .= "&custID=".urlencode($custID); }
+    if (!empty($custID)) { $itemlink .= "&custID=".urlencode($custID); }
     if ($input->get->q) {
-        $items = searchitem_page($q, false, $config->showonpage, $input->pageNum, false);
-        $resultscount = searchitemcount($q, false, false);
+        $q = $input->get->text('q');
+        $items = search_itm($q, false, $custID, $config->showonpage, $input->pageNum, false);
+        $resultscount = search_itmcount($q, false, $custID, false);
     }
 ?>
-
 
 <div class="list-group" id="item-results">
     <?php if ($input->get->q) : ?>
