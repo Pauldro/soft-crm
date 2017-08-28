@@ -1,9 +1,18 @@
 <?php
-	if ($input->post->action) { $action = $input->post->text('action'); } else { $action = $input->get->text('action'); }
-	if ($input->get->page) { $pagenumber = $input->get->int('page'); } else { $pagenumber = 1; }
-	if ($input->get->orderby) { $sortaddon = '&orderby=' . $input->get->text('orderby'); } else { $sortaddon = ''; }
+	/**
+	* ORDERS REDIRECT
+	* @param string $action
+	*
+	*
+	* */
 
-	$link_addon = $sortaddon;
+	$action = ($input->post->action ? $input->text('action') : $input->get->text('action'));
+
+	// USED FOR MAINLY ORDER LISTING FUNCTIONS
+	$pagenumber = (!empty($input->get->page) ? $input->get->int('page') : 1);
+	$sortaddon = (!empty($input->get->orderby) ? '&orderby=' . $input->get->text('orderby') : '');
+
+	$linkaddon = $sortaddon;
 	$session->{'from-redirect'} = $page->url;
 	$session->remove('order-search');
 
@@ -11,7 +20,7 @@
 
 	/**
 	* ORDERS REDIRECT
-	* @param string $action
+	*
 	*
 	*
 	*
@@ -67,6 +76,12 @@
 	*		ITEMID=$itemID
 	*		QTY=$qty
 	* 		break;
+	* 	case 'add-multiple-items':
+	*		DBNAME=$config->DBNAME
+	*		ORDERADDMULTIPLE
+	*		ORDERNO=$ordn
+	*		ITEMID=$custID   QTY=$qty  **REPEAT
+	*		break;
 	*	case 'add-nonstock-item':
 	*		DBNAME=$config->DBNAME
 	*		CARTDET
@@ -100,13 +115,13 @@
 			$session->remove('ordersearch');
 			$custID = $input->get->text('custID');
 			$data = array('DBNAME' => $config->dbName, 'ORDRHED' => false, 'CUSTID' => $custID, 'TYPE' => 'O');
-			$session->loc = $config->pages->ajax."load/orders/cust/".urlencode($custID)."/"."?ordn=".$link_addon;
+			$session->loc = $config->pages->ajax."load/orders/cust/".urlencode($custID)."/"."?ordn=".$linkaddon;
 			$session->{'orders-loaded-for'} = $custID;
 			$session->{'orders-updated'} = date('m/d/Y h:i A');
 			break;
 		case 'load-orders':
 			$data = array('DBNAME' => $config->dbName, 'REPORDRHED' => false, 'TYPE' => 'O');
-			$session->loc = $config->pages->ajax."load/orders/salesrep/".urlencode($custID)."/?ordn=".$link_addon."";
+			$session->loc = $config->pages->ajax."load/orders/salesrep/".urlencode($custID)."/?ordn=".$linkaddon."";
 			$session->{'orders-loaded-for'} = $user->loginid;
 			$session->{'orders-updated'} = date('m/d/Y h:i A');
 			break;
@@ -120,9 +135,9 @@
 			} elseif ($input->get->print) {
 				$session->loc = $config->pages->print."order/?ordn=".$ordn;
 			} elseif($input->get->custID) {
-				$session->loc = paginate($config->pages->ajax."load/orders/cust/".urlencode($custID)."/?ordn=".$ordn.$link_addon, $pagenumber, $custID, '');
+				$session->loc = paginate($config->pages->ajax."load/orders/cust/".urlencode($custID)."/?ordn=".$ordn.$linkaddon, $pagenumber, $custID, '');
 			} else {
-				$session->loc = paginate($config->pages->ajax."load/orders/salesrep/?ordn=".$ordn.$link_addon, $pagenumber, "salesrep", '');
+				$session->loc = paginate($config->pages->ajax."load/orders/salesrep/?ordn=".$ordn.$linkaddon, $pagenumber, "salesrep", '');
 				if ($input->get->readonly) {$session->loc = $config->pages->editorder."?ordn=".$ordn; }
 			}
 			break;
@@ -133,11 +148,11 @@
 			if ($input->get->ajax) {
 				$session->loc = $config->pages->ajax."load/order/tracking/?ordn=".$ordn;
 			} elseif($input->get->custID) {
-				$session->loc = paginate($config->pages->ajax."load/orders/cust/".urlencode($custID)."/?ordn=".$ordn.$link_addon."&show=tracking", $pagenumber, $custID, '');
+				$session->loc = paginate($config->pages->ajax."load/orders/cust/".urlencode($custID)."/?ordn=".$ordn.$linkaddon."&show=tracking", $pagenumber, $custID, '');
 			} elseif ($input->get->page == 'edit') {
 				$session->loc = $config->pages->ajax.'load/order/tracking/?ordn='.$ordn;
 			} else {
-				$session->loc = paginate($config->pages->ajax."load/orders/salesrep/".urlencode($custID)."/?ordn=".$ordn.$link_addon."&show=tracking", $pagenumber, $custID, '');
+				$session->loc = paginate($config->pages->ajax."load/orders/salesrep/".urlencode($custID)."/?ordn=".$ordn.$linkaddon."&show=tracking", $pagenumber, $custID, '');
 			}
 			break;
 		case 'get-order-documents':
@@ -146,20 +161,20 @@
 
 			if ($input->get->itemdoc) {
 				if ($input->get->custID) {
-					$session->loc = paginate($config->pages->ajax."load/orders/cust/".urlencode($custID)."/?ordn=".$ordn.$link_addon."&show=documents&itemdoc=".$input->get->text('itemdoc'), $pagenumber, $custID, '');
+					$session->loc = paginate($config->pages->ajax."load/orders/cust/".urlencode($custID)."/?ordn=".$ordn.$linkaddon."&show=documents&itemdoc=".$input->get->text('itemdoc'), $pagenumber, $custID, '');
 				} elseif ($input->get->page == 'edit') {
 					$session->loc = $config->pages->ajax.'load/order/documents/?ordn='.$ordn;
 				} else {
-					$session->loc = paginate($config->pages->ajax."load/orders/salesrep/?ordn=".$ordn.$link_addon."&show=documents&itemdoc=".$input->get->text('itemdoc'), $pagenumber, "salesrep", '');
+					$session->loc = paginate($config->pages->ajax."load/orders/salesrep/?ordn=".$ordn.$linkaddon."&show=documents&itemdoc=".$input->get->text('itemdoc'), $pagenumber, "salesrep", '');
 				}
 			} else {
 				if ($input->get->custID) {
 					$custID = $input->get->text('custID');
-					$session->loc = paginate($config->pages->ajax."load/orders/cust/".urlencode($custID)."/?ordn=".$ordn."&show=documents".$link_addon, $pagenumber, $custID, '');
+					$session->loc = paginate($config->pages->ajax."load/orders/cust/".urlencode($custID)."/?ordn=".$ordn."&show=documents".$linkaddon, $pagenumber, $custID, '');
 				} elseif ($input->get->page == 'edit') {
 					$session->loc = $config->pages->ajax.'load/order/documents/?ordn='.$ordn;
 				} else {
-					$session->loc = paginate($config->pages->ajax."load/orders/salesrep/?ordn=".$ordn."&show=documents".$link_addon, $pagenumber, "salesrep", '');
+					$session->loc = paginate($config->pages->ajax."load/orders/salesrep/?ordn=".$ordn."&show=documents".$linkaddon, $pagenumber, "salesrep", '');
 				}
 
 			}
@@ -229,7 +244,7 @@
 
 			$session->loc = $config->pages->ajax."load/orders/cust/".urlencode($custID)."/";
 			if ($shipID != '') {$session->loc .= "shipto-".urlencode($shipID)."/";}
-			$session->loc .= "?ordn=".$link_addon;
+			$session->loc .= "?ordn=".$linkaddon;
 			$session->{'orders-loaded-for'} = $custID;
 			$session->{'orders-updated'} = date('m/d/Y h:i A');
 			break;
@@ -299,6 +314,14 @@
 			$ordn = $input->post->text('ordn');
 			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'ITEMID' => $itemID, 'QTY' => $qty);
 			$session->loc = $input->post->page;
+			break;
+		case 'add-multiple-items':
+			$ordn = $input->post->text('ordn');
+			$itemids = $input->post->itemID;
+			$qtys = $input->post->qty;
+			$data = array("DBNAME=$config->dbName", 'ORDERADDMULTIPLE', "ORDERNO=$ordn");
+			$data = writedataformultitems($data, $itemids, $qtys);
+            $session->loc = $config->pages->edit."order/?ordn=".$ordn;
 			break;
 		case 'add-nonstock-item':
 			$ordn = $input->post->text('ordn');
@@ -387,7 +410,7 @@
 			break;
 		default:
 			$data = array('DBNAME' => $config->dbName, 'REPORDRHED' => false, 'TYPE' => 'O');
-			$session->loc = $config->pages->ajax."load/orders/salesrep/".urlencode($custID)."/?ordn=".$link_addon."";
+			$session->loc = $config->pages->ajax."load/orders/salesrep/".urlencode($custID)."/?ordn=".$linkaddon."";
 			$session->{'orders-loaded-for'} = $user->loginid;
 			$session->{'orders-updated'} = date('m/d/Y h:i A');
 			break;

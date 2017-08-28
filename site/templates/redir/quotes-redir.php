@@ -5,9 +5,11 @@
 	*/
 
 
-	if ($input->post->action) { $action = $input->post->text('action'); } else { $action = $input->get->text('action'); }
-	if ($input->get->page) { $pagenumber = $input->get->int('page'); } else { $pagenumber = 1; }
-	if ($input->get->orderby) { $sortaddon = '&orderby=' . $input->get->text('orderby'); } else { $sortaddon = ''; }
+	$action = ($input->post->action ? $input->text('action') : $input->get->text('action'));
+
+	// USED FOR MAINLY ORDER LISTING FUNCTIONS
+	$pagenumber = (!empty($input->get->page) ? $input->get->int('page') : 1);
+	$sortaddon = (!empty($input->get->orderby) ? '&orderby=' . $input->get->text('orderby') : '');
 
 	$linkaddon = $sortaddon;
 	$session->{'from-redirect'} = $page->url;
@@ -17,7 +19,7 @@
 	//TODO merge get-quote-details and get-quote-details-print
 	/**
 	*  QUOTE REDIRECT
-	* @param string $action
+	*
 	*
 	*
 	*
@@ -62,6 +64,12 @@
 	*		QUOTENO=$qnbr
 	*		ITEMID=$itemID
 	*		QTY=$qty
+	*		break;
+	*	case 'add-multiple-items':
+	*		DBNAME=$config->DBNAME
+	*		ORDERADDMULTIPLE
+	*		ORDERNO=$ordn
+	*		ITEMID=$custID   QTY=$qty  **REPEAT
 	*		break;
 	*	case 'update-line':
 	*		DBNAME=$config->DBNAME
@@ -165,6 +173,14 @@
 			$qty = $input->post->text('qty');
 			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'ITEMID' => $itemID, 'QTY' => $qty);
 			$session->editdetail = true;
+			break;
+		case 'add-multiple-items':
+			$qnbr = $input->post->text('qnbr');
+			$itemids = $input->post->itemID;
+			$qtys = $input->post->qty;
+			$data = array("DBNAME=$config->dbName", 'ORDERADDMULTIPLE', "QUOTENO=$qnbr");
+			$data = writedataformultitems($data, $itemids, $qtys);
+            $session->loc = $config->pages->edit."quote/?qnbr=".$qnbr;
 			break;
 		case 'add-nonstock-item':
 			$qnbr = $input->post->text('qnbr');
