@@ -301,6 +301,32 @@
 			$session->loc = $input->post->page;
 			break;
 		case 'add-nonstock-item':
+			$ordn = $input->post->text('ordn');
+			$qty = $input->post->text('qty');
+			insertorderline(session_id(), $ordn, '0', false);
+			$orderdetail = getorderlinedetail(session_id(), $ordn, '0', false);
+			$orderdetail['orderno'] = $ordn;
+			$orderdetail['recno'] = '0';
+			$orderdetail['price'] = $input->post->text('price');
+			$orderdetail['qty'] = $qty;
+			$orderdetail['desc1'] = $input->post->text('desc1');
+			$orderdetail['desc2'] = $input->post->text('desc2');
+			$orderdetail['vendorid'] = $input->post->text('vendorID');
+			$orderdetail['shipfromid'] = $input->post->text('shipfromid');
+			$orderdetail['vendoritemid'] = $input->post->text('itemID');
+			$orderdetail['nsitemgroup'] = $input->post->text('itemgroup');
+			$orderdetail['ponbr'] = $input->post->text('ponbr');
+			$orderdetail['poref'] = $input->post->text('poref');
+			$orderdetail['uom'] = $input->post->text('uofm');
+			$orderdetail['spcord'] = 'S';
+			$session->sql = edit_orderline(session_id(), $ordn, $orderdetail, false);
+			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => '0', 'ITEMID' => 'N', 'QTY' => $qty, 'CUSTID' => $custID);
+			if ($input->post->page) {
+				$session->loc = $input->post->text('page');
+			} else {
+				$session->loc = $config->pages->edit."order/?ordn=".$ordn;
+			}
+			$session->editdetail = true;
 			break;
 		case 'update-line':
 			$ordn = $input->post->text('ordn');
@@ -322,6 +348,11 @@
 			$orderdetail['poref'] = $input->post->text('poref');
 			$orderdetail['uom'] = $input->post->text('uofm');
 
+			if ($orderdetail['spcord'] != 'N') {
+				$orderdetail['desc1'] = $input->post->text('desc1');
+				$orderdetail['desc2'] = $input->post->text('desc2');
+			}
+
 			$session->sql = edit_orderline(session_id(), $ordn, $orderdetail, false);
 			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr);
 			if ($input->post->page) {
@@ -339,7 +370,7 @@
 			$orderdetail['linenbr'] = $input->post->text('linenbr');
 			$session->sql = edit_orderline(session_id(), $ordn, $orderdetail, false);
 			$session->editdetail = true;
-			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr);
+			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'QTY' => '0');
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
 			} else {

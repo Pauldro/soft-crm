@@ -105,6 +105,14 @@
 			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'LINENO' => '0', 'ITEMID' => 'N', 'QTY' => $qty, 'CUSTID' => $custID);
 			$session->loc = $config->pages->cart;
 			break;
+		case 'add-multiple-items':
+			$itemids = $input->post->itemID;
+			$qtys = $input->post->qty;
+			$data = array("DBNAME=$config->dbName", 'CARTADDMULTIPLE', "CUSTID=$custID");
+			$data = writedataformultitems($data, $itemids, $qtys);
+            $session->addtocart = sizeof($itemIDs);
+            $session->loc = $config->pages->cart;
+			break;
 		case 'update-line':
 			$linenbr = $input->post->text('linenbr');
 			$cartdetail = getcartline(session_id(), $linenbr, false);

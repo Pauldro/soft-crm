@@ -8,6 +8,14 @@ var fields = {
 
 $(function() {
 
+    $("body").on("change", ".special-order-select", function() {
+        var select = $(this);
+        if (select.val() != 'N') {
+            $('.special-order-details').removeClass('hidden');
+        } else {
+            $('.special-order-details').addClass('hidden');
+        }
+    });
 
     $("body").on("change", fields.qty, function() {
         calculateextendedprice();

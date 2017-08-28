@@ -166,6 +166,37 @@
 			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'ITEMID' => $itemID, 'QTY' => $qty);
 			$session->editdetail = true;
 			break;
+		case 'add-nonstock-item':
+			$qnbr = $input->post->text('qnbr');
+			$qty = $input->post->text('qty');
+			insertquoteline(session_id(), $qnbr, '0', false);
+
+			$quotedetail = getquotelinedetail(session_id(), $qnbr, '0', false);
+			$quotedetail['quotenbr'] = $qnbr;
+			$quotedetail['recno'] = '0';
+			$quotedetail['linenbr'] = '0';
+			$quotedetail['ordrprice'] = $input->post->text('price');
+			$quotedetail['qty'] = $qty;
+			$quotedetail['desc1'] = $input->post->text('desc1');
+			$quotedetail['desc2'] = $input->post->text('desc2');
+			$quotedetail['vendorid'] = $input->post->text('vendorID');
+			$quotedetail['shipfromid'] = $input->post->text('shipfromid');
+			$quotedetail['vendoritemid'] = $input->post->text('itemID');
+			$quotedetail['nsitemgroup'] = $input->post->text('itemgroup');
+			//$quotedetail['ponbr'] = $input->post->text('ponbr');
+			//$quotedetail['poref'] = $input->post->text('poref');
+			$quotedetail['uom'] = $input->post->text('uofm');
+			$quotedetail['spcord'] = 'S';
+			$session->sql = edit_quoteline(session_id(), $qnbr, $quotedetail, false);
+
+			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => '0', 'ITEMID' => 'N', 'QTY' => $qty);
+			if ($input->post->page) {
+				$session->loc = $input->post->text('page');
+			} else {
+				$session->loc = $config->pages->edit."quote/?qnbr=".$qnbr;
+			}
+			$session->editdetail = true;
+			break;
 		case 'update-line':
 			if ($input->post) {
 				$qnbr = $input->post->text('qnbr');
@@ -192,6 +223,11 @@
 			$quotedetail['ponbr'] = $input->post->text('ponbr');
 			$quotedetail['poref'] = $input->post->text('poref');
 			$quotedetail['uom'] = $input->post->text('uofm');
+
+			if ($quotedetail['spcord'] != 'N') {
+				$quotedetail['desc1'] = $input->post->text('desc1');
+				$quotedetail['desc2'] = $input->post->text('desc2');
+			}
 
 			$session->sql = edit_quoteline(session_id(), $qnbr, $quotedetail, false);
 			$session->detail = $quotedetail;
@@ -230,7 +266,7 @@
 		case 'send-quote-to-order':
 			$qnbr = $input->post->text('qnbr');
 			$linenbrs = $input->post->linenbr;
-			$session->linecount = $linecount = nextquotelinenbr(session_id(), $qnbr);
+			$linecount = nextquotelinenbr(session_id(), $qnbr);
 			for ($i = 1; $i < $linecount; $i++) {
 				$quotedetail = getquotelinedetail(session_id(), $qnbr, $i, false);
 				if (in_array($i, $linenbrs)) {
