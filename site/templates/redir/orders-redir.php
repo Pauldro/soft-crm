@@ -5,7 +5,7 @@
 	*
 	* */
 
-	$action = ($input->post->action ? $input->text('action') : $input->get->text('action'));
+	$action = ($input->post->action ? $input->post->text('action') : $input->get->text('action'));
 
 	// USED FOR MAINLY ORDER LISTING FUNCTIONS
 	$pagenumber = (!empty($input->get->page) ? $input->get->int('page') : 1);

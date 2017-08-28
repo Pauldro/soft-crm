@@ -6,8 +6,8 @@
 	*
 	*/
 	$custID = $shipID = '';
-    $action = ($input->post->action ? $input->text('action') : $input->get->text('action'));
-	$itemID = ($input->post->itemID ? $input->text('itemID') : $input->get->text('itemID'));
+    $action = ($input->post->action ? $input->post->text('action') : $input->get->text('action'));
+	$itemID = ($input->post->itemID ? $input->post->text('itemID') : $input->get->text('itemID'));
 
 	$filename = session_id();
 
@@ -164,8 +164,8 @@
 	**/
     switch ($action) {
         case 'item-search':
-            $q = ($input->post->q ? $input->text('q') : $input->get->text('q'));
-			$custID = ($input->post->custID ? $input->text('custID') : $input->get->text('custID'));
+            $q = ($input->post->q ? $input->post->text('q') : $input->get->text('q'));
+			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
 			if (empty($custID)) { $custID == $config->defaultweb; }
 			$data = array('DBNAME' => $config->dbName, 'ITNOSRCH' => strtoupper($q), 'CUSTID' => $custID);
             $session->loc = $config->page->index;
@@ -180,22 +180,22 @@
 			if ($shipID != '') {$data['SHIPID'] = $shipID; $session->loc .= "&shipID=".urlencode($shipID); }
             break;
         case 'item-info':
-            $q = ($input->post->q ? $input->text('q') : $input->get->text('q'));
-			$custID = ($input->post->custID ? $input->text('custID') : $input->get->text('custID'));
+            $q = ($input->post->q ? $input->post->text('q') : $input->get->text('q'));
+			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
 			if (empty($custID)) { $custID == $config->defaultweb; }
 			$data = array('DBNAME' => $config->dbName, 'ITNOSRCH' => $q, 'ITEMID' => $itemID, 'CUSTID' => $custID);
             $session->loc = $config->page->index;
             break;
         case 'get-item-price':
-			$custID = ($input->post->custID ? $input->text('custID') : $input->get->text('custID'));
+			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
 			if (empty($custID)) { $custID == $config->defaultweb; }
 			$data = array('DBNAME' => $config->dbName, 'IIPRICING' => false, 'ITEMID' => $itemID, 'CUSTID' => $custID);
             $session->loc = $config->page->index;
             break;
 		case 'ii-pricing': //II INFORMATION
 			$data = array('DBNAME' => $config->dbName, 'IIPRICE' => false, 'ITEMID' => $itemID);
-			$custID = ($input->post->custID ? $input->text('custID') : $input->get->text('custID'));
-			$shipID = ($input->post->shipID ? $input->text('shipID') : $input->get->text('shipID'));
+			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
+			$shipID = ($input->post->shipID ? $input->post->text('shipID') : $input->get->text('shipID'));
 			if (!empty($custID))  {$data['CUSTID'] = $custID; } if (!empty($shipID)) {$data['SHIPID'] = $shipID; }
 			$session->loc = $config->page->index;
             break;
@@ -209,7 +209,7 @@
             break;
 		case 'ii-quotes':
 			$data = array('DBNAME' => $config->dbName, 'IIQUOTE' => false, 'ITEMID' => $itemID);
-			$custID = ($input->post->custID ? $input->text('custID') : $input->get->text('custID'));
+			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
 			if (!empty($custID))  {$data['CUSTID'] = $custID; }
             $session->loc = $config->page->index;
             break;
@@ -222,13 +222,13 @@
             $session->loc = $config->page->index;
             break;
 		case 'ii-kit-components':
-			$qty = ($input->post->qty ? $input->text('qty') : $input->get->text('qty'));
+			$qty = ($input->post->qty ? $input->post->text('qty') : $input->get->text('qty'));
 			$data = array('DBNAME' => $config->dbName, 'IIKIT' => false, 'ITEMID' => $itemID, 'QTYNEEDED' => $qty);
             $session->loc = $config->page->index;
             break;
 		case 'ii-item-bom':
-            $qty = ($input->post->qty ? $input->text('qty') : $input->get->text('qty'));
-            $bom = ($input->post->bom ? $input->text('bom') : $input->get->text('bom'));
+            $qty = ($input->post->qty ? $input->post->text('qty') : $input->get->text('qty'));
+            $bom = ($input->post->bom ? $input->post->text('bom') : $input->get->text('bom'));
             if ($bom == 'single') {
 				$data = array('DBNAME' => $config->dbName, 'IIBOMSINGLE' => false, 'ITEMID' => $itemID, 'QTYNEEDED' => $qty);
             } elseif ($bom == 'consolidated') {
@@ -254,13 +254,13 @@
 		case 'ii-activity':
             $custID = $shipID = $date = '';
 			$data = array('DBNAME' => $config->dbName, 'IIACTIVITY' => false, 'ITEMID' => $itemID);
-            $date = ($input->post->date ? $input->text('date') : $input->get->text('date'));
+            $date = ($input->post->date ? $input->post->text('date') : $input->get->text('date'));
             if (!empty($date)) {$data['DATE'] = date('Ymd', strtotime($date)); }
 			$session->loc = $config->page->index;
             break;
 		case 'ii-requirements':
-            $whse = ($input->post->whse ? $input->text('whse') : $input->get->text('whse'));
-            $screentype = ($input->post->screentype ? $input->text('screentype') : $input->get->text('screentype'));
+            $whse = ($input->post->whse ? $input->post->text('whse') : $input->get->text('whse'));
+            $screentype = ($input->post->screentype ? $input->post->text('screentype') : $input->get->text('screentype'));
             //screen type would be REQ or AVL
 			$data = array('DBNAME' => $config->dbName, 'IIREQUIRE' => false, 'ITEMID' => $itemID, 'WHSE' => $whse, 'REQAVL' => $screentype);
             $session->loc = $config->page->index;
@@ -276,9 +276,9 @@
 		case 'ii-sales-history':
             $date = '';
 			$data = array('DBNAME' => $config->dbName, 'IISALESHIST' => false, 'ITEMID' => $itemID);
-			$custID = ($input->post->custID ? $input->text('custID') : $input->get->text('custID'));
-			$shipID = ($input->post->shipID ? $input->text('shipID') : $input->get->text('shipID'));
-			$date = ($input->post->date ? $input->text('date') : $input->get->text('date'));
+			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
+			$shipID = ($input->post->shipID ? $input->post->text('shipID') : $input->get->text('shipID'));
+			$date = ($input->post->date ? $input->post->text('date') : $input->get->text('date'));
             if (!empty($custID)) {$data['CUSTID'] = $custID; } if (!empty($shipID)) {$data['SHIPID'] = $shipID; }
             if (!empty($date)) { $data['DATE'] = date('Ymd', strtotime($date)); }
             $session->loc = $config->page->index;

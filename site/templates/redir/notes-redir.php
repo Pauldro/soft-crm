@@ -7,7 +7,7 @@
 	$date = date('Ymd');
 	$time = date('His');
 
-	$action = ($input->post->action ? $input->text('action') : $input->get->text('action'));
+	$action = ($input->post->action ? $input->post->text('action') : $input->get->text('action'));
 
 	$session->{'from-redirect'} = $page->url;
 	$filename = session_id();

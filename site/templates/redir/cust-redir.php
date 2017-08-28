@@ -5,9 +5,9 @@
 	*
 	*/
 
-	$action = ($input->post->action ? $input->text('action') : $input->get->text('action'));
-	$custID = ($input->post->custID ? $input->text('custID') : $input->get->text('custID'));
-	$shipID = ($input->post->shipID ? $input->text('shipID') : $input->get->text('shipID'));
+	$action = ($input->post->action ? $input->post->text('action') : $input->get->text('action'));
+	$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
+	$shipID = ($input->post->shipID ? $input->post->text('shipID') : $input->get->text('shipID'));
 
 	$session->{'from-redirect'} = $page->url;
 

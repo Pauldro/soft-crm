@@ -4,7 +4,7 @@
 	* @param string $action
 	*
 	*/
-	$action = ($input->post->action ? $input->text('action') : $input->get->text('action'));
+	$action = ($input->post->action ? $input->post->text('action') : $input->get->text('action'));
 
 	$filename = session_id();
 
