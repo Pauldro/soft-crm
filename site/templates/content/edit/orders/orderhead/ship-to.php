@@ -16,7 +16,7 @@
     	<td class="control-label">Ship-To ID <b class="text-danger">*</b> <input type="hidden" id="shipto-id" value="<?php echo $billing['shiptoid']; ?>"></td>
         <td>
         	<select class="form-control input-sm ordrhed shipto-select" name="shiptoid" data-custid="<?php echo $billing['custid']; ?>">
-				<?php $shiptos = get_allowed_shiptos($billing['custid'], $user->loginid, $user->hasrestrictions, false); ?>
+				<?php $shiptos = get_customershiptos($billing['custid'], $user->loginid, $user->hasrestrictions, false); ?>
                 <?php foreach ($shiptos as $shipto) : ?>
                     <?php if ($billing['shiptoid'] == $shipto['shiptoid']) : ?>
                         <option value="<?php echo $billing['shiptoid'];?>" selected><?php echo $billing['shiptoid'].' - '.$billing['sname']; ?></option>

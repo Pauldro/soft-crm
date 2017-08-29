@@ -99,14 +99,14 @@
 		}
 	}
 
-	function get_shipto_count($loginID, $restrictions, $custID, $debug) {
+	function count_shiptos($loginID, $restrictions, $custID, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM view_distinct_cust_shiptos WHERE recno IN (SELECT recno FROM view_distinct_cust_shiptos WHERE splogin1 IN (:loginID, :shared)  OR splogin2 = :loginID  OR splogin3 = :loginID) AND custid = :custID");
-			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':loginID' => $loginID, ':loginID' => $loginID, ':custID' => $custID);
-			$withquotes = array(true, true, true, true);
+			$sql = wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custperm WHERE custid = :custID AND shiptoid != '') t WHERE loginid = :loginID OR loginid = :shared ");
+			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS);
+			$withquotes = array(true, true, true);
 		} else {
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM view_distinct_cust_shiptos WHERE custid = :custID");
+			$sql = wire('database')->prepare("SELECT COUNT(*) FROM custperm WHERE custid = :custID AND shiptoid != ''");
 			$switching = array(':custID' => $custID); $withquotes = array(true);
 		}
 		if ($debug) {
@@ -117,8 +117,8 @@
 		}
 	}
 
-	function get_shipto_info($custID, $shipID, $debug) {
-		$sql = wire('database')->prepare("SELECT * FROM view_distinct_cust_shiptos WHERE custid = :custID AND shiptoid = :shipID");
+	function get_shiptoinfo($custID, $shipID, $debug) {
+		$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid = :shipID LIMIT 1");
 		$switching = array(':custID' => $custID, ':shipID' => $shipID); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -128,14 +128,14 @@
 		}
 	}
 
-	function getcustomershiptos($custID, $loginID, $restrictions, $debug) {
+	function get_customershiptos($custID, $loginID, $restrictions, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT * FROM view_distinct_cust_shiptos WHERE custid = :custID AND recno IN (SELECT recno FROM view_distinct_cust_shiptos WHERE splogin1 IN (:loginID, :shared) OR splogin2 = :loginID  OR splogin3 = :loginID)");
-			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':loginID' => $loginID, ':loginID' => $loginID);
-			$withquotes = array(true, true, true, true);
+			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN ( SELECT custid, shiptoid FROM (SELECT * FROM custperm WHERE custid = :custID AND shiptoid != '') t WHERE loginid = :logiID OR loginid = :shared) GROUP BY custid, shiptoid");
+			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS);
+			$withquotes = array(true, true, true);
 		} else {
-			$sql = wire('database')->prepare("SELECT * FROM view_distinct_cust_shiptos WHERE custid = :custID");
+			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID WHERE shiptoid != ''");
 			$switching = array(':custID' => $custID); $withquotes = array(true);
 		}
 
@@ -143,25 +143,6 @@
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
 			$sql->execute($switching);
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	function get_allowed_shiptos($custID, $loginID, $restrictions, $debug) { //DEPRECATE
-		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid != '' AND recno IN (SELECT recno FROM custindex WHERE (splogin1 IN (:loginID, :sharedaccounts) OR splogin2 = :loginID OR splogin3 = :loginID)) GROUP BY shiptoid");
-			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':sharedaccounts' => wire('config')->sharedaccounts, ':loginID' => $loginID, ':loginID' => $loginID);
-
-			$withquotes = array(true, true, true, true, true);
-		} else {
-			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid != '' GROUP BY shiptoid");
-			$switching = array(':custID' => $custID);
-			$withquotes = array(true);
-		}
-		$sql->execute($switching);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
