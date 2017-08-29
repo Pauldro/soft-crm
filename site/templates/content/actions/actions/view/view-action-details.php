@@ -23,7 +23,7 @@
     <?php if ($action->hasshiptolink) : ?>
         <tr>
             <td>Ship-to:</td>
-            <td><?php echo get_shipto_name($action->customerlink, $action->shiptolink, false); ?> <a href="<?php echo $action->generateshiptourl(); ?>" target="_blank"><i class="glyphicon glyphicon-share"></i> Go to Ship-to Page</a></td>
+            <td><?= get_shiptoname($action->customerlink, $action->shiptolink, false); ?> <a href="<?php echo $action->generateshiptourl(); ?>" target="_blank"><i class="glyphicon glyphicon-share"></i> Go to Ship-to Page</a></td>
         </tr>
     <?php endif; ?>
     <?php if ($action->hascontactlink) : ?>

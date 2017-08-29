@@ -18,7 +18,7 @@
     <?php if ($note->hasshiptolink) : ?>
         <tr>
             <td>Ship-to:</td>
-            <td><?php echo get_shipto_name($note->customerlink, $note->shiptolink, false); ?> &nbsp;<a href="<?php echo $note->generateshiptourl(); ?>"><i class="glyphicon glyphicon-share"></i> Go to Ship-to Page</a></td>
+            <td><?= get_shiptoname($note->customerlink, $note->shiptolink, false); ?> &nbsp;<a href="<?php echo $note->generateshiptourl(); ?>"><i class="glyphicon glyphicon-share"></i> Go to Ship-to Page</a></td>
         </tr>
     <?php endif; ?>
     <?php if ($note->hascontactlink) : ?>

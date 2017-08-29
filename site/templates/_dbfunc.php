@@ -67,7 +67,7 @@
 		return $sql->fetchColumn();
 	}
 
-	function get_shipto_name($custID, $shipID, $debug) {
+	function get_shiptoname($custID, $shipID, $debug) {
 		$sql = wire('database')->prepare("SELECT name FROM custindex WHERE custid = :custID AND shiptoid = :shipID LIMIT 1");
 		$switching = array(':custID' => $custID, ':shipID' => $shipID); $withquotes = array(true, true);
 		if ($debug) {

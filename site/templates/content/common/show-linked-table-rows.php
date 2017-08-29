@@ -3,7 +3,7 @@
 <?php endif; ?>
 
 <?php if ($shipID != '' ) : ?>
-    <tr> <td>Ship-to:</td> <td><?php echo get_shipto_name($custID, $shipID, false). " ($shipID)"; ?></td>  </tr>
+    <tr> <td>Ship-to:</td> <td><?= get_shiptoname($custID, $shipID, false). " ($shipID)"; ?></td>  </tr>
 <?php endif; ?>
 
 <?php if ($contactID != '') : ?>

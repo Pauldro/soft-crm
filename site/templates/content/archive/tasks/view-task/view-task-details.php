@@ -18,7 +18,7 @@
     <?php if ($task->hasshiptolink) : ?>
         <tr>
             <td>Ship-to:</td>
-            <td><?php echo get_shipto_name($task->customerlink, $task->shiptolink, false); ?> <a href="<?php echo $task->generateshiptourl(); ?>" target="_blank"><i class="glyphicon glyphicon-share"></i> Go to Ship-to Page</a></td>
+            <td><?php echo get_shiptoname($task->customerlink, $task->shiptolink, false); ?> <a href="<?php echo $task->generateshiptourl(); ?>" target="_blank"><i class="glyphicon glyphicon-share"></i> Go to Ship-to Page</a></td>
         </tr>
     <?php endif; ?>
     <?php if ($task->hascontactlink) : ?>
