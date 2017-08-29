@@ -121,8 +121,15 @@
 
         function defineregardinglink() {
             $regardinglink = '';
-            if ($this->customerlink != '') { $this->hascustomerlink = true; $regardinglink = 'CustID: '. $this->customerlink;}
-            if ($this->shiptolink != '') { $this->hasshiptolink = true; $regardinglink .= ' ShipID: '. $this->shiptolink; }
+            if ($this->customerlink != '') {
+                //$this->hascustomerlink = true; $regardinglink = 'CustID: '. $this->customerlink;
+                $this->hascustomerlink = true; $regardinglink = 'CustID: '. get_customer_name($this->customerlink);
+
+            }
+            if ($this->shiptolink != '') {
+                //$this->hasshiptolink = true; $regardinglink .= ' ShipID: '. $this->shiptolink;
+                $this->hasshiptolink = true; $regardinglink .= ' ShipID: '. get_shipto_name($this->customerlink, $this->shiptolink, false);
+            }
             if ($this->contactlink != '') { $this->hascontactlink = true; $regardinglink .= ' Contact: '. $this->contactlink; }
             if ($this->salesorderlink != '') { $this->hasorderlink = true; $regardinglink = 'Order #' . $this->salesorderlink; }
             if ($this->quotelink != '') { $this->hasquotelink = true; $regardinglink = 'Quote #' . $this->quotelink; }
