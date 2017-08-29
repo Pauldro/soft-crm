@@ -10,7 +10,7 @@
 			$shipID = '';
 			$customer = get_customer_name($input->urlSegment(1));
 			$page->title = $input->urlSegment1 . ' - ' . $customer;
-			$user->hascustomeraccess = has_access_to_customer($user->loginid, $user->hascontactrestrictions, $custID, false);
+			$user->hascustomeraccess = can_accesscustomer($user->loginid, $user->hascontactrestrictions, $custID, false);
 			$page->body = $config->paths->content.'customer/cust-page/customer-page-outline.php';
 			$config->scripts->append($config->urls->templates.'scripts/pages/customer-page.js');
 			$config->scripts->append($config->urls->templates.'scripts/dplusnotes/order-notes.js');
@@ -29,7 +29,7 @@
 					}
 				} elseif (strpos($input->urlSegment(2), 'shipto-') !== FALSE) {
 					$shipID = urldecode(str_replace('shipto-', '', $input->urlSegment(2)));
-					$user->hasshiptoaccess = has_access_to_customer_shipto($user->loginid, $user->hascontactrestrictions, $custID, $shipID, false);
+					$user->hasshiptoaccess = can_accesscustomershipto($user->loginid, $user->hascontactrestrictions, $custID, $shipID, false);
 				}
 
 				if (strpos($input->urlSegment(3), 'contacts') !== FALSE) {
