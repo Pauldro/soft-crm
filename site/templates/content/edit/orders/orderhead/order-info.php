@@ -2,7 +2,7 @@
 <table class="table table-striped table-bordered table-condensed">
 	<tr>
     	<td class="control-label">Contact Name</td>
-        <td> <input type="text" name="contact" class="form-control input-sm required" id="shiptocontact" value="<?php echo $billing['contact']; ?>"> </td>
+        <td> <input type="text" name="contact" class="form-control input-sm" id="shiptocontact" value="<?php echo $billing['contact']; ?>"> </td>
     </tr>
     <?php if ($config->phoneintl) : ?>
 		<tr>
@@ -21,11 +21,10 @@
     <?php else : ?>
     	<?php include $config->paths->content.'edit/orders/orderhead/phone-domestic.php'; ?>
     <?php endif; ?>
-    
-    
+	
     <tr>
     	<td class="control-label">Contact Email</td>
-        <td> <input type="email" name="contact-email" class="form-control input-sm required email" value="<?php echo $billing['email']; ?>"> </td>
+        <td> <input type="email" name="contact-email" class="form-control input-sm email" value="<?php echo $billing['email']; ?>"> </td>
     </tr>
 </table>
 
