@@ -934,6 +934,23 @@
 
 	}
 
+	function updateactionlinks($oldlinks, $newlinks, $wherelinks, $debug) {
+		$query = returnupdatequery($newlinks, $oldlinks, $wherelinks);
+		$query['setstatement'] .= ', dateupdated = :date'; $query['switching'][':date'] = date("Y-m-d H:i:s"); $query['withquotes'][] = true;
+		$sql = wire('database')->prepare("UPDATE useractions SET ".$query['setstatement']." WHERE " . $query['wherestatement']);
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
+		} else {
+			$sql->execute($query['switching']);
+			$success = $sql->rowCount();
+			if ($success) {
+				return array("error" => false,  "sql" => returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']));
+			} else {
+				return array("error" => true,  "sql" => returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']));
+			}
+		}
+	}
+
 	function insertaction($action, $debug) {
 		$query = returninsertlinks($action);
 		$sql = wire('database')->prepare("INSERT INTO useractions (".$query['columnlist'].") VALUES (".$query['valuelist'].")");

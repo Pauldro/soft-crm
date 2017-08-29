@@ -250,6 +250,11 @@
 			$data = array('DBNAME' => $config->dbName, 'EDITCONTACT' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID, 'CONTACT' => $contactID, 'NAME' => $contact['contact'], 'PHONE' => $contact['cphone'], 'EXTENSION' => $contact['cphext'], 'CELLPHONE' => $contact['ccellphone'], 'EMAIL' => $contact['email']);
 			$returnpage = new \Purl\Url($input->post->text('page'));
 			$returnpage->query->set('id', $contact['contact']);
+
+			$oldlinks = array('customerlink' => $custID, 'shiptolink' => $shipID, 'contactlink' => $contactID);
+			$newlinks = array('customerlink' => $custID, 'shiptolink' => $shipID, 'contactlink' => $contact['contact']);
+			$session->sql = updateactionlinks($oldlinks, $newlinks, $oldlinks, true);
+			updateactionlinks($oldlinks, $newlinks, $oldlinks, false);
 			$session->loc = $returnpage->getUrl();
 			break;
 		case 'ci-buttons':

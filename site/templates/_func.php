@@ -19,7 +19,6 @@ function renderNavTree($items, $maxDepth = 3) {
 		// markup for the list item...
 		// if current item is the same as the page being viewed, add a "current" class to it
 
-
 		// markup for the link
 		if($item->id == wire('page')->id) {
 			echo "<a href='$item->url' class='list-group-item bg-primary'>$item->title</a>";
@@ -316,6 +315,20 @@ function show_requirements($field) {
 			'setstatement' => $setstmt,
 			'changecount' => sizeof($switching)
 		);
+	}
+
+	function returnupdatequery($newlinks, $oldlinks, $wherelinks) {
+		$wherestmt = '';
+		$query = returnpreppedquery($oldlinks, $newlinks);
+		foreach ($wherelinks as $column => $val) {
+			$prepped = ':x'.$column;
+			$wherestmt .= $column." = ".$prepped." AND ";
+			$query['switching'][$prepped] = $val;
+			$query['withquotes'][] = true;
+		}
+		$wherestmt = rtrim($wherestmt, ' AND ');
+		$query['wherestatement'] = $wherestmt;
+		return $query;
 	}
 
 	function returnwherelinks($linkarray) {
