@@ -1,4 +1,4 @@
-<?php $contacts = get_contacts($user->loginid, $user->hascontactrestrictions, $custID, false); ?>
+<?php $contacts = get_customercontacts($user->loginid, $user->hascontactrestrictions, $custID, false); ?>
 <div class="panel panel-primary not-round" id="contacts-panel">
     <div class="panel-heading not-round">
         <a href="#contacts-div" class="panel-link" data-parent="#contacts-panel" data-toggle="collapse" ><i class="fa fa-address-book" aria-hidden="true"></i> &nbsp; Customer Contacts <span class="caret"></span></a>

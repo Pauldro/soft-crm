@@ -240,7 +240,7 @@
 			$custID = $input->post->text('custID');
 			$shipID = $input->post->text('shipID');
 			$contactID = $input->post->text('contactID');
-			$contact = getcustcontact($custID, $shipID, $contactID, false);
+			$contact = get_customercontact($custID, $shipID, $contactID, false);
 			$contact['contact'] = $input->post->text('name');
 			$contact['cphone'] = str_replace('-', '', $input->post->text('phone'));
 			$contact['cphext'] = $input->post->text('extension');
