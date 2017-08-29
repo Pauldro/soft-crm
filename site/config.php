@@ -50,7 +50,7 @@
 	*
 	*/
 	$config->prependTemplateFile = '_init.php';
-
+	$config->maxUrlSegments = 7;
 
 /*** INSTALLER CONFIG ********************************************************************/
 
@@ -62,8 +62,7 @@
 	$config->dbName = 'dpluso';
 	$config->dbUser = 'cptecomm';
 	$config->dbPass = 'rghopeless';
-	$config->dbPort = '3306';
-	$config->maxUrlSegments = 7;
+	$config->dbPort = '3306';	
 	/**
 	* Installer: User Authentication Salt
 	*
@@ -131,6 +130,7 @@
 	$config->showonpageoptions = array('5', '10', '20', '50');
 	$config->yesnoarray = array('Yes' => 'Y', 'No' => 'N');
 	$config->nonstockitems = array('N');
+	$config->salesrepcustomer = true;
 
 	$config->fob_array = array('Origin' => 'O', 'Delivery' => 'D');
 
