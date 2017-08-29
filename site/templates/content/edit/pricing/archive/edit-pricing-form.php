@@ -66,7 +66,7 @@
             <?php include $config->paths->content."edit/pricing/item-stock.php"; ?>
         </div>
         <div class="col-sm-4 grid-item">
-            <div class="jumbotron item-detail-heading"> <div class="container"> <h4>Item History for <?php echo get_customer_name($custID); ?></h4> </div> </div>
+            <div class="jumbotron item-detail-heading"> <div class="container"> <h4>Item History for <?= get_customername($custID); ?></h4> </div> </div>
             <?php include $config->paths->content."edit/pricing/item-history.php"; ?>
         </div>
     </div>
@@ -76,4 +76,3 @@
         </div>
     <?php endif; ?>
 </form>
-

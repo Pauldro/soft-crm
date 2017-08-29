@@ -482,7 +482,7 @@ function show_requirements($field) {
 		$replace = "";
 
 		if ($custID != '') {
-			$replace = get_customer_name($custID)." ($custID)";
+			$replace = get_customername($custID)." ($custID)";
 		}
 
 		if ($shipID != '') {
@@ -590,9 +590,9 @@ function show_requirements($field) {
 		$form .= '<input type="hidden" name="custID" value="'.$custID.'">';
 		if ($shipID) {
 			$form .= '<input type="hidden" name="shipID" value="'.$shipID.'">';
-			$form .= '<button type="submit" class="btn btn-sm btn-primary">Shop as '.get_customer_name($custID).' - '. $shipID.'</button>';
+			$form .= '<button type="submit" class="btn btn-sm btn-primary">Shop as '.get_customername($custID).' - '. $shipID.'</button>';
 		} else {
-			$form .= '<button type="submit" class="btn btn-sm btn-primary">Shop as '.get_customer_name($custID).'</button>';
+			$form .= '<button type="submit" class="btn btn-sm btn-primary">Shop as '.get_customername($custID).'</button>';
 		}
 		$form .= '</form>';
 		return $form;

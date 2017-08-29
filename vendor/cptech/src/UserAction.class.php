@@ -123,7 +123,7 @@
             $regardinglink = '';
             if ($this->customerlink != '') {
                 //$this->hascustomerlink = true; $regardinglink = 'CustID: '. $this->customerlink;
-                $this->hascustomerlink = true; $regardinglink = 'CustID: '. get_customer_name($this->customerlink);
+                $this->hascustomerlink = true; $regardinglink = 'CustID: '. get_customername($this->customerlink);
 
             }
             if ($this->shiptolink != '') {
@@ -143,7 +143,7 @@
     		$replace = "";
 
     		if ($this->hascustomerlink) {
-    			$replace = get_customer_name($this->customerlink)." ($this->customerlink)";
+    			$replace = get_customername($this->customerlink)." ($this->customerlink)";
     		}
 
     		if ($this->hasshiptolink) {
@@ -180,7 +180,6 @@
                     }
                 }
             }
-
     		return preg_replace($regex, $replace, $message);
         }
 

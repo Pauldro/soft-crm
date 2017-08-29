@@ -27,9 +27,9 @@
             $editquote['custID'] = getquotecustomer(session_id(), $qnbr, false); $custID = $editquote['custID'];
             $editquote['canedit'] = true; //caneditquote(session_id(), $qnbr);
             if ($editquote['canedit']) {
-                $page->title = "Editing Quote #" . $editquote['qnbr'] . ' for ' . get_customer_name($custID);
+                $page->title = "Editing Quote #" . $editquote['qnbr'] . ' for ' . get_customername($custID);
             } else {
-                $page->title = "Viewing Quote #" . $editquote['qnbr'] . ' for ' . get_customer_name($custID);
+                $page->title = "Viewing Quote #" . $editquote['qnbr'] . ' for ' . get_customername($custID);
             }
             $editquote['unlock-url'] = $config->pages->quotes."redir/?action=unlock-quote&qnbr=".$qnbr;
 

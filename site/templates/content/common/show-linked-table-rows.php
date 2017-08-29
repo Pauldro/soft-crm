@@ -1,5 +1,5 @@
 <?php if ($custID != '' ) : ?>
-    <tr> <td>Customer:</td> <td><?php echo get_customer_name($custID)." ($custID)"; ?></td> </tr>
+    <tr> <td>Customer:</td> <td><?= get_customername($custID)." ($custID)"; ?></td> </tr>
 <?php endif; ?>
 
 <?php if ($shipID != '' ) : ?>

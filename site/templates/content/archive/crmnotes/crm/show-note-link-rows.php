@@ -1,22 +1,22 @@
 <?php if ($custID != '' ) : ?>
-    <tr> 
-		<td>Customer:</td> 
+    <tr>
+		<td>Customer:</td>
 		<td>
   			<a href="<?= $note->generatecustomerurl(); ?>">
-  				<?php echo get_customer_name($custID)." ($custID)"; ?>
+  				<?= get_customername($custID)." ($custID)"; ?>
   			</a>
-   		</td> 
+   		</td>
     </tr>
 <?php endif; ?>
 
 <?php if ($shipID != '' ) : ?>
-    <tr> 
-    	<td>Ship-to:</td> 
+    <tr>
+    	<td>Ship-to:</td>
 		<td>
 			<a href="<?= $note->generateshiptourl();; ?>">
 				<?php echo get_shipto_name($custID, $shipID, false). " ($shipID)"; ?>
 			</a>
-   		</td>  
+   		</td>
     </tr>
 <?php endif; ?>
 

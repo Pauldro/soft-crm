@@ -7,7 +7,7 @@
     </tr>
     <tr>
         <td>Customer:</td>
-        <td><?php echo get_customer_name($note->customerlink); ?> <a href="<?php echo $note->generatecustomerurl(); ?>"><i class="glyphicon glyphicon-share"></i> Go to Customer Page</a></td>
+        <td><?= get_customername($note->customerlink); ?> <a href="<?php echo $note->generatecustomerurl(); ?>"><i class="glyphicon glyphicon-share"></i> Go to Customer Page</a></td>
     </tr>
     <?php if ($note->hasshiptolink) : ?>
         <tr>
