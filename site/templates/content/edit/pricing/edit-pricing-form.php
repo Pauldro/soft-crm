@@ -41,7 +41,7 @@
             		<?php include $config->paths->content."edit/pricing/item-price-breaks.php"; ?>
             	</div>
             	<div class="col-sm-6">
-            		<div class="jumbotron item-detail-heading"> <div class=""> <h4><?php echo get_customer_name($custID); ?> History</h4> </div> </div>
+            		<div class="jumbotron item-detail-heading"> <div class=""> <h4><?= get_customername($custID); ?> History</h4> </div> </div>
           			<?php include $config->paths->content."edit/pricing/item-history.php"; ?>
             	</div>
             </div>

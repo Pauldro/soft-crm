@@ -14,7 +14,7 @@
                     <tbody>
                         <tr>
                             <td>CustID:</td>
-                            <td><?= $contact['custid']. ' - '. get_customer_name($contact['custid'], false); ?></td>
+                            <td><?= $contact['custid']. ' - '. get_customername($contact['custid'], false); ?></td>
                         </tr>
                         <?php if (strlen($contact['shiptoid']) > 0) : ?>
                             <tr> <td>Ship-to ID:</td> <td><?php echo $contact['shiptoid']; ?></td></tr>

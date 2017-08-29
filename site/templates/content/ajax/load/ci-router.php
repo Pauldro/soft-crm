@@ -1,6 +1,6 @@
 <?php
     $shipID = '';
-    switch ($input->urlSegment(2)) { 
+    switch ($input->urlSegment(2)) {
         case 'item-search-results':
             $page->title = "Searching items for " . $input->get->text('q');
             $q = $input->get->text('q');
@@ -8,13 +8,13 @@
             break;
 		case 'ci-shiptos':
 			$custID = $input->get->text('custID');
-			$page->title = 'Viewing ' . get_customer_name($custID) . ' shiptos';
+			$page->title = 'Viewing ' . get_customername($custID) . ' shiptos';
 			$page->body = $config->paths->content."cust-information/cust-shiptos.php";
 			break;
 		case 'ci-shipto-info':
 			$custID = $input->get->text('custID');
 			$shipID = $input->get->text('shipID');
-			$page->title = 'Viewing ' . get_customer_name($custID) . ' shipto ' . $shipID;
+			$page->title = 'Viewing ' . get_customername($custID) . ' shipto ' . $shipID;
 			$page->content = $config->paths->content."cust-information/cust-shipto-info.php";
 			break;
         case 'ci-pricing-search':
@@ -37,17 +37,17 @@
             break;
 		case 'ci-open-invoices':
 			$custID = $input->get->text('custID');
-			$page->title = get_customer_name($custID) . ' Open Invoice Inquiry';
+			$page->title = get_customername($custID) . ' Open Invoice Inquiry';
 			$page->body = $config->paths->content."cust-information/cust-open-invoices.php";
 			break;
 		case 'ci-standing-orders':
 			$custID = $input->get->text('custID');
-			$page->title = get_customer_name($custID) . ' Standing Orders Inquiry';
+			$page->title = get_customername($custID) . ' Standing Orders Inquiry';
 			$page->body = $config->paths->content."cust-information/cust-standing-orders.php";
 			break;
 		case 'ci-payment-history':
 			$custID = $input->get->text('custID');
-			$page->title = get_customer_name($custID) . ' Payment History Inquiry';
+			$page->title = get_customername($custID) . ' Payment History Inquiry';
 			$page->body = $config->paths->content."cust-information/cust-payment-history.php";
 			break;
 		case 'ci-documents':
@@ -57,60 +57,60 @@
                     $page->title = "Order #" . $input->get->text('ordn'). ' Documents';
                     break;
                 default:
-                    $page->title = get_customer_name($custID) . ' Documents';
+                    $page->title = get_customername($custID) . ' Documents';
                     break;
             }
 			$page->body = $config->paths->content."cust-information/cust-documents.php";
 			break;
 		case 'ci-quotes':
 			$custID = $input->get->text('custID');
-			$page->title = get_customer_name($custID) . ' Quote Inquiry';
+			$page->title = get_customername($custID) . ' Quote Inquiry';
 			$page->body = $config->paths->content."cust-information/cust-quotes.php";
 			break;
 		case 'ci-contacts':
 			$custID = $input->get->text('custID');
-			$page->title = get_customer_name($custID) . ' Contacts Inquiry';
+			$page->title = get_customername($custID) . ' Contacts Inquiry';
 			$page->body = $config->paths->content."cust-information/cust-contacts.php";
 			break;
 		case 'ci-contacts':
 			$custID = $input->get->text('custID');
-			$page->title = get_customer_name($custID) . ' Contacts Inquiry';
+			$page->title = get_customername($custID) . ' Contacts Inquiry';
 			$page->body = $config->paths->content."cust-information/cust-contacts.php";
 			break;
 		case 'ci-credit':
 			$custID = $input->get->text('custID');
-			$page->title = get_customer_name($custID) . ' Credit Inquiry';
+			$page->title = get_customername($custID) . ' Credit Inquiry';
 			$page->body = $config->paths->content."cust-information/cust-credit.php";
 			break;
 		case 'ci-payments':
 			$custID = $input->get->text('custID');
-			$page->title = get_customer_name($custID) . ' Credit Inquiry';
+			$page->title = get_customername($custID) . ' Credit Inquiry';
 			$page->body = $config->paths->content."cust-information/cust-credit.php";
 			break;
         case 'ci-sales-orders':
 			$custID = $input->get->text('custID');
-			$page->title = get_customer_name($custID) . ' Sales Order Inquiry';
+			$page->title = get_customername($custID) . ' Sales Order Inquiry';
 			$page->body = $config->paths->content."cust-information/cust-sales-orders.php";
 			break;
         case 'ci-sales-history':
 			$custID = $input->get->text('custID');
             if ($input->urlSegment(3) == 'form') {
                 $action = 'ci-sales-history';
-                $page->title = get_customer_name($custID) . ' Choose a Starting Date';
+                $page->title = get_customername($custID) . ' Choose a Starting Date';
     			$page->body = $config->paths->content."cust-information/forms/cust-sales-history-form.php";
             } else {
-                $page->title = get_customer_name($custID) . ' Sales History Inquiry';
+                $page->title = get_customername($custID) . ' Sales History Inquiry';
     			$page->body = $config->paths->content."cust-information/cust-sales-history.php";
             }
 			break;
         case 'ci-custpo':
 			$custID = $input->get->text('custID');
-			$page->title = get_customer_name($custID) . ' Customer PO Inquiry';
+			$page->title = get_customername($custID) . ' Customer PO Inquiry';
 			$page->body = $config->paths->content."cust-information/cust-po.php";
 			break;
         case 'ci-53weeks':
 			$custID = $input->get->text('custID');
-			$page->title = get_customer_name($custID) . ' 52 Week Sales Data';
+			$page->title = get_customername($custID) . ' 52 Week Sales Data';
 			$page->body = $config->paths->content."cust-information/cust-sales-data.php";
 			break;
         default:

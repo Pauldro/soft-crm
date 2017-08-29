@@ -31,7 +31,7 @@
     </tr>
     <tr>
         <td>Customer:</td>
-        <td><?php echo get_customer_name($task->customerlink); ?> <a href="<?php echo $task->generatecustomerurl(); ?>" target="_blank"><i class="glyphicon glyphicon-share"></i> Go to Customer Page</a></td>
+        <td><?= get_customername($task->customerlink); ?> <a href="<?php echo $task->generatecustomerurl(); ?>" target="_blank"><i class="glyphicon glyphicon-share"></i> Go to Customer Page</a></td>
     </tr>
     <?php if ($task->hasshiptolink) : ?>
         <tr>

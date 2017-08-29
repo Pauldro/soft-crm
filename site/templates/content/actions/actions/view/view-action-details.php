@@ -17,7 +17,7 @@
     <?php if ($action->hascustomerlink) : ?>
         <tr>
             <td>Customer:</td>
-            <td><?php echo get_customer_name($action->customerlink); ?> <a href="<?php echo $action->generatecustomerurl(); ?>" target="_blank"><i class="glyphicon glyphicon-share"></i> Go to Customer Page</a></td>
+            <td><?= get_customername($action->customerlink); ?> <a href="<?php echo $action->generatecustomerurl(); ?>" target="_blank"><i class="glyphicon glyphicon-share"></i> Go to Customer Page</a></td>
         </tr>
     <?php endif; ?>
     <?php if ($action->hasshiptolink) : ?>

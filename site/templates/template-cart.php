@@ -5,7 +5,7 @@
         $carthead = getcarthead(session_id(), false);
         $custID = $carthead['custid'];
         $shipID = $carthead['shiptoid'];
-        $page->title = "Cart for ".get_customer_name($carthead['custid']);
+        $page->title = "Cart for ".get_customername($carthead['custid']);
     }
 	$noteurl = $config->pages->notes.'redir/?action=get-cart-notes';
 ?>

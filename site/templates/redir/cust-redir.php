@@ -231,7 +231,7 @@
 		case 'shop-as-customer':
 			$session->custID = $custID;
 			$data = array('DBNAME' => $config->dbName, 'CARTCUST' => false, 'CUSTID' => $custID);
-			$session->{'new-shopping-customer'} = get_customer_name($custID);
+			$session->{'new-shopping-customer'} = get_customername($custID);
             if (!empty($shipID)) {$data['SHIPID'] = $shipID; $session->shipID = $shipID; }
 			if (!getcartheadcount(session_id(), false)) { $session->sql = insertcarthead(session_id(), $custID, $shipID, false);}
 			$session->loc = ($input->post->page ? $input->post->page : $input->get->text('page'));
@@ -290,7 +290,7 @@
 			$session->loc = $config->pages->index;
 			break;
 		case 'ci-documents':
-			$custname = get_customer_name($custID);
+			$custname = get_customername($custID);
 			$data = array('DBNAME' => $config->dbName, 'DOCVIEW' => false, 'FLD1CD' => 'CU', 'FLD1DATA' => $custID, 'FLD1DESC' => $custname);
 			$session->loc = $config->pages->index;
 			break;

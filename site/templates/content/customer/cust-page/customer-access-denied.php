@@ -1,7 +1,7 @@
 <div class="row">
 	<div class="col-xs-12">
 		<h2>Access Denied</h2>
-		<p>Customer: <?= get_customer_name($custID)." (".$custID.")"; ?></p>
+		<p>Customer: <?= get_customername($custID)." (".$custID.")"; ?></p>
 		<?php if ($shipID != '') : ?>
 			<p>Ship-to: <?= get_shipto_name($custID, $shipID, false)." (".$shipID.")"; ?></p>
 		<?php endif; ?>

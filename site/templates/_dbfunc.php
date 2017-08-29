@@ -60,7 +60,7 @@
 		}
 	}
 
-	function get_customer_name($custID) {
+	function get_customername($custID) {
 		$sql = wire('database')->prepare("SELECT name FROM custindex WHERE custid = :custID LIMIT 1");
 		$switching = array(':custID' => $custID);
 		$sql->execute($switching);

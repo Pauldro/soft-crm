@@ -72,7 +72,7 @@
         <div class="row">
             <div class="col-sm-6">
                 <?php if ($input->get->custID) : ?>
-                    <h4>Pricing for <?php echo get_customer_name($custID); ?></h4>
+                    <h4>Pricing for <?= get_customername($custID); ?></h4>
                 <?php else : ?>
                     <h4>Pricing</h4>
                 <?php endif; ?>

@@ -3,7 +3,7 @@
 
     if ($input->urlSegment(1)) {
         $custID = $input->urlSegment(1);
-		$page->title = 'CI: ' . get_customer_name($custID);
+		$page->title = 'CI: ' . get_customername($custID);
 		$custjson = json_decode(file_get_contents($config->jsonfilepath.session_id()."-cicustomer.json"), true);
 	    $custshiptos = json_decode(file_get_contents($config->jsonfilepath.session_id()."-cishiptolist.json"), true);
 		$buttonsjson = json_decode(file_get_contents($config->jsonfilepath.session_id()."-cibuttons.json"), true);
@@ -19,7 +19,7 @@
 					break;
 				}
 			}
-            
+
 			if ($i > sizeof($custshiptos['data'])) {
 				$i = 1;
 			}

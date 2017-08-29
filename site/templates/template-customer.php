@@ -9,7 +9,7 @@
 			$page->editcontact = false;
 			$custID = $sanitizer->text($input->urlSegment(1));
 			$shipID = '';
-			$customer = get_customer_name($input->urlSegment(1));
+			$customer = get_customername($input->urlSegment(1));
 			$page->title = $input->urlSegment(1) . ' - ' . $customer;
 			$user->hascustomeraccess = can_accesscustomer($user->loginid, $user->hascontactrestrictions, $custID, false);
 			$page->body = $config->paths->content.'customer/cust-page/customer-page-outline.php';

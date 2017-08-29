@@ -3,7 +3,7 @@
 		<td>Customer:</td>
 		<td>
   			<a href="<?= $note->generatecustomerurl(); ?>">
-  				<?php echo get_customer_name($custID)." ($custID)"; ?>
+  				<?= get_customername($custID)." ($custID)"; ?>
   			</a>
    		</td>
     </tr>
