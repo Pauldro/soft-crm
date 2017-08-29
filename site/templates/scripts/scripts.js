@@ -384,6 +384,19 @@ $(document).ready(function() {
 			$('#'+modal.attr('id')+ " .resultsurl").val(resultsurl);
 		});
 
+		$('body').on('submit', '#add-multiple-item-form', function(e) {
+            if ($(this).attr('data-checked') == 'true') {
+                $(this).submit();
+            } else {
+                e.preventDefault();
+                $(this).validateitemids();
+                var invaliditemcount = $(this).find('input[name="itemID[]"]').length;
+                if (!invaliditemcount) {
+                    $(this).submit();
+                }
+            }
+        });
+
 		$('#add-item-modal').on('shown.bs.modal', function() {
 			$('#add-item-modal .searchfield').focus();
 		});
@@ -401,13 +414,15 @@ $(document).ready(function() {
 			});
 		});
 
+		/*==============================================================
+		 CI/II FUNCTIONS
+		=============================================================*/
 		$("body").on("keyup", ".ii-item-search", function() {
 			var thisform = $(this).closest('form');
 			var href = thisform.attr('action')+"?q="+urlencode($(this).val());
 			var loadinto = '#item-results';
 			$(loadinto).loadin(href, function() { });
 		});
-
 
 		$("body").on("submit", "#ci-search-item", function(e) {
 			e.preventDefault();
@@ -457,9 +472,6 @@ $(document).ready(function() {
 				$(loadinto).loadin(href+' '+loadinto, function() { });
 		});
 
-
-
-
 		$('body').on('click', '.load-doc', function(e) {
 			e.preventDefault();
 			var button = $(this);
@@ -480,7 +492,6 @@ $(document).ready(function() {
 		/*==============================================================
 		  ACTION FUNCTIONS
 		=============================================================*/
-
 		$("body").on("change", "#actions-panel .change-action-type, #actions-modal-panel .change-action-type", function() {
 			var select = $(this);
 			var actiontype = select.val();
@@ -788,9 +799,33 @@ $(document).ready(function() {
 					string += '#'+id;
 				}
 			}
-
 			return string;
-		}
+		},
+		validateitemids: function() {
+            var custID = $(this).find('input[name="custID"]').val();
+            var valid = true;
+            $(this).find('input[name="itemID[]"]').each(function() {
+                var field = $(this);
+                var itemID = $(this).val();
+                var href = URI(config.urls.json.validateitemid).addQuery('itemID', itemID).addQuery('custID', custID).toString();
+                $.getJSON(href, function(json) {
+                    if (json.error) {
+                        alert();
+                    } else {
+                        if (!json.itemexists) {
+                            valid = false;
+                            field.parent().addClass('has-error');
+                        }
+                    }
+                });
+            });
+
+            $(this).attr('data-checked', 'true');
+            var invaliditemcount = $(this).find('input[name="itemID[]"]').length;
+            if (invaliditemcount) {
+                $(this).find('.response').createalertpanel('Double Check your itemIDs', '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>', 'warning');
+            }
+        }
 	});
 
 	function getpaginationurl(form) {
@@ -978,6 +1013,7 @@ $(document).ready(function() {
 	});
 
 
+
 /*==============================================================
  	CONTENT FUNCTIONS
 =============================================================*/
@@ -993,7 +1029,7 @@ $(document).ready(function() {
 			$(this).children('.modal-dialog').removeClass('modal-xl').removeClass('modal-lg').removeClass('modal-sm').removeClass('modal-md').removeClass('modal-xs').addClass('modal-'+size);
 			return $(this);
 		},
-		createalertpanel(alert, alert_message, exclamation, alert_type) {
+		createalertpanel: function(alert_message, exclamation, alert_type) {
 			var alertheader = '<div class="alert alert-'+alert_type+' alert-dismissible" role="alert">';
 			var closebutton = '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>';
 			var message = '<strong>'+exclamation+'</strong> ' + alert_message

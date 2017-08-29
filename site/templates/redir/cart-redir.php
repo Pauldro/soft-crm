@@ -106,7 +106,7 @@
             $session->loc = $input->post->page;
 			break;
 		case 'add-nonstock-item':
-			insertcartline(session_id(), false);
+			insertcartline(session_id(), '0', false);
 			$cartdetail = getcartline(session_id(), '0', false);
 			$cartdetail['orderno'] = session_id();
 			$cartdetail['recno'] = '0';
