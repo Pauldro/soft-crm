@@ -90,8 +90,8 @@
 				<tr class="detail last-detail">
 					<td></td>
 					<td>
-						<a href="<?= $config->pages->quotes."redir/?action=get-quote-details-print&qnbr=".$quote['quotnbr']; ?>" class="h3" target="_blank">
-							<i class="glyphicon glyphicon-print" aria-hidden="true"></i> <span class="sr-only">View Printable Quoter</span>
+						<a href="<?= $config->pages->quotes."redir/?action=get-quote-details-print&qnbr=".$quote['quotnbr']; ?>" target="_blank">
+							<span class="h3"><i class="glyphicon glyphicon-print" aria-hidden="true"></i></span>  View Printable Quote
 						</a>
 					</td>
 					<td>
