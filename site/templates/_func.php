@@ -486,7 +486,7 @@ function show_requirements($field) {
 		}
 
 		if ($shipID != '') {
-			$replace .= " Shipto: " . get_shipto_name($custID, $shipID, false)." ($shipID)";
+			$replace .= " Shipto: " . get_shiptoname($custID, $shipID, false)." ($shipID)";
 		}
 
 		if ($contactID != '') {

@@ -14,7 +14,7 @@
     	<td>Ship-to:</td>
 		<td>
 			<a href="<?= $note->generateshiptourl();; ?>">
-				<?php echo get_shipto_name($custID, $shipID, false). " ($shipID)"; ?>
+				<?= get_shiptoname($custID, $shipID, false). " ($shipID)"; ?>
 			</a>
    		</td>
     </tr>

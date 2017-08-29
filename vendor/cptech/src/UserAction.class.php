@@ -128,7 +128,7 @@
             }
             if ($this->shiptolink != '') {
                 //$this->hasshiptolink = true; $regardinglink .= ' ShipID: '. $this->shiptolink;
-                $this->hasshiptolink = true; $regardinglink .= ' ShipID: '. get_shipto_name($this->customerlink, $this->shiptolink, false);
+                $this->hasshiptolink = true; $regardinglink .= ' ShipID: '. get_shiptoname($this->customerlink, $this->shiptolink, false);
             }
             if ($this->contactlink != '') { $this->hascontactlink = true; $regardinglink .= ' Contact: '. $this->contactlink; }
             if ($this->salesorderlink != '') { $this->hasorderlink = true; $regardinglink = 'Order #' . $this->salesorderlink; }
@@ -147,7 +147,7 @@
     		}
 
     		if ($this->hasshiptolink) {
-    			$replace .= " Shipto: " . get_shipto_name($this->customerlink, $this->shiptolink, false)." ($this->shiptolink)";
+    			$replace .= " Shipto: " . get_shiptoname($this->customerlink, $this->shiptolink, false)." ($this->shiptolink)";
     		}
 
     		if ($this->hascontactlink) {
