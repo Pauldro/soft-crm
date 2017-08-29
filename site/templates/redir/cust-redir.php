@@ -146,7 +146,7 @@
 
 	switch ($action) {
 		case 'add-customer':
-			$customer = get_first_custindex(false);
+			$customer = get_firstcustindexrecord(false);
 			$custkeys = array_keys($customer);
 			$newcustomer = array_fill_keys($custkeys, ' ');
 			$newcustomer['custid'] = session_id();
