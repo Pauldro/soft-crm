@@ -1,7 +1,7 @@
 <?php
 
 
-	$vl = is_valid_login(session_id());
+	$vl = is_validlogin(session_id());
 
 
 	$L = $session->loc;

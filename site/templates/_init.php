@@ -48,7 +48,7 @@
 	$config->scripts->append($config->urls->templates.'scripts/classes.js');
 	$config->scripts->append($config->urls->templates.'scripts/scripts.js');
 
-	$user->loggedin = is_valid_login(session_id());
+	$user->loggedin = is_validlogin(session_id());
 
 	if ($user->loggedin) {
 		setupuser(session_id());

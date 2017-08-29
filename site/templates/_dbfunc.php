@@ -3,7 +3,7 @@
 /* =============================================================
 	LOGIN FUNCTIONS
 ============================================================ */
-	function is_valid_login($sessionID) {
+	function is_validlogin($sessionID) {
 		$sql = wire('database')->prepare("SELECT IF(validlogin = 'Y',1,0) FROM logperm WHERE sessionid = :sessionID LIMIT 1");
 		$switching = array(':sessionID' => $sessionID);
 		$sql->execute($switching);
@@ -12,27 +12,6 @@
 
 	function get_loginerrormsg($sessionID) {
 		$sql = wire('database')->prepare("SELECT errormsg FROM logperm WHERE sessionid = :sessionID");
-		$switching = array(':sessionID' => $sessionID);
-		$sql->execute($switching);
-		return $sql->fetchColumn();
-	}
-
-	function get_login_name($sessionID) {
-		$sql = wire('database')->prepare("SELECT salespername FROM logperm WHERE sessionid = :sessionID");
-		$switching = array(':sessionID' => $sessionID);
-		$sql->execute($switching);
-		return $sql->fetchColumn();
-	}
-
-	function get_login_id($sessionID) {
-		$sql = wire('database')->prepare("SELECT loginid FROM logperm WHERE sessionid = :sessionID");
-		$switching = array(':sessionID' => $sessionID);
-		$sql->execute($switching);
-		return $sql->fetchColumn();
-	}
-
-	function does_user_have_contact_restrictions($sessionID) {
-		$sql = wire('database')->prepare("SELECT IF(restrictaccess = 'Y',1,0) FROM logperm WHERE sessionid = :sessionID");
 		$switching = array(':sessionID' => $sessionID);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
