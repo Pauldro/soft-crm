@@ -26,12 +26,12 @@
 /* =============================================================
 	CUSTOMER FUNCTIONS
 ============================================================ */
-	function has_access_to_customer($loginID, $restrictions, $custID, $debug) {
+	function can_accesscustomer($loginID, $restrictions, $custID, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custindex WHERE custid = :custID AND source = 'CS') t WHERE splogin1 IN (:loginID, :shared) OR splogin2 = :loginID OR splogin3 = :loginID");
-			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':loginID' => $loginID, ':loginID' => $loginID);
-			$withquotes = array(true, true, true, true, true);
+			$sql = wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custperm WHERE custid = :custID) t WHERE loginid = :loginID OR loginid = :shared");
+			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS);
+			$withquotes = array(true, true, true);
 			if ($debug) {
 				return returnsqlquery($sql->queryString, $switching, $withquotes);
 			} else {
@@ -43,11 +43,11 @@
 		}
 	}
 
-	function has_access_to_customer_shipto($loginID, $restrictions, $custID, $shipID, $debug) {
+	function can_accesscustomershipto($loginID, $restrictions, $custID, $shipID, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custindex WHERE custid = :custID AND shiptoid = :shipID AND source = 'CS') t WHERE splogin1 IN (:loginID, :shared) OR splogin2 = :loginID OR splogin3 = :loginID");
-			$switching = array(':custID' => $custID, ':shipID' => $shipID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':loginID' => $loginID, ':loginID' => $loginID);
+			$sql = wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custperm WHERE custid = :custID AND shiptoid = :shipID) t WHERE loginid = :loginID OR loginid = :shared");
+			$switching = array(':custID' => $custID, ':shipID' => $shipID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS);
 			$withquotes = array(true, true, true, true, true);
 			if ($debug) {
 				return returnsqlquery($sql->queryString, $switching, $withquotes);
