@@ -1,4 +1,5 @@
 <?php
+	$shipID = "";
 	if ($input->urlSegment(1)) {
 		if ($input->urlSegment(1) == 'add') {
 			$page->title = "Add Customer";
@@ -9,7 +10,7 @@
 			$custID = $sanitizer->text($input->urlSegment(1));
 			$shipID = '';
 			$customer = get_customer_name($input->urlSegment(1));
-			$page->title = $input->urlSegment1 . ' - ' . $customer;
+			$page->title = $input->urlSegment(1) . ' - ' . $customer;
 			$user->hascustomeraccess = can_accesscustomer($user->loginid, $user->hascontactrestrictions, $custID, false);
 			$page->body = $config->paths->content.'customer/cust-page/customer-page-outline.php';
 			$config->scripts->append($config->urls->templates.'scripts/pages/customer-page.js');
@@ -20,7 +21,6 @@
 				if (strpos($input->urlSegment(2), 'contacts') !== FALSE) {
 					$contactID = $input->get->text('id');
 					$page->title = $contactID .", " . $customer;
-					$shipID = "";
 					$user->hasshiptoaccess = false;
 					$page->contact = true;
 					if ($input->urlSegment(3) == 'edit') {
