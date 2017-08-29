@@ -76,10 +76,9 @@
 			$sql->execute($switching);
 			return $sql->fetchColumn();
 		}
-
 	}
 
-	function get_customer_info($sessionID, $custID, $debug) {
+	function get_customerinfo($sessionID, $custID, $debug) {
 		$sql = wire('database')->prepare("SELECT custindex.*, customer.dateentered FROM custindex JOIN customer ON custindex.custid = customer.custid WHERE custindex.custid = :custID AND customer.sessionid = :sessionID LIMIT 1");
 		$switching = array(':sessionID' => $sessionID, ':custID' => $custID); $withquotes = array(true, true);
 		if ($debug) {
@@ -90,11 +89,10 @@
 		}
 	}
 
-	function get_first_custindex($debug) {
+	function get_firstcustindexrecord($debug) {
 		$sql = wire('database')->prepare("SELECT * FROM custindex LIMIT 1");
-		$switching = array(); $withquotes = array();
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $sql->queryString;
 		} else {
 			$sql->execute();
 			return $sql->fetch(PDO::FETCH_ASSOC);

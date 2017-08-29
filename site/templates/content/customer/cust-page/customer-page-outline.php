@@ -1,6 +1,6 @@
 <?php
 	error_reporting(error_reporting() & ~E_NOTICE);
-	$customer = get_customer_info(session_id(), $custID, false);
+	$customer = get_customerinfo(session_id(), $custID, false);
 	$shiptocount = get_shipto_count($user->loginid, $user->hascontactrestrictions, $custID, false);
 	$address = $city = $state = $zip = $phone = $contact = "";
 ?>
