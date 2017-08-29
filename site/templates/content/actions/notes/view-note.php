@@ -1,10 +1,10 @@
 <?php
     // $note is loaded by Crud Controller
 
-    if ($note->hascontactlink) {
-        $contactinfo = getcustcontact($note->customerlink, $note->shiptolink, $note->contactlink, false);
+    if ($note->hascontactlink) { //DOESNT MATTER DEPRECATE
+        $contactinfo = get_customercontact($note->customerlink, $note->shiptolink, $note->contactlink, false);
     } else {
-        $contactinfo = getshiptocontact($note->customerlink, $note->shiptolink, false);
+        $contactinfo = get_customercontact($note->customerlink, $note->shiptolink, $note->contactlink, false);
     }
 ?>
 
@@ -17,4 +17,3 @@
 		<div role="tabpanel" class="tab-pane active" id="note"><?php include $config->paths->content."actions/notes/view/view-note-details.php"; ?></div>
 	</div>
 </div>
-

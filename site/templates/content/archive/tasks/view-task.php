@@ -6,10 +6,10 @@
         $note = loadcrmnote($task->notelink, false);
     }
 
-    if ($task->hascontactlink) {
-        $contactinfo = getcustcontact($task->customerlink, $task->shiptolink, $task->contactlink, false);
+    if ($task->hascontactlink) { //DOESNT MATTER DEPRECATE
+        $contactinfo = get_customercontact($task->customerlink, $task->shiptolink, $task->contactlink, false);
     } else {
-        $contactinfo = getshiptocontact($task->customerlink, $task->shiptolink, false);
+        $contactinfo = get_customercontact($task->customerlink, $task->shiptolink, $task->contactlink, false);
     }
 
 

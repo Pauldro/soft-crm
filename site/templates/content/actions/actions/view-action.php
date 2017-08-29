@@ -1,9 +1,9 @@
 <?php
 	// $action is Loaded by Crud Controller
-    if ($action->hascontactlink) {
-        $contactinfo = getcustcontact($action->customerlink, $action->shiptolink, $action->contactlink, false);
+    if ($action->hascontactlink) { //DOESNT MATTER DEPRECATE
+        $contactinfo = get_customercontact($action->customerlink, $action->shiptolink, $action->contactlink, false);
     } else {
-        $contactinfo = getshiptocontact($action->customerlink, $action->shiptolink, false);
+        $contactinfo = get_customercontact($action->customerlink, $action->shiptolink, $action->contactlink, false);
     }
 
     if ($action->isrescheduled) {

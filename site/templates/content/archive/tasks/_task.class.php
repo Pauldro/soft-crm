@@ -104,7 +104,7 @@
             }
             $this->generatetasklineage();
             if (strtotime($this->duedate) < strtotime("now") && (!$this->hascompleted) ) { $this->isoverdue = true;}
-            $contact = getcustcontact($this->customerlink, $this->shiptolink, $this->contactlink, false);
+            $contact = get_customercontact($this->customerlink, $this->shiptolink, $this->contactlink, false);
             switch ($this->tasktype) {
                 case 'email':
                     $this->contactby = $contact['email'];
@@ -148,7 +148,7 @@
 
         public function generatecontactbylink() {
             $href = '';
-            $contact = getcustcontact($this->customerlink, $this->shiptolink, $this->contactlink, false);
+            $contact = get_customercontact($this->customerlink, $this->shiptolink, $this->contactlink, false);
             switch ($this->tasktype) {
                 case 'email':
                     $href = "mailto:".$contact['email'];

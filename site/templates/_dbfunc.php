@@ -147,12 +147,12 @@
 		}
 	}
 
-	function get_contacts($loginID, $restrictions, $custID, $debug) {
+	function get_customercontacts($loginID, $restrictions, $custID, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND recno IN (SELECT recno FROM custindex WHERE splogin1 IN (:loginID, :shared) OR splogin2 = :loginID  OR splogin3 = :loginID)");
-			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':loginID' => $loginID, ':loginID' => $loginID);
-			$withquotes = array(true, true, true, true);
+			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM (SELECT * FROM custperm WHERE custid = :custID) t WHERE loginid = :loginID OR loginid = :shared)");
+			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS);
+			$withquotes = array(true, true, true);
 		} else {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID");
 			$switching = array(':custID' => $custID); $withquotes = array(true);
@@ -167,22 +167,22 @@
 		}
 	}
 
-	function does_user_have_access_contact($loginID, $restrictions, $custID, $shipID, $contact, $debug) {
+	function can_accesscustomercontact($loginID, $restrictions, $custID, $shipID, $contactID, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE (splogin1 IN (:loginID, :shared) OR splogin2 = :loginID OR splogin3 = :loginID) AND custid = :custID AND shiptoid = :shipID AND contact = :contact");
-			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':custID' => $custID, ':shipID' => $shipID, ':contact' => $contact);
+			$sql = wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM (SELECT * FROM custperm WHERE custid = :custID) t WHERE loginid = :loginID OR loginid = :shared) AND shiptoid = :shipID AND contact = :contactID");
+			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':shipID' => $shipID, ':contactID' => $contactID);
 			$withquotes = array(true, true, true, true, true);
 		} else {
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE custid = :custID AND shiptoid = :shipID AND contact = :contact");
-			$switching = array(':custID' => $custID, ':shipID' => $shipID, ':contact' => $contact);
+			$sql = wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE custid = :custID AND shiptoid = :shipID AND contact = :contactID");
+			$switching = array(':custID' => $custID, ':shipID' => $shipID, ':contactID' => $contactID);
 			$withquotes = array(true, true, true);
 		}
 		$sql->execute($switching);
 		if ($debug) { return returnsqlquery($sql->queryString, $switching, $withquotes); } else { if ($sql->fetchColumn() > 0){return true;} else {return false; } }
 	}
 
-	function getcustcontact($custID, $shipID, $contactID, $debug) {
+	function get_customercontact($custID, $shipID, $contactID, $debug) {
 		if (!empty($contactID)) {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid = :shipID AND contact = :contactid LIMIT 1");
 			$switching = array(':custID' => $custID, ':shipID' => $shipID, ':contactid' => $contactID);
@@ -199,14 +199,6 @@
 			$sql->execute($switching);
 			return $sql->fetch(PDO::FETCH_ASSOC);
 		}
-	}
-
-	function getshiptocontact($custID, $shipID, $debug) {
-		$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid = :shipID LIMIT 1");
-		$switching = array(':custID' => $custID, ':shipID' => $shipID);
-		$withquotes = array(true, true, true);
-		$sql->execute($switching);
-		if ($debug) { return returnsqlquery($sql->queryString, $switching, $withquotes); } else { return $sql->fetch(PDO::FETCH_ASSOC); }
 	}
 
 	function edit_customercontact($custID, $shipID, $contactID, $contact, $debug) {

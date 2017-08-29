@@ -1,5 +1,5 @@
-<?php if (does_user_have_access_contact($user->loginid, $user->hasrestrictions, $custID, $shipID, $contactID, false)) : ?>
-	<?php $contact = getcustcontact($custID, $shipID, $contactID, false); ?>
+<?php if (can_accesscustomercontact($user->loginid, $user->hasrestrictions, $custID, $shipID, $contactID, false)) : ?>
+	<?php $contact = get_customercontact($custID, $shipID, $contactID, false); ?>
 	<h3 class="text-muted"><?= $contact['contact']; ?></h3>
 	<?php include $config->paths->content.'customer/contact/contact-address.php'; ?>
 	<div class="row">
