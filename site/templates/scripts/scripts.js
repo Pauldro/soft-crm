@@ -645,7 +645,7 @@ $(document).ready(function() {
 							wait(500, function() {
 								$(elementreload + " .actions-refresh").click();
 								$(modal).modal('hide');
-								swal({
+								/* swal({
 									title: "Your "+json.response.actiontype+" was created!",
 									text: "Would you like to create an action for this "+json.response.actiontype+"?",
 									type: "success",
@@ -658,7 +658,7 @@ $(document).ready(function() {
 									$('#actions-panel .add-action').attr('href', href).click();
 									href = URI(href).removeQuery('actionID').toString();
 									$('#actions-panel .add-action').attr('href', href);
-								}).catch(swal.noop);
+								}).catch(swal.noop); */
 							});
 						}
 					});
