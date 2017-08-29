@@ -5,7 +5,7 @@
 		<td>
 			<select name="shipTo" class="form-control input-sm" onChange="refreshshipto(this.value,'<?php echo $custID; ?>')">
             	<option value=" " <?php if ($shipID == '') { echo 'selected'; } ?>>Company Totals</option>
-               	<?php $shiptos = getcustomershiptos($custID, $user->loginid, $user->hascontactrestrictions, false); ?>
+               	<?php $shiptos = get_customershiptos($custID, $user->loginid, $user->hascontactrestrictions, false); ?>
                 <?php
 					foreach ($shiptos as $shipto) :
 					$address = $shipto['addr1'] . ' ' .$shipto['addr2']; $whole_address = $address.', '.$shipto['ccity'].', '.$shipto['cst'];
@@ -15,7 +15,7 @@
             </select>
         </td>
 	</tr>
-    <?php $shipto = get_shipto_info($custID, $shipID, false); ?>
+    <?php $shipto = get_shiptoinfo($custID, $shipID, false); ?>
     <tr> <td class="control-label">Ship-To ID: </td> <td><?php echo $shipto['shiptoid']; ?></td> </tr>
 	<?php if ($shipID != '') : ?>
 		<tr> <td></td> <td><?php //$withshipto = true; include $config->paths->content."customer/shop-as-form.php"; ?></td> </tr>
