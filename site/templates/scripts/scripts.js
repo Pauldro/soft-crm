@@ -579,6 +579,7 @@ $(document).ready(function() {
 						type: 'error',
 					}).catch(swal.noop);
 				} else {
+					button.closest('.modal').modal('hide');
 					swal({
 						title: 'Confirm task as complete?',
 						html:
