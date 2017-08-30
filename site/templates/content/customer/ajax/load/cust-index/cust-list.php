@@ -4,9 +4,9 @@
     $custID = '';
     $custlink = $config->pages->customer."redir/?action=ci-select";
     if ($input->get->q) {
-        $custresults = get_custindex_keyword_paged($user->loginid, $config->showonpage, $input->pageNum, $user->hascontactrestrictions, $input->get->text('q'),  false);
+        $custresults = search_custindexpaged($user->loginid, $config->showonpage, $input->pageNum, $user->hascontactrestrictions, $input->get->text('q'),  false);
         //$custresults = search_custindex_keyword_paged($user->loginid, $config->showonpage, $input->pageNum, $user->hascontactrestrictions, $input->get->text('q'),  false);
-        $resultscount = get_custindex_keyword_count($user->loginid, $user->hascontactrestrictions, $input->get->text('q'), false);
+        $resultscount = count_searchcustindex($user->loginid, $user->hascontactrestrictions, $input->get->text('q'), false);
 
     }
 
