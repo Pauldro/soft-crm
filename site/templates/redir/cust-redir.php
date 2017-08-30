@@ -199,8 +199,8 @@
 			$newcustomer['cphone'] = $input->post->text('billto-phone');
 			$newcustomer['cphext'] = $input->post->text('billto-ext');
 			$newcustomer['email'] = $data['BILLTOEMAIL'];
-			$newcustomer['recno'] = getmaxcustindexrecnbr() + 1;
-			$session->sql = insertnewcustomer($newcustomer, false);
+			$newcustomer['recno'] = getmax_custindexrecnbr() + 1;
+			$session->sql = insert_newcustindexrecord($newcustomer, false);
 
 			$newcustomershipto['shiptoid'] = '1';
 			$newcustomershipto['source'] = 'CS';
@@ -213,13 +213,13 @@
 			$newcustomershipto['cphone'] = $input->post->text('shipto-phone');
 			$newcustomershipto['cphext'] = $input->post->text('shipto-ext');
 			$newcustomershipto['email'] = $data['SHIPTOEMAIL'];
-			$newcustomershipto['recno'] = getmaxcustindexrecnbr() + 1;
-			$session->sql = insertnewcustomer($newcustomershipto, false);
+			$newcustomershipto['recno'] = getmax_custindexrecnbr() + 1;
+			$session->sql = insert_newcustindexrecord($newcustomershipto, false);
 			$session->loc = $config->pages->customer.'redir/?action=load-new-customer';
 			break;
 		case 'load-new-customer':
 			$custID = getcreatedordn(session_id(), false);
-			changecustindexcustid(session_id(), $custID);
+			edit_custindexcustid(session_id(), $custID);
 			$session->loc = $config->pages->customer . urlencode($custID)."/shipto-1/";
 			$data = array('DBNAME' => $config->dbName, 'CUSTID' => $custID);
 			break;

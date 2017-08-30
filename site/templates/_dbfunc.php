@@ -220,37 +220,36 @@
 /* =============================================================
 	CUST INDEX FUNCTIONS
 ============================================================ */
-	function get_distinct_custindex_paged($loginID, $limit = 10, $page = 1, $restrictions, $debug) {
+	function get_distinctcustindexpaged($loginID, $limit = 10, $page = 1, $restrictions, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		$limiting = returnlimitstatement($limit, $page);
 
 		if ($restrictions) {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid IN (SELECT DISTINCT(custid) FROM custperm WHERE loginid = :loginID OR loginid = :shared) GROUP BY custid ".$limiting);
-			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':loginID' => $loginID, ':loginID' => $loginID);
-			$withquotes = array(true, true, true, true);
+			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS);
+			$withquotes = array(true, true);
 		} else {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE shiptoid = '' GROUP BY custid " . $limiting);
-			$switching = array();
-			$withquotes = array();
+			$switching = array(); $withquotes = array();
 		}
 
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
 			$sql->execute($switching);
-			$sql->setFetchMode(\PDO::FETCH_CLASS, 'Contact');
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'Contact');
 			return $sql->fetchAll();
 		}
 	}
 
-	function get_distinct_custindex_count($loginID, $restrictions, $debug) {
+	function count_distinctcustindex($loginID, $restrictions, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE custid IN (SELECT DISTINCT(custid) FROM custperm WHERE loginid = :loginID OR loginid = :shared)");
-			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':loginID' => $loginID, ':loginID' => $loginID);
-			$withquotes = array(true, true, true, true);
+			$sql = wire('database')->prepare("SELECT COUNT(DISTINCT(custid)) FROM custindex WHERE custid IN (SELECT DISTINCT(custid) FROM custperm WHERE loginid = :loginID OR loginid = :shared)");
+			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS);
+			$withquotes = array(true, true);
 		} else {
-			$sql = wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE shiptoid = ''");
+			$sql = wire('database')->prepare("SELECT COUNT(DISTINCT(custid)) FROM custindex WHERE shiptoid = ''");
 			$switching = array(); $withquotes = array();
 		}
 
@@ -262,15 +261,15 @@
 		}
 	}
 
-	function get_custindex_keyword_paged($loginID, $limit = 10, $page = 1, $restrictions, $keyword, $debug) {
+	function search_custindexpaged($loginID, $limit = 10, $page = 1, $restrictions, $keyword, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		$limiting = returnlimitstatement($limit, $page);
 		$search = '%'.str_replace(' ', '%',$keyword).'%';
 
 		if ($restrictions) {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) ".$limiting);
-			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':loginID' => $loginID, ':search' => $search);
-			$withquotes = array(true, true, true, true);
+			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':search' => $search);
+			$withquotes = array(true, true, true);
 		} else {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) " . $limiting);
 			$switching = array(':search' => $search); $withquotes = array(true);
@@ -285,30 +284,7 @@
 		}
 	}
 
-	function search_custindex_keyword_paged($loginID, $limit = 10, $page = 1, $restrictions, $keyword, $debug) {
-		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
-		$limiting = returnlimitstatement($limit, $page);
-		$search = '%'.str_replace(' ', '%',$keyword).'%';
-
-		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) ".$limiting);
-			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':loginID' => $loginID, ':search' => $search);
-			$withquotes = array(true, true, true, true);
-		} else {
-			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) " . $limiting);
-			$switching = array(':search' => $search); $withquotes = array(true);
-		}
-
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			$sql->setFetchMode(PDO::FETCH_CLASS, 'Contact');
-			return $sql->fetchAll();
-		}
-	}
-
-	function get_custindex_keyword_count($loginID, $restrictions, $keyword, $debug) {
+	function count_searchcustindex($loginID, $restrictions, $keyword, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		$search = '%'.str_replace(' ', '%',$keyword).'%';
 
@@ -329,13 +305,13 @@
 		}
 	}
 
-	function get_top_25_selling_customers($loginID, $restrictions, $debug) {
+	function get_topxsellingcustomers($loginID, $numberofcustomers, $restrictions, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT custid, name, amountsold, timesold, lastsaledate FROM custindex WHERE splogin1 IN (:loginID, :sharedaccounts) OR splogin2 = :loginID OR splogin3 = :loginID GROUP BY custid ORDER BY CAST(amountsold as Decimal(10,8)) DESC LIMIT 25");
+			$sql = wire('database')->prepare("SELECT custid, shiptoid, name, amountsold, timesold, lastsaledate FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND shiptoid = '' ORDER BY CAST(amountsold as Decimal(10,8)) DESC LIMIT $numberofcustomers");
 			$switching = array(':loginID' => $loginID, ':sharedaccounts' => $SHARED_ACCOUNTS); $withquotes = array(true);
 		} else {
-			$sql = wire('database')->prepare("SELECT custid, name, amountsold, timesold, lastsaledate FROM custindex GROUP BY custid ORDER BY CAST(amountsold as Decimal(10,8)) DESC LIMIT 25 ");
+			$sql = wire('database')->prepare("SELECT custid, shiptoid, name, amountsold, timesold, lastsaledate FROM custindex WHERE shiptoid = '' ORDER BY CAST(amountsold as Decimal(10,8)) DESC LIMIT $numberofcustomers");
 			$switching = array(); $withquotes = array();
 		}
 
@@ -347,7 +323,7 @@
 		}
 	}
 
-	function insertnewcustomer($customer, $debug) {
+	function insert_newcustindexrecord($customer, $debug) {
 		$query = returninsertlinks($customer);
 		$sql = wire('database')->prepare("INSERT INTO custindex (".$query['columnlist'].") VALUES (".$query['valuelist'].")");
 		$switching = $query['switching']; $withquotes = $query['withquotes'];
@@ -359,13 +335,13 @@
 		}
 	}
 
-	function getmaxcustindexrecnbr() {
+	function getmax_custindexrecnbr() {
 		$sql = wire('database')->prepare("SELECT MAX(recno) FROM custindex");
 		$sql->execute();
 		return $sql->fetchColumn();
 	}
 
-	function changecustindexcustid($originalcustID, $newcustID) {
+	function edit_custindexcustid($originalcustID, $newcustID) {
 		$sql = wire('database')->prepare("UPDATE custindex SET custid = :newcustid WHERE custid = :originalcustid");
 		$switching = array(':newcustid' => $newcustID, ':originalcustid' => $originalcustID); $withquotes = array(true, true);
 		$sql->execute($switching);
