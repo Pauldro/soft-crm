@@ -2,14 +2,17 @@
     class DplusDateTime {
         static $defaultdate = 'm-d-Y';
         static $defaulttime = 'h:i A';
+        static $fulltimestring = 'YmdHisu';
+        static $shorttimestring = 'Hi';
 
-        public static function formatdplustime($time, $formatstring = null) {
+        static function formatdplustime($time, $formatstring = null, $timestring = null) {
             $formatstring ? $formatstring = $formatstring : $formatstring = self::$defaulttime;
-            $formatted = DateTime::createFromFormat('YmdHisu', $time);
+            $timestring ? $timestring = $timestring : $timestring = self::$fulltimestring;
+            $formatted = DateTime::createFromFormat($timestring, $time);
             return $formatted->format($formatstring);
         }
 
-        public static function formatdate($date, $formatstring = null) {
+        static function formatdate($date, $formatstring = null) {
             $formatstring ? $formatstring = $formatstring : $formatstring = self::$defaultdate;
             if (date($formatstring, strtotime($date)) == "12/31/1969") {
     			return '';

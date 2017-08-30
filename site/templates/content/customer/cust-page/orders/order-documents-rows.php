@@ -1,5 +1,5 @@
 <tr class="detail document-header">
-    <td colspan="3">ORDER #<?php echo $on; ?> Documents</td> <td>Document Type</td> <td align="right">Date</td> <td align="right">Time</td>
+    <td colspan="2">Documents</td> <td colspan="2">Document Type</td> <td align="right">Date</td> <td align="right">Time</td>
     <td></td> <td></td> <td></td> <td></td> <td></td>
 </tr>
 <?php $orderdocs = get_order_docs(session_id(), $on, false); ?>
@@ -7,10 +7,10 @@
 	<?php $filename = $orderdoc['pathname']; ?>
 	<tr class="detail">
 		<td colspan="2"></td>
-		<td>
+		<td colspan="2">
 			<b><a href="<?php echo $config->documentstorage.$filename; ?>" title="Click to View Document" target="_blank" ><?php echo $orderdoc['title']; ?></a></b>
 		</td>
-		<td align="right"><?php echo $orderdoc['createdate']; ?></td>
-		<td align="right"><?= DplusDateTime::formatdplustime($orderdoc['createtime']); ?></td> <td></td> <td></td><td></td> <td></td> <td></td> <td></td>
+		<td align="right"><?= $orderdoc['createdate']; ?></td>
+		<td align="right"><?= DplusDateTime::formatdplustime($orderdoc['createtime'], null, DplusDateTime::$shorttimestring); ?></td> <td></td><td></td> <td></td> <td></td> <td></td>
 	</tr>
 <?php endforeach; ?>
