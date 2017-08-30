@@ -53,9 +53,9 @@
     		<h4>Current Price</h4>
             <?php
                 if ($soconfig['config']['change_price']) {
-                    include $config->paths->content.'edit/pricing/tables/price-edit-table.php';
+                    include $config->paths->content.'edit/pricing/quotes/tables/price-edit-table.php';
                 } else {
-                    include $config->paths->content.'edit/pricing/tables/price-static-table.php';
+                    include $config->paths->content.'edit/pricing/quotes/tables/price-static-table.php';
                 }
             ?>
 
@@ -131,17 +131,8 @@
                             </select>
 						</td>
 					</tr>
-					<tr>
-						<td>PO Nbr</td>
-						<td><input type="text" name="ponbr" class="form-control input-sm" value="<?= $linedetail['ponbr']; ?>" disabled></td>
-					</tr>
-					<tr>
-						<td>Reference</td>
-						<td><input type="text" name="poref" class="form-control input-sm" value="<?= $linedetail['poref']; ?>"></td>
-					</tr>
 				</table>
 			</div>
-
 
 			<?php if ($linedetail['can-edit']) :?>
 		    	<button type="submit" class="btn btn-success btn-block"><i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Save Changes</button>
