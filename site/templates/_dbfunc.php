@@ -131,11 +131,11 @@
 	function get_customershiptos($custID, $loginID, $restrictions, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
-			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN ( SELECT custid, shiptoid FROM (SELECT * FROM custperm WHERE custid = :custID AND shiptoid != '') t WHERE loginid = :logiID OR loginid = :shared) GROUP BY custid, shiptoid");
+			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM (SELECT * FROM custperm WHERE custid = :custID AND shiptoid != '') t WHERE loginid = :loginID OR loginid = :shared) GROUP BY custid, shiptoid");
 			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS);
 			$withquotes = array(true, true, true);
 		} else {
-			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID WHERE shiptoid != ''");
+			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid != ''");
 			$switching = array(':custID' => $custID); $withquotes = array(true);
 		}
 
