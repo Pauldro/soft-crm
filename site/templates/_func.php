@@ -572,7 +572,7 @@ function show_requirements($field) {
 		$loginrecord = get_loginrecord($sessionID);
 		wire('user')->fullname = $loginrecord['loginname'];
 		wire('user')->loginid = $loginrecord['loginid'];
-		wire('user')->hascontactrestrictions = $loginrecord['restrictedaccess'];
+		wire('user')->hascontactrestrictions = $loginrecord['restrictcustomer'];
 		wire('user')->hasorderlocked = hasanorderlocked(session_id());
 		if (wire('user')->hasorderlocked) {
 			wire('user')->lockedordn = getlockedordn(session_id());
