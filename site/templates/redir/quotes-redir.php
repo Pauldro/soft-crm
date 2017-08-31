@@ -2,7 +2,7 @@
 	/**
 	*  QUOTE REDIRECT
 	* @param string $action
-	* 
+	*
 	*/
 
 
@@ -123,13 +123,19 @@
 			break;
 		case 'edit-quote':
 			$qnbr = $input->get->text('qnbr');
+			$date = date('Ymd');
+			$time = date('Hi');
 			$custID = getquotecustomer(session_id(), $qnbr, false);
 			$data = array('DBNAME' => $config->dbName, 'EDITQUOTE' => $qnbr, 'QUOTENO' => $qnbr);
+			$session->sql = insert_orderlock(session_id(), '2', $qnbr, $user->loginid, $date, $time, false);
 			$session->loc= $config->pages->editquote."?qnbr=".$qnbr;
 			break;
 		case 'edit-new-quote':
 			$qnbr = getcreatedordn(session_id(), false);
+			$date = date('Ymd');
+			$time = date('Hi');
 			$data = array('DBNAME' => $config->dbName, 'EDITQUOTE' => $qnbr, 'QUOTENO' => $qnbr);
+			$session->sql = insert_orderlock(session_id(), '2', $qnbr, $user->loginid, $date, $time, false);
 			$session->loc = $config->pages->editquote."?qnbr=".$qnbr;
 			break;
 		case 'save-quotehead':
