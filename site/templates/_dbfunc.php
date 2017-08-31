@@ -475,8 +475,15 @@
 	}
 
 	function getlockedordn($sessionID) {
-		$sql = wire('database')->prepare("SELECT orderno FROM ordlock WHERE sessionid = :sessionID");
+		$sql = wire('database')->prepare("SELECT orderno FROM ordlock WHERE sessionid = :sessionID LIMIT 1");
 		$switching = array(':sessionID' => $sessionID);
+		$sql->execute($switching);
+		return $sql->fetchColumn();
+	}
+
+	function is_orderlocked($sessionID, $ordn) {
+		$sql = wire('database')->prepare("SELECT COUNT(*) FROM ordlock WHERE sessionid = :sessionID AND orderno = :ordn LIMIT 1");
+		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
@@ -651,6 +658,30 @@
 				$sql->execute($query['switching']);
 			}
 			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
+		}
+	}
+
+	function insert_orderlock($sessionID, $recnbr, $ordn, $userID, $date, $time, $debug) {
+		$sql = wire('database')->prepare("INSERT INTO ordlock (sessionid, recno, date, time, orderno, userid) VALUES (:sessionID, :recnbr, :date, :time, :orderno, :userID)");
+		$switching = array(':sessionID' => $sessionID, ':recnbr' => $recnbr, ':date' => $time, ':time' => $time, ':orderno' => $ordn, ':userID' => $userID);
+		$withquotes = array(true, true, true, true, true, true);
+		if ($debug) {
+			return	returnsqlquery($sql->queryString, $switching, $withquotes);
+		} else {
+			$sql->execute($switching);
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
+		}
+	}
+
+	function remove_orderlock($sessionID, $ordn, $userID, $debug) {
+		$sql = wire('database')->prepare("DELETE FROM ordlock WHERE sessionid = :sessionID AND orderno = :ordn AND userid = :userID");
+		$switching = array(':sessionID' => $sessionID, ':orderno' => $ordn, ':userID' => $userID);
+		$withquotes = array(true, true, true);
+		if ($debug) {
+			return	returnsqlquery($sql->queryString, $switching, $withquotes);
+		} else {
+			$sql->execute($switching);
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		}
 	}
 
