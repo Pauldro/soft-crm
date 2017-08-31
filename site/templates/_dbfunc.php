@@ -202,7 +202,7 @@
 	}
 
 	function edit_customercontact($custID, $shipID, $contactID, $contact, $debug) {
-		$originalcontact = getcustcontact($custID, $shipID, $contactID, false);
+		$originalcontact = get_customercontact($custID, $shipID, $contactID, false);
 		$query = returnpreppedquery($originalcontact, $contact);
 		$sql = wire('database')->prepare("UPDATE custindex SET ".$query['setstatement']." WHERE custid = :custID AND shiptoid = :shipID AND contact = :contactID");
 		$query['switching'][':custID'] = $custID; $query['switching'][':shipID'] = $shipID; $query['switching'][':contactID'] = $contactID;
