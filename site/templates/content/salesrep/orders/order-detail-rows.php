@@ -56,7 +56,7 @@
 	?>
     <tr class="detail">
         <td colspan="2" class="text-center">
-            <a href="<?= $config->pages->ajax."load/edit-detail/order/?ordn=".$detail['orderno']."&line=".$detail['linenbr']; ?>" class="update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-custid="<?= $order['custid']; ?>">
+            <a href="<?= $config->pages->ajax."load/edit-detail/order/?ordn=".$detail['orderno']."&line=".$detail['linenbr']; ?>" class="update-line" data-kit="<?= $detail['kititemflag']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-custid="<?= $order['custid']; ?>">
                 <?php echo $detail['itemid']; ?>
             </a>
         </td>

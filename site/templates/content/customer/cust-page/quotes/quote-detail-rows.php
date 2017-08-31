@@ -21,7 +21,11 @@
 
     ?>
     <tr class="detail">
-        <td class="text-center"><?= $quotedetail['itemid']; ?></td>
+        <td class="text-center">
+            <a href="<?= $config->pages->ajax."load/edit-detail/quote/?qnbr=".$quotedetail['quotenbr']."&line=".$quotedetail['linenbr']."&readonly=readonly"; ?>" class="update-line" data-itemid="<?= $quotedetail['itemid']; ?>" data-kit="<?= $quotedetail['kititemflag']; ?>" data-custid="<?= $quote['custid']; ?>">
+                <?= $quotedetail['itemid']; ?>
+            </a>
+        </td>
         <td colspan="2">
             <?php if (strlen($quotedetail['vendoritemid'])) { echo ' '.$quotedetail['vendoritemid']."<br>";} ?>
             <?= $quotedetail['desc1']; ?>
