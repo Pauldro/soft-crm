@@ -127,7 +127,9 @@
 			$time = date('Hi');
 			$custID = getquotecustomer(session_id(), $qnbr, false);
 			$data = array('DBNAME' => $config->dbName, 'EDITQUOTE' => $qnbr, 'QUOTENO' => $qnbr);
-			$session->sql = insert_orderlock(session_id(), '2', $qnbr, $user->loginid, $date, $time, false);
+			if (!is_orderlocked(session_id(), $qnbr)) {
+				$session->sql = insert_orderlock(session_id(), '2', $qnbr, $user->loginid, $date, $time, false);
+			}
 			$session->loc= $config->pages->editquote."?qnbr=".$qnbr;
 			break;
 		case 'edit-new-quote':
@@ -135,7 +137,9 @@
 			$date = date('Ymd');
 			$time = date('Hi');
 			$data = array('DBNAME' => $config->dbName, 'EDITQUOTE' => $qnbr, 'QUOTENO' => $qnbr);
-			$session->sql = insert_orderlock(session_id(), '2', $qnbr, $user->loginid, $date, $time, false);
+			if (!is_orderlocked(session_id(), $qnbr)) {
+				$session->sql = insert_orderlock(session_id(), '2', $qnbr, $user->loginid, $date, $time, false);
+			}
 			$session->loc = $config->pages->editquote."?qnbr=".$qnbr;
 			break;
 		case 'save-quotehead':
