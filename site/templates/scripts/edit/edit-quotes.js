@@ -37,13 +37,11 @@ $(function() {
 		e.preventDefault();
 		var form = $(this).closest('form');
 		var formid = '#'+form.attr('id');
-
 		var qnbr = form.find('#qnbr').val();
-		console.log(formid);
-		console.log(qnbr);
 		var custID = form.find('.shipto-select').data('custid');
 		if (form.formiscomplete('tr')) {
-			$(formid).postform({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
+
+			$(formid).postform({formdata: $(formid).serializeform({ exitquote: 'true'}), jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
 				$.notify({
 					icon: "glyphicon glyphicon-floppy-disk",
 					message: "Your quotehead changes have been submitted",
@@ -51,7 +49,9 @@ $(function() {
 					type: "info",
 					onClose: function() {
 						getquoteheadresults(qnbr, formid, function() {
-							window.location.href = config.urls.customer.page + urlencode(custID) + "/";
+							generateurl(function(url) {
+								window.location.href = url;
+							});
 						});
 					}
 				});
@@ -66,8 +66,8 @@ $(function() {
 function getquoteheadresults(qnbr, form, callback) {
 	console.log(config.urls.json.getquotehead+"?qnbr="+qnbr);
 	$.getJSON(config.urls.json.getquotehead+"?qnbr="+qnbr, function( json ) {
-		if (json.response.quote.error === 'Y') {
-			createalertpanel(form + ' .response', json.response.quote.errormsg, "<i span='glyphicon glyphicon-floppy-remove'> </i> Error! ", "danger");
+		if (json.response.quote.error == 'Y') {
+			$(form + ' .response').createalertpanel(json.response.quote.errormsg, "<i span='glyphicon glyphicon-floppy-remove'> </i> Error! ", "danger");
 			$('html, body').animate({scrollTop: $(form + ' .response').offset().top - 120}, 1000);
 		} else {
 			$.notify({

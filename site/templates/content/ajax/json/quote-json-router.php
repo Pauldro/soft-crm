@@ -2,7 +2,7 @@
  	header('Content-Type: application/json');
     $qnbr = $input->get->text('qnbr');
 
-	switch ($input->urlSegment3) {
+	switch ($input->urlSegment(2)) {
 		case 'quotehead':
 			$quote = get_quotehead(session_id(), $qnbr, false);
 			echo json_encode(array("response" => array("quote" => $quote)));

@@ -176,7 +176,12 @@
 
 			$session->sql = edit_quotehead(session_id(), $qnbr, $quote, false);
 			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEHEAD' => false, 'QUOTENO' => $qnbr);
-			$session->loc = $config->pages->edit."quote/?qnbr=".$qnbr.$linkaddon;
+			if ($input->post->exitquote) {
+				$session->loc = $config->pages->edit."quote/confirm/?qnbr=".$qnbr.$linkaddon;
+			} else {
+				$session->loc = $config->pages->edit."quote/?qnbr=".$qnbr.$linkaddon;
+			}
+
 			break;
 		case 'add-to-quote':
 			$qnbr = $input->post->text('qnbr');
