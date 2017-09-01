@@ -6,6 +6,7 @@
             break;
         case 'quote':
             $qnbr = $input->get->text('qnbr');
+            $page->title = 'Summary for Quote # '.$qnbr;
             $page->body = $config->paths->content."confirm/quotes/outline.php";
             break;
     }

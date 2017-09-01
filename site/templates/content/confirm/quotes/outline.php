@@ -4,28 +4,31 @@
 		<img src="<?php echo $config->urls->files."images/dplus.png"; ?>" alt="">
 	</div>
 	<div class="col-sm-6 text-right">
-		<h1>Quote # <?php echo $qnbr; ?></h1>
+		<h1>Summary for Quote # <?php echo $qnbr; ?></h1>
 	</div>
 </div>
 <div class="row">
-	<div class="col-sm-6"></div>
-
 	<div class="col-sm-6">
 		<table class="table table-bordered table-striped table-condensed">
+			<tr> <td>CustID</td> <td><?php echo $quote['custid']; ?></td> </tr>
 			<tr> <td>Quote Date</td> <td><?php echo $quote['quotdate']; ?></td> </tr>
 			<tr> <td>Review Date</td> <td><?php echo $quote['revdate']; ?></td> </tr>
 			<tr> <td>Expire Date</td> <td><?php echo $quote['expdate']; ?></td> </tr>
-			<tr> <td>CustID</td> <td><?php echo $quote['custid']; ?></td> </tr>
-            <tr> <td>Terms Code</td> <td><?php // TODO ?></td> </tr>
-            <tr> <td>Tax</td> <td><?php // TODO ?></td> </tr>
-            <tr> <td>Sales Person</td> <td><?php // TODO ?></td> </tr>
+			<tr> <td>Terms Code</td> <td><?php echo $quote['termcode']; ?></td> </tr>
+			<tr> <td>Tax</td> <td><?php echo $quote['taxcode']; ?></td> </tr>
+            <tr> <td>Sales Person</td> <td><?php echo $quote['sp1']; ?></td> </tr>
+		</table>
+	</div>
+
+	<div class="col-sm-6">
+		<table class="table table-bordered table-striped table-condensed">
 			<tr> <td>Customer PO</td> <td><?php echo $quote['custpo']; ?></td> </tr>
-            <tr> <td>Cust Ref</td> <td><?php // TODO  ?></td> </tr>
-            <tr> <td>Ship Via</td> <td><?php // TODO ?></td> </tr>
-            <tr> <td>FOB</td> <td><?php // TODO ?></td> </tr>
-            <tr> <td>Delivery</td> <td><?php // TODO ?></td> </tr>
-            <tr> <td>Whse</td> <td><?php // TODO ?></td> </tr>
-            <tr> <td>Care Of</td> <td><?php // TODO ?></td> </tr>
+            <tr> <td>Cust Ref</td> <td><?php echo $quote['custref']; ?></td> </tr>
+            <tr> <td>Ship Via</td> <td><?php echo $quote['sviacode'].' - '.$quote['sviacodedesc']; ?></td> </tr>
+            <tr> <td>FOB</td> <td><?php echo $quote['fob']; ?></td> </tr>
+            <tr> <td>Delivery</td> <td><?php echo $quote['deliverydesc']; ?></td> </tr>
+            <tr> <td>Whse</td> <td><?php echo $quote['whse']; ?></td> </tr>
+            <tr> <td>Care Of</td> <td><?php echo $quote['careof']; ?></td> </tr>
 		</table>
 	</div>
 </div>
@@ -58,6 +61,7 @@
 		<th class="text-center">Item ID/Cust Item ID</th>  <th class="text-right">Qty</th>
 		<th class="text-right" width="100">Price</th>
 		<th class="text-right">Line Total</th>
+		<th class="text-center">View Item Details</th>
 	</tr>
 	<?php  $details = get_quote_details(session_id(), $qnbr, false); ?>
 	<?php foreach ($details as $detail) : ?>
@@ -99,3 +103,14 @@
 		<td></td><td>Total</td> <td></td> <td class="text-right">$ <?php echo formatmoney($quote['order_total']); ?></td>
 	</tr>
 </table>
+
+<div class="row">
+	<div class="col-sm-6">
+		<a href="<?php echo $config->pages->customer.urlencode($quote['custid']).'/'; ?>" class="btn btn-sm btn-block btn-default">
+			Proceed to Customer Page
+		</a>
+	</div>
+	<div class="col-sm-6">
+
+	</div>
+</div>
