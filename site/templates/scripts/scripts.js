@@ -390,7 +390,7 @@ $(document).ready(function() {
             } else {
                 e.preventDefault();
                 $(this).validateitemids();
-                var invaliditemcount = $(this).find('input[name="itemID[]"]').length;
+                var invaliditemcount = $(this).find('.form-group.has-error').length;
                 if (!invaliditemcount) {
                     $(this).submit();
                 }
@@ -761,6 +761,36 @@ $(document).ready(function() {
 		parent.load(url, function() { callback(); });
 	}
 
+	(function ( $ ) {
+		// Pass an object of key/vals to override
+		$.fn.serializeform = function(overrides) {
+			// Get the parameters as an array
+			var newParams = this.serializeArray();
+
+			for(var key in overrides) {
+				var newVal = overrides[key]
+				// Find and replace `content` if there
+				for (index = 0; index < newParams.length; ++index) {
+					if (newParams[index].name == key) {
+						newParams[index].value = newVal;
+						break;
+					}
+				}
+
+				// Add it if it wasn't there
+				if (index >= newParams.length) {
+					newParams.push({
+						name: key,
+						value: newVal
+					});
+				}
+			}
+
+			// Convert to URL-encoded string
+			return $.param(newParams);
+		}
+	}( jQuery ));
+
 	$.fn.extend({
 		postform: function(options, callback) { //{formdata: data/false, jsoncallback: true/false}
 			var form = $(this);
@@ -822,7 +852,7 @@ $(document).ready(function() {
             });
 
             $(this).attr('data-checked', 'true');
-            var invaliditemcount = $(this).find('input[name="itemID[]"]').length;
+            var invaliditemcount = $(this).find('form-group.has-error').length;
             if (invaliditemcount) {
                 $(this).find('.response').createalertpanel('Double Check your itemIDs', '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>', 'warning');
             }
