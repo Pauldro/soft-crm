@@ -1,6 +1,6 @@
 <?php
     class DplusDateTime {
-        static $defaultdate = 'm-d-Y';
+        static $defaultdate = 'm/d/Y';
         static $defaulttime = 'h:i A';
         static $fulltimestring = 'YmdHisu';
         static $shorttimestring = 'Hi';
@@ -14,7 +14,7 @@
 
         static function formatdate($date, $formatstring = null) {
             $formatstring ? $formatstring = $formatstring : $formatstring = self::$defaultdate;
-            if (date($formatstring, strtotime($date)) == "12/31/1969") {
+            if (strtotime($date) == strtotime("12/31/1969")) {
     			return '';
     		} else {
     			return date($formatstring, strtotime($date));
