@@ -792,7 +792,8 @@
 ============================================================ */
 	function get_item_search_results($sessionID, $limit = 10, $page = 1, $debug) {
 		$limiting = returnlimitstatement($limit, $page);
-		$sql = wire('database')->prepare("SELECT * FROM pricing WHERE sessionid = :sessionID " .$limiting);
+		$sql = wire('database')->prepare("SELECT pricing.*, lastqty, lastsold, lastprice, ordn FROM pricing
+JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pricing.itemid = custpricehistory.itemid WHERE pricing.sessionid = :sessionID " .$limiting);
 		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
 		$sql->execute($switching);
 		if ($debug) {

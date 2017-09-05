@@ -18,11 +18,19 @@
 				<div class="tab-content">
 					<div class="tab-pane fade active in" id="<?= cleanforjs($item['itemid']); ?>-desc-tab">
 						<br><p><?= $item['shortdesc']; ?></p>
+
 					</div>
 					<div class="tab-pane fade" id="<?= cleanforjs($item['itemid']); ?>-specs-tab"><br><?php include $config->paths->content."products/product-results/product-features.php"; ?></div>
 					<div class="tab-pane fade" id="<?= cleanforjs($item['itemid']); ?>-pricing-tab"><br><?php include $config->paths->content."products/product-results/price-structure.php"; ?></div>
 					<div class="tab-pane fade" id="<?= cleanforjs($item['itemid']); ?>-stock-tab"><br><?php include $config->paths->content."products/product-results/stock-table.php"; ?></div>
 				</div>
+				<table class="table">
+					<tr>
+						<td>Last Sold: <?= DplusDateTime::formatdate($item['lastsold']); ?></td>
+						<td>Price: $<?= $item['lastprice']; ?></td>
+						<td>Qty Bought: <?= $item['lastqty']; ?></td>
+					</tr>
+				</table>
 			</div>
 		</div>
 		<div class="col-md-3 col-sm-3 hidden-print">
