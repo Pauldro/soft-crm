@@ -1326,10 +1326,10 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		$search = '%'.str_replace(' ', '%', $q).'%';
 		if (empty($custID)) {
 			if ($onlyitemid) {
-				$sql = wire('database')->prepare("SELECT * FROM itemsearch WHERE UCASE(itemid) LIKE UCASE(:search) AND origintype = 'I' GROUP BY itemid $limiting");
+				$sql = wire('database')->prepare("SELECT * FROM itemsearch WHERE UCASE(itemid) LIKE UCASE(:search) AND origintype IN ('I', 'V') GROUP BY itemid $limiting");
 				$switching = array(':search' => $search); $withquotes = array(true);
 			} else {
-				$sql = wire('database')->prepare("SELECT * FROM itemsearch WHERE UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND origintype = 'I' GROUP BY itemid $limiting");
+				$sql = wire('database')->prepare("SELECT * FROM itemsearch WHERE UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND origintype IN ('I', 'V') GROUP BY itemid $limiting");
 				$switching = array(':search' => $search); $withquotes = array(true);
 			}
 		} else {
@@ -1337,7 +1337,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 				$sql = wire('database')->prepare("SELECT * FROM itemsearch WHERE (originid = (:custID) AND UCASE(refitemid) LIKE UCASE(:search)) OR (UCASE(itemid) like UCASE(:search)) GROUP BY itemid $limiting ");
 				$switching = array(':search' => $search, ':custID' => $custID); $withquotes = array(true, true);
 			} else {
-				$sql = wire('database')->prepare("SELECT * FROM itemsearch WHERE (UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND origintype = 'I') OR (UCASE(CONCAT(itemid, ' ', refitemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND originid = :custID) GROUP BY itemid $limiting");
+				$sql = wire('database')->prepare("SELECT * FROM itemsearch WHERE (UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND origintype IN ('I', 'V')) OR (UCASE(CONCAT(itemid, ' ', refitemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND originid = :custID) GROUP BY itemid $limiting");
 				$switching = array(':search' => $search, ':custID' => $custID); $withquotes = array(true, true);
 			}
 		}
@@ -1370,10 +1370,10 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		$search = '%'.str_replace(' ', '%', $q).'%';
 		if (empty($custID)) {
 			if ($onlyitemid) {
-				$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE UCASE(itemid) LIKE UCASE(:search) AND origintype = 'I' GROUP BY itemid $limiting");
+				$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE UCASE(itemid) LIKE UCASE(:search) AND origintype IN ('I', 'V') GROUP BY itemid $limiting");
 				$switching = array(':search' => $search); $withquotes = array(true);
 			} else {
-				$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND origintype = 'I'");
+				$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND origintype IN ('I', 'V')");
 				$switching = array(':search' => $search); $withquotes = array(true);
 			}
 		} else {
@@ -1381,7 +1381,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 				$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE (originid = (:custID) AND UCASE(refitemid) LIKE UCASE(:search)) OR (UCASE(itemid) like UCASE(:search))");
 				$switching = array(':search' => $search, ':custID' => $custID); $withquotes = array(true, true);
 			} else {
-				$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE (UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND origintype = 'I') OR (UCASE(CONCAT(itemid, ' ', refitemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND originid = :custID)");
+				$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE (UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND origintype IN ('I', 'V')) OR (UCASE(CONCAT(itemid, ' ', refitemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND originid = :custID)");
 				$switching = array(':search' => $search, ':custID' => $custID); $withquotes = array(true, true);
 			}
 		}
