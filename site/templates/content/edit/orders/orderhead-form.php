@@ -55,7 +55,7 @@
 ?>
 <?php include $config->paths->content.'edit/orders/order-attachments.php'; ?>
 <form id="orderhead-form" action="<?php echo $config->pages->orders."redir/"; ?>" class="form-group" data-ordn="<?php echo $ordn; ?>">
-	<input type="hidden" name="action" value="save-order-head">
+	<input type="hidden" name="action" value="update-orderhead">
 	<input type="hidden" name="ordn" id="ordn" value="<?php echo $ordn; ?>">
     <input type="hidden" name="custID" id="custID" value="<?php echo $billing['custid']; ?>">
     <div class="row"> <div class="col-xs-10 col-xs-offset-1"> <div class="response"></div> </div> </div>
