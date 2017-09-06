@@ -408,8 +408,11 @@ $(document).ready(function() {
 			var addonurl = $(formid+ " .addonurl").val();
 			var loadinto = '#' + $(this).closest('.modal').attr('id') + ' .results';
 			$(formid).postform({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
-				wait(500, function() {
-					$(loadinto).loadin(resultsurl, function() { });
+				wait(1000, function() {
+					$(loadinto).empty();
+					$(loadinto).loadin(resultsurl, function() {
+
+					});
 				});
 			});
 		});
