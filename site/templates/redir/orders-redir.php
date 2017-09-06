@@ -253,7 +253,7 @@
 			$data = array('DBNAME' => $config->dbName, 'ORDRDET' => $ordn, 'CUSTID' => $custID, 'LOCK' => false);
 			$session->loc = $config->pages->edit.'order/?ordn=' . $ordn;
 			break;
-		case 'submit-order-head':
+		case 'update-orderhead':
 			$ordn = $input->post->text("ordn");
 			$order = get_orderhead(session_id(), $ordn, false);
 			$intl = $input->post->text("intl");
