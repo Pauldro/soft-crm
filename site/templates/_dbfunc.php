@@ -217,6 +217,18 @@
 		}
 	}
 
+	function get_customersalesperson($custID, $shipID, $debug) {
+		$sql = wire('database')->prepare("SELECT splogin1 FROM custindex WHERE custid = :custID AND shiptoid = :shipID LIMIT 1");
+		$switching = array(':custID' => $custID, ':shipID' => $shipID);
+		$withquotes = array(true, true);
+
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
+		} else {
+			$sql->execute($switching);
+			return $sql->fetchColumn();
+		}
+	}
 /* =============================================================
 	CUST INDEX FUNCTIONS
 ============================================================ */
