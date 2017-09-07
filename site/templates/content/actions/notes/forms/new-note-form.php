@@ -4,13 +4,14 @@
 ?>
 <form action="<?php echo $config->pages->actions."notes/add/"; ?>" method="post" id="new-action-form" data-refresh="#actions-panel" data-modal="#ajax-modal">
 	<input type="hidden" name="action" value="write-crm-note">
-	<input type="hidden" name="custlink" value="<?php echo $custID; ?>">
-	<input type="hidden" name="shiptolink" value="<?php echo $shipID; ?>">
-	<input type="hidden" name="contactlink" value="<?php echo $contactID; ?>">
-	<input type="hidden" name="salesorderlink" value="<?php echo $ordn; ?>">
-	<input type="hidden" name="quotelink" value="<?php echo $qnbr; ?>">
-	<input type="hidden" name="tasklink" value="<?php echo $taskID; ?>">
-	<input type="hidden" name="actionlink" value="<?php echo $actionID; ?>">
+	<input type="hidden" name="custlink" value="<?= $notelinks['customerlink']; ?>">
+	<input type="hidden" name="shiptolink" value="<?= $notelinks['shiptolink']; ?>">
+	<input type="hidden" name="contactlink" value="<?= $notelinks['contactlink']; ?>">
+	<input type="hidden" name="salesorderlink" value="<?= $notelinks['salesorderlink']; ?>">
+	<input type="hidden" name="quotelink" value="<?= $notelinks['quotelink']; ?>">
+	<input type="hidden" name="notelink" value="<?= $notelinks['notelink']; ?>">
+	<input type="hidden" name="tasklink" value="<?= $notelinks['tasklink']; ?>">
+	<input type="hidden" name="actionlink" value="<?= $notelinks['actionlink']; ?>">
 	<table class="table table-bordered table-striped">
 	    <tr>  <td>Note Create Date:</td> <td><?php echo date('m/d/Y g:i A'); ?></td> </tr>
 	    <tr>
@@ -18,7 +19,7 @@
 	        <td>
 	            <select name="assignedto" class="form-control input-sm" style="width: 200px;">
 	                <?php foreach ($salespersoncodes as $salespersoncode) : ?>
-	                    <?php if ($salespersonjson['data'][$salespersoncode]['splogin'] == $user->loginid) : ?>
+	                    <?php if ($salespersonjson['data'][$salespersoncode]['splogin'] == $notelinks['assignedto']) : ?>
 	                        <option value="<?= $salespersonjson['data'][$salespersoncode]['splogin']; ?>" selected><?= $salespersoncode.' - '.$salespersonjson['data'][$salespersoncode]['spname']; ?></option>
 	                    <?php else : ?>
 	                        <option value="<?= $salespersonjson['data'][$salespersoncode]['splogin']; ?>"><?= $salespersoncode.' - '.$salespersonjson['data'][$salespersoncode]['spname']; ?></option>

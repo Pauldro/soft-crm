@@ -11,14 +11,14 @@
 		<div role="tabpanel" class="tab-pane active" id="task">
 			<form action="<?php echo $config->pages->actions."tasks/add/"; ?>" method="POST" id="new-action-form" data-refresh="#actions-panel" data-modal="#ajax-modal">
 				<input type="hidden" name="action" value="write-task">
-				<input type="hidden" name="custlink" value="<?php echo $custID; ?>">
-				<input type="hidden" name="shiptolink" value="<?php echo $shipID; ?>">
-				<input type="hidden" name="contactlink" value="<?php echo $contactID; ?>">
-				<input type="hidden" name="salesorderlink" value="<?php echo $ordn; ?>">
-				<input type="hidden" name="quotelink" value="<?php echo $qnbr; ?>">
-				<input type="hidden" name="notelink" value="<?php echo $noteID; ?>">
-				<input type="hidden" name="tasklink" value="<?php echo $taskID; ?>">
-				<input type="hidden" name="actionlink" value="<?php echo $actionID; ?>">
+				<input type="hidden" name="custlink" value="<?= $tasklinks['customerlink']; ?>">
+				<input type="hidden" name="shiptolink" value="<?= $tasklinks['shiptolink']; ?>">
+				<input type="hidden" name="contactlink" value="<?= $tasklinks['contactlink']; ?>">
+				<input type="hidden" name="salesorderlink" value="<?= $tasklinks['salesorderlink']; ?>">
+				<input type="hidden" name="quotelink" value="<?= $tasklinks['quotelink']; ?>">
+				<input type="hidden" name="notelink" value="<?= $tasklinks['notelink']; ?>">
+				<input type="hidden" name="tasklink" value="<?= $tasklinks['tasklink']; ?>">
+				<input type="hidden" name="actionlink" value="<?= $tasklinks['actionlink']; ?>">
 				<div class="response"></div>
 				<table class="table table-bordered table-striped">
 					<tr>  <td class="control-label">Task Date:</td> <td><?php echo date('m/d/Y g:i A'); ?></td> </tr>
@@ -27,7 +27,7 @@
 						<td>
 							<select name="assignedto" class="form-control input-sm" style="width: 200px;">
                                 <?php foreach ($salespersoncodes as $salespersoncode) : ?>
-									<?php if ($salespersonjson['data'][$salespersoncode]['splogin'] == $user->loginid) : ?>
+									<?php if ($salespersonjson['data'][$salespersoncode]['splogin'] == $tasklinks['assignedto']) : ?>
 										<option value="<?= $salespersonjson['data'][$salespersoncode]['splogin']; ?>" selected><?= $salespersoncode.' - '.$salespersonjson['data'][$salespersoncode]['spname']; ?></option>
 									<?php else : ?>
 										<option value="<?= $salespersonjson['data'][$salespersoncode]['splogin']; ?>"><?= $salespersoncode.' - '.$salespersonjson['data'][$salespersoncode]['spname']; ?></option>
