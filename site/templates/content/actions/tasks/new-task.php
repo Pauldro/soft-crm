@@ -20,7 +20,11 @@
 		}
 	}
 
-	$tasklinks['assignedto'] = $user->loginid;
+	if (!empty($tasklinks['customerlink'])) {
+		$tasklinks['assignedto'] = get_customersalesperson($tasklinks['customerlink'], $tasklinks['shiptolink'], false);
+	} else {
+		$tasklinks['assignedto'] = $user->loginid;
+	}
 	$task = UserAction::blankuseraction($tasklinks);
 
 	$message = "Creating a task for {replace} ";
