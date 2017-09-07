@@ -135,7 +135,7 @@
 			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS);
 			$withquotes = array(true, true, true);
 		} else {
-			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid != ''");
+			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid != '' GROUP BY custid, shiptoid");
 			$switching = array(':custID' => $custID); $withquotes = array(true);
 		}
 
@@ -321,7 +321,7 @@
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
 			$sql = wire('database')->prepare("SELECT custid, shiptoid, name, amountsold, timesold, lastsaledate FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND shiptoid = '' ORDER BY CAST(amountsold as Decimal(10,8)) DESC LIMIT $numberofcustomers");
-			$switching = array(':loginID' => $loginID, ':sharedaccounts' => $SHARED_ACCOUNTS); $withquotes = array(true);
+			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS); $withquotes = array(true, true);
 		} else {
 			$sql = wire('database')->prepare("SELECT custid, shiptoid, name, amountsold, timesold, lastsaledate FROM custindex WHERE shiptoid = '' ORDER BY CAST(amountsold as Decimal(10,8)) DESC LIMIT $numberofcustomers");
 			$switching = array(); $withquotes = array();

@@ -9,7 +9,7 @@
             <table class="table table-bordered table-condensed table-striped small" id="cust-sales">
                 <thead> <tr> <th>CustID</th> <th>Name</th> <th>Amount Sold</th> <th>Times Sold</th> <th>Last Sale Date</th> </tr> </thead>
                 <tbody>
-                    <?php $customers = get_topxsellingcustomers($user->loginid, 25, $user->hasrestrictions, false) ; ?>
+                    <?php $customers = get_topxsellingcustomers($user->loginid, 25, $user->hascontactrestrictions, false); ?>
                     <?php foreach ($customers as $customer) : ?>
                         <tr>
                             <td>
