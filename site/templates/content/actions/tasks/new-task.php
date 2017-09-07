@@ -9,6 +9,18 @@
 	$tasklinks['notelink'] = $noteID;
 	$tasklinks['tasklink'] = $taskID;
 	$tasklinks['actionlink'] = $taskID;
+
+	if (empty($tasklinks['customerlink'])) {
+		if (!empty($tasklinks['salesorderlink'])) {
+			$tasklinks['customerlink'] = get_custid_from_order(session_id(), $tasklinks['salesorderlink']);
+			$tasklinks['shiptolink'] = get_shiptoid_from_order(session_id(), $tasklinks['salesorderlink']);
+		} elseif (!empty($tasklinks['quotelink'])) {
+			$tasklinks['customerlink'] = getquotecustomer(session_id(), $tasklinks['quotelink']);
+			$tasklinks['shiptolink'] = getquoteshipto(session_id(), $tasklinks['salesorderlink'], false);
+		}
+	}
+
+	$tasklinks['assignedto'] = $user->loginid;
 	$task = UserAction::blankuseraction($tasklinks);
 
 	$message = "Creating a task for {replace} ";

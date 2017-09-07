@@ -12,14 +12,14 @@
 		<div role="tabpanel" class="tab-pane active" id="action">
 			<form action="<?= $config->pages->actions."actions/add/"; ?>" method="POST" id="new-action-form" data-refresh="#actions-panel" data-modal="#ajax-modal">
 				<input type="hidden" name="action" value="write-action">
-				<input type="hidden" name="custlink" value="<?php echo $custID; ?>">
-				<input type="hidden" name="shiptolink" value="<?php echo $shipID; ?>">
-				<input type="hidden" name="contactlink" value="<?php echo $contactID; ?>">
-				<input type="hidden" name="salesorderlink" value="<?php echo $ordn; ?>">
-				<input type="hidden" name="quotelink" value="<?php echo $qnbr; ?>">
-				<input type="hidden" name="notelink" value="<?php echo $noteID; ?>">
-				<input type="hidden" name="tasklink" value="<?php echo $taskID; ?>">
-				<input type="hidden" name="actionlink" value="<?php echo $actionID; ?>">
+                <input type="hidden" name="custlink" value="<?= $actionlinks['customerlink']; ?>">
+            	<input type="hidden" name="shiptolink" value="<?= $actionlinks['shiptolink']; ?>">
+            	<input type="hidden" name="contactlink" value="<?= $actionlinks['contactlink']; ?>">
+            	<input type="hidden" name="salesorderlink" value="<?= $actionlinks['salesorderlink']; ?>">
+            	<input type="hidden" name="quotelink" value="<?= $actionlinks['quotelink']; ?>">
+            	<input type="hidden" name="notelink" value="<?= $actionlinks['notelink']; ?>">
+            	<input type="hidden" name="tasklink" value="<?= $actionlinks['tasklink']; ?>">
+            	<input type="hidden" name="actionlink" value="<?= $actionlinks['actionlink']; ?>">
 				<div class="response"></div>
 				<table class="table table-bordered table-striped">
 					<?php include $config->paths->content."common/show-linked-table-rows.php"; ?>

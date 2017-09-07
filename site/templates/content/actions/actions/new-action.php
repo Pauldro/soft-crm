@@ -10,8 +10,19 @@
 	$actionlinks['tasklink'] = $taskID;
 	$actionlinks['actionlink'] = $actionID;
 
+	if (empty($actionlinks['customerlink'])) {
+		if (!empty($actionlinks['salesorderlink'])) {
+			$actionlinks['customerlink'] = get_custid_from_order(session_id(), $actionlinks['salesorderlink']);
+			$actionlinks['shiptolink'] = get_shiptoid_from_order(session_id(), $actionlinks['salesorderlink']);
+		} elseif (!empty($actionlinks['quotelink'])) {
+			$actionlinks['customerlink'] = getquotecustomer(session_id(), $actionlinks['quotelink']);
+			$actionlinks['shiptolink'] = getquoteshipto(session_id(), $actionlinks['salesorderlink'], false);
+		}
+	}
+
+	$actionlinks['assignedto'] = $user->loginid;
 	$action = UserAction::blankuseraction($actionlinks);
-	
+
 	$message = "Creating an action for {replace}";
 	$page->title = $action->createmessage($message);
 
