@@ -1,4 +1,5 @@
 var loadingwheel = "<div class='la-ball-spin la-light la-3x'><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>";
+var darkloadingwheel = "<div class='la-ball-spin la-dark la-3x'><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>";
 var togglearray = {Y: 'on', N: 'off'};
 var listener = new window.keypress.Listener();
 
@@ -256,7 +257,7 @@ $(document).ready(function() {
 			e.preventDefault();
 			var form = new itemform($(this));
 			var msg = "You added " + form.qty + " of " + form.desc + " to the cart";
-			$(form.formID).postformsync(function() {
+			$(form.formID).postformsync({formdata: false, jsoncallback: false}, function() {
 				$.notify({
 					icon: "glyphicon glyphicon-shopping-cart",
 					message: msg +"<br> (Click this Message to go to the cart.)" ,
@@ -407,13 +408,15 @@ $(document).ready(function() {
 			var resultsurl = $(formid+ " .resultsurl").val();
 			var addonurl = $(formid+ " .addonurl").val();
 			var loadinto = '#' + $(this).closest('.modal').attr('id') + ' .results';
-			$(formid).postform({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
-				wait(2000, function() {
+			$(formid).postformsync({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
+			var loadingdiv = "<div class='loading'>"+loadingwheel+"</div>";
+			$("<div class='tribute' style='height: 400px;'></div>").html(loadingdiv).appendTo(loadinto);
+				//wait(2000, function() {
 					$(loadinto).empty();
 					$(loadinto).loadin(resultsurl, function() {
 
 					});
-				});
+			//	});
 			});
 		});
 
@@ -806,10 +809,16 @@ $(document).ready(function() {
 				$.post(action, options.formdata).done(callback());
 			}
 		},
-		postformsync: function(callback) {
+		postformsync: function(options, callback) {
 			var form = $(this);
 			var action = form.attr('action');
-			$.ajax({async: false, url: action, method: "POST", data: $(form).serialize()}).done(callback());
+
+			if (!options.formdata) {options.formdata = form.serialize(); }
+			if (options.jsoncallback) {
+				$.ajax({async: false, url: action, method: "POST", data: options.formdata}).done(callback(json));
+			} else {
+				$.ajax({async: false, url: action, method: "POST", data: options.formdata}).done(callback());
+			}
 		},
 		loadin: function(href, callback) {
 			var element = $(this);
@@ -951,7 +960,7 @@ $(document).ready(function() {
 
 		for (var i = 0; i < forms.length; i++) {
 			var form = new itemform($("#"+forms[i]));
-			$(form.formid).postformsync(function(){
+			$(form.formid).postformsync({formdata: false, jsoncallback: false},function(){
 				$.notify({
 					// options
 					title: '<strong>Success</strong>',
