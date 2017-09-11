@@ -140,7 +140,7 @@
 		#loading-bkgd .close {position: absolute; top: 10%; right: 10%;}
 		#loading-bkgd .close a {color: white;}
 		.loading {position:fixed; left: 45%; top: 45%;}
-
+		.loading-item-results {width: 20%; margin: 0 auto;}
 	#lightbox-modal .modal-header {border-bottom: none;}
 	#lightbox-modal, #lightbox-modal .close {color: white;}
 	#lightbox-modal .modal-content {box-shadow: none; border: none;}

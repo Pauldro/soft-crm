@@ -407,15 +407,15 @@ $(document).ready(function() {
 			var resultsurl = $(formid+ " .resultsurl").val();
 			var addonurl = $(formid+ " .addonurl").val();
 			var loadinto = '#' + $(this).closest('.modal').attr('id') + ' .results';
-			$(formid).postformsync({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
-			var loadingdiv = "<div class='loading'>"+loadingwheel+"</div>";
-			$("<div class='tribute' style='height: 400px;'></div>").html(loadingdiv).appendTo(loadinto);
-				//wait(2000, function() {
-					$(loadinto).empty();
-					$(loadinto).loadin(resultsurl, function() {
+			$(loadinto).empty();
+			var loadingdiv = "<div class='loading-item-results'>"+darkloadingwheel+"</div>";
+			$(loadingdiv).appendTo(loadinto);
 
-					});
-			//	});
+			$(formid).postformsync({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
+
+				$(loadinto).loadin(resultsurl, function() {
+
+				});
 			});
 		});
 		/*==============================================================
