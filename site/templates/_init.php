@@ -34,8 +34,6 @@
 	$page->querystring = $querystring = $page->fullURL->query;
 	$page->PageURL = $page->httpUrl.'?'.$page->querystring;
 
-
-
 	$config->styles->append($config->urls->templates.'styles/bootstrap.min.css');
 	$config->styles->append('https://fonts.googleapis.com/icon?family=Material+Icons');
 	$config->styles->append($config->urls->templates.'styles/libraries.css');
@@ -47,6 +45,7 @@
 	$config->scripts->append($config->urls->templates.'scripts/libs/datatables.js');
 	$config->scripts->append($config->urls->templates.'scripts/classes.js');
 	$config->scripts->append($config->urls->templates.'scripts/scripts.js');
+	$config->scripts->append($config->urls->modules . 'Inputfield/InputfieldCKEditor/ckeditor-4.6.1/ckeditor.js');
 
 	$user->loggedin = is_validlogin(session_id());
 

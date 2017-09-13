@@ -45,9 +45,14 @@
 	    <tr>
 	        <td colspan="2">
 	            <label for="" class="control-label">Notes</label>
-	            <textarea name="textbody" cols="30" rows="10" class="form-control note"> </textarea> <br>
+	            <textarea name="textbody" id="note" cols="30" rows="10" class="form-control note"> </textarea> <br>
 				<button type="submit" class="btn btn-success">Save Note</button>
 	        </td>
 	    </tr>
 	</table>
 </form>
+<script>
+	$(function() {
+		CKEDITOR.replace('note', { height: 400});
+	})
+</script>
