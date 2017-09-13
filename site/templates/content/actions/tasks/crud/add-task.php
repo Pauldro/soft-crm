@@ -13,7 +13,7 @@
         $tasklinks['salesorderlink'] = $input->post->text('salesorderlink');
         $tasklinks['quotelink'] = $input->post->text('quotelink');
         $tasklinks['title'] = $input->post->text('title');
-        $tasklinks['textbody'] = $input->post->text('textbody');
+        $tasklinks['textbody'] = $input->post->purify('textbody');
 		$tasklinks['tasklink'] = $input->post->text('tasklink');
         $tasklinks['notelink'] = $input->post->text('notelink');
         $tasklinks['actionlink'] = $input->post->text('actionlink');

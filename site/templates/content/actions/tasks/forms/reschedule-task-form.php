@@ -77,3 +77,8 @@
 		</div>
 	</div>
 </div>
+<script>
+	$(function() {
+		CKEDITOR.replace('note', { height: 400});
+	})
+</script>

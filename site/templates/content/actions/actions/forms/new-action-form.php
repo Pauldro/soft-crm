@@ -67,7 +67,7 @@
 					<tr>
 						<td colspan="2" class="control-label">
 							<label for="" class="control-label">Notes</label>
-							<textarea name="textbody" id="" cols="30" rows="10" class="form-control note required"> </textarea> <br>
+							<textarea name="textbody" id="note" cols="30" rows="10" class="form-control note required"> </textarea> <br>
 							<button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Record Action</button>
 						</td>
 					</tr>
@@ -76,3 +76,8 @@
 		</div>
 	</div>
 </div>
+<script>
+	$(function() {
+		CKEDITOR.replace('note', { height: 400});
+	})
+</script>
