@@ -326,3 +326,8 @@
    CUSTOM DATE MENU
  =============================================================*/
 	.modal-body.modal-results .dropdown-menu.datepicker-calendar-wrapper { position: fixed; top: inherit; }
+
+/*==============================================================
+   ACTIONS STYLES
+ =============================================================*/
+	#new-action-form #note, .display-notes {white-space: pre-wrap};
