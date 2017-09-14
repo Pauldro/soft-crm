@@ -44,7 +44,12 @@
 	$config->scripts->append($config->urls->templates.'scripts/libs/key-listener.js');
 	$config->scripts->append($config->urls->templates.'scripts/libs/datatables.js');
 	$config->scripts->append($config->urls->templates.'scripts/classes.js');
-	$config->scripts->append($config->urls->templates.'scripts/scripts.js');
+	if (file_exists($config->paths->templates."scripts/$config->dplusocompany-scripts.js")) {
+		$config->scripts->append($config->urls->templates."scripts/$config->dplusocompany-scripts.js");
+	} else {
+		$config->scripts->append($config->urls->templates.'scripts/scripts.js');
+	}
+
 	//$config->scripts->append($config->urls->modules . 'Inputfield/InputfieldCKEditor/ckeditor-4.6.1/ckeditor.js');
 
 	$user->loggedin = is_validlogin(session_id());
