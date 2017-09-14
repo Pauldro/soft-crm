@@ -89,7 +89,6 @@
 	</tr>
 	<tr>
 		<td></td><td>Tax</td> <td></td> <td colspan="2" class="text-right">$ <?php echo formatmoney($quote['salestax']); ?></td>
-
 	</tr>
 	<tr>
 		<td></td><td>Freight</td> <td></td> <td class="text-right">$ <?php echo formatmoney($quote['freight']); ?></td>
@@ -97,7 +96,6 @@
 	</tr>
 	<tr>
 		<td></td><td>Misc.</td> <td></td><td class="text-right">$ <?php echo formatmoney($quote['miscellaneous']); ?></td>
-
 	</tr>
 	<tr>
 		<td></td><td>Total</td> <td></td> <td class="text-right">$ <?php echo formatmoney($quote['order_total']); ?></td>
