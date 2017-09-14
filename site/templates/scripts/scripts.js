@@ -508,6 +508,18 @@ $(document).ready(function() {
 			$(loadinto).loadin(href, function() { });
 		});
 
+		$("body").on("change", "#actions-panel .change-actions-user, #actions-modal-panel .change-actions-user", function() {
+			var select = $(this);
+			var userID = select.val();
+			var href = URI(select.data('link')).addQuery('assignedto', userID).toString();
+			var loadinto = $(this).data('loadinto');
+			var focuson = $(this).data('focus');
+			showajaxloading();
+			$(loadinto).loadin(href, function() {
+				hideajaxloading();
+			});
+		});
+
 		$("body").on("change", "#view-action-task-status", function(e) {
 			e.preventDefault();
 			var status = $(this).val();

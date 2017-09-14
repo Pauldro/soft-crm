@@ -5,7 +5,8 @@
 	$ajax->insertafter = $actionpanel->getinsertafter();
 
 	$totalcount = $actionpanel->count;
-
+	$salespersonjson = json_decode(file_get_contents($config->companyfiles."json/salespersontbl.json"), true);
+	$salespersoncodes = array_keys($salespersonjson['data']);
 ?>
 
 <div class="panel panel-primary not-round" id="<?= $actionpanel->panelid; ?>">
@@ -31,7 +32,7 @@
         	<div class="panel-body">
 				<div class="row">
 					<div class="col-xs-4">
-                        <select name="" id="" class="form-control change-action-type" data-link="<?php echo $actionpanel->getactiontyperefreshlink(); ?>" <?= $ajax->data; ?>>
+                        <select class="form-control input-sm change-action-type" data-link="<?php echo $actionpanel->getactiontyperefreshlink(); ?>" <?= $ajax->data; ?>>
                             <?php $actiontypes = $pages->get('/activity/')->children(); ?>
                             <?php foreach ($actiontypes as $actiontype) : ?>
 								<?php if ($actiontype->name == $actionpanel->getactiontypepage()) : ?>
@@ -41,6 +42,20 @@
 								<?php endif; ?>
                             <?php endforeach; ?>
                         </select>
+					</div>
+					<div class="col-xs-4">
+						<?php if (!$user->hasrestrictions) : ?>
+							<label>Change User</label>
+							<select class="form-control input-sm change-actions-user" data-link="<?= $actionpanel->getpanelrefreshlink(); ?>" <?= $ajax->data; ?>>
+								<?php foreach ($salespersoncodes as $salespersoncode) : ?>
+									<?php if ($salespersonjson['data'][$salespersoncode]['splogin'] == $assigneduserID) : ?>
+										<option value="<?= $salespersonjson['data'][$salespersoncode]['splogin']; ?>" selected><?= $salespersoncode.' - '.$salespersonjson['data'][$salespersoncode]['spname']; ?></option>
+									<?php else : ?>
+										<option value="<?= $salespersonjson['data'][$salespersoncode]['splogin']; ?>"><?= $salespersoncode.' - '.$salespersonjson['data'][$salespersoncode]['spname']; ?></option>
+									<?php endif; ?>
+                                <?php endforeach; ?>
+							</select>
+						<?php endif; ?>
 					</div>
 				</div>
             </div>
