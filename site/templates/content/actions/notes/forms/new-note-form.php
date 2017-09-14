@@ -51,8 +51,3 @@
 	    </tr>
 	</table>
 </form>
-<script>
-	$(function() {
-		CKEDITOR.replace('note', { height: 400});
-	})
-</script>
