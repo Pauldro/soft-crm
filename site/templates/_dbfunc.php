@@ -18,7 +18,7 @@
 	}
 
 	function get_loginrecord($sessionID) {
-		$sql = wire('database')->prepare("SELECT IF(restrictcustomers = 'Y',1,0) as restrictcustomer, logperm.* FROM logperm WHERE sessionid = :sessionID");
+		$sql = wire('database')->prepare("SELECT IF(restrictcustomers = 'Y',1,0) as restrictcustomer, IF(restrictaccess = 'Y',1,0) as restrictuseraccess, logperm.* FROM logperm WHERE sessionid = :sessionID");
 		$switching = array(':sessionID' => $sessionID);
 		$sql->execute($switching);
 		return $sql->fetch(PDO::FETCH_ASSOC);
