@@ -1,4 +1,5 @@
 var loadingwheel = "<div class='la-ball-spin la-light la-3x'><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>";
+var darkloadingwheel = "<div class='la-ball-spin la-dark la-3x'><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div></div>";
 var togglearray = {Y: 'on', N: 'off'};
 var listener = new window.keypress.Listener();
 
@@ -256,7 +257,7 @@ $(document).ready(function() {
 			e.preventDefault();
 			var form = new itemform($(this));
 			var msg = "You added " + form.qty + " of " + form.desc + " to the cart";
-			$(form.formID).postformsync(function() {
+			$(form.formID).postformsync({formdata: false, jsoncallback: false}, function() {
 				$.notify({
 					icon: "glyphicon glyphicon-shopping-cart",
 					message: msg +"<br> (Click this Message to go to the cart.)" ,
@@ -418,6 +419,7 @@ $(document).ready(function() {
 				});
 			});
 		});
+
 		/*==============================================================
 		 CI/II FUNCTIONS
 		=============================================================*/
@@ -504,6 +506,18 @@ $(document).ready(function() {
 			var loadinto = $(this).data('loadinto');
 			var focuson = $(this).data('focus');
 			$(loadinto).loadin(href, function() { });
+		});
+
+		$("body").on("change", "#actions-panel .change-actions-user, #actions-modal-panel .change-actions-user", function() {
+			var select = $(this);
+			var userID = select.val();
+			var href = URI(select.data('link')).addQuery('assignedto', userID).toString();
+			var loadinto = $(this).data('loadinto');
+			var focuson = $(this).data('focus');
+			showajaxloading();
+			$(loadinto).loadin(href, function() {
+				hideajaxloading();
+			});
 		});
 
 		$("body").on("change", "#view-action-task-status", function(e) {
@@ -661,7 +675,7 @@ $(document).ready(function() {
 							wait(500, function() {
 								$(elementreload + " .actions-refresh").click();
 								$(modal).modal('hide');
-								swal({
+								/* swal({
 									title: "Your "+json.response.actiontype+" was created!",
 									text: "Would you like to create an action for this "+json.response.actiontype+"?",
 									type: "success",
@@ -674,7 +688,7 @@ $(document).ready(function() {
 									$('#actions-panel .add-action').attr('href', href).click();
 									href = URI(href).removeQuery('actionID').toString();
 									$('#actions-panel .add-action').attr('href', href);
-								}).catch(swal.noop);
+								}).catch(swal.noop); */
 							});
 						}
 					});
@@ -807,10 +821,16 @@ $(document).ready(function() {
 				$.post(action, options.formdata).done(callback());
 			}
 		},
-		postformsync: function(callback) {
+		postformsync: function(options, callback) {
 			var form = $(this);
 			var action = form.attr('action');
-			$.ajax({async: false, url: action, method: "POST", data: $(form).serialize()}).done(callback());
+
+			if (!options.formdata) {options.formdata = form.serialize(); }
+			if (options.jsoncallback) {
+				$.ajax({async: false, url: action, method: "POST", data: options.formdata}).done(callback(json));
+			} else {
+				$.ajax({async: false, url: action, method: "POST", data: options.formdata}).done(callback());
+			}
 		},
 		loadin: function(href, callback) {
 			var element = $(this);
@@ -952,7 +972,7 @@ $(document).ready(function() {
 
 		for (var i = 0; i < forms.length; i++) {
 			var form = new itemform($("#"+forms[i]));
-			$(form.formid).postformsync(function(){
+			$(form.formid).postformsync({formdata: false, jsoncallback: false},function(){
 				$.notify({
 					// options
 					title: '<strong>Success</strong>',
