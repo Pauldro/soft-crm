@@ -411,11 +411,9 @@ $(document).ready(function() {
 			$(loadinto).empty();
 			var loadingdiv = "<div class='loading-item-results'>"+darkloadingwheel+"</div>";
 			$(loadingdiv).appendTo(loadinto);
-
 			$(formid).postformsync({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
-
 				$(loadinto).loadin(resultsurl, function() {
-
+					
 				});
 			});
 		});
