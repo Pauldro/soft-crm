@@ -24,10 +24,15 @@ class ComposerStaticInitaaf93569a92e3a693aba24b0e09354b2
         ),
     );
 
+    public static $classMap = array (
+        'SimpleMail' => __DIR__ . '/..' . '/eoghanobrien/php-simple-mail/class.simple_mail.php',
+    );
+
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixesPsr0 = ComposerStaticInitaaf93569a92e3a693aba24b0e09354b2::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInitaaf93569a92e3a693aba24b0e09354b2::$classMap;
 
         }, null, ClassLoader::class);
     }

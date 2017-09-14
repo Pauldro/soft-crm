@@ -16,7 +16,8 @@
   "require": {
     "php": ">=5.3.8",
     "ext-gd": "*",
-    "jwage/purl": "^0.0.7"
+    "jwage/purl": "^0.0.7",
+    "eoghanobrien/php-simple-mail": "^1.7"
   },
   "autoload": {
     "files": [ "wire/core/ProcessWire.php" ]
