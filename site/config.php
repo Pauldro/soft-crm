@@ -62,7 +62,7 @@
 	$config->dbName = 'dpluso';
 	$config->dbUser = 'cptecomm';
 	$config->dbPass = 'rghopeless';
-	$config->dbPort = '3306';	
+	$config->dbPort = '3306';
 	/**
 	* Installer: User Authentication Salt
 	*
@@ -113,6 +113,7 @@
 	}
 
 	$config->COMPANY = '3';
+	$config->dplusocompany = 'cptech';
 	$config->companyfiles = "/var/www/html/data".$config->COMPANY."/";
 	$config->documentstorage = "/orderfiles/";
 	$config->documentstoragedirectory = "/var/www/html/orderfiles/";
