@@ -89,11 +89,21 @@
         <td class="control-label">Title</td> <td><?= $task->title; ?></td>
     </tr>
     <tr>
-        <td colspan="2"><b>Notes</b><br><?php echo $task->textbody; ?></td>
+        <td colspan="2">
+            <b>Notes</b><br>
+            <div class="display-notes">
+                <?php echo $task->textbody; ?>
+            </div>
+        </td>
     </tr>
     <?php if ($task->hascompleted) : ?>
         <tr>
-            <td colspan="2"><b>Completion Notes</b><br><?= $task->reflectnote; ?></td>
+            <td colspan="2">
+                <b>Completion Notes</b><br>
+                <div class="display-notes">
+                    <?= $task->reflectnote; ?>
+                </div>
+            </td>
         </tr>
     <?php endif; ?>
 </table>

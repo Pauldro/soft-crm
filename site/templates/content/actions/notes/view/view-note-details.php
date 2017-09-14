@@ -49,6 +49,11 @@
         <td class="control-label">Title</td> <td><?= $note->title; ?></td>
     </tr>
     <tr>
-        <td colspan="2"><b>Notes</b><br><?php echo $note->textbody; ?></td>
+        <td colspan="2">
+            <b>Notes</b><br>
+            <div class="display-notes">
+                <?php echo $note->textbody; ?>
+            </div>
+        </td>
     </tr>
 </table>

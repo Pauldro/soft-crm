@@ -76,6 +76,11 @@
         <td class="control-label">Title</td> <td><?= $action->title; ?></td>
     </tr>
     <tr>
-        <td colspan="2"><b>Notes</b><br><?php echo $action->textbody; ?></td>
+        <td colspan="2">
+            <b>Notes</b><br>
+            <div class="view-notes">
+                <?php echo $action->textbody; ?>
+            </div>
+        </td>
     </tr>
 </table>
