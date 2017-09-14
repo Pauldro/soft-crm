@@ -10,8 +10,8 @@
         case 'add':
             switch($input->urlSegment2) {
                 case 'new':
-                    if (file_exists($config->paths->content."actions/actions/$config->dplusocompany-new-action.php")) {
-                        include $config->paths->content."actions/actions/$config->dplusocompany-new-action.php";
+                    if (file_exists($config->paths->content."actions/actions/$config->cptechcustomer-new-action.php")) {
+                        include $config->paths->content."actions/actions/$config->cptechcustomer-new-action.php";
                     } else {
                         include $config->paths->content."actions/actions/new-action.php";
                     }

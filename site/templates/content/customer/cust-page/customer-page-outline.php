@@ -18,8 +18,8 @@
     </div>
     <div class="col-sm-6">
 		<?php
-			if (file_exists($config->paths->content."customer/cust-page/$config->dplusocompany-customer-shiptos-form.php")) {
-				include $config->paths->content."customer/cust-page/$config->dplusocompany-customer-shiptos-form.php";
+			if (file_exists($config->paths->content."customer/cust-page/$config->cptechcustomer-customer-shiptos-form.php")) {
+				include $config->paths->content."customer/cust-page/$config->cptechcustomer-customer-shiptos-form.php";
 			} else {
 				include $config->paths->content.'customer/cust-page/customer-shiptos-form.php';
 			}

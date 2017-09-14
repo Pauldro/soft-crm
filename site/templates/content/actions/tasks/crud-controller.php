@@ -9,8 +9,8 @@
         case 'add':
             switch($input->urlSegment2) {
                 case 'new':
-                    if (file_exists($config->paths->content."actions/tasks/$config->dplusocompany-new-task.php")) {
-                        include $config->paths->content."actions/tasks/$config->dplusocompany-new-task.php";
+                    if (file_exists($config->paths->content."actions/tasks/$config->cptechcustomer-new-task.php")) {
+                        include $config->paths->content."actions/tasks/$config->cptechcustomer-new-task.php";
                     } else {
                         include $config->paths->content."actions/tasks/new-task.php";
                     }
