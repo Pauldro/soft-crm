@@ -13,7 +13,7 @@
                     if (!$config->ajax) {
     					$actionpanel = new UserActionPanel($input->urlSegment3, 'all', $partialid, '#ajax-modal', $config->ajax, $config->modal);
                         $actionpanel->querylinks = UserAction::getlinkarray();
-                        $actionpanel->querylinks['assignedto'] = $user->loginid;
+                        $actionpanel->querylinks['assignedto'] = $assigneduserID;
                     }
                     switch($input->urlSegment3) {
                         case 'user':
@@ -32,16 +32,7 @@
         					}
                             break;
                         case 'cust':
-                            if ($config->ajax) {
-        						include $config->paths->content.'customer/cust-page/actions/actions-panel.php';
-        					} else {
-                                $actionpanel->setupcustomerpanel($custID, $shipID);
-                                $actionpanel->querylinks['customerlink'] = $custID;
-                                $actionpanel->querylinks['shiptolink'] = $shipID;
-        						$page->title = 'User Action List';
-        						$page->modalbody = $config->paths->content.'actions/all/lists/cust-list.php';
-        						include $config->paths->content."common/include-blank-page.php";
-        					}
+                            include $config->paths->content.'customer/cust-page/actions/actions-panel.php';
                             break;
 						case 'contact':
                             if ($config->ajax) {
@@ -65,7 +56,7 @@
 								} else {
 									include $config->paths->content.'edit/orders/actions/actions-panel.php';
 								}
-        						
+
         					} else {
                                 $actionpanel->setuporderpanel($ordn);
                                 $actionpanel->querylinks['salesorderlink'] = $ordn;
