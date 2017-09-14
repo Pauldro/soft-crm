@@ -1529,27 +1529,4 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ?>
