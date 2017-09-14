@@ -17,7 +17,13 @@
     	<?php include $config->paths->content.'customer/cust-page/customer-contact-form.php'; ?>
     </div>
     <div class="col-sm-6">
-    	<?php include $config->paths->content.'customer/cust-page/customer-shiptos-form.php'; ?>
+		<?php
+			if (file_exists($config->paths->content."customer/cust-page/$config->dplusocompany-customer-shiptos-form.php")) {
+				include $config->paths->content."customer/cust-page/$config->dplusocompany-customer-shiptos-form.php";
+			} else {
+				include $config->paths->content.'customer/cust-page/customer-shiptos-form.php';
+			}
+		?>
     </div>
 </div>
 <div class="row">
