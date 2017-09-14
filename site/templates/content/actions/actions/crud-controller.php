@@ -10,7 +10,11 @@
         case 'add':
             switch($input->urlSegment2) {
                 case 'new':
-                    include $config->paths->content."actions/actions/new-action.php";
+                    if (file_exists($config->paths->content."actions/actions/$config->dplusocompany-new-action.php")) {
+                        include $config->paths->content."actions/actions/$config->dplusocompany-new-action.php";
+                    } else {
+                        include $config->paths->content."actions/actions/new-action.php";
+                    }
                     break;
                 default:
                     include $config->paths->content."actions/actions/crud/add-action.php";
@@ -93,7 +97,7 @@
 					$action = loaduseraction($actionid, $fetchclass, false);
 					$messagetemplate = "Viewing Action for {replace}";
 					$page->title = $action->createmessage($messagetemplate);
-					
+
                     if ($config->ajax) {
                         $page->body = $config->paths->content.'actions/actions/view-action.php';
 						include $config->paths->content.'common/modals/include-ajax-modal.php';

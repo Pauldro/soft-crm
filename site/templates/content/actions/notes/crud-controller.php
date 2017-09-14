@@ -9,12 +9,10 @@
         case 'add':
             switch($input->urlSegment2) {
                 case 'new':
-                    if ($config->ajax) {
-                		include $config->paths->content."actions/notes/new-note.php";
+                    if (file_exists($config->paths->content."actions/notes/$config->dplusocompany-new-note.php")) {
+                        include $config->paths->content."actions/notes/$config->dplusocompany-new-note.php";
                     } else {
-                        $page->title = 'Viewing User Note List';
-                        $page->modalbody = $config->paths->content."actions/notes/new-note.php";
-                        include $config->paths->content."common/include-blank-page.php";
+                        include $config->paths->content."actions/notes/new-note.php";
                     }
                     break;
                 default:
@@ -98,7 +96,7 @@
 					$note = loaduseraction($noteID, $fetchclass, false);
 					$messagetemplate = "Viewing Note for {replace}";
 					$page->title = $note->createmessage($messagetemplate);
-					
+
                     if ($config->ajax) {
                         $page->body = $config->paths->content.'actions/notes/view-note.php';
 						include $config->paths->content.'common/modals/include-ajax-modal.php';

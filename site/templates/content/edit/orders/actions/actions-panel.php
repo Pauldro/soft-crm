@@ -15,4 +15,8 @@
     }
     $actionpanel->count = getuseractionscount($user->loginid, $actionpanel->querylinks, false);
 
-    include $config->paths->content."actions/actions-panel.php";
+    if (file_exists($config->paths->content."actions/$config->dplusocompany-actions-panel.php")) {
+        include $config->paths->content."actions/$config->dplusocompany-actions-panel.php";
+    } else {
+        include $config->paths->content."actions/actions-panel.php";
+    }

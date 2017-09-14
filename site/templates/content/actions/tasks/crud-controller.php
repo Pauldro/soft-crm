@@ -9,12 +9,10 @@
         case 'add':
             switch($input->urlSegment2) {
                 case 'new':
-                    if ($config->ajax) {
-                        include $config->paths->content."actions/tasks/new-task.php";
+                    if (file_exists($config->paths->content."actions/tasks/$config->dplusocompany-new-task.php")) {
+                        include $config->paths->content."actions/tasks/$config->dplusocompany-new-task.php";
                     } else {
-                        $page->title = 'Add New Task';
-                        $page->body = $config->paths->content."actions/tasks/new-task.php";
-                        include $config->paths->content."common/include-blank-page.php";
+                        include $config->paths->content."actions/tasks/new-task.php";
                     }
                     break;
                 default:
@@ -99,7 +97,7 @@
 					$task = loaduseraction($taskid, $fetchclass, false);
 					$messagetemplate = "Viewing Action for {replace}";
 					$page->title = $task->createmessage($messagetemplate);
-					
+
                     if ($config->ajax) {
                         $page->body = $config->paths->content.'actions/tasks/view-task.php';
 						include $config->paths->content.'common/modals/include-ajax-modal.php';
