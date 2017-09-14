@@ -13,7 +13,7 @@
         $actionlinks['salesorderlink'] = $input->post->text('salesorderlink');
         $actionlinks['quotelink'] = $input->post->text('quotelink');
         $actionlinks['title'] = $input->post->text('title');
-        $actionlinks['title'] = $input->post->text('title');
+        $actionlinks['textbody'] = $input->post->purify('textbody');
         $actionlinks['tasklink'] = $input->post->text('tasklink');
         $actionlinks['notelink'] = $input->post->text('notelink');
         $actionlinks['actionlink'] = $input->post->text('actionlink');
