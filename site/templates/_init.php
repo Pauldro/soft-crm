@@ -34,21 +34,20 @@
 	$page->querystring = $querystring = $page->fullURL->query;
 	$page->PageURL = $page->httpUrl.'?'.$page->querystring;
 
-	$config->styles->appendwithfilehash('styles/bootstrap.min.css');
+	$config->styles->append($config->urls->templates.'styles/bootstrap.min.css');
 	$config->styles->append('https://fonts.googleapis.com/icon?family=Material+Icons');
-	$config->styles->appendwithfilehash('styles/libraries.css');
-	$config->styles->appendwithfilehash('styles/styles.css');
+	$config->styles->append($config->urls->templates.'styles/libraries.css');
+	$config->styles->append($config->urls->templates.'styles/styles.css');
 
-	$config->scripts->appendwithfilehash('scripts/js-config.js');
-	$config->scripts->appendwithfilehash('scripts/libraries.js');
-	$config->scripts->appendwithfilehash('scripts/libs/key-listener.js');
-	$config->scripts->appendwithfilehash('scripts/libs/datatables.js');
-	$config->scripts->appendwithfilehash('scripts/classes.js');
-
+	$config->scripts->append($config->urls->templates.'scripts/js-config.js');
+	$config->scripts->append($config->urls->templates.'scripts/libraries.js');
+	$config->scripts->append($config->urls->templates.'scripts/libs/key-listener.js');
+	$config->scripts->append($config->urls->templates.'scripts/libs/datatables.js');
+	$config->scripts->append($config->urls->templates.'scripts/classes.js');
 	if (file_exists($config->paths->templates."scripts/$config->dplusocompany-scripts.js")) {
-		$config->scripts->appendwithfilehash("scripts/$config->dplusocompany-scripts.js");
+		$config->scripts->append($config->urls->templates."scripts/$config->dplusocompany-scripts.js");
 	} else {
-		$config->scripts->appendwithfilehash('scripts/scripts.js');
+		$config->scripts->append($config->urls->templates.'scripts/scripts.js');
 	}
 
 	//$config->scripts->append($config->urls->modules . 'Inputfield/InputfieldCKEditor/ckeditor-4.6.1/ckeditor.js');
