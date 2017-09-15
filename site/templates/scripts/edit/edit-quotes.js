@@ -40,7 +40,6 @@ $(function() {
 		var qnbr = form.find('#qnbr').val();
 		var custID = form.find('.shipto-select').data('custid');
 		if (form.formiscomplete('tr')) {
-
 			$(formid).postform({formdata: $(formid).serializeform({ exitquote: 'true'}), jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
 				$.notify({
 					icon: "glyphicon glyphicon-floppy-disk",

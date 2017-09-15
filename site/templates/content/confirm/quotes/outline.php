@@ -58,57 +58,59 @@
 </div>
 <table class="table table-bordered table-striped">
 	 <tr class="detail item-header">
-		<th class="text-center">Item ID/Cust Item ID</th>  <th class="text-right">Qty</th>
+		<th class="text-center">Item ID/Cust Item ID</th>
+		<th class="text-center">Details</th>
+		<th class="text-right">Qty</th>
 		<th class="text-right" width="100">Price</th>
 		<th class="text-right">Line Total</th>
-		<th class="text-center">View Item Details</th>
 	</tr>
 	<?php  $details = get_quote_details(session_id(), $qnbr, false); ?>
 	<?php foreach ($details as $detail) : ?>
 		<?php $qtyo = $detail['ordrqty'] + 0; ?>
 		<tr class="detail">
-			<td class="text-center">
+			<td>
 				<?php echo $detail['itemid']; ?>
                 <?php if (strlen($detail['vendoritemid'])) { echo ' '.$detail['vendoritemid'];} ?>
                 <br>
-				<?php echo $detail['desc1']. ' ' . $detail['desc2'] ; ?>
+				<small><?= $detail['desc1']. ' ' . $detail['desc2'] ; ?></small>
 			</td>
-			<td class="text-right"> <?php echo $qtyo ; ?> </td>
-			<td class="text-right">$ <?php echo formatmoney($detail['ordrprice']); ?></td>
-			<td class="text-right">$ <?php echo formatmoney($detail['ordrprice'] * $qtyo) ?> </td>
-            <td>
+			<td>
                 <a href="<?= $config->pages->ajax."load/edit-detail/quote/?qnbr=".$detail['quotenbr']."&line=".$detail['linenbr']; ?>" class="btn btn-xs btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
                     <i class="glyphicon glyphicon-eye-open"></i>
                 </a>
             </td>
+			<td class="text-right"> <?php echo $qtyo ; ?> </td>
+			<td class="text-right">$ <?php echo formatmoney($detail['ordrprice']); ?></td>
+			<td class="text-right">$ <?php echo formatmoney($detail['ordrprice'] * $qtyo) ?> </td>
 		</tr>
 	<?php endforeach; ?>
 	<tr>
-		<td></td> <td>Subtotal</td> <td></td> <td class="text-right">$ <?php echo formatmoney($quote['subtotal']); ?></td>
+		<td></td> <td><b>Subtotal</b></td> <td></td> <td></td> <td class="text-right">$ <?= formatmoney($quote['subtotal']); ?></td>
+	</tr>
+	<tr>
+		<td></td><td><b>Tax</b></td> <td></td> <td></td> <td class="text-right">$ <?= formatmoney($quote['salestax']); ?></td>
+	</tr>
+	<tr>
+		<td></td><td><b>Freight</b></td> <td></td> <td></td><td class="text-right">$ <?=formatmoney($quote['freight']); ?></td>
 
 	</tr>
 	<tr>
-		<td></td><td>Tax</td> <td></td> <td colspan="2" class="text-right">$ <?php echo formatmoney($quote['salestax']); ?></td>
+		<td></td><td><b>Misc.</b></td> <td></td> <td></td> <td class="text-right">$ <?= formatmoney($quote['miscellaneous']); ?></td>
 	</tr>
 	<tr>
-		<td></td><td>Freight</td> <td></td> <td class="text-right">$ <?php echo formatmoney($quote['freight']); ?></td>
-
-	</tr>
-	<tr>
-		<td></td><td>Misc.</td> <td></td><td class="text-right">$ <?php echo formatmoney($quote['miscellaneous']); ?></td>
-	</tr>
-	<tr>
-		<td></td><td>Total</td> <td></td> <td class="text-right">$ <?php echo formatmoney($quote['order_total']); ?></td>
+		<td></td><td><b>Total</b></td> <td></td> <td></td> <td class="text-right">$ <?= formatmoney($quote['order_total']); ?></td>
 	</tr>
 </table>
 
 <div class="row">
 	<div class="col-sm-6">
-		<a href="<?php echo $config->pages->customer.urlencode($quote['custid']).'/'; ?>" class="btn btn-sm btn-block btn-default">
+		<a href="<?php echo $config->pages->customer.urlencode($quote['custid']).'/'; ?>" class="btn btn-block btn-primary">
 			Proceed to Customer Page
 		</a>
 	</div>
 	<div class="col-sm-6">
-
+		<a href="<?= $config->pages->quotes.'redir/?action=edit-quote&qnbr='.$qnbr; ?>" class="btn btn-block btn-warning">
+			<i class="fa fa-pencil" aria-hidden="true"></i> Edit Quote
+		</a>
 	</div>
 </div>

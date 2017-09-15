@@ -687,7 +687,7 @@
 
 	function remove_orderlock($sessionID, $ordn, $userID, $debug) {
 		$sql = wire('database')->prepare("DELETE FROM ordlock WHERE sessionid = :sessionID AND orderno = :ordn AND userid = :userID");
-		$switching = array(':sessionID' => $sessionID, ':orderno' => $ordn, ':userID' => $userID);
+		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn, ':userID' => $userID);
 		$withquotes = array(true, true, true);
 		if ($debug) {
 			return	returnsqlquery($sql->queryString, $switching, $withquotes);

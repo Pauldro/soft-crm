@@ -110,7 +110,7 @@
 			$custID = getquotecustomer(session_id(), $qnbr, false);
 			$data = array('DBNAME' => $config->dbName, 'LOADQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'CUSTID' => $custID);
 			if ($input->get->lock) {
-				$session->loc= $config->pages->editquote."?qnbr=".$qnbr;
+				$session->loc = $config->pages->editquote."?qnbr=".$qnbr;
 			} else {
 				$session->loc = $config->pages->ajax."load/quotes/cust/".urlencode($custID)."/?qnbr=".$qnbr.$link_addon;
 			}
@@ -160,7 +160,6 @@
 			$quote['ststate'] = $input->post->text('shipto-state');
 			$quote['stzip'] = $input->post->text('shipto-zip');
 			$quote['contact'] = $input->post->text('contact');
-
 			$quote['emailadr'] = $input->post->text('contact-email');
 			$quote['careof'] = $input->post->text('careof');
 			$quote['revdate'] = $input->post->text('reviewdate');
@@ -170,18 +169,19 @@
 			$quote['custpo'] = $input->post->text('custpo');
 			$quote['custref'] = $input->post->text('reference');
 
-			$quote['telenbr'] = $input->post->text('contact-phone');
+			$quote['telenbr'] = str_replace('-', '', $input->post->text('contact-phone'));
 			//$extension = $_POST["contact-extension"];
-			$quote['faxnbr'] = $input->post->text('contact-fax');
+			$quote['faxnbr'] = str_replace('-', '', $input->post->text('contact-fax'));
 
 			$session->sql = edit_quotehead(session_id(), $qnbr, $quote, false);
 			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEHEAD' => false, 'QUOTENO' => $qnbr);
-			if ($input->post->exitquote) {
-				$session->loc = $config->pages->edit."quote/confirm/?qnbr=".$qnbr.$linkaddon;
-			} else {
-				$session->loc = $config->pages->edit."quote/?qnbr=".$qnbr.$linkaddon;
-			}
 
+			if ($input->post->exitquote) {
+				remove_orderlock(session_id(), $qnbr, $user->loginid, false);
+				$session->loc = $config->pages->editquote."confirm/?qnbr=".$qnbr.$linkaddon;
+			} else {
+				$session->loc = $config->pages->editquote."?qnbr=".$qnbr.$linkaddon;
+			}
 			break;
 		case 'add-to-quote':
 			$qnbr = $input->post->text('qnbr');
@@ -202,7 +202,6 @@
 			$qnbr = $input->post->text('qnbr');
 			$qty = $input->post->text('qty');
 			insertquoteline(session_id(), $qnbr, '0', false);
-
 			$quotedetail = getquotelinedetail(session_id(), $qnbr, '0', false);
 			$quotedetail['quotenbr'] = $qnbr;
 			$quotedetail['recno'] = '0';
@@ -246,7 +245,7 @@
 			$quotedetail['rshipdate'] = $input->post->text('rqstdate');
 			$quotedetail['whse'] = $input->post->text('whse');
 			$quotedetail['linenbr'] = $input->post->text('linenbr');
-
+			
 			$quotedetail['spcord'] = $input->post->text('specialorder');
 			$quotedetail['vendorid'] = $input->post->text('vendorID');
 			$quotedetail['shipfromid'] = $input->post->text('shipfromid');
@@ -289,11 +288,9 @@
 			break;
 		case 'unlock-quote':
 			$qnbr = $input->get->text('qnbr');
-			$custID = getquotecustomer(session_id(), $qnbr, false);
-			$shipID = getquoteshipto(session_id(), $qnbr, false);
 			$data = array('UNLOCKING QUOTE' => false);
-			$session->loc = $config->pages->customer.urlencode($custID)."/";
-			if ($shipID != '') { $session->loc .= "shipto-".urlencode($shipID)."/"; }
+			$session->loc = $config->pages->edit."quote/confirm/?qnbr=".$qnbr.$linkaddon;
+			remove_orderlock($sessionID, $ordn, $userID, $debug);
 			break;
 		case 'send-quote-to-order':
 			$qnbr = $input->post->text('qnbr');
