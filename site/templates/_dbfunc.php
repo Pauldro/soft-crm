@@ -845,7 +845,11 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		$limiting = returnlimitstatement($limit, $page);
 		$query = returnwherelinks($querylinks);
 		$andlinks = $query['wherestatement'];
-		$sql = wire('database')->prepare("SELECT * FROM useractions WHERE $andlinks $limiting");
+		if ($config->cptechcustomer == 'stempf') {
+			$sql = wire('database')->prepare("SELECT * FROM useractions WHERE $andlinks ORDER BY duedate ASC $limiting");
+		} else {
+			$sql = wire('database')->prepare("SELECT * FROM useractions WHERE $andlinks $limiting");
+		}
 		$switching = $query['switching'];
 		$withquotes = $query['withquotes'];
 		if ($debug) {
