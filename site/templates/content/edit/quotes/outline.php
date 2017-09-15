@@ -39,13 +39,6 @@
     <?php endforeach; ?>
 </div>
 
-<br>
-<?php if (!$editquote['canedit']) : ?>
-   <a href="<?php echo $editquote['unlock-url']; ?>" class="btn btn-block btn-success save-unlock-order">Finished with quote</a>
-   <br>
-   <a href="<?php echo $editquote['unlock-url']; ?>" class="btn btn-block btn-warning">Discard Changes, unlock quote</a>
-<?php endif; ?>
-
 <?php if ($session->editdetail) : ?>
     <script>
         $(function() {
