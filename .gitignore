@@ -17,8 +17,8 @@ site/templates/redir/test-redir.php
 site/modules/CronjobDatabaseBackup
 site/modules/Helloworld
 site/modules/InputfieldCKEditor
-site/modules/JqueryDatatabes-master
+site/modules/JqueryDatatables-master
 site/modules/ModulesManager
 site/modules/ProcessDatabaseBackups
-site/modules/ProcessExportProfile/
+site/modules/ProcessExportProfile
 site/assets
