@@ -6,6 +6,7 @@
 *.c text
 *.h text
 *.php text
+*.js text
 
 # Declare files that will always have CRLF line endings on checkout.
 *.php text eol=crlf
@@ -15,7 +16,6 @@
 *.png binary
 *.jpg binary
 
-# DW Dreamweaver added files
 _notes
 _compareTemp
 configs/
@@ -23,11 +23,9 @@ dwsync.xml
 dw_php_codehinting.config
 *.mno
 
-site/templates/content/ajax/json/test-json.php
+# Test Files and/or data
 custpricecodetbl.json
 salespersontbl.json
 site/templates/content/ajax/json/test-json.php
 site/templates/template-test.php
-
-
 site/templates/redir/test-redir.php
