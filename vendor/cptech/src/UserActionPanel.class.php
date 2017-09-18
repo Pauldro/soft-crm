@@ -21,6 +21,8 @@
         public $qnbr;
         public $querylinks = array();
         public $taskstatuses = array('Y' => 'Completed', 'N' => 'Not Completed', 'R' => 'Rescheduled');
+        private $userID;
+        protected $assigneduserID;
 
         public $count = 0;
 
@@ -40,6 +42,8 @@
 			} else {
 				$this->collapse = 'collapse';
 			}
+            $this->userID = \Processwire\wire('user')->loginid;
+            $this->assigneduserID = \Processwire\wire('user')->loginid;
         }
 
 		function setupcustomerpanel($custID, $shipID) {
@@ -58,6 +62,10 @@
 
         function setuporderpanel($ordn) {
             $this->ordn = $ordn;
+        }
+
+        function changeassignedtouserID($userID) {
+            $this->assigneduserID = $userID;
         }
 
 		function setupcompletetasks() {
@@ -121,28 +129,29 @@
         }
 
 		function getaddactionlink() {
-			$link = '';
+            $link = new \Purl\Url(wire('page')->httpUrl);
+        	$link->path = '';
+        	$link->join(wire('config')->pages->actions.$this->actiontype."/add/new/");
 			switch ($this->type) {
 				case 'cust':
-                    $link = wire('config')->pages->actions.$this->actiontype."/add/new/?custID=".urlencode($this->custID);
-					if ($this->shipID != '') {$link .= "&shipID=".urlencode($this->shipID);}
+                    $link->query->set('custID', $this->custID);
+					if ($this->shipID != '') {$link->query->set('shipID', $this->shipID);}
 					break;
 				case 'contact':
-                    $link = wire('config')->pages->actions.$this->actiontype."/add/new/?custID=".urlencode($this->custID);
-                    if ($this->shipID != '') {$link .= "&shipID=".urlencode($this->shipID);}
-					$link .= "&contactID=".urlencode($this->contactID);
-					break;
-                case 'user':
-					$link = wire('config')->pages->actions.$this->actiontype."/add/new/";
+                    $link->query->set('custID', $this->custID);
+                    if ($this->shipID != '') {$link->query->set('shipID', $this->shipID);}
+                    $link->query->set('contactID', $this->contactID);
 					break;
                 case 'quote':
-                    $link = wire('config')->pages->actions.$this->actiontype."/add/new/?qnbr=".$this->qnbr;
+                    $link->query->set('qnbr', $this->qnbr);
                     break;
                 case 'order':
-                    $link = wire('config')->pages->actions.$this->actiontype."/add/new/?ordn=".$this->ordn;
+                    $link->query->set('ordn', $this->ordn);
                     break;
+                case 'user':
+					break;
 			}
-			return $link;
+			return $link->getUrl();
 		}
 
         function getactiontyperefreshlink() {
@@ -161,30 +170,44 @@
         }
 
 		function getpanelrefreshlink() {
-			$link = '';
+            $link = new \Purl\Url(wire('page')->httpUrl);
+        	$link->path = '';
+        	$link->join(wire('config')->pages->actions.$this->getactiontypepage()."/load/list/");
 			switch ($this->type) {
 				case 'cust':
-					$link = wire('config')->pages->actions.$this->getactiontypepage()."/load/list/cust/?custID=".urlencode($this->custID);
-					if ($this->shipID != '') {$link .= "&shipID=".urlencode($this->shipID);}
+                    $link->path->add('cust');
+                    $link->query->set('custID', $this->custID);
+					if ($this->shipID != '') {$link->query->set('shipID', $this->shipID);}
 					break;
 				case 'contact':
-					$link = wire('config')->pages->actions.$this->getactiontypepage()."/load/list/contact/?custID=".urlencode($this->custID);
-					if ($this->shipID != '') {$link .= "&shipID=".urlencode($this->shipID);}
-					$link .= "&contactID=".urlencode($this->contactID);
+                    $link->path->add('contact');
+                    $link->query->set('custID', $this->custID);
+					if ($this->shipID != '') {$link->query->set('shipID', $this->shipID);}
+                    $link->query->set('contactID', $this->contactID);
 					break;
                 case 'user':
-					$link = wire('config')->pages->actions.$this->getactiontypepage()."/load/list/user/";
+                    $link->path->add('user');
 					break;
                 case 'order':
-					$link = wire('config')->pages->actions.$this->getactiontypepage()."/load/list/order/?ordn=".$this->ordn;
+                    $link->path->add('user');
+                    $link->query->set('ordn', $this->ordn);
 					break;
                 case 'quote':
-					$link = wire('config')->pages->actions.$this->getactiontypepage()."/load/list/quote/?qnbr=".$this->qnbr;
+                    $link->path->add('quote');
+                    $link->query->set('qnbr', $this->qnbr);
 					break;
 			}
-			if ($this->loadmodal) {$link .= "&modal=modal";}
-			return $link;
+			if ($this->loadmodal) { $link->query->set('modal', 'modal'); }
+			return $link->getUrl();
 		}
+
+        function getpanelpaginationlink() {
+            $link = new \Purl\Url($this->getpanelrefreshlink());
+            if ($this->assigneduserID != $this->userID) {
+                $link->query->set('assignedto', $this->assigneduserID);
+            }
+            return $link->getUrl();
+        }
 
         function needsaddactionlink() {
             $needsadd = false;
