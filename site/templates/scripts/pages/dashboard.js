@@ -1,3 +1,0 @@
-$(function() {
-    $('#cust-sales').DataTable();
-});
