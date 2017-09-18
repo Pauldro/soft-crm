@@ -3,6 +3,7 @@
 	if (!isset($partialid)) {$partialid = 'actions';}
     if (!isset($assigneduserID)) {$assigneduserID = $user->loginid;}
     $actionpanel = new UserActionPanel('order', $actiontype, $partialid, '#ajax-modal', $config->ajax, $config->modal);
+    $actionpanel->changeassignedtouserID($assigneduserID);
     $actionpanel->setuporderpanel($ordn);
     $actionpanel->setuptasks($input->get->text('action-status'));
     $actionpanel->querylinks = UserAction::getlinkarray();

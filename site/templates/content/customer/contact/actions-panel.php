@@ -3,6 +3,7 @@
 	if (!isset($partialid)) {$partialid = 'actions';}
     if (!isset($assigneduserID)) {$assigneduserID = $user->loginid;}
     $actionpanel = new UserActionPanel('contact', $actiontype, $partialid, '#ajax-modal', $config->ajax, $config->modal);
+    $actionpanel->changeassignedtouserID($assigneduserID);
     $actionpanel->setupcontactpanel($custID, $shipID, $contactID);
     $actionpanel->setuptasks($input->get->text('action-status'));
     $actionpanel->querylinks = UserAction::getlinkarray();
@@ -16,7 +17,7 @@
         $actionpanel->querylinks['actiontype'] = $actiontype;
     }
     $actionpanel->count = getuseractionscount($user->loginid, $actionpanel->querylinks, false);
-    
+
     if (file_exists($config->paths->content."actions/$config->cptechcustomer-actions-panel.php")) {
         include $config->paths->content."actions/$config->cptechcustomer-actions-panel.php";
     } else {
