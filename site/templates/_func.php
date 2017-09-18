@@ -626,4 +626,9 @@ function show_requirements($field) {
 		return '<a href="'.$link.'" class="h4" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> '.$msg.'.</a>';
 	}
 
+	function hashtemplatefile($filename) {
+		$hash = hash_file(wire('config')->userAuthHashType, wire('config')->paths->templates.$filename);
+		return $this->add(wire('config')->urls->templates.$filename.'?v='.$hash);
+	}
+
 ?>
