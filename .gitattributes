@@ -8,8 +8,8 @@
 *.php text
 
 # Declare files that will always have CRLF line endings on checkout.
-*.php text eol=crlf
-*.js text eol=crlf
+*.php text eol=lf
+*.js text eol=lf
 
 # Denote all files that are truly binary and should not be modified.
 *.png binary
