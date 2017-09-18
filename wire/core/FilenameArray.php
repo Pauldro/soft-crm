@@ -74,21 +74,6 @@ class FilenameArray implements \IteratorAggregate, \Countable {
 	public function append($filename) {
 		return $this->add($filename);
 	}
-	
-	/**
-	* Append self hosted $filename with hash to the end
-	* Unfortunately file has to exist on diskpath specifically
-	* hardcoded to be under site/templates/
-	*
-	*
-	* @param string $filename
-	* @return FilenameArray
-	*
-	*/
-	public function appendwithfilehash($filename) {
-		$hash = hash_file(wire('config')->userAuthHashType, wire('config')->paths->templates.$filename);
-		return $this->add(wire('config')->urls->templates.$filename.'?v='.$hash);
-	}
 
 	/**
 	 * Make iterable
