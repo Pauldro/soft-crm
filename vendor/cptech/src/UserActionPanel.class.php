@@ -42,8 +42,8 @@
 			} else {
 				$this->collapse = 'collapse';
 			}
-            $this->userID = \Processwire\wire('user')->loginid;
-            $this->assigneduserID = \Processwire\wire('user')->loginid;
+            $this->userID = wire('user')->loginid;
+            $this->assigneduserID = wire('user')->loginid;
         }
 
 		function setupcustomerpanel($custID, $shipID) {
