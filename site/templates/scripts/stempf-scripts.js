@@ -841,8 +841,14 @@ $(document).ready(function() {
 		returnelementdescription: function() {
 			var element = $(this);
 			var tag = element[0].tagName.toLowerCase();
-			var classes = element.attr('class').replace(' ', '.');
-			var id = element.attr('id');
+			var classes = '';
+			var id = '';
+			if (element.attr('class')) {
+				classes = element.attr('class').replace(' ', '.');
+			}
+			if (element.attr('id')) {
+				id = element.attr('id');
+			}
 			var string = tag;
 			if (classes) {
 				if (classes.length) {
