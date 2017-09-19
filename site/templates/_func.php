@@ -407,7 +407,7 @@
 	
 	function hashtemplatefile($filename) {
 		$hash = hash_file(wire('config')->userAuthHashType, wire('config')->paths->templates.$filename);
-		return $this->add(wire('config')->urls->templates.$filename.'?v='.$hash);
+		return wire('config')->urls->templates.$filename.'?v='.$hash;
 	}
 	
 	function curl_redir($url) {
