@@ -1,92 +1,149 @@
 <?php
+/* =============================================================
+   STRING FUNCTIONS
+ ============================================================ */
+ function latin_to_utf($string) {
+	$encode = array("â€¢" => '&bull;', "â„¢" => '&trade;', "â€" => '&prime;');
+	foreach ($encode as $key => $value) {
+		if (strpos($string, $key) !== false) {
+			$string = str_replace($key, $value, $string);
+		}
+	}
+	return $string;
+ }
+ 
+ function ordinal($number) {
+	    $ends = array('th','st','nd','rd','th','th','th','th','th','th');
+	    if ((($number % 100) >= 11) && (($number%100) <= 13))
+	        return $number. 'th';
+	    else
+	        return $number. $ends[$number % 10];
+	}
 
+	function ordinalword($number) {
+		switch ($number) {
+			case '1':
+				return 'first';
+				break;
+			case '2':
+				return 'second';
+				break;
+			case '3':
+				return 'third';
+				break;
+			case '4':
+				return 'fourth';
+				break;
+		}
+	}
+	
+	function strToHex($string){
+		$hex = '';
+		for ($i=0; $i<strlen($string); $i++){
+			$ord = ord($string[$i]);
+			$hexCode = dechex($ord);
+			$hex .= substr('0'.$hexCode, -2);
+		}
+		return strToUpper($hex);
+	}
+
+	function hexToStr($hex){
+		$string='';
+		for ($i=0; $i < strlen($hex)-1; $i+=2){
+			$string .= chr(hexdec($hex[$i].$hex[$i+1]));
+		}
+		return $string;
+	}
+	
+	function formatmoney($amt) {
+		return number_format($amt, 2, '.', ',');
+	}
+
+	function formatnumber($number, $beforedecimal, $afterdecimal) {
+		$array = explode('.', $number);
+		return str_pad($array[0], $beforedecimal, '0', STR_PAD_LEFT) . '.' . str_pad($array[1], $afterdecimal, '0', STR_PAD_RIGHT);
+	}
+
+	function formatphone($number) {
+		return preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '$1-$2-$3', $number);
+	}
+	
+	function cleanforjs($str) {
+		return urlencode(str_replace(' ', '-', str_replace('#', '', $str)));
+	}
+	
 /* =============================================================
    URL FUNCTIONS
  ============================================================ */
+	function paginate($url, $page, $insertafter, $hash) {
+		if (strpos($url, 'page') !== false) {
+			$regex = "((page)\d{1,3})";
+			if ($page > 1) { $replace = "page".$page; } else {$replace = ""; }
+			$newurl = preg_replace($regex, $replace, $url);
+		} else {
+			$insertafter = str_replace('/', '', $insertafter)."/";
+			$regex = "(($insertafter))";
+			if ($page > 1) { $replace = $insertafter."page".$page."/";} else {$replace = $insertafter; }
+			$newurl = preg_replace($regex, $replace, $url);
+		}
 
-function paginate($url, $page, $insertafter, $hash) {
-	if (strpos($url, 'page') !== false) {
-		$regex = "((page)\d{1,3})";
-		if ($page > 1) { $replace = "page".$page; } else {$replace = ""; }
-		$newurl = preg_replace($regex, $replace, $url);
-	} else {
-		$insertafter = str_replace('/', '', $insertafter)."/";
-		$regex = "(($insertafter))";
-		if ($page > 1) { $replace = $insertafter."page".$page."/";} else {$replace = $insertafter; }
-		$newurl = preg_replace($regex, $replace, $url);
+		return $newurl . $hash;
+	 }
+
+/* =============================================================
+   ORDERBY / SORT FUNCTIONS
+ ============================================================ */
+	function get_symbols($orderby, $match, $page_orderby) {
+		$symbol = "";
+		if ($orderby == $match) {
+			if ($page_orderby == "ASC") {
+				$symbol = "&#x25B2;";
+				$symbol = "<span class='glyphicon glyphicon-arrow-up'></span>";
+			} else {
+				$symbol = "&#x25BC;";
+				$symbol = "<span class='glyphicon glyphicon-arrow-down'></span>";
+			}
+		}
+		return $symbol;
 	}
 
-	return $newurl . $hash;
- }
-
-
+	function get_sorting_rule($orderingby, $sort, $orderby) {
+		if ($orderingby != $orderby || $sort == false) {
+			$sortrule = "ASC";
+		} else {
+			switch ($sort) {
+				case 'ASC':
+					$sortrule = 'DESC';
+					break;
+				case 'DESC':
+					$sortrule = 'ASC';
+					break;
+			}
+		}
+		return $sortrule;
+	}
 
 /* =============================================================
    ORDERS FUNCTIONS
  ============================================================ */
-
-function get_symbols($orderby, $match, $page_orderby) {
-	$symbol = "";
-	if ($orderby == $match) {
-		if ($page_orderby == "ASC") {
-			$symbol = "&#x25B2;";
-			$symbol = "<span class='glyphicon glyphicon-arrow-up'></span>";
+	function returntracklink($carrier, $tracknbr, $on) {
+		$link = '';
+		if (strpos(strtolower($carrier), 'fed') !== false) {
+			$link = "https://www.fedex.com/fedextrack/WTRK/index.html?action=track&trackingnumber=".$tracknbr."&cntry_code=us&fdx=1490";
+		} else if (strpos(strtolower($carrier), 'ups') !== false) {
+			$link = "http://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=".$tracknbr."&loc=en_us";
+		} else if (strpos(strtolower($carrier), 'gro') !== false) {
+			$link = "http://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=".$tracknbr."&loc=en_us";
+		} else if ((strpos(strtolower($carrier), 'will') !== false)) {
+			$link = "#$on";
 		} else {
-			$symbol = "&#x25BC;";
-			$symbol = "<span class='glyphicon glyphicon-arrow-down'></span>";
+			$link = "#$on";
 		}
+		return $link;
 	}
-	return $symbol;
-}
-
-function get_sorting_rule($orderingby, $sort, $orderby) {
-	if ($orderingby != $orderby || $sort == false) {
-		$sortrule = "ASC";
-	} else {
-		switch ($sort) {
-			case 'ASC':
-				$sortrule = 'DESC';
-				break;
-			case 'DESC':
-				$sortrule = 'ASC';
-				break;
-		}
-	}
-	return $sortrule;
-}
-
-function formatmoney($amt) {
-	return number_format($amt, 2, '.', ',');
-}
-
-function formatnumber($number, $beforedecimal, $afterdecimal) {
-	$array = explode('.', $number);
-	return str_pad($array[0], $beforedecimal, '0', STR_PAD_LEFT) . '.' . str_pad($array[1], $afterdecimal, '0', STR_PAD_RIGHT);
-}
-
-function formatphone($number) {
-	return preg_replace('~.*(\d{3})[^\d]{0,7}(\d{3})[^\d]{0,7}(\d{4}).*~', '$1-$2-$3', $number);
-}
-
-function returntracklink($carrier, $tracknbr, $on) {
-	$link = '';
-	if (strpos(strtolower($carrier), 'fed') !== false) {
-		$link = "https://www.fedex.com/fedextrack/WTRK/index.html?action=track&trackingnumber=".$tracknbr."&cntry_code=us&fdx=1490";
-	} else if (strpos(strtolower($carrier), 'ups') !== false) {
-		$link = "http://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=".$tracknbr."&loc=en_us";
-	} else if (strpos(strtolower($carrier), 'gro') !== false) {
-		$link = "http://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=".$tracknbr."&loc=en_us";
-	} else if ((strpos(strtolower($carrier), 'will') !== false)) {
-		$link = "#$on";
-	} else {
-		$link = "#$on";
-	}
-	return $link;
-}
-
 
 /* =============================================================
-   DISPLAY FUNCTIONS
+   HTML CONTENT FUNCTIONS
  ============================================================ */
 	function highlight($haystack, $needle, $element) { //\b(\w*".$needle."\w*)\b
 		$regex = "/(".$needle.")/i";
@@ -98,36 +155,45 @@ function returntracklink($carrier, $tracknbr, $on) {
 			return $haystack;
 		}
 	}
-
-/* =============================================================
-   MISC FUNCTIONS
- ============================================================ */
-
- function latin_to_utf($string) {
-	$encode = array("â€¢" => '&bull;', "â„¢" => '&trade;', "â€" => '&prime;');
-	foreach ($encode as $key => $value) {
-		if (strpos($string, $key) !== false) {
-			$string = str_replace($key, $value, $string);
-		}
-	}
-	return $string;
- }
-
- function returnsqlquery($sql, $oldtonew, $havequotes) {
-	$i = 0;
-	foreach ($oldtonew as $old => $new) {
-		if ($havequotes[$i]) {
-			$sql = str_replace($old, "'".$new."'", $sql);
+	function createshopasform($custID, $shipID) {
+		$form = '<form action="'.wire(config)->pages->customer.'redir/" method="post">';
+		$form .= '<input type="hidden" name="action" value="shop-as-customer">';
+		$form .= '<input type="hidden" name="page" value="'.wire(config)->filename.'">';
+		$form .= '<input type="hidden" name="custID" value="'.$custID.'">';
+		if ($shipID) {
+			$form .= '<input type="hidden" name="shipID" value="'.$shipID.'">';
+			$form .= '<button type="submit" class="btn btn-sm btn-primary">Shop as '.get_customername($custID).' - '. $shipID.'</button>';
 		} else {
-			$sql = str_replace($old, $new, $sql);
+			$form .= '<button type="submit" class="btn btn-sm btn-primary">Shop as '.get_customername($custID).'</button>';
 		}
-		$i++;
+		$form .= '</form>';
+		return $form;
 	}
-	return $sql;
-}
+	
+	function createalert($alerttype, $msg) {
+		return '<div class="alert alert-'.$alerttype.'" role="alert">' . $msg . '</div>';
+	}
+
+	function makeprintlink($link, $msg) {
+		return '<a href="'.$link.'" class="h4" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> '.$msg.'.</a>';
+	}
+
  /* =============================================================
    DB FUNCTIONS
  ============================================================ */
+	 function returnsqlquery($sql, $oldtonew, $havequotes) {
+		$i = 0;
+		foreach ($oldtonew as $old => $new) {
+			if ($havequotes[$i]) {
+				$sql = str_replace($old, "'".$new."'", $sql);
+			} else {
+				$sql = str_replace($old, $new, $sql);
+			}
+			$i++;
+		}
+		return $sql;
+	}
+	
 	function returnlimitstatement($limit, $page) {
 		if ($limit) {
 			if ($page > 1 ) {$start_point = ($page * $limit) - $limit; } else { $start_point = 0; }
@@ -226,21 +292,6 @@ function returntracklink($carrier, $tracknbr, $on) {
 		);
 	}
 
-	function returncustindextable($distincton) {
-		if ($distincton) {
-			if ($distincton == 'shipto') {
-				$table = 'view_distinct_cust_records';
-			} elseif ($distincton == 'custshipto') {
-				$table = 'view_distinct_cust_shiptos';
-			} else {
-				$table = 'view_distinct_customers';
-			}
-		} else {
-			$table = 'custindex';
-		}
-		return $table;
-	}
-
  /* =============================================================
    DATE FUNCTIONS
  ============================================================ */
@@ -278,33 +329,6 @@ function returntracklink($carrier, $tracknbr, $on) {
 /* =============================================================
   TASK FUNCTIONS
 ============================================================ */
-
-
-	function ordinal($number) {
-	    $ends = array('th','st','nd','rd','th','th','th','th','th','th');
-	    if ((($number % 100) >= 11) && (($number%100) <= 13))
-	        return $number. 'th';
-	    else
-	        return $number. $ends[$number % 10];
-	}
-
-	function ordinalword($number) {
-		switch ($number) {
-			case '1':
-				return 'first';
-				break;
-			case '2':
-				return 'second';
-				break;
-			case '3':
-				return 'third';
-				break;
-			case '4':
-				return 'fourth';
-				break;
-		}
-	}
-
 	function createmessage($message, $custID, $shipID, $contactID, $taskID, $noteID, $ordn, $qnbr) {
 		$regex = '/({replace})/i';
 		$replace = "";
@@ -335,18 +359,10 @@ function returntracklink($carrier, $tracknbr, $on) {
 
 		return preg_replace($regex, $replace, $message);
 	}
-
-	function curl_redir($url) {
-		$curl = curl_init();
-		curl_setopt_array($curl, array(
-			CURLOPT_RETURNTRANSFER => 1,
-			CURLOPT_URL => $url,
-			CURLOPT_FOLLOWLOCATION => true
-		));
-		sleep(2);
-		return curl_exec($curl);
-	}
-
+	
+/* =============================================================
+  FILE FUNCTIONS
+============================================================ */
 	function writedplusfile($data, $filename) {
 		$file = '';
 		foreach ($data as $key => $value) {
@@ -366,7 +382,7 @@ function returntracklink($carrier, $tracknbr, $on) {
 		fwrite($handle, $file);
 		fclose($handle);
 	}
-
+	
 	function writedataformultitems($data, $items, $qtys) {
 		for ($i = 0; $i < sizeof($items); $i++) {
 			$itemID = str_pad(wire('sanitizer')->text($items[$i]), 30, ' ');
@@ -376,7 +392,7 @@ function returntracklink($carrier, $tracknbr, $on) {
 		}
 		return $data;
 	}
-
+	
 	/**
 	 * [convertfiletojson description]
 	 * @param  [string] $file [String that contains file location]
@@ -388,9 +404,21 @@ function returntracklink($carrier, $tracknbr, $on) {
 		$json = utf8_clean($json);
 		return $json;
 	}
-
-	function cleanforjs($str) {
-		return urlencode(str_replace(' ', '-', str_replace('#', '', $str)));
+	
+	function hashtemplatefile($filename) {
+		$hash = hash_file(wire('config')->userAuthHashType, wire('config')->paths->templates.$filename);
+		return $this->add(wire('config')->urls->templates.$filename.'?v='.$hash);
+	}
+	
+	function curl_redir($url) {
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+			CURLOPT_RETURNTRANSFER => 1,
+			CURLOPT_URL => $url,
+			CURLOPT_FOLLOWLOCATION => true
+		));
+		sleep(2);
+		return curl_exec($curl);
 	}
 
  /* =============================================================
@@ -411,52 +439,3 @@ function returntracklink($carrier, $tracknbr, $on) {
 			$user->lockedquote = getlockedquotenbr(session_id());
 		}
 	}
-
-	function createshopasform($custID, $shipID) {
-		$form = '<form action="'.wire(config)->pages->customer.'redir/" method="post">';
-		$form .= '<input type="hidden" name="action" value="shop-as-customer">';
-		$form .= '<input type="hidden" name="page" value="'.wire(config)->filename.'">';
-		$form .= '<input type="hidden" name="custID" value="'.$custID.'">';
-		if ($shipID) {
-			$form .= '<input type="hidden" name="shipID" value="'.$shipID.'">';
-			$form .= '<button type="submit" class="btn btn-sm btn-primary">Shop as '.get_customername($custID).' - '. $shipID.'</button>';
-		} else {
-			$form .= '<button type="submit" class="btn btn-sm btn-primary">Shop as '.get_customername($custID).'</button>';
-		}
-		$form .= '</form>';
-		return $form;
-	}
-
-	function strToHex($string){
-		$hex = '';
-		for ($i=0; $i<strlen($string); $i++){
-			$ord = ord($string[$i]);
-			$hexCode = dechex($ord);
-			$hex .= substr('0'.$hexCode, -2);
-		}
-		return strToUpper($hex);
-	}
-
-	function hexToStr($hex){
-		$string='';
-		for ($i=0; $i < strlen($hex)-1; $i+=2){
-			$string .= chr(hexdec($hex[$i].$hex[$i+1]));
-		}
-		return $string;
-	}
-
-
-	function createalert($alerttype, $msg) {
-		return '<div class="alert alert-'.$alerttype.'" role="alert">' . $msg . '</div>';
-	}
-
-	function makeprintlink($link, $msg) {
-		return '<a href="'.$link.'" class="h4" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> '.$msg.'.</a>';
-	}
-
-	function hashtemplatefile($filename) {
-		$hash = hash_file(wire('config')->userAuthHashType, wire('config')->paths->templates.$filename);
-		return $this->add(wire('config')->urls->templates.$filename.'?v='.$hash);
-	}
-
-?>
