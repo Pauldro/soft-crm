@@ -1,47 +1,5 @@
 <?php
 
-
-function renderNavTree($items, $maxDepth = 3) {
-
-	// if we've been given just one item, convert it to an array of items
-	if($items instanceof Page) $items = array($items);
-
-	// if there aren't any items to output, exit now
-	if(!count($items)) return;
-
-	// $out is where we store the markup we are creating in this function
-	// start our <ul> markup
-	echo "<div class='list-group'>";
-
-	// cycle through all the items
-	foreach($items as $item) {
-
-		// markup for the list item...
-		// if current item is the same as the page being viewed, add a "current" class to it
-
-		// markup for the link
-		if($item->id == wire('page')->id) {
-			echo "<a href='$item->url' class='list-group-item bg-primary'>$item->title</a>";
-		} else {
-			echo "<a href='$item->url' class='list-group-item'>$item->title</a>";
-		}
-
-
-		// if the item has children and we're allowed to output tree navigation (maxDepth)
-		// then call this same function again for the item's children
-		if($item->hasChildren() && $maxDepth) {
-			renderNavTree($item->children, $maxDepth-1);
-		}
-
-		// close the list item
-		//echo "</li>";
-	}
-
-	// end our <ul> markup
-	echo "</div>";
-}
-
-
 /* =============================================================
    URL FUNCTIONS
  ============================================================ */
@@ -60,93 +18,6 @@ function paginate($url, $page, $insertafter, $hash) {
 
 	return $newurl . $hash;
  }
-
-function querystring_replace($querystring, $replacing, $values) { // DEPRECATED 8/8/2017 DELETE BY 9/1/2017
-	$querystring = str_replace("?", "&", $querystring);
-	for ($i = 0; $i < sizeof($replacing); $i++) {
-		$regex = getregex($replacing[$i]);
-		if (preg_match($regex, $querystring)) {
-			$replace = querystringreplacevalue($replacing[$i], $values[$i]);
-			$querystring = preg_replace($regex, $replace, $querystring);
-		} else { // IF DOESN'T MATCH ADD IT TO STRING MANUALLY
-			if ($values[$i]) { //IF VALUE NOT FALSE
-				$querystring = $querystring . "&".$replacing[$i]."=".$values[$i]; //MAKE IT AMPERSAND, AT THE END THE FIRST QUERY DELIMITER WILL BE REPLACED WITH ?
-			} else {
-				//$querystring = $querystring;
-			}
-		}
-	}
-
-	if (strlen(ltrim($querystring, "&")) > 0) {
-		$querystring = 	"?".ltrim($querystring, "&");
-	} else {
-		$querystring = ltrim($querystring, "&");
-	}
-
-	return $querystring;
-
-}
-
-function buildlink($url, $replacing, $values, $hash) { // DEPRECATED 8/8/2017 DELETE BY 9/1/2017
-	if (strpos($url, '?') !== false) {
-		$url_arr = explode("?", $url);
-		$querystring = $url_arr[1];
-		return $url_arr[0] . querystring_replace($querystring, $replacing, $values) . $hash;
-	} else {
-	   return $url;
-	}
-}
-
-
-	function getregex($replacing) { // DEPRECATED 8/8/2017 DELETE BY 9/1/2017
-		 $regex = '';
-		 switch ($replacing) {
-			case 'orderby':
-				$regex = "/[\?\&]\borderby+=\w+-(DESC|ASC)\b/";
-				break;
-			default:
-				$regex = "/[\?\&]($replacing=\w+)/";
-                $regex = "/[\?&]$replacing*?=[^&?]*/";
-				break;
-		 }
-		 return $regex;
-	 }
-
-	 function querystringreplacevalue($replacing, $value) { // DEPRECATED 8/8/2017 DELETE BY 9/1/2017
-		 if ($value == 'remove-me' || (!$value)) {
-			 return '';
-		 } else {
-			 return "&".$replacing."=".$value;
-		 }
-	 }
-
-	function buildajaxpath($baseurl, $destinationsegments, $pagesegments) { // DEPRECATED 8/8/2017 DELETE BY 9/1/2017
-		if (strpos($pagesegments, $destinationsegments) !== false) { // IF PAGE SEGMENTS IS IN SEGMENTS
-			$pagesegments = str_replace($destinationsegments, '', $pagesegments); //GET RID OF SAME SEGMENTS FROM PAGE SEGMENTS
-		}
-		return rtrim($baseurl . $destinationsegments . $pagesegments, "/") ."/"; //CONCATENATE ALL SEGMENTS
-	}
-
-	function buildpath($url, $replacing, $replacements) { // DEPRECATED 8/8/2017 DELETE BY 9/1/2017
-		for ($i = 0; $i < sizeof($replacements); $i++) {
-			$regex = "/$replacing[$i]\//";
-			if (preg_match($regex, $url)) {
-				$replace = getpathreplacevalue($replacements[$i]);
-				$url = preg_replace($regex, $replace, $url);
-			} else {
-				$url .= "$replacements[$i]/";
-			}
-		}
-		return $url;
-	}
-
-	function getpathreplacevalue($replacement) { // DEPRECATED 8/8/2017 DELETE BY 9/1/2017
-		if ($replacement== 'remove-me' || (!$replacement)) {
-			return '';
-		} else {
-			return $replacement . "/";
-		}
-	}
 
 
 
@@ -213,28 +84,6 @@ function returntracklink($carrier, $tracknbr, $on) {
 	return $link;
 }
 
-function doesitcontain($container, $needle) {
-	if (is_array($container)) {
-		if (in_array($needle, $container) !== false) {
-			return true;
-		} else {
-			return false;
-		}
-	} else {
-		if (strpos($needle, $container) !== false) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-}
-
-
-function show_requirements($field) {
-	if (doesitcontain(wire('config')->required_billing_fields, $field)) {
-		echo 'required';
-	}
-}
 
 /* =============================================================
    DISPLAY FUNCTIONS
@@ -392,30 +241,9 @@ function show_requirements($field) {
 		return $table;
 	}
 
-	function returntaskstable($status) {
-		switch ($status) {
-			case 'Y':
-				$table = 'view_completed_tasks';
-				break;
-			case 'N':
-				$table = 'view_incomplete_tasks';
-				break;
-			case 'R':
-				$table = 'view_rescheduled_tasks';
-				break;
-			default:
-				$table = 'view_incomplete_tasks';
-				break;
-		}
-		return $table;
-	}
-
  /* =============================================================
    DATE FUNCTIONS
  ============================================================ */
-
-
-
 	function get_time($timeString) {
 		$partofDay = ""; $colon = ":";
 		$timeAsString = substr($timeString, 0, 2) . $colon . substr($timeString, 2, 2);
