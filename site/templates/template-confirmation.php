@@ -2,7 +2,8 @@
     switch ($page->parent->name) { //$page->name is what we are editing
         case 'order':
             $ordn = $input->get->text('ordn');
-			$page->body = $config->paths->content."edit/orders/outline.php";
+            $page->title = 'Summary for Order # '.$ordn;
+			$page->body = $config->paths->content."confirm/orders/outline.php";
             break;
         case 'quote':
             $qnbr = $input->get->text('qnbr');

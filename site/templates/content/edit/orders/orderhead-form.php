@@ -76,12 +76,24 @@
 			<?php endif; ?>
         </div>
     </div>
-	<?php include $config->paths->content.'edit/orders/order-attachments.php'; ?>
     <div class="row">
-    	<div class="text-center">
+		<div class="col-sm-6">
 			<?php if ($editorder['canedit']) : ?>
-        		<button type="submit" class="btn btn-success text-center"><span class="glyphicon glyphicon-floppy-disk"></span> Save Changes</button>
+        		<button type="submit" class="btn btn-success btn-block text-center"><span class="glyphicon glyphicon-floppy-disk"></span> Save Changes</button>
 			<?php endif; ?>
-        </div>
+		</div>
     </div>
+	<hr>
+	<?php if (!$editorder['canedit']) : ?>
+		<a href="<?= $config->pages->confirmorder."?ordn=".$ordn; ?>" class="btn btn-block btn-success">Finished with Order</a>
+	<?php else : ?>
+		<div class="row">
+			<div class="col-sm-6 form-group">
+				 <a href="<?= $editorder['unlock-url']; ?>" class="btn btn-block btn-warning"><i class="glyphicon glyphicon-floppy-remove" aria-hidden="true"></i> Discard Changes, Unlock Order</a>
+			</div>
+			<div class="col-sm-6 form-group">
+				<a href="<?= $editorder['unlock-url']; ?>" class="btn btn-block btn-emerald save-unlock-order" data-form="#orderhead-form"><i class="fa fa-unlock" aria-hidden="true"></i> Save and Unlock Order</a>
+			</div>
+		</div>
+	<?php endif; ?>
 </form>

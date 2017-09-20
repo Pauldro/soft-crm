@@ -54,9 +54,11 @@
 	<?php foreach ($details as $detail) : ?>
 		<?php $qtyo = $detail['ordrqty'] + 0; ?>
 		<tr class="detail">
-			<td class="text-center">
-				<?php echo $detail['itemid']; ?> <br>
-				<?php echo $detail['desc1']. ' ' . $detail['desc2'] ; ?>
+			<td>
+				<?= $detail['itemid']; ?>
+				<?php if (strlen($detail['vendoritemid'])) { echo ' '.$detail['vendoritemid'];} ?>
+				<br>
+				<small><?= $detail['desc1']. ' ' . $detail['desc2'] ; ?></small>
 			</td>
 			<td class="text-right"> <?php echo $qtyo ; ?> </td>
 			<td class="text-right">$ <?php echo formatmoney($detail['ordrprice']); ?></td>

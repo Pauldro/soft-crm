@@ -46,24 +46,26 @@
     </div>
     <hr>
     <?php if (!$editquote['canedit']) : ?>
-       <a href="<?php echo $editquote['unlock-url']; ?>" class="btn btn-block btn-success save-unlock-order">Finished with quote</a>
+         <a href="<?= $config->pages->confirmquote."?qnbr=".$qnbr; ?>" class="btn btn-block btn-success">Finished with Quote</a>
     <?php else : ?>
+        <?php if (($config->pages->orderquote.'?qnbr='.$qnbr) != $config->filename) : ?>
+            <div class="form-group">
+                <a href="<?= $config->pages->orderquote.'?qnbr='.$qnbr; ?>" class="btn btn-block btn-default">
+                    <i class="fa fa-paper-plane-o" aria-hidden="true"></i> Send To Order
+                </a>
+            </div>
+        <?php endif; ?>
         <div class="row">
+            <div class="col-sm-6 form-group">
+    			<div class="text-center">
+    				<a href="<?= $editquote['unlock-url']; ?>" class="btn btn-block btn-warning"><i class="glyphicon glyphicon-floppy-remove" aria-hidden="true"></i> Discard Changes, Unlock Quote</a>
+    			</div>
+    		</div>
     		<div class="col-sm-6 form-group">
     			<div class="text-center">
     				<button type="button" class="btn btn-emerald btn-block save-unlock-quotehead"><i class="fa fa-unlock" aria-hidden="true"></i> Save and Unlock Quote</button>
     			</div>
     		</div>
-    		<div class="col-sm-6 form-group">
-    			<div class="text-center">
-    				<?php if (($config->pages->orderquote.'?qnbr='.$qnbr) != $config->filename) : ?>
-    					<a href="<?= $config->pages->orderquote.'?qnbr='.$qnbr; ?>" class="btn btn-block btn-default">
-    						<i class="fa fa-paper-plane-o" aria-hidden="true"></i> Send To Order
-    					</a>
-    				<?php endif; ?>
-    			</div>
-    		</div>
-    	</div>
-        <a href="<?php echo $editquote['unlock-url']; ?>" class="btn btn-block btn-warning"><i class="glyphicon glyphicon-floppy-remove" aria-hidden="true"></i> Discard Changes, unlock quote</a>
+    	</div>    
     <?php endif; ?>
 </form>
