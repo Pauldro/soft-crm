@@ -12,7 +12,11 @@
 			$customer = get_customername($input->urlSegment(1));
 			$page->title = $input->urlSegment(1) . ' - ' . $customer;
 			$user->hascustomeraccess = can_accesscustomer($user->loginid, $user->hascontactrestrictions, $custID, false);
-			$page->body = $config->paths->content.'customer/cust-page/customer-page-outline.php';
+			if ($user->hascustomeraccess) {
+				$page->body = $config->paths->content.'customer/cust-page/customer-page-outline.php';
+			} else {
+				$page->body = $config->paths->content.'customer/cust-page/customer-access-denied.php';
+			}
 			$config->scripts->append(hashtemplatefile('scripts/pages/customer-page.js'));
 			$config->scripts->append(hashtemplatefile('scripts/dplusnotes/order-notes.js'));
 		    $config->scripts->append(hashtemplatefile('scripts/dplusnotes/quote-notes.js'));
@@ -51,12 +55,6 @@
 				} else {
 					if (!empty($shipID)) {
 						if ($user->hasshiptoaccess) {
-							$page->body = $config->paths->content.'customer/cust-page/customer-page-outline.php';
-						} else {
-							$page->body = $config->paths->content.'customer/cust-page/customer-access-denied.php';
-						}
-					} else {
-						if ($user->hascustomeraccess) {
 							$page->body = $config->paths->content.'customer/cust-page/customer-page-outline.php';
 						} else {
 							$page->body = $config->paths->content.'customer/cust-page/customer-access-denied.php';
