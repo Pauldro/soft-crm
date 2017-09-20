@@ -16,15 +16,11 @@
 			$shipID = $input->get->text('shipID');
         }
     }
-
-    $config->styles->append('//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css');
-    $config->scripts->append('//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js');
-    $config->scripts->append('//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js');
-    $config->scripts->append($config->urls->templates.'scripts/libs/datatables.js');
-	$config->scripts->append($config->urls->templates.'scripts/ii/item-functions.js');
-	$config->scripts->append($config->urls->templates.'scripts/ii/item-info.js');
-
-
+    $config->scripts->append(hashtemplatefile('scripts/libs/raphael.js'));
+    $config->scripts->append(hashtemplatefile('scripts/libs/morris.js'));
+    $config->scripts->append(hashtemplatefile('scripts/libs/datatables.js'));
+	$config->scripts->append(hashtemplatefile('scripts/ii/item-functions.js'));
+	$config->scripts->append(hashtemplatefile('scripts/ii/item-info.js'));
 ?>
 <?php include('./_head.php'); // include header markup ?>
     <div class="jumbotron pagetitle">
@@ -46,6 +42,5 @@
 				</script>
     		<?php endif; ?>
     	<?php endif; ?>
-
     </div>
 <?php include('./_foot-with-toolbar.php'); // include footer markup ?>
