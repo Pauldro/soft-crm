@@ -9,11 +9,8 @@
         <?php
             if ($input->get->q) {
                 switch ($dplusfunction) {
-                    case 'ci':
-                        include $config->paths->content."customer/ajax/load/cust-index/ci-cust-list.php";
-                        break;
-                    case 'ii':
-                        include $config->paths->content."customer/ajax/load/cust-index/ii-cust-list.php";
+                    case 'vi':
+                        include $config->paths->content."vendor/ajax/load/vend-index/vi-vend-list.php";
                         break;
                 }
             } else {

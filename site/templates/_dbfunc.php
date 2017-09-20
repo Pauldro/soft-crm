@@ -980,7 +980,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 	
-	function search_vendorspaged($loginID, $limit = 10, $page = 1, $restrictions, $keyword, $debug) {
+	function search_vendorspaged($limit = 10, $page = 1, $keyword, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		$limiting = returnlimitstatement($limit, $page);
 		$search = '%'.str_replace(' ', '%',$keyword).'%';
@@ -994,11 +994,11 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 	
-	function count_searchvendors($loginID, $limit = 10, $page = 1, $restrictions, $keyword, $debug) {
+	function count_searchvendors($keyword, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		$limiting = returnlimitstatement($limit, $page);
 		$search = '%'.str_replace(' ', '%',$keyword).'%';
-		$sql = wire('database')->prepare("SELECT * FROM vendors WHERE UCASE(CONCAT(vendid, ' ', shipfrom, ' ', name, ' ', address1, ' ', address2, ' ', address3, ' ', city, ' ', state, ' ', zip, ' ', country, ' ', phone, ' ', fax, ' ', email)) LIKE UCASE(:search) $limiting");
+		$sql = wire('database')->prepare("SELECT COUNT(*) FROM vendors WHERE UCASE(CONCAT(vendid, ' ', shipfrom, ' ', name, ' ', address1, ' ', address2, ' ', address3, ' ', city, ' ', state, ' ', zip, ' ', country, ' ', phone, ' ', fax, ' ', email)) LIKE UCASE(:search)");
 		$switching = array(':search' => $search); $withquotes = array(true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
