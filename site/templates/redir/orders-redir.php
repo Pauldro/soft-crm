@@ -63,7 +63,7 @@
 	*		CUSTID=$custID
 	*		LOCK
 	* 		break;
-	* 	case 'save-order-head'
+	* 	case 'update-orderhead'
 	* 		DBNAME=$config->DBNAME
 	*		SALESHEAD
 	*		ORDERNO=$ordn
@@ -305,7 +305,11 @@
 			$session->sql = edit_orderhead(session_id(), $ordn, $order, false);
 			$session->sql .= '<br>'. edit_orderhead_credit(session_id(), $ordn, $paytype, $ccno, $xpd, $ccv);
 			$data = array('DBNAME' => $config->dbName, 'SALESHEAD' => false, 'ORDERNO' => $ordn);
-			$session->loc = $config->pages->customer;
+			if ($input->post->exitorder) {
+				$session->loc = $config->pages->confirmorder."?ordn=$ordn";
+			} else {
+				$session->loc = $config->pages->editorder."?ordn=$ordn";
+			}
 			break;
 		case 'add-to-order':
 			$itemID = $input->post->text('itemID');

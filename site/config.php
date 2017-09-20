@@ -148,6 +148,8 @@
 	$config->pages->editorder = $config->urls->root . 'edit/order/';
 	$config->pages->editquote = $config->urls->root . 'edit/quote/';
 	$config->pages->orderquote = $config->urls->root . 'edit/quote-to-order/';
+	$config->pages->confirmorder = $config->urls->root . 'edit/order/confirm/';
+	$config->pages->confirmquote = $config->urls->root . 'edit/quote/confirm/';
     $config->pages->print = $config->urls->root."print/";
 	$config->pages->products = $config->urls->root . 'products/';
 	$config->pages->iteminfo = $config->urls->root . 'products/item-info/';

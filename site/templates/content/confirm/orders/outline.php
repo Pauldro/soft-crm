@@ -46,7 +46,9 @@
 </div>
 <table class="table table-bordered table-striped">
 	 <tr class="detail item-header">
-		<th class="text-center">Item ID/Cust Item ID</th>  <th class="text-right">Qty</th>
+		<th class="text-center">Item ID/Cust Item ID</th>
+		<th class="text-center">Detail</th>
+		<th class="text-right">Qty</th>
 		<th class="text-right" width="100">Price</th>
 		<th class="text-right">Line Total</th>
 	</tr>
@@ -60,28 +62,29 @@
 				<br>
 				<small><?= $detail['desc1']. ' ' . $detail['desc2'] ; ?></small>
 			</td>
+			<td>
+				<a href="<?= $config->pages->ajax."load/edit-detail/order/?ordn=".$detail['orderno']."&line=".$detail['linenbr']; ?>" class="btn btn-xs btn-warning update-line" data-kit="<?= $detail['kititemflag']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-custid="<?= $order['custid']; ?>">
+	                <i class="glyphicon glyphicon-eye-open"></i>
+	            </a>
+			</td>
 			<td class="text-right"> <?php echo $qtyo ; ?> </td>
 			<td class="text-right">$ <?php echo formatmoney($detail['price']); ?></td>
 			<td class="text-right">$ <?php echo formatmoney($detail['price'] * $qtyo) ?> </td>
 		</tr>
 	<?php endforeach; ?>
 	<tr>
-		<td></td> <td>Subtotal</td> <td></td> <td class="text-right">$ <?php echo formatmoney($order['odrsubtot']); ?></td>
-
+		<td></td> <td><b>Subtotal</b></td> <td></td> <td></td> <td class="text-right">$ <?php echo formatmoney($order['odrsubtot']); ?></td>
 	</tr>
 	<tr>
-		<td></td><td>Tax</td> <td></td> <td colspan="2" class="text-right">$ <?php echo formatmoney($order['odrtax']); ?></td>
-
+		<td></td><td><b>Tax</b></td> <td></td> <td colspan="2" class="text-right">$ <?php echo formatmoney($order['odrtax']); ?></td>
 	</tr>
 	<tr>
-		<td></td><td>Freight</td> <td></td> <td class="text-right">$ <?php echo formatmoney($order['odrfrt']); ?></td>
-
+		<td></td><td><b>Freight</b></td> <td></td> <td></td> <td class="text-right">$ <?php echo formatmoney($order['odrfrt']); ?></td>
 	</tr>
 	<tr>
-		<td></td><td>Misc.</td> <td></td><td class="text-right">$ <?php echo formatmoney($order['odrmis']); ?></td>
-
+		<td></td><td><b>Misc.</b></td> <td></td> <td></td><td class="text-right">$ <?php echo formatmoney($order['odrmis']); ?></td>
 	</tr>
 	<tr>
-		<td></td><td>Total</td> <td></td> <td class="text-right">$ <?php echo formatmoney($order['odrtotal']); ?></td>
+		<td></td><td><b>Total</b></td> <td></td> <td></td> <td class="text-right">$ <?php echo formatmoney($order['odrtotal']); ?></td>
 	</tr>
 </table>

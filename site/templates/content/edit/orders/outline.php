@@ -40,17 +40,8 @@
                 <?php include $config->paths->content.$tab['tabcontent']; ?>
             </div>
         <?php endif; ?>
-
     <?php endforeach; ?>
-
 </div>
-
-<br>
-<?php if ($editorder['canedit']) : ?>
-   <a href="<?php echo $editorder['unlock-url']; ?>" class="btn btn-block btn-success save-unlock-order" data-form="#orderhead-form">Finished with order</a>
-   <br>
-   <a href="<?php echo $editorder['unlock-url']; ?>" class="btn btn-block btn-warning">Discard Changes, unlock order</a>
-<?php endif; ?>
 
 <?php if ($session->editdetail) : ?>
     <script>

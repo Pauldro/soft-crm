@@ -55,15 +55,18 @@ $(function() {
 		var formid = $(this).data('form');
 		var ordn = $('#ordn').val();
 		if ($(formid).formiscomplete('tr')) {
-			$(formid).postform({formdata: false, jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
+			$(formid).postform({formdata: $(formid).serializeform({ exitorder: 'true'}), jsoncallback: false}, function() { //{formdata: data/false, jsoncallback: true/false}
 				$.notify({
 					icon: "glyphicon glyphicon-floppy-disk",
 					message: "Your orderhead changes have been submitted",
 				},{
 					type: "info",
 					onClose: function() {
+						console.log($(formid).serializeform({ exitorder: 'true'}));
 						getorderheadresults(ordn, formid, function() {
-							window.location.href = href;
+							generateurl(function(url) {
+								window.location.href = url;
+							});
 						});
 					}
 				});

@@ -69,13 +69,13 @@
 		<?php $qtyo = $detail['ordrqty'] + 0; ?>
 		<tr class="detail">
 			<td>
-				<?php echo $detail['itemid']; ?>
-                <?php if (strlen($detail['vendoritemid'])) { echo ' '.$detail['vendoritemid'];} ?>
-                <br>
+				<?= $detail['itemid']; ?>
+				<?php if (strlen($detail['vendoritemid'])) { echo ' '.$detail['vendoritemid'];} ?>
+				<br>
 				<small><?= $detail['desc1']. ' ' . $detail['desc2'] ; ?></small>
 			</td>
 			<td>
-                <a href="<?= $config->pages->ajax."load/edit-detail/quote/?qnbr=".$detail['quotenbr']."&line=".$detail['linenbr']; ?>" class="btn btn-xs btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
+                <a href="<?= $config->pages->ajax."load/edit-detail/quote/?qnbr=".$detail['quotenbr']."&line=".$detail['linenbr']; ?>" class="btn btn-xs btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?= $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
                     <i class="glyphicon glyphicon-eye-open"></i>
                 </a>
             </td>
