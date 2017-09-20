@@ -22,3 +22,4 @@ site/modules/ModulesManager
 site/modules/ProcessDatabaseBackups
 site/modules/ProcessExportProfile
 site/assets
+wire/templates-admin/styles/font-awesome/fonts/fontawesome-webfont.ttf
