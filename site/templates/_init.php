@@ -15,12 +15,7 @@
 	include_once("./_dbfunc.php");
 	include_once($config->paths->content."common/initialize.php");
 
-	include $config->paths->vendor."cptech/src/UserAction.class.php";
-	include $config->paths->vendor."cptech/src/UserActionPanel.class.php";
-	include $config->paths->vendor."cptech/src/Contact.class.php";
-	include $config->paths->vendor."cptech/src/Table.php";
-	include $config->paths->vendor."cptech/src/utfport.php";
-	include $config->paths->vendor."cptech/src/DplusDateTime.class.php";
+	include $config->paths->vendor."cptech/vendor/autoload.php";
 
 	$session->sessionName = session_name();
 
