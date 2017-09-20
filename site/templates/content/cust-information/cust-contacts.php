@@ -18,7 +18,9 @@
 			$shiptoleftcolumns = array_keys($contactjson['columns']['shipto']['shiptoleft']);
 			$shiptorightcolumns = array_keys($contactjson['columns']['shipto']['shiptoright']);
 			$contactcolumns = array_keys($contactjson['columns']['contact']);
-			$formscolumns = array_keys($contactjson['columns']['forms']);
+            if (isset($contactjson['columns']['forms']))  {
+                $formscolumns = array_keys($contactjson['columns']['forms']);
+            }
 
 			if (sizeof($contactjson['data']) > 0) {
 				echo '<div class="row">';
@@ -78,7 +80,6 @@
 					$tb->section('thead');
 					$tb->row('');
 						foreach ($contactcolumns as $column) {
-
 							$tb->headercell('class='.$config->textjustify[$contactjson['columns']['contact'][$column]['headingjustify']], $contactjson['columns']['contact'][$column]['heading']);
 						}
 					$tb->closesection('thead');
@@ -87,7 +88,11 @@
 							$tb->row('');
 							$tb->cell('class='.$config->textjustify[$contactjson['columns']['contact']['contactname']['datajustify']], $contact['contactname']);
 							$tb->cell('class='.$config->textjustify[$contactjson['columns']['contact']['contactemail']['datajustify']], $contact['contactemail']);
-							$tb->cell('class='.$config->textjustify[$contactjson['columns']['contact']['contactnbr']['datajustify']], $contact['contactnumbers']["1"]['contactnbr']);
+                            if (isset($contact['contactnumbers']["1"]['contactnbr'])) {
+                                $tb->cell('class='.$config->textjustify[$contactjson['columns']['contact']['contactnbr']['datajustify']], $contact['contactnumbers']["1"]['contactnbr']);
+                            } else {
+                                $tb->cell('');
+                            }
 							for ($i = 1; $i < sizeof($contact['contactnumbers']) + 1; $i++) {
 								if ($i != 1) {
 									$tb->row('');
@@ -99,25 +104,25 @@
 						}
 					$tb->closesection('tbody');
 				echo $tb->close();
-
-				echo '<h2>Forms Information</h2>';
-
-				$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
-					$tb->section('thead');
-						$tb->row('');
-						foreach ($formscolumns as $column) {
-							$tb->headercell('class='.$config->textjustify[$contactjson['columns']['forms'][$column]['headingjustify']], $contactjson['columns']['forms'][$column]['heading']);
-						}
-					$tb->closesection('thead');
-					$tb->section('tbody');
-						foreach ($contactjson['data']['forms'] as $form) {
-							$tb->row('');
-							foreach ($formscolumns as $column) {
-								$tb->headercell('class='.$config->textjustify[$contactjson['columns']['forms'][$column]['datajustify']], $form[$column]);
-							}
-						}
-					$tb->closesection('tbody');
-				echo $tb->close();
+                if (isset($contactjson['columns']['forms'])) : 
+    				echo '<h2>Forms Information</h2>';
+    				$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+    					$tb->section('thead');
+    						$tb->row('');
+    						foreach ($formscolumns as $column) {
+    							$tb->headercell('class='.$config->textjustify[$contactjson['columns']['forms'][$column]['headingjustify']], $contactjson['columns']['forms'][$column]['heading']);
+    						}
+    					$tb->closesection('thead');
+    					$tb->section('tbody');
+    						foreach ($contactjson['data']['forms'] as $form) {
+    							$tb->row('');
+    							foreach ($formscolumns as $column) {
+    								$tb->headercell('class='.$config->textjustify[$contactjson['columns']['forms'][$column]['datajustify']], $form[$column]);
+    							}
+    						}
+    					$tb->closesection('tbody');
+    				echo $tb->close();
+                endif;
 			} else {
 				createalert('warning', 'Information Not Available');
 			}
