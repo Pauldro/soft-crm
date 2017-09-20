@@ -36,16 +36,13 @@
 			}
 		}
 
-		$config->scripts->append($config->urls->templates.'scripts/ci/cust-functions.js');
-		$config->scripts->append($config->urls->templates.'scripts/ci/cust-info.js');
-        $config->scripts->append($config->urls->templates.'scripts/libs/raphael.js');
-        $config->scripts->append($config->urls->templates.'scripts/libs/morris.js');
-
+		$config->scripts->append(hashtemplatefile('scripts/ci/cust-functions.js'));
+		$config->scripts->append(hashtemplatefile('scripts/ci/cust-info.js'));
+        $config->scripts->append(hashtemplatefile('scripts/libs/raphael.js'));
+        $config->scripts->append(hashtemplatefile('scripts/libs/morris.js'));
     } else {
 		$toolbar = false;
 	}
-
-
 ?>
 <?php include('./_head.php'); // include header markup ?>
     <div class="jumbotron pagetitle">
@@ -66,7 +63,5 @@
                 include $config->paths->content."customer/ajax/load/cust-index/search-form.php";
 			}
 		?>
-
-
     </div>
 <?php include('./_foot-with-toolbar.php'); // include footer markup ?>

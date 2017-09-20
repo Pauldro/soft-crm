@@ -13,9 +13,9 @@
 			$page->title = $input->urlSegment(1) . ' - ' . $customer;
 			$user->hascustomeraccess = can_accesscustomer($user->loginid, $user->hascontactrestrictions, $custID, false);
 			$page->body = $config->paths->content.'customer/cust-page/customer-page-outline.php';
-			$config->scripts->append($config->urls->templates.'scripts/pages/customer-page.js');
-			$config->scripts->append($config->urls->templates.'scripts/dplusnotes/order-notes.js');
-		    $config->scripts->append($config->urls->templates.'scripts/dplusnotes/quote-notes.js');
+			$config->scripts->append(hashtemplatefile('scripts/pages/customer-page.js'));
+			$config->scripts->append(hashtemplatefile('scripts/dplusnotes/order-notes.js'));
+		    $config->scripts->append(hashtemplatefile('scripts/dplusnotes/quote-notes.js'));
 
 			if ($input->urlSegment(2)) {
 				if (strpos($input->urlSegment(2), 'contacts') !== FALSE) {
@@ -25,7 +25,7 @@
 					$page->contact = true;
 					if ($input->urlSegment(3) == 'edit') {
 						$page->editcontact = true;
-						$config->scripts->append($config->urls->templates.'scripts/pages/contact-page.js');
+						$config->scripts->append(hashtemplatefile('scripts/pages/contact-page.js'));
 					}
 				} elseif (strpos($input->urlSegment(2), 'shipto-') !== FALSE) {
 					$shipID = urldecode(str_replace('shipto-', '', $input->urlSegment(2)));

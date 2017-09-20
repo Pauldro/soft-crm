@@ -42,7 +42,7 @@
 				$include = $config->paths->content."cust-information/screen-formatters/ci-sales-history-formatter.php";
 				break;
 		}
-		$config->scripts->append($config->urls->templates.'scripts/table-formatter.js');
+		$config->scripts->append(hashtemplatefile('scripts/table-formatter.js'));
 	} else {
 		$formatters = array(
 			'II Sales Order' => 'ii-sales-order-formatter',
