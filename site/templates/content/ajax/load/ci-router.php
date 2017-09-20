@@ -130,9 +130,9 @@
 		$config->styles->append('//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css');
 		$config->scripts->append('//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js');
 		$config->scripts->append('//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js');
-		$config->scripts->append($config->urls->templates.'scripts/libs/datatables.js');
-		$config->scripts->append($config->urls->templates.'scripts/ci/cust-functions.js');
-		$config->scripts->append($config->urls->templates.'scripts/ci/cust-info.js');
+		$config->scripts->append(hashtemplatefile('scripts/libs/datatables.js'));
+		$config->scripts->append(hashtemplatefile('scripts/ci/cust-functions.js'));
+		$config->scripts->append(hashtemplatefile('scripts/ci/cust-info.js'));
 		include $config->paths->content."common/include-blank-page.php";
 	}
 
