@@ -1,5 +1,5 @@
 <?php
-
+  
     /**
      * Portable UTF-8
      * Lightweight Library for Unicode Handling in PHP
@@ -12,20 +12,6 @@
      * @copyright  2013 Hamid sarfraz
      * @license    http://pageconfig.com/post/license
     */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     /**

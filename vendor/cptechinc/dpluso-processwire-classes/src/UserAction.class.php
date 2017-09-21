@@ -1,4 +1,5 @@
 <?php
+    
     class UserAction {
         public $id;
         public $datecreated;

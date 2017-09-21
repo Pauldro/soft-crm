@@ -1,5 +1,4 @@
-<?php
-
+<?php 
     class Contact {
         public $recno;
 		public $date;

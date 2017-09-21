@@ -1,4 +1,5 @@
 <?php
+    
     class UserActionPanel {
         public $type = 'cust';
         public $actiontype;

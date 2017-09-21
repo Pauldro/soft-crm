@@ -1,5 +1,5 @@
 <?php  
-
+	
 /*
  *    author:		Kyle Gadd
  *    documentation:	http://www.php-ease.com/classes/table.html
@@ -20,7 +20,6 @@
 
 
 class Table {
-
 	private $tableOpen = ''; // so we can save the opening statement for later
 	private $rowOpen = false; // after the first row in a table this $var stays true
 	private $cellOpen = false; // after the first cell in a row this $var stays true
