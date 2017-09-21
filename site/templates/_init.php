@@ -1,4 +1,4 @@
-<?php
+<?php 
 
 /**
  * Initialization file for template files
@@ -14,8 +14,6 @@
 	include_once("./_func.php"); // include our shared functions
 	include_once("./_dbfunc.php");
 	include_once($config->paths->content."common/initialize.php");
-
-	include $config->paths->vendor."cptech/vendor/autoload.php";
 
 	$session->sessionName = session_name();
 
