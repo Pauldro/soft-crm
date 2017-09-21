@@ -475,6 +475,20 @@ $(document).ready(function() {
 													   .toString();
 				$(loadinto).loadin(href+' '+loadinto, function() { });
 		});
+		
+		$("body").on("submit", "#vend-index-search-form", function(e) {
+			e.preventDefault();
+		});
+
+		$("body").on("keyup", ".vend-index-search", function() {
+				var thisform = $(this).closest('form');
+				var pagefunction = thisform.find('[name=function]').val();
+				var loadinto = '#vend-results';
+				var href = URI(thisform.attr('action')).addQuery('q', $(this).val())
+													   .addQuery('function', pagefunction)
+													   .toString();
+				$(loadinto).loadin(href+' '+loadinto, function() { });
+		});
 
 		$('body').on('click', '.load-doc', function(e) {
 			e.preventDefault();

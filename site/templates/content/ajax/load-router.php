@@ -33,6 +33,12 @@
         case 'ci':
             include $config->paths->content . 'ajax/load/ci-router.php';
             break;
+        case 'vi':
+            include $config->paths->content . 'ajax/load/vi-router.php';
+            break;
+        case 'vendor':
+            include $config->paths->content . 'ajax/load/vendor-router.php';
+            break;
         default:
             throw new Wire404Exception();
             break;
