@@ -6,4 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Contact' => $baseDir . '/src/Contact.class.php',
+    'DplusDateTime' => $baseDir . '/src/DplusDateTime.class.php',
+    'Table' => $baseDir . '/src/Table.php',
+    'UserAction' => $baseDir . '/src/UserAction.class.php',
+    'UserActionPanel' => $baseDir . '/src/UserActionPanel.class.php',
 );

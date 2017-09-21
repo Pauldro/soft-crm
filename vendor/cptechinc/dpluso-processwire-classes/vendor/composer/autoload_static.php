@@ -6,25 +6,18 @@ namespace Composer\Autoload;
 
 class ComposerStaticInitbc1bd12326b6449f6f4b7d928a87cff9
 {
-    public static $prefixLengthsPsr4 = array (
-        'D' => 
-        array (
-            'Dpluso\\' => 7,
-        ),
-    );
-
-    public static $prefixDirsPsr4 = array (
-        'Dpluso\\' => 
-        array (
-            0 => __DIR__ . '/../..' . '/src',
-        ),
+    public static $classMap = array (
+        'Contact' => __DIR__ . '/../..' . '/src/Contact.class.php',
+        'DplusDateTime' => __DIR__ . '/../..' . '/src/DplusDateTime.class.php',
+        'Table' => __DIR__ . '/../..' . '/src/Table.php',
+        'UserAction' => __DIR__ . '/../..' . '/src/UserAction.class.php',
+        'UserActionPanel' => __DIR__ . '/../..' . '/src/UserActionPanel.class.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInitbc1bd12326b6449f6f4b7d928a87cff9::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInitbc1bd12326b6449f6f4b7d928a87cff9::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitbc1bd12326b6449f6f4b7d928a87cff9::$classMap;
 
         }, null, ClassLoader::class);
     }
