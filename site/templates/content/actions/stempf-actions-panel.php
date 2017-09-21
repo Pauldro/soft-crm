@@ -1,6 +1,6 @@
 <?php
 	$ajax = new stdClass();
-	$ajax->link = $actionpanel->getpanelrefreshlink();
+	$ajax->link = $actionpanel->getpanelpaginationlink();
 	$ajax->data = $actionpanel->data;
 	$ajax->insertafter = $actionpanel->getinsertafter();
 
