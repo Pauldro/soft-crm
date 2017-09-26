@@ -5,7 +5,7 @@
  * Based off Kyle Gadd's Table class http://www.php-ease.com/classes/table.html
  * 	Modified to suit DPluso
  */
-class Table2 {
+class Table {
 	private $tropen = false; // after the first row in a table this $var stays true
 	private $tdopen = false; // after the first cell in a row this $var stays true
 	private $thopen = false; // after the first cell in a row this $var stays true
