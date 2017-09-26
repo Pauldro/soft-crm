@@ -4,7 +4,7 @@
             <tr>
                 <td>Vendor ID</td>
                 <td>
-                    <form action="/dpluso/ajax/load/customers/cust-index/" method="POST" id="ci-cust-lookup">
+                    <form action="/dpluso/ajax/load/customers/cust-index/" method="POST" id="vi-cust-lookup">
                         <input type="hidden" name="action" value="ci-item-lookup">
                         <input type="hidden" name="shipID" class="shipID" value="">
                         <input type="hidden" name="nextshipID" class="nextshipID" value="KRAMER">
