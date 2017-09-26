@@ -1,14 +1,14 @@
 <?php
-    $docfile = $config->jsonfilepath.session_id()."-docview.json";
-    //$docfile = $config->jsonfilepath."iidcv-docview.json";
+	$docfile = $config->jsonfilepath.session_id()."-docview.json";
+	//$docfile = $config->jsonfilepath."iidcv-docview.json";
  ?>
 
 <?php if (file_exists($docfile)) : ?>
-    <?php $docjson = json_decode(file_get_contents($docfile), true);  ?>
-    <?php if (!$docjson) { $docjson = array('error' => true, 'errormsg' => 'The Cust Documents JSON contains errors');} ?>
-    <?php if ($docjson['error']) : ?>
-        <div class="alert alert-warning" role="alert"><?php echo $docjson['errormsg']; ?></div>
-    <?php else : ?>
+	<?php $docjson = json_decode(file_get_contents($docfile), true);  ?>
+	<?php if (!$docjson) { $docjson = array('error' => true, 'errormsg' => 'The Cust Documents JSON contains errors');} ?>
+	<?php if ($docjson['error']) : ?>
+		<div class="alert alert-warning" role="alert"><?php echo $docjson['errormsg']; ?></div>
+	<?php else : ?>
 		<?php $columns = array_keys($docjson['columns']); ?>
 		<?php $documents = array_keys($docjson['data']); ?>
 		<table class="table table-striped table-condensed table-excel">
@@ -29,7 +29,7 @@
 				</tr>
 			<?php endforeach; ?>
 		</table>
-    <?php endif; ?>
+	<?php endif; ?>
 <?php else : ?>
-    <div class="alert alert-warning" role="alert">Information Not Available</div>
+	<div class="alert alert-warning" role="alert">Information Not Available</div>
 <?php endif; ?>

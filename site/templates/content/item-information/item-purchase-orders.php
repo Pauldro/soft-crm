@@ -1,6 +1,5 @@
 <?php
 	//WAS item-purchase-orders-formatted
-	include $config->paths->content."item-information/functions/ii-functions.php";
 	$purchasefile = $config->jsonfilepath.session_id()."-iipurchordr.json";
 	//$purchasefile = $config->jsonfilepath."iiso-iipurchordr.json";
 

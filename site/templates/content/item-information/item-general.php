@@ -30,9 +30,7 @@
                 $inspectioncolumns = array_keys($notesjson['columns']['inspection notes']);
                 $internalcolumns = array_keys($notesjson['columns']['internal notes']);
                 $ordercolumns = array_keys($notesjson['columns']['order notes']);
-
             }
-
         }
     } else {
         $notesfile = false;
@@ -48,11 +46,11 @@
     } else {
         $miscfile = false;
     }
+    
+    if ($config->ajax) {
+		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
+	}
  ?>
-
-<?php if ($config->ajax) : ?>
-	<p> <a href="<?php echo $config->filename; ?>" class="h4" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a> </p>
-<?php endif; ?>
 
 <?php if ($usagefile) : ?>
     <?php if (!$usagejson['error']) : ?>

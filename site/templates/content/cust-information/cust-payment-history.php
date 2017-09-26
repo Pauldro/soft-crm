@@ -1,5 +1,4 @@
 <?php
-	include $config->paths->content."item-information/functions/ii-functions.php";
 	$historyfile = $config->jsonfilepath.session_id()."-cipayment.json";
 	//$historyfile = $config->jsonfilepath."cioi-cipayment.json";
 
@@ -30,19 +29,19 @@
 	}
 ?>
 <?php if (file_exists($historyfile)) : ?>
-    <?php $historyjson = json_decode(file_get_contents($historyfile), true);  ?>
-    <?php if (!$historyjson) { $historyjson= array('error' => true, 'errormsg' => 'The Payment History JSON contains errors');} ?>
+	<?php $historyjson = json_decode(file_get_contents($historyfile), true);  ?>
+	<?php if (!$historyjson) { $historyjson= array('error' => true, 'errormsg' => 'The Payment History JSON contains errors');} ?>
 
-    <?php if ($historyjson['error']) : ?>
-        <div class="alert alert-warning" role="alert"><?php echo $historyjson['errormsg']; ?></div>
-    <?php else : ?>
-    	<?php include $config->paths->content."/cust-information/tables/payment-history-formatted.php"; ?>
+	<?php if ($historyjson['error']) : ?>
+		<div class="alert alert-warning" role="alert"><?php echo $historyjson['errormsg']; ?></div>
+	<?php else : ?>
+		<?php include $config->paths->content."/cust-information/tables/payment-history-formatted.php"; ?>
    		<script>
 			$(function() {
 				$('#payments').DataTable();
 			})
 		</script>
-    <?php endif; ?>
+	<?php endif; ?>
 <?php else : ?>
-    <div class="alert alert-warning" role="alert">Information Not Available</div>
+	<div class="alert alert-warning" role="alert">Information Not Available</div>
 <?php endif; ?>

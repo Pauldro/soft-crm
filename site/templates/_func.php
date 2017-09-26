@@ -86,7 +86,6 @@
 			if ($page > 1) { $replace = $insertafter."page".$page."/";} else {$replace = $insertafter; }
 			$newurl = preg_replace($regex, $replace, $url);
 		}
-
 		return $newurl . $hash;
 	 }
 

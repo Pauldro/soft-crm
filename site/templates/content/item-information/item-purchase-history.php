@@ -1,10 +1,7 @@
 <?php
 	//WAS item-purchase-history-formatted
-	include $config->paths->content."item-information/functions/ii-functions.php";
 	$historyfile = $config->jsonfilepath.session_id()."-iipurchhist.json";
 	//$historyfile = $config->jsonfilepath."iish-iipurchhist.json";
-
-
 
 	if (checkformatterifexists($user->loginid, 'ii-purchase-history', false)) {
 		$defaultjson = json_decode(getformatter($user->loginid, 'ii-purchase-history', false), true);

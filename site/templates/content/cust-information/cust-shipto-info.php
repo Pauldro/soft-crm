@@ -1,14 +1,14 @@
 <?php
-    $shiptofile = $config->jsonfilepath.session_id()."-cishiptoinfo.json";
-    //$shiptofile = $config->jsonfilepath."cislist-cishiptolist.json";
+	$shiptofile = $config->jsonfilepath.session_id()."-cishiptoinfo.json";
+	//$shiptofile = $config->jsonfilepath."cislist-cishiptolist.json";
  ?>
 
 <?php if (file_exists($shiptofile)) : ?>
-    <?php $shiptojson = json_decode(file_get_contents($shiptofile), true);  ?>
-    <?php if (!$shiptojson) { $shiptojson = array('error' => true, 'errormsg' => 'The customer shiptos Inquiry Single JSON contains errors');} ?>
-    <?php if ($shiptojson['error']) : ?>
-        <div class="alert alert-warning" role="alert"><?php echo $shiptojson['errormsg']; ?></div>
-    <?php else : ?>
+	<?php $shiptojson = json_decode(file_get_contents($shiptofile), true);  ?>
+	<?php if (!$shiptojson) { $shiptojson = array('error' => true, 'errormsg' => 'The customer shiptos Inquiry Single JSON contains errors');} ?>
+	<?php if ($shiptojson['error']) : ?>
+		<div class="alert alert-warning" role="alert"><?php echo $shiptojson['errormsg']; ?></div>
+	<?php else : ?>
 		<div class="row">
 			<div class="col-xs-12">
 				<div class="row">
@@ -111,7 +111,7 @@
 				</div>
 			</div>
 		</div>
-    <?php endif; ?>
+	<?php endif; ?>
 <?php else : ?>
-    <div class="alert alert-warning" role="alert">Information Not Available</div>
+	<div class="alert alert-warning" role="alert">Information Not Available</div>
 <?php endif; ?>
