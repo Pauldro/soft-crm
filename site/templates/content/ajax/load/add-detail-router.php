@@ -18,6 +18,7 @@
             $page->title = 'Add multiple items for Quote #'. $qnbr;
 			$custID = getquotecustomer(session_id(), $qnbr, false);
 			$formaction = $config->pages->quotes."redir/";
+            break;
     }
 
     $page->body = $config->paths->content."products/ajax/load/add-multiple/add-multiple-item-form.php";
