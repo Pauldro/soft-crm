@@ -60,7 +60,7 @@
             $page->body = $config->paths->content."item-information/item-general.php";
             break;
 		case 'ii-activity': // $itemID provided by $input->get
-			if ($input->$input->urlSegment(3) == 'form') {
+			if ($input->urlSegment(3) == 'form') {
 				$page->title = 'Enter the Starting Report Date ';
 				$page->body = $config->paths->content."item-information/forms/item-activity-form.php";
 			} else {
