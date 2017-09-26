@@ -13,7 +13,8 @@
 
 	include_once("./_func.php"); // include our shared functions
 	include_once("./_dbfunc.php");
-	include_once($config->paths->content."common/initialize.php");
+	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/utfport.php"); // UTF8 conversion library functions
+	include_once($config->paths->content."common/initialize.php");  // includes class files
 
 	$session->sessionName = session_name();
 

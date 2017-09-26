@@ -3,7 +3,7 @@
         "classmap": [
             "src/Contact.class.php",
             "src/DplusDateTime.class.php",
-            "src/Table.php",
+            "src/Table.class.php",
             "src/UserAction.class.php",
             "src/UserActionPanel.class.php",
             "src/utfport.php"

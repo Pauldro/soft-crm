@@ -1,9 +1,11 @@
-<?php $lotserialfile = $config->jsonfilepath.session_id()."-iilotser.json"; ?>
-<?php //$lotserialfile = $config->jsonfilepath."iilot-iilotser.json"; ?>
-
-<?php if ($config->ajax) : ?>
-	<p> <a href="<?php echo $config->filename; ?>" class="h4" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> View Printable Version</a> </p>
-<?php endif; ?>
+<?php 
+	$lotserialfile = $config->jsonfilepath.session_id()."-iilotser.json"; 
+	//$lotserialfile = $config->jsonfilepath."iilot-iilotser.json";
+	
+	if ($config->ajax) {
+		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
+	}
+?>
 
 <?php if (file_exists($lotserialfile)) : ?>
     <?php $lotserialjson = json_decode(file_get_contents($lotserialfile), true);  ?>

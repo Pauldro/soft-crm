@@ -1,6 +1,5 @@
 <?php
 	//WAS item-history-formatted
-	include $config->paths->content."item-information/functions/ii-functions.php";
 	$historyfile = $config->jsonfilepath.session_id()."-iisaleshist.json";
 	//$historyfile = $config->jsonfilepath."iish-iisaleshist.json";
 

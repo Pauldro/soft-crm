@@ -1,5 +1,4 @@
 <?php
-	include $config->paths->content."item-information/functions/ii-functions.php";
 	$quotesfile = $config->jsonfilepath.session_id()."-ciquote.json";
 	//$quotesfile = $config->jsonfilepath."ciqt-ciquote.json";
 
