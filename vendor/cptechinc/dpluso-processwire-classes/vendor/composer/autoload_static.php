@@ -8,6 +8,7 @@ class ComposerStaticInitbc1bd12326b6449f6f4b7d928a87cff9
 {
     public static $classMap = array (
         'Contact' => __DIR__ . '/../..' . '/src/Contact.class.php',
+        'Contento' => __DIR__ . '/../..' . '/src/Contento.class.php',
         'DplusDateTime' => __DIR__ . '/../..' . '/src/DplusDateTime.class.php',
         'Table' => __DIR__ . '/../..' . '/src/Table.class.php',
         'UserAction' => __DIR__ . '/../..' . '/src/UserAction.class.php',
