@@ -1,35 +1,39 @@
 <?php
 	$docfile = $config->jsonfilepath.session_id()."-docview.json";
 	//$docfile = $config->jsonfilepath."iidcv-docview.json";
- ?>
-
-<?php if (file_exists($docfile)) : ?>
-	<?php $docjson = json_decode(file_get_contents($docfile), true);  ?>
-	<?php if (!$docjson) { $docjson = array('error' => true, 'errormsg' => 'The Cust Documents JSON contains errors');} ?>
-	<?php if ($docjson['error']) : ?>
-		<div class="alert alert-warning" role="alert"><?php echo $docjson['errormsg']; ?></div>
-	<?php else : ?>
-		<?php $columns = array_keys($docjson['columns']); ?>
-		<?php $documents = array_keys($docjson['data']); ?>
-		<table class="table table-striped table-condensed table-excel">
-			<tr>
-				<?php foreach ($columns as $column) : ?>
-					<th class="<?= $config->textjustify[$docjson['columns'][$column]['headingjustify']]; ?>"><?php echo $docjson['columns'][$column]['heading']; ?></th>
-				<?php endforeach; ?>
-				<th>Load Document</th>
-			</tr>
-			<?php foreach ($documents as $doc) : ?>
-				<tr class="doc-<?php echo $doc; ?>">
-					<?php foreach ($columns as $column) : ?>
-						<td class="<?= $config->textjustify[$docjson['columns'][$column]['datajustify']]; ?>"><?php echo $docjson['data'][$doc][$column]; ?></td>
-					<?php endforeach; ?>
-					<td>
-						<button type="button" class="btn btn-sm btn-primary load-doc" data-doc="<?= $doc; ?>"><i class="fa fa-file-o" aria-hidden="true"></i> Load</button>
-					</td>
-				</tr>
-			<?php endforeach; ?>
-		</table>
-	<?php endif; ?>
-<?php else : ?>
-	<div class="alert alert-warning" role="alert">Information Not Available</div>
-<?php endif; ?>
+	
+	if (file_exists($docfile)) {
+		// JSON file will be false if an error occurred during file_get_contents or json_decode
+		$docjson = json_decode(file_get_contents($docfile), true); 
+		$docjson = $docjson ? $docjson : array('error' => true, 'errormsg' => 'The Cust Documents JSON contains errors. JSON ERROR: '.json_last_error());
+		if ($docjson['error']) {
+			echo $page->bootstrap->createalert('warning', $docjson['errormsg']); 
+		} else {
+			$columns = array_keys($docjson['columns']);
+			$documents = array_keys($docjson['data']);
+			$tb = new Table('class=table table-striped table-condensed table-excel');
+			$tb->tablesection('thead');
+				$tb->tr();
+				foreach ($columns as $column) {
+					$class = $config->textjustify[$docjson['columns'][$column]['headingjustify']];
+					$tb->th("class=$class", $docjson['columns'][$column]['heading']);
+				}
+				$tb->th("", 'Load Document');
+			$tb->closetablesection('thead');
+			$tb->tablesection('tbody');
+				foreach ($documents as $doc) {
+					$tb->tr("class=$doc");
+					foreach ($columns as $column) {
+						$class = $config->textjustify[$docjson['columns'][$column]['datajustify']];
+						$tb->td("class=$class", $docjson['data'][$doc][$column]);
+					}
+					$content = $page->bootstrap->openandclose('button', "class=btn btn-sm btn-primary load-doc|data-doc=$doc", '<i class="fa fa-file-o" aria-hidden="true"></i> Load');
+					$tb->td("class=$class", $docjson['data'][$doc][$column]);
+				}
+			$tb->closetablesection('tbody');
+			echo $tb->close();
+		}
+	} else {
+		echo $page->bootstrap->createalert('warning', 'Information Not Available'); 
+	}
+?>

@@ -72,7 +72,6 @@
 							<?php endforeach; ?>
 							<tr class="last-section-row"> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr>
 						<?php endif; ?>
-
 					<?php endforeach; ?>
 
 					<?php $misccolumns = array_keys($custjson['data']['right']['misc']); ?>
@@ -90,7 +89,6 @@
 						<?php endif; ?>
 					<?php endforeach; ?>
 				</table>
-
 			</div>
 		</div>
 		<?php include $config->paths->content."cust-information/cust-sales-data.php"; ?>

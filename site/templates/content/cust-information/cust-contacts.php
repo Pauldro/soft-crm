@@ -3,15 +3,16 @@
 	//$contactfile = $config->jsonfilepath."cicont-cicontact.json";
 
 	if ($config->ajax) {
-		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
+		echo $page->bootstrap->openandclose('p', '', makeprintlink($config->filename, 'View Printable Version'));
 	}
 
 	if (file_exists($contactfile)) {
+		// JSON file will be false if an error occurred during file_get_contents or json_decode
 		$contactjson = json_decode(file_get_contents($contactfile), true);
-		if (!$contactjson) { $contactjson = array('error' => true, 'errormsg' => 'The customer Contacts JSON contains errors'); }
+		$contactjson = $contactjson ? $contactjson : array('error' => true, 'errormsg' => 'The Customer Contacts JSON contains errors. JSON ERROR: '.json_last_error()); 
 
 		if ($contactjson['error']) {
-			createalert('warning', $contactjson['errormsg']);
+			echo $page->bootstrap->createalert('warning', $contactjson['errormsg']); 
 		} else {
 			$customerleftcolumns = array_keys($contactjson['columns']['customer']['customerleft']);
 			$customerrightcolumns = array_keys($contactjson['columns']['customer']['customerright']);
@@ -22,7 +23,7 @@
 			if (isset($contactjson['columns']['forms']))  {
 				$formscolumns = array_keys($contactjson['columns']['forms']);
 			}
-
+			
 			if (sizeof($contactjson['data']) > 0) {
 				echo '<div class="row">';
 					echo '<div class="col-sm-6">';
@@ -106,7 +107,7 @@
 					$tb->closetablesection('tbody');
 				echo $tb->close();
 				
-				if (isset($contactjson['columns']['forms'])) : 
+				if (isset($contactjson['columns']['forms'])) { 
 					echo '<h2>Forms Information</h2>';
 					$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
 						$tb->tablesection('thead');
@@ -124,12 +125,12 @@
 							}
 						$tb->closetablesection('tbody');
 					echo $tb->close();
-				endif;
+				}
 			} else {
-				createalert('warning', 'Information Not Available');
-			}
+				echo $page->bootstrap->createalert('warning', 'Information Not Available'); 
+			} // END if (sizeof($contactjson['data']) > 0)
 		}
 	} else {
-		createalert('warning', 'Customer has no Contacts');
+		echo $page->bootstrap->createalert('warning', 'Customer has no Contacts'); 
 	}
 ?>

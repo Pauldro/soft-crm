@@ -1,6 +1,6 @@
 <table class="table table-striped">
 	<thead>
-		<tr>  <th>Document</th> <th>Date</th> <th>Time</th> </tr>
+		<tr> <th>Document</th> <th>Date</th> <th>Time</th> </tr>
 	</thead>
 	<tbody>
 		<?php $documents = get_order_docs(session_id(), $ordn, false); ?>

@@ -3,7 +3,7 @@
 	//$salesfile = $config->paths->templates."json/test-cust-sales.json";
 
 	$href = $config->pages->ajax.'load/ci/ci-53weeks/?custID='.urlencode($custID);
-	echo '<p>' . makeprintlink($href, 'View Printable Version') . '</p>';
+	echo $page->bootstrap->openandclose('p', '', makeprintlink($href, 'View Printable Version'));
 ?>
 
 <?php if (file_exists($salesfile)) : ?>
