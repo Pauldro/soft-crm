@@ -1,8 +1,8 @@
 <?php 
     class Contento {
         public function open($element, $attributes) {
-            $attr = $this->attributes($attributes);
-            return "<$element $this->values($attributes)>";
+            $attributes = $this->attributes($attributes);
+            return "<$element $attributes>";
         }
         
         public function close($element) {
@@ -12,6 +12,17 @@
         public function openandclose($element, $attributes, $content) {
             return $this->open($element, $attributes) . $content . $this->close($element);
         }
+        
+        public function createalert($type, $msg) {
+            $attributes = "class=alert alert-$type|role=alert";
+            return $this->openandclose('div', $attributes, $msg);
+    	}
+
+    	public function makeprintlink($link, $msg) {
+            $attributes = "href=$link|class=h4|target=_blank";
+            $content = '<i class="glyphicon glyphicon-print" aria-hidden="true"></i>';
+            return $this->openandclose('a', $attributes, $content);
+    	}
         
         
         
