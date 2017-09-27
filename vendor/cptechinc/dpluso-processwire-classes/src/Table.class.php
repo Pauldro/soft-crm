@@ -96,7 +96,7 @@ class Table {
 	 */
 	public function close() {
 		$add = '';
-		if (!$this->tdopen) $add .= $this->cell();
+		if (!$this->tdopen) $add .= $this->td();
 		$add .= '</td></tr>' . $this->indent() . '</table>';
 		self::$count--;
 		$this->tablestring .= $add;
