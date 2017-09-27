@@ -23,6 +23,8 @@
 	if (!empty($config->filename) && $config->filename != '/') {
 		$page->fullURL->join($config->filename);
 	}
+	
+	$page->bootstrap = new Contento();
 
 	$page->querystring = $querystring = $page->fullURL->query;
 	$page->PageURL = $page->httpUrl.'?'.$page->querystring;
