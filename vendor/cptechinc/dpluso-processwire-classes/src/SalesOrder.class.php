@@ -98,7 +98,6 @@
         public $haserror = false;
         public $phoneinternational = false;
         
-        
         public function __construct() {
             if ($this->havedoc == 'Y') { $this->hasdocuments = true; }
             if ($this->havetrk == 'Y') { $this->hastracking = true; }
@@ -108,98 +107,20 @@
             if ($this->error == 'Y') { $this->haserror = true; }
         }
         
-        public status function getlinkarray() {
-            return array(
-                'sessionid' => false,
-                'recno' => false,
-                'date' => false,
-                'time' => false,
-                'type' => false,
-                'custid' => false,
-                'shiptoid' => false,
-                'custname' => false,
-                'orderno' => false,
-                'custpo' => false,
-                'custref' => false,
-                'status' => false,
-                'orderdate' => false,
-                'careof' => false,
-                'quotdate' => false,
-                'invdate' => false,
-                'shipdate' => false,
-                'revdate' => false,
-                'expdate' => false,
-                'havedoc' => false,
-                'havetrk' => false,
-                'odrsubtot' => false,
-                'odrtax' => false,
-                'odrfrt' => false,
-                'odrmis' => false,
-                'odrtotal' => false,
-                'havenote' => false,
-                'editord' => false,
-                'error' => false,
-                'errormsg' => false,
-                'sconame' => false,
-                'sname' => false,
-                'saddress' => false,
-                'saddress2' => false,
-                'scity' => false,
-                'sst' => false,
-                'szip' => false,
-                'scountry' => false,
-                'contact' => false,
-                'phintl' => false,
-                'phone' => false,
-                'extension' => false,
-                'faxnumber' => false,
-                'email' => false,
-                'releasenbr' => false,
-                'shipviacd' => false,
-                'shipviadesc' => false,
-                'priccode' => false,
-                'pricdesc' => false,
-                'pricdisp' => false,
-                'taxcode' => false,
-                'taxcodedesc' => false,
-                'taxcodedisp' => false,
-                'termcode' => false,
-                'termtype' => false,
-                'termdesc' => false,
-                'rqstdate' => false,
-                'shipcom' => false,
-                'sp1' => false,
-                'sp1name' => false,
-                'sp2' => false,
-                'sp2name' => false,
-                'sp2disp' => false,
-                'sp3' => false,
-                'sp3name' => false,
-                'sp3disp' => false,
-                'fob' => false,
-                'deliverydesc' => false,
-                'whse' => false,
-                'ccno' => false,
-                'xpdate' => false,
-                'ccvalidcode' => false,
-                'ccapproval' => false,
-                'costtot' => false,
-                'totdisc' => false,
-                'paytype' => false,
-                'srcdatefrom' => false,
-                'srcdatethru' => false,
-                'btname' => false,
-                'btadr1' => false,
-                'btadr2' => false,
-                'btadr3' => false,
-                'btcity' => false,
-                'btstate' => false,
-                'btzip' => false,
-                'prntfmt' => false,
-                'prntfmtdisp' => false,
-                'dummy' => false,
-            );
+        public static function returnclassarray() {
+            return SalesOrder::unsetnondbkeys(get_class_vars('SalesOrder'));
         }
+        
+        public static function unsetnondbkeys($array) {
+            unset($array['canedit']);
+            unset($array['hasnotes']);
+            unset($array['hasdocuments']);
+            unset($array['hastracking']);
+            unset($array['haserror']);
+            unset($array['phoneinternational']);
+            return $array;
+        }
+        
     }
     
     

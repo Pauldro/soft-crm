@@ -2,17 +2,16 @@
 
     class QuotePanel {
         public $type = 'cust';
-        public $modal,
-        public $focus,
+        public $modal;
+        public $focus;
         public $throughajax;
-        public $collapse = 'collapse'
-        public $orderby,
-        public $orderbystring,
-        public $sortrule,
-        public $nextorder,
-        public $orderby,
-        public $custID,
-        public $shipID,
+        public $collapse = 'collapse';
+        public $orderby;
+        public $orderbystring;
+        public $sortrule;
+        public $nextorder;
+        public $custID;
+        public $shipID;
         public $count;
         public $quotes = array();
         
