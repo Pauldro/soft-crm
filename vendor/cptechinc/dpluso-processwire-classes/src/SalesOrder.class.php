@@ -107,6 +107,30 @@
             if ($this->error == 'Y') { $this->haserror = true; }
         }
         
+        public function generateeditorderlink() {
+            // TODO USE Purl
+            return wire('config')->pages->orders."redir/?action=get-order-details&ordn=$this->orderno&lock=lock";
+        }
+        
+        public function generateclicktoexpand($ordn) {
+            if ($ordn == $this->orderno) {
+                
+            } else {
+                
+            }
+        }
+        
+        public static function fromarray(array $array) {
+           $myClass = get_class();
+           $object  = new $myClass(); 
+
+           foreach ($array as $key => $val) {
+               $object->$key = $val;
+           }
+           return $object;
+       }
+        
+        
         public static function returnclassarray() {
             return SalesOrder::unsetnondbkeys(get_class_vars('SalesOrder'));
         }
