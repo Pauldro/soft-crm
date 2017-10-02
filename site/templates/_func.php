@@ -13,11 +13,11 @@
  }
  
  function ordinal($number) {
-	    $ends = array('th','st','nd','rd','th','th','th','th','th','th');
-	    if ((($number % 100) >= 11) && (($number%100) <= 13))
-	        return $number. 'th';
-	    else
-	        return $number. $ends[$number % 10];
+		$ends = array('th','st','nd','rd','th','th','th','th','th','th');
+		if ((($number % 100) >= 11) && (($number%100) <= 13))
+			return $number. 'th';
+		else
+			return $number. $ends[$number % 10];
 	}
 
 	function ordinalword($number) {
@@ -154,6 +154,7 @@
 			return $haystack;
 		}
 	}
+	
 	function createshopasform($custID, $shipID) {
 		$form = '<form action="'.wire(config)->pages->customer.'redir/" method="post">';
 		$form .= '<input type="hidden" name="action" value="shop-as-customer">';
@@ -169,11 +170,11 @@
 		return $form;
 	}
 	
-	function createalert($alerttype, $msg) {
+	function createalert($alerttype, $msg) { // DEPRECATED 10/2/2017
 		return '<div class="alert alert-'.$alerttype.'" role="alert">' . $msg . '</div>';
 	}
 
-	function makeprintlink($link, $msg) {
+	function makeprintlink($link, $msg) { // DEPRECATED 10/2/2017
 		return '<a href="'.$link.'" class="h4" target="_blank"><i class="glyphicon glyphicon-print" aria-hidden="true"></i> '.$msg.'.</a>';
 	}
 
