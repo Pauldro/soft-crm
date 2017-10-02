@@ -60,7 +60,7 @@
 									$class = $config->textjustify[$fieldsjson['data']['lotserial'][$column['id']]['datajustify']];
 									$colspan = $column['col-length'];
 									$celldata = Table::generatejsoncelldata($fieldsjson['data']['lotserial'][$column['id']]['type'], $lot, $column);
-									$tb->td('colspan='.$colspan.'|class='.$class);
+									$tb->td('colspan='.$colspan.'|class='.$class, $celldata);
 									if ($colspan > 1) { $i = $i + ($colspan - 1); }
 								} else {
 									$tb->td();
