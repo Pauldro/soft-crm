@@ -2,9 +2,9 @@
 	$substitutefile = $config->jsonfilepath.session_id()."-iisub.json";
 	//$substitutefile = $config->jsonfilepath."iisublindst-iisub.json";
 	//$substitutefile = $config->jsonfilepath."iisub-iisub.json";
-	//
+	
 	if ($config->ajax) {
-		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
+		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
 	}
 	
 	if (file_exists($substitutefile)) {

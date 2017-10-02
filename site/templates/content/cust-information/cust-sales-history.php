@@ -9,7 +9,7 @@
 	$shownoteslink = $config->pages->ajax.'load/ci/ci-sales-history/?custID='.urlencode($custID).'&shipID'.urlencode($shipID).'&startdate='.urlencode($startdate);
 
 	if ($config->ajax) {
-		echo $page->bootstrap->openandclose('p', '', makeprintlink($config->filename, 'View Printable Version'));
+		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
 	}
 	
 	if (file_exists($historyfile)) {

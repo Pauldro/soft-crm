@@ -1,8 +1,9 @@
 <?php
     $costfile = $config->jsonfilepath.session_id()."-iicost.json";
     //$costfile = $config->jsonfilepath."iicost-iicost.json";
+    
     if ($config->ajax) {
-		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
+		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
 	}
 ?>
 

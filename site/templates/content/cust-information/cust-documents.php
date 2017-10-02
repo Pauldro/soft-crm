@@ -6,6 +6,7 @@
 		// JSON file will be false if an error occurred during file_get_contents or json_decode
 		$docjson = json_decode(file_get_contents($docfile), true); 
 		$docjson = $docjson ? $docjson : array('error' => true, 'errormsg' => 'The Cust Documents JSON contains errors. JSON ERROR: '.json_last_error());
+		
 		if ($docjson['error']) {
 			echo $page->bootstrap->createalert('warning', $docjson['errormsg']); 
 		} else {

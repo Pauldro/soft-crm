@@ -3,7 +3,7 @@
 	//$purchasefile = $config->jsonfilepath."iiso-iipurchordr.json";
 	
 	if ($config->ajax) {
-		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
+		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
 	}
 	
 	if (file_exists($purchasefile)) {

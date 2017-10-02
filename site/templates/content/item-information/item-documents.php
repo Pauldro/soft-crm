@@ -1,8 +1,9 @@
 <?php
     $docfile = $config->jsonfilepath.session_id()."-docview.json";
     //$docfile = $config->jsonfilepath."iiprc-iiprice.json";
+    
     if ($config->ajax) {
-		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
+		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
 	}
     
     if (file_exists($docfile)) {

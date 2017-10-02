@@ -3,7 +3,7 @@
 	//$whsestockfile = $config->jsonfilepath."debugstkbywhse-iistkbywhse.json";
 	
 	if ($config->ajax) {
-		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
+		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
 	}
 	
 	if (file_exists($whsestockfile)) {

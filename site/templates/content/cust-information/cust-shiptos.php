@@ -5,6 +5,7 @@
 	if (file_exists($shiptofile))  {
 		$shiptojson = json_decode(file_get_contents($shiptofile), true); 
 		$shiptojson = $shiptojson ? $shiptojson : array('error' => true, 'errormsg' => 'The customer Ship-tos Inquiry JSON contains errors');
+		
 		if ($shiptojson['error']) {
 			echo $page->bootstrap->createalert('warning', $shiptojson['errormsg']);
 		} else {

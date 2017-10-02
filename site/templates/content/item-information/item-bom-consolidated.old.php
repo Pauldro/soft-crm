@@ -1,8 +1,9 @@
 <?php
 	$bomfile = $config->jsonfilepath.session_id()."-iibomcons.json";
 	//$bomfile = $config->jsonfilepath."iibomc-iibomcons.json";
+	//$
 	if ($config->ajax) {
-		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
+		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
 	}
 ?>
 <?php if (file_exists($bomfile)) : ?>

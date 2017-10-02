@@ -3,7 +3,7 @@
 	//$contactfile = $config->jsonfilepath."cicont-cicontact.json";
 
 	if ($config->ajax) {
-		echo $page->bootstrap->openandclose('p', '', makeprintlink($config->filename, 'View Printable Version'));
+		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
 	}
 
 	if (file_exists($contactfile)) {

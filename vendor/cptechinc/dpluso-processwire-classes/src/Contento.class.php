@@ -20,7 +20,7 @@
 
     	public function makeprintlink($link, $msg) {
             $attributes = "href=$link|class=h4|target=_blank";
-            $content = '<i class="glyphicon glyphicon-print" aria-hidden="true"></i>';
+            $content = '<i class="glyphicon glyphicon-print" aria-hidden="true"></i> ' . $msg;
             return $this->openandclose('a', $attributes, $content);
     	}
         

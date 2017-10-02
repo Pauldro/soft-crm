@@ -9,7 +9,7 @@
 	
 	if ($config->ajax) {
         $refresh = 'false'; 
-		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
+		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
 	}
 	
 	if (file_exists($requirementsfile)) {
