@@ -72,8 +72,8 @@ class Table {
 	public function td($vars = '', $content = '&nbsp; ') {
 		$add = '';
 		if (!$this->tropen) $add .= $this->tr();
-		if ($this->tdopen) $add .='</td>';
-		$this->tdopen= true;
+		if ($this->tdopen) $add .= '</td>';
+		$this->tdopen = true;
 		$this->tablestring .= $add . $this->indent() . '<td' . $this->values($vars) . '>' . $content;
 	}
 	
@@ -85,9 +85,13 @@ class Table {
 	public function th($vars = '', $content='') {
 		$add = '';
 		if (!$this->tropen) $add .= $this->tr();
-		if ($this->thopen) $add .='</th>';
+		if ($this->thopen) $add .= '</th>';
 		$this->thopen = true;
 		$this->tablestring .= $add . $this->indent() . '<th' . $this->values($vars) . '>' . $content;
+	}
+	
+	public function tclose($element) {
+		return '</'.$element.'>';
 	}
 	
 	/**
