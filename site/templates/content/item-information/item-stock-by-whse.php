@@ -1,96 +1,95 @@
 <?php
 	$whsestockfile = $config->jsonfilepath.session_id()."-iistkbywhse.json";
 	//$whsestockfile = $config->jsonfilepath."debugstkbywhse-iistkbywhse.json";
+	
 	if ($config->ajax) {
-		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
+		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
+	}
+	
+	if (file_exists($whsestockfile)) {
+		// JSON file will be false if an error occurred during file_get_contents or json_decode
+		$whsestock = json_decode(file_get_contents($whsestockfile), true);
+		$whsestock = $whsestock ? $whsestock : array('error' => true, 'errormsg' => 'The Warehouse JSON contains errors. JSON ERROR: '.json_last_error());
+		
+		if ($whsestock['error']) {
+			echo $page->bootstrap->createalert('warning', $whsestock['errormsg']);
+		} else {
+			$whsecolumns = array_keys($whsestock['columns']['warehouse']);
+			$lotcolumns = array_keys($whsestock['columns']['lots']);
+			$ordercolumns = array_keys($whsestock['columns']['orders']);
+			
+			foreach ($whsestock['data'] as $whse) {
+				if ($whse != $whsestock['data']['zz']) {
+					echo '<div>';
+						echo '<h3>'.$whse['Whse Name'].'</h3>';
+						$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+						$tb->tablesection('thead');
+							$tb->tr();
+							foreach($whsestock['columns']['warehouse'] as $column) {
+								$class = $config->textjustify[$column['headingjustify']];
+								$tb->th("class=$class", $column['heading']);
+							}
+						$tb->closetablesection('thead');
+						$tb->tablesection('tbody');
+							$tb->tr();
+							foreach($whsecolumns as $column) {
+								$class = $config->textjustify[$whsestock['columns']['warehouse'][$column]['datajustify']];
+								$tb->td("class=$class", $whse[$column]);
+							}
+						$tb->closetablesection('tbody');
+						echo $tb->close();
+						
+						$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+						$tb->tr();
+						foreach ($whsestock['columns']['lots'] as $column) {
+							$class = $config->textjustify[$column['headingjustify']];
+							$tb->th("class=$class", $column['heading']);
+						}
+						
+						$tb->tr();
+						foreach ($whsestock['columns']['orders'] as $column) {
+							$class = $config->textjustify[$column['headingjustify']];
+							$tb->td("class=$class", $column['heading']);
+						}
+						
+						foreach ($whse['lots'] as $lot) {
+							$tb->tr();
+							foreach($lotcolumns as $column) {
+								$class = $config->textjustify[$whsestock['columns']['lots'][$column]['datajustify']];
+								$tb->td("class=$class", $lot[$column]);
+							}
+							foreach($lot['orders'] as $order) {
+								$tb->tr();
+								foreach($ordercolumns as $column) {
+									$class = $config->textjustify[$whsestock['columns']['orders'][$column]['datajustify']];
+									$tb->td("class=$class", $order[$column]);
+								}
+							}
+						}
+						echo $tb->close();
+					echo '</div>';
+					
+					echo '<h3>'.$whsestock['data']['zz']['Whse Name'].'</h3>';
+					$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+					$tb->tablesection('thead');
+						$tb->tr();
+						foreach ($whsestock['columns']['warehouse'] as $column) {
+							$class = $config->textjustify[$column['headingjustify']];
+							$tb->th("class=$class", $column['heading']);
+						}
+					$tb->closetablesection('thead');
+					$tb->tablesection('tbody');
+						$tb->tr();
+						foreach ($whsecolumns as $column) {
+							$class = $config->textjustify[$whsestock['columns']['warehouse'][$column]['datajustify']];
+							$tb->th("class=$class", $whsestock['data']['zz'][$column]);
+						}
+					$tb->closetablesection('tbody');
+					echo $tb->close();
+				}
+			}
+		}
+	} else {
+		echo $page->bootstrap->createalert('warning', 'Information Not Available');
 	}
 ?>
-<?php if (file_exists($whsestockfile)) : ?>
-	<?php $whsestock = json_decode(file_get_contents($whsestockfile), true); ?>
-	<?php if (!$whsestock) { $whsestock = array('error' => true, 'errormsg' => 'The warehouse stock JSON contains errors');} ?>
-
-	<?php if ($whsestock['error']) : ?>
-		<div class="alert alert-warning" role="alert"><?php echo $whsestock['errormsg']; ?></div>
-	<?php else : ?>
-		<?php
-			if (!$whsestock['error']) {
-				$whsecolumns = array_keys($whsestock['columns']['warehouse']);
-				$lotcolumns = array_keys($whsestock['columns']['lots']);
-				$ordercolumns = array_keys($whsestock['columns']['orders']);
-			}
-		?>
-		<?php foreach ($whsestock['data'] as $whse) : ?>
-			<?php if ($whse != $whsestock['data']['zz']) : ?>
-				<div>
-					<h3><?php echo $whse['Whse Name']; ?></h3>
-					<table class="table table-striped table-bordered table-condensed table-excel">
-						<thead>
-							<tr>
-								<?php foreach($whsestock['columns']['warehouse'] as $column) : ?>
-									<th class="<?= $config->textjustify[$column['headingjustify']]; ?>"><?php echo $column['heading']; ?></th>
-								<?php endforeach; ?>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<?php foreach($whsecolumns as $column) : ?>
-									<td class="<?= $config->textjustify[$whsestock['columns']['warehouse'][$column]['datajustify']]; ?>"><?php echo $whse[$column]; ?></td>
-								<?php endforeach; ?>
-							</tr>
-						</tbody>
-					</table>
-
-					<table class="table table-striped table-bordered table-condensed table-excel">
-						<tr>
-							<?php foreach($whsestock['columns']['lots'] as $column) : ?>
-								<td class="<?= $config->textjustify[$column['headingjustify']]; ?>"><b><?php echo $column['heading']; ?></b></td>
-							<?php endforeach; ?>
-						</tr>
-						<tr>
-							<?php foreach($whsestock['columns']['orders'] as $column) : ?>
-								<td class="<?= $config->textjustify[$column['headingjustify']]; ?>"><b><?php echo $column['heading']; ?></b></td>
-							<?php endforeach; ?>
-						</tr>
-
-						<?php foreach ($whse['lots'] as $lot) : ?>
-							<tr>
-								<?php foreach($lotcolumns as $column) : ?>
-									<td class="<?= $config->textjustify[$whsestock['columns']['lots'][$column]['datajustify']]; ?>"><?php echo $lot[$column]; ?></td>
-								<?php endforeach; ?>
-							</tr>
-							<?php foreach($lot['orders'] as $order) : ?>
-								<tr>
-									<?php foreach($ordercolumns as $column) : ?>
-										<td class="<?= $config->textjustify[$whsestock['columns']['orders'][$column]['datajustify']]; ?>"><?php echo $order[$column]; ?></td>
-									<?php endforeach; ?>
-								</tr>
-							<?php endforeach; ?>
-						<?php endforeach; ?>
-					</table>
-				</div>
-			<?php endif; ?>
-		<?php endforeach; ?>
-		<div>
-
-		<h3><?php echo $whsestock['data']['zz']['Whse Name']; ?></h3>
-		<table class="table table-striped table-bordered table-condensed table-excel">
-			<thead>
-				<tr>
-					<?php foreach($whsestock['columns']['warehouse'] as $column) : ?>
-						<th class="<?= $config->textjustify[$column['headingjustify']]; ?>"><?php echo $column['heading']; ?></th>
-					<?php endforeach; ?>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<?php foreach($whsecolumns as $column) : ?>
-						<td class="<?= $config->textjustify[$whsestock['columns']['warehouse'][$column]['datajustify']]; ?>"><?php echo $whsestock['data']['zz'][$column]; ?></td>
-					<?php endforeach; ?>
-				</tr>
-			</tbody>
-		</table>
-	</div>
-	<?php endif; ?>
-<?php else : ?>
-	<div class="alert alert-warning" role="alert">Information Not Available</div>
-<?php endif; ?>

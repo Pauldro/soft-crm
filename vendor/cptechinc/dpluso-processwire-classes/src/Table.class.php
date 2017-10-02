@@ -26,6 +26,7 @@ class Table {
 	public function tablesection($section = 'tbody') {
 		$this->opensection = $section;
 		$this->tablestring .= $this->indent() . '<'.$section.'>';
+		return $this;
 	}
 	
 	/**
@@ -43,6 +44,7 @@ class Table {
 			}
 		}
 		$this->tablestring .= $add . $this->indent() . '</'.$section.'>';
+		return $this;
 	}
 	
 	/**
@@ -62,6 +64,7 @@ class Table {
 		$this->tdopen = false;
 		$this->thopen = false;
 		$this->tablestring .= $add . $this->indent() . '<tr' . $this->values($vars) . '>';
+		return $this;
 	}
 	
 	/**
@@ -72,9 +75,10 @@ class Table {
 	public function td($vars = '', $content = '&nbsp; ') {
 		$add = '';
 		if (!$this->tropen) $add .= $this->tr();
-		if ($this->tdopen) $add .='</td>';
-		$this->tdopen= true;
+		if ($this->tdopen) $add .= '</td>';
+		$this->tdopen = true;
 		$this->tablestring .= $add . $this->indent() . '<td' . $this->values($vars) . '>' . $content;
+		return $this;
 	}
 	
 	/**
@@ -85,9 +89,14 @@ class Table {
 	public function th($vars = '', $content='') {
 		$add = '';
 		if (!$this->tropen) $add .= $this->tr();
-		if ($this->thopen) $add .='</th>';
+		if ($this->thopen) $add .= '</th>';
 		$this->thopen = true;
 		$this->tablestring .= $add . $this->indent() . '<th' . $this->values($vars) . '>' . $content;
+		return $this;
+	}
+	
+	public function tclose($element) {
+		return '</'.$element.'>';
 	}
 	
 	/**
@@ -96,7 +105,7 @@ class Table {
 	 */
 	public function close() {
 		$add = '';
-		if (!$this->tdopen) $add .= $this->cell();
+		if (!$this->tdopen) $this->td();
 		$add .= '</td></tr>' . $this->indent() . '</table>';
 		self::$count--;
 		$this->tablestring .= $add;

@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'Contact' => $baseDir . '/src/Contact.class.php',
+    'Contento' => $baseDir . '/src/Contento.class.php',
     'DplusDateTime' => $baseDir . '/src/DplusDateTime.class.php',
     'Table' => $baseDir . '/src/Table.class.php',
     'UserAction' => $baseDir . '/src/UserAction.class.php',

@@ -6,7 +6,7 @@
             "src/Table.class.php",
             "src/UserAction.class.php",
             "src/UserActionPanel.class.php",
-            "src/utfport.php"
+            "src/Contento.class.php"
         ]
     }
 }

@@ -3,15 +3,16 @@
 	//$creditfile = $config->jsonfilepath."cicred-credit.json";
 
 	if ($config->ajax) {
-		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
+		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
 	}
 
 	if (file_exists($creditfile)) {
+		// JSON file will be false if an error occurred during file_get_contents or json_decode
 		$creditjson = json_decode(file_get_contents($creditfile), true);
-		if (!$creditjson) { $creditjson = array('error' => true, 'errormsg' => 'The Customer Credit JSON contains errors'); }
+		$creditjson = $creditjson ? $creditjson : array('error' => true, 'errormsg' => 'The Customer Credit JSON contains errors. JSON ERROR: '.json_last_error());
 
 		if ($creditjson['error']) {
-			createalert('warning', $creditjson['errormsg']);
+			echo $page->bootstrap->createalert('warning', $creditjson['errormsg']); 
 		} else {
 			$leftcolumns = array_keys($creditjson['columns']['left']);
 			$rightcolumns = array_keys($creditjson['columns']['right']);
@@ -63,11 +64,11 @@
 					echo '</div>';
 				echo '</div>';
 			} else {
-				createalert('warning', 'Information Not Available');
+				echo $page->bootstrap->createalert('warning', 'Information Not Available'); 
 			}
 		}
 	} else {
-		createalert('warning', 'Customer has no Contacts');
+		echo $page->bootstrap->createalert('warning', 'Customer has no Contacts'); 
 	}
 
  ?>
