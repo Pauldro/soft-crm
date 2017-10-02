@@ -1,39 +1,39 @@
 var itemlookupform = "#ii-item-lookup";
 
 $(function() {
-    //listener.simple_combo("u", function() {iicust()});
-    listener.simple_combo("c", function() {costing();});
-    listener.simple_combo("d", function() {purchorder();});
-    listener.simple_combo("e", function() {docview();});
-    listener.simple_combo("i", function() {compinq();});
-    listener.simple_combo("h", function() {saleshist();});
-    listener.simple_combo("k", function() {whsestock();});
-    listener.simple_combo("n", function() {general();});
-    listener.simple_combo("o", function() {salesorder();});
+	//listener.simple_combo("u", function() {iicust()});
+	listener.simple_combo("c", function() {costing();});
+	listener.simple_combo("d", function() {purchorder();});
+	listener.simple_combo("e", function() {docview();});
+	listener.simple_combo("i", function() {compinq();});
+	listener.simple_combo("h", function() {saleshist();});
+	listener.simple_combo("k", function() {whsestock();});
+	listener.simple_combo("n", function() {general();});
+	listener.simple_combo("o", function() {salesorder();});
 	listener.simple_combo("p", function() {pricing();});
-    listener.simple_combo("q", function() {quotes();});
-    listener.simple_combo("r", function() {requirements();});
-    listener.simple_combo("s", function() {seriallot();});
-    listener.simple_combo("t", function() {purchhist();});
-    listener.simple_combo("u", function() {substitute();});
-    listener.simple_combo("v", function() {activity();});
-    listener.simple_combo("w", function() {whereused();});
+	listener.simple_combo("q", function() {quotes();});
+	listener.simple_combo("r", function() {requirements();});
+	listener.simple_combo("s", function() {seriallot();});
+	listener.simple_combo("t", function() {purchhist();});
+	listener.simple_combo("u", function() {substitute();});
+	listener.simple_combo("v", function() {activity();});
+	listener.simple_combo("w", function() {whereused();});
 	listener.simple_combo("pageup", function() {previousitem();});
 	listener.simple_combo("pagedown", function() {nextitem();});
 
 	$("body").on("focus", ".swal2-container .swal2-input", function(event) {
-        console.log('focused');
-        listener.stop_listening();
-    });
+		console.log('focused');
+		listener.stop_listening();
+	});
 
 	$(config.modals.ajax).on('hide.bs.modal', function(event) {
-        listener.listen();
-    });
+		listener.listen();
+	});
 
-    $(config.modals.ajax).on('shown.bs.modal', function(event) {
-        listener.stop_listening();
+	$(config.modals.ajax).on('shown.bs.modal', function(event) {
+		listener.stop_listening();
 		hidetoolbar();
-    });
+	});
 
 	$("body").on("submit", "#ii-search-item", function(e) {
 		e.preventDefault();
@@ -43,7 +43,7 @@ $(function() {
 		e.preventDefault();
 		var itemID = $(this).find('.itemID').val();
 		var modal = config.modals.ajax;
-        var loadinto =  modal+" .modal-content";
+		var loadinto =  modal+" .modal-content";
 		var href = URI($(this).attr('action')).addQuery('q', itemID).addQuery('modal', 'modal').normalizeQuery().toString();
 		showajaxloading();
 		$(loadinto).loadin(href, function() {
@@ -55,57 +55,57 @@ $(function() {
 
 
 	$("body").on("submit", "#ii-item-activity-form", function(e) {
-        e.preventDefault();
-        var formid = '#'+$(this).attr('id');
-        var modal = config.modals.ajax;
-        var loadinto =  modal+" .modal-content";
-        var itemID = $(itemlookupform + " .itemID").val();
-        var custID = $(itemlookupform + " .custID").val();
-        var href = URI(config.urls.load.ii_activity).addQuery("itemID", itemID)
+		e.preventDefault();
+		var formid = '#'+$(this).attr('id');
+		var modal = config.modals.ajax;
+		var loadinto =  modal+" .modal-content";
+		var itemID = $(itemlookupform + " .itemID").val();
+		var custID = $(itemlookupform + " .custID").val();
+		var href = URI(config.urls.load.ii_activity).addQuery("itemID", itemID)
 													.addQuery("custID", custID)
 													.addQuery('modal', 'modal')
 													.query(cleanparams)
 													.toString();
-        showajaxloading();
-        $(formid).postform({formdata: false, jsoncallback: false}, function() { //form, overwriteformdata, returnjson, callback
-            $(modal).modal('hide');
-            wait(500, function() {
-                $(loadinto).loadin(href, function() {
-                    hideajaxloading();
+		showajaxloading();
+		$(formid).postform({formdata: false, jsoncallback: false}, function() { //form, overwriteformdata, returnjson, callback
+			$(modal).modal('hide');
+			wait(500, function() {
+				$(loadinto).loadin(href, function() {
+					hideajaxloading();
 					$(modal).find('.modal-body').addClass('modal-results');
-                    $(modal).resizemodal('lg').modal();
-                    listener.listen();
-                });
-            });
-        });
-    });
+					$(modal).resizemodal('lg').modal();
+					listener.listen();
+				});
+			});
+		});
+	});
 
 	$("body").on("submit", "#ii-sales-history-form", function(e) {
-        e.preventDefault();
-        var formid = '#'+$(this).attr('id');
-        var modal = config.modals.ajax;
-        var loadinto = modal+" .modal-content";
-        var itemID = $(itemlookupform + " .itemID").val();
-        var custID = $(itemlookupform + " .custID").val();
-        var href = URI(config.urls.load.ii_saleshistory).addQuery("itemID", itemID)
+		e.preventDefault();
+		var formid = '#'+$(this).attr('id');
+		var modal = config.modals.ajax;
+		var loadinto = modal+" .modal-content";
+		var itemID = $(itemlookupform + " .itemID").val();
+		var custID = $(itemlookupform + " .custID").val();
+		var href = URI(config.urls.load.ii_saleshistory).addQuery("itemID", itemID)
 														.addQuery("custID", custID)
 														.addQuery('modal', 'modal')
 														.query(cleanparams)
 														.toString();
-        showajaxloading();
-        $(formid).postform({formdata: false, jsoncallback: false}, function() { //form, overwriteformdata, returnjson, callback
-            $(modal).modal('hide');
-            $(loadinto).loadin(href, function() {
-                hideajaxloading();
-                wait(500, function() {
+		showajaxloading();
+		$(formid).postform({formdata: false, jsoncallback: false}, function() { //form, overwriteformdata, returnjson, callback
+			$(modal).modal('hide');
+			$(loadinto).loadin(href, function() {
+				hideajaxloading();
+				wait(500, function() {
 					$(modal).find('.modal-body').addClass('modal-results');
-                    $(modal).resizemodal('lg').modal();
-                    listener.listen();
-                });
+					$(modal).resizemodal('lg').modal();
+					listener.listen();
+				});
 
-            });
-        });
-    });
+			});
+		});
+	});
 });
 
 /*==============================================================
@@ -122,35 +122,35 @@ $(function() {
 		}
 	}
 
-    function costing() {
-        var itemID = $(itemlookupform + " .itemID").val();
-        var modal = config.modals.ajax;
-        var loadinto =  modal+" .modal-content";
+	function costing() {
+		var itemID = $(itemlookupform + " .itemID").val();
+		var modal = config.modals.ajax;
+		var loadinto =  modal+" .modal-content";
 		var href = URI(config.urls.load.ii_costing).addQuery("itemID", itemID).addQuery('modal', 'modal').toString();
-        showajaxloading();
-        ii_costing(itemID, function() {
-            $(loadinto).loadin(href, function() {
-                hideajaxloading();
+		showajaxloading();
+		ii_costing(itemID, function() {
+			$(loadinto).loadin(href, function() {
+				hideajaxloading();
 				$(modal).find('.modal-body').addClass('modal-results');
-                $(modal).resizemodal('lg').modal();
-            });
-        });
-    }
+				$(modal).resizemodal('lg').modal();
+			});
+		});
+	}
 
-    function purchorder() {
-        var itemID = $(itemlookupform + " .itemID").val();
-        var modal = config.modals.ajax;
-        var loadinto =  modal+" .modal-content";
+	function purchorder() {
+		var itemID = $(itemlookupform + " .itemID").val();
+		var modal = config.modals.ajax;
+		var loadinto =  modal+" .modal-content";
 		var href = URI(config.urls.load.ii_purchaseorder).addQuery("itemID", itemID).addQuery('modal', 'modal').toString();
-        showajaxloading();
-        ii_purchaseorder(itemID, function() {
-            $(loadinto).loadin(href, function() {
-                hideajaxloading();
+		showajaxloading();
+		ii_purchaseorder(itemID, function() {
+			$(loadinto).loadin(href, function() {
+				hideajaxloading();
 				$(modal).find('.modal-body').addClass('modal-results');
-                $(modal).resizemodal('xl').modal();
-            });
-        });
-    }
+				$(modal).resizemodal('xl').modal();
+			});
+		});
+	}
 
 	function quotes() {
 		var itemID = $(itemlookupform + " .itemID").val();
@@ -202,37 +202,37 @@ $(function() {
 		});
 	}
 
-    function compinq() {
-        var itemID = $(itemlookupform + " .itemID").val();
-        var loadinto =  config.modals.ajax+" .modal-content";
-        swal({
-            title: "Component Inquiry Selection",
-            text: "Kit or BOM Inquiry (K/B)",
-            input: 'text',
-            showCancelButton: true,
-            inputValidator: function (value) {
-                return new Promise(function (resolve, reject) {
-                    if (value.toUpperCase() == 'K') {
-                        resolve();
-                    } else if (value.toUpperCase() == 'B') {
-                        resolve();
-                    } else {
-                        reject('You need to write something!');
-                    }
-                })
-            }
-        }).then(function (input) {
-            if (input) {
-                if (input.toUpperCase() == 'K') {
-                    askkitqtyneeded(itemID);
-                } else if (input.toUpperCase() == 'B') {
-                    askbomqtyneed(itemID);
-                }
-            } else {
-                listener.listen();
-            }
-        }).catch(swal.noop);
-    }
+	function compinq() {
+		var itemID = $(itemlookupform + " .itemID").val();
+		var loadinto =  config.modals.ajax+" .modal-content";
+		swal({
+			title: "Component Inquiry Selection",
+			text: "Kit or BOM Inquiry (K/B)",
+			input: 'text',
+			showCancelButton: true,
+			inputValidator: function (value) {
+				return new Promise(function (resolve, reject) {
+					if (value.toUpperCase() == 'K') {
+						resolve();
+					} else if (value.toUpperCase() == 'B') {
+						resolve();
+					} else {
+						reject('You need to write something!');
+					}
+				})
+			}
+		}).then(function (input) {
+			if (input) {
+				if (input.toUpperCase() == 'K') {
+					askkitqtyneeded(itemID);
+				} else if (input.toUpperCase() == 'B') {
+					askbomqtyneed(itemID);
+				}
+			} else {
+				listener.listen();
+			}
+		}).catch(swal.noop);
+	}
 
 	function general() {
 		var itemID = $(itemlookupform + " .itemID").val();
@@ -404,115 +404,115 @@ $(function() {
 /*==============================================================
    EXTENSION FUNCTIONS
  =============================================================*/
-     function askkitqtyneeded(itemID) {
-        var href = URI(iiurl(config.urls.load.ii_kitcomponents, itemID, false, false)).addQuery('modal', 'modal').toString();
-        var modal = config.modals.ajax;
-        var loadinto =  modal+" .modal-content";
-        swal({
-            title: "Kit Quantity",
-            text: "Enter the Kit Quantity Needed",
-            input: 'text',
-            showCancelButton: true,
-            inputValidator: function (value) {
-                return new Promise(function (resolve, reject) {
-                    if (!isNaN(value)) {
-                        resolve();
-                    } else {
-                        reject("Your input is not numeric");
-                    }
-                })
-            }
-        }).then(function (input) {
-            if (input) {
-                var qty = input;
-                swal.close();
-                showajaxloading();
-                ii_kitcomponents(itemID, qty, function() {
-                    $(loadinto).loadin(href, function() {
-                        hideajaxloading();
+	 function askkitqtyneeded(itemID) {
+		var href = URI(iiurl(config.urls.load.ii_kitcomponents, itemID, false, false)).addQuery('modal', 'modal').toString();
+		var modal = config.modals.ajax;
+		var loadinto =  modal+" .modal-content";
+		swal({
+			title: "Kit Quantity",
+			text: "Enter the Kit Quantity Needed",
+			input: 'text',
+			showCancelButton: true,
+			inputValidator: function (value) {
+				return new Promise(function (resolve, reject) {
+					if (!isNaN(value)) {
+						resolve();
+					} else {
+						reject("Your input is not numeric");
+					}
+				})
+			}
+		}).then(function (input) {
+			if (input) {
+				var qty = input;
+				swal.close();
+				showajaxloading();
+				ii_kitcomponents(itemID, qty, function() {
+					$(loadinto).loadin(href, function() {
+						hideajaxloading();
 						$(modal).find('.modal-body').addClass('modal-results');
-                        $(modal).resizemodal('lg').modal();
-                        listener.listen();
-                    });
-                });
-            } else {
-                listener.listen();
-            }
-        }).catch(swal.noop);
+						$(modal).resizemodal('lg').modal();
+						listener.listen();
+					});
+				});
+			} else {
+				listener.listen();
+			}
+		}).catch(swal.noop);
 
-    }
+	}
 
-    function askbomqtyneed(itemID) {
-        swal({
-            title: "Bill of Material Inquiry",
-            text: "Enter the Bill of Material Qty Needed",
-            input: 'text',
-            showCancelButton: true,
-            inputValidator: function (value) {
-                return new Promise(function (resolve, reject) {
-                    if (!isNaN(value)) {
-                        resolve();
-                    } else {
-                        reject("Your input is not numeric");
-                    }
-                })
-            }
-        }).then(function (input) {
-            if (input) {
-                var qty = input;
-                askbomsingleconsolided(itemID, qty);
-            } else {
-                listener.listen();
-            }
-        }).catch(swal.noop);
-    }
+	function askbomqtyneed(itemID) {
+		swal({
+			title: "Bill of Material Inquiry",
+			text: "Enter the Bill of Material Qty Needed",
+			input: 'text',
+			showCancelButton: true,
+			inputValidator: function (value) {
+				return new Promise(function (resolve, reject) {
+					if (!isNaN(value)) {
+						resolve();
+					} else {
+						reject("Your input is not numeric");
+					}
+				})
+			}
+		}).then(function (input) {
+			if (input) {
+				var qty = input;
+				askbomsingleconsolided(itemID, qty);
+			} else {
+				listener.listen();
+			}
+		}).catch(swal.noop);
+	}
 
-    function askbomsingleconsolided(itemID, qty) {
-        var href = iiurl(config.urls.load.ii_bom, itemID, false, false);
-        var modal = config.modals.ajax;
-        var loadinto =  modal+" .modal-content";
-        swal({
-            title: "Bill of Material Inquiry",
-            text: "Single or Consolidated Inquiry (S/C)",
-            input: 'text',
-            showCancelButton: true,
-            inputValidator: function (value) {
-                return new Promise(function (resolve, reject) {
-                    if (value.toUpperCase() == 'S') { //Single
-                        resolve();
-                    } else if (value.toUpperCase() == 'C') { //Consolidated
-                        resolve();
-                    } else {
-                        reject("The accepted values are S or C");
-                    }
+	function askbomsingleconsolided(itemID, qty) {
+		var href = iiurl(config.urls.load.ii_bom, itemID, false, false);
+		var modal = config.modals.ajax;
+		var loadinto =  modal+" .modal-content";
+		swal({
+			title: "Bill of Material Inquiry",
+			text: "Single or Consolidated Inquiry (S/C)",
+			input: 'text',
+			showCancelButton: true,
+			inputValidator: function (value) {
+				return new Promise(function (resolve, reject) {
+					if (value.toUpperCase() == 'S') { //Single
+						resolve();
+					} else if (value.toUpperCase() == 'C') { //Consolidated
+						resolve();
+					} else {
+						reject("The accepted values are S or C");
+					}
 
-                })
-            }
-        }).then(function (input) {
-            if (input) {
-                var bom = "single";
-                if (input.toUpperCase() == 'S') { //Single
-                    bom = "single";
-                } else if (input.toUpperCase() == 'C') { //Consolidated
-                    bom = "consolidated";
-                }
-                href = URI(href).addQuery('bom', bom).addQuery('modal', 'modal').normalizeQuery().toString();
-                ii_bom(itemID, qty, bom, function() {
-                    swal.close();
-                    showajaxloading();
-                    $(loadinto).loadin(href, function() {
-                        hideajaxloading();
+				})
+			}
+		}).then(function (input) {
+			if (input) {
+				var bom = "single";
+				if (input.toUpperCase() == 'S') { //Single
+					bom = "single";
+				} else if (input.toUpperCase() == 'C') { //Consolidated
+					bom = "consolidated";
+				}
+				href = URI(href).addQuery('bom', bom).addQuery('modal', 'modal').normalizeQuery().toString();
+				ii_bom(itemID, qty, bom, function() {
+					swal.close();
+					showajaxloading();
+					$(loadinto).loadin(href, function() {
+						hideajaxloading();
 						$(modal).find('.modal-body').addClass('modal-results');
-                        $(modal).resizemodal('lg').modal();
-                        listener.listen();
-                    });
-                });
-            } else {
-                listener.listen();
-            }
-        }).catch(swal.noop);
+						$(modal).resizemodal('lg').modal();
+						listener.listen();
+					});
+				});
+			} else {
+				listener.listen();
+			}
+		}).catch(swal.noop);
 
-    }
+	}
 
 	function ii_customer(custID) { //WAS ii_customer
 		var itemID = $(itemlookupform+' .itemID').val();
@@ -585,7 +585,7 @@ $(function() {
 	function iipricing(custID, shipID, itemID) {
 		var href = URI(iiurl(config.urls.load.ii_pricing, itemID, custID, shipID)).addQuery('modal', 'modal').toString();
 		var modal = config.modals.ajax;
-		var loadinto = modal+" .modal-content";
+		var loadinto =  modal+" .modal-content";
 		$('.modal').modal('hide');
 		showajaxloading();
 		ii_pricing(itemID, custID, shipID, function() {
