@@ -74,7 +74,7 @@ class Table {
 	 */
 	public function td($vars = '', $content = '&nbsp; ') {
 		$add = '';
-		if (!$this->tropen) $add .= $this->tr();
+		if (!$this->tropen) $this->tr();
 		if ($this->tdopen) $add .= '</td>';
 		$this->tdopen = true;
 		$this->tablestring .= $add . $this->indent() . '<td' . $this->values($vars) . '>' . $content;
