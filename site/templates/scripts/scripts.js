@@ -193,6 +193,7 @@ $(document).ready(function() {
 			showajaxloading();
 			dplusrequesturl(ajaxloader.url, function(url) {
 				wait(500, function() {
+					url = URI(url).addQuery('modal', 'modal').toString();
 					$(ajaxloader.loadinto).loadin(url, function() {
 						$(ajaxloader.modal).resizemodal('lg').modal(); hideajaxloading();
 					});
