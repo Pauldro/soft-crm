@@ -6,7 +6,7 @@
            "Purchase Order Number": {
                 "line": 0,
                 "column": 0,
-    			"col-length": 9,
+    			"col-length": 1,
     			"label": "PO #",
                 "before-decimal": 7,
                 "after-decimal": false,
@@ -15,7 +15,7 @@
             "Invoice Number": {
                 "line": 1,
                 "column": 1,
-    			"col-length": 9,
+    			"col-length": 1,
     			"label": "Invc #",
                 "before-decimal": false,
                 "after-decimal": false,
@@ -24,7 +24,7 @@
             "Check Number": {
                 "line": 1,
                 "column": 2,
-    			"col-length": 9,
+    			"col-length": 1,
     			"label": "Check No",
                 "before-decimal": 7,
                 "after-decimal": false,
@@ -33,7 +33,7 @@
             "Check Status": {
                 "line": 1,
                 "column": 3,
-    			"col-length": 3,
+    			"col-length": 1,
     			"label": "Check Stat",
                 "before-decimal": false,
                 "after-decimal": false,
@@ -42,7 +42,7 @@
             "Check Date": {
                 "line": 1,
                 "column": 6,
-    			"col-length": 9,
+    			"col-length": 1,
     			"label": "Pay Date",
                 "before-decimal": false,
                 "after-decimal": false,
@@ -51,7 +51,7 @@
             "Invoice Date": {
                "line": 1,
                 "column": 4,
-    			"col-length": 9,
+    			"col-length": 1,
     			"label": "Invc Date",
                 "before-decimal": false,
                 "after-decimal": false,
@@ -60,7 +60,7 @@
             "Due Date": {
                "line": 1,
                 "column": 7,
-    			"col-length": 9,
+    			"col-length": 1,
     			"label": "Due Date",
                 "before-decimal": false,
                 "after-decimal": false,
@@ -78,7 +78,7 @@
             "Void Date": {
                 "line": 0,
                 "column": 0,
-    			"col-length": 9,
+    			"col-length": 1,
     			"label": "Void Date",
                 "before-decimal": false,
                 "after-decimal": false,
@@ -87,7 +87,7 @@
             "Payment Days": {
                 "line": 1,
                 "column": 8,
-    			"col-length": 6,
+    			"col-length": 1,
     			"label": "Days",
                 "before-decimal": 7,
                 "after-decimal": false,
@@ -96,7 +96,7 @@
             "Overdue Days": {
                 "line": 1,
                 "column": 9,
-    			"col-length": 6,
+    			"col-length": 1,
     			"label": "Past Due",
                 "before-decimal": 7,
                 "after-decimal": false,
@@ -105,7 +105,7 @@
             "Paid + Discount Amount": {
                 "line": 1,
                 "column": 5,
-    			"col-length": 11,
+    			"col-length": 1,
     			"label": "Paid/Disc",
                 "before-decimal": 7,
                 "after-decimal": 2,
@@ -114,7 +114,7 @@
             "Payment Amount": {
                 "line": 0,
                 "column": 0,
-    			"col-length": 10,
+    			"col-length": 1,
     			"label": "Pymt Amt",
                 "before-decimal": 7,
                 "after-decimal": 2,
@@ -123,7 +123,7 @@
             "Discount Amount": {
                 "line": 0,
                 "column": 0,
-    			"col-length": 10,
+    			"col-length": 1,
     			"label": "Disc Amt",
                 "before-decimal": 7,
                 "after-decimal": 2,

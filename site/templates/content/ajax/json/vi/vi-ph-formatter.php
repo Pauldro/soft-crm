@@ -1,7 +1,7 @@
 <?php
 	header('Content-Type: application/json');
 
-	$formatjson = json_decode(file_get_contents($config->companyfiles."json/viphfmattbl.json"), true);
+	$formatjson = json_decode(file_get_contents($config->companyfiles."json/vipyfmattbl.json"), true);
 	$columns = array_keys($formatjson['data']['detail']);
 	$postarray = array();
 

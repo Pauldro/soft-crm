@@ -9,7 +9,7 @@
 		$action = 'add-formatter';
 	}
 	
-	$fieldsjson = json_decode(file_get_contents($config->companyfiles."json/viphfmattbl.json"), true);
+	$fieldsjson = json_decode(file_get_contents($config->companyfiles."json/vipyfmattbl.json"), true);
 	$columns = array_keys($fieldsjson['data']['detail']);
 	
 	$examplejson = json_decode(file_get_contents($config->paths->content."vend-information/screen-formatters/examples/vi-payment-history.json"), true);
