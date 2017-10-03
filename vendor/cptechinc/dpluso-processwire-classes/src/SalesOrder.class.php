@@ -99,6 +99,10 @@
         public $phoneinternational = false;
         
         public function __construct() {
+            $this->update_properties();
+        }
+        
+        public function update_properties() {
             if ($this->havedoc == 'Y') { $this->hasdocuments = true; }
             if ($this->havetrk == 'Y') { $this->hastracking = true; }
             if ($this->havenote == 'Y') { $this->hasnotes = true; }
@@ -107,12 +111,20 @@
             if ($this->error == 'Y') { $this->haserror = true; }
         }
         
-        public function generateeditorderlink() {
+        public function generate_editorderlink() {
             // TODO USE Purl
             return wire('config')->pages->orders."redir/?action=get-order-details&ordn=$this->orderno&lock=lock";
         }
         
-        public function generateclicktoexpand($ordn) {
+        public function generate_rowclass($ordn) {
+            if ($ordn == $this->orderno) {
+                return 'selected';
+            } else {
+                return '';
+            }
+        }
+        
+        public function generate_clicktoexpand($ordn) {
             if ($ordn == $this->orderno) {
                 
             } else {
@@ -120,22 +132,37 @@
             }
         }
         
-        public static function fromarray(array $array) {
+        public function generate_getorderdetailslink($ajaxpath) {
+            $orderlink = new \Purl\Url(wire('page')->httpUrl);
+            $orderlink->path = wire('config')->pages->orders."redir";
+            $orderlink->query->setData(array('action' => 'get-order-details', 'ordn' => $this->orderno, 'show' => false, 'orderby' => false));
+            return $orderlink;
+        }
+        
+        public function generate_generateclosedetailslink($ajaxpath) {
+            $orderlink = new \Purl\Url(wire('page')->httpUrl);
+            $orderlink->path = $ajaxpath;
+            $orderlink->query->setData(array('ordn' => '', 'show' => false, 'orderby' => false));
+            return $orderlink;
+        }
+        
+        public static function create_fromarray(array $array) {
            $myClass = get_class();
            $object  = new $myClass(); 
 
            foreach ($array as $key => $val) {
                $object->$key = $val;
            }
+           
+           $object->update_properties();
            return $object;
        }
         
-        
-        public static function returnclassarray() {
-            return SalesOrder::unsetnondbkeys(get_class_vars('SalesOrder'));
+        public static function generate_classarray() {
+            return SalesOrder::remove_nondbkeys(get_class_vars('SalesOrder'));
         }
         
-        public static function unsetnondbkeys($array) {
+        public static function remove_nondbkeys($array) {
             unset($array['canedit']);
             unset($array['hasnotes']);
             unset($array['hasdocuments']);
