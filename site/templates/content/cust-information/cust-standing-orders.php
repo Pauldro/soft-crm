@@ -1,25 +1,27 @@
 <?php
 	$standfile = $config->jsonfilepath.session_id()."-cistandordr.json";
 	//$standfile = $config->jsonfilepath."cistand-cistandordr.json";
+	
+	if ($config->ajax) {
+		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
+	}
+
+	if (file_exists($standfile)) {
+		// JSON file will be false if an error occurred during file_get_contents or json_decode
+		$standingjson = json_decode(file_get_contents($standfile), true);
+		$standingjson = $standingjson ? $standingjson : array('error' => true, 'errormsg' => 'The Customer Standing Orders JSON contains errors JSON ERROR: '.json_last_error());
+		
+		if ($standingjson['error']) {
+			echo $page->bootstrap->createalert('warning', $standingjson['errormsg']);
+		} else {
+			$custcolumns = array_keys($standingjson['columns']['custinfo']);
+			$itemcolumns = array_keys($standingjson['columns']['iteminfo']);
+			
+			foreach ($standingjson['data'] as $order) {
+				include $config->paths->content."cust-information/tables/standing-orders.php";
+			}
+		}
+	} else {
+		echo $page->bootstrap->createalert('warning', 'Information Not Available');
+	}
  ?>
-
-<?php if (file_exists($standfile)) : ?>
-	<?php $standingjson = json_decode(file_get_contents($standfile), true);  ?>
-	<?php if (!$standingjson) { $standingjson = array('error' => true, 'errormsg' => 'The customer shiptos Inquiry Single JSON contains errors');} ?>
-	<?php if ($standingjson['error']) : ?>
-		<div class="alert alert-warning" role="alert"><?php echo $standingjson['errormsg']; ?></div>
-	<?php else : ?>
-		<?php $custcolumns = array_keys($standingjson['columns']['custinfo']); ?>
-		<?php $itemcolumns = array_keys($standingjson['columns']['iteminfo']); ?>
-
-		<div class="row">
-			<div class="col-xs-12">
-				<?php foreach ($standingjson['data'] as $order) : ?>
-					<?php include $config->paths->content."cust-information/tables/standing-order.php"; ?>
-				<?php endforeach; ?>
-			</div>
-		</div>
-	<?php endif; ?>
-<?php else : ?>
-	<div class="alert alert-warning" role="alert">Information Not Available</div>
-<?php endif; ?>

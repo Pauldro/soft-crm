@@ -1,43 +1,49 @@
 <?php
 	$stockfile = $config->jsonfilepath.session_id()."-iistkstat.json";
-	$itemlink = $config->pages->products."redir/?action=ii-select&custID=".urlencode($custID);
+	
+	$itemlink = $page->fullURL;
+	$itemlink->path = $config->pages->products."redir/";
+	$itemlink->query = '';
+	
+	if ($config->ajax) {
+		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
+	}
+
+	if (file_exists($stockfile))  {
+		// JSON file will be false if an error occurred during file_get_contents or json_decode
+		$jsonstock = json_decode(file_get_contents($stockfile), true); 
+		$jsonstock = $jsonstock ? $jsonstock : array('error' => true, 'errormsg' => 'The Stock Info JSON contains errors. JSON ERROR: '.json_last_error());
+		
+		if ($jsonstock['error']) {
+			echo $page->bootstrap->createalert('warning', $jsonstock['errormsg']);
+		} else {
+			$columns = array_keys($jsonstock['columns']);
+			$tb = new Table('class=table table-striped table-condensed table-bordered table-excel');
+			$tb->tablesection('thead');
+				$tb->tr();
+				foreach ($jsonstock['columns'] as $column) {
+					$class = $config->textjustify[$column['headingjustify']];
+					$tb->th("class=$class", $column['heading']);
+				}
+			$tb->closetablesection('thead');
+			$tb->tablesection('tbody');
+				foreach ($jsonstock['data'] as $warehouse) {
+					$tb->tr();
+					foreach ($columns as $column) {
+						$class = $config->textjustify[$jsonstock['columns'][$column]['datajustify']];
+						if ($column == "Item ID") {
+							$itemlink->query->setData(array("action" => "ii-select", "custID" => $custID, 'itemID' => $warehouse[$column]));;
+							$content = $page->bootstrap->openandclose('a', "href=".$itemlink->getUrl(), $warehouse[$column]);
+						} else {
+							$content = $warehouse[$column];
+						}
+						$tb->td("class=$class", $content);
+					}
+				}
+			$tb->closetablesection('tbody');
+			echo $tb->close();
+		}
+	} else {
+		echo $page->bootstrap->createalert('warning', 'Information Not Available');
+	}
 ?>
-
-<?php if (file_exists($stockfile)) : ?>
-    <?php $jsonstock = json_decode(file_get_contents($stockfile), true); $columns = array(); ?>
-    <?php if (!$jsonstock) { $jsonstock = array('error' => true, 'errormsg' => 'The stock info JSON contains errors');} ?>
-
-    <?php if ($jsonstock['error']) : ?>
-        <div class="alert alert-warning" role="alert"><?php echo $jsonstock['errormsg']; ?></div>
-    <?php else : ?>
-        <?php $columns = array_keys($jsonstock['columns']); ?>
-        <div class="table-responsive">
-            <table class="table table-striped table-condensed table-bordered table-excel">
-                <thead>
-                    <tr>
-                        <?php foreach($jsonstock['columns'] as $column) : ?>
-                            <th class="<?= $config->textjustify[$column['headingjustify']]; ?>"><?php echo $column['heading']; ?></th>
-                        <?php endforeach; ?>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($jsonstock['data'] as $warehouse) : ?>
-                        <tr>
-                            <?php foreach($columns as $column) : ?>
-                                <?php if ($column == "Item ID") : ?>
-                                    <td class="<?= $config->textjustify[$jsonstock['columns'][$column]['datajustify']]; ?>">
-                                        <a href="<?= $itemlink."&itemID=".$warehouse[$column]; ?>"><?php echo $warehouse[$column]; ?></a>
-                                    </td>
-                                <?php else :?>
-                                    <td class="<?= $config->textjustify[$jsonstock['columns'][$column]['datajustify']]; ?>"><?php echo $warehouse[$column]; ?></td>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
-                        </tr>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-        </div>
-    <?php endif; ?>
-<?php else : ?>
-    <div class="alert alert-warning" role="alert">Information Not Available</div>
-<?php endif; ?>

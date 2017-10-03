@@ -1,67 +1,70 @@
 <?php
 	$bomfile = $config->jsonfilepath.session_id()."-iibomcons.json";
 	//$bomfile = $config->jsonfilepath."iibomc-iibomcons.json";
+	
 	if ($config->ajax) {
-		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
+		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
 	}
+	
+	if (file_exists($bomfile)) {
+		// JSON file will be false if an error occurred during file_get_contents or json_decode
+		$bomjson = json_decode(file_get_contents($bomfile), true);
+		$bomjson = $bomjson ? $bomjson : array('error' => true, 'errormsg' => 'The BOM Item Inquiry Consolidated JSON contains errors. JSON ERROR: '.json_last_error());
+		
+		if ($bomjson['error']) {
+			echo $page->bootstrap->createalert('warning', $bomjson['errormsg']);
+		} else {
+			$componentcolumns = array_keys($bomjson['columns']['component']);
+			$warehousecolumns = array_keys($bomjson['columns']['warehouse']);
+			
+			echo "<p><b>Kit Qty:</b> ".$component['component item']."</p>";
+			
+			foreach ($bomjson['data']['component'] as $component)  {
+				echo "<h3>".$component['component item']."</h3>";
+				$tb = new Table('class=table table-striped table-bordered table-condensed table-excel no-bottom');
+				$tb->tablesection('thead');
+					$tb->tr();
+					foreach($bomjson['columns']['component'] as $column) {
+						$class = $config->textjustify[$column['headingjustify']];
+						$tb->th("class=$class", $column['heading']);
+					}
+				$tb->closetablesection('thead');
+				$tb->tablesection('tbody');
+					$tb->tr();
+					foreach ($componentcolumns as $column) {
+						$class = $config->textjustify[$bomjson['columns']['component'][$column]['datajustify']];
+						$tb->td("class=$class", $component[$column]);
+					}
+				$tb->closetablesection('tbody');
+				echo $tb->close();
+				
+				$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+				$tb->tablesection('thead');
+					$tb->tr();
+					foreach($bomjson['columns']['warehouse'] as $column) {
+						$class = $config->textjustify[$column['headingjustify']];
+						$tb->th("class=$class", $column['heading']);
+					}
+				$tb->closetablesection('thead');
+				$tb->tablesection('tbody');
+					foreach ($component['warehouse'] as $whse)  {
+						$tb->tr();
+						foreach ($warehousecolumns as $column) {
+							$class = $config->textjustify[$bomjson['columns']['warehouse'][$column]['datajustify']];
+							$tb->td("class=$class", $whse[$column]);
+						}
+					}
+				$tb->closetablesection('tbody');
+				echo $tb->close();
+			} // END foreach ($bomjson['data']['component'] as $component)
+			$warehouses = '';
+			foreach ($bomjson['data']['whse meeting req'] as $whse => $name) {
+				$warehouses .= $name . ' ';
+			}
+			echo "<p><b>Warehouses that meet the Requirement: </b> $warehouses</p>";
+		}
+	} else {
+		echo $page->bootstrap->createalert('warning', 'Information Not Available');
+	}
+	
 ?>
-
-<?php if (file_exists($bomfile)) : ?>
-	<?php $bomjson = json_decode(file_get_contents($bomfile), true);  ?>
-	<?php if (!$bomjson) { $bomjson = array('error' => true, 'errormsg' => 'The BOM Item Inquiry Consolidated JSON contains errors');} ?>
-
-	<?php if ($bomjson['error']) : ?>
-		<div class="alert alert-warning" role="alert"><?php echo $bomjson['errormsg']; ?></div>
-	<?php else : ?>
-		<?php $componentcolumns = array_keys($bomjson['columns']['component']); ?>
-		<?php $warehousecolumns = array_keys($bomjson['columns']['warehouse']); ?>
-		<p><b>Kit Qty:</b> <?php echo $bomjson['qtyneeded']; ?></p>
-		<?php foreach ($bomjson['data']['component'] as $component) : ?>
-			<h3><?php echo $component['component item']; ?></h3>
-			<table class="table table-striped table-bordered table-condensed table-excel no-bottom">
-				<thead>
-					<tr>
-						<?php foreach($bomjson['columns']['component'] as $column) : ?>
-							<th class="<?= $config->textjustify[$column['headingjustify']]; ?>"><?php echo $column['heading']; ?></th>
-						<?php endforeach; ?>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<?php foreach ($componentcolumns as $column) : ?>
-							<td class="<?= $config->textjustify[$bomjson['columns']['component'][$column]['datajustify']]; ?>"><?php echo $component[$column]; ?></td>
-						<?php endforeach; ?>
-					</tr>
-				</tbody>
-			</table>
-			<table class="table table-striped table-bordered table-condensed table-excel">
-				<thead>
-					<tr>
-						<?php foreach($bomjson['columns']['warehouse'] as $column) : ?>
-							<th class="<?= $config->textjustify[$column['headingjustify']]; ?>"><?php echo $column['heading']; ?></th>
-						<?php endforeach; ?>
-					</tr>
-				</thead>
-				<tbody>
-					<?php foreach ($component['warehouse'] as $whse) : ?>
-						<tr>
-							<?php foreach ($warehousecolumns as $column) : ?>
-								<td class="<?= $config->textjustify[$bomjson['columns']['warehouse'][$column]['datajustify']]; ?>"><?php echo $whse[$column]; ?></td>
-							<?php endforeach; ?>
-						</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
-
-		<?php endforeach; ?>
-		<p>
-			<b>Warehouses that meet the Requirement: </b>
-			<?php foreach ($bomjson['data']['whse meeting req'] as $whse => $name) : ?>
-				<?= $name; ?> &nbsp;
-			<?php endforeach; ?>
-		</p>
-
-	<?php endif; ?>
-<?php else : ?>
-	<div class="alert alert-warning" role="alert">Information Not Available</div>
-<?php endif; ?>

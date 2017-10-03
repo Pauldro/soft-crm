@@ -1,64 +1,69 @@
 <?php
 	$kititemfile = $config->jsonfilepath.session_id()."-iikit.json";
 	//$kititemfile = $config->jsonfilepath."iikt-iikit.json";
+	
 	if ($config->ajax) {
-		echo '<p>' . makeprintlink($config->filename, 'View Printable Version') . '</p>';
+		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
+	}
+	
+	if (file_exists($kititemfile)) {
+		// JSON file will be false if an error occurred during file_get_contents or json_decode
+		$kitjson = json_decode(file_get_contents($kititemfile), true);
+		$kitjson = $kitjson ? $kitjson : array('error' => true, 'errormsg' => 'The Item Kit Components Consolidated JSON contains errors. JSON ERROR: '.json_last_error());
+		
+		if ($kitjson['error']) {
+			echo $page->bootstrap->createalert('warning', $kitjson['errormsg']);
+		} else {
+			$componentcolumns = array_keys($kitjson['columns']['component']);
+			$warehousecolumns = array_keys($kitjson['columns']['warehouse']);
+			
+			echo "<p><b>Kit Qty:</b>".$kitjson['qtyneeded']."</p>";
+			
+			foreach ($kitjson['data']['component'] as $component) {
+				echo "<h3>".$component['component item']."</h3>";
+				$tb = new Table('class=table table-striped table-bordered table-condensed table-excel no-bottom');
+				$tb->tablesection('thead');
+					$tb->tr();
+					foreach($kitjson['columns']['component'] as $column) {
+						$class = $config->textjustify[$column['headingjustify']];
+						$tb->th("class=$class", $column['heading']);
+					}
+				$tb->closetablesection('thead');
+				$tb->tablesection('tbody');
+					foreach ($componentcolumns as $column) {
+						$tb->tr();
+						$class = $config->textjustify[$kitjson['columns']['component'][$column]['datajustify']];
+						$tb->td("class=$class", $component[$column]);
+					}
+				$tb->closetablesection('tbody');
+				echo $tb->close();
+				
+				// WAREHOUSE Table
+				$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+				$tb->tablesection('thead');
+					$tb->tr();
+					foreach($kitjson['columns']['warehouse'] as $column) {
+						$class = $config->textjustify[$column['headingjustify']];
+						$tb->th("class=$class", $column['heading']);
+					}
+				$tb->closetablesection('thead');
+				$tb->tablesection('tbody');
+					foreach ($component['warehouse'] as $whse) {
+						foreach ($warehousecolumns as $column) {
+							$class = $config->textjustify[$kitjson['columns']['warehouse'][$column]['datajustify']];
+							$tb->td("class=$class", $whse[$column]);
+						}
+					}
+				$tb->closetablesection('tbody');
+				echo $tb->close();
+			} // foreach ($kitjson['data']['component'] as $component)
+			$warehouses = '';
+			foreach ($kitjson['data']['whse meeting req'] as $whse => $name) {
+				$warehouses .= $name . ' ';
+			}
+			echo "<p><b>Warehouses that meet the Requirement: </b> $warehouses</p>";
+		}
+	} else {
+		echo $page->bootstrap->createalert('warning', 'Information Not Available');
 	}
 ?>
-
-<?php if (file_exists($kititemfile)) : ?>
-	<?php $kitjson = json_decode(file_get_contents($kititemfile), true);  ?>
-	<?php if (!$kitjson) { $kitjson = array('error' => true, 'errormsg' => 'The item Kit Components JSON contains errors');} ?>
-	<?php if ($kitjson['error']) : ?>
-		<div class="alert alert-warning" role="alert"><?php echo $kitjson['errormsg']; ?></div>
-	<?php else : ?>
-		<?php $componentcolumns = array_keys($kitjson['columns']['component']); ?>
-		<?php $warehousecolumns = array_keys($kitjson['columns']['warehouse']); ?>
-		<p><b>Kit Qty:</b> <?php echo $kitjson['qtyneeded']; ?></p>
-		<?php foreach ($kitjson['data']['component'] as $component) : ?>
-			<h3><?php echo $component['component item']; ?></h3>
-			<table class="table table-striped table-bordered table-condensed table-excel no-bottom">
-				<thead>
-					<tr>
-						<?php foreach($kitjson['columns']['component'] as $column) : ?>
-							<th class="<?= $config->textjustify[$column['headingjustify']]; ?>"><?php echo $column['heading']; ?></th>
-						<?php endforeach; ?>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<?php foreach ($componentcolumns as $column) : ?>
-							<td class="<?= $config->textjustify[$kitjson['columns']['component'][$column]['datajustify']]; ?>"><?php echo $component[$column]; ?></td>
-						<?php endforeach; ?>
-					</tr>
-				</tbody>
-			</table>
-			<table class="table table-striped table-bordered table-condensed table-excel">
-				<thead>
-					<tr>
-						<?php foreach($kitjson['columns']['warehouse'] as $column) : ?>
-							<th class="<?= $config->textjustify[$column['headingjustify']]; ?>"><?php echo $column['heading']; ?></th>
-						<?php endforeach; ?>
-					</tr>
-				</thead>
-				<tbody>
-					<?php foreach ($component['warehouse'] as $whse) : ?>
-						<tr>
-							<?php foreach ($warehousecolumns as $column) : ?>
-								<td class="<?= $config->textjustify[$kitjson['columns']['warehouse'][$column]['datajustify']]; ?>"><?php echo $whse[$column]; ?></td>
-							<?php endforeach; ?>
-						</tr>
-					<?php endforeach; ?>
-				</tbody>
-			</table>
-		<?php endforeach; ?>
-		<p>
-			<b>Warehouses that meet the Requirement: </b>
-			<?php foreach ($kitjson['data']['whse meeting req'] as $whse => $name) : ?>
-				<?= $name; ?> &nbsp;
-			<?php endforeach; ?>
-		</p>
-	<?php endif; ?>
-<?php else : ?>
-	<div class="alert alert-warning" role="alert">Information Not Available</div>
-<?php endif; ?>
