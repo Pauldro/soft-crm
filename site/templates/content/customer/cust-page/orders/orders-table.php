@@ -10,25 +10,26 @@
         <?php endif; ?>
 
          <?php
+		 	$useclass = true;
 			if ($orderby != "") {
 				if ($orderby == "orderdate") {
-					$orders = get_cust_orders_orderdate(session_id(), $custID, $config->showonpage, $input->pageNum(), $sortrule, false);
-					$sql = get_cust_orders_orderdate(session_id(), $custID, $config->showonpage, $input->pageNum(), $sortrule, true);
+					$orders = get_customerordersorderdate(session_id(), $custID, $config->showonpage, $input->pageNum(), $sortrule, $useclass, false);
+					$sql = get_customerordersorderdate(session_id(), $custID, $config->showonpage, $input->pageNum(), $sortrule, $useclass, true);
 				} else {
-					$orders = get_cust_orders_orderby(session_id(), $custID, $config->showonpage, $input->pageNum(), $sortrule, $orderby, false);
-					$sql = get_cust_orders_orderby(session_id(), $custID, $config->showonpage, $input->pageNum(), $sortrule, $orderby, true);
+					$orders = get_customerordersorderby(session_id(), $custID, $config->showonpage, $input->pageNum(), $sortrule, $orderby, $useclass, false);
+					$sql = get_customerordersorderby(session_id(), $custID, $config->showonpage, $input->pageNum(), $sortrule, $orderby, $useclass, true);
 				}
 			} else {
 				$orders = get_cust_orders(session_id(), $custID, $config->showonpage, $input->pageNum(), false);
 				$sql = get_cust_orders(session_id(), $custID, $config->showonpage, $input->pageNum(), true);
 				$sortrule = 'DESC'; $orderby = 'orderno';
-				$orders = get_cust_orders_orderby(session_id(), $custID, $config->showonpage, $input->pageNum(), $sortrule, $orderby, false);
-				$sql = get_cust_orders_orderby(session_id(), $custID, $config->showonpage, $input->pageNum(), $sortrule, $orderby, true);
+				$orders = get_customerordersorderby(session_id(), $custID, $config->showonpage, $input->pageNum(), $sortrule, $orderby, $useclass, false);
+				$sql = get_customerordersorderby(session_id(), $custID, $config->showonpage, $input->pageNum(), $sortrule, $orderby, $useclass, true);
 			}
 		?>
 
         <?php foreach($orders as $order) :
-				$on = $order['orderno'];
+				$on = $order->orderno;
 				$editlink = $config->pages->orders."redir/?action=get-order-details&ordn=".$on."&lock=lock";
 				//$customer_link = $config->pages->customer.$custID."/";
 				//$customer_ship = $customer_link . "shipto-" . urlencode($order['shiptoid'])."/";
@@ -56,7 +57,7 @@
 				$docsurl->path = $config->pages->orders."redir/";
 				$docsurl->query->setData(array('action' => 'get-order-documents', 'custID' => $custID, 'ordn' => $on, 'linenbr' => '0', 'page' => $input->pageNum, 'orderby' => $sorting));
 
-				if ($order['havedoc'] == 'Y') {
+				if ($order->hasdocuments) {
 					$documentlink = '
 								<a class="h3 generate-load-link" href="'.$docsurl.'" '.$ajax->data.'>
 									<span class="sr-only">View Documents</span>
@@ -76,7 +77,7 @@
 				$trackhref->query->setData(array('action' => 'get-order-tracking','custID' => $custID,'ordn' => $on,'page' => $input->pageNum,'orderby' => $sorting));
 
 
-				if ($order['havetrk'] == 'Y') {
+				if ($order->hastracking) {
 					$tracklink = '
 								<a href="'.$trackhref.'" class="h3 generate-load-link" '.$ajax->data.'>
 										<span class="sr-only">View Tracking</span><span class="glyphicon glyphicon-plane hover" title="Click to view Tracking"></span>
@@ -86,28 +87,14 @@
 										<span class="sr-only">View Tracking</span>
 										<span class="glyphicon glyphicon-plane hover" title="There are no tracking numbers for this order"></span>
 								  </a>';
-
 				}
-
-				//ORDER NOTES
-				$noteurl = new \Purl\Url($page->httpUrl);
-				$noteurl->path = $config->pages->notes."redir/";
-				$noteurl->query->setData(array('action' => 'get-order-notes','ordn' => $on, 'linenbr' => '0', 'modal' => 'modal'));
-
-
-				if ($order['havenote'] != 'Y') {
-					$headnoteicon = '<a href="'.$noteurl.'" class="load-notes text-muted" data-modal="#ajax-modal"><i class="material-icons md-36" title="View order notes">&#xE0B9;</i></a>';
-				} else {
-					$headnoteicon = '<a href="'.$noteurl.'" class="load-notes" data-modal="#ajax-modal"> <i class="material-icons md-36" title="View order notes">&#xE0B9;</i></a>';
-				}
-
 
 				//ORDER LOCKS
 				include ($config->paths->content."recent-orders/order-lock-logic.php");
 
-				$shiptoaddress = $order['saddress']."<br>";
-				if ($order['saddress2'] != '' ) { $shiptoaddress .= $order['saddress2']."<br>"; }
-				$shiptoaddress .= $order['scity'].", ". $order['sst'].' ' . $order['szip'];
+				$shiptoaddress = $order->saddress."<br>";
+				if ($order->saddress2 != '' ) { $shiptoaddress .= $order->saddress2."<br>"; }
+				$shiptoaddress .= $order->scity.", ". $order->sst.' ' . $order->szip;
 
 				$shiptopopover = 'data-toggle="popover" role="button" data-placement="top" data-trigger="focus" data-html="true" title="Ship-To Address"';
 
@@ -124,18 +111,18 @@
                      </td>
                 <?php endif; ?>
 
-                <td> <?php echo $order['orderno'];?> </td>
-                <td><?php echo $order['custpo']; ?></td>
+                <td> <?php echo $order->orderno; ?> </td>
+                <td><?php echo $order->custpo; ?></td>
                 <td>
-                    <a href="<?php echo $customer_ship; ?>"><?php echo $shipID = $order['shiptoid']; ?></a>
+                    <a href="<?php echo $customer_ship; ?>"><?php echo $shipID = $order->shiptoid; ?></a>
                     <a tabindex="0" class="btn btn-default bordered btn-sm" <?php echo $shiptopopover; ?> data-content="<?php echo $shiptoaddress; ?>"><b>?</b></a>
                 </td>
-                <td align="right">$ <?php echo formatmoney($order['odrtotal']); ?></td> <td align="right" ><?php echo $order['orderdate']; ?></td>
-                <td align="right"><?php echo $order['status']; ?></td>
+                <td align="right">$ <?php echo formatmoney($order->odrtotal); ?></td> <td align="right" ><?php echo $order->orderdate; ?></td>
+                <td align="right"><?php echo $order->status; ?></td>
                 <td colspan="4">
                     <span class="col-xs-3"><?php echo $documentlink; ?></span>
-                    <span class="col-xs-3"><?php echo $tracklink; ?></span>
-                    <span class="col-xs-3"><?php echo $headnoteicon; ?> </span>
+                    <span class="col-xs-3"><?php echo $order->generate_trackinglink($orderpanel); ?></span>
+                    <span class="col-xs-3"><?php echo $order->generate_loadnoteslink($orderpanel, '0'); ?> </span>
                     <span class="col-xs-3"><?php echo $editordericon; ?> </span>
                 </td>
             </tr>
@@ -153,7 +140,7 @@
 					<?php include $config->paths->content.'customer/cust-page/orders/order-tracking-rows.php'; ?>
                <?php endif; ?>
 
-        	<?php if ($order['error'] == 'Y') : ?>
+        	<?php if ($order->haserror) : ?>
                 <tr class="detail bg-danger" >
                     <td colspan="2" class="text-center"><b class="text-danger">Error:</b></td>
                     <td colspan="2"><?php echo $order['errormsg']; ?></td> <td></td> <td></td>

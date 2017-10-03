@@ -111,6 +111,56 @@
             if ($this->error == 'Y') { $this->haserror = true; }
         }
         
+        public function generate_loadnoteslink(SalesOrderPanel $orderpanel, $linenbr) {
+            $bootstrap = new Contento();
+            $url = $orderpanel->pageurl;
+            $url->path = wire('config')->pages->notes."redir/";
+            $url->query->setData(array('action' => 'get-order-notes','ordn' => $this->orderno, 'linenbr' => $linenbr));
+            $href = $url->getUrl();
+            
+            if ($order->canedit) {
+                if ($order->hasnotes) {
+                    $title = "View and Create Order Notes";
+                    $addclass = '';
+                } else {
+                    $title = "Create Order Notes";
+                    $addclass = 'text-muted';
+                }
+            } else {
+                if ($order->hasnotes) {
+                    $title = "View Order Notes";
+                    $addclass = '';
+                } else {
+                    $title = "View Order Notes";
+                    $addclass = 'text-muted';
+                }
+            }
+            $content = $bootstrap->openandclose('i', "class=material-icons md-3|aria-hidden=true", '&#xE0B9;');
+            $link = $bootstrap->openandclose('a', "href=$href|class=load-notes $addclass|title=$title|data-modal=$orderpanel->modal", $content);
+            return $link;
+        }
+        
+        public function generate_trackinglink(SalesOrderPanel $orderpanel) {
+            $bootstrap = new Contento();
+            $url = $orderpanel->pageurl;
+            $url->path = wire('config')->pages->orders."redir/";
+            $url->query->setData(array('action' => 'get-order-tracking','custID' => $order->custid, 'ordn' => $order->orderno, 'page' => $ordepanel->pagenbr, 'orderby' => $orderpanel->orderbystring));
+            $href = $url->getUrl();
+            
+            if ($this->hastracking) {
+                $content = $bootstrap->openandclose('span', "class=sr-only", 'View Tracking');
+                $content .= $bootstrap->openandclose('i', "class=glyphicon glyphicon-plane hover|aria-hidden=true", '');
+                $ajaxdata = str_replace("'", "", str_replace('"', '', $orderpanel->ajaxdata));
+                return $bootstrap->openandclose('a', "href=$href|class=h3 generate-load-link|title=Click to view Tracking|$ajaxdata", $content);
+            } else {
+                $content = $bootstrap->openandclose('span', "class=sr-only", 'No Tracking Information Available');
+                $content .= $bootstrap->openandclose('i', "class=glyphicon glyphicon-plane hover|aria-hidden=true", '');
+                $ajaxdata = str_replace("'", "", str_replace('"', '', $orderpanel->ajaxdata));
+                return $bootstrap->openandclose('a', "|class=text-muted h3|title=No Tracking Info Available", $content);
+            }
+            
+        }
+        
         public function generate_editorderlink() {
             // TODO USE Purl
             return wire('config')->pages->orders."redir/?action=get-order-details&ordn=$this->orderno&lock=lock";

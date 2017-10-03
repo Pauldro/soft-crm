@@ -1,4 +1,10 @@
 <?php
+	$orderpanel = new SalesOrderPanel('cust', $page->fullURL, '#ajax-modal', '#orders-panel', $config->ajax, session_id()); 
+	$orderpanel->pageurl->path->setDplusPath("load/orders/cust/", $input->urlSegmentsStr."/");
+	$orderpanel->pageurl->query->setData(array("display" => false, "ajax" => false));
+	$orderpanel->pagenbr = $input->pageNum;
+	
+	
 	//SETUP AJAX
 	$ajax = new stdClass();
 	$ajax->loadinto = "#orders-panel"; //WHERE TO LOAD AJAX LOADED DATA

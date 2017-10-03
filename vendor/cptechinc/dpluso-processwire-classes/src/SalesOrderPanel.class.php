@@ -5,6 +5,7 @@
         public $modal;
         public $focus;
         public $loadinto;
+        public $ajaxdata;
         public $pageurl;
         public $throughajax;
         public $sessionID;
@@ -13,6 +14,7 @@
         public $sortrule;
         public $nextorder;
         public $orderby;
+        public $pagenbr; // Will be instance of \Purl\Url
         public $active;
         public $custID;
         public $shipID;
@@ -20,20 +22,19 @@
         public $orders = array();
         private $debugorders;
         
-        public function __construct($type, $orderbystring, $modal, $loadinto, $throughajax, $sessionID) {
+        public function __construct($type, \Purl\Url $pageurl, $modal, $loadinto, $ajax, $sessionID) {
         	$this->type = $type;
-            $this->orderbystring = $orderbystring;
-        	
-        	if ($throughajax) {
+            $this->pageurl = $pageurl;
+            $this->modal = $modal;
+            $this->loadinto = $this->focus = $loadinto;
+            $this->ajaxdata = 'data-loadinto="'.$this->loadinto.'" data-focus="'.$this->focus.'"';
+            $this->sessionID = $sessionID;
+            
+        	if ($ajax) {
         		$this->collapse = '';
         	} else {
         		$this->collapse = 'collapse';
         	}
-        	
-        	$this->loadinto = $this->focus = $loadinto;
-            $this->sessionID = $sessionID;
-        	
-        	$this->data = 'data-loadinto="'.$this->loadinto.'" data-focus="'.$this->focus.'"';
         }
 
         public function setup_customerpanel($custID, $shipID) {
@@ -41,7 +42,8 @@
         	$this->shipID = $shipID;
         }
         
-        public function setup_orderby() {
+        
+        public function setup_orderby($orderbystring) {
             if (!empty($this->orderbystring)) {
         		$orderby_array = explode('-', $this->orderbystring);
         		$this->orderby = $orderby_array[0];
@@ -75,7 +77,7 @@
         protected function get_customerorders($debug = false) {
             if ($this->orderby) {
                 if ($this->orderby == 'orderdate') {
-                    return customerordersorderdate($this->sessionID, $this->custID, wire('config')->showonpage, wire('input')->pageNum(), $this->sortrule, $debug);
+                    return get_customerordersorderdate($this->sessionID, $this->custID, wire('config')->showonpage, wire('input')->pageNum(), $this->sortrule, $debug);
                 } else {
                     return get_cust_orders_orderby($this->sessionID, $this->custID, wire('config')->showonpage, wire('input')->pageNum(), $this->sortrule, $this->orderby, $debug);
                 }
