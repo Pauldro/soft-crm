@@ -444,7 +444,7 @@
 		}
 	}
 
-	function get_cust_orders_orderby($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $orderby, $debug) {
+	function get_customerordersorderby($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $orderby, $useclass, $debug) {
 		$limiting = returnlimitstatement($limit, $page);
 		$sql = wire('database')->prepare("SELECT ordrhed.*, CAST(odrsubtot AS DECIMAL(8,2)) AS subtotal FROM ordrhed WHERE sessionid = :sessionID AND custid = :custID AND type = 'O' ORDER BY $orderby $sortrule ".$limiting);
 		$switching = array(':sessionID' => $sessionID, ':custID' => $custID); $withquotes = array(true, true);
@@ -452,11 +452,15 @@
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
 			$sql->execute($switching);
+			if ($useclass) {
+				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrder');
+				return $sql->fetchAll();
+			}
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
 
-	function get_cust_orders_orderdate($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $debug) {
+	function get_customerordersorderdate($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug) {
 		$limiting = returnlimitstatement($limit, $page);
 		$sql = wire('database')->prepare("SELECT orderdate, STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder, orderno, custpo, shiptoid, sname, saddress, saddress2, scity, sst, szip, havenote, status, havetrk, havedoc, odrsubtot, odrtax, odrfrt, odrmis, odrtotal, error, errormsg, shipdate, custid, custname, invdate, editord FROM ordrhed WHERE sessionid = :sessionID AND custid = :custID AND type = 'O' ORDER BY dateoforder $sortrule ".$limiting);
 		$switching = array(':sessionID' => $sessionID, ':custID' => $custID); $withquotes = array(true, true);
@@ -464,6 +468,10 @@
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
 			$sql->execute($switching);
+			if ($useclass) {
+				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrder');
+				return $sql->fetchAll();
+			}
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
