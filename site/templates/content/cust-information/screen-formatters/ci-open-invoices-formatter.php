@@ -17,7 +17,6 @@
 	$datetypes = array('m/d/y' => 'MM/DD/YY', 'm/d/Y' => 'MM/DD/YYYY', 'm/d' => 'MM/DD', 'm/Y' => 'MM/YYYY')
 ?>
 
-
 <div class="formatter-response">
 	<div class="message"></div>
 </div>
