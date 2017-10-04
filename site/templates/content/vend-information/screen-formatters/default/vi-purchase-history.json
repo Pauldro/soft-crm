@@ -108,7 +108,7 @@
      			"col-length": 1,
      			"label": "QTY IN",
                 "before-decimal": 7,
-                "after-decimal": 3,
+                "after-decimal": false,
                 "date-format": false
             },
             "Received Unit Cost": {
@@ -117,16 +117,16 @@
      			"col-length": 1,
      			"label": "UnitCost",
                 "before-decimal": 7,
-                "after-decimal": 3,
+                "after-decimal": 4,
                 "date-format": false
             },
-            "Purchase Unit of Measure": {
+            "Received Amount": {
                 "line": 1,
                 "column": 10,
      			"col-length": 1,
-     			"label": "PurUntMeas",
-                "before-decimal": 7,
-                "after-decimal": 3,
+     			"label": "InvcAmt",
+                "before-decimal": 8,
+                "after-decimal": 2,
                 "date-format": false
             },
             "Invoiced Quantity": {
@@ -144,7 +144,7 @@
      			"col-length": 1,
      			"label": "InvcUntCst",
                 "before-decimal": 7,
-                "after-decimal": 3,
+                "after-decimal": 4,
                 "date-format": false
             },
             "Invoiced Amount": {
@@ -152,8 +152,8 @@
                 "column": 0,
      			"col-length": 1,
      			"label": "InvcAmt",
-                "before-decimal": 7,
-                "after-decimal": 3,
+                "before-decimal": 8,
+                "after-decimal": 2,
                 "date-format": false
             }
         }

@@ -275,7 +275,7 @@
                     "column": 4,
         			"col-length": 1,
         			"label": "UnitCost",
-                    "before-decimal": 7,
+                    "before-decimal": 5,
                     "after-decimal": 3,
                     "date-format": false
                 }

@@ -107,7 +107,7 @@
                 "column": 5,
     			"col-length": 1,
     			"label": "Paid/Disc",
-                "before-decimal": 7,
+                "before-decimal": 6,
                 "after-decimal": 2,
                 "date-format": false
             },
@@ -116,8 +116,8 @@
                 "column": 0,
     			"col-length": 1,
     			"label": "Pymt Amt",
-                "before-decimal": 7,
-                "after-decimal": 2,
+                "before-decimal": 8,
+                "after-decimal": 0,
                 "date-format": false
             },
             "Discount Amount": {
@@ -125,8 +125,8 @@
                 "column": 0,
     			"col-length": 1,
     			"label": "Disc Amt",
-                "before-decimal": 7,
-                "after-decimal": 2,
+                "before-decimal": 8,
+                "after-decimal": false,
                 "date-format": false
             }
         }
