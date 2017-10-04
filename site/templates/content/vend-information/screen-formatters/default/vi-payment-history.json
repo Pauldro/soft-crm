@@ -8,7 +8,7 @@
                 "column": 0,
     			"col-length": 1,
     			"label": "PO #",
-                "before-decimal": 7,
+                "before-decimal": false,
                 "after-decimal": false,
                 "date-format": false
             },
@@ -26,7 +26,7 @@
                 "column": 2,
     			"col-length": 1,
     			"label": "Check No",
-                "before-decimal": 7,
+                "before-decimal": false,
                 "after-decimal": false,
                 "date-format": false
             },
@@ -89,7 +89,7 @@
                 "column": 8,
     			"col-length": 1,
     			"label": "Days",
-                "before-decimal": 7,
+                "before-decimal": false,
                 "after-decimal": false,
                 "date-format": false
             },
@@ -98,7 +98,7 @@
                 "column": 9,
     			"col-length": 1,
     			"label": "Past Due",
-                "before-decimal": 7,
+                "before-decimal": false,
                 "after-decimal": false,
                 "date-format": false
             },
