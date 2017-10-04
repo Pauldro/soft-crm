@@ -19,6 +19,6 @@
 			include $config->paths->content."cust-information/scripts/open-invoices.js.php"; 
 		}
 	} else {
-		$page->bootstrap->createalert('warning', 'Information Not Available');
+		echo $page->bootstrap->createalert('warning', 'Information Not Available');
 	}
 ?>
