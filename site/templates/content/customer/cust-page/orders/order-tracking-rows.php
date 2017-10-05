@@ -1,4 +1,4 @@
-<?php $trackings = getordertracking(session_id(), $on, false); ?>
+<?php $trackings = getordertracking(session_id(), $order->orderno, false); ?>
 <?php foreach($trackings as $tracking) : ?>
 	<?php $carrier = $tracking['servtype']; $link = ""; $link = returntracklink($tracking['servtype'], $tracking['tracknbr'], $on); ?>
     <tr class="detail tracking">
