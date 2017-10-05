@@ -5,7 +5,6 @@
             Order # <?= $orderpanel->tablesorter->generate_sortsymbol('orderno'); ?>
         </a>
     </th>
-
     <th>
         <a href="<?= $orderpanel->generate_tableorderbyurl("custpo") ; ?>" class="load-link" <?= $orderpanel->ajaxdata; ?>>
             Customer PO: <?= $orderpanel->tablesorter->generate_sortsymbol('custpo'); ?>

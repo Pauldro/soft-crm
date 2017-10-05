@@ -56,6 +56,10 @@
 			if (!empty($shipID)) $this->pageurl->path->add("shipto-$shipID");
 		}
 		
+		public function setup_reppanel() {
+			$this->pageurl->path->add('salesrep');
+		}
+		
 		public function set_activeorder($ordn) {
 			$this->active = $ordn;
 		}
@@ -76,12 +80,16 @@
 			if ($this->type == 'cust') {
 				$this->count = $this->get_customerordercount();
 			} else {
-				$this->count = $this->get_customerordercount(); // TODO
+				$this->count = $this->get_repordercount(); // TODO
 			}
 		}
 		
 		protected function get_customerordercount() {
 			return count_customerorders($this->sessionID, $this->custID, false);
+		}
+		
+		protected function get_repordercount() {
+			return count_salesreporders($this->sessionID, false);
 		}
 		
 		protected function get_customerorders($debug = false) {
@@ -98,20 +106,22 @@
 			}
 		}
 		
-		protected function get_salesreporders() {
+		protected function get_salesreporders($debug = false) {
+			$useclass = true; 
 			if ($this->tablesorter->orderby) {
 				if ($this->tablesorter->orderby == 'orderdate') {
-					
+					return get_salesrepordersorderdate($this->sessionID, wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $useclass, false);
 				} else {
-					
+					return get_salesrepordersorderby($this->sessionID, wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $useclass, false);
 				}
 			} else {
-				
+				$this->tablesorter->sortrule = 'DESC'; $this->tablesorter->orderby = 'orderno';
+				return get_salesrepordersorderby($this->sessionID, wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $useclass, false);
 			}
 		}
 		
 		/* =============================================================
-			cONTENT FUNCTIONS
+			CONTENT FUNCTIONS
 		============================================================ */
 		public function generate_salesordericonlegend() {
 			$bootstrap = new Contento();
@@ -173,16 +183,17 @@
 			if ($this->type == 'cust') {
 				$url->query->setData(array('action' => 'load-cust-orders', 'custID' => $this->custID));
 			} else {
-				// TODO
+				$url->query->setData(array('action' => 'load-orders'));
 			}
 			return $url->getUrl();
 		}
 		
 		public function generate_ordersearchurl() {
 			$url = new \Purl\Url($this->pageurl->getUrl());
-			$url->path = wire('config')->pages->ajax.'load/orders/search/cust/';
+			$url->path = wire('config')->pages->ajax.'load/orders/search/';
 			$url->query = '';
 			if ($this->type = 'cust') {
+				$url->path->add('cust');
 				$url->query->set('custID', $this->custID);
 				if ($this->shipID) {
 					$url->query->set('shipID', $this->shipID);

@@ -226,13 +226,19 @@
 		
 		public function generate_trackingrequesturl(SalesOrderPanel $orderpanel) {
 			$url = $url = $this->generate_ordersredirurl();
-			$url->query->setData(array('action' => 'get-order-tracking','custID' => $this->custid, 'ordn' => $this->orderno, 'page' => $orderpanel->pagenbr, 'orderby' => $orderpanel->tablesorter->orderbystring));
+			$url->query->setData(array('action' => 'get-order-tracking', 'ordn' => $this->orderno, 'page' => $orderpanel->pagenbr, 'orderby' => $orderpanel->tablesorter->orderbystring));
+			if ($orderpanel->type == 'cust') {
+				$url->query->set('custID', $this->custid);
+			}
 			return $url->getUrl();
 		}
 		
 		public function generate_documentsrequesturl(SalesOrderPanel $orderpanel) {
 			$url = $this->generate_ordersredirurl();
-			$url->query->setData(array('action' => 'get-order-documents','custID' => $this->custid, 'ordn' => $this->orderno, 'page' => $orderpanel->pagenbr, 'orderby' => $orderpanel->tablesorter->orderbystring));
+			$url->query->setData(array('action' => 'get-order-documents', 'ordn' => $this->orderno, 'page' => $orderpanel->pagenbr, 'orderby' => $orderpanel->tablesorter->orderbystring));
+			if ($orderpanel->type == 'cust') {
+				$url->query->set('custID', $this->custid);
+			}
 			return $url->getUrl();
 		}
 		
@@ -266,7 +272,10 @@
 		
 		public function generate_getorderdetailsurl(SalesOrderPanel $orderpanel) { // TODO add logic to handle if for customer / rep
 			$url = $this->generate_ordersredirurl();
-			$url->query->setData(array('action' => 'get-order-details', 'ordn' => $this->orderno, 'custID' => $this->custid, 'page' => $orderpanel->pagenbr, 'orderby' => $orderpanel->tablesorter->orderbystring));
+			$url->query->setData(array('action' => 'get-order-details', 'ordn' => $this->orderno, 'page' => $orderpanel->pagenbr, 'orderby' => $orderpanel->tablesorter->orderbystring));
+			if ($orderpanel->type == 'cust') {
+				$url->query->set('custID', $this->custid);
+			}
 			return $url->getUrl();
 		}
 		

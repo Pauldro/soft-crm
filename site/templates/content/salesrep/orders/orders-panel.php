@@ -1,4 +1,12 @@
 <?php
+	$orderpanel = new SalesOrderPanel('rep', $page->fullURL, '#ajax-modal', '#orders-panel', $config->ajax, session_id());
+	$orderpanel->setup_reppanel();
+	$orderpanel->pagenbr = $input->pageNum;
+	$orderpanel->active = !empty($input->get->ordn) ? $input->get->text('ordn') : false;
+	$orderpanel->get_ordercount();
+
+	$insertafter = 'salesrep';
+	$paginator = new Paginator($orderpanel->pagenbr, $orderpanel->count, $orderpanel->pageurl->getUrl(), $insertafter, $orderpanel->ajaxdata);
 	//SETUP AJAX
 	$ajax = new stdClass();
 	$ajax->loadinto = "#orders-panel"; //WHERE TO LOAD AJAX LOADED DATA
@@ -21,7 +29,7 @@
 
 
 	include $config->paths->content.'recent-orders/setup.php';
-	$ordercount =  get_salesrep_order_count(session_id(), false);
+	$ordercount =  count_salesreporders(session_id(), false);
 	$totalcount = $ordercount;
 
 ?>
@@ -29,17 +37,13 @@
     <div class="panel-heading not-round" id="order-panel-heading">
     	<?php if (isset($_SESSION['order-search'])) : ?>
         	<a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">
-				Searching for <?php echo $_SESSION['order-search']; ?> <span class="caret"></span> <span class="badge"><?php echo $ordercount; ?></span>
+				Searching for <?php echo $_SESSION['order-search']; ?> <span class="caret"></span> <span class="badge"><?php echo $orderpanel->count; ?></span>
             </a>
     	<?php elseif ($ordercount > 0) : ?>
-            <a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">Your Orders <span class="caret"></span></a> &nbsp; <span class="badge"> <?php echo $ordercount; ?></span> &nbsp; | &nbsp;
-            <a href="<?php echo $config->pages->orders."redir/?action=load-orders"; ?>" class="generate-load-link" id="load-cust-orders" <?php echo $ajax->data; ?>>
-                <i class="fa fa-refresh" aria-hidden="true"></i> Refresh Orders
-            </a>
+            <a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">Your Orders <span class="caret"></span></a> &nbsp; <span class="badge"> <?php echo $orderpanel->count; ?></span> &nbsp; | &nbsp;
+            <?php echo $orderpanel->generate_refreshorderslink(); ?>
         <?php else : ?>
-        	<a href="<?php echo $config->pages->orders."redir/?action=load-orders"; ?>" class="generate-load-link" id="load-cust-orders"  <?php echo $ajax->data; ?>>
-                Customer Orders
-            </a>
+        	<?php echo $orderpanel->generate_loadorderslink(); ?>
         <?php endif; ?>
 		&nbsp; &nbsp;
 		<?php
@@ -51,27 +55,26 @@
 		?>
         <span class="pull-right"><?php if ($input->pageNum > 1 ) {echo 'Page '.$input->pageNum;} ?></span>
     </div>
-    <div id="orders-div" class="<?php echo $collapse; ?>">
+    <div id="orders-div" class="<?php echo $orderpanel->collapse; ?>">
         <div class="panel-body">
         	<div class="row">
                 <div class="col-sm-6">
-                    <?php include $config->paths->content.'pagination/ajax/pagination-start.php'; ?>
+                    <?= $paginator->generate_showonpage(); ?>
                 </div>
                 <div class="col-sm-4">
-                	<a href="<?php echo $ajax->searchlink; ?>" class="btn btn-default bordered search-orders" data-modal="#order-search-modal">Search Orders</a>
-                    &nbsp; &nbsp; &nbsp;
-                    <?php if (isset($_SESSION['order-search'])) : ?>
-                    <a href="<?php echo $config->pages->customer."redir/?custID=".$custID;?>" class="btn-warning btn" id="load-cust-orders" <?php echo $ajax->data; ?>>
-                        Clear Search
-                    </a>
-                    <?php endif; ?>
+					<?php if (100 == 1) : // TODO add salesrep order search ?>
+						<?php echo $orderpanel->generate_ordersearchlink(); ?>
+	                    &nbsp; &nbsp; &nbsp;
+	                    <?php if (isset($_SESSION['order-search'])) : ?>
+	                    	<?php echo $orderpanel->generate_clearsearchlink(); ?>
+	                    <?php endif; ?>
+					<?php endif; ?>
                 </div>
             </div>
         </div>
         <div class="table-responsive">
             <?php include $config->paths->content.'salesrep/orders/orders-table.php'; ?>
-            <?php $totalpages = ceil($totalcount / $config->showonpage); ?>
-            <?php include $config->paths->content.'pagination/ajax/pagination-links.php'; ?>
+			<?php echo $paginator; ?>
         </div>
     </div>
 </div>
