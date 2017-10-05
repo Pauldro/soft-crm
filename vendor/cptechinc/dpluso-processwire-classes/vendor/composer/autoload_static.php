@@ -10,7 +10,11 @@ class ComposerStaticInitbc1bd12326b6449f6f4b7d928a87cff9
         'Contact' => __DIR__ . '/../..' . '/src/Contact.class.php',
         'Contento' => __DIR__ . '/../..' . '/src/Contento.class.php',
         'DplusDateTime' => __DIR__ . '/../..' . '/src/DplusDateTime.class.php',
+        'Paginator' => __DIR__ . '/../..' . '/src/Paginator.class.php',
+        'SalesOrder' => __DIR__ . '/../..' . '/src/SalesOrder.class.php',
+        'SalesOrderPanel' => __DIR__ . '/../..' . '/src/SalesOrderPanel.class.php',
         'Table' => __DIR__ . '/../..' . '/src/Table.class.php',
+        'TablePageSorter' => __DIR__ . '/../..' . '/src/TablePageSorter.class.php',
         'UserAction' => __DIR__ . '/../..' . '/src/UserAction.class.php',
         'UserActionPanel' => __DIR__ . '/../..' . '/src/UserActionPanel.class.php',
     );
