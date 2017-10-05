@@ -193,6 +193,7 @@ $(document).ready(function() {
 			showajaxloading();
 			dplusrequesturl(ajaxloader.url, function(url) {
 				wait(500, function() {
+					url = URI(url).addQuery('modal', 'modal').toString();
 					$(ajaxloader.loadinto).loadin(url, function() {
 						$(ajaxloader.modal).resizemodal('lg').modal(); hideajaxloading();
 					});
@@ -211,7 +212,7 @@ $(document).ready(function() {
 			});
 		});
 
-		$(".page").on("click", ".load-cust-orders", function(event) { //Changed from #load-cust-orders
+		$(".page").on("click", ".load-cust-orders", function(event) { //Changed from #load-cust-orders  //DEPRECATED 
 			event.preventDefault();
 			var loadinto = $(this).data('loadinto');
 			var geturl = $(this).attr('href');

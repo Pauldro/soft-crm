@@ -6,7 +6,7 @@
 	}
 
 	if ($input->get->display) {
-		$config->showonpage = $sanitizer->text($input->get->display);
+		$config->showonpage = $input->get->text('display');
 		$session->display = $config->showonpage;
 	} elseif ($session->display){
 		$config->showonpage = $session->display;
