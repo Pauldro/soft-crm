@@ -10,11 +10,11 @@
 
 
 
-	if ($order->canedit) {
-		$editlink = $config->pages->orders."redir/?action=get-order-details&ordn=".$on."&custID=".$order->custid."&lock=lock";
+	if ($order['editord'] == 'Y') {
+		$editlink = $config->pages->orders."redir/?action=get-order-details&ordn=".$on."&custID=".$order['custid']."&lock=lock";
 		$span = "<span class='glyphicon glyphicon-pencil'></span>";
 		$atitle = "Edit this Order";
-	} elseif ($order->editord == 'L') {
+	} elseif ($order['editord'] == 'L') {
 		if ($user->hasqorderlocked) {
 			if ($on == $user->lockedordn) {
 				$editlink = $config->pages->orders."redir/?action=get-order-details&ordn=".$on."&custID=".$order->custid."&lock=lock";
