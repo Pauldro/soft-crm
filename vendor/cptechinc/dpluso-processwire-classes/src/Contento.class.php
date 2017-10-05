@@ -13,6 +13,10 @@
             return $this->open($element, $attributes) . $content . $this->close($element);
         }
         
+        public function createicon($class, $content = '') {
+            return $this->openandclose('i', "class=$class|aria-hidden=true", $content);
+        }
+        
         public function createalert($type, $msg) {
             $attributes = "class=alert alert-$type|role=alert";
             return $this->openandclose('div', $attributes, $msg);
@@ -43,7 +47,7 @@
     		$attributes = '';
     		if (!empty($put)) {
     			foreach ($put as $key => $value) {
-    				$attributes .= ' ' . $key . '="' . $value . '"';
+                    $attributes .= ' ' . $key . '="' . $value . '"';
     			}
     		}
     		return $attributes;
