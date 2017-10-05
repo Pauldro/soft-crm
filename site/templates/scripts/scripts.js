@@ -212,7 +212,7 @@ $(document).ready(function() {
 			});
 		});
 
-		$(".page").on("click", ".load-cust-orders", function(event) { //Changed from #load-cust-orders
+		$(".page").on("click", ".load-cust-orders", function(event) { //Changed from #load-cust-orders  //DEPRECATED 
 			event.preventDefault();
 			var loadinto = $(this).data('loadinto');
 			var geturl = $(this).attr('href');
