@@ -45,6 +45,18 @@
 				$page->title = "Vend Info - Payment History Format";
 				$include = $config->paths->content."vend-information/screen-formatters/vi-payment-history-formatter.php";
 				break;
+			case 'vi-purchase-history-formatter':
+				$page->title = "Vend Info - Purchase History Format";
+				$include = $config->paths->content."vend-information/screen-formatters/vi-purchase-history-formatter.php";
+				break;
+			case 'vi-open-invoices-formatter':
+				$page->title = "Vend Info - Open Invoices Format";
+				$include = $config->paths->content."vend-information/screen-formatters/vi-open-invoices-formatter.php";
+				break;
+			case 'vi-purchase-orders-formatter':
+				$page->title = "Vend Info - Purchase Orders Format";
+				$include = $config->paths->content."vend-information/screen-formatters/vi-purchase-orders-formatter.php";
+				break;
 		}
 		$config->scripts->append(hashtemplatefile('scripts/table-formatter.js'));
 	} else {
@@ -59,7 +71,10 @@
 			'CI Quotes' => 'ci-quotes-formatter',
 			'CI Sales Order' => 'ci-sales-order-formatter',
 			'CI Sales History' => 'ci-sales-history-formatter',
-			'VI Payment History' => 'vi-payment-history-formatter'
+			'VI Payment History' => 'vi-payment-history-formatter',
+			'VI Purchase History' => 'vi-purchase-history-formatter',
+			'VI Open Invoices' => 'vi-open-invoices-formatter',
+			'VI Purchase Orders' => 'vi-purchase-orders-formatter'
 		);
 	}
 
