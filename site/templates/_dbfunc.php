@@ -421,7 +421,7 @@
 		}
 	}
 
-	function get_cust_order_count($sessionID, $custID, $debug) {
+	function count_customerorders($sessionID, $custID, $debug) {
 		$sql = wire('database')->prepare("SELECT COUNT(*) as count FROM ordrhed WHERE sessionid = :sessionID AND custid = :custID AND type = 'O'");
 		$switching = array(':sessionID' => $sessionID, ':custID' => $custID); $withquotes = array(true, true);
 		if ($debug) {
@@ -446,7 +446,7 @@
 
 	function get_customerordersorderby($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $orderby, $useclass, $debug) {
 		$limiting = returnlimitstatement($limit, $page);
-		$sql = wire('database')->prepare("SELECT ordrhed.*, CAST(odrsubtot AS DECIMAL(8,2)) AS subtotal FROM ordrhed WHERE sessionid = :sessionID AND custid = :custID AND type = 'O' ORDER BY $orderby $sortrule ".$limiting);
+		$sql = wire('database')->prepare("SELECT ordrhed.*, CAST(odrsubtot AS DECIMAL(8,2)) AS subtotal FROM ordrhed WHERE sessionid = :sessionID AND custid = :custID AND type = 'O' ORDER BY $orderby $sortrule $limiting");
 		$switching = array(':sessionID' => $sessionID, ':custID' => $custID); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
