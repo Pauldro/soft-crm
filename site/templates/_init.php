@@ -15,9 +15,6 @@
 	include_once("./_dbfunc.php");
 	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/utfport.php"); // UTF8 conversion library functions
 	include_once($config->paths->content."common/initialize.php");  // includes class files
-	
-	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/SalesOrder.class.php");
-	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/SalesOrderPanel.class.php");
 
 	$session->sessionName = session_name();
 
