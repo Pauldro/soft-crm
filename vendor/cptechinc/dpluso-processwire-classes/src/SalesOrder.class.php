@@ -134,6 +134,7 @@
 			$bootstrap = new Contento();
 			
 			if ($this->hastracking) {
+				$href = $this->generate_trackingrequesturl($orderpanel);
 				$content = $bootstrap->openandclose('span', "class=sr-only", 'View Tracking');
 				$content .= $bootstrap->createicon('glyphicon glyphicon-plane hover');
 				$ajaxdata = $orderpanel->generate_ajaxdataforcontento();
