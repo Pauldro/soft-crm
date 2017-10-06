@@ -1,38 +1,18 @@
 <?php
-	// $paymentfile = $config->jsonfilepath.session_id()."-vipaymenthist.json";
-	$paymentfile = $config->jsonfilepath."viph-vipaymenthist.json";
+	// $paymentfile = $config->jsonfilepath.session_id()."-vipayment.json";
+	$paymentfile = $config->jsonfilepath."vipy-vipayment.json";
+	
+	if (file_exists($paymentfile)) {
+		// JSON FILE will be false if an error occured during file get or json decode
+		$paymentjson = json_decode(convertfiletojson($paymentfile), true);
+		$paymentjson ? $paymentjson : array('error' => true, 'errormsg' => 'The VI Payment History JSON contains errors. JSON ERROR: ' . json_last_error());
+		if ($paymentjson['error']) {
+			echo $page->bootstrap->createalert('Warning!', $paymentjson['errormsg']);
+		} else {
+			$table = include $config->paths->content. 'vend-information/screen-formatters/logic/payment-history.php';
+			include $config->paths->content. 'vend-information/tables/payment-history-formatted.php';
+		}
+	} else {
+		echo $page->bootstrap->createalert('Warning!', 'Information not available.');
+	}
 ?>
-
-<?php if (file_exists($paymentfile)) : ?>
-    <?php $paymentjson = json_decode(convertfiletojson($paymentfile), true);  ?>
-    <?php if (!$paymentjson) { $paymentjson = array('error' => true, 'errormsg' => 'The VI Payment History JSON contains errors. JSON ERROR: ' . json_last_error());} ?>
-
-    <?php if ($paymentjson['error']) : ?>
-        <div class="alert alert-warning" role="alert"><?php echo $paymentjson['errormsg']; ?></div>
-    <?php else : ?>
-        <?php $columns = array_keys($paymentjson['columns']); ?>
-        <table class="table table-striped table-bordered table-condensed table-excel">
-            <thead>
-                <?php foreach ($columns as $column) :?>
-                <th><?php echo $column; ?></th>
-                <?php endforeach; ?>
-            </thead>
-            <?php 
-            $invoices = array_keys($paymentjson['data']['invoices']);
-            foreach ($invoices as $invoice) :
-            ?>
-                <tr>
-                    <?php 
-                    $rows = $paymentjson['data']['invoices'][$invoice];
-                    foreach ($rows as $row) :
-                    ?>
-                        <td><?php echo $row; ?></td>
-                    <?php endforeach;?>
-                </tr>
-            <?php endforeach; ?>
-        </table>
-				
-    <?php endif; ?>
-<?php else : ?>
-    <div class="alert alert-warning" role="alert">Information Not Available</div>
-<?php endif; ?>

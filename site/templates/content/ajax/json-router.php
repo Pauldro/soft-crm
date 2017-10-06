@@ -27,6 +27,9 @@
         case 'ci':
             include $config->paths->content."ajax/json/ci-json-router.php";
             break;
+        case 'vi':
+            include $config->paths->content."ajax/json/vi-json-router.php";
+            break;
         case 'load-action';
             include $config->paths->content."actions/load-action-json.php";
             break;
