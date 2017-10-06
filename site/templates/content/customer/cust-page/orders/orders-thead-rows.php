@@ -1,46 +1,35 @@
 <tr>
     <th>Detail</th>
     <th>
-        <?php $ajax->url->query->set("orderby", "orderno-".get_sorting_rule($orderby, $sortrule, "orderno")); ?>
-        <a href="<?= $ajax->url; ?>" class="load-link" <?= $ajax->data; ?>>
-            Order #<?= $orderno_sym; ?>
+        <a href="<?= $orderpanel->generate_tableorderbyurl("orderno") ; ?>" class="load-link" <?= $orderpanel->ajaxdata; ?>>
+            Order # <?= $orderpanel->tablesorter->generate_sortsymbol('orderno'); ?>
         </a>
     </th>
-
     <th>
-        <?php $ajax->url->query->set("orderby", 'custpo-'.get_sorting_rule($orderby, $sortrule, "custpo")); ?>
-        <a href="<?= $ajax->url; ?>" class="load-link" <?= $ajax->data; ?>>
-            Customer PO: <?= $custpo_sym; ?>
+        <a href="<?= $orderpanel->generate_tableorderbyurl("custpo") ; ?>" class="load-link" <?= $orderpanel->ajaxdata; ?>>
+            Customer PO: <?= $orderpanel->tablesorter->generate_sortsymbol('custpo'); ?>
         </a>
     </th>
     <th>Ship-To</th>
     <th>
-        <?php $ajax->url->query->set("orderby", 'subtotal-'.get_sorting_rule($orderby, $sortrule, "subtotal")); ?>
-        <a href="<?= $ajax->url; ?>" class="load-link" <?= $ajax->data; ?>>
-            Order Totals <?= $total_sym; ?>
+        <a href="<?= $orderpanel->generate_tableorderbyurl("subtotal") ; ?>" class="load-link" <?= $orderpanel->ajaxdata; ?>>
+            Order Totals <?= $orderpanel->tablesorter->generate_sortsymbol('subtotal'); ?>
         </a>
     </th>
-
     <th>
-        <?php $ajax->url->query->set("orderby", 'orderdate-'.get_sorting_rule($orderby, $sortrule, "orderdate")); ?>
-        <a href="<?= $ajax->url; ?>" class="load-link" <?= $ajax->data; ?>>
-            Order Date: <?= $orderdate_sym; ?>
+        <a href="<?= $orderpanel->generate_tableorderbyurl("orderdate") ; ?>" class="load-link" <?= $orderpanel->ajaxdata; ?>>
+            Order Date: <?= $orderpanel->tablesorter->generate_sortsymbol('orderdate'); ?>
         </a>
     </th>
-
     <th class="text-center">
-        <?php $ajax->url->query->set("orderby", 'status-'.get_sorting_rule($orderby, $sortrule, "status")); ?>
-        <a href="<?= $ajax->url; ?>" class="load-link" <?= $ajax->data; ?>>
-            Status:<?= $status_sym; ?>
+        <a href="<?= $orderpanel->generate_tableorderbyurl("status") ; ?>" class="load-link" <?= $orderpanel->ajaxdata; ?>>
+            Status: <?= $orderpanel->tablesorter->generate_sortsymbol('status'); ?>
         </a>
     </th>
-
-
     <th colspan="2">
-        <?php $ajax->url->query->remove('orderby'); ?>
-        <a tabindex="0" <?= $legendiconcontent; ?> data-content="<?= $legendcontent; ?>">Icon Definitions</a>
+        <?= $orderpanel->generate_salesordericonlegend(); ?>
         <?php if (isset($input->get->orderby)) : ?>
-            <a class="btn btn-warning btn-sm load-link" href="<?= $ajax->url; ?>" <?= $ajax->data; ?>> (Clear Sort) </a>
+            <?= $orderpanel->generate_clearsortlink(); ?>
         <?php endif; ?>
     </th>
     <th colspan="2"> </th>

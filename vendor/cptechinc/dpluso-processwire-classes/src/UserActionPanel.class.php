@@ -155,9 +155,13 @@
 			return $link->getUrl();
 		}
 
-        function getactiontyperefreshlink() {
-            $refreshlink = $this->getpanelrefreshlink();
-            return str_replace($this->getactiontypepage(), '{replace}', $refreshlink);
+        function getactiontyperefreshlink($keepactiontype = false) {
+            $refreshlink = $this->getpanelpaginationlink();
+            if ($keepactiontype){
+                return $refreshlink;
+            } else {
+                return str_replace($this->getactiontypepage(), '{replace}', $refreshlink);
+            }
         }
 
         function getaddactiontypelink() {
@@ -172,7 +176,7 @@
 
 		function getpanelrefreshlink() {
             $link = new \Purl\Url(wire('page')->httpUrl);
-        	$link->path = '';
+            $link->path = '';
         	$link->join(wire('config')->pages->actions.$this->getactiontypepage()."/load/list/");
 			switch ($this->type) {
 				case 'cust':

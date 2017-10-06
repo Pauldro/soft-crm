@@ -62,7 +62,7 @@
 					<tr>
 						<td class="control-label">Title</td>
 						<td>
-							<input type="text" name="title" class="form-control">
+							<input type="text" name="title" class="form-control" value="<?php echo $originaltask->title; ?>">
 						</td>
 					</tr>
 					<tr>

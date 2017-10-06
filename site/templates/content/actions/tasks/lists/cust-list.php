@@ -6,7 +6,7 @@
 	<div class="row">
 		<div class="col-xs-4">
 			<label for="view-task-status">View Completed Tasks</label>
-			<select name="" id="view-action-completion-status" class="form-control input-sm" <?= $actionpanel->data; ?> data-url="<?= $actionpanel->getpanelrefreshlink(); ?>" >
+			<select name="" id="view-action-completion-status" class="form-control input-sm" <?= $actionpanel->data; ?> data-url="<?= $actionpanel->getactiontyperefreshlink(true);; ?>" >
 				<?php foreach ($actionpanel->taskstatuses as $status => $label) : ?>
 					<?php if ($status == $actionpanel->taskstatus) : ?>
 						<option value="<?= $status; ?>" selected><?= $label; ?></option>

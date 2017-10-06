@@ -17,7 +17,7 @@
 	} elseif ($order['editord'] == 'L') {
 		if ($user->hasqorderlocked) {
 			if ($on == $user->lockedordn) {
-				$editlink = $config->pages->orders."redir/?action=get-order-details&ordn=".$on."&custID=".$order['custid']."&lock=lock";
+				$editlink = $config->pages->orders."redir/?action=get-order-details&ordn=".$on."&custID=".$order->custid."&lock=lock";
 				$span = "<span class='glyphicon glyphicon-wrench'></span>";
 				$atitle = "Edit this Order";
 			} else {
