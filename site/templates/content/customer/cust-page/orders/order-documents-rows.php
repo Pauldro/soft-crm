@@ -8,7 +8,7 @@
 	<tr class="detail">
 		<td colspan="2"></td>
 		<td colspan="2">
-			<b><a href="<?php echo $config->documentstorage.$filename; ?>" title="Click to View Document" target="_blank" ><?php echo $orderdoc['title']; ?></a></b>
+			<b><a href="<?= $config->documentstorage.$filename; ?>" title="Click to View Document" target="_blank" ><?= $orderdoc['title']; ?></a></b>
 		</td>
 		<td align="right"><?= $orderdoc['createdate']; ?></td>
 		<td align="right"><?= DplusDateTime::formatdplustime($orderdoc['createtime'], null, DplusDateTime::$shorttimestring); ?></td> <td></td><td></td> <td></td> <td></td> <td></td>
