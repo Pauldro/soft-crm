@@ -167,6 +167,8 @@
 	$config->pages->actions = $config->urls->root . 'activity/';
 	$config->pages->documentation = $config->urls->root . "documentation/";
 	$config->pages->documentstorage = $config->documentstorage;
+	$config->pages->vendor = $config->urls->root . "vendors/";
+	$config->pages->vendorinfo = $config->urls->root . "vendors/vend-info/";
 
 
 	$config->dplusnotes = array (
