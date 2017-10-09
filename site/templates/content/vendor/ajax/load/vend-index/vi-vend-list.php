@@ -3,6 +3,9 @@
         $vendresults = search_vendorspaged($config->showonpage, $input->pageNum, $input->get->text('q'),  false);
         $resultscount = count_searchvendors($input->get->text('q'), false);
     }
+    $vendlink = $page->pageURL;
+    $vendlink->path = $config->pages->vendor. 'redir/';
+    $vendlink->query->set('action', 'vi-vendor');
 ?>
 
 <div id="vend-results">
@@ -15,10 +18,11 @@
             </thead>
             <tbody>
                 <?php if ($resultscount > 0) : ?>
-                    <?php foreach ($vendresults as $vend) : ?>
+                    <?php foreach ($vendresults as $vend) : // TODO convert vendors into class ?>
+                        <?php $vendlink->query->set('vendorID', $vend['vendid']); ?>
                         <tr>
                             <td>
-                                <a href="#">
+                                <a href="<?= $vendlink->getUrl(); ?>">
                                     <?= highlight($vend['vendid'], $input->get->text('q'),'<span class="highlight">{ele}</span>');?>
                                 </a> &nbsp; <span class="glyphicon glyphicon-share"></span>
                             </td>
