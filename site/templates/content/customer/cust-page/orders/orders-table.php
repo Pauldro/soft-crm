@@ -41,7 +41,7 @@
 					<?php include $config->paths->content.'customer/cust-page/orders/order-tracking-rows.php'; ?>
                <?php endif; ?>
 
-        	<?php if ($order->haserror) : ?>
+        	<?php if ($order->has_error()) : ?>
                 <tr class="detail bg-danger" >
                     <td colspan="2" class="text-center"><b class="text-danger">Error:</b></td>
                     <td colspan="2"><?php echo $order['errormsg']; ?></td> <td></td> <td></td>
