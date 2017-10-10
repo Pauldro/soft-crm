@@ -1,3 +1,15 @@
+<?php 
+$vendID = '';
+
+if ($input->urlSegment(1)) {
+    $vendorID = $input->urlSegment(1);
+    $page->title = 'VI: ' . get_vendorname($vendorID);
+    $toolbar = $config->paths->content."vend-information/toolbar.php";
+} else {
+    $toolbar = false;
+}
+?>
+
 <?php include('./_head.php'); // include header markup ?>
     <div class="jumbotron pagetitle">
         <div class="container">

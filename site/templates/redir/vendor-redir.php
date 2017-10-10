@@ -40,12 +40,13 @@
 
 
 	switch ($action) {
-		case 'ci-buttons': //NOT USED WILL BE AUTOCALLED BY vend-vendor
+		case 'vi-buttons': //NOT USED WILL BE AUTOCALLED BY vend-vendor
 			$data = array('DBNAME' => $config->dbName, 'VIBUTTONS' => false);
 			$session->loc = $config->pages->index;
 			break;
 		case 'vi-vendor':
-		
+			$data = array('DBNAME' => $config->dbName, 'VIVENDOR' => $vendorID);
+			$session->loc = $config->pages->vendinfo. "$vendorID/";
 			break;
 		case 'vi-shipfrom-list':
 			$data = array('DBNAME' => $config->dbName, 'VISHIPFROMLIST' => $vendorID);

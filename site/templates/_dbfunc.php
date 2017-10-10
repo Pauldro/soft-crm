@@ -1053,6 +1053,13 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
+	
+	function get_vendorname($vendorID) {
+		$sql = wire('database')->prepare("SELECT name FROM vendors WHERE vendid = :vendorID LIMIT 1");
+		$switching = array(':vendorID' => $vendorID);
+		$sql->execute($switching);
+		return $sql->fetchColumn();
+	}
 
 /* =============================================================
 	CART FUNCTIONS
