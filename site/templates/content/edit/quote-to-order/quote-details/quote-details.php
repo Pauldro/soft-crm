@@ -7,7 +7,7 @@
                 <th>Whse</th>
                 <th>
                 	<div class="row">
-                    	<div class="col-xs-3">Details</div><div class="col-xs-3">Documents</div> <div class="col-xs-3">Notes</div> <div class="col-xs-3">Edit</div>
+                    	<div class="col-xs-3">Details</div><div class="col-xs-3">Documentss</div> <div class="col-xs-2">Notes</div> <div class="col-xs-4">Edit</div>
                     </div>
                 </th>
             </tr>
@@ -51,18 +51,25 @@
                             <span class="visible-xs-block action-label">Details</span>
                             <a href="<?= $config->pages->ajax."load/view-detail/quote/?qnbr=".$detail['quotenbr']."&line=".$detail['linenbr']; ?>" class="btn btn-xs btn-primary view-item-details" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>" data-modal="#ajax-modal"> <i class="material-icons">&#xE8DE;</i><a>
                         </div>
-                        <div class="col-xs-3"> <span class="visible-xs-block action-label">Documents</span> <?= $detaildocumenticon; ?></div>
-                        <div class="col-xs-3"> <span class="visible-xs-block action-label">Notes</span> <?= $detnoteicon; ?></div>
-                        <div class="col-xs-3"> <span class="visible-xs-block action-label">Update</span>
+                        <div class="col-xs-3"> <span class="visible-xs-block action-label">Docs</span> <?= $detaildocumenticon; ?></div>
+                        <div class="col-xs-2"> <span class="visible-xs-block action-label">Notes</span> <?= $detnoteicon; ?></div>
+                        <div class="col-xs-4"> <span class="visible-xs-block action-label">Edit</span>
                             <?php if ($editquote['canedit']) : ?>
-                                <a href="<?= $editdetail; ?>" class="btn btn-xs btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
+                                <a href="<?= $editdetail; ?>" class="btn btn-xs btn-warning update-line pull-left" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
                                     <i class="material-icons">&#xE3C9;</i>
                                 </a>
                             <?php else : ?>
-                                <a href="<?= $editdetail; ?>" class="btn btn-xs btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
+                                <a href="<?= $editdetail; ?>" class="btn btn-xs btn-warning update-line pull-left" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
                                     <i class="glyphicon glyphicon-eye-open"></i>
                                 </a>
                             <?php endif; ?>
+                            <form class="" action="<?php echo $config->pages->cart."redir/"; ?>" method="post">
+                                <input type="hidden" name="action" value="remove-line">
+                                <input type="hidden" name="linenbr" value="<?= $detail['linenbr']; ?>">
+                                <button type="submit" class="btn btn-sm btn-danger" name="button">
+                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </td>
