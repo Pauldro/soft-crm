@@ -272,28 +272,90 @@
 		}
 	}
 	
-	function search_custindexpaged($loginID, $limit = 10, $page = 1, $restrictions, $keyword, $debug) {
+	// function search_custindexpaged($loginID, $limit = 10, $page = 1, $restrictions, $keyword, $debug) {
+	// 	$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
+	// 	$limiting = returnlimitstatement($limit, $page);
+	// 	$search = '%'.str_replace(' ', '%',$keyword).'%';
+	// 
+	// 	if ($restrictions) {
+	// 		if (wire('config')->cptechcustomer == 'stempf') {
+	// 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(custid) LIKE UCASE(:search) UNION
+	// 											  SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) GROUP BY custid, shiptoid $limiting");
+	// 		} else {
+	// 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(custid) LIKE UCASE(:search) UNION
+	// 											  SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) $limiting");
+	// 		}
+	// 		$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':search' => $search);
+	// 		$withquotes = array(true, true, true);
+	// 	} else {
+	// 		if (wire('config')->cptechcustomer == 'stempf') {
+	// 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE UCASE(custid) LIKE UCASE(:search) UNION
+	// 											  SELECT * FROM custindex WHERE UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) GROUP BY custid, shiptoid $limiting");
+	// 		} else {
+	// 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE UCASE(custid) LIKE UCASE(:search) UNION
+	// 											  SELECT * FROM custindex WHERE UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) $limiting");
+	// 		}
+	// 		$switching = array(':search' => $search); $withquotes = array(true);
+	// 	}
+	// 
+	// 	if ($debug) {
+	// 		return returnsqlquery($sql->queryString, $switching, $withquotes);
+	// 	} else {
+	// 		$sql->execute($switching);
+	// 		$sql->setFetchMode(PDO::FETCH_CLASS, 'Contact');
+	// 		return $sql->fetchAll();
+	// 	}
+	// }
+	
+	function search_custindexpaged_2($loginID, $limit = 10, $page = 1, $restrictions, $keyword, $debug) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		$limiting = returnlimitstatement($limit, $page);
 		$search = '%'.str_replace(' ', '%',$keyword).'%';
 	
 		if ($restrictions) {
 			if (wire('config')->cptechcustomer == 'stempf') {
-				$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(custid) LIKE UCASE(:search) UNION
-												  SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) GROUP BY custid, shiptoid $limiting");
+				$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) AND UCASE(custid) != UCASE(:keyword) GROUP BY custid, shiptoid $limiting");
 			} else {
-				$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(custid) LIKE UCASE(:search) UNION
-												  SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) $limiting");
+				$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) AND UCASE(custid) != UCASE(:keyword) $limiting");
 			}
-			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':search' => $search);
-			$withquotes = array(true, true, true);
+			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':search' => $search, ':keyword' => $keyword);
+			$withquotes = array(true, true, true, true);
 		} else {
 			if (wire('config')->cptechcustomer == 'stempf') {
-				$sql = wire('database')->prepare("SELECT * FROM custindex WHERE UCASE(custid) LIKE UCASE(:search) UNION
-												  SELECT * FROM custindex WHERE UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) GROUP BY custid, shiptoid $limiting");
+				$sql = wire('database')->prepare("SELECT * FROM custindex WHERE UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) AND UCASE(custid) != UCASE(:keyword) GROUP BY custid, shiptoid $limiting");
 			} else {
-				$sql = wire('database')->prepare("SELECT * FROM custindex WHERE UCASE(custid) LIKE UCASE(:search) UNION
-												  SELECT * FROM custindex WHERE UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) $limiting");
+				$sql = wire('database')->prepare("SELECT * FROM custindex WHERE UCASE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext)) LIKE UCASE(:search) AND UCASE(custid) != UCASE(:keyword) $limiting");
+			}
+			$switching = array(':search' => $search, ':keyword' => $keyword); $withquotes = array(true, true);
+		}
+	
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
+		} else {
+			$sql->execute($switching);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'Contact');
+			return $sql->fetchAll();
+		}
+	}
+	
+	function search_custindexpaged_bycustid($loginID, $limit = 10, $page = 1, $restrictions, $keyword, $debug) {
+		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
+		$search = $keyword;
+		$limiting = returnlimitstatement($limit, $page);
+	
+		if ($restrictions) {
+			if (wire('config')->cptechcustomer == 'stempf') {
+				$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(custid) = UCASE(:search) GROUP BY custid, shiptoid");
+			} else {
+				$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(custid) = UCASE(:search)");
+			}
+			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':search' => $search);
+			$withquotes = array(true, true, true, true);
+		} else {
+			if (wire('config')->cptechcustomer == 'stempf') {
+				$sql = wire('database')->prepare("SELECT * FROM custindex WHERE UCASE(custid) = UCASE(:search) GROUP BY custid, shiptoid");
+			} else {
+				$sql = wire('database')->prepare("SELECT * FROM custindex WHERE UCASE(custid) = UCASE(:search)");
 			}
 			$switching = array(':search' => $search); $withquotes = array(true);
 		}
