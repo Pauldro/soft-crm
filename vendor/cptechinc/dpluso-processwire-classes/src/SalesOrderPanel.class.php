@@ -20,9 +20,11 @@
 		public $count;
 		public $orders = array();
 		private $debugorders;
+		public $listorders = true;
 		
 		public function __construct($type, \Purl\Url $pageurl, $modal, $loadinto, $ajax, $sessionID) {
 			$this->type = $type;
+			$this->setup_listorders();
 			$this->pageurl = $this->setup_pageurl($pageurl);
 			$this->modal = $modal;
 			$this->loadinto = $this->focus = $loadinto;
@@ -41,14 +43,27 @@
 		/* =============================================================
 			SETUP FUNCTIONS = FUNCTIONS THAT PREPARE THE SALES ORDER PANEL
 		============================================================ */
+		public function setup_listorders() {
+			switch ($this->type) {
+				case 'edit-order':
+					$this->listorders = false;
+					break;
+				default: 
+					$this->listorders = true;
+					break;
+			}
+		}
+		
 		public function setup_pageurl($pageurl) {
 			$url = $pageurl;
-			$url->path = wire('config')->pages->ajax."load/orders/";
-			$url->query->remove('display');
-			$url->query->remove('ajax');
+			if ($this->listorders) {
+				$url->path = wire('config')->pages->ajax."load/orders/";
+				$url->query->remove('display');
+				$url->query->remove('ajax');
+			}
 			return $url;
 		}
-
+		
 		public function setup_customerpanel($custID, $shipID) {
 			$this->custID = $custID;
 			$this->shipID = $shipID;
@@ -64,9 +79,24 @@
 			$this->active = $ordn;
 		}
 		
+		public function setup_editorderpanel($pageurl) {
+			$this->pageurl = $pageurl;
+		}
+		
 		/* =============================================================
 			ORDER RETREIVAL FUNCTIONS
 		============================================================ */
+		public function get_orderclass() {
+			switch ($this->type) {
+				case 'edit-order':
+					return 'SalesOrderEdit';
+					break;
+				default: 
+					return 'SalesOrder';
+					break;
+			}
+		}
+		
 		public function get_orders() {
 			if ($this->type == 'cust') {
 				$this->orders = $this->get_customerorders();
