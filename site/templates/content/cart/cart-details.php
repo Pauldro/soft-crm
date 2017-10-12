@@ -25,9 +25,15 @@
 				?>
             <tr>
                 <td data-title="ItemID/Desc">
-                    <?= $detail['itemid']; ?>
-                    <?php if (strlen($detail['vendoritemid'])) { echo ' '.$detail['vendoritemid'];} ?>
-                    <br> <small><?= $detail['desc1']; ?></small>
+                    <?php if ($detail['errormsg'] != '') : ?>
+                        <div class="btn-sm btn-danger">
+                          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <strong>Error!</strong> <?= $detail['errormsg']; ?>
+                        </div>
+                    <?php else : ?>
+                        <?= $detail['itemid']; ?>
+                        <?php if (strlen($detail['vendoritemid'])) { echo ' '.$detail['vendoritemid'];} ?>
+                        <br> <small><?= $detail['desc1']; ?></small>
+					<?php endif; ?>
                 </td>
                 <td data-title="Price" class="text-right">$ <?= formatMoney($detail['price']); ?></td>
                 <td data-title="Ordered" class="text-right"><?= $detail['qtyordered'] + 0; ?></td>

@@ -36,9 +36,15 @@
 				?>
             <tr>
                 <td data-title="Item">
-                    <?= $detail['itemid']; ?>
-                    <?php if (strlen($detail['vendoritemid'])) { echo ' '.$detail['vendoritemid'];} ?>
-                    <br> <?= $detail['desc1']; ?>
+                    <?php if ($detail['errormsg'] != '') : ?>
+                        <div class="btn-sm btn-danger">
+                          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <strong>Error!</strong> <?= $detail['errormsg']; ?>
+                        </div>
+                    <?php else : ?>
+                        <?= $detail['itemid']; ?>
+                        <?php if (strlen($detail['vendoritemid'])) { echo ' '.$detail['vendoritemid'];} ?>
+                        <br> <?= $detail['desc1']; ?>
+					<?php endif; ?>
                 </td>
                 <td data-title="Price" class="text-right">$ <?= formatMoney($detail['quotprice']); ?></td>
                 <td data-title="Ordered" class="text-right"><?= $detail['quotunit'] + 0; ?></td>
@@ -54,11 +60,11 @@
                         <div class="col-xs-2"> <span class="visible-xs-block action-label">Notes</span> <?= $detnoteicon; ?></div>
                         <div class="col-xs-4"> <span class="visible-xs-block action-label">Update</span>
                             <?php if ($editquote['canedit']) : ?>
-                                <a href="<?= $config->pages->ajax."load/edit-detail/quote/?qnbr=".$detail['quotenbr']."&line=".$detail['linenbr']; ?>" class="btn btn-xs btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
+                                <a href="<?= $config->pages->ajax."load/edit-detail/quote/?qnbr=".$detail['quotenbr']."&line=".$detail['linenbr']; ?>" class="btn btn-sm btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
                                     <i class="fa fa-pencil fa-1-5x" aria-hidden="true"></i><span class="sr-only">Edit</span>
                                 </a>&nbsp;
                             <?php else : ?>
-                                <a href="<?= $config->pages->ajax."load/edit-detail/quote/?qnbr=".$detail['quotenbr']."&line=".$detail['linenbr']; ?>" class="btn btn-xs btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
+                                <a href="<?= $config->pages->ajax."load/edit-detail/quote/?qnbr=".$detail['quotenbr']."&line=".$detail['linenbr']; ?>" class="btn btn-sm btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
                                     <i class="fa fa-pencil fa-1-5x" aria-hidden="true"></i><span class="sr-only">Edit</span>
                                 </a>&nbsp;
                             <?php endif; ?>

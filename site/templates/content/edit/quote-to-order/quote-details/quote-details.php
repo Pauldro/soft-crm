@@ -40,7 +40,15 @@
             <tr class="item-not-selected">
                 <td data-title="Add Item"><input type="checkbox" name="linenbr[]" value="<?= $detail['linenbr']; ?>" class="select-item"></td>
                 <td data-title="ItemID"><?= $detail['itemid']; ?> </td>
-                <td data-title="Description"><?= $detail['desc1']; ?></td>
+                <td data-title="Description">
+                <?php if ($detail['errormsg'] != '') : ?>
+                    <div class="btn-sm btn-danger">
+                      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <strong>Error!</strong> <?= $detail['errormsg']; ?>
+                    </div>
+                <?php else : ?>
+                    <?= $detail['desc1']; ?>
+				<?php endif; ?>
+                </td>
                 <td data-title="Price" class="text-right">$ <?= formatMoney($detail['quotprice']); ?></td>
                 <td data-title="Ordered" class="text-right"><?= $detail['quotunit'] + 0; ?></td>
                 <td data-title="Total" class="text-right">$ <?= formatMoney($detail['quotprice'] * $detail['quotunit']); ?></td>
@@ -55,11 +63,11 @@
                         <div class="col-xs-2"> <span class="visible-xs-block action-label">Notes</span> <?= $detnoteicon; ?></div>
                         <div class="col-xs-4"> <span class="visible-xs-block action-label">Edit</span>
                             <?php if ($editquote['canedit']) : ?>
-                                <a href="<?= $editdetail; ?>" class="btn btn-xs btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
+                                <a href="<?= $editdetail; ?>" class="btn btn-sm btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
                                     <i class="fa fa-pencil fa-1-5x" aria-hidden="true"></i><span class="sr-only">Edit</span>
                                 </a>&nbsp;
                             <?php else : ?>
-                                <a href="<?= $editdetail; ?>" class="btn btn-xs btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
+                                <a href="<?= $editdetail; ?>" class="btn btn-sm btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
                                     <i class="fa fa-pencil fa-1-5x" aria-hidden="true"></i><span class="sr-only">Edit</span>
                                 </a>&nbsp;
                             <?php endif; ?>
