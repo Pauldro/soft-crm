@@ -54,19 +54,19 @@
                         <div class="col-xs-2"> <span class="visible-xs-block action-label">Notes</span> <?= $detnoteicon; ?></div>
                         <div class="col-xs-4"> <span class="visible-xs-block action-label">Update</span>
                             <?php if ($editquote['canedit']) : ?>
-                                <a href="<?= $config->pages->ajax."load/edit-detail/quote/?qnbr=".$detail['quotenbr']."&line=".$detail['linenbr']; ?>" class="btn btn-xs btn-warning update-line pull-left" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
-                                    <i class="material-icons">&#xE3C9;</i>
-                                </a>
+                                <a href="<?= $config->pages->ajax."load/edit-detail/quote/?qnbr=".$detail['quotenbr']."&line=".$detail['linenbr']; ?>" class="btn btn-xs btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
+                                    <i class="fa fa-pencil fa-1-5x" aria-hidden="true"></i><span class="sr-only">Edit</span>
+                                </a>&nbsp;
                             <?php else : ?>
-                                <a href="<?= $config->pages->ajax."load/edit-detail/quote/?qnbr=".$detail['quotenbr']."&line=".$detail['linenbr']; ?>" class="btn btn-xs btn-warning update-line pull-left" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
-                                    <i class="glyphicon glyphicon-eye-open"></i>
-                                </a>
+                                <a href="<?= $config->pages->ajax."load/edit-detail/quote/?qnbr=".$detail['quotenbr']."&line=".$detail['linenbr']; ?>" class="btn btn-xs btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>"  data-custid="<?= $quote['custid']; ?>">
+                                    <i class="fa fa-pencil fa-1-5x" aria-hidden="true"></i><span class="sr-only">Edit</span>
+                                </a>&nbsp;
                             <?php endif; ?>
-                            <form class="" action="<?php echo $config->pages->cart."redir/"; ?>" method="post">
+                            <form class="inline-block" action="<?php echo $config->pages->cart."redir/"; ?>" method="post">
                                 <input type="hidden" name="action" value="remove-line">
                                 <input type="hidden" name="linenbr" value="<?= $detail['linenbr']; ?>">
                                 <button type="submit" class="btn btn-sm btn-danger" name="button">
-                                    <i class="fa fa-times" aria-hidden="true"></i>
+                                    <i class="fa fa-trash fa-1-5x" aria-hidden="true"></i><span class="sr-only">Delete</span>
                                 </button>
                             </form>
                         </div>

@@ -42,14 +42,14 @@
                         <div class="col-xs-2"> <span class="visible-xs-block action-label">Docs</span> <i class="material-icons md-36">&#xE873;</i> </div>
                         <div class="col-xs-2"> <span class="visible-xs-block action-label">Notes</span> <?= $detnoteicon; ?></div>
                         <div class="col-xs-5"> <span class="visible-xs-block action-label">Edit</span>
-                            <a href="<?php echo $config->pages->ajax."load/edit-detail/cart/?line=".$detail['recno']; ?>" class="btn btn-sm btn-warning update-line pull-left" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-custid="<?php echo $carthead['custid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>">
-                                <i class="material-icons">&#xE3C9;</i>
-                            </a>
-                            <form class="" action="<?php echo $config->pages->cart."redir/"; ?>" method="post">
+                            <a href="<?php echo $config->pages->ajax."load/edit-detail/cart/?line=".$detail['recno']; ?>" class="btn btn-sm btn-warning update-line" data-line="<?= $detail['recno']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-custid="<?php echo $carthead['custid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>">
+                                <i class="fa fa-pencil fa-1-5x" aria-hidden="true"></i><span class="sr-only">Edit</span>
+                            </a>&nbsp;
+                            <form class="inline-block" action="<?php echo $config->pages->cart."redir/"; ?>" method="post">
                                 <input type="hidden" name="action" value="remove-line">
                                 <input type="hidden" name="linenbr" value="<?= $detail['linenbr']; ?>">
                                 <button type="submit" class="btn btn-sm btn-danger" name="button">
-                                    <i class="fa fa-times  fa-2x" aria-hidden="true"></i>
+                                    <i class="fa fa-trash fa-1-5x" aria-hidden="true"></i><span class="sr-only">Delete</span>
                                 </button>
                             </form>
                         </div>
