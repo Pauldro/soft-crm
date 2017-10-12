@@ -31,7 +31,7 @@
 			$this->ajaxdata = 'data-loadinto="'.$this->loadinto.'" data-focus="'.$this->focus.'"';
 			$this->sessionID = $sessionID;
 			
-			$this->tablesorter = new TablePageSorter($this->pageurl->query->get('orderby'));
+			$this->setup_tablesorter();
 			
 			if ($ajax) {
 				$this->collapse = '';
@@ -51,6 +51,12 @@
 				default: 
 					$this->listorders = true;
 					break;
+			}
+		}
+		
+		public function setup_tablesorter() {
+			if ($this->listorders) {
+				$this->tablesorter = new TablePageSorter($this->pageurl->query->get('orderby'));
 			}
 		}
 		
