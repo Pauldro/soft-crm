@@ -112,7 +112,7 @@
 		$config->cgi = "CRMTEST";
 	}
 
-	$config->cptechcustomer = 'cptech';
+	$config->cptechcustomer = 'stempf';
 	$config->COMPANYNBR = '3';
 	$config->companyfiles = "/var/www/html/data".$config->COMPANYNBR."/";
 	$config->documentstorage = "/orderfiles/";
