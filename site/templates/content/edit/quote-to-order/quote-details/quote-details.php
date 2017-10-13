@@ -57,7 +57,7 @@
                     <div class="row">
                         <div class="col-xs-3">
                             <span class="visible-xs-block action-label">Details</span>
-                            <a href="<?= $config->pages->ajax."load/view-detail/quote/?qnbr=".$detail['quotenbr']."&line=".$detail['linenbr']; ?>" class="btn btn-xs btn-primary view-item-details" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>" data-modal="#ajax-modal"> <i class="material-icons">&#xE8DE;</i><a>
+                            <a href="<?= $config->pages->ajax."load/view-detail/quote/?qnbr=".$detail['quotenbr']."&line=".$detail['linenbr']; ?>" class="btn btn-sm btn-primary view-item-details" data-itemid="<?= $detail['itemid']; ?>" data-kit="<?php echo $detail['kititemflag']; ?>" data-modal="#ajax-modal"> <i class="material-icons">&#xE8DE;</i><a>
                         </div>
                         <div class="col-xs-3"> <span class="visible-xs-block action-label">Docs</span> <?= $detaildocumenticon; ?></div>
                         <div class="col-xs-2"> <span class="visible-xs-block action-label">Notes</span> <?= $detnoteicon; ?></div>
