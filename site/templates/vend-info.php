@@ -4,7 +4,12 @@ $vendID = '';
 if ($input->urlSegment(1)) {
     $vendorID = $input->urlSegment(1);
     $page->title = 'VI: ' . get_vendorname($vendorID);
+    $buttonsjson = json_decode(file_get_contents($config->jsonfilepath.session_id()."-vibuttons.json"), true);
     $toolbar = $config->paths->content."vend-information/toolbar.php";
+    $config->scripts->append(hashtemplatefile('scripts/vi/vend-functions.js'));
+    $config->scripts->append(hashtemplatefile('scripts/vi/vend-info.js'));
+    $config->scripts->append(hashtemplatefile('scripts/libs/raphael.js'));
+    $config->scripts->append(hashtemplatefile('scripts/libs/morris.js'));
 } else {
     $toolbar = false;
 }

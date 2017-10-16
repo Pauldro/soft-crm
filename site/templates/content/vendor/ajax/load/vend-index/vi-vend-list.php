@@ -3,14 +3,16 @@
         $vendresults = search_vendorspaged($config->showonpage, $input->pageNum, $input->get->text('q'),  false);
         $resultscount = count_searchvendors($input->get->text('q'), false);
     }
-    $vendlink = $page->pageURL;
-    $vendlink->path = $config->pages->vendor. 'redir/';
+    
+    $vendlink = new \Purl\Url($page->fullURL);
+    $vendlink->path = $config->pages->vendor.'redir/';
+    $vendlink->query = '';
     $vendlink->query->set('action', 'vi-vendor');
 ?>
 
 <div id="vend-results">
     <?php if ($input->get->q) : ?>
-        <table id="vend-index" class="table table-striped table-bordered">
+        <table id="vend-index" class="table table-striped table-bordered table-condensed">
             <thead>
                 <tr>
                     <th width="100">VendID</th> <th>Vendor Name</th> <th>Ship-From</th> <th>Address</th> <th>City</th> <th>State</th> <th>Zip</th> <th width="100">Phone</th>
@@ -18,24 +20,24 @@
             </thead>
             <tbody>
                 <?php if ($resultscount > 0) : ?>
-                    <?php foreach ($vendresults as $vend) : // TODO convert vendors into class ?>
-                        <?php $vendlink->query->set('vendorID', $vend['vendid']); ?>
+                    <?php foreach ($vendresults as $vend) : ?>
+                         <?php $vendlink->query->set('vendorID', $vend['vendid']); ?>
                         <tr>
                             <td>
-                                <a href="<?= $vendlink->getUrl(); ?>">
-                                    <?= highlight($vend['vendid'], $input->get->text('q'),'<span class="highlight">{ele}</span>');?>
+                                <a href="<?= $vendlink; ?>">
+                                    <?= $page->stringerbell->highlight($vend['vendid'], $input->get->text('q'));?>
                                 </a> &nbsp; <span class="glyphicon glyphicon-share"></span>
                             </td>
-                            <td><?= highlight($vend['name'], $input->get->q,'<span class="highlight">{ele}</span>'); ?></td>
-                            <td><?= highlight($vend['shipfrom'], $input->get->q,'<span class="highlight">{ele}</span>'); ?></td>
+                            <td><?= $page->stringerbell->highlight($vend['name'], $input->get->q); ?></td>
+                            <td><?= $page->stringerbell->highlight($vend['shipfrom'], $input->get->q); ?></td>
                             <td>
-                                <?= highlight($vend['address1'], $input->get->q,'<span class="highlight">{ele}</span>'); ?>
-                                <?= highlight($vend['address2'], $input->get->q,'<span class="highlight">{ele}</span>'); ?>
+                                <?= $page->stringerbell->highlight($vend['address1'], $input->get->q); ?>
+                                <?= $page->stringerbell->highlight($vend['address2'], $input->get->q); ?>
                             </td>
-                            <td><?= highlight($vend['city'], $input->get->q, '<span class="highlight">{ele}</span>'); ?></td>
-                            <td><?= highlight($vend['state'], $input->get->q, '<span class="highlight">{ele}</span>'); ?></td>
-                            <td><?= highlight($vend['zip'], $input->get->q, '<span class="highlight">{ele}</span>'); ?></td>
-                            <td><a href="tel:<?= $vend['phone']; ?>" title="Click To Call"><?= highlight($vend['phone'], $input->get->q,'<span class="highlight">{ele}</span>'); ?></a></td>
+                            <td><?= $page->stringerbell->highlight($vend['city'], $input->get->q); ?></td>
+                            <td><?= $page->stringerbell->highlight($vend['state'], $input->get->q); ?></td>
+                            <td><?= $page->stringerbell->highlight($vend['zip'], $input->get->q); ?></td>
+                            <td><a href="tel:<?= $vend['phone']; ?>" title="Click To Call"><?= $page->stringerbell->highlight($vend['phone'], $input->get->q); ?></a></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else : ?>

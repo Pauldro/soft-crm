@@ -131,7 +131,17 @@ var config = {
 			ii_substitutes: sitepath + "ajax/load/ii/ii-substitutes/",
 			ii_documents: sitepath + "ajax/load/ii/ii-documents/",
             ii_order_documents: sitepath + "ajax/load/ii/ii-documents/order/",
-		}
+		},
+        vendor: {
+            redir: {
+                vi_shipfrom: sitepath + "vendors/redir/?action=vi-shipfrom-list",
+                vi_payment: sitepath + "vendors/redir/?action=vi-payment"
+            },
+            load: {
+                vi_shipfrom: sitepath + "ajax/load/vi/vi-shipfrom/",
+                vi_payment: sitepath + "ajax/load/vi/vi-payment/"
+            } 
+        }
 	},
 	paths: {
 		assets: {

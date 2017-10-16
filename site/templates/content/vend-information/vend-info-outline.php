@@ -1,6 +1,6 @@
 <?php
-// $vendjson = json_decode(file_get_contents($config->jsonfilepath.session_id()."-vivendor.json"), true);
-$vendjson = json_decode(file_get_contents($config->jsonfilepath."vitest-vivendor.json"), true);
+$vendjson = json_decode(file_get_contents($config->jsonfilepath.session_id()."-vivendor.json"), true);
+// $vendjson = json_decode(file_get_contents($config->jsonfilepath."vitest-vivendor.json"), true);
 ?>
 
 <div class="row">
