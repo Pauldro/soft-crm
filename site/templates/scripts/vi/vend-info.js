@@ -35,3 +35,19 @@ function shipfrom() {
 		});
 	});
 }
+
+function openinv() { 
+	var vendorID = $(vendlookupform + " .vendorID").val();
+    console.log(vendorID);
+	var modal = config.modals.ajax;
+	var loadinto =  modal+" .modal-content";
+	var href = URI(config.urls.vendor.load.vi_openinv).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
+	showajaxloading();
+	vi_openinv(vendorID, function() {
+		$(loadinto).loadin(href, function() {
+			hideajaxloading(); console.log(href);
+			$(modal).find('.modal-body').addClass('modal-results');
+			$(modal).resizemodal('lg').modal();
+		});
+	});
+}

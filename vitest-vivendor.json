@@ -1,0 +1,213 @@
+{
+    "error": false,
+    "errormsg": "",
+    "sessionid": "vitest",
+    "vendid": "RDB100",
+    "shipfromcount": "0",
+    "columns": {
+        "top": {
+            "vendorid": {
+                "heading": "Vendor ID",
+                "headingjustify": "l",
+                "datajustify": "l"
+            },
+            "vendorname": {
+                "heading": "",
+                "headingjustify": "l",
+                "datajustify": "l"
+            },
+            "vendoradr1": {
+                "heading": "",
+                "headingjustify": "l",
+                "datajustify": "l"
+            },
+            "vendoradr2": {
+                "heading": "",
+                "headingjustify": "l",
+                "datajustify": "l"
+            },
+            "vendoradr3": {
+                "heading": "",
+                "headingjustify": "l",
+                "datajustify": "l"
+            },
+            "vendoradr4": {
+                "heading": "",
+                "headingjustify": "l",
+                "datajustify": "l"
+            },
+            "vendoradr5": {
+                "heading": "",
+                "headingjustify": "l",
+                "datajustify": "l"
+            },
+            "numberofshipfrom": {
+                "heading": "Number of Ship-From",
+                "headingjustify": "l",
+                "datajustify": "r"
+            }
+        },
+        "left": {
+            "phone": {
+                "heading": "Phone",
+                "headingjustify": "l",
+                "datajustify": "l"
+            },
+            "fax": {
+                "heading": "Fax",
+                "headingjustify": "l",
+                "datajustify": "l"
+            },
+            "ouraccount": {
+                "heading": "Our Acct",
+                "headingjustify": "l",
+                "datajustify": "l"
+            },
+            "buyer": {
+                "heading": "Buyer",
+                "headingjustify": "l",
+                "datajustify": "l"
+            },
+            "shipvia": {
+                "heading": "Ship Via",
+                "headingjustify": "l",
+                "datajustify": "l"
+            },
+            "termcode": {
+                "heading": "Terms",
+                "headingjustify": "l",
+                "datajustify": "l"
+            },
+            "typecode": {
+                "heading": "Type Code",
+                "headingjustify": "l",
+                "datajustify": "l"
+            }
+        },
+        "right": {
+            "activity": {
+                "display": {
+                    "heading": "Activity",
+                    "headingjustify": "l",
+                    "datajustify": "l"
+                },
+                "number": {
+                    "heading": "Number",
+                    "headingjustify": "r",
+                    "datajustify": "r"
+                },
+                "amount": {
+                    "heading": "Amount",
+                    "headingjustify": "r",
+                    "datajustify": "r"
+                }
+            },
+            "history": {
+                "display": {
+                    "heading": "History",
+                    "headingjustify": "l",
+                    "datajustify": "l"
+                },
+                "number": {
+                    "heading": "Number",
+                    "headingjustify": "r",
+                    "datajustify": "r"
+                },
+                "amount": {
+                    "heading": "Amount",
+                    "headingjustify": "r",
+                    "datajustify": "r"
+                }
+            },
+            "misc": {
+                "dateentered": {
+                    "heading": "Date Entered",
+                    "headingjustify": "l",
+                    "datajustify": "l"
+                },
+                "lastrcptdate": {
+                    "heading": "Last Rcpt/Inv Date",
+                    "headingjustify": "l",
+                    "datajustify": "l"
+                },
+                "notes": {
+                    "heading": "Notes",
+                    "headingjustify": "l",
+                    "datajustify": "l"
+                }
+            }
+        }
+    },
+    "data": {
+        "top": {
+            "vendorid": "RDB100",
+            "vendorname": "ROBEC DISTRIBUTING CO",
+            "vendoradr1": "PO BOX 90341",
+            "vendoradr2": "DENVER           CO 800002456",
+            "vendoradr3": "United States of America",
+            "vendoradr4": "",
+            "vendoradr5": "",
+            "numberofshipfrom": "0"
+        },
+        "left": {
+            "phone": "800-456-8000 X 67394",
+            "fax": "714-566-1775",
+            "ouraccount": "98-209867",
+            "buyer": "RDB    RON BECKER",
+            "shipvia": "UPSG   UPS Ground",
+            "termcode": "60     Net 60 Days",
+            "typecode": "SUP    SUPPLIERS FOR COS"
+        },
+        "right": {
+            "activity": {
+                "purchaseorders": {
+                    "display": "Purchase Orders",
+                    "number": "138",
+                    "amount": "165787.73"
+                },
+                "openinvoices": {
+                    "display": "Open Invoices",
+                    "number": "88",
+                    "amount": "65673.01"
+                }
+            },
+            "history": {
+                "mtdreceipts": {
+                    "display": "MTD Receipts",
+                    "number": "57",
+                    "amount": "111056.34"
+                },
+                "mtdinvoices": {
+                    "display": "MTD Invoices",
+                    "number": "9",
+                    "amount": "19086.00"
+                },
+                "ytdreceipts": {
+                    "display": "YTD Receipts",
+                    "number": "75",
+                    "amount": "140825.70"
+                },
+                "ytdinvoices": {
+                    "display": "YTD Invoices",
+                    "number": "13",
+                    "amount": "33253.31"
+                },
+                "last12receipts": {
+                    "display": "Last 12mo Rcpts",
+                    "number": "18",
+                    "amount": "29769.36"
+                },
+                "last12invoices": {
+                    "display": "Last 12mo Invcs",
+                    "number": "4",
+                    "amount": "14167.31"
+                }
+            },
+            "misc": {
+                "dateentered": "06/06/1995",
+                "lastrcptdate": "09/14/2017",
+                "notes": "Yes"
+            }
+        }
+    }
+}

@@ -1,5 +1,5 @@
 <?php 
-$vendID = '';
+$vendorID = '';
 
 if ($input->urlSegment(1)) {
     $vendorID = $input->urlSegment(1);

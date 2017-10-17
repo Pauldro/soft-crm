@@ -1,10 +1,20 @@
 <?php
     $shipID = '';
     switch ($input->urlSegment(2)) {
+        case 'vi-openinv':
+            $vendorID = $input->get->text('vendorID');
+            $page->title = get_vendorname($vendorID) . ' Open Invoices';
+            $page->body = $config->paths->content."vend-information/vend-open-invoices.php";
+            break;
         case 'vi-payment':
             $vendorID = $input->get->text('vendorID');
             $page->title = get_vendorname($vendorID) . ' Payment';
             $page->body = $config->paths->content."vend-information/payment-history.php";
+            break;
+        case 'vi-shipfrom':
+            $vendorID = $input->get->text('vendorID');
+            $page->title = get_vendorname($vendorID) . ' Ship-From Information';
+            $page->body = $config->paths->content."vend-information/vend-shipfrom.php";
             break;
         default:
             $page->title = 'Search for a customer';

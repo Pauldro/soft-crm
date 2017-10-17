@@ -34,10 +34,16 @@
 	*		VISHIPFROMLIST
 	*		VENDID=$custID
 	* 		break;
-	*	case 'vi-paymentVIPAYMENT'
+	*	case 'vi-payment'
 	* 		DBNAME=$config->DBNAME
 	*		VIPAYMENT
 	*		VENDID=$custID
+	* 		break;
+	*	case 'vi-shipfrom'
+	* 		DBNAME=$config->DBNAME
+	*		VISHIPFROMINFO
+	*		VENDID=$custID
+	*		SHIPID=TODO fill in
 	* 		break;
 	* }
 	*
@@ -56,6 +62,14 @@
 		case 'vi-shipfrom-list':
 			$data = array('DBNAME' => $config->dbName, 'VISHIPFROMLIST' => $vendorID);
 			$session->loc = $config->pages->index;
+			break;
+		case 'vi-shipfrom':
+			$data = array('DBNAME' => $config->dbName, 'VISHIPFROMINFO' => false, 'VENDID' => $vendorID, 'SHIPID' => $shipID);
+			$session->loc = $config->pages->vendorinfo. "$vendorID/";
+			break;
+		case 'vi-openinv':
+			$data = array('DBNAME' => $config->dbName, 'VIOPENINV' => false, 'VENDID' => $vendorID);
+			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
 		case 'vi-payment':
 			$data = array('DBNAME' => $config->dbName, 'VIPAYMENT' => false, 'VENDID' => $vendorID);

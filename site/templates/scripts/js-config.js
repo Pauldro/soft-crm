@@ -135,11 +135,13 @@ var config = {
         vendor: {
             redir: {
                 vi_shipfrom: sitepath + "vendors/redir/?action=vi-shipfrom-list",
-                vi_payment: sitepath + "vendors/redir/?action=vi-payment"
+                vi_payment: sitepath + "vendors/redir/?action=vi-payment",
+                vi_openinv: sitepath + "vendors/redir/?action=vi-openinv"
             },
             load: {
                 vi_shipfrom: sitepath + "ajax/load/vi/vi-shipfrom/",
-                vi_payment: sitepath + "ajax/load/vi/vi-payment/"
+                vi_payment: sitepath + "ajax/load/vi/vi-payment/",
+                vi_openinv: sitepath + "ajax/load/vi/vi-openinv/"
             } 
         }
 	},

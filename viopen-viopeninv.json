@@ -1,0 +1,90 @@
+{
+    "error": false,
+    "errormsg": "",
+    "sessionid": "viopen",
+    "vendid": "CLEAR",
+    "data": {
+        "invoices": {
+            "1": {
+                "Purchase Order Number": "",
+                "Invoice Number": "77086",
+                "Status": "RL",
+                "Invoice Date": "07/29/07",
+                "Discount Date": "08/28/07",
+                "Due Date": "08/28/07",
+                "Amount - Total": "725.00000",
+                "Amount - Discount": "0.00000",
+                "Amount - Current": "0.00000",
+                "Amount - Aging 1": "0.00000",
+                "Amount - Aging 2": "0.00000",
+                "Amount - Aging 3": "725.00000",
+                "PONbr": "00000000",
+                "InvNbr": "77086"
+            },
+            "2": {
+                "Purchase Order Number": "",
+                "Invoice Number": "77256",
+                "Status": "RL",
+                "Invoice Date": "07/30/07",
+                "Discount Date": "08/29/07",
+                "Due Date": "08/29/07",
+                "Amount - Total": "1530.00000",
+                "Amount - Discount": "0.00000",
+                "Amount - Current": "0.00000",
+                "Amount - Aging 1": "0.00000",
+                "Amount - Aging 2": "0.00000",
+                "Amount - Aging 3": "1530.00000",
+                "PONbr": "00000000",
+                "InvNbr": "77256"
+            },
+            "3": {
+                "Purchase Order Number": "",
+                "Invoice Number": "77467",
+                "Status": "RL",
+                "Invoice Date": "07/30/07",
+                "Discount Date": "08/29/07",
+                "Due Date": "08/29/07",
+                "Amount - Total": "750.00000",
+                "Amount - Discount": "0.00000",
+                "Amount - Current": "0.00000",
+                "Amount - Aging 1": "0.00000",
+                "Amount - Aging 2": "0.00000",
+                "Amount - Aging 3": "750.00000",
+                "PONbr": "00000000",
+                "InvNbr": "77467"
+            },
+            "4": {
+                "Purchase Order Number": "",
+                "Invoice Number": "77468",
+                "Status": "RL",
+                "Invoice Date": "07/29/07",
+                "Discount Date": "08/28/07",
+                "Due Date": "08/28/07",
+                "Amount - Total": "100.00000",
+                "Amount - Discount": "0.00000",
+                "Amount - Current": "0.00000",
+                "Amount - Aging 1": "0.00000",
+                "Amount - Aging 2": "0.00000",
+                "Amount - Aging 3": "100.00000",
+                "PONbr": "00000000",
+                "InvNbr": "77468"
+            },
+            "TOTAL": {
+                "Purchase Order Number": "Totals",
+                "Invoice Number": "",
+                "Status": "",
+                "Invoice Date": "",
+                "Discount Date": "",
+                "Due Date": "",
+                "Amount - Total": "3105.00000",
+                "Amount - Discount": "0.00000",
+                "Amount - Current": "0.00000",
+                "Amount - Aging 1": "0.00000",
+                "Amount - Aging 2": "0.00000",
+                "Amount - Aging 3": "3105.00000",
+                "PONbr": "",
+                "InvNbr": ""
+            }
+        }
+    }
+}

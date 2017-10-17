@@ -2,6 +2,10 @@
 	$paymentfile = $config->jsonfilepath.session_id()."-vipayment.json";
 	// $paymentfile = $config->jsonfilepath."vipy-vipayment.json";
 	
+	if ($config->ajax) {
+		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
+	}
+	
 	if (file_exists($paymentfile)) {
 		// JSON FILE will be false if an error occured during file get or json decode
 		$paymentjson = json_decode(convertfiletojson($paymentfile), true);
