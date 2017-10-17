@@ -38,6 +38,8 @@
             $editquote['canedit'] = true;
             $page->title = "Creating a Sales Order from Quote #" . $qnbr;
             $page->body = $config->paths->content."edit/quote-to-order/outline.php";
+            $config->scripts->append(hashtemplatefile('scripts/edit/edit-quote-to-order.js'));
+            $config->scripts->append(hashtemplatefile('scripts/edit/edit-pricing.js'));
             break;
     }
  ?>
