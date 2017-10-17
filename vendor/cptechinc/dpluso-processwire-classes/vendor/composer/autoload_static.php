@@ -22,6 +22,7 @@ class ComposerStaticInitbc1bd12326b6449f6f4b7d928a87cff9
         'a0cabdbd9b88355534fbe65163795350' => __DIR__ . '/../..' . '/src/SalesOrderDisplay.interface.php',
         'fce0f8b6e0d8d5bbcbb5e6fbfdd5074f' => __DIR__ . '/../..' . '/src/SalesOrderDisplay.trait.php',
         'c44eaadb21a488b049387d572de37eae' => __DIR__ . '/../..' . '/src/SalesOrderDisplay.class.php',
+        'c65e8e6340b24792082e556674d6f9ff' => __DIR__ . '/../..' . '/src/SalesOrderDisplayEdit.class.php',
         '7f42507641148c6993b0668bf84d8a9e' => __DIR__ . '/../..' . '/src/SalesOrderPanel.interface.php',
         '1e99eba587ae0975e7567cc96aca09df' => __DIR__ . '/../..' . '/src/SalesOrderPanel.class.php',
         'c6606aee3a957f50ca7d61fc438dcd8c' => __DIR__ . '/../..' . '/src/SalesOrderPanelRep.class.php',
@@ -31,6 +32,7 @@ class ComposerStaticInitbc1bd12326b6449f6f4b7d928a87cff9
         '0a6ffebbefbb4d19014ef0f9b55315c2' => __DIR__ . '/../..' . '/src/TablePageSorter.class.php',
         '3197c9ce28500f61544ef7d371ad70aa' => __DIR__ . '/../..' . '/src/Paginator.class.php',
         '158870b1f2d9e740dbb61458a8e9f8e4' => __DIR__ . '/../..' . '/src/Stringer.class.php',
+        '440ec72fe751892a61acbb76b5815831' => __DIR__ . '/../..' . '/src/OrderCreditCard.class.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

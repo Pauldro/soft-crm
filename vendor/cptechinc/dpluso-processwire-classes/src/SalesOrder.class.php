@@ -149,8 +149,8 @@
 			return $array;
 		}
 		
-		public function toJson() {
-			return $this::generate_classarray();
+		public function toArray() {
+			return (array) $this;
 		}
 	}
 	

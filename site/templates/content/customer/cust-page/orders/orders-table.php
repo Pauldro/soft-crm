@@ -44,7 +44,7 @@
         	<?php if ($order->has_error()) : ?>
                 <tr class="detail bg-danger" >
                     <td colspan="2" class="text-center"><b class="text-danger">Error:</b></td>
-                    <td colspan="2"><?php echo $order['errormsg']; ?></td> <td></td> <td></td>
+                    <td colspan="2"><?= $order->errormsg; ?></td> <td></td> <td></td>
                     <td colspan="2"> </td> <td></td> <td></td> <td></td>
                 </tr>
             <?php endif; ?>

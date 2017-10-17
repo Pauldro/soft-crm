@@ -38,12 +38,6 @@
             }
         }
         
-        public function generate_documentsrequesturl(Order $order) {
-            $url = $this->generate_ordersredirurl();
-            $url->query->setData(array('action' => 'get-order-documents', 'ordn' => $order->orderno, 'page' => $this->pagenbr, 'orderby' => $this->tablesorter->orderbystring));
-            return $url->getUrl();
-        }
-        
         public function generate_editurl(Order $order) {
             $url = $this->generate_ordersredirurl();
             $url->query->setData(array('action' => 'get-order-details','ordn' => $order->orderno));
@@ -105,25 +99,30 @@
             }
         }
         
-        public function generate_trackingrequesturl(Order $order) {
+        public function generate_documentsrequesturltrait(Order $order) {
             $url = $this->generate_ordersredirurl();
-            $url->query->setData(array('action' => 'get-order-tracking', 'ordn' => $order->orderno, 'page' => $this->pagenbr, 'orderby' => $this->tablesorter->orderbystring));
+            $url->query->setData(array('action' => 'get-order-documents', 'ordn' => $order->orderno));
             return $url->getUrl();
         }
         
-
+        public function generate_trackingrequesturltrait(Order $order) {
+            $url = $this->generate_ordersredirurl();
+            $url->query->setData(array('action' => 'get-order-tracking', 'ordn' => $order->orderno));
+            return $url->getUrl();
+        }
+        
         /* =============================================================
             URL Helper Functions
         ============================================================ */
         public function generate_customerurl(Order $order) {
-            $url = new \Purl\Url(wire('page')->httpUrl);
-            $url->path = wire('config')->pages->customer."$order->custid/";
+            $url = $this->generate_customerredirurl();
+            $url->query->setData(array('action' => 'load-customer', 'custID' => $order->custid));
             return $url->getUrl();
         }
         
         public function generate_customershiptourl(Order $order) {
             $url = new \Purl\Url($this->generate_customerurl($order));
-            if (!empty($order->shiptoid)) $url->path->add("shipto-$order->shiptoid");
+            if (!empty($order->shiptoid)) $url->query->set('shipID', $order->shiptoid);
             return $url->getUrl();
         }
         
@@ -134,6 +133,12 @@
         public function generate_ordersredirurl() {
             $url = new \Purl\Url(wire('config')->pages->orders);
             $url->path = wire('config')->pages->orders."redir/";
+            return $url;
+        }
+        
+        public function generate_customerredirurl() {
+            $url = new \Purl\Url(wire('config')->pages->orders);
+            $url->path = wire('config')->pages->customer."redir/";
             return $url;
         }
     }

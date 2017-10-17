@@ -11,6 +11,7 @@
         
         public function generate_loadurl() { 
             $url = new \Purl\Url(parent::generate_loadurl());
+            $url->query->set('action', 'load-cust-orders');
             $url->query->set('custID', $this->custID);
             return $url->getUrl();
         }
@@ -24,17 +25,19 @@
         public function generate_trackingrequesturl(Order $order) {
             $url = new \Purl\Url(parent::generate_trackingrequesturl($order));
             $url->query->set('custID', $this->custID);
+            return $url->getUrl();
         }
         
         public function generate_documentsrequesturl(Order $order) {
             $url = new \Purl\Url(parent::generate_documentsrequesturl($order));
             $url->query->set('custID', $this->custID);
+            return $url->getUrl();
         }
         
         public function generate_searchurl() {
             $url = new \Purl\Url(parent::generate_searchurl());
             $url->path = wire('config')->pages->ajax.'load/orders/search/cust/';
-            $url->query->setData(array('custID', $this->custID));
+            $url->query->set('custID', $this->custID);
             if ($this->shipID) {
                 $url->query->set('shipID', $this->shipID);
             }

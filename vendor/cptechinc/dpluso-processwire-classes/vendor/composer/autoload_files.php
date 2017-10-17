@@ -21,6 +21,7 @@ return array(
     'a0cabdbd9b88355534fbe65163795350' => $baseDir . '/src/SalesOrderDisplay.interface.php',
     'fce0f8b6e0d8d5bbcbb5e6fbfdd5074f' => $baseDir . '/src/SalesOrderDisplay.trait.php',
     'c44eaadb21a488b049387d572de37eae' => $baseDir . '/src/SalesOrderDisplay.class.php',
+    'c65e8e6340b24792082e556674d6f9ff' => $baseDir . '/src/SalesOrderDisplayEdit.class.php',
     '7f42507641148c6993b0668bf84d8a9e' => $baseDir . '/src/SalesOrderPanel.interface.php',
     '1e99eba587ae0975e7567cc96aca09df' => $baseDir . '/src/SalesOrderPanel.class.php',
     'c6606aee3a957f50ca7d61fc438dcd8c' => $baseDir . '/src/SalesOrderPanelRep.class.php',
@@ -30,4 +31,5 @@ return array(
     '0a6ffebbefbb4d19014ef0f9b55315c2' => $baseDir . '/src/TablePageSorter.class.php',
     '3197c9ce28500f61544ef7d371ad70aa' => $baseDir . '/src/Paginator.class.php',
     '158870b1f2d9e740dbb61458a8e9f8e4' => $baseDir . '/src/Stringer.class.php',
+    '440ec72fe751892a61acbb76b5815831' => $baseDir . '/src/OrderCreditCard.class.php',
 );

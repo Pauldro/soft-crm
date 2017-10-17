@@ -1,5 +1,4 @@
 <?php 
-
     interface OrderPanelInterface {
         public function setup_pageurl(\Purl\Url $pageurl);
         public function generate_expandorcollapselink(Order $order);

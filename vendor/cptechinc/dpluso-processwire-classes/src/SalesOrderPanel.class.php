@@ -105,6 +105,20 @@
 			return $url->getUrl();
 		}
 		
+		public function generate_documentsrequesturl(Order $order) {
+            $url = new \Purl\Url($this->generate_documentsrequesturltrait($order));
+			$url->query->set('page', $this->pagenbr);
+			$url->query->set('orderby', $this->tablesorter->orderbystring);
+            return $url->getUrl();
+        }
+		
+		public function generate_trackingrequesturl(Order $order) {
+            $url = new \Purl\Url($this->generate_trackingrequesturltrait($order));
+			$url->query->set('page', $this->pagenbr);
+			$url->query->set('orderby', $this->tablesorter->orderbystring);
+            return $url->getUrl();
+        }
+		
 		public function generate_viewlinkeduseractionslink(Order $order) {
 			$bootstrap = new Contento();
 			$href = $this->generate_viewlinkeduseractionsurl($order);
@@ -155,7 +169,7 @@
             $ajaxdata = $this->generate_ajaxdataforcontento();
             
             if ($order->has_documents()) {
-                return $bootstrap->openandclose('a', "href=$href|class=generate-load-links|title=Click to view Documents|$ajaxdata", $icon);
+                return $bootstrap->openandclose('a', "href=$href|class=generate-load-link|title=Click to view Documents|$ajaxdata", $icon);
             } else {
                 return $bootstrap->openandclose('a', "href=#|class=text-muted|title=No Documents Available", $icon);
             }

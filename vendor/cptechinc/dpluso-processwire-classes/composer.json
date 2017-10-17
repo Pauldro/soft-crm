@@ -21,6 +21,7 @@
 			"src/SalesOrderDisplay.interface.php",
 			"src/SalesOrderDisplay.trait.php",
 			"src/SalesOrderDisplay.class.php",
+			"src/SalesOrderDisplayEdit.class.php",
 			"src/SalesOrderPanel.interface.php",
 			"src/SalesOrderPanel.class.php",
 			"src/SalesOrderPanelRep.class.php",
@@ -29,7 +30,8 @@
 			"src/SalesOrder.class.php",
 			"src/TablePageSorter.class.php",
 			"src/Paginator.class.php",
-			"src/Stringer.class.php"
+			"src/Stringer.class.php",
+			"src/OrderCreditCard.class.php"
 		]
 	}
 }
