@@ -64,8 +64,9 @@
 			$session->loc = $config->pages->index;
 			break;
 		case 'vi-shipfrom':
-			$data = array('DBNAME' => $config->dbName, 'VISHIPFROMINFO' => false, 'VENDID' => $vendorID, 'SHIPID' => $shipID);
-			$session->loc = $config->pages->vendorinfo. "$vendorID/";
+			$shipfromID = $input->get->text('shipfromID');
+			$data = array('DBNAME' => $config->dbName, 'VISHIPFROMINFO' => false, 'VENDID' => $vendorID, 'SHIPID' => $shipfromID);
+			$session->loc = $config->pages->vendorinfo. "$vendorID/shipfrom-$shipfromID";
 			break;
 		case 'vi-openinv':
 			$data = array('DBNAME' => $config->dbName, 'VIOPENINV' => false, 'VENDID' => $vendorID);
