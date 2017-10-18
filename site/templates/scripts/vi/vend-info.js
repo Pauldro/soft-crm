@@ -4,6 +4,8 @@ var vendlookupform = "#vi-vend-lookup";
 $(function() {
     
 });
+    // ADD LINE BELOW under vendorID to buttons that pull from both... also addQuery to href in function
+    // var vendorshipfromID = $(vendlookupform + " .vendorshipfromID").val();
 
 function payment() { 
 	var vendorID = $(vendlookupform + " .vendorID").val();

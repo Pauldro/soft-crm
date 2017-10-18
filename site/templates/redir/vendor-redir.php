@@ -66,6 +66,10 @@
 		case 'vi-shipfrom':
 			$shipfromID = $input->get->text('shipfromID');
 			$data = array('DBNAME' => $config->dbName, 'VISHIPFROMINFO' => false, 'VENDID' => $vendorID, 'SHIPID' => $shipfromID);
+			// USE THIS for cases where buttons will be grabbed twice 
+			// if (!empty($input->get->text('shipfromID'))) {
+			// 	$data['SHIPID'] = $input->get->text('shipfromID');
+			// }
 			$session->loc = $config->pages->vendorinfo. "$vendorID/shipfrom-$shipfromID";
 			break;
 		case 'vi-openinv':
