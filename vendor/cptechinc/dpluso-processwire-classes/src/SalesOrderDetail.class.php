@@ -1,6 +1,6 @@
 <?php 
 
-    class SalesOrderDetail {
+    class SalesOrderDetail extends OrderDetail implements OrderDetailInterface {
         public $sessionid;
         public $recno;
         public $date;
