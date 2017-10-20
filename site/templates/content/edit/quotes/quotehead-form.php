@@ -1,8 +1,6 @@
 <?php
-    $quote = get_quotehead(session_id(), $qnbr, false); $hidden_domestic = '';
-
     $noteurl = $config->pages->notes.'redir/?action=get-quote-notes&qnbr='.$qnbr.'&linenbr=0&modal=modal';
-	if ($quote['notes'] != 'Y') {
+	if ($quote->has_notes() != 'Y') {
 		$headnotelink = '<a class="btn btn-default load-notes" role="button" href="'.$noteurl.'" data-modal="#ajax-modal"><i class="material-icons" title="View quote notes">&#xE0B9;</i> Add Quote Notes</a>';
 	} else {
 		$headnotelink = '<a class="btn btn-primary load-notes" role="button" href="'.$noteurl.'" data-modal="#ajax-modal"> <i class="material-icons" title="View quote notes">&#xE0B9;</i> View Quote Notes</a>';
@@ -18,7 +16,7 @@
 <form id="quotehead-form" action="<?php echo $config->pages->quotes."redir/";  ?>" class="form-group" method="post">
 	<input type="hidden" name="action" value="save-quotehead">
 	<input type="hidden" name="qnbr" id="qnbr" value="<?php echo $qnbr; ?>">
-    <input type="hidden" name="custID" id="custID" value="<?php echo $quote['custid']; ?>">
+    <input type="hidden" name="custID" id="custID" value="<?php echo $quote->custid; ?>">
     <div class="row"> <div class="col-xs-10 col-xs-offset-1"> <div class="response"></div> </div> </div>
 
     <div class="row">
