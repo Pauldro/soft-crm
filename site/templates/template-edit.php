@@ -17,14 +17,15 @@
             break;
         case 'quote':
             $qnbr = $input->get->text('qnbr');
-            $editquote['qnbr'] = $qnbr;
-            $editquote['custID'] = getquotecustomer(session_id(), $qnbr, false); $custID = $editquote['custID'];
+            $editquotedisplay = new EditQuoteDisplay(session_id(), $page->fullURL, '#ajax-modal', $qnbr);
+            $quote = $editquotedisplay->get_quote();
             $editquote['canedit'] = true; //caneditquote(session_id(), $qnbr);
             if ($editquote['canedit']) {
-                $page->title = "Editing Quote #" . $editquote['qnbr'] . ' for ' . get_customername($custID);
+                $page->title = "Editing Quote #" . $qnbr . ' for ' . get_customername($quote->custid);
             } else {
-                $page->title = "Viewing Quote #" . $editquote['qnbr'] . ' for ' . get_customername($custID);
+                $page->title = "Viewing Quote #" . $qnbr . ' for ' . get_customername($quote->custid);
             }
+            
             $editquote['unlock-url'] = $config->pages->quotes."redir/?action=unlock-quote&qnbr=".$qnbr;
 
             $page->body = $config->paths->content."edit/quotes/outline.php";
