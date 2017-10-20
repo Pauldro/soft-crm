@@ -23,7 +23,7 @@
     <?php endif; ?>
     <tr>
     	<td class="control-label">Contact Email</td>
-        <td> <input type="email" name="contact-email" class="form-control input-sm required email" value="<?php echo $quote['emailadr']; ?>"> </td>
+        <td> <input type="email" name="contact-email" class="form-control input-sm email" value="<?php echo $quote['emailadr']; ?>"> </td>
     </tr>
 </table>
 
