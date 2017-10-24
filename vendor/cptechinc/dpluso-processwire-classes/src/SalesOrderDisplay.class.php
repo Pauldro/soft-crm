@@ -23,6 +23,14 @@
             return ($order->paytype == 'cc') ? '' : 'hidden';
         }
         
+        public function showhide_phoneintl(Order $order) {
+            return $order->is_phoneintl() ? '' : 'hidden';
+        }
+        
+        public function showhide_phonedomestic(Order $order) {
+            return $order->is_phoneintl() ? 'hidden' : '';
+        }
+        
         /* =============================================================
             OrderDisplayInterface Functions
             LINKS ARE HTML LINKS, AND URLS ARE THE URLS THAT THE HREF VALUE
