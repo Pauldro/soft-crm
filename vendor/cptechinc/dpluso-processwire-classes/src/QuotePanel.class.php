@@ -28,6 +28,13 @@
 			OrderPanelInterface Functions
 			LINKS ARE HTML LINKS, AND URLS ARE THE URLS THAT THE HREF VALUE
 		============================================================ */
+		public function generate_loadlink() {
+            $bootstrap = new Contento();
+            $href = $this->generate_loadurl();
+            $ajaxdata = $this->generate_ajaxdataforcontento();
+            return $bootstrap->openandclose('a', "href=$href|class=generate-load-link|$ajaxdata", "Load Quotes");
+        }
+		
 		public function generate_expandorcollapselink(Order $quote) {
 			$bootstrap = new Contento();
 			

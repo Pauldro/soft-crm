@@ -9,9 +9,9 @@
             $href = $this->generate_dplusnotesrequesturl($quote, $linenbr);
             
             if ($quote->can_edit()) {
-                $title = ($quote->has_notes()) ? "View and Create Order Notes" : "Create Order Notes";
+                $title = ($quote->has_notes()) ? "View and Create Quote Notes" : "Create Quote Notes";
             } else {
-                $title = ($quote->has_notes()) ? "View Order Notes" : "View Order Notes";
+                $title = ($quote->has_notes()) ? "View Quote Notes" : "View Quote Notes";
             }
             $content = $bootstrap->createicon('material-icons', '&#xE0B9;') . ' ' . $title;
             $link = $bootstrap->openandclose('a', "href=$href|class=btn btn-default load-notes|title=$title|data-modal=$this->modal", $content);
