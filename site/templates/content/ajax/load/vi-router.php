@@ -16,10 +16,15 @@
             $page->title = get_vendorname($vendorID) . ' Ship-From Information';
             $page->body = $config->paths->content."vend-information/vend-shipfrom.php";
             break;
+        case 'vi-purchasehist':
+            $vendorID = $input->get->text('vendorID');
+            $page->title = get_vendorname($vendorID) . ' Purchase History';
+            $page->body = $config->paths->content."vend-information/vend-purchase-history.php";
+            break;
         default:
-            $page->title = 'Search for a customer';
+            $page->title = 'Search for a vendor';
             if ($input->get->q) {$q = $input->get->text('q');}
-            $page->body = $config->paths->content."cust-information/forms/cust-search-form.php";
+            $page->body = $config->paths->content."vend-information/forms/vend-page-form.php";
             break;
     }
 
@@ -34,8 +39,8 @@
 		$config->scripts->append('//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js');
 		$config->scripts->append('//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js');
 		$config->scripts->append(hashtemplatefile('scripts/libs/datatables.js'));
-		$config->scripts->append(hashtemplatefile('scripts/ci/cust-functions.js'));
-		$config->scripts->append(hashtemplatefile('scripts/ci/cust-info.js'));
+		$config->scripts->append(hashtemplatefile('scripts/vi/vend-functions.js'));
+		$config->scripts->append(hashtemplatefile('scripts/vi/vend-info.js'));
 		include $config->paths->content."common/include-blank-page.php";
 	}
 

@@ -43,7 +43,14 @@
 	* 		DBNAME=$config->DBNAME
 	*		VISHIPFROMINFO
 	*		VENDID=$custID
-	*		SHIPID=TODO fill in
+	*		SHIPID=
+	* 		break;
+	*	case 'vi-purchasehist'
+	* 		DBNAME=$config->DBNAME
+	*		VIPURCHHIST
+	*		VENDID=$custID
+	*		SHIPID=
+	*		DATE=
 	* 		break;
 	* }
 	*
@@ -78,6 +85,16 @@
 			break;
 		case 'vi-payment':
 			$data = array('DBNAME' => $config->dbName, 'VIPAYMENT' => false, 'VENDID' => $vendorID);
+			$session->loc = $config->pages->vendorinfo. "$vendorID/";
+			break;
+		case 'vi-purchasehist':
+			$date = $input->get->text('startdate');
+			$session->date = $date;
+			$startdate = date('Ymd', strtotime($date));
+			$data = array('DBNAME' => $config->dbName, 'VIPURCHHIST' => false, 'VENDID' => $vendorID, 'SHIPID' => $shipfromID, 'DATE' => $startdate);
+			if (!empty($input->get->text('shipfromID'))) {
+				$data['SHIPID'] = $input->get->text('shipfromID');
+			}
 			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
 	}

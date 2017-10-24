@@ -1,0 +1,531 @@
+{
+    "error": false,
+    "errormsg": "",
+    "sessionid": "viphv",
+    "vendid": "RDB100",
+    "shipid": "",
+    "date": "20170730",
+    "data": {
+        "purchaseorders": {
+            "1": {
+                "details": {
+                    "1": {
+                        "Purchase Order Number": "7143",
+                        "Invoice Number": "",
+                        "Reference": "",
+                        "Item ID": "RDB100",
+                        "Item Description 1": "LCD MONITOR 19\"",
+                        "Item Description 2": "WIDESCREEN WITH SPEAKERS ATTACHED",
+                        "Warehouse Code": "BU",
+                        "Order Date": "10/17/17",
+                        "Receipt Date": "10/17/17",
+                        "Invoice Date": "",
+                        "Purchase Unit of Measure": "EACH",
+                        "Received Quantity": "10.00000",
+                        "Received Unit Cost": "67.12000",
+                        "Received Amount": "671.20000",
+                        "Invoiced Quantity": "0.00000",
+                        "Invoiced Unit Cost": "0.00000",
+                        "Invoiced Amount": "0.00000",
+                        "PONbr": "00007143",
+                        "InvNbr": "",
+                        "detailnotes": {
+                            "1": {
+                                "Detail Notes": "Detail line note one for po 7143"
+                            },
+                            "2": {
+                                "Detail Notes": "line 1"
+                            }
+                        }
+                    }
+                },
+                "ordernotes": {
+                },
+                "pototals": {
+                    "Purchase Order Number": "PO Totals",
+                    "Invoice Number": "",
+                    "Reference": "",
+                    "Item ID": "",
+                    "Item Description 1": "",
+                    "Item Description 2": "",
+                    "Warehouse Code": "",
+                    "Order Date": "",
+                    "Receipt Date": "",
+                    "Invoice Date": "",
+                    "Purchase Unit of Measure": "",
+                    "Received Quantity": "",
+                    "Received Unit Cost": "",
+                    "Received Amount": "671.20000",
+                    "Invoiced Quantity": "",
+                    "Invoiced Unit Cost": "",
+                    "Invoiced Amount": "0.00000",
+                    "PONbr": "",
+                    "InvNbr": ""
+                }
+            },
+            "2": {
+                "details": {
+                    "1": {
+                        "Purchase Order Number": "7142",
+                        "Invoice Number": "",
+                        "Reference": "",
+                        "Item ID": "2.7MM4X8",
+                        "Item Description 1": "CHINESE MURANTI SHEET",
+                        "Item Description 2": "",
+                        "Warehouse Code": "BU",
+                        "Order Date": "10/12/17",
+                        "Receipt Date": "10/12/17",
+                        "Invoice Date": "",
+                        "Purchase Unit of Measure": "EACH",
+                        "Received Quantity": "945.00000",
+                        "Received Unit Cost": "6.25000",
+                        "Received Amount": "5906.25000",
+                        "Invoiced Quantity": "0.00000",
+                        "Invoiced Unit Cost": "0.00000",
+                        "Invoiced Amount": "0.00000",
+                        "PONbr": "00007142",
+                        "InvNbr": "",
+                        "detailnotes": {
+                        }
+                    }
+                },
+                "ordernotes": {
+                },
+                "pototals": {
+                    "Purchase Order Number": "PO Totals",
+                    "Invoice Number": "",
+                    "Reference": "",
+                    "Item ID": "",
+                    "Item Description 1": "",
+                    "Item Description 2": "",
+                    "Warehouse Code": "",
+                    "Order Date": "",
+                    "Receipt Date": "",
+                    "Invoice Date": "",
+                    "Purchase Unit of Measure": "",
+                    "Received Quantity": "",
+                    "Received Unit Cost": "",
+                    "Received Amount": "5906.25000",
+                    "Invoiced Quantity": "",
+                    "Invoiced Unit Cost": "",
+                    "Invoiced Amount": "0.00000",
+                    "PONbr": "",
+                    "InvNbr": ""
+                }
+            },
+            "3": {
+                "details": {
+                    "1": {
+                        "Purchase Order Number": "7111",
+                        "Invoice Number": "",
+                        "Reference": "",
+                        "Item ID": "8391",
+                        "Item Description 1": "COUNTER MAGNETIC SPINNER DSPLY-WHTE",
+                        "Item Description 2": "",
+                        "Warehouse Code": "BU",
+                        "Order Date": "02/09/17",
+                        "Receipt Date": "09/14/17",
+                        "Invoice Date": "",
+                        "Purchase Unit of Measure": "EACH",
+                        "Received Quantity": "5.00000",
+                        "Received Unit Cost": "22.25000",
+                        "Received Amount": "111.25000",
+                        "Invoiced Quantity": "0.00000",
+                        "Invoiced Unit Cost": "0.00000",
+                        "Invoiced Amount": "0.00000",
+                        "PONbr": "00007111",
+                        "InvNbr": "",
+                        "detailnotes": {
+                        }
+                    }
+                },
+                "ordernotes": {
+                },
+                "pototals": {
+                    "Purchase Order Number": "PO Totals",
+                    "Invoice Number": "",
+                    "Reference": "",
+                    "Item ID": "",
+                    "Item Description 1": "",
+                    "Item Description 2": "",
+                    "Warehouse Code": "",
+                    "Order Date": "",
+                    "Receipt Date": "",
+                    "Invoice Date": "",
+                    "Purchase Unit of Measure": "",
+                    "Received Quantity": "",
+                    "Received Unit Cost": "",
+                    "Received Amount": "111.25000",
+                    "Invoiced Quantity": "",
+                    "Invoiced Unit Cost": "",
+                    "Invoiced Amount": "0.00000",
+                    "PONbr": "",
+                    "InvNbr": ""
+                }
+            },
+            "4": {
+                "details": {
+                    "1": {
+                        "Purchase Order Number": "7137",
+                        "Invoice Number": "",
+                        "Reference": "",
+                        "Item ID": "N",
+                        "Item Description 1": "STEP LADDER 8\\'",
+                        "Item Description 2": "",
+                        "Warehouse Code": "BU",
+                        "Order Date": "09/11/17",
+                        "Receipt Date": "09/14/17",
+                        "Invoice Date": "",
+                        "Purchase Unit of Measure": "EA",
+                        "Received Quantity": "1.00000",
+                        "Received Unit Cost": "55.00000",
+                        "Received Amount": "55.00000",
+                        "Invoiced Quantity": "0.00000",
+                        "Invoiced Unit Cost": "0.00000",
+                        "Invoiced Amount": "0.00000",
+                        "PONbr": "00007137",
+                        "InvNbr": "",
+                        "detailnotes": {
+                        }
+                    }
+                },
+                "ordernotes": {
+                },
+                "pototals": {
+                    "Purchase Order Number": "PO Totals",
+                    "Invoice Number": "",
+                    "Reference": "",
+                    "Item ID": "",
+                    "Item Description 1": "",
+                    "Item Description 2": "",
+                    "Warehouse Code": "",
+                    "Order Date": "",
+                    "Receipt Date": "",
+                    "Invoice Date": "",
+                    "Purchase Unit of Measure": "",
+                    "Received Quantity": "",
+                    "Received Unit Cost": "",
+                    "Received Amount": "55.00000",
+                    "Invoiced Quantity": "",
+                    "Invoiced Unit Cost": "",
+                    "Invoiced Amount": "0.00000",
+                    "PONbr": "",
+                    "InvNbr": ""
+                }
+            },
+            "5": {
+                "details": {
+                    "1": {
+                        "Purchase Order Number": "7126",
+                        "Invoice Number": "",
+                        "Reference": "",
+                        "Item ID": "2300 08",
+                        "Item Description 1": "SOY-SOL SAMPLE",
+                        "Item Description 2": "ITEM 2300 08 DESC 2 XXXXXXXXXXXXXYZ",
+                        "Warehouse Code": "BU",
+                        "Order Date": "04/26/17",
+                        "Receipt Date": "08/24/17",
+                        "Invoice Date": "",
+                        "Purchase Unit of Measure": "EACH",
+                        "Received Quantity": "50.00000",
+                        "Received Unit Cost": "0.68500",
+                        "Received Amount": "34.25000",
+                        "Invoiced Quantity": "0.00000",
+                        "Invoiced Unit Cost": "0.00000",
+                        "Invoiced Amount": "0.00000",
+                        "PONbr": "00007126",
+                        "InvNbr": "",
+                        "detailnotes": {
+                        }
+                    }
+                },
+                "ordernotes": {
+                },
+                "pototals": {
+                    "Purchase Order Number": "PO Totals",
+                    "Invoice Number": "",
+                    "Reference": "",
+                    "Item ID": "",
+                    "Item Description 1": "",
+                    "Item Description 2": "",
+                    "Warehouse Code": "",
+                    "Order Date": "",
+                    "Receipt Date": "",
+                    "Invoice Date": "",
+                    "Purchase Unit of Measure": "",
+                    "Received Quantity": "",
+                    "Received Unit Cost": "",
+                    "Received Amount": "34.25000",
+                    "Invoiced Quantity": "",
+                    "Invoiced Unit Cost": "",
+                    "Invoiced Amount": "0.00000",
+                    "PONbr": "",
+                    "InvNbr": ""
+                }
+            },
+            "6": {
+                "details": {
+                    "1": {
+                        "Purchase Order Number": "7130",
+                        "Invoice Number": "",
+                        "Reference": "",
+                        "Item ID": "8391",
+                        "Item Description 1": "COUNTER MAGNETIC SPINNER DSPLY-WHTE",
+                        "Item Description 2": "",
+                        "Warehouse Code": "BU",
+                        "Order Date": "05/16/17",
+                        "Receipt Date": "08/11/17",
+                        "Invoice Date": "",
+                        "Purchase Unit of Measure": "EACH",
+                        "Received Quantity": "50.00000",
+                        "Received Unit Cost": "22.25000",
+                        "Received Amount": "1112.50000",
+                        "Invoiced Quantity": "0.00000",
+                        "Invoiced Unit Cost": "0.00000",
+                        "Invoiced Amount": "0.00000",
+                        "PONbr": "00007130",
+                        "InvNbr": "",
+                        "detailnotes": {
+                        }
+                    }
+                },
+                "ordernotes": {
+                },
+                "pototals": {
+                    "Purchase Order Number": "PO Totals",
+                    "Invoice Number": "",
+                    "Reference": "",
+                    "Item ID": "",
+                    "Item Description 1": "",
+                    "Item Description 2": "",
+                    "Warehouse Code": "",
+                    "Order Date": "",
+                    "Receipt Date": "",
+                    "Invoice Date": "",
+                    "Purchase Unit of Measure": "",
+                    "Received Quantity": "",
+                    "Received Unit Cost": "",
+                    "Received Amount": "1112.50000",
+                    "Invoiced Quantity": "",
+                    "Invoiced Unit Cost": "",
+                    "Invoiced Amount": "0.00000",
+                    "PONbr": "",
+                    "InvNbr": ""
+                }
+            },
+            "7": {
+                "details": {
+                    "1": {
+                        "Purchase Order Number": "7135",
+                        "Invoice Number": "",
+                        "Reference": "",
+                        "Item ID": "8391",
+                        "Item Description 1": "COUNTER MAGNETIC SPINNER DSPLY-WHTE",
+                        "Item Description 2": "",
+                        "Warehouse Code": "BU",
+                        "Order Date": "08/11/17",
+                        "Receipt Date": "08/11/17",
+                        "Invoice Date": "",
+                        "Purchase Unit of Measure": "EACH",
+                        "Received Quantity": "100.00000",
+                        "Received Unit Cost": "21.75000",
+                        "Received Amount": "2175.00000",
+                        "Invoiced Quantity": "0.00000",
+                        "Invoiced Unit Cost": "0.00000",
+                        "Invoiced Amount": "0.00000",
+                        "PONbr": "00007135",
+                        "InvNbr": "",
+                        "detailnotes": {
+                        }
+                    }
+                },
+                "ordernotes": {
+                },
+                "pototals": {
+                    "Purchase Order Number": "PO Totals",
+                    "Invoice Number": "",
+                    "Reference": "",
+                    "Item ID": "",
+                    "Item Description 1": "",
+                    "Item Description 2": "",
+                    "Warehouse Code": "",
+                    "Order Date": "",
+                    "Receipt Date": "",
+                    "Invoice Date": "",
+                    "Purchase Unit of Measure": "",
+                    "Received Quantity": "",
+                    "Received Unit Cost": "",
+                    "Received Amount": "2175.00000",
+                    "Invoiced Quantity": "",
+                    "Invoiced Unit Cost": "",
+                    "Invoiced Amount": "0.00000",
+                    "PONbr": "",
+                    "InvNbr": ""
+                }
+            },
+            "8": {
+                "details": {
+                    "1": {
+                        "Purchase Order Number": "7134",
+                        "Invoice Number": "",
+                        "Reference": "",
+                        "Item ID": "FLU1T09",
+                        "Item Description 1": "9\" TOILET SUPPLY LINE",
+                        "Item Description 2": "",
+                        "Warehouse Code": "BU",
+                        "Order Date": "07/31/17",
+                        "Receipt Date": "07/31/17",
+                        "Invoice Date": "",
+                        "Purchase Unit of Measure": "EACH",
+                        "Received Quantity": "25.00000",
+                        "Received Unit Cost": "1.34000",
+                        "Received Amount": "33.50000",
+                        "Invoiced Quantity": "0.00000",
+                        "Invoiced Unit Cost": "0.00000",
+                        "Invoiced Amount": "0.00000",
+                        "PONbr": "00007134",
+                        "InvNbr": "",
+                        "detailnotes": {
+                        }
+                    },
+                    "2": {
+                        "Purchase Order Number": "7134",
+                        "Invoice Number": "",
+                        "Reference": "",
+                        "Item ID": "FLU400A",
+                        "Item Description 1": "PRO SERIES ADJUSTABLE BALLCOCK",
+                        "Item Description 2": "",
+                        "Warehouse Code": "BU",
+                        "Order Date": "07/31/17",
+                        "Receipt Date": "07/31/17",
+                        "Invoice Date": "",
+                        "Purchase Unit of Measure": "EACH",
+                        "Received Quantity": "50.00000",
+                        "Received Unit Cost": "5.12000",
+                        "Received Amount": "256.00000",
+                        "Invoiced Quantity": "0.00000",
+                        "Invoiced Unit Cost": "0.00000",
+                        "Invoiced Amount": "0.00000",
+                        "PONbr": "00007134",
+                        "InvNbr": "",
+                        "detailnotes": {
+                        }
+                    },
+                    "3": {
+                        "Purchase Order Number": "7134",
+                        "Invoice Number": "",
+                        "Reference": "",
+                        "Item ID": "FLU400AB",
+                        "Item Description 1": "ADJUSTABLE BALLCOCK W/BRASS SHANK",
+                        "Item Description 2": "SAME AS FLU400A",
+                        "Warehouse Code": "BU",
+                        "Order Date": "07/31/17",
+                        "Receipt Date": "07/31/17",
+                        "Invoice Date": "",
+                        "Purchase Unit of Measure": "EACH",
+                        "Received Quantity": "12.00000",
+                        "Received Unit Cost": "7.65000",
+                        "Received Amount": "91.80000",
+                        "Invoiced Quantity": "0.00000",
+                        "Invoiced Unit Cost": "0.00000",
+                        "Invoiced Amount": "0.00000",
+                        "PONbr": "00007134",
+                        "InvNbr": "",
+                        "detailnotes": {
+                        }
+                    },
+                    "4": {
+                        "Purchase Order Number": "7134",
+                        "Invoice Number": "",
+                        "Reference": "",
+                        "Item ID": "FLU400AK",
+                        "Item Description 1": "ADJUSTABLE BALLCOCK W/FLUSHVALVE",
+                        "Item Description 2": "W/TANK LEVER W/TANK BOLTS & GASKET",
+                        "Warehouse Code": "BU",
+                        "Order Date": "07/31/17",
+                        "Receipt Date": "07/31/17",
+                        "Invoice Date": "",
+                        "Purchase Unit of Measure": "EACH",
+                        "Received Quantity": "6.00000",
+                        "Received Unit Cost": "12.78000",
+                        "Received Amount": "76.68000",
+                        "Invoiced Quantity": "0.00000",
+                        "Invoiced Unit Cost": "0.00000",
+                        "Invoiced Amount": "0.00000",
+                        "PONbr": "00007134",
+                        "InvNbr": "",
+                        "detailnotes": {
+                        }
+                    },
+                    "5": {
+                        "Purchase Order Number": "7134",
+                        "Invoice Number": "",
+                        "Reference": "",
+                        "Item ID": "FLU500",
+                        "Item Description 1": "REPLACEMENT FLAPPER FOR 555C",
+                        "Item Description 2": "",
+                        "Warehouse Code": "BU",
+                        "Order Date": "07/31/17",
+                        "Receipt Date": "07/31/17",
+                        "Invoice Date": "",
+                        "Purchase Unit of Measure": "EACH",
+                        "Received Quantity": "24.00000",
+                        "Received Unit Cost": "1.45000",
+                        "Received Amount": "34.80000",
+                        "Invoiced Quantity": "0.00000",
+                        "Invoiced Unit Cost": "0.00000",
+                        "Invoiced Amount": "0.00000",
+                        "PONbr": "00007134",
+                        "InvNbr": "",
+                        "detailnotes": {
+                        }
+                    }
+                },
+                "ordernotes": {
+                },
+                "pototals": {
+                    "Purchase Order Number": "PO Totals",
+                    "Invoice Number": "",
+                    "Reference": "",
+                    "Item ID": "",
+                    "Item Description 1": "",
+                    "Item Description 2": "",
+                    "Warehouse Code": "",
+                    "Order Date": "",
+                    "Receipt Date": "",
+                    "Invoice Date": "",
+                    "Purchase Unit of Measure": "",
+                    "Received Quantity": "",
+                    "Received Unit Cost": "",
+                    "Received Amount": "492.78000",
+                    "Invoiced Quantity": "",
+                    "Invoiced Unit Cost": "",
+                    "Invoiced Amount": "0.00000",
+                    "PONbr": "",
+                    "InvNbr": ""
+                }
+            }
+        },
+        "vendortotals": {
+            "Purchase Order Number": "Vendor Totals",
+            "Invoice Number": "",
+            "Reference": "",
+            "Item ID": "",
+            "Item Description 1": "",
+            "Item Description 2": "",
+            "Warehouse Code": "",
+            "Order Date": "",
+            "Receipt Date": "",
+            "Invoice Date": "",
+            "Purchase Unit of Measure": "",
+            "Received Quantity": "",
+            "Received Unit Cost": "",
+            "Received Amount": "10558.23000",
+            "Invoiced Quantity": "",
+            "Invoiced Unit Cost": "",
+            "Invoiced Amount": "0.00000",
+            "PONbr": "",
+            "InvNbr": ""
+        }
+    }
+}

@@ -12,3 +12,8 @@ function vi_shipfrom(vendorID, shipfromID, callback) {
     var url = config.urls.vendor.redir.vi_shipfrom+"&vendorID="+urlencode(vendorID)+"&shipfromID="+urlencode(shipfromID);
     $.get(url, function() { callback();});
 }
+
+function vi_purchasehist(vendorID, callback) {
+    var url = config.urls.vendor.redir.vi_purchasehist+"&vendorID="+urlencode(vendorID);
+    $.get(url, function() { callback();});
+}
