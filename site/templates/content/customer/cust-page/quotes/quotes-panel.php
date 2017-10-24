@@ -32,7 +32,7 @@
             <a href="#quotes-div" data-parent="#quotes-panel" data-toggle="collapse">Customer Quotes <span class="caret"></span></a> <span class="badge"><?= $quotepanel->count; ?></span> &nbsp; | &nbsp;
             <?= $quotepanel->generate_refreshlink(); ?>
         <?php else : ?>
-        	<?= $quotepanel->generate_loadurl(); ?>
+        	<?= $quotepanel->generate_loadlink(); ?>
         <?php endif; ?>
 		&nbsp; &nbsp;
 		<?= $quotepanel->generate_lastloadeddescription(); ?>

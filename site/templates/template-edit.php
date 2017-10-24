@@ -5,10 +5,9 @@
             $custID = get_custid_from_order(session_id(), $ordn);
             $ordereditdisplay = new EditSalesOrderDisplay(session_id(), $page->fullURL, '#ajax-modal', $ordn);
         	$order = $ordereditdisplay->get_order(); 
-            $ordereditdisplay->canedit = ($input->get->readonly) ? $ordereditdisplay->canedit = false : $order->can_edit();
+            $ordereditdisplay->canedit = ($input->get->readonly) ? false : $order->can_edit();
             $prefix = ($ordereditdisplay->canedit) ? 'Editing' : 'Viewing';
             $page->title = "$prefix Order #" . $ordn . ' for ' . get_customer_name_from_order(session_id(), $ordn);
-            
             $config->scripts->append(hashtemplatefile('scripts/dplusnotes/order-notes.js'));
 			$config->scripts->append(hashtemplatefile('scripts/edit/card-validate.js'));
 			$config->scripts->append(hashtemplatefile('scripts/edit/edit-orders.js'));
@@ -19,15 +18,9 @@
             $qnbr = $input->get->text('qnbr');
             $editquotedisplay = new EditQuoteDisplay(session_id(), $page->fullURL, '#ajax-modal', $qnbr);
             $quote = $editquotedisplay->get_quote();
-            $editquote['canedit'] = true; //caneditquote(session_id(), $qnbr);
-            if ($editquote['canedit']) {
-                $page->title = "Editing Quote #" . $qnbr . ' for ' . get_customername($quote->custid);
-            } else {
-                $page->title = "Viewing Quote #" . $qnbr . ' for ' . get_customername($quote->custid);
-            }
-            
-            $editquote['unlock-url'] = $config->pages->quotes."redir/?action=unlock-quote&qnbr=".$qnbr;
-
+            $editquotedisplay->canedit = $quote->can_edit();
+            $prefix = ($editquotedisplay->canedit) ? 'Editing' : 'Viewing';
+            $page->title = "$prefix Quote #" . $qnbr . ' for ' . get_customername($quote->custid);
             $page->body = $config->paths->content."edit/quotes/outline.php";
             $config->scripts->append(hashtemplatefile('scripts/dplusnotes/quote-notes.js'));
 			$config->scripts->append(hashtemplatefile('scripts/edit/edit-quotes.js'));
@@ -35,10 +28,12 @@
             break;
         case 'quote-to-order':
             $qnbr = $input->get->text('qnbr');
-            $editquote['custID'] = getquotecustomer(session_id(), $qnbr, false); $custID = $editquote['custID'];
-            $editquote['canedit'] = true;
+            $editquotedisplay = new EditQuoteDisplay(session_id(), $page->fullURL, '#ajax-modal', $qnbr);
+            $quote = $editquotedisplay->get_quote();
+            $editquotedisplay->canedit = $quote->can_edit();
             $page->title = "Creating a Sales Order from Quote #" . $qnbr;
             $page->body = $config->paths->content."edit/quote-to-order/outline.php";
+            $config->scripts->append(hashtemplatefile('scripts/edit/edit-quotes.js'));
             $config->scripts->append(hashtemplatefile('scripts/edit/edit-quote-to-order.js'));
             $config->scripts->append(hashtemplatefile('scripts/edit/edit-pricing.js'));
             break;
