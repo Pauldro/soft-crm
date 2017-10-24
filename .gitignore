@@ -21,3 +21,4 @@ site/modules/ModulesManager
 site/modules/ProcessDatabaseBackups
 site/modules/ProcessExportProfile
 site/assets
+composer.lock

@@ -146,12 +146,12 @@
 			$qnbr = $input->post->text('qnbr');
 			$quote = get_quotehead(session_id(), $qnbr, false);
 			//$quote['status'] = ''; //TODO ON FORM
-			$quote['btname'] = $input->post->text('cust-name');
-			$quote['btadr1'] = $input->post->text('cust-address');
-			$quote['btadr2'] = $input->post->text('cust-address2');
-			$quote['btcity'] = $input->post->text('cust-city');
-			$quote['btstate'] = $input->post->text('cust-state');
-			$quote['btzip'] = $input->post->text('cust-zip');
+			// $quote['btname'] = $input->post->text('cust-name');
+			// $quote['btadr1'] = $input->post->text('cust-address');
+			// $quote['btadr2'] = $input->post->text('cust-address2');
+			// $quote['btcity'] = $input->post->text('cust-city');
+			// $quote['btstate'] = $input->post->text('cust-state');
+			// $quote['btzip'] = $input->post->text('cust-zip');
 			$quote['shiptoid'] = $input->post->text('shiptoid');
 			$quote['stname'] = $input->post->text('shiptoname');
 			$quote['stadr1'] = $input->post->text('shipto-address');
@@ -262,7 +262,8 @@
 
 			$session->sql = edit_quoteline(session_id(), $qnbr, $quotedetail, false);
 			$session->detail = $quotedetail;
-			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr);
+			$custID = getquotecustomer(session_id(), $qnbr, false);
+			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'CUSTID' => $custID);
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
 			} else {
@@ -278,9 +279,27 @@
 			$quotedetail['linenbr'] = $input->post->text('linenbr');
 			$session->sql = edit_quoteline(session_id(), $qnbr, $quotedetail, false);
 			$session->detail = $quotedetail;
-			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'QTY' => '0');
+			$custID = getquotecustomer(session_id(), $qnbr, false);
+			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'QTY' => '0', 'CUSTID' => $custID);
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
+			} else {
+				$session->loc = $config->pages->edit."quote/?qnbr=".$qnbr;
+			}
+			$session->editdetail = true;
+			break;
+		case 'remove-line-get':
+			$qnbr = $input->get->text('qnbr');
+			$linenbr = $input->get->text('linenbr');
+			$quotedetail = getquotelinedetail(session_id(), $qnbr, $linenbr, false);
+			$quotedetail['quotunit'] = '0';
+			$quotedetail['linenbr'] = $input->post->text('linenbr');
+			$session->sql = edit_quoteline(session_id(), $qnbr, $quotedetail, false);
+			$session->detail = $quotedetail;
+			$custID = getquotecustomer(session_id(), $qnbr, false);
+			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'QTY' => '0', 'CUSTID' => $custID);
+			if ($input->get->page) {
+				$session->loc = $input->get->text('page');
 			} else {
 				$session->loc = $config->pages->edit."quote/?qnbr=".$qnbr;
 			}
