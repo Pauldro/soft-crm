@@ -9,7 +9,7 @@
 	if (file_exists($purchasehistfile)) {
 		// JSON FILE will be false if an error occured during file get or json decode
 		$purchasehistjson = json_decode(convertfiletojson($purchasehistfile), true);
-		$purchasehistjson ? $purchasehistjson : array('error' => true, 'errormsg' => 'The VI Purchase History JSON contains errors. JSON ERROR: ' . json_last_error());
+		$purchasehistjson = $purchasehistjson ? $purchasehistjson : array('error' => true, 'errormsg' => 'The VI Purchase History JSON contains errors. JSON ERROR: ' . json_last_error());
 		if ($purchasehistjson['error']) {
 			echo $page->bootstrap->createalert('warning', $purchasehistjson['errormsg']);
 		} else {
