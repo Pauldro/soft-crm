@@ -39,8 +39,8 @@
         }
         
         /**
-         * Sets up a common url function for getting tracking request url, classes that have this trait 
-         * will definve generate_documentsrequesturltrait(Order $order)
+         * Sets up a common url function for getting documents request url, classes that have this trait 
+         * will define generate_documentsrequesturltr(Order $order)
          * @param  Order  $order [description]
          * @return String        URL to the order redirect to make the get order documents request
          */
@@ -124,8 +124,8 @@
         }    
         
         /**
-         * Sets up a common url function for getting tracking request url, classes that have this trait 
-         * will definve generate_documentsrequesturltrait(Order $order)
+         * Sets up a common url function for getting d request url, classes that have this trait 
+         * will definve generate_trackingrequesturl(Order $order)
          * @param  Order  $order [description]
          * @return String        URL to the order redirect to make the get order documents request
          */

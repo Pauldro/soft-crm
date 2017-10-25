@@ -35,7 +35,7 @@
             OrderDisplayInterface Functions
             LINKS ARE HTML LINKS, AND URLS ARE THE URLS THAT THE HREF VALUE
         ============================================================ */
-        public function generate_documentsrequesturl(Order $order) {
+        public function generate_documentsrequesturl(Order $order, $itemID = false) {
             return $this->generate_documentsrequesturltrait($order);
         }
         

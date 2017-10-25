@@ -39,8 +39,9 @@
         }
         
         /**
-         * Sets up a common url function for getting tracking request url, classes that have this trait 
-         * will definve generate_documentsrequesturltrait(Order $quote)
+         * Sets up a common url function for getting documents request url, classes that have this trait 
+         * will define generate_documentsrequesturl(Order $quote)
+         * Not used as of 10/25/2017
          * @param  Order  $quote [description]
          * @return String        URL to the order redirect to make the get order documents request
          */

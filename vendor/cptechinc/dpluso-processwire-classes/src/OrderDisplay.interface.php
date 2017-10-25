@@ -12,4 +12,8 @@
         public function generate_viewlinkeduseractionsurl(Order $order);
         public function generate_customerurl(Order $order);
         public function generate_customershiptourl(Order $order);
+        // FUNCTIONS FOR DETAIL LINES 
+        // public function generate_detaildplusnotelink(Order $order, $linenbr = '1');
+        // public function generate_detailvieweditlink(Order $order, OrderDetail $detail);
+        // public function generate_detailviewediturl(Order $order, OrderDetail $detail);
     }
