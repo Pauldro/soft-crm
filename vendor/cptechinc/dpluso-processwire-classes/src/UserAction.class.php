@@ -122,6 +122,11 @@
 
 		function defineregardinglink() {
 			$regardinglink = '';
+			
+			if (!empty($this->title)) {
+				return $this->title;
+			}
+			
 			if ($this->customerlink != '') {
 				//$this->hascustomerlink = true; $regardinglink = 'CustID: '. $this->customerlink;
 				$this->hascustomerlink = true; $regardinglink = 'CustID: '. get_customername($this->customerlink);
@@ -168,6 +173,7 @@
 			} elseif ($this->hasactionlink) {
 				$replace .= " Action #" . $this->tasklink;
 			}
+			
 			$replace = trim($replace);
 
 			if (empty($replace)) {
