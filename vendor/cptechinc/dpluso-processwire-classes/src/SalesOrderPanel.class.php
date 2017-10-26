@@ -143,8 +143,8 @@
 			return $link;
 		}
 		
-		public function generate_documentsrequesturl(Order $order) {
-            $url = new \Purl\Url($this->generate_documentsrequesturltrait($order));
+		public function generate_documentsrequesturl(Order $order, OrderDetail $orderdetail = null) {
+            $url = new \Purl\Url($this->generate_documentsrequesturltrait($order, $orderdetail));
 			$url->query->set('page', $this->pagenbr);
 			$url->query->set('orderby', $this->tablesorter->orderbystring);
             return $url->getUrl();
@@ -191,9 +191,9 @@
 			return $bootstrap->openandclose('a', "href=$href|class=edit-order h3|title=$title", $icon);
 		}
 		
-		public function generate_loaddocumentslink(Order $order) {
+		public function generate_loaddocumentslink(Order $order, OrderDetail $orderdetail = null) {
             $bootstrap = new Contento();
-            $href = $this->generate_documentsrequesturl($order);
+            $href = $this->generate_documentsrequesturl($order, $orderdetail);
             $icon = $bootstrap->createicon('material-icons md-36', '&#xE873;');
             $ajaxdata = $this->generate_ajaxdataforcontento();
             

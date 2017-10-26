@@ -2,8 +2,8 @@
     interface OrderDisplayInterface {
         public function generate_loaddplusnoteslink(Order $order, $linenbr = '0');
         public function generate_dplusnotesrequesturl(Order $order, $linenbr);
-        public function generate_loaddocumentslink(Order $order);
-        public function generate_documentsrequesturl(Order $order);
+        public function generate_loaddocumentslink(Order $order, OrderDetail $detail = null);
+        public function generate_documentsrequesturl(Order $order, OrderDetail $detail = null);
         public function generate_editlink(Order $order);
         public function generate_editurl(Order $order);
         public function generate_viewprintlink(Order $order);

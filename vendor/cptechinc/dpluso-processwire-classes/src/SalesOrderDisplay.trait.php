@@ -25,9 +25,9 @@
             return $url->getUrl();
         }
         
-        public function generate_loaddocumentslink(Order $order) {
+        public function generate_loaddocumentslink(Order $order, OrderDetail $orderdetail = null) {
             $bootstrap = new Contento();
-            $href = $this->generate_documentsrequesturl($order);
+            $href = $this->generate_documentsrequesturl($order, $orderdetail);
             $icon = $bootstrap->createicon('material-icons', '&#xE873;');
             $ajaxdata = "data-loadinto=.docs|data-focus=.docs|data-click=#documents-link";
             
@@ -44,9 +44,12 @@
          * @param  Order  $order [description]
          * @return String        URL to the order redirect to make the get order documents request
          */
-        public function generate_documentsrequesturltrait(Order $order) {
+        public function generate_documentsrequesturltrait(Order $order, OrderDetail $orderdetail = null) {
             $url = $this->generate_ordersredirurl();
             $url->query->setData(array('action' => 'get-order-documents', 'ordn' => $order->orderno));
+            if ($orderdetail) {
+                $url->query->set('itemdoc', $orderdetail->itemid);
+            }
             return $url->getUrl();
         }
         

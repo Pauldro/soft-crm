@@ -25,9 +25,9 @@
             return $url->getUrl();
         }
         
-        public function generate_loaddocumentslink(Order $quote) {
+        public function generate_loaddocumentslink(Order $quote, OrderDetail $quotedetail = null) {
             $bootstrap = new Contento();
-            $href = $this->generate_documentsrequesturl($quote);
+            $href = $this->generate_documentsrequesturl($quote, $quotedetail);
             $icon = $bootstrap->createicon('material-icons', '&#xE873;');
             $ajaxdata = "data-loadinto=.docs|data-focus=.docs|data-click=#documents-link";
             
@@ -45,9 +45,12 @@
          * @param  Order  $quote [description]
          * @return String        URL to the order redirect to make the get order documents request
          */
-        public function generate_documentsrequesturltrait(Order $quote) {
+        public function generate_documentsrequesturltrait(Order $quote, OrderDetail $quotedetail = null) {
             $url = $this->generate_quotesredirurl();
             $url->query->setData(array('action' => 'get-quote-documents', 'qnbr' => $quote->quotnbr));
+            if ($quotedetail) {
+                $url->query->set('itemdoc', $quotedetail->itemid);
+            }
             return $url->getUrl();
         }
         
