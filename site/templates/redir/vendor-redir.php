@@ -6,7 +6,7 @@
 	*/
 
 	$action = ($input->post->action ? $input->post->text('action') : $input->get->text('action'));
-	$vendorID = ($input->post->custID ? $input->post->text('vendorID') : $input->get->text('vendorID'));
+	$vendorID = ($input->post->vendorID ? $input->post->text('vendorID') : $input->get->text('vendorID'));
 	
 
 	$session->{'from-redirect'} = $page->url;
@@ -88,12 +88,12 @@
 			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
 		case 'vi-purchasehist':
-			$date = $input->get->text('startdate');
+			$date = $input->post->text('date');
 			$session->date = $date;
 			$startdate = date('Ymd', strtotime($date));
-			$data = array('DBNAME' => $config->dbName, 'VIPURCHHIST' => false, 'VENDID' => $vendorID, 'SHIPID' => $shipfromID, 'DATE' => $startdate);
-			if (!empty($input->get->text('shipfromID'))) {
-				$data['SHIPID'] = $input->get->text('shipfromID');
+			$data = array('DBNAME' => $config->dbName, 'VIPURCHHIST' => false, 'VENDID' => $vendorID, 'DATE' => $startdate);
+			if (!empty($input->post->shipfromID)) {
+				$data['SHIPID'] = $input->post->text('shipfromID');
 			}
 			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;

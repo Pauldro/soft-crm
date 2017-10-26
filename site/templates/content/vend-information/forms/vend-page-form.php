@@ -2,7 +2,7 @@
     <div class="form-group">
         <div class="input-group custom-search-form">
             <input type="text" class="form-control input-sm not-round vendorID" name="vendorID" placeholder="Search vendorID" value="<?= $vendorID; ?>">
-            <input type="hidden" class="vendorshipfromID" name="vendorshipfromID" value="<?= $vendorshipfromID; ?>"> 
+            <input type="hidden" class="shipfromID" name="shipfromID" value="<?= $shipfromID; ?>"> 
             <span class="input-group-btn">
             	<button type="submit" class="btn btn-sm btn-default not-round"> <span class="glyphicon glyphicon-search"></span> </button>
             </span>

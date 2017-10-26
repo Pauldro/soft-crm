@@ -7,12 +7,13 @@ if ($input->urlSegment(1)) {
     $buttonsjson = json_decode(file_get_contents($config->jsonfilepath.session_id()."-vibuttons.json"), true);
     $toolbar = $config->paths->content."vend-information/toolbar.php";
     $page->body = $config->paths->content."vend-information/vend-info-outline.php";
+    
     if ($input->urlSegment(2)) {
         $shipfromID = urldecode(str_replace('shipfrom-', '', $input->urlSegment(2)));
         $page->title .= ' - ' . $shipfromID;
         $buttonsjson = json_decode(file_get_contents($config->jsonfilepath.session_id()."-visfbuttons.json"), true);
         $page->body = $config->paths->content."vend-information/vend-shipfrom.php";
-    }
+    } 
     
     
     $config->scripts->append(hashtemplatefile('scripts/vi/vend-functions.js'));

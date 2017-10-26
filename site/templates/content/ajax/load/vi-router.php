@@ -18,8 +18,14 @@
             break;
         case 'vi-purchasehist':
             $vendorID = $input->get->text('vendorID');
-            $page->title = get_vendorname($vendorID) . ' Purchase History';
-            $page->body = $config->paths->content."vend-information/vend-purchase-history.php";
+            $shipfromID = $input->get->text('shipfromID');
+            if ($input->urlSegment(3) == 'form') {
+				$page->title = 'Enter the Starting Report Date ';
+				$page->body = $config->paths->content."vend-information/forms/purchase-history-form.php";
+			} else {
+                $page->title = get_vendorname($vendorID) . ' Purchase History';
+                $page->body = $config->paths->content."vend-information/vend-purchase-history.php";
+			}
             break;
         default:
             $page->title = 'Search for a vendor';

@@ -1,6 +1,6 @@
 <?php
-	// $purchasehistfile = $config->jsonfilepath.session_id()."-vipurchhist.json";
-	$purchasehistfile = $config->jsonfilepath."viphv-vipurchhist.json";
+	$purchasehistfile = $config->jsonfilepath.session_id()."-vipurchhist.json";
+	// $purchasehistfile = $config->jsonfilepath."viphv-vipurchhist.json";
 	
 	if ($config->ajax) {
 		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));

@@ -30,10 +30,32 @@ $(function() {
 			$(modal).resizemodal('lg').modal();
 		});
 	});
+	
+	$("body").on("submit", '#vi-purchase-history-form', function(e) {
+		e.preventDefault();
+		var formid = '#'+$(this).attr('id');
+		var vendorID = $(this).find('.vendorID').val();
+		var shipfromID = $(this).find('.shipfromID').val();
+		var modal = config.modals.ajax;
+        var loadinto =  modal+" .modal-content";
+		var href = URI(config.urls.vendor.load.vi_purchasehist).addQuery("vendorID", vendorID).addQuery("shipfromID", shipfromID).addQuery('modal', 'modal').toString();
+		showajaxloading();
+		$(formid).postform({formdata: false, jsoncallback: false}, function() { //form, overwriteformdata, returnjson, callback
+			$(modal).modal('hide');
+			wait(500, function() {
+				$(loadinto).loadin(href, function() {
+					hideajaxloading();
+					$(modal).find('.modal-body').addClass('modal-results');
+					$(modal).resizemodal('xl').modal();
+					listener.listen();
+				});
+			});
+		});
+	});
 });
 
     // ADD LINE BELOW under vendorID to buttons that pull from both... also addQuery to href in function
-    // var vendorshipfromID = $(vendlookupform + " .vendorshipfromID").val();
+    // var shipfromID = $(vendlookupform + " .shipfromID").val();
 
 function payment() { 
 	var vendorID = $(vendlookupform + " .vendorID").val();
@@ -69,17 +91,15 @@ function openinv() {
 
 function purchasehist() { 
 	var vendorID = $(vendlookupform + " .vendorID").val();
-    console.log(vendorID);
+	var shipfromID = $(vendlookupform + " .shipfromID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
-	var href = URI(config.urls.vendor.load.vi_purchasehist).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
+	var href = URI(config.urls.vendor.load.vi_purchasehist_form).addQuery("vendorID", vendorID).addQuery("shipfromID", shipfromID).addQuery('modal', 'modal').toString();
 	showajaxloading();
-	vi_purchasehist(vendorID, function() {
-		$(loadinto).loadin(href, function() {
-			hideajaxloading(); console.log(href);
-			$(modal).find('.modal-body').addClass('modal-results');
-			$(modal).resizemodal('lg').modal();
-		});
+	$(loadinto).loadin(href, function() {
+		hideajaxloading(); console.log(href);
+		$(modal).find('.modal-body').addClass('modal-results');
+		$(modal).resizemodal('sm').modal();
 	});
 }
 
@@ -91,12 +111,13 @@ function shipfrom() {
     console.log(config.urls.vendor.json.vi_shipfromlist);
     $.getJSON(config.urls.vendor.json.vi_shipfromlist, function(json) {
         if (json.response.error) {
+			hideajaxloading();
             swal({
               title: 'Error!',
               text: json.response.errormsg,
               type: 'error',
               confirmButtonText: 'OK'
-            })
+            }).catch(swal.noop);
         } else {
             console.log(json);
             if (json.response.shipfromlist) {
@@ -107,12 +128,13 @@ function shipfrom() {
                 	});
             	});
             } else {
+				hideajaxloading();
                 swal({
                   title: 'Error!',
                   text: 'This vendor has no Ship-Froms',
                   type: 'error',
                   confirmButtonText: 'OK'
-                })
+                }).catch(swal.noop);
             }
         }
     });
