@@ -1,13 +1,13 @@
 <?php 
-    if (checkformatterifexists($user->loginid, 'ci-payment-history', false)) {
-        $formatterjson = json_decode(getformatter($user->loginid, 'ci-payment-history', false), true);
+    if (checkformatterifexists($user->loginid, 'vi-open-invoice', false)) {
+        $formatterjson = json_decode(getformatter($user->loginid, 'vi-open-invoice', false), true);
     } else {
-        $default = $config->paths->content."cust-information/screen-formatters/default/ci-payment-history.json";
+        $default = $config->paths->content."vend-information/screen-formatters/default/vi-open-invoices.json";
         $formatterjson = json_decode(file_get_contents($default), true);
     }
 
     $columns = array_keys($formatterjson['detail']['columns']);
-    $fieldsjson = json_decode(file_get_contents($config->companyfiles."json/cipyfmattbl.json"), true);
+    $fieldsjson = json_decode(file_get_contents($config->companyfiles."json/vioifmattbl.json"), true);
 
     $table = array(
         'maxcolumns' => $formatterjson['cols'], 
@@ -16,7 +16,7 @@
             'rows' => array()
         ), 
     );
-    
+
     for ($i = 1; $i < $formatterjson['detail']['rows'] + 1; $i++) {
         $table['detail']['rows'][$i] = array('columns' => array());
         $count = 1;
@@ -36,5 +36,5 @@
             }
         }
     }
-    
     return $table;
+?>

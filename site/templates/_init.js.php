@@ -1,5 +1,8 @@
 <?php 
     $config->js('pwconfig', [
+        'appconfig' => [
+            'cptechcustomer' => $config->cptechcustomer
+        ],
         'edit' => [
             'pricing' => [
                 'show_minpriceerror' => false
@@ -131,7 +134,29 @@
     			'ii_substitutes' => $config->pages->ajaxload."ii/ii-substitutes/",
     			'ii_documents' => $config->pages->ajaxload."ii/ii-documents/",
                 'ii_order_documents' => $config->pages->ajaxload."ii/ii-documents/order/",
-    		]
+    		],
+            'vendor' => [
+                'redir' => [
+                    'vi_shipfrom' => $config->pages->vendor."redir/?action=vi-shipfrom",
+                    'vi_payment' => $config->pages->vendor."redir/?action=vi-payment",
+                    'vi_openinv' => $config->pages->vendor."redir/?action=vi-openinv",
+                    'vi_purchasehist' => $config->pages->vendor."redir/?action=vi-purchasehist"
+                ],
+                'load' => [
+                    'vi_shipfrom' => $config->pages->ajaxload."vi/vi-shipfrom/",
+                    'vi_payment' => $config->pages->ajaxload."vi/vi-payment/",
+                    'vi_openinv' => $config->pages->vajaxload."vi/vi-openinv/",
+                    'vi_purchasehist' => $config->pages->ajaxload."vi/vi-purchasehist/",
+                    'vi_purchasehist_form' => $config->pages->ajaxload."vi/vi-purchasehist/form/"
+                ],
+                'json' => [
+                    'vi_shipfromlist' => $config->pages->ajaxjson."vi/vi-shipfrom-list/",
+                    'vi_purchasehist' => $config->pages->ajaxload."vi/vi-purchasehist/"
+                ],
+                'json' => [
+                    'vi_shipfromlist' => $config->pages->ajaxjson."vi/vi-shipfrom-list"
+                ]
+            ]
     	],
         'paths' => [
     		'assets' => [

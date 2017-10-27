@@ -1,13 +1,13 @@
 <?php 
-    if (checkformatterifexists($user->loginid, 'ci-payment-history', false)) {
-        $formatterjson = json_decode(getformatter($user->loginid, 'ci-payment-history', false), true);
+    if (checkformatterifexists($user->loginid, 'vi-purchase-history', false)) {
+        $formatterjson = json_decode(getformatter($user->loginid, 'vi-purchase-history', false), true);
     } else {
-        $default = $config->paths->content."cust-information/screen-formatters/default/ci-payment-history.json";
+        $default = $config->paths->content."vend-information/screen-formatters/default/vi-purchase-history.json";
         $formatterjson = json_decode(file_get_contents($default), true);
     }
 
     $columns = array_keys($formatterjson['detail']['columns']);
-    $fieldsjson = json_decode(file_get_contents($config->companyfiles."json/cipyfmattbl.json"), true);
+    $fieldsjson = json_decode(file_get_contents($config->companyfiles."json/viphfmattbl.json"), true);
 
     $table = array(
         'maxcolumns' => $formatterjson['cols'], 
