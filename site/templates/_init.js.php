@@ -151,6 +151,10 @@
                 ],
                 'json' => [
                     'vi_shipfromlist' => $config->pages->ajaxjson."vi/vi-shipfrom-list/"
+                    'vi_purchasehist' => $config->pages->ajaxload."vi/vi-purchasehist/"
+                ],
+                'json' => [
+                    'vi_shipfromlist' => $config->pages->ajaxjson."vi/vi-shipfrom-list"
                 ]
             ]
     	],
