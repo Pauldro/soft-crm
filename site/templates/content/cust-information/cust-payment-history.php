@@ -14,7 +14,7 @@
 		if ($historyjson['error']) {
 			echo $page->bootstrap->createalert('warning', $historyjson['errormsg']);
 		} else {
-			$table = include $config->paths->content."cust-information/screen-formatters/logic/payment-history.php"; 
+			$table = include $config->paths->content."cust-information/screen-formatters/logic/payment-history.php";
 			include $config->paths->content."cust-information/tables/payment-history-formatted.php";
 			include $config->paths->content."cust-information/scripts/payment-history.js.php";
 		}
