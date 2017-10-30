@@ -111,13 +111,6 @@
 			return $url->getUrl();
 		}
         
-        public function generate_detailvieweditlink(Order $order, OrderDetail $detail, $display = false) {
-            $bootstrap = new Contento();
-            $href = $this->generate_detailviewediturl($order, $detail);
-            $display = (!empty($display)) ? $display : $detail->itemid;
-            return $bootstrap->openandclose('a', "href=$href|class=update-line|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$order->custid|aria-label=View Detail Line", $display);    
-        }
-        
         public function generate_detailviewediturl(Order $order, OrderDetail $detail) {
             $url = new \Purl\Url(wire('config')->pages->ajaxload.'edit-detail/order/');
             $url->query->setData(array('ordn' => $order->orderno, 'line' => $detail->linenbr));

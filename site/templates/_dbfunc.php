@@ -634,13 +634,17 @@
 		}
 	}
 
-	function get_quote_details($sessionID, $qnbr, $debug) {
+	function get_quotedetails($sessionID, $qnbr, $useclass, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM quotdet WHERE sessionid = :sessionID AND quotenbr = :qnbr");
 		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr); $withquotes = array(true, true);
 		if ($debug) {
 			returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
 			$sql->execute($switching);
+			if ($useclass) {
+				$sql->setFetchMode(PDO::FETCH_CLASS, 'QuoteDetail');
+				return $sql->fetchAll();
+			}
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}

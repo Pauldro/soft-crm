@@ -21,7 +21,7 @@
 </div>
 <div class="row">
 	<div class="col-sm-6">
-		<h4>Bill-to</h4>
+		<div class="page-header"><h3>Bill-to</h3></div>
 		<address>
 			<?= $order->custname; ?><br>
 			<?= $order->btadr1; ?><br>
@@ -32,7 +32,7 @@
 		</address>
 	</div>
 	<div class="col-sm-6">
-		<h4>Ship-to</h4>
+		<div class="page-header"><h3>Ship-to</h3></div>
 		<address>
 			<?= $order->sname; ?><br>
 			<?= $order->saddress; ?><br>

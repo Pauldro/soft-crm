@@ -1,7 +1,13 @@
  <tr class="detail item-header">
-    <th colspan="2" class="text-center">Item ID/Cust Item ID</th> <th colspan="2">Description</th> <th class="text-right">Ordered</th>
+    <th colspan="2" class="text-center">Item ID/Cust Item ID</th>
+    <th colspan="2">Description</th>
+    <th class="text-right">Ordered</th>
     <th class="text-right" width="100">Price</th>
-    <th class="text-right">Back Order</th> <th class="text-right">Shipped</th>  <th>Notes</th><th>Reorder</th> <th>Documents</th>
+    <th class="text-right">Back Order</th>
+    <th class="text-right">Shipped</th>
+    <th>Notes</th>
+    <th>Reorder</th>
+    <th>Documents</th>
 </tr>
 <?php $details = $orderpanel->get_orderdetails($order); ?>
 <?php foreach ($details as $detail) : ?>

@@ -1,5 +1,5 @@
 <?php 	
-	class QuotePanel extends OrderPanel implements OrderDisplayInterface, QuotePanelInterface {
+	class QuotePanel extends OrderPanel implements OrderDisplayInterface, QuoteDisplayInterface, QuotePanelInterface {
 		public $quotes = array();
 		use QuoteDisplayTraits;
 		
@@ -177,6 +177,12 @@
             } else {
                 return $bootstrap->openandclose('a', "href=#|class=text-muted|title=No Documents Available", $icon);
             }
+        }
+		
+		public function generate_detailvieweditlink(Order $quote, OrderDetail $detail, $display = false) {
+            $bootstrap = new Contento();
+            $href = $this->generate_detailviewediturl($quote, $detail);
+            return $bootstrap->openandclose('a', "href=$href|class=update-line|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$quote->custid|aria-label=View Detail Line", $detail->itemid);    
         }
 		
 	}

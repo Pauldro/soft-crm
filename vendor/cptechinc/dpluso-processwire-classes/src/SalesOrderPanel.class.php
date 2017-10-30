@@ -219,6 +219,12 @@
             }
         }
 		
+		public function generate_detailvieweditlink(Order $order, OrderDetail $detail) {
+            $bootstrap = new Contento();
+            $href = $this->generate_detailviewediturl($order, $detail);
+            return $bootstrap->openandclose('a', "href=$href|class=update-line|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$order->custid|aria-label=View Detail Line", $detail->itemid);    
+        }
+		
 		/* =============================================================
             SalesOrderDisplayInterface Functions
             LINKS ARE HTML LINKS, AND URLS ARE THE URLS THAT THE HREF VALUE

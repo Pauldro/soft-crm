@@ -74,7 +74,6 @@
             return $url->getUrl();
         }
         
-        
         public function generate_viewprintlink(Order $quote) {
             $bootstrap = new Contento();
             $href = $this->generate_viewprinturl($quote);
@@ -112,6 +111,16 @@
 			$url->query->setData(array('action' => 'load-quote-details', 'qnbr' => $quote->quotnbr));
 			return $url->getUrl();
 		}
+        
+        public function generate_detailviewediturl(Order $quote, OrderDetail $detail) {
+            $url = new \Purl\Url(wire('config')->pages->ajaxload.'edit-detail/quote/');
+            $url->query->setData(array('qnbr' => $quote->quotnbr, 'line' => $detail->linenbr));
+            return $url->getUrl();
+        }
+        
+        public function get_quotedetails(Order $quote, $debug = false) {
+            return get_quotedetails($this->sessionID, $quote->quotnbr, true, $debug);
+        }
         
         /* =============================================================
             URL Helper Functions

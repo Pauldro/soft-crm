@@ -10,6 +10,7 @@
         case 'quote':
             $qnbr = $input->get->text('qnbr');
             $quotedisplay = new QuoteDisplay(session_id(), $page->fullURL, '#ajax-modal', $qnbr);
+            $quote = $quotedisplay->get_quote();
             $page->title = 'Summary for Quote # '.$qnbr;
             $page->body = $config->paths->content."confirm/quotes/outline.php";
             break;

@@ -9,8 +9,8 @@
             break;
         case 'quote':
             $qnbr = $input->get->text('qnbr');
-            $editorder = array();
-            $editquote['qnbr'] = $qnbr;
+            $quotedisplay = new QuoteDisplay(session_id(), $page->fullURL, '#ajax-modal', $qnbr);
+            $quote = $quotedisplay->get_quote();
             $page->title = 'Viewing Quote #' . $qnbr;
             $includefile = $config->paths->content."print/quotes/outline.php";
             break;
