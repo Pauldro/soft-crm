@@ -14,7 +14,7 @@
 	$filename = session_id();
 
 	/**
-	* CUSTOMER REDIRECT
+	* VENDOR REDIRECT
 	* @param string $action
 	*
 	*
@@ -45,7 +45,7 @@
 	*		VENDID=$custID
 	*		SHIPID=
 	* 		break;
-	*	case 'vi-purchasehist'
+	*	case 'vi-purchase-history'
 	* 		DBNAME=$config->DBNAME
 	*		VIPURCHHIST
 	*		VENDID=$custID
@@ -85,7 +85,7 @@
 			// }
 			$session->loc = $config->pages->vendorinfo. "$vendorID/shipfrom-$shipfromID";
 			break;
-		case 'vi-openinv':
+		case 'vi-open-invoices':
 			$data = array('DBNAME' => $config->dbName, 'VIOPENINV' => false, 'VENDID' => $vendorID);
 			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
@@ -93,7 +93,7 @@
 			$data = array('DBNAME' => $config->dbName, 'VIPAYMENT' => false, 'VENDID' => $vendorID);
 			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
-		case 'vi-purchasehist':
+		case 'vi-purchase-history':
 			$date = $input->post->text('date');
 			$session->date = $date;
 			$startdate = date('Ymd', strtotime($date));

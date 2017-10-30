@@ -1,12 +1,12 @@
 <?php
     $shipID = '';
     switch ($input->urlSegment(2)) {
-        case 'vi-openinv':
+        case 'vi-open-invoices':
             $vendorID = $input->get->text('vendorID');
             $page->title = get_vendorname($vendorID) . ' Open Invoices';
             $page->body = $config->paths->content."vend-information/vend-open-invoices.php";
             break;
-        case 'vi-payment':
+        case 'vi-payments':
             $vendorID = $input->get->text('vendorID');
             $page->title = get_vendorname($vendorID) . ' Payment';
             $page->body = $config->paths->content."vend-information/payment-history.php";
@@ -16,7 +16,7 @@
             $page->title = get_vendorname($vendorID) . ' Ship-From Information';
             $page->body = $config->paths->content."vend-information/vend-shipfrom.php";
             break;
-        case 'vi-purchasehist':
+        case 'vi-purchase-history':
             $vendorID = $input->get->text('vendorID');
             $shipfromID = $input->get->text('shipfromID');
             if ($input->urlSegment(3) == 'form') {

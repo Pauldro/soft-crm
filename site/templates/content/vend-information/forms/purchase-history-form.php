@@ -2,7 +2,7 @@
     $date = date("m/d/y", strtotime("- 365 day"));
 ?>
 <form action="<?php echo $config->pages->vendor."redir/"; ?>" id="vi-purchase-history-form" method="post">
-    <input type="hidden" name="action" value="vi-purchasehist">
+    <input type="hidden" name="action" value="vi-purchase-history">
     <input type="hidden" name="vendorID" value="<?php echo $vendorID; ?>">
     <input type="hidden" name="shipfromID" value="<?php echo $shipfromID; ?>">
     <div class="row">
