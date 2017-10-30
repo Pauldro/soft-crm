@@ -2,8 +2,8 @@
     switch ($page->name) { //$page->name is what we are printing
         case 'order':
             $ordn = $input->get->text('ordn');
-            $editorder = array();
-            $editorder['ordn'] = $ordn;
+            $orderdisplay = new SalesOrderDisplay(session_id(), $page->fullURL, '#ajax-modal', $ordn);
+            $order = $orderdisplay->get_order(); 
             $page->title = 'Viewing Order #' . $ordn;
 			$includefile = $config->paths->content."print/orders/outline.php";
             break;

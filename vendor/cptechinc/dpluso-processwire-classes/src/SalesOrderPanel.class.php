@@ -123,6 +123,21 @@
 			return $url->getUrl();
 		}
 		
+		public function generate_detailreorderform(Order $order, OrderDetail $detail) {
+            if (empty($detail->itemid)) return '';
+            $action = wire('config')->pages->cart.'redir/';
+            $id = $order->orderno.'-'.$detail->itemid.'-form';
+            $form = new FormMaker("method=post|action=$action|class=item-reorder|id=$id");
+            $form->input("type=hidden|name=action|value=reorder");
+            $form->input("type=hidden|name=ordn|value=$order->orderno");
+            $form->input("type=hidden|name=custID|value=$order->custid");
+            $form->input("type=hidden|name=itemID|value=$detail->itemid");
+            $form->input("type=hidden|name=qty|value=".intval($detail->qtyordered));
+            $form->input("type=hidden|name=desc|value=$detail->desc1");
+            $form->button("type=submit|class=btn btn-primary btn-xs", $form->createicon('glyphicon glyphicon-shopping-cart'). $form->openandclose('span', 'class=sr-only', 'Submit Reorder'));
+            return $form->finish();
+        }
+		
 		/* =============================================================
             OrderDisplayInterface Functions
             LINKS ARE HTML LINKS, AND URLS ARE THE URLS THAT THE HREF VALUE

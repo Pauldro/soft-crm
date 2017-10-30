@@ -54,24 +54,21 @@
 		<th class="text-right" width="100">Price</th>
 		<th class="text-right">Line Total</th>
 	</tr>
-	<?php  $details = get_order_details(session_id(), $ordn, false); ?>
+	<?php $details = $orderdisplay->get_orderdetails($order); ?>
 	<?php foreach ($details as $detail) : ?>
-		<?php $qtyo = $detail['qtyordered'] + 0; ?>
 		<tr class="detail">
 			<td>
-				<?= $detail['itemid']; ?>
-				<?php if (strlen($detail['vendoritemid'])) { echo ' '.$detail['vendoritemid'];} ?>
+				<?= $detail->itemid; ?>
+				<?php if (strlen($detail->vendoritemid)) { echo ' '.$detail->vendoritemid;} ?>
 				<br>
-				<small><?= $detail['desc1']. ' ' . $detail['desc2'] ; ?></small>
+				<small><?= $detail->desc1. ' ' . $detail->desc2 ; ?></small>
 			</td>
 			<td>
-				<a href="<?= $config->pages->ajax."load/edit-detail/order/?ordn=".$detail['orderno']."&line=".$detail['linenbr']; ?>" class="btn btn-xs btn-warning update-line" data-kit="<?= $detail['kititemflag']; ?>" data-itemid="<?= $detail['itemid']; ?>" data-custid="<?= $order->custid; ?>">
-	                <i class="glyphicon glyphicon-eye-open"></i>
-	            </a>
+				<?= $orderdisplay->generate_detailvieweditlink($order, $detail, $page->boostrap->createicon('glyphicon glyphicon-eye-open')); ?>
 			</td>
-			<td class="text-right"> <?= $qtyo ; ?> </td>
-			<td class="text-right">$ <?= formatmoney($detail['price']); ?></td>
-			<td class="text-right">$ <?= formatmoney($detail['price'] * $qtyo) ?> </td>
+			<td class="text-right"> <?= intval($detail->qtyordered) ; ?> </td>
+			<td class="text-right">$ <?= formatmoney($detail->price); ?></td>
+			<td class="text-right">$ <?= formatmoney($detail->price * intval($detail->qtyordered)) ?> </td>
 		</tr>
 	<?php endforeach; ?>
 	<tr>

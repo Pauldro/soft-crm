@@ -86,6 +86,7 @@
         }
         
         public function generate_viewlinkeduseractionslink(Order $order) {
+            $bootstrap = new Contento();
             $href = $this->generate_viewlinkeduseractionsurl($order);
             $icon = $bootstrap->openandclose('span','class=h3', $bootstrap->createicon('glyphicon glyphicon-check'));
             return $bootstrap->openandclose('a', "href=$href|target=_blank", $icon." View Associated Actions");
@@ -109,6 +110,19 @@
 			$url->query->setData(array('action' => 'get-order-details', 'ordn' => $order->orderno));
 			return $url->getUrl();
 		}
+        
+        public function generate_detailvieweditlink(Order $order, OrderDetail $detail, $display = false) {
+            $bootstrap = new Contento();
+            $href = $this->generate_detailviewediturl($order, $detail);
+            $display = (!empty($display)) ? $display : $detail->itemid;
+            return $bootstrap->openandclose('a', "href=$href|class=update-line|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$order->custid|aria-label=View Detail Line", $display);    
+        }
+        
+        public function generate_detailviewediturl(Order $order, OrderDetail $detail) {
+            $url = new \Purl\Url(wire('config')->pages->ajaxload.'edit-detail/order/');
+            $url->query->setData(array('ordn' => $order->orderno, 'line' => $detail->linenbr));
+            return $url->getUrl();
+        }
         
         /* =============================================================
             SalesOrderDisplayInterface Functions
@@ -136,6 +150,10 @@
             $url = $this->generate_ordersredirurl();
             $url->query->setData(array('action' => 'get-order-tracking', 'ordn' => $order->orderno));
             return $url->getUrl();
+        }
+        
+        public function get_orderdetails(Order $order, $debug = false) {
+            return get_orderdetails($this->sessionID, $order->orderno, true, $debug);
         }
         
         /* =============================================================
