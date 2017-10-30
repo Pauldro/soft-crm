@@ -34,7 +34,7 @@
 	*		VISHIPFROMLIST
 	*		VENDID=$custID
 	* 		break;
-	*	case 'vi-payment'
+	*	case 'vi-payments'
 	* 		DBNAME=$config->DBNAME
 	*		VIPAYMENT
 	*		VENDID=$custID
@@ -89,7 +89,7 @@
 			$data = array('DBNAME' => $config->dbName, 'VIOPENINV' => false, 'VENDID' => $vendorID);
 			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
-		case 'vi-payment':
+		case 'vi-payments':
 			$data = array('DBNAME' => $config->dbName, 'VIPAYMENT' => false, 'VENDID' => $vendorID);
 			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
