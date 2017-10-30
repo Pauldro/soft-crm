@@ -16,8 +16,8 @@
             SalesOrderPanelInterface Functions
             
         ============================================================ */
-        public function get_ordercount() {
-			$this->count = count_customerorders($this->sessionID, $this->custID, false);
+        public function get_ordercount($debug = false) {
+			$this->count = count_customerorders($this->sessionID, $this->custID, $debug);
 		}
         
         public function get_orders($debug = false) {

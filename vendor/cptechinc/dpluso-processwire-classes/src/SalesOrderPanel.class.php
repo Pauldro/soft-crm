@@ -29,9 +29,9 @@
 		
 		/* =============================================================
             SalesOrderPanelInterface Functions
-            LINKS ARE HTML LINKS, AND URLS ARE THE URLS THAT THE HREF VALUE
+            
         ============================================================ */
-		public function get_ordercount() { }
+		public function get_ordercount($debug = false) { }
 		public function get_orders($debug = false) { }
 		
 		/* =============================================================
