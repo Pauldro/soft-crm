@@ -27,6 +27,11 @@
                 $page->body = $config->paths->content."vend-information/vend-purchase-history.php";
 			}
             break;
+        case 'vi-purchaseorder':
+            $vendorID = $input->get->text('vendorID');
+            $page->title = get_vendorname($vendorID) . ' Purchase Orders';
+            $page->body = $config->paths->content."vend-information/vend-purchase-order.php";
+            break;
         default:
             $page->title = 'Search for a vendor';
             if ($input->get->q) {$q = $input->get->text('q');}

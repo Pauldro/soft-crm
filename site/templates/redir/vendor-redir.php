@@ -52,6 +52,12 @@
 	*		SHIPID=
 	*		DATE=
 	* 		break;
+	*	case 'vi-purchaseorder'
+	* 		DBNAME=$config->DBNAME
+	*		VIPURCHORDR
+	*		VENDID=$custID
+	*		SHIPID=
+	* 		break;
 	* }
 	*
 	**/
@@ -92,6 +98,13 @@
 			$session->date = $date;
 			$startdate = date('Ymd', strtotime($date));
 			$data = array('DBNAME' => $config->dbName, 'VIPURCHHIST' => false, 'VENDID' => $vendorID, 'DATE' => $startdate);
+			if (!empty($input->post->shipfromID)) {
+				$data['SHIPID'] = $input->post->text('shipfromID');
+			}
+			$session->loc = $config->pages->vendorinfo. "$vendorID/";
+			break;
+		case 'vi-purchaseorder':
+			$data = array('DBNAME' => $config->dbName, 'VIPURCHORDR' => false, 'VENDID' => $vendorID);
 			if (!empty($input->post->shipfromID)) {
 				$data['SHIPID'] = $input->post->text('shipfromID');
 			}

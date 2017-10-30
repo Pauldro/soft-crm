@@ -17,3 +17,8 @@ function vi_purchasehist(vendorID, callback) {
     var url = config.urls.vendor.redir.vi_purchasehist+"&vendorID="+urlencode(vendorID);
     $.get(url, function() { callback();});
 }
+
+function vi_purchaseorder(vendorID, callback) {
+    var url = config.urls.vendor.redir.vi_purchaseorder+"&vendorID="+urlencode(vendorID);
+    $.get(url, function() { callback();});
+}
