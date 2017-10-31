@@ -27,7 +27,7 @@
                 $page->body = $config->paths->content."vend-information/vend-purchase-history.php";
 			}
             break;
-        case 'vi-purchaseorder':
+        case 'vi-purchase-orders':
             $vendorID = $input->get->text('vendorID');
             $page->title = get_vendorname($vendorID) . ' Purchase Orders';
             $page->body = $config->paths->content."vend-information/vend-purchase-order.php";

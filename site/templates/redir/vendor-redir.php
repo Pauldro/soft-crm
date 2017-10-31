@@ -103,7 +103,7 @@
 			}
 			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
-		case 'vi-purchaseorder':
+		case 'vi-purchase-orders':
 			$data = array('DBNAME' => $config->dbName, 'VIPURCHORDR' => false, 'VENDID' => $vendorID);
 			if (!empty($input->post->shipfromID)) {
 				$data['SHIPID'] = $input->post->text('shipfromID');

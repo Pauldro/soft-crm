@@ -141,7 +141,7 @@
                     'vi_payment' => $config->pages->vendor."redir/?action=vi-payments",
                     'vi_openinv' => $config->pages->vendor."redir/?action=vi-open-invoices",
                     'vi_purchasehist' => $config->pages->vendor."redir/?action=vi-purchase-history",
-                    'vi_purchaseorder' => $config->pages->vendor."redir/?action=vi-purchaseorder"
+                    'vi_purchaseorder' => $config->pages->vendor."redir/?action=vi-purchase-orders"
                 ],
                 'load' => [
                     'vi_shipfrom' => $config->pages->ajaxload."vi/vi-shipfrom/",
@@ -149,12 +149,12 @@
                     'vi_openinv' => $config->pages->ajaxload."vi/vi-open-invoices/",
                     'vi_purchasehist' => $config->pages->ajaxload."vi/vi-purchase-history/",
                     'vi_purchasehist_form' => $config->pages->ajaxload."vi/vi-purchase-history/form/",
-                    'vi_purchaseorder' => $config->pages->ajaxload."vi/vi-purchaseorder/"
+                    'vi_purchaseorder' => $config->pages->ajaxload."vi/vi-purchase-orders/"
                 ],
                 'json' => [
                     'vi_shipfromlist' => $config->pages->ajaxjson."vi/vi-shipfrom-list/",
                     'vi_purchasehist' => $config->pages->ajaxload."vi/vi-purchase-history/",
-                    'vi_purchaseorder' => $config->pages->ajaxload."vi/vi-purchaseorder/",
+                    'vi_purchaseorder' => $config->pages->ajaxload."vi/vi-purchase-orders/",
                     'vi_payment' => $config->pages->ajaxload."vi/vi-payments/",
                     'vi_openinv' => $config->pages->ajaxload."vi/vi-open-invoices/"
                 ]
