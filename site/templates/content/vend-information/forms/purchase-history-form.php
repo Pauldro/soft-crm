@@ -10,8 +10,9 @@
             <div class="form-group">
                 <p>Vendor: <?php echo $vendorID; ?></p>
             </div>
+            
             <div class="form-group">
-                <label for="">Starting Report Date</label>
+                <label for="date">Starting Report Date</label>
                 <div class="input-group date">
                 	<?php $name = 'date'; $value = $date;?>
 					<?php include $config->paths->content."common/date-picker.php"; ?>

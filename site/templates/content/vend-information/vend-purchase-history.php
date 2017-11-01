@@ -15,7 +15,8 @@
 		} else {
 			$table = include $config->paths->content. 'vend-information/screen-formatters/logic/purchase-history.php';
 			include $config->paths->content. 'vend-information/tables/purchase-history-formatted.php';
-			include $config->paths->content. 'vend-information/scripts/purchase-history.js.php';
+			// needs to be commented out or js will get confused and get ajaxloading
+			// include $config->paths->content. 'vend-information/scripts/purchase-history.js.php';
 		}
 	} else {
 		echo $page->bootstrap->createalert('warning', 'Information not available.');
