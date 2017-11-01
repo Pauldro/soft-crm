@@ -15,7 +15,7 @@
 		} else {
 			$table = include $config->paths->content. 'vend-information/screen-formatters/logic/purchase-history.php';
 			include $config->paths->content. 'vend-information/tables/purchase-history-formatted.php';
-			// include $config->paths->content. 'vend-information/scripts/purchase-history.js.php';
+			include $config->paths->content. 'vend-information/scripts/purchase-history.js.php';
 		}
 	} else {
 		echo $page->bootstrap->createalert('warning', 'Information not available.');

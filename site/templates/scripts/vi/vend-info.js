@@ -155,3 +155,35 @@ function purchaseorder() {
 		});
 	});
 }
+
+function contact() { 
+	var vendorID = $(vendlookupform + " .vendorID").val();
+    console.log(vendorID);
+	var modal = config.modals.ajax;
+	var loadinto =  modal+" .modal-content";
+	var href = URI(config.urls.vendor.load.vi_contact).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
+	showajaxloading();
+	vi_contact(vendorID, function() {
+		$(loadinto).loadin(href, function() {
+			hideajaxloading(); console.log(href);
+			$(modal).find('.modal-body').addClass('modal-results');
+			$(modal).resizemodal('lg').modal();
+		});
+	});
+}
+
+function notes() { 
+	var vendorID = $(vendlookupform + " .vendorID").val();
+    console.log(vendorID);
+	var modal = config.modals.ajax;
+	var loadinto =  modal+" .modal-content";
+	var href = URI(config.urls.vendor.load.vi_notes).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
+	showajaxloading();
+	vi_contact(vendorID, function() {
+		$(loadinto).loadin(href, function() {
+			hideajaxloading(); console.log(href);
+			$(modal).find('.modal-body').addClass('modal-results');
+			$(modal).resizemodal('lg').modal();
+		});
+	});
+}

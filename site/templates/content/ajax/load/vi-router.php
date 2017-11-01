@@ -32,6 +32,16 @@
             $page->title = get_vendorname($vendorID) . ' Purchase Orders';
             $page->body = $config->paths->content."vend-information/vend-purchase-order.php";
             break;
+        case 'vi-contact':
+            $vendorID = $input->get->text('vendorID');
+            $page->title = get_vendorname($vendorID) . ' Contacts';
+            $page->body = $config->paths->content."vend-information/vend-contact.php";
+            break;
+        case 'vi-notes':
+            $vendorID = $input->get->text('vendorID');
+            $page->title = get_vendorname($vendorID) . ' Notes';
+            $page->body = $config->paths->content."vend-information/vend-notes.php";
+            break;
         default:
             $page->title = 'Search for a vendor';
             if ($input->get->q) {$q = $input->get->text('q');}

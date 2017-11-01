@@ -22,3 +22,13 @@ function vi_purchaseorder(vendorID, callback) {
     var url = config.urls.vendor.redir.vi_purchaseorder+"&vendorID="+urlencode(vendorID);
     $.get(url, function() { callback();});
 }
+
+function vi_contact(vendorID, callback) {
+    var url = config.urls.vendor.redir.vi_contact+"&vendorID="+urlencode(vendorID);
+    $.get(url, function() { callback();});
+}
+
+function vi_notes(vendorID, callback) {
+    var url = config.urls.vendor.redir.vi_notes+"&vendorID="+urlencode(vendorID);
+    $.get(url, function() { callback();});
+}
