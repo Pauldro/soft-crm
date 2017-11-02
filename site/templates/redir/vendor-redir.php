@@ -64,6 +64,18 @@
 	*		VENDID=$custID
 	*		SHIPID=
 	* 		break;
+	*	case 'vi-costing'
+	* 		DBNAME=$config->DBNAME
+	*		VICOST
+	*		VENDID=$custID
+	*		ITEMID=
+	* 		break;
+	*	case 'vi-unreleased'
+	* 		DBNAME=$config->DBNAME
+	*		VIUNRELEASED
+	*		VENDID=$custID
+	*		SHIPID=
+	* 		break;
 	* }
 	*
 	**/
@@ -125,6 +137,18 @@
 			break;
 		case 'vi-notes':
 			$data = array('DBNAME' => $config->dbName, 'VINOTES' => false, 'VENDID' => $vendorID);
+			if (!empty($input->post->shipfromID)) {
+				$data['SHIPID'] = $input->post->text('shipfromID');
+			}
+			$session->loc = $config->pages->vendorinfo. "$vendorID/";
+			break;
+		case 'vi-costing':
+			$itemID = $input->get->text('itemID');
+			$data = array('DBNAME' => $config->dbName, 'VICOST' => false, 'ITEMID' => $itemID, 'VENDID' => $vendorID);
+			$session->loc = $config->pages->index;
+			break;
+		case 'vi-unreleased-purchase-orders':
+			$data = array('DBNAME' => $config->dbName, 'VIUNRELEASED' => false, 'VENDID' => $vendorID);
 			if (!empty($input->post->shipfromID)) {
 				$data['SHIPID'] = $input->post->text('shipfromID');
 			}

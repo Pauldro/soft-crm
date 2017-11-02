@@ -143,7 +143,9 @@
                     'vi_purchasehist' => $config->pages->vendor."redir/?action=vi-purchase-history",
                     'vi_purchaseorder' => $config->pages->vendor."redir/?action=vi-purchase-orders",
                     'vi_contact' => $config->pages->vendor."redir/?action=vi-contact",
-                    'vi_notes' => $config->pages->vendor."redir/?action=vi-notes"
+                    'vi_notes' => $config->pages->vendor."redir/?action=vi-notes",
+                    'vi_costing' => $config->pages->vendor."redir/?action=vi-costing",
+                    'vi_unreleased' => $config->pages->vendor."redir/?action=vi-unreleased-purchase-orders"
                 ],
                 'load' => [
                     'vi_shipfrom' => $config->pages->ajaxload."vi/vi-shipfrom/",
@@ -153,7 +155,10 @@
                     'vi_purchasehist_form' => $config->pages->ajaxload."vi/vi-purchase-history/form/",
                     'vi_purchaseorder' => $config->pages->ajaxload."vi/vi-purchase-orders/",
                     'vi_contact' => $config->pages->ajaxload."vi/vi-contact/",
-                    'vi_notes' => $config->pages->ajaxload."vi/vi-notes/"
+                    'vi_notes' => $config->pages->ajaxload."vi/vi-notes/",
+                    'vi_costing' => $config->pages->ajaxload."vi/vi-costing/",
+                    'vi_costingform' => $config->pages->ajaxload."vi/vi-costing-search/",
+                    'vi_unreleased' => $config->pages->ajaxload."vi/vi-unreleased-purchase-orders/"
                 ],
                 'json' => [
                     'vi_shipfromlist' => $config->pages->ajaxjson."vi/vi-shipfrom-list/",
@@ -162,7 +167,9 @@
                     'vi_payment' => $config->pages->ajaxload."vi/vi-payments/",
                     'vi_openinv' => $config->pages->ajaxload."vi/vi-open-invoices/",
                     'vi_contact' => $config->pages->ajaxload."vi/vi-contact/",
-                    'vi_notes' => $config->pages->ajaxload."vi/vi-notes/"
+                    'vi_notes' => $config->pages->ajaxload."vi/vi-notes/",
+                    'vi_costing' => $config->pages->ajaxload."vi/vi-costing/",
+                    'vi_unreleased' => $config->pages->ajaxload."vi/vi-unreleased-purchase-orders/",
                 ]
             ]
     	],

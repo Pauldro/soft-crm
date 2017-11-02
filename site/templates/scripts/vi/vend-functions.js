@@ -32,3 +32,13 @@ function vi_notes(vendorID, callback) {
     var url = config.urls.vendor.redir.vi_notes+"&vendorID="+urlencode(vendorID);
     $.get(url, function() { callback();});
 }
+
+function vi_costing(vendorID, callback) {
+    var url = config.urls.vendor.redir.vi_costing+"&vendorID="+urlencode(vendorID);
+    $.get(url, function() { callback();});
+}
+
+function vi_unreleased(vendorID, callback) {
+    var url = config.urls.vendor.redir.vi_unreleased+"&vendorID="+urlencode(vendorID);
+    $.get(url, function() { callback();});
+}

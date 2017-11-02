@@ -42,6 +42,29 @@
             $page->title = get_vendorname($vendorID) . ' Notes';
             $page->body = $config->paths->content."vend-information/vend-notes.php";
             break;
+        case 'vi-costing-search':
+            $page->title = 'Search for an Item';
+            $action = 'vi-costing';
+            $vendorID = $input->get->text('vendorID');
+            if ($input->get->q) {$q = $input->get->text('q'); $page->title = "Searching for '$q'";}
+
+			if ($config->modal) {
+				$page->body = $config->paths->content."vend-information/forms/item-search-form.php";
+			} else {
+				$page->body = $config->paths->content."vend-information/item-search-results.php";
+			}
+            break;
+        case 'vi-costing':
+            $vendorID = $input->get->text('vendorID');
+            $itemID = $input->get->text('itemID');
+            $page->title = 'Viewing Cost for ' . $itemID;
+			$page->body = $config->paths->content."vend-information/vend-costing.php";
+            break;
+        case 'vi-unreleased-purchase-orders':
+            $vendorID = $input->get->text('vendorID');
+            $page->title = get_vendorname($vendorID) . ' Unreleased Purchase Orders';
+            $page->body = $config->paths->content."vend-information/vend-unreleased-purchase-order.php";
+            break;
         default:
             $page->title = 'Search for a vendor';
             if ($input->get->q) {$q = $input->get->text('q');}

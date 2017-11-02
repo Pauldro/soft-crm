@@ -179,7 +179,50 @@ function notes() {
 	var loadinto =  modal+" .modal-content";
 	var href = URI(config.urls.vendor.load.vi_notes).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
 	showajaxloading();
-	vi_contact(vendorID, function() {
+	vi_notes(vendorID, function() {
+		$(loadinto).loadin(href, function() {
+			hideajaxloading(); console.log(href);
+			$(modal).find('.modal-body').addClass('modal-results');
+			$(modal).resizemodal('lg').modal();
+		});
+	});
+}
+
+function costing() {
+	var vendorID = $(vendlookupform + " .vendorID").val();
+	var href = URI(config.urls.vendor.load.vi_costingform).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
+	var modal = config.modals.ajax;
+	var loadinto =  modal+" .modal-content";
+	showajaxloading();
+	$(loadinto).loadin(href, function() {
+		hideajaxloading(); console.log(href);
+		$(modal).find('.modal-body').addClass('modal-results');
+		$(modal).resizemodal('lg').modal();
+	});
+}
+
+function choosevicostingitem(itemID) {
+	var vendorID = $(vendlookupform + " .vendorID").val();
+	var modal = config.modals.ajax;
+	var loadinto =  modal+" .modal-content";
+	var href = URI(config.urls.vendor.load.vi_costing).addQuery("vendorID", vendorID).addQuery("itemID", itemID).addQuery('modal', 'modal').toString();
+	vi_costing(vendorID, itemID, function() {
+		$(loadinto).loadin(href, function() {
+			hideajaxloading(); console.log(href);
+			$(modal).find('.modal-body').addClass('modal-results');
+			$(modal).resizemodal('lg').modal();
+		});
+	});
+}
+
+function unreleased() { 
+	var vendorID = $(vendlookupform + " .vendorID").val();
+    console.log(vendorID);
+	var modal = config.modals.ajax;
+	var loadinto =  modal+" .modal-content";
+	var href = URI(config.urls.vendor.load.vi_unreleased).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
+	showajaxloading();
+	vi_unreleased(vendorID, function() {
 		$(loadinto).loadin(href, function() {
 			hideajaxloading(); console.log(href);
 			$(modal).find('.modal-body').addClass('modal-results');
