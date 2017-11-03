@@ -97,18 +97,37 @@
 		public function has_error() {
 			return $this->error == 'Y' ? true : false;
 		}
-
         
+        /* =============================================================
+			OTHER CONSTRUCTOR FUNCTIONS 
+		============================================================ */
+		public static function create_fromarray(array $array) {
+			$myClass = get_class();
+			$object  = new $myClass(); 
+
+			foreach ($array as $key => $val) {
+				$object->$key = $val;
+			}
+			return $object;
+	   }
+
+        /* =============================================================
+ 		   GENERATE ARRAY FUNCTIONS 
+ 	   ============================================================ */
         public static function returnclassarray() {
-            return SalesOrder::unsetnondbkeys(get_class_vars('Quote'));
+            return SalesOrder::remove_nondbkeys(get_class_vars('Quote'));
         }
         
-        public static function unsetnondbkeys($array) {
+        public static function remove_nondbkeys($array) {
             $array = get_class_vars('Quote');
             unset($array['canedit']);
             unset($array['hasnotes']);
             return $array;
         }
+        
+        public function toArray() {
+			return (array) $this;
+		}
         
     }
     
