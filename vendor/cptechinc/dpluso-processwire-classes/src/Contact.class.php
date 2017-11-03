@@ -49,23 +49,23 @@
             return ($this->cphext != '') ? true : false;
         }
 
-        public function generatecustomerurl() {
+        public function generate_customerurl() {
             return wire('config')->pages->customer."redir/?action=load-customer&custID=".urlencode($this->custid);
         }
 
-        public function generateshiptourl() {
-            return $this->generatecustomerurl() . "&shipID=".urlencode($this->shiptoid);
+        public function generate_shiptourl() {
+            return $this->generate_customerurl() . "&shipID=".urlencode($this->shiptoid);
         }
 
 		public function generatecustloadurl() {
 			if ($this->has_shipto()) {
-				return $this->generateshiptourl();
+				return $this->generate_shiptourl();
 			} else {
-				return $this->generatecustomerurl();
+				return $this->generate_customerurl();
 			}
 		}
 
-        public function generatecontacturl() {
+        public function generate_contacturl() {
             if ($this->has_shipto()) {
                 return wire('config')->pages->customer.urlencode($this->custid) . "/shipto-".urlencode($this->shiptoid)."/contacts/?id=".urlencode($this->contact);
             } else {
