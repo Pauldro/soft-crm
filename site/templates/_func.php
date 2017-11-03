@@ -324,41 +324,6 @@
 			return date('m/d/Y', strtotime($date));
 		}
 	}
-
-
-/* =============================================================
-  TASK FUNCTIONS
-============================================================ */
-	function createmessage($message, $custID, $shipID, $contactID, $taskID, $noteID, $ordn, $qnbr) {
-		$regex = '/({replace})/i';
-		$replace = "";
-
-		if ($custID != '') {
-			$replace = get_customername($custID)." ($custID)";
-		}
-
-		if ($shipID != '') {
-			$replace .= " Shipto: " . get_shiptoname($custID, $shipID, false)." ($shipID)";
-		}
-
-		if ($contactID != '') {
-			$replace .= " Contact: " . $contactID;
-		}
-
-		if ($ordn != '') {
-			$replace .= " Sales Order #" . $ordn;
-		} elseif ($qnbr != '') {
-			$replace .= " Quote #" . $qnbr;
-		}
-
-		if ($taskID != '') {
-			$replace .= " Task #" . $taskID;
-		} elseif ($noteID != '') {
-			$replace .= " CRM Note #" . $noteID;
-		}
-
-		return preg_replace($regex, $replace, $message);
-	}
 	
 /* =============================================================
   FILE FUNCTIONS
