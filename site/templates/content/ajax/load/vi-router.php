@@ -65,6 +65,21 @@
             $page->title = get_vendorname($vendorID) . ' Unreleased Purchase Orders';
             $page->body = $config->paths->content."vend-information/vend-unreleased-purchase-order.php";
             break;
+        case 'vi-uninvoiced':
+            $vendorID = $input->get->text('vendorID');
+            $page->title = get_vendorname($vendorID) . ' Uninvoiced';
+            $page->body = $config->paths->content."vend-information/vend-uninvoiced.php";
+            break;
+        case 'vi-24-month-summary':
+            $vendorID = $input->get->text('vendorID');
+            $page->title = get_vendorname($vendorID) . ' Purchase Orders';
+            $page->body = $config->paths->content."vend-information/vend-24-month-summary.php";
+            break;
+        case 'vi-docview':
+            $vendorID = $input->get->text('vendorID');
+            $page->title = get_vendorname($vendorID) . ' Payment';
+            $page->body = $config->paths->content."vend-information/payment-history.php";
+            break;
         default:
             $page->title = 'Search for a vendor';
             if ($input->get->q) {$q = $input->get->text('q');}

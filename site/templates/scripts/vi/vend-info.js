@@ -68,7 +68,7 @@ function payment() {
 		$(loadinto).loadin(href, function() {
 			hideajaxloading(); console.log(href);
 			$(modal).find('.modal-body').addClass('modal-results');
-			$(modal).resizemodal('lg').modal();
+			$(modal).resizemodal('xl').modal();
 		});
 	});
 }
@@ -223,6 +223,55 @@ function unreleased() {
 	var href = URI(config.urls.vendor.load.vi_unreleased).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
 	showajaxloading();
 	vi_unreleased(vendorID, function() {
+		$(loadinto).loadin(href, function() {
+			hideajaxloading(); console.log(href);
+			$(modal).find('.modal-body').addClass('modal-results');
+			$(modal).resizemodal('lg').modal();
+		});
+	});
+}
+
+function uninvoiced() { 
+	var vendorID = $(vendlookupform + " .vendorID").val();
+    console.log(vendorID);
+	var modal = config.modals.ajax;
+	var loadinto =  modal+" .modal-content";
+	var href = URI(config.urls.vendor.load.vi_uninvoiced).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
+	showajaxloading();
+	vi_uninvoiced(vendorID, function() {
+		$(loadinto).loadin(href, function() {
+			hideajaxloading(); console.log(href);
+			$(modal).find('.modal-body').addClass('modal-results');
+			$(modal).resizemodal('lg').modal();
+		});
+	});
+}
+
+// TODO: rename function 
+// function 24monthsummary() { 
+// 	var vendorID = $(vendlookupform + " .vendorID").val();
+//     console.log(vendorID);
+// 	var modal = config.modals.ajax;
+// 	var loadinto =  modal+" .modal-content";
+// 	var href = URI(config.urls.vendor.load.vi_24monthsummary).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
+// 	showajaxloading();
+// 	vi_24monthsummary(vendorID, function() {
+// 		$(loadinto).loadin(href, function() {
+// 			hideajaxloading(); console.log(href);
+// 			$(modal).find('.modal-body').addClass('modal-results');
+// 			$(modal).resizemodal('lg').modal();
+// 		});
+// 	});
+// }
+
+function docview() { 
+	var vendorID = $(vendlookupform + " .vendorID").val();
+    console.log(vendorID);
+	var modal = config.modals.ajax;
+	var loadinto =  modal+" .modal-content";
+	var href = URI(config.urls.vendor.load.vi_docview).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
+	showajaxloading();
+	vi_docview(vendorID, function() {
 		$(loadinto).loadin(href, function() {
 			hideajaxloading(); console.log(href);
 			$(modal).find('.modal-body').addClass('modal-results');

@@ -76,6 +76,11 @@
 	*		VENDID=$custID
 	*		SHIPID=
 	* 		break;
+	*	case 'vi-uninvoiced'
+	* 		DBNAME=$config->DBNAME
+	*		VIUNINVOICED
+	*		VENDID=$custID
+	* 		break;
 	* }
 	*
 	**/
@@ -145,13 +150,28 @@
 		case 'vi-costing':
 			$itemID = $input->get->text('itemID');
 			$data = array('DBNAME' => $config->dbName, 'VICOST' => false, 'ITEMID' => $itemID, 'VENDID' => $vendorID);
-			$session->loc = $config->pages->index;
+			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
 		case 'vi-unreleased-purchase-orders':
 			$data = array('DBNAME' => $config->dbName, 'VIUNRELEASED' => false, 'VENDID' => $vendorID);
 			if (!empty($input->post->shipfromID)) {
 				$data['SHIPID'] = $input->post->text('shipfromID');
 			}
+			$session->loc = $config->pages->vendorinfo. "$vendorID/";
+			break;
+		case 'vi-uninvoiced':
+			$data = array('DBNAME' => $config->dbName, 'VIUNINVOICED' => false, 'VENDID' => $vendorID);
+			$session->loc = $config->pages->vendorinfo. "$vendorID/";
+			break;
+		case 'vi-24-month-summary':
+			$data = array('DBNAME' => $config->dbName, 'VIMONTHSUM' => false, 'VENDID' => $vendorID);
+			if (!empty($input->post->shipfromID)) {
+				$data['SHIPID'] = $input->post->text('shipfromID');
+			}
+			$session->loc = $config->pages->vendorinfo. "$vendorID/";
+			break;
+		case 'vi-docview':
+			$data = array('DBNAME' => $config->dbName, 'VIDOCVIEW' => false, 'VENDID' => $vendorID);
 			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
 	}

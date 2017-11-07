@@ -33,12 +33,27 @@ function vi_notes(vendorID, callback) {
     $.get(url, function() { callback();});
 }
 
-function vi_costing(vendorID, callback) {
-    var url = config.urls.vendor.redir.vi_costing+"&vendorID="+urlencode(vendorID);
+function vi_costing(vendorID, itemID, callback) {
+    var url = config.urls.vendor.redir.vi_costing+"&vendorID="+urlencode(vendorID)+"&itemID="+urlencode(itemID);
     $.get(url, function() { callback();});
 }
 
 function vi_unreleased(vendorID, callback) {
     var url = config.urls.vendor.redir.vi_unreleased+"&vendorID="+urlencode(vendorID);
+    $.get(url, function() { callback();});
+}
+
+function vi_uninvoiced(vendorID, callback) {
+    var url = config.urls.vendor.redir.vi_uninvoiced+"&vendorID="+urlencode(vendorID);
+    $.get(url, function() { callback();});
+}
+
+function vi_24monthssummary(vendorID, callback) {
+    var url = config.urls.vendor.redir.vi_24monthssummary+"&vendorID="+urlencode(vendorID);
+    $.get(url, function() { callback();});
+}
+
+function vi_docview(vendorID, callback) {
+    var url = config.urls.vendor.redir.vi_docview+"&vendorID="+urlencode(vendorID);
     $.get(url, function() { callback();});
 }
