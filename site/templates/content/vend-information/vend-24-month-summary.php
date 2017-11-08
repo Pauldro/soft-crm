@@ -34,8 +34,7 @@
     						return moment(ds).format('YYYY/MM/DD');
     					},
     					hoverCallback: function (index, options, content, row) {
-    						var ds = new Date(row.month);
-    						var date = moment(ds).format('YYYY/MM/DD');
+    						var date = moment(row.month).format('YYYY/MM/DD');
     						var hover = '<b>'+date+'</b><br>';
     						hover += '<b>Receipt Amt: </b> $' + row.receiptamount+'<br>';
     						hover += '<b>Invoice Amt: </b> $' + row.invoiceamount+'<br>';
