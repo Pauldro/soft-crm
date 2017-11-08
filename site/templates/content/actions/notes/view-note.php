@@ -1,7 +1,7 @@
 <?php
     // $note is loaded by Crud Controller
 
-    if ($note->hascontactlink) { //DOESNT MATTER DEPRECATE
+    if ($note->has_contactlink()) { //DOESNT MATTER DEPRECATE
         $contactinfo = get_customercontact($note->customerlink, $note->shiptolink, $note->contactlink, false);
     } else {
         $contactinfo = get_customercontact($note->customerlink, $note->shiptolink, $note->contactlink, false);

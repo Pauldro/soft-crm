@@ -5,9 +5,9 @@
 
     if ($action) {
         $urls = array(
-            'completion' => $action->generatecompletionurl('true'),
-            'view' => $action->generateviewactionurl(),
-            'reschedule' => $action->generaterescheduleurl()
+            'completion' => $action->generate_completionurl('true'),
+            'view' => $action->generate_viewactionurl(),
+            'reschedule' => $action->generate_rescheduleurl()
         );
         $action->urls = $urls;
         echo json_encode(array(

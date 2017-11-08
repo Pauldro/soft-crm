@@ -1,5 +1,5 @@
 <?php
-	$actionlinks = UserAction::getlinkarray();
+	$actionlinks = UserAction::generate_classarray();
 	$actionlinks['actiontype'] = 'action';
 	$actionlinks['customerlink'] = $custID;
 	$actionlinks['shiptolink'] = $shipID;
@@ -20,11 +20,16 @@
 		}
 	}
 
-	$actionlinks['assignedto'] = $user->loginid;
-	$action = UserAction::blankuseraction($actionlinks);
+	if (!empty($actionlinks['customerlink']) && $config->cptechcustomer == 'stempf') {
+		$actionlinks['assignedto'] = get_customersalesperson($actionlinks['customerlink'], $actionlinks['shiptolink'], false);
+	} else {
+		$actionlinks['assignedto'] = $user->loginid;
+	}
+	
+	$action = UserAction::create_fromarray($actionlinks);
 
 	$message = "Creating an action for {replace}";
-	$page->title = $action->createmessage($message);
+	$page->title = $action->generate_message($message);
 
 	if ($config->ajax) {
 		if ($config->modal) {

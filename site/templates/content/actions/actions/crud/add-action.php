@@ -4,7 +4,7 @@
     if (isset($input->post)) {
         $action = $input->post->text('action');
 
-        $actionlinks = UserAction::getlinkarray();
+        $actionlinks = UserAction::generate_classarray();
         $actionlinks['actiontype'] = 'action';
         $actionlinks['actionsubtype'] = $input->post->text('actiontype');
         $actionlinks['customerlink'] = $input->post->text('custlink');
@@ -39,7 +39,7 @@
         $session->sql = $results['sql'];
         $newactionID =  $results['insertedid'];
 
-        $createdaction = UserAction::blankuseraction($actionlinks);
+        $createdaction = UserAction::create_fromarray($actionlinks);
 
         if ($results['insertedid'] > $maxrec) {
             switch ($action) {
@@ -48,7 +48,7 @@
                     $message = "<strong>Success!</strong><br> Your action for {replace} has been created";
                     $icon = "glyphicon glyphicon-floppy-saved";
                     // TODO FIX CREATE MESSAGE TO HAVE IT COME FROM USERACTION
-                    $message = $createdaction->createmessage($message);
+                    $message = $createdaction->generate_message($message);
                     break;
             }
 

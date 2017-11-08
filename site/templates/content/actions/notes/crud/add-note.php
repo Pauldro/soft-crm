@@ -4,7 +4,7 @@
     if (isset($input->post)) {
         $action = $input->post->text('action');
 
-        $notelinks = UserAction::getlinkarray();
+        $notelinks = UserAction::generate_classarray();
         $notelinks['actiontype'] = 'note';
         $notelinks['actionsubtype'] = $input->post->text('tasktype');
         $notelinks['customerlink'] = $input->post->text('custlink');
@@ -44,7 +44,7 @@
             $error = false;
             $message = "<strong>Success!</strong><br> Your note for {replace} has been created";
             $icon = "glyphicon glyphicon-floppy-saved";
-            $message = $newnote->createmessage($message);
+            $message = $newnote->generate_message($message);
 		} else {
 			$error = true;
 			$message = "<strong>Error!</strong><br> Your note could not be created";

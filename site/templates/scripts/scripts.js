@@ -609,7 +609,6 @@ $(document).ready(function() {
 			e.preventDefault();
 			var button = $(this);
 			var url = button.attr('href');
-			var taskid = button.data('id');
 			$.getJSON(url, function(json) {
 				if (json.response.error) {
 					swal({
@@ -626,7 +625,7 @@ $(document).ready(function() {
 							'<b>description:</b> ' + json.response.action.textbody,
 						type: 'question',
 						showCancelButton: true,
-						confirmButtonText: 'Confirm as complete'
+						confirmButtonText: 'Confirm as Complete'
 					}).then(function() {
 						swal({
 						  title: "Leave Reflection Note?",
@@ -637,11 +636,35 @@ $(document).ready(function() {
 						  if (text) {
 						    $.post(json.response.action.urls.completion, {reflectnote: text})
 								.done(function(json) {
-									console.log(json.sql);
-									$('.actions-refresh').click(); $(config.modals.ajax).modal('hide');
+									$('.actions-refresh').click(); 
+									$(config.modals.ajax).modal('hide');
+									$.notify({
+										// options
+										title: ucfirst(json.response.notifytype)+"!",
+										icon: json.response.icon,
+										message: json.response.message
+									},{
+										element: "body",
+										type: json.response.notifytype,
+										timer: 1000,
+									});
 								});
 						} else {
-							$.get(json.response.action.urls.completion, function() { $('.actions-refresh').click(); $(config.modals.ajax).modal('hide'); });
+							$.get(json.response.action.urls.completion, function(json) { 
+								$('.actions-refresh').click(); 
+								$(config.modals.ajax).modal('hide');
+								console.log(json);
+								$.notify({
+									// options
+									title: ucfirst(json.response.notifytype)+"!",
+									icon: json.response.icon,
+									message: json.response.message
+								},{
+									element: "body",
+									type: json.response.notifytype,
+									timer: 1000,
+								});
+							});
 						}
 						swal.close();
 						}).catch(swal.noop);
@@ -1022,6 +1045,14 @@ $(document).ready(function() {
 /*==============================================================
  	STRING FUNCTIONS
 =============================================================*/
+function ucfirst(str) {
+    var pieces = str.split(" ");
+    for ( var i = 0; i < pieces.length; i++ ) {
+        var j = pieces[i].charAt(0).toUpperCase();
+        pieces[i] = j + pieces[i].substr(1);
+    }
+    return pieces.join(" ");
+}
 	function getordinalsuffix(i) {
 		var j = i % 10, k = i % 100;
 		if (j == 1 && k != 11) { return i + "st"; }

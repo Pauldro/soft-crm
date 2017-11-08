@@ -1,12 +1,12 @@
 <?php
 	// $action is Loaded by Crud Controller
-    if ($action->hascontactlink) { //DOESNT MATTER DEPRECATE
+    if ($action->has_contactlink()) { //DOESNT MATTER DEPRECATE
         $contactinfo = get_customercontact($action->customerlink, $action->shiptolink, $action->contactlink, false);
     } else {
         $contactinfo = get_customercontact($action->customerlink, $action->shiptolink, $action->contactlink, false);
     }
 
-    if ($action->isrescheduled) {
+    if ($action->is_rescheduled()) {
         $rescheduledtask = loaduseraction($action->rescheduledlink, true, false);
     }
 ?>

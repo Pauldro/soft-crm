@@ -5,8 +5,8 @@
 <div class="panel-body">
 	<div class="row">
 		<div class="col-xs-4">
-			<label for="view-task-status">View Completed Tasks</label>
-			<select name="" id="view-action-completion-status" class="form-control input-sm" <?= $actionpanel->data; ?> data-url="<?= $actionpanel->getactiontyperefreshlink(true);; ?>" >
+			<label for="view-action-completion-status">View Completed Tasks</label>
+			<select id="view-action-completion-status" class="form-control input-sm" <?= $actionpanel->ajaxdata; ?> data-url="<?= $actionpanel->generate_refreshurl(true); ?>" >
 				<?php foreach ($actionpanel->taskstatuses as $status => $label) : ?>
 					<?php if ($status == $actionpanel->taskstatus) : ?>
 						<option value="<?= $status; ?>" selected><?= $label; ?></option>
@@ -32,20 +32,20 @@
 			</tr>
 		<?php else : ?>
 			<?php foreach ($tasks as $task) : ?>
-				<?php if ($task->isoverdue && (!$task->isrescheduled)) {$class="bg-warning";} else {$class = "";} ?>
+				<?php if ($task->is_overdue() && (!$task->is_rescheduled())) {$class="bg-warning";} else {$class = "";} ?>
 	            <tr class="<?= $class; ?>">
-					<td><?= $task->displayduedate('m/d/Y'); ?></td>
+					<td><?= $task->generate_duedatedisplay('m/d/Y'); ?></td>
 					<td><?= $task->actiontype; ?></td>
-					<td><?= $task->getactionsubtypedescription(); ?></td>
+					<td><?= $task->generate_actionsubtypedescription(); ?></td>
 	                <td><?= $task->title; ?></td>
 					<td>
-						<a href="<?= $task->generateviewactionurl(); ?>" role="button" class="btn btn-xs btn-primary load-action" data-modal="<?= $actionpanel->modal; ?>" title="View Task">
+						<a href="<?= $task->generate_viewactionurl(); ?>" role="button" class="btn btn-xs btn-primary load-action" data-modal="<?= $actionpanel->modal; ?>" title="View Task">
 							<i class="material-icons md-18">&#xE02F;</i>
 						</a>
 					</td>
 					<td>
-						<?php if (!$task->isrescheduled && !$task->hascompleted) : ?>
-							<a href="<?= $task->generateviewactionjson(); ?>" role="button" class="btn btn-xs btn-primary complete-action" data-modal="<?= $actionpanel->modal; ?>" title="Mark Task as Complete">
+						<?php if (!$task->is_rescheduled() && !$task->is_completed()) : ?>
+							<a href="<?= $task->generate_viewactionjsonurl(); ?>" role="button" class="btn btn-xs btn-primary complete-action" data-modal="<?= $actionpanel->modal; ?>" title="Mark Task as Complete">
 								<i class="fa fa-check-circle"></i> <span class="sr-only">Mark as Complete</span>
 							</a>
 						<?php endif; ?>

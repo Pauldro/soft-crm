@@ -1,10 +1,7 @@
 <?php
-    $actiontype = "note";
-	if ($input->get->modal) {
-		$partialid = 'actions-modal';
-	} else {
-		$partialid = 'actions';
-	}
+    $actiontype = "notes";
+	$page->useractionpanelfactory = new UserActionPanelFactory($assigneduserID, $page->fullURL, $actiontype);
+    
     switch ($input->urlSegment1) {
         case 'add':
             switch($input->urlSegment2) {
@@ -23,13 +20,6 @@
         case 'load':
             switch ($input->urlSegment2) {
                 case 'list':
-                    if (!$config->ajax) {
-    					$actionpanel = new UserActionPanel($input->urlSegment3, 'note', $partialid, '#ajax-modal', $config->ajax, $config->modal);
-                        $actionpanel->querylinks = UserAction::getlinkarray();
-                        $actionpanel->querylinks['assignedto'] = $user->loginid;
-                        $actionpanel->querylinks['actiontype'] = 'note';
-                    }
-
                     switch($input->urlSegment3) {
                         case 'user':
                             if ($config->ajax) {
@@ -65,7 +55,7 @@
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;
-                        case 'order':
+                        case 'salesorder':
                             if ($config->ajax) {
         						include $config->paths->content.'edit/orders/actions/actions-panel.php';
         					} else {
@@ -95,7 +85,7 @@
 					$fetchclass = true;
 					$note = loaduseraction($noteID, $fetchclass, false);
 					$messagetemplate = "Viewing Note for {replace}";
-					$page->title = $note->createmessage($messagetemplate);
+					$page->title = $note->generate_message($messagetemplate);
 
                     if ($config->ajax) {
                         $page->body = $config->paths->content.'actions/notes/view-note.php';

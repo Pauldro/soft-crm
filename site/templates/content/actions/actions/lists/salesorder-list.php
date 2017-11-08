@@ -15,14 +15,14 @@
 			</tr>
 		<?php else : ?>
 			<?php foreach ($actions as $action) : ?>
-				<?php if ($action->isoverdue) {$class="bg-warning";} else {$class = "";} ?>
+				<?php if ($action->is_overdue()) {$class="bg-warning";} else {$class = "";} ?>
 	            <tr class="<?= $class; ?>">
 					<td><?= date('m/d/Y H:i A', strtotime($action->datecompleted)); ?></td>
 					<td><?= $action->actiontype; ?></td>
-					<td><?= $action->getactionsubtypedescription(); ?></td>
-	                <td><?= $action->regardinglink; ?></td>
+					<td><?= $action->generate_actionsubtypedescription(); ?></td>
+	                <td><?= $action->generate_regardingdescription(); ?></td>
 					<td>
-						<a href="<?= $action->generateviewactionurl(); ?>" role="button" class="btn btn-xs btn-primary load-action" data-modal="<?= $actionpanel->modal; ?>" title="View Task">
+						<a href="<?= $action->generate_viewactionurl(); ?>" role="button" class="btn btn-xs btn-primary load-action" data-modal="<?= $actionpanel->modal; ?>" title="View Task">
 							<i class="material-icons md-18">&#xE02F;</i>
 						</a>
 					</td>

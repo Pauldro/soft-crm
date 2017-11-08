@@ -1,19 +1,12 @@
 <?php
-    $actiontype = "task";
-	if ($input->get->modal) {
-		$partialid = 'actions-modal';
-	} else {
-		$partialid = 'actions';
-	}
+    $actiontype = "tasks";
+	$page->useractionpanelfactory = new UserActionPanelFactory($assigneduserID, $page->fullURL, $actiontype);
+    
     switch ($input->urlSegment1) {
         case 'add':
             switch($input->urlSegment2) {
                 case 'new':
-                    if (file_exists($config->paths->content."actions/tasks/$config->cptechcustomer-new-task.php")) {
-                        include $config->paths->content."actions/tasks/$config->cptechcustomer-new-task.php";
-                    } else {
-                        include $config->paths->content."actions/tasks/new-task.php";
-                    }
+                    include $config->paths->content."actions/tasks/new-task.php";
                     break;
                 default:
                     include $config->paths->content."actions/tasks/crud/add-task.php";
@@ -23,15 +16,6 @@
         case 'load':
             switch ($input->urlSegment2) {
                 case 'list':
-                    if (!$config->ajax) {
-    					$actionpanel = new UserActionPanel($input->urlSegment3, 'task', $partialid, '#ajax-modal', $config->ajax, $config->modal);
-                        $actionpanel->setuptasks($input->get->text('action-status'));
-                        $actionpanel->querylinks = UserAction::getlinkarray();
-                        $actionpanel->querylinks['assignedto'] = $user->loginid;
-                        $actionpanel->querylinks['actiontype'] = 'task';
-                        $actionpanel->querylinks['completed'] = $actionpanel->databasetaskstatus();
-                    }
-
                     switch($input->urlSegment3) {
                         case 'user':
                             if ($config->ajax) {
@@ -67,7 +51,7 @@
         						include $config->paths->content."common/include-blank-page.php";
         					}
                             break;
-                        case 'order':
+                        case 'salesorder':
                             if ($config->ajax) {
         						include $config->paths->content.'edit/orders/actions/actions-panel.php';
         					} else {
@@ -96,7 +80,7 @@
 					$fetchclass = true;
 					$task = loaduseraction($taskid, $fetchclass, false);
 					$messagetemplate = "Viewing Action for {replace}";
-					$page->title = $task->createmessage($messagetemplate);
+					$page->title = $task->generate_message($messagetemplate);
 
                     if ($config->ajax) {
                         $page->body = $config->paths->content.'actions/tasks/view-task.php';

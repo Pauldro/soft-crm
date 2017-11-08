@@ -4,7 +4,7 @@
     if (isset($input->post)) {
         $action = $input->post->text('action');
 
-        $tasklinks = UserAction::getlinkarray();
+        $tasklinks = UserAction::generate_classarray();
         $tasklinks['actiontype'] = 'task';
         $tasklinks['actionsubtype'] = $input->post->text('tasktype');
         $tasklinks['customerlink'] = $input->post->text('custlink');
@@ -60,7 +60,7 @@
 					$error = false;
 					$message = "<strong>Success!</strong><br> Your task for {replace} has been created";
 					$icon = "glyphicon glyphicon-floppy-saved";
-					$message = $newtask->createmessage($message);
+					$message = $newtask->generate_message($message);
 					break;
 			}
 

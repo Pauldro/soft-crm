@@ -246,15 +246,16 @@
 			$contact['cphext'] = $input->post->text('extension');
 			$contact['ccellphone'] = str_replace('-', '', $input->post->text('cellphone'));
 			$contact['email'] = $input->post->text('email');
-			$session->sql = edit_customercontact($custID, $shipID, $contactID, $contact, true);
+			$response = edit_customercontact($custID, $shipID, $contactID, $contact, false);
+			$session->sql = $response['sql'];
 			$data = array('DBNAME' => $config->dbName, 'EDITCONTACT' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID, 'CONTACT' => $contactID, 'NAME' => $contact['contact'], 'PHONE' => $contact['cphone'], 'EXTENSION' => $contact['cphext'], 'CELLPHONE' => $contact['ccellphone'], 'EMAIL' => $contact['email']);
 			$returnpage = new \Purl\Url($input->post->text('page'));
 			$returnpage->query->set('id', $contact['contact']);
 
 			$oldlinks = array('customerlink' => $custID, 'shiptolink' => $shipID, 'contactlink' => $contactID);
 			$newlinks = array('customerlink' => $custID, 'shiptolink' => $shipID, 'contactlink' => $contact['contact']);
-			if ($contactID != $contact['contact']) {
-				$session->sql = updateactionlinks($oldlinks, $newlinks, $oldlinks, true);
+			if ($response['changes']) {
+				$session->sql .= "<br>" . updateactionlinks($oldlinks, $newlinks, $oldlinks, true);
 				updateactionlinks($oldlinks, $newlinks, $oldlinks, false);
 			}
 			$session->loc = $returnpage->getUrl();

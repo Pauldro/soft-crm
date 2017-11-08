@@ -1,4 +1,6 @@
 <?php
+    $page->useractionpanelfactory = new UserActionPanelFactory($user->loginid, $page->fullURL);
+    
     switch ($page->name) { //$page->name is what we are editing
         case 'order':
             $ordn = $input->get->text('ordn');
@@ -7,7 +9,7 @@
         	$order = $ordereditdisplay->get_order(); 
             $ordereditdisplay->canedit = ($input->get->readonly) ? false : $order->can_edit();
             $prefix = ($ordereditdisplay->canedit) ? 'Editing' : 'Viewing';
-            $page->title = "$prefix Order #" . $ordn . ' for ' . get_customer_name_from_order(session_id(), $ordn);
+            $page->title = "$prefix Order #" . $ordn . ' for ' . get_customername($order->custid);
             $config->scripts->append(hashtemplatefile('scripts/dplusnotes/order-notes.js'));
 			$config->scripts->append(hashtemplatefile('scripts/edit/card-validate.js'));
 			$config->scripts->append(hashtemplatefile('scripts/edit/edit-orders.js'));

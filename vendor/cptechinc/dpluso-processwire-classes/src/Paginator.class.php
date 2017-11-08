@@ -110,5 +110,13 @@
 			$ul = $bootstrap->openandclose('ul', 'class=pagination', $list);
 			return $bootstrap->openandclose('nav', 'class=text-center', $ul);
 		}
+		
+		public static function generate_pagenbr(\Purl\Url $url) {
+	        if (preg_match("((page)\d{1,3})", $url->path, $matches)) {
+	            return str_replace('page', '', $matches[0]);
+	        } else {
+	            return 1;
+	        }
+	    }
 	}
 ?>

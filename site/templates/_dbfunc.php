@@ -203,16 +203,19 @@
 	function edit_customercontact($custID, $shipID, $contactID, $contact, $debug) {
 		$originalcontact = get_customercontact($custID, $shipID, $contactID, false);
 		$query = returnpreppedquery($originalcontact, $contact);
-		$sql = wire('database')->prepare("UPDATE custindex SET ".$query['setstatement']." WHERE custid = :custID AND shiptoid = :shipID AND contact = :contactID");
-		$query['switching'][':custID'] = $custID; $query['switching'][':shipID'] = $shipID; $query['switching'][':contactID'] = $contactID;
+		$sql = wire('database')->prepare("UPDATE custindex SET ".$query['setstatement']." WHERE custid = :custID AND shiptoid = :shipID AND contact = :originalcontactID");
+		$query['switching'][':custID'] = $custID; $query['switching'][':shipID'] = $shipID; $query['switching'][':originalcontactID'] = $contactID;
 		$query['withquotes'][] = true; $query['withquotes'][]= true; $query['withquotes'][] = true;
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
 		} else {
+			$returnquery = returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
 			if ($query['changecount'] > 0) {
 				$sql->execute($query['switching']);
+				$success = $sql->rowCount();
+				return $success ? array('error' => false, 'changes' => $query['changecount'], 'sql' => $returnquery) : array('error' => true, 'changes' => 0, 'sql' => $returnquery);
 			}
-			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
+			return array('error' => false, 'changes' => 0, 'sql' => $returnquery);
 		}
 	}
 
@@ -910,7 +913,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getuseractionscount($user, $querylinks, $debug) {
+	function count_useractions($user, $querylinks, $debug) {
 		$query = returnwherelinks($querylinks);
 		$andlinks = $query['wherestatement'];
 		$sql = wire('database')->prepare("SELECT COUNT(*) FROM useractions WHERE $andlinks");

@@ -18,11 +18,11 @@
 			<?php foreach ($notes as $note) : ?>
 	            <tr>
 					<td><?= ucfirst($note->actiontype); ?></td>
-					<td><?= ucfirst($note->getactionsubtypedescription()); ?></td>
+					<td><?= ucfirst($note->generate_actionsubtypedescription()); ?></td>
                     <td><?= date('m/d/Y H:i A', strtotime($note->datecreated)); ?></td>
 	                <td><?= $note->title; ?></td>
 					<td>
-						<a href="<?= $note->generateviewactionurl(); ?>" role="button" class="btn btn-xs btn-primary load-action" data-modal="<?= $actionpanel->modal; ?>" title="View Task">
+						<a href="<?= $note->generate_viewactionurl(); ?>" role="button" class="btn btn-xs btn-primary load-action" data-modal="<?= $actionpanel->modal; ?>" title="View Task">
 							<i class="material-icons md-18">&#xE02F;</i>
 						</a>
 					</td>

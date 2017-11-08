@@ -23,7 +23,29 @@
 	$session->sql = $response['sql'];
 	$response['request_type'] = 'update';
 	$response['taskid'] = $taskID;
+    
+    if ($response['error']) {
+        $json = array (
+				'response' => array (
+					'error' => true,
+					'notifytype' => 'warning',
+					'message' => 'Your task was not able to be updated',
+					'icon' => 'glyphicon glyphicon-floppy-remove',
+					'taskid' => $taskID,
+				)
+			);
+    } else {
+        $json = array (
+				'response' => array (
+					'error' => false,
+					'notifytype' => 'success',
+					'message' => 'Your task has been marked as completed',
+					'icon' => 'glyphicon glyphicon-floppy-saved',
+					'taskid' => $taskID,
+				)
+			);
+    }
 
-	echo json_encode($response);
+	echo json_encode($json);
 
 ?>

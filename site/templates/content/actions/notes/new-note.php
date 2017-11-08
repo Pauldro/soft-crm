@@ -1,5 +1,5 @@
 <?php
-	$notelinks = UserAction::getlinkarray();
+	$notelinks = UserAction::generate_classarray();
 	$notelinks['actiontype'] = 'note';
 	$notelinks['customerlink'] = $custID;
 	$notelinks['shiptolink'] = $shipID;
@@ -20,11 +20,16 @@
 		}
 	}
 
-	$notelinks['assignedto'] = $user->loginid;
-	$note = UserAction::blankuseraction($notelinks);
+	if (!empty($notelinks['customerlink']) && $config->cptechcustomer == 'stempf') {
+		$notelinks['assignedto'] = get_customersalesperson($notelinks['customerlink'], $notelinks['shiptolink'], false);
+	} else {
+		$notelinks['assignedto'] = $user->loginid;
+	}
+	
+	$note = UserAction::create_fromarray($notelinks);
 
     $message = "Writing Note for {replace} ";
-    $page->title = $note->createmessage($message);
+    $page->title = $note->generate_message($message);
 
 	if ($config->ajax) {
 		$page->body = $config->paths->content."actions/notes/forms/new-note-form.php";
