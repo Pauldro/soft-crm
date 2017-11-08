@@ -106,11 +106,8 @@
 	*
 	*
 	*/
-	if ($config->debug) {
-		$config->cgi = "DPLUSO";
-	} else {
-		$config->cgi = "CRMTEST";
-	}
+	
+	$config->cgi = "DPLUSO";
 
 	$config->cptechcustomer = 'stempf';
 	$config->COMPANYNBR = '3';
@@ -135,6 +132,23 @@
 
 	$config->fob_array = array('Origin' => 'O', 'Delivery' => 'D');
 
+	$config->dplusnotes = array (
+		'order' => array(
+			'width' => '35', 'type' => 'SORD', 'forms' => 4, 'form1' => 'Pick Ticket', 'form2' => 'Pack Ticket', 'form3' => 'Invoice', 'form4' => 'Acknowledgement'
+		),
+		'quote' => array(
+			'width' => '35', 'type' => 'QUOT', 'forms' => 5, 'form1' => 'Quote', 'form2' => 'Pick Ticket', 'form3' => 'Pack Ticket', 'form4' => 'Invoice', 'form5' => 'Acknowledgement'
+		),
+		'cart' => array(
+			'width' => '35', 'type' => 'CART', 'forms' => 5, 'form1' => 'Quote', 'form2' => 'Pick Ticket', 'form3' => 'Pack Ticket', 'form4' => 'Invoice', 'form5' => 'Acknowledgement'
+		)
+	);
+
+	$config->phoneintl = false;
+	$config->textjustify = array('r' => 'text-right', 'c' => 'text-center', 'l' => 'text-left', 'u' => '');
+	$config->formattypes = array('N' => 'number', 'I' => 'integer', 'C' => 'text', 'D' => 'date');
+	$config->specialordertypes = array('S' => 'Special Order', 'N' => 'Normal', 'D' => 'Dropship');
+	
 	$config->pages = new Paths($rootURL);
 	$config->pages->index = $config->urls->root;
 	$config->pages->account = $config->urls->root . 'user/account/';
@@ -152,7 +166,7 @@
 	$config->pages->orderquote = $config->urls->root . 'edit/quote-to-order/';
 	$config->pages->confirmorder = $config->urls->root . 'edit/order/confirm/';
 	$config->pages->confirmquote = $config->urls->root . 'edit/quote/confirm/';
-    $config->pages->print = $config->urls->root."print/";
+	$config->pages->print = $config->urls->root."print/";
 	$config->pages->products = $config->urls->root . 'products/';
 	$config->pages->iteminfo = $config->urls->root . 'products/item-info/';
 	$config->pages->user = $config->urls->root . 'user/';
@@ -171,33 +185,3 @@
 	$config->pages->documentstorage = $config->documentstorage;
 	$config->pages->vendor = $config->urls->root . "vendors/";
 	$config->pages->vendorinfo = $config->urls->root . "vendors/vend-info/";
-
-
-	$config->dplusnotes = array (
-		'order' => array(
-			'width' => '35', 'type' => 'SORD', 'forms' => 4, 'form1' => 'Pick Ticket', 'form2' => 'Pack Ticket', 'form3' => 'Invoice', 'form4' => 'Acknowledgement'
-		),
-		'quote' => array(
-			'width' => '35', 'type' => 'QUOT', 'forms' => 5, 'form1' => 'Quote', 'form2' => 'Pick Ticket', 'form3' => 'Pack Ticket', 'form4' => 'Invoice', 'form5' => 'Acknowledgement'
-		),
-		'cart' => array(
-			'width' => '35', 'type' => 'CART', 'forms' => 5, 'form1' => 'Quote', 'form2' => 'Pick Ticket', 'form3' => 'Pack Ticket', 'form4' => 'Invoice', 'form5' => 'Acknowledgement'
-		)
-	);
-
-	$config->phoneintl = false;
-	$config->textjustify = array('r' => 'text-right', 'c' => 'text-center', 'l' => 'text-left', 'u' => '');
-	$config->formattypes = array('N' => 'number', 'I' => 'integer', 'C' => 'text', 'D' => 'date');
-	$config->specialordertypes = array('S' => 'Special Order', 'N' => 'Normal', 'D' => 'Dropship');
-
-
-
-	/**
-	* CPTECH: Additional User fields
-	*
-	* $user->loggedin Boolean
-	* $user->username String
-	* $user->hasrestrictions Boolean
-	* $user->lockedordn Boolean
-	*
-	*/
