@@ -163,8 +163,8 @@
                     'vi_costingform' => $config->pages->ajaxload."vi/vi-costing-search/",
                     'vi_unreleased' => $config->pages->ajaxload."vi/vi-unreleased-purchase-orders/",
                     'vi_uninvoiced' => $config->pages->ajaxload."vi/vi-uninvoiced/",
-                    'vi_24monthsummary' => $config->pages->ajaxload."vi/vi-24monthsummary",
-                    'vi_docview' => $config->pages->ajaxload."vi/vi-docview"
+                    'vi_24monthsummary' => $config->pages->ajaxload."vi/vi-24monthsummary/",
+                    'vi_docview' => $config->pages->ajaxload."vi/vi-docview/"
                 ],
                 'json' => [
                     'vi_shipfromlist' => $config->pages->ajaxjson."vi/vi-shipfrom-list/",

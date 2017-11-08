@@ -163,7 +163,7 @@
 			$data = array('DBNAME' => $config->dbName, 'VIUNINVOICED' => false, 'VENDID' => $vendorID);
 			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
-		case 'vi-24-month-summary':
+		case 'vi-24monthsummary':
 			$data = array('DBNAME' => $config->dbName, 'VIMONTHSUM' => false, 'VENDID' => $vendorID);
 			if (!empty($input->post->shipfromID)) {
 				$data['SHIPID'] = $input->post->text('shipfromID');

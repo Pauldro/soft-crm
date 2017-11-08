@@ -247,22 +247,21 @@ function uninvoiced() {
 	});
 }
 
-// TODO: rename function 
-// function 24monthsummary() { 
-// 	var vendorID = $(vendlookupform + " .vendorID").val();
-//     console.log(vendorID);
-// 	var modal = config.modals.ajax;
-// 	var loadinto =  modal+" .modal-content";
-// 	var href = URI(config.urls.vendor.load.vi_24monthsummary).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
-// 	showajaxloading();
-// 	vi_24monthsummary(vendorID, function() {
-// 		$(loadinto).loadin(href, function() {
-// 			hideajaxloading(); console.log(href);
-// 			$(modal).find('.modal-body').addClass('modal-results');
-// 			$(modal).resizemodal('lg').modal();
-// 		});
-// 	});
-// }
+function monthsummary() { 
+	var vendorID = $(vendlookupform + " .vendorID").val();
+    console.log(vendorID);
+	var modal = config.modals.ajax;
+	var loadinto =  modal+" .modal-content";
+	var href = URI(config.urls.vendor.load.vi_24monthsummary).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
+	showajaxloading();
+	vi_24monthsummary(vendorID, function() {
+		$(loadinto).loadin(href, function() {
+			hideajaxloading(); console.log(href);
+			$(modal).find('.modal-body').addClass('modal-results');
+			$(modal).resizemodal('xl').modal();
+		});
+	});
+}
 
 function docview() { 
 	var vendorID = $(vendlookupform + " .vendorID").val();

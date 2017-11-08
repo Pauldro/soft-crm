@@ -70,9 +70,9 @@
             $page->title = get_vendorname($vendorID) . ' Uninvoiced';
             $page->body = $config->paths->content."vend-information/vend-uninvoiced.php";
             break;
-        case 'vi-24-month-summary':
+        case 'vi-24monthsummary':
             $vendorID = $input->get->text('vendorID');
-            $page->title = get_vendorname($vendorID) . ' Purchase Orders';
+            $page->title = get_vendorname($vendorID) . ' 24-Month Summary';
             $page->body = $config->paths->content."vend-information/vend-24-month-summary.php";
             break;
         case 'vi-docview':

@@ -48,8 +48,8 @@ function vi_uninvoiced(vendorID, callback) {
     $.get(url, function() { callback();});
 }
 
-function vi_24monthssummary(vendorID, callback) {
-    var url = config.urls.vendor.redir.vi_24monthssummary+"&vendorID="+urlencode(vendorID);
+function vi_24monthsummary(vendorID, callback) {
+    var url = config.urls.vendor.redir.vi_24monthsummary+"&vendorID="+urlencode(vendorID);
     $.get(url, function() { callback();});
 }
 
