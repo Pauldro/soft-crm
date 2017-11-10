@@ -12,7 +12,7 @@ site/templates/content/ajax/json/test-json.php
 site/templates/template-test.php
 site/templates/redir/test-redir.php
 
-#Processwire Directories
+# Processwire Directories
 site/modules/CronjobDatabaseBackup
 site/modules/Helloworld
 site/modules/InputfieldCKEditor
@@ -21,4 +21,9 @@ site/modules/ModulesManager
 site/modules/ProcessDatabaseBackups
 site/modules/ProcessExportProfile
 site/assets
+wire
+
+
+.ftpconfig
+site/config.php
 composer.lock
