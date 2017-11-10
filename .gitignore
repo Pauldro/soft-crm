@@ -23,7 +23,10 @@ site/modules/ProcessExportProfile
 site/assets
 wire
 
-
+# Project Configurations
 .ftpconfig
 site/config.php
+composer.json
 composer.lock
+index.php
+vendor/composer
