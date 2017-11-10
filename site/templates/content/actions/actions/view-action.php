@@ -1,5 +1,7 @@
 <?php
 	// $action is Loaded by Crud Controller
+	$actiondisplay = new UserActionDisplay($page->fullURL);
+    
     if ($action->has_contactlink()) { //DOESNT MATTER DEPRECATE
         $contactinfo = get_customercontact($action->customerlink, $action->shiptolink, $action->contactlink, false);
     } else {

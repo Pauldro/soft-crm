@@ -48,7 +48,7 @@
         
         public function generate_completetasklink($task) {
             $bootstrap = new Contento();
-            $href = $this->generate_rescheduleurl($task);
+            $href = $this->generate_viewactionjsonurl($task);
             $icon = $bootstrap->createicon('fa fa-check-circle');
             $icon .= ' <span class="sr-only">Mark as Complete</span>';
             return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-primary complete-action|title=Mark Task as Complete", $icon. " Complete Task");

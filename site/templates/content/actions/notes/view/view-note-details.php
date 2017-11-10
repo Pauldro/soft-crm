@@ -13,18 +13,18 @@
     </tr>
     <tr>
         <td>Customer:</td>
-        <td><?= get_customername($note->customerlink); ?> &nbsp;<a href="<?= $note->generate_customerurl(); ?>"><i class="glyphicon glyphicon-share"></i> Go to Customer Page</a></td>
+        <td><?= get_customername($note->customerlink); ?> &nbsp;<a href="<?= $notedisplay->generate_customerurl($note); ?>"><i class="glyphicon glyphicon-share"></i> Go to Customer Page</a></td>
     </tr>
     <?php if ($note->has_shiptolink()) : ?>
         <tr>
             <td>Ship-to:</td>
-            <td><?= get_shiptoname($note->customerlink, $note->shiptolink, false); ?> &nbsp;<a href="<?= $note->generate_shiptourl(); ?>"><i class="glyphicon glyphicon-share"></i> Go to Ship-to Page</a></td>
+            <td><?= get_shiptoname($note->customerlink, $note->shiptolink, false); ?> &nbsp;<a href="<?= $notedisplay->generate_shiptourl($note); ?>"><i class="glyphicon glyphicon-share"></i> Go to Ship-to Page</a></td>
         </tr>
     <?php endif; ?>
     <?php if ($note->has_contactlink()) : ?>
         <tr>
             <td>Contact:</td>
-            <td><?= $note->contactlink; ?> &nbsp;<a href="<?= $note->generate_contacturl(); ?>"><i class="glyphicon glyphicon-share"></i> Go to Contact Page</a></td>
+            <td><?= $note->contactlink; ?> &nbsp;<a href="<?= $notedisplay->generate_contacturl($note); ?>"><i class="glyphicon glyphicon-share"></i> Go to Contact Page</a></td>
         </tr>
     <?php endif; ?>
     <?php if ($note->has_salesorderlink()) : ?>

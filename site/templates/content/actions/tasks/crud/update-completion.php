@@ -39,7 +39,7 @@
 				'response' => array (
 					'error' => false,
 					'notifytype' => 'success',
-					'message' => 'Your task has been marked as completed',
+					'message' => 'Your task has been marked as complete',
 					'icon' => 'glyphicon glyphicon-floppy-saved',
 					'taskid' => $taskID,
 				)

@@ -13,7 +13,7 @@
 	<input type="hidden" name="tasklink" value="<?= $notelinks['tasklink']; ?>">
 	<input type="hidden" name="actionlink" value="<?= $notelinks['actionlink']; ?>">
 	<table class="table table-bordered table-striped">
-	    <tr>  <td>Note Create Date:</td> <td><?php echo date('m/d/Y g:i A'); ?></td> </tr>
+	    <tr>  <td>Note Create Date:</td> <td><?= date('m/d/Y g:i A'); ?></td> </tr>
 	    <tr>
 	        <td class="control-label">Assigned To:</td>
 	        <td>
@@ -24,7 +24,6 @@
 	                    <?php else : ?>
 	                        <option value="<?= $salespersonjson['data'][$salespersoncode]['splogin']; ?>"><?= $salespersoncode.' - '.$salespersonjson['data'][$salespersoncode]['spname']; ?></option>
 	                    <?php endif; ?>
-
 	                <?php endforeach; ?>
 	            </select>
 	        </td>

@@ -113,38 +113,6 @@
 			return preg_replace($regex, $replace, $message);
 		}
 
-		public function generate_viewactionurl() {
-			return wire('config')->pages->actions."$this->actiontype/load/?id=".$this->id;
-		}
-
-		public function generate_completionurl($complete) {
-			return wire('config')->pages->actions."$this->actiontype/update/completion/?id=".$this->id."&complete=".$complete; //true or false
-		}
-
-		public function generate_rescheduleurl() {
-			return wire('config')->pages->actions."$this->actiontype/update/reschedule/?id=".$this->id;
-		}
-
-		public function generate_viewactionjsonurl() {
-			return wire('config')->pages->ajax."json/load-action/?id=".$this->id;
-		}
-
-		public function generate_customerurl() {
-			return wire('config')->pages->customer."redir/?action=load-customer&custID=".urlencode($this->customerlink);
-		}
-
-		public function generate_shiptourl() {
-			return $this->generate_customerurl() . "&shipID=".urlencode($this->shiptolink);
-		}
-
-		public function generate_contacturl() {
-			if ($this->has_shiptolink()) {
-				return wire('config')->pages->customer.urlencode($this->customerlink) . "/shipto-".urlencode($this->shiptolink)."/contacts/?id=".urlencode($this->contactlink);
-			} else {
-				return wire('config')->pages->customer.urlencode($this->customerlink)."/contacts/?id=".urlencode($this->contactlink);
-			}
-		}
-
 		public function generate_duedatedisplay($format) {
 			switch ($this->actiontype) {
 				case 'tasks':

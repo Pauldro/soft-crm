@@ -17,19 +17,19 @@
     <?php if ($action->has_customerlink()) : ?>
         <tr>
             <td>Customer:</td>
-            <td><?= get_customername($action->customerlink); ?> <a href="<?= $action->generate_customerurl(); ?>" target="_blank"><i class="glyphicon glyphicon-share"></i> Go to Customer Page</a></td>
+            <td><?= get_customername($action->customerlink); ?> &nbsp;<a href="<?= $actiondisplay->generate_customerurl($action); ?>" target="_blank"><i class="glyphicon glyphicon-share"></i> Go to Customer Page</a></td>
         </tr>
     <?php endif; ?>
     <?php if ($action->has_shiptolink()) : ?>
         <tr>
             <td>Ship-to:</td>
-            <td><?= get_shiptoname($action->customerlink, $action->shiptolink, false); ?> <a href="<?= $action->generate_customerurl(); ?>" target="_blank"><i class="glyphicon glyphicon-share"></i> Go to Ship-to Page</a></td>
+            <td><?= get_shiptoname($action->customerlink, $action->shiptolink, false); ?> <a href="<?= $actiondisplay->generate_shiptourl($action); ?>" target="_blank"><i class="glyphicon glyphicon-share"></i> Go to Ship-to Page</a></td>
         </tr>
     <?php endif; ?>
     <?php if ($action->has_contactlink()) : ?>
         <tr>
             <td>Action Contact:</td>
-            <td><?= $action->contactlink; ?> <a href="<?= $action->generate_contacturl(); ?>" target="_blank"><i class="glyphicon glyphicon-share"></i> Go to Contact Page</a></td>
+            <td><?= $action->contactlink; ?> <a href="<?= $actiondisplay->generate_contacturl($action); ?>" target="_blank"><i class="glyphicon glyphicon-share"></i> Go to Contact Page</a></td>
         </tr>
     <?php else : ?>
         <tr>

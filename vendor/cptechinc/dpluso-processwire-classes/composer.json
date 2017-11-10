@@ -8,7 +8,7 @@
 		"files": [
 			"src/Contact.class.php",
 			"src/DplusDateTime.class.php",
-			"src/UserAction.class.php",
+			"src/Model/UserAction.class.php",
 			"src/UserActionDisplay.class.php",
 			"src/UserActionsPanel.class.php",
 			"src/UserActionsPanelCustomer.class.php",
