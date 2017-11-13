@@ -1,6 +1,6 @@
 <?php
-	// $purchaseorderfile = $config->jsonfilepath.session_id()."-vipurchordr.json";
-	$purchaseorderfile = $config->jsonfilepath."vipov-vipurchordr.json";
+	$purchaseorderfile = $config->jsonfilepath.session_id()."-vipurchordr.json";
+	// $purchaseorderfile = $config->jsonfilepath."vipov-vipurchordr.json";
 	
 	if ($config->ajax) {
 		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));

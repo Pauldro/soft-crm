@@ -1,6 +1,6 @@
 <?php
-	// $summaryfile = $config->jsonfilepath.session_id()."-vimonthsum";
-	$summaryfile = $config->jsonfilepath."vimthv-vimonthsum.json";
+	$summaryfile = $config->jsonfilepath.session_id()."-vimonthsum";
+	// $summaryfile = $config->jsonfilepath."vimthv-vimonthsum.json";
 
     if ($config->ajax) {
 		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
