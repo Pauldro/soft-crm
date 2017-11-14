@@ -57,8 +57,13 @@
         case 'vi-costing':
             $vendorID = $input->get->text('vendorID');
             $itemID = $input->get->text('itemID');
-            $page->title = 'Viewing Cost for ' . $itemID;
-			$page->body = $config->paths->content."vend-information/vend-costing.php";
+            $page->title = 'Viewing Pricing for ' . $itemID;
+            $page->body = $config->paths->content."vend-information/vend-costing.php";
+            break;
+        case 'item-search-results':
+            $page->title = "Searching items for " . $input->get->text('q');
+            $q = $input->get->text('q');
+            $page->body = $config->paths->content."vend-information/item-search-results.php";
             break;
         case 'vi-unreleased-purchase-orders':
             $vendorID = $input->get->text('vendorID');

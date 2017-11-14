@@ -149,8 +149,8 @@
 			break;
 		case 'vi-costing':
 			$itemID = $input->get->text('itemID');
-			$data = array('DBNAME' => $config->dbName, 'VICOST' => false, 'ITEMID' => $itemID, 'VENDID' => $vendorID);
-			$session->loc = $config->pages->vendorinfo. "$vendorID/";
+			$data = array('DBNAME' => $config->dbName, 'VICOST' => false, 'VENDID' => $vendorID, 'ITEMID' => $itemID);
+			$session->loc = $config->pages->index;
 			break;
 		case 'vi-unreleased-purchase-orders':
 			$data = array('DBNAME' => $config->dbName, 'VIUNRELEASED' => false, 'VENDID' => $vendorID);
