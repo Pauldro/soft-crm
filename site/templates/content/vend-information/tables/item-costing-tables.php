@@ -1,79 +1,38 @@
 <?php 
+
 	$tb = new Table('class=table table-striped table-condensed table-excel');
 	$tb->tr();
 		$tb->td('', '<b>Item ID</b>');
 		$tb->td('', $costjson['itemid']);
 		$tb->td('colspan=2', $costjson['desc1']);
 	$tb->tr();
-		$tb->td('', '<b>Customer ID</b>');
+		$tb->td('', '<b>VENDOR ID</b>');
 		$button = $page->bootstrap->openandclose('button', "type=button|class=btn btn-primary btn-sm|data-dismiss=modal|onclick=iicust('ii-pricing')", 'Change Customer');
-		$content = $costjson['vendorID']." - ".$costjson['cust name'] . ' &nbsp; ';
+		$content = $costjson['vendid']." - ".$costjson['vendname'] . ' &nbsp; ';
 		$tb->td('colspan=2', $content);
 	$tb->tr();
-		$tb->td('', '<b>Cust Price Code</b>');
-		$tb->td('colspan=2', $costjson['cust price code']." - ".$costjson['cust price desc']);
+		$tb->td('', '<b>Purch UOM</b>');
+		$tb->td('colspan=2', $costjson['purchuom']);
 	$itemtable = $tb->close();
-
-	// STANDARD CUSTOMER PRICING TABLE
+	
 	$tb = new Table('class=table table-striped table-condensed table-excel');
 	$tb->tablesection('thead');
 		$tb->tr();
-		foreach($costjson['columns']['standard pricing'] as $column) {
+		foreach ($costjson['columns']['vendor costing'] as $column) {
 			$class = $config->textjustify[$column['headingjustify']];
 			$tb->th("class=$class", $column['heading']);
 		}
 	$tb->closetablesection('thead');
 	$tb->tablesection('body');
-		$tb->tr();
-			$tb->td('', '<b>Last Price Date: </b>');
-			$tb->td('', $costjson['data']['standard pricing']['last price date']);
-		foreach ($costjson['data']['standard pricing']['standard breaks'] as $standardpricing) {
+		$count = count($costjson['data']['vendor costing']);
+		for ($i = 1; $i < $count + 1; $i++) {
+			$title = $costjson['data']['vendor costing'][$i]['vend cost label'];
 			$tb->tr();
-			foreach($standardpricecolumns as $column) {
-				$class = $config->textjustify[$costjson['columns']['standard pricing'][$column]['datajustify']];
-				$tb->td("class=$class", $standardpricing[$column]);
-			}
+				$tb->td('class='.$config->textjustify[$costjson['columns']['vendor costing']['vend cost label']['headingjustify']], "<b>$title</b>");
+				$tb->td('class='.$config->textjustify[$costjson['columns']['vendor costing']['vend cost']['headingjustify']], $costjson['data']['vendor costing'][$i]['vend cost']);
+				$tb->td('class='.$config->textjustify[$costjson['columns']['vendor costing']['vend cost date']['headingjustify']], $costjson['data']['vendor costing'][$i]['vend cost date']);
 		}
 	$tb->closetablesection('tbody');
-	$standardpricingtable = $tb->close();
-
-	// CUSTROMER PRICING TABLE
-	$tb = new Table('class=table table-striped table-condensed table-excel');
-	$tb->tablesection('thead');
-		$tb->tr();
-		foreach($costjson['columns']['customer pricing'] as $column) {
-			$class = $config->textjustify[$column['headingjustify']];
-			$tb->th("class=$class", $column['heading']);
-		}
-	$tb->closetablesection('thead');
-	$tb->tablesection('body');
-		foreach ($costjson['data']['customer pricing']['cust breaks'] as $customerpricing) {
-			$tb->tr();
-			foreach($customerpricecolumns as $column) {
-				$class = $config->textjustify[$costjson['columns']['customer pricing'][$column]['datajustify']];
-				$tb->td("class=$class", $customerpricing[$column]);
-			}
-		}
-	$tb->closetablesection('tbody');
-	$customerpricingtable = $tb->close();
-
-	// DERIVED PRICING TABLE
-	$tb = new Table('class=table table-striped table-condensed table-excel');
-	$tb->tablesection('thead');
-		$tb->tr();
-		foreach($costjson['columns']['pricing derived from'] as $column) {
-			$class = $config->textjustify[$column['headingjustify']];
-			$tb->th("class=$class", $column['heading']);
-		}
-	$tb->closetablesection('thead');
-	$tb->tablesection('body');
-		foreach ($costjson['data']['pricing derived from'] as $derivedpricing) {
-			$tb->tr();
-			foreach($derivedpricecolumns as $column) {
-				$class = $config->textjustify[$costjson['columns']['pricing derived from'][$column]['datajustify']];
-				$tb->td("class=$class", $derivedpricing[$column]);
-			}
-		}
-	$tb->closetablesection('tbody');
-	$derivedpricingtable = $tb->close();
+	$costingtable = $tb->close();
+	
 ?>
