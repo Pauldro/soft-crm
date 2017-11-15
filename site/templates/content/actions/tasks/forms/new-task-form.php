@@ -11,14 +11,12 @@
 		<div role="tabpanel" class="tab-pane active" id="task">
 			<form action="<?= $config->pages->actions."tasks/add/"; ?>" method="POST" id="new-action-form" data-refresh="#actions-panel" data-modal="#ajax-modal">
 				<input type="hidden" name="action" value="write-task">
-				<input type="hidden" name="custlink" value="<?= $tasklinks['customerlink']; ?>">
-				<input type="hidden" name="shiptolink" value="<?= $tasklinks['shiptolink']; ?>">
-				<input type="hidden" name="contactlink" value="<?= $tasklinks['contactlink']; ?>">
-				<input type="hidden" name="salesorderlink" value="<?= $tasklinks['salesorderlink']; ?>">
-				<input type="hidden" name="quotelink" value="<?= $tasklinks['quotelink']; ?>">
-				<input type="hidden" name="notelink" value="<?= $tasklinks['notelink']; ?>">
-				<input type="hidden" name="tasklink" value="<?= $tasklinks['tasklink']; ?>">
-				<input type="hidden" name="actionlink" value="<?= $tasklinks['actionlink']; ?>">
+				<input type="hidden" name="custlink" value="<?= $task->customerlink; ?>">
+				<input type="hidden" name="shiptolink" value="<?= $task->shiptolink; ?>">
+				<input type="hidden" name="contactlink" value="<?= $task->contactlink; ?>">
+				<input type="hidden" name="salesorderlink" value="<?= $task->salesorderlink; ?>">
+				<input type="hidden" name="quotelink" value="<?= $task->quotelink; ?>">
+				<input type="hidden" name="actionlink" value="<?=  $task->id; ?>">
 				<div class="response"></div>
 				<table class="table table-bordered table-striped">
 					<tr>  <td class="control-label">Task Date:</td> <td><?php echo date('m/d/Y g:i A'); ?></td> </tr>

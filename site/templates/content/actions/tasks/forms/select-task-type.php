@@ -17,4 +17,4 @@
 	<?php endif; ?>
 <?php endforeach; ?>
 
-<input type="hidden" class="select-button-value required" name="tasktype" value="<?php echo $task->actionsubtype; ?>">
+<input type="hidden" class="select-button-value required" name="tasktype" value="<?= $task->actionsubtype; ?>">

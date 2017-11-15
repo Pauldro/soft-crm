@@ -16,8 +16,6 @@
 				<input type="hidden" name="contactlink" value="<?= $originaltask->contactlink; ?>">
 				<input type="hidden" name="salesorderlink" value="<?= $originaltask->salesorderlink; ?>">
 				<input type="hidden" name="quotelink" value="<?= $originaltask->quotelink; ?>">
-				<input type="hidden" name="notelink" value="<?= $originaltask->notelink; ?>">
-                <input type="hidden" name="tasklink" value="<?= $originaltask->tasklink; ?>">
 				<input type="hidden" name="actionlink" value="<?=  $originaltask->id; ?>">
 				<div class="response"></div>
 				<table class="table table-bordered table-striped">
