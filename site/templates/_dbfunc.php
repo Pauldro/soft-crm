@@ -1,4 +1,5 @@
 <?php
+	use atk4\dsql\Query;
 /* =============================================================
 	LOGIN FUNCTIONS
 ============================================================ */
@@ -912,6 +913,30 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 			return $sql->fetchAll();
 		}
 	}
+	
+	function get_useractions($user, $querylinks, $limit, $page, $debug) {
+		$q = (new atk4\dsql\Query())->table('useractions');
+		$querybuilder = new QueryBuilder();
+		
+		if (wire('config')->cptechcustomer == 'stempf') {
+			$querybuilder->generate_query($q, $querylinks, "duedate-DESC", $limit, $page);
+			$sql = wire('database')->prepare($q->render());
+		} else {
+			$querybuilder->generate_query($q, $querylinks, false, $limit, $page);
+			$sql = wire('database')->prepare($q->render());
+		}
+		
+		$switching = $q->params;
+		if ($debug) {
+			return $querybuilder->returnsqlquery($sql->queryString, $switching);
+		} else {
+			$sql->execute($switching);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'UserAction');
+			return $sql->fetchAll();
+		}
+	}
+	
+	
 
 	function count_useractions($user, $querylinks, $debug) {
 		$query = returnwherelinks($querylinks);
@@ -927,7 +952,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function loaduseraction($id, $fetchclass, $debug) {
+	function get_useraction($id, $fetchclass, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM useractions WHERE id = :id");
 		$switching = array(':id' => $id); $withquotes = array(true);
 		if ($debug) {
@@ -942,7 +967,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 	}
 
 	function updateaction($actionID, $action, $debug) {
-		$originalaction = loaduseraction($actionID, false, false); // (id, bool fetchclass, bool debug)
+		$originalaction = get_useraction($actionID, false, false); // (id, bool fetchclass, bool debug)
 		$query = returnpreppedquery($originalaction, $action);
 		$sql = wire('database')->prepare("UPDATE useractions SET ".$query['setstatement']." WHERE id = :actionid");
 		$query['switching'][':actionid'] = $actionID;$query['withquotes'][] = true;
@@ -977,7 +1002,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function insertaction($action, $debug) {
+	function insert_useraction($action, $debug) {
 		$query = returninsertlinks($action);
 		$sql = wire('database')->prepare("INSERT INTO useractions (".$query['columnlist'].") VALUES (".$query['valuelist'].")");
 		$switching = $query['switching'];
@@ -1445,7 +1470,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 				$sql = wire('database')->prepare("SELECT * FROM itemsearch WHERE (originid = (:custID) AND UCASE(refitemid) LIKE UCASE(:search)) OR (UCASE(itemid) like UCASE(:search)) GROUP BY itemid $limiting ");
 				$switching = array(':search' => $search, ':custID' => $custID); $withquotes = array(true, true);
 			} else {
-				$sql = wire('database')->prepare("SELECT * FROM itemsearch WHERE (UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND origintype IN ('I', 'V')) OR (UCASE(CONCAT(itemid, ' ', refitemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND originid = :custID) GROUP BY itemid $limiting");
+				$sql = wire('database')->prepare("SELECT * FROM itemsearch WHERE (UCASE(CONCAT(itemid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND origintype IN ('I', 'V')) OR (UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND originid = :custID) GROUP BY itemid $limiting");
 				$switching = array(':search' => $search, ':custID' => $custID); $withquotes = array(true, true);
 			}
 		}
