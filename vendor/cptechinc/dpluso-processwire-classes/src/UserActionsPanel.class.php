@@ -86,7 +86,7 @@
                         return $this->taskstatus;
                 }
             } else {
-                return ' ';
+                return '';
             }
         }
         
@@ -177,7 +177,7 @@
             return ($action->is_overdue() && $action->actiontype == 'tasks' && (!$action->is_rescheduled())) ?  'bg-warning' : '';
         }
         
-        public function generate_actiontable() {
+        public function generate_actionstable() {
             $actions = $this->get_actions();
              $table = false;
              switch ($this->actiontype) {
@@ -367,11 +367,17 @@
         }
         
         
-        public function count_actions($debug = false) {
+        public function count_actions($debug = false, $overridelinks = false) {
+            $querylinks = $overridelinks ? array_merge($this->querylinks, $overridelinks) : $this->querylinks;
             if ($debug) {
-                return count_useractions($this->userID, $this->querylinks, $debug);
+                return count_useractions($this->userID, $querylinks, $debug);
             } else {
-                $this->count = count_useractions($this->userID, $this->querylinks, $debug);
+                if (!empty($overridelinks)) {
+                    return count_useractions($this->userID, $querylinks, $debug);
+                } else {
+                    return $this->count = count_useractions($this->userID, $querylinks, $debug);
+                }
+                
             }
         }
         

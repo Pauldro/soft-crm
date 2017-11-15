@@ -25,9 +25,36 @@
 		public $purchaseorderlink;
 		public $actionlink;
 		public $rescheduledlink;
-
+		
 		public $actionlineage = array();
-
+		
+		public $structure = array(
+			'id' => array(),
+			'datecreated' => array(),
+			'actiontype' => array(),
+			'actionsubtype'  => array(),
+			'duedate' => array(),
+			'createdby' => array(),
+			'assignedto' => array(),
+			'assignedby' => array(),
+			'title' => array(),
+			'textbody' => array(),
+			'reflectnote' => array(),
+			'completed' => array(),
+			'datecompleted' => array(),
+			'dateupdated' => array(),
+			'customerlink' => array(),
+			'shiptolink' => array(),
+			'contactlink' => array(),
+			'salesorderlink' => array(),
+			'quotelink' => array(),
+			'vendorlink' => array(),
+			'vendorshipfromlink' => array(),
+			'purchaseorderlink' => array(),
+			'actionlink' => array(),
+			'rescheduledlink' => array(),
+		);
+	
 		public function __construct() {
 			
 		}

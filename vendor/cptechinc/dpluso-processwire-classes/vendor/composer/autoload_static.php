@@ -9,7 +9,7 @@ class ComposerStaticInitbc1bd12326b6449f6f4b7d928a87cff9
     public static $files = array (
         '3a4188d2a2502199518e49fbee8686ef' => __DIR__ . '/../..' . '/src/Contact.class.php',
         'bd8bf74d70613675ab92685140191001' => __DIR__ . '/../..' . '/src/DplusDateTime.class.php',
-        'd655193400d7eaf9e3e6aaa5a377a3c1' => __DIR__ . '/../..' . '/src/UserAction.class.php',
+        'fcb8bf629f10208cb0cd7ed34611b338' => __DIR__ . '/../..' . '/src/Model/UserAction.class.php',
         '99cdb7b00d1b32397a34259baa6470e4' => __DIR__ . '/../..' . '/src/UserActionDisplay.class.php',
         'd7eda4e360e3507d41e7e121f3158376' => __DIR__ . '/../..' . '/src/UserActionsPanel.class.php',
         '5bc366a5e2d6dd09e16d98d41a60cf13' => __DIR__ . '/../..' . '/src/UserActionsPanelCustomer.class.php',
@@ -54,6 +54,9 @@ class ComposerStaticInitbc1bd12326b6449f6f4b7d928a87cff9
         '3197c9ce28500f61544ef7d371ad70aa' => __DIR__ . '/../..' . '/src/Paginator.class.php',
         '158870b1f2d9e740dbb61458a8e9f8e4' => __DIR__ . '/../..' . '/src/Stringer.class.php',
         '440ec72fe751892a61acbb76b5815831' => __DIR__ . '/../..' . '/src/OrderCreditCard.class.php',
+        'b390a1d19d06d3b904a199423f7333d5' => __DIR__ . '/../..' . '/src/QueryBuilder.php',
+        '0fc8ec2fafa063f84b33c82ab1d68a25' => __DIR__ . '/../..' . '/src/Report.class.php',
+        '69b228a040ed5fb7f87edbe646451aee' => __DIR__ . '/../..' . '/src/UserActionsReport.class.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

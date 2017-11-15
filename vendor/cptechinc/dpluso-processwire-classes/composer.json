@@ -1,7 +1,7 @@
 {
 	"name": "cptechinc/dpluso-processwire-classes",
     "type": "library",
-    "description": "URL Manipulation for PHP 5.3",
+    "description": "Classes for Dplus Online",
     "keywords": ["crm"],
     "homepage": "http://github.com/cptechinc/dpluso-processwire-classes",
 	"autoload": {
@@ -52,7 +52,10 @@
 			"src/TablePageSorter.class.php",
 			"src/Paginator.class.php",
 			"src/Stringer.class.php",
-			"src/OrderCreditCard.class.php"
+			"src/OrderCreditCard.class.php",
+			"src/QueryBuilder.php",
+			"src/Report.class.php",
+			"src/UserActionsReport.class.php"
 		]
 	}
 }

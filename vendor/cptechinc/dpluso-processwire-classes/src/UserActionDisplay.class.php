@@ -2,9 +2,11 @@
     class UserActionDisplay {
         public $modal = '#ajax-modal';
         public $pageurl = false;
+        public $userID;
         
         public function __construct(\Purl\Url $pageurl) {
-            $this->pageurl = new \Purl\Url($pageurl->getUrl());;
+            $this->pageurl = new \Purl\Url($pageurl->getUrl());
+            $this->userID = wire('user')->loginid;
         }
         
         public function generate_viewactionurl($action) {
