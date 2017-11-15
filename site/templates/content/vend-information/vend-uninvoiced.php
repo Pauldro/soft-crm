@@ -1,6 +1,6 @@
 <?php
-	// $uninvoicedfile = $config->jsonfilepath.session_id()."-viuninvoiced.json";
-	$uninvoicedfile = $config->jsonfilepath."viuni-viuninvoiced.json";
+	$uninvoicedfile = $config->jsonfilepath.session_id()."-viuninvoiced.json";
+	// $uninvoicedfile = $config->jsonfilepath."viuni-viuninvoiced.json";
 	
 	if ($config->ajax) {
 		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
@@ -37,37 +37,46 @@
 					}
 				$tb->closetablesection('thead');
 				$tb->tablesection('tbody');
-					$pocolumnmax = (count($uninvoicedjson['columns']['header'])) - 1;
-					$detailcolumnmax = count($uninvoicedjson['columns']['details']);
 					$maxrows = count($uninvoicedjson['data']['purchaseorders']);
-					$row = 0;
-					foreach ($uninvoicedjson['data']['purchaseorders'] as $order) {
-						$row++;
-						$tb->tr();
-						for ($x = 1; $x < $pocolumnmax + 1; $x++) {
-							$tb->td('');
+					for ($row = 1; $row < $maxrows; $row++) {
+						$tb->tr('');
+							$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['header']['Purchase Order Number']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['Purchase Order Number']);
+							$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['header']['Receipt Date']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['Receipt Date']);
+							$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['header']['Item ID']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['Item ID']);
+							$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['header']['Item Description 1']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['Item Description 1']);
+						$count = 0;
+						foreach ($uninvoicedjson['data']['purchaseorders'][$row]['details'] as $details) {
+							$count++;
+							$tb->tr('');
+								$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Unit of Measure']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['details'][$count]['Unit of Measure']);
+								$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Quantity Received']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['details'][$count]['Quantity Received']);
+								$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Quantity Invoiced']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['details'][$count]['Quantity Invoiced']);
+								$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Quantity Uninvoiced']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['details'][$count]['Quantity Uninvoiced']);
+								$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Unit Cost']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['details'][$count]['Unit Cost']);
+								$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Total Amount']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['details'][$count]['Total Amount']);
 						}
 						$tb->tr('');
-						for ($x = 1; $x < $detailcolumnmax + 1; $x++) {
+							$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Unit of Measure']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['totals']['Unit of Measure']);
 							$tb->td('');
-						}
-						$tb->tr('');
-						foreach ($uninvoicedjson['data']['purchaseorders'][$row]['totals'] as $total) {
-							$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details'][$column]['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['totals'][$total]);
-						}
+							$tb->td('');
+							$tb->td('');
+							$tb->td('');
+							$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Total Amount']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['totals']['Total Amount']);
 						$tb->tr('class=last-section-row');
-					}
+						}
 					$tb->tr('class=bg-primary');
-					foreach ($uninvoicedjson['data']['vendortotals'] as $totals) {
-						$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details'][$column]['headingjustify']], $uninvoicedjson['data']['vendortotals'][$totals]);
-					}
+						$tb->td('');
+						$tb->td('');
+						$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Unit of Measure']['headingjustify']], $uninvoicedjson['data']['vendortotals']['Unit of Measure']);
+						$tb->td('');
+						$tb->td('');
+						$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Total Amount']['headingjustify']], $uninvoicedjson['data']['vendortotals']['Total Amount']);
 				$tb->closetablesection('tbody');
 				echo $tb->close();
-			} else {
-				echo $page->bootstrap->createalert('warning', 'Information not available.');
 			}
+			}
+			
+		} else {
+			echo $page->bootstrap->createalert('warning', 'Information not available.');
 		}
-	} else {
-		echo $page->bootstrap->createalert('warning', 'Vendor has no Uninvoiced Purchase Orders'); 
-	}
 ?>
