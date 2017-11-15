@@ -21,9 +21,8 @@
         <div>
         	<div class="panel-body">
 				<div class="row">
-					<div class="col-xs-4">
+					<div class="col-sm-4 form-group">
 						<label for="">Change Action Type</label>
-						<?php $types = $pages->get('/activity/')->children(); ?>
                         <select class="form-control input-sm change-action-type" data-link="<?= $actionpanel->generate_refreshurl(); ?>" <?= $actionpanel->ajaxdata; ?>>
                             <?php $types = $pages->get('/activity/')->children(); ?>
                             <?php foreach ($types as $type) : ?>
@@ -32,7 +31,7 @@
                             <?php endforeach; ?>
                         </select>
 					</div>
-					<div class="col-xs-4">
+					<div class="col-sm-4 form-group">
 						<?php if (!$user->hasrestrictions) : ?>
 							<label>Change User</label>
 							<select class="form-control input-sm change-actions-user" data-link="<?= $actionpanel->generate_refreshurl(true); ?>" <?= $actionpanel->ajaxdata; ?>>
@@ -48,9 +47,9 @@
 					</div>
 				</div>
             </div>
-             <?php include $config->paths->content.'pagination/ajax/pagination-start-no-form.php'; ?>
-             <?php //include $config->paths->content.'actions/'.$actionpanel->actiontype.'/lists/'.$actionpanel::$type.'-list.php'; ?>
-			 <?= $actionpanel->generate_actiontable(); ?>
+			 <div class="table-responsive">
+			 	<?= $actionpanel->generate_actionstable(); ?>
+			 </div>
              <?= $paginator; ?>
         </div>
     </div>
