@@ -33,11 +33,11 @@
 
         $maxrec = get_useractions_maxrec($user->loginid);
 
-        $results = insertaction($actionlinks, false);
+        $results = insert_useraction($actionlinks, false);
 
         $session->insertedid = $results['insertedid'];
         $session->sql = $results['sql'];
-        $newactionID =  $results['insertedid'];
+        $newactionID = $results['insertedid'];
 
         $createdaction = UserAction::create_fromarray($actionlinks);
 

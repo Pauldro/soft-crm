@@ -2,11 +2,7 @@
     // $note is loaded by Crud Controller
     $notedisplay = new UserActionDisplay($page->fullURL);
     
-    if ($note->has_contactlink()) { //DOESNT MATTER DEPRECATE
-        $contactinfo = get_customercontact($note->customerlink, $note->shiptolink, $note->contactlink, false);
-    } else {
-        $contactinfo = get_customercontact($note->customerlink, $note->shiptolink, $note->contactlink, false);
-    }
+    $contactinfo = get_customercontact($note->customerlink, $note->shiptolink, $note->contactlink, false);
 ?>
 
 <div>

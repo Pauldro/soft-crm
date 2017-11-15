@@ -33,12 +33,12 @@
 
         $maxrec = get_useractions_maxrec($user->loginid);
 
-        $results = insertaction($notelinks, false);
+        $results = UserAction::create($notelinks, false);
 
         $session->insertedid = $results['insertedid'];
         $session->sql = $results['sql'];
 		$newnoteID = $results['insertedid'];
-		$newnote = loaduseraction($newnoteID, true, false); // (id, bool fetchclass, bool debug)
+		$newnote = get_useraction($newnoteID, true, false); // (id, bool fetchclass, bool debug)
 
 		if ($results['insertedid'] > $maxrec) {
             $error = false;

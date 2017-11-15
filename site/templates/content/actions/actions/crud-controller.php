@@ -23,45 +23,61 @@
                     switch($input->urlSegment3) {
                         case 'user':
                             if ($config->ajax) {
-        						include $config->paths->content.'dashboard/actions/actions-panel.php';
-        					} else {
-        						include $config->paths->content.'dashboard/actions/actions-panel.php';
-        					}
+                                include $config->paths->content.'dashboard/actions/actions-panel.php';
+                            } else {
+                                $page->title = '';
+                                $page->body = $config->paths->content.'dashboard/actions/actions-list.php';
+                                include $config->paths->content.'common/include-blank-page.php';
+                            }
                             break;
                         case 'cust':
                             if ($config->ajax) {
-        						include $config->paths->content.'customer/cust-page/actions/actions-panel.php';
-        					} else {
-                                 // TODO ACTION LIST
-        					}
+                                include $config->paths->content.'customer/cust-page/actions/actions-panel.php';
+                            } else {
+                                $page->title = '';
+                                $page->body = $config->paths->content.'customer/cust-page/actions/actions-list.php';
+                                include $config->paths->content.'common/include-blank-page.php';
+                            }
                             break;
 						case 'contact':
                             if ($config->ajax) {
-        						include $config->paths->content.'customer/contact/actions-panel.php';
-        					} else {
-                                 // TODO ACTION LIST
-        					}
+                                include $config->paths->content.'customer/contact/actions/actions-panel.php';
+                            } else {
+                                $page->title = '';
+                                $page->body = $config->paths->content.'customer/contact/actions/actions-list.php';
+                                include $config->paths->content.'common/include-blank-page.php';
+                            }
                             break;
                         case 'salesorder':
                             if ($config->ajax) {
-        						include $config->paths->content.'edit/orders/actions/actions-panel.php';
-        					} else {
-                                 // TODO ACTION LIST
-        					}
+                                if ($config->modal) {
+                                    $page->title = 'Viewing actions for Order #'.$ordn;
+                                    $page->body = $config->paths->content.'edit/orders/actions/actions-panel.php';
+                                    include $config->paths->content."common/modals/include-ajax-modal.php";
+                                } else {
+                                    include $config->paths->content.'edit/orders/actions/actions-panel.php';
+                                }
+                            } else {
+                                $page->title = '';
+                                $page->body = $config->paths->content.'edit/orders/actions/actions-list.php';
+                                include $config->paths->content.'common/include-blank-page.php';
+                            }
                             break;
                         case 'quote':
                             if ($config->ajax) {
-        						include $config->paths->content.'edit/quotes/actions/actions-panel.php';
-        					} else {
-                                 // TODO ACTION LIST
-        					}
+                                include $config->paths->content.'edit/quotes/actions/actions-panel.php';
+                            } else {
+                                $page->title = '';
+                                $page->body = $config->paths->content.'edit/quotes/actions/actions-list.php';
+                                include $config->paths->content.'common/include-blank-page.php';
+                            }
                             break;
                     }
                     break;
                 default:
-					$actionid = $input->get->id;
+					$actionID = $input->get->text('id');
 					$fetchclass = true;
-					$action = loaduseraction($actionid, $fetchclass, false);
+					$action = get_useraction($actionID, $fetchclass, false);
 					$messagetemplate = "Viewing Action for {replace}";
 					$page->title = $action->generate_message($messagetemplate);
 

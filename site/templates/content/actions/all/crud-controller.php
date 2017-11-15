@@ -11,17 +11,27 @@
                             if ($config->ajax) {
 								include $config->paths->content.'dashboard/actions/actions-panel.php';
         					} else {
-        					    // TODO ACTION LIST
+                                $page->title = '';
+        					    $page->body = $config->paths->content.'dashboard/actions/actions-list.php';
+                                include $config->paths->content.'common/include-blank-page.php';
         					}
                             break;
                         case 'cust':
-                            include $config->paths->content.'customer/cust-page/actions/actions-panel.php';
+                            if ($config->ajax) {
+								include $config->paths->content.'customer/cust-page/actions/actions-panel.php';
+        					} else {
+                                $page->title = '';
+        					    $page->body = $config->paths->content.'customer/cust-page/actions/actions-list.php';
+                                include $config->paths->content.'common/include-blank-page.php';
+        					}
                             break;
 						case 'contact':
                             if ($config->ajax) {
-        						include $config->paths->content.'customer/contact/actions-panel.php';
+        						include $config->paths->content.'customer/contact/actions/actions-panel.php';
         					} else {
-                                 // TODO ACTION LIST
+                                $page->title = '';
+                                $page->body = $config->paths->content.'customer/contact/actions/actions-list.php';
+                                include $config->paths->content.'common/include-blank-page.php';
         					}
                             break;
                         case 'salesorder':
@@ -34,27 +44,27 @@
 									include $config->paths->content.'edit/orders/actions/actions-panel.php';
 								}
         					} else {
-                                 // TODO ACTION LIST
+                                $page->title = '';
+                                $page->body = $config->paths->content.'edit/orders/actions/actions-list.php';
+                                include $config->paths->content.'common/include-blank-page.php';
         					}
                             break;
                         case 'quote':
                             if ($config->ajax) {
         						include $config->paths->content.'edit/quotes/actions/actions-panel.php';
         					} else {
-                                 // TODO ACTION LIST
+                                $page->title = '';
+                                $page->body = $config->paths->content.'edit/quotes/actions/actions-list.php';
+                                include $config->paths->content.'common/include-blank-page.php';
         					}
                             break;
                     }
                     break;
-                default:
-                    if ($config->ajax) {
-                        include $config->paths->content.'actions/tasks/view-task.php';
-                    } else {
-                        $page->title = 'Task ID: ' . $input->get->text('id');
-                        $page->body = $config->paths->content.'actions/tasks/view-task.php';
-                        include $config->paths->content."common/include-blank-page.php";
-                    }
-                    break;
+                    case 'report-form':
+                        $page->title = 'Viewing actions for Order #';
+                        $page->body = $config->paths->content.'actions/forms/user-actions-report-form.php';
+                        include $config->paths->content."common/modals/include-ajax-modal.php";
+                        break;
             }
             break;
     }

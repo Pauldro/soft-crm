@@ -35,17 +35,17 @@
 
         $maxrec = get_useractions_maxrec($user->loginid);
 
-        $results = insertaction($tasklinks, false);
+        $results = insert_useraction($tasklinks, false);
 
         $session->insertedid = $results['insertedid'];
         $session->sql = $results['sql'];
 		$newtaskID =  $results['insertedid'];
-		$newtask = loaduseraction($newtaskID, true, false); // (id, bool fetchclass, bool debug)
+		$newtask = get_useraction($newtaskID, true, false); // (id, bool fetchclass, bool debug)
 
 		if ($results['insertedid'] > $maxrec) {
 			switch ($action) {
 				case 'reschedule-task':
-					$originaltask = loaduseraction($tasklinks['actionlink'], false, false); // (id, bool fetchclass, bool debug)
+					$originaltask = get_useraction($tasklinks['actionlink'], false, false); // (id, bool fetchclass, bool debug)
 					$originaltask['datecompleted'] = '0000-00-00 00:00:00';
 					$originaltask['dateupdated'] = date("Y-m-d H:i:s");
 					$originaltask['completed'] = 'R';

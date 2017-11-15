@@ -30,14 +30,13 @@
 
 	$message = "Creating an action for {replace}";
 	$page->title = $action->generate_message($message);
-
+	$page->body = $config->paths->content."actions/actions/forms/new-action-form.php";
+	
 	if ($config->ajax) {
 		if ($config->modal) {
-			$page->body = $config->paths->content."actions/actions/forms/new-action-form.php";
 			include $config->paths->content."common/modals/include-ajax-modal.php";
 		}
 	} else {
-		$page->body = $config->paths->content."actions/actions/forms/new-action-form.php";
 		include $config->paths->content."common/include-blank-page.php";
 	}
 

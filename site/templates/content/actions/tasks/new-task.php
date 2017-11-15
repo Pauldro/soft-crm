@@ -28,12 +28,11 @@
 
 	$message = "Creating a task for {replace} ";
 	$page->title = $task->generate_message($message);
+	$page->body = $config->paths->content."actions/tasks/forms/new-task-form.php";
 
 	if ($config->ajax) {
-		$page->body = $config->paths->content."actions/tasks/forms/new-task-form.php";
 		include $config->paths->content."common/modals/include-ajax-modal.php";
 	} else {
-		$page->body = $config->paths->content."actions/tasks/forms/new-task-form.php";
 		include $config->paths->content."common/include-blank-page.php";
 	}
 

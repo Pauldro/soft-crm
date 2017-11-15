@@ -2,14 +2,10 @@
 	// $task is loaded by Crud Controller
     $taskdisplay = new UserActionDisplay($page->fullURL);
     
-    if ($task->has_contactlink()) { //DOESNT MATTER DEPRECATE
-        $contactinfo = get_customercontact($task->customerlink, $task->shiptolink, $task->contactlink, false);
-    } else {
-        $contactinfo = get_customercontact($task->customerlink, $task->shiptolink, $task->contactlink, false);
-    }
+    $contactinfo = get_customercontact($task->customerlink, $task->shiptolink, $task->contactlink, false);
 
     if ($task->is_rescheduled()) {
-        $rescheduledtask = loaduseraction($task->rescheduledlink, true, false);
+        $rescheduledtask = get_useraction($task->rescheduledlink, true, false);
     }
     
     $task->get_actionlineage();

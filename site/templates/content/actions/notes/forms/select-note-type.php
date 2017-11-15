@@ -15,7 +15,6 @@
 			<?= $actiontype->subtypeicon." ".$actiontype->actionsubtypelabel; ?>
 		</button>
 	<?php endif; ?>
-
 <?php endforeach; ?>
 
 <input type="hidden" class="select-button-value required" name="actiontype" value="<?php echo $action->actionsubtype; ?>">

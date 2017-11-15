@@ -30,12 +30,11 @@
 
     $message = "Writing Note for {replace} ";
     $page->title = $note->generate_message($message);
-
+	$page->body = $config->paths->content."actions/notes/forms/new-note-form.php";
+	
 	if ($config->ajax) {
-		$page->body = $config->paths->content."actions/notes/forms/new-note-form.php";
 		include $config->paths->content."common/modals/include-ajax-modal.php";
 	} else {
-		$page->body = $config->paths->content."actions/notes/forms/new-note-form.php";
 		include $config->paths->content."common/include-blank-page.php";
 	}
 ?>
