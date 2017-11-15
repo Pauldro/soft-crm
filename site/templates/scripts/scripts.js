@@ -50,6 +50,7 @@ $(document).ready(function() {
 		$(config.modals.lightbox).on('shown.bs.modal', function (event) {
 			makeshadow();
 		});
+		
 		$(config.modals.lightbox).on('hide.bs.modal', function (event) {
 			removeshadow();
 		});
@@ -149,10 +150,17 @@ $(document).ready(function() {
 	=============================================================*/
 		$("body").on("click", ".load-link", function(e) {
 			e.preventDefault();
+			var button = $(this);
 			var loadinto = $(this).data('loadinto');
 			var focuson = $(this).data('focus');
 			var href = $(this).attr('href');
+			if (button.hasClass('actions-refresh')) {
+				showajaxloading();
+			}
 			$(loadinto).loadin(href, function() {
+				if (button.hasClass('actions-refresh')) {
+					hideajaxloading();
+				}
 				if (focuson.length > 0) {
 					$('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000);
 				}
