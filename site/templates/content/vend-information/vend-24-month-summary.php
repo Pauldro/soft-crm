@@ -1,5 +1,5 @@
 <?php
-	$summaryfile = $config->jsonfilepath.session_id()."-vimonthsum";
+	$summaryfile = $config->jsonfilepath.session_id()."-vimonthsum.json";
 	// $summaryfile = $config->jsonfilepath."vimthv-vimonthsum.json";
 
     if ($config->ajax) {
@@ -15,7 +15,33 @@
 		<div class="alert alert-warning" role="alert"><?php echo $summaryjson['errormsg']; ?></div>
 	<?php else : ?>
 		<?php $data = array_values($summaryjson['data']['monthsum']); ?>
-
+		
+		<h2>24-Month Data</h2>
+		<table class= 'table table-striped table-bordered table-condensed table-excel' id='monthsum'>
+			<thead>
+				<?php foreach ($summaryjson['columns']['monthsum'] as $column) : ?>
+					<?php $class = $config->textjustify[$column['headingjustify']]; ?>
+					<th class="<?php echo $class; ?>">
+						<?php echo $column['heading']; ?>
+					</th>
+				<?php endforeach; ?>
+			</thead>
+			<tbody>
+				<?php $maxrows = count($summaryjson['data']['monthsum'])?>
+				<?php for ($i = 1; $i < $maxrows; $i++) : ?>
+					<tr>
+						<?php foreach ($summaryjson['data']['monthsum'][$i] as $month) : ?>
+							<?php $key = array_search($month, ($summaryjson['data']['monthsum'][$i])); ?>
+							<?php $class = $config->textjustify[$summaryjson['columns']['monthsum'][$key]['datajustify']]; ?>
+							<td class="<?php echo $class; ?>"><?php echo $month; ?></td>
+						<?php endforeach; ?>
+					</tr>
+			<?php endfor; ?>
+			</tbody>
+		</table>
+		
+		</br>
+		<h2>24-Month Graph</h2>
 		<div id="24monthsummary"></div>
 
 		<script>
