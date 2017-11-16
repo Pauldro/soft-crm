@@ -59,7 +59,6 @@ $(function() {
 
 function payment() { 
 	var vendorID = $(vendlookupform + " .vendorID").val();
-    console.log(vendorID);
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
 	var href = URI(config.urls.vendor.load.vi_payment).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
@@ -75,7 +74,6 @@ function payment() {
 
 function openinv() { 
 	var vendorID = $(vendlookupform + " .vendorID").val();
-    console.log(vendorID);
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
 	var href = URI(config.urls.vendor.load.vi_openinv).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
@@ -142,7 +140,6 @@ function shipfrom() {
 
 function purchaseorder() { 
 	var vendorID = $(vendlookupform + " .vendorID").val();
-    console.log(vendorID);
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
 	var href = URI(config.urls.vendor.load.vi_purchaseorder).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
@@ -158,7 +155,6 @@ function purchaseorder() {
 
 function contact() { 
 	var vendorID = $(vendlookupform + " .vendorID").val();
-    console.log(vendorID);
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
 	var href = URI(config.urls.vendor.load.vi_contact).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
@@ -174,7 +170,6 @@ function contact() {
 
 function notes() { 
 	var vendorID = $(vendlookupform + " .vendorID").val();
-    console.log(vendorID);
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
 	var href = URI(config.urls.vendor.load.vi_notes).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
@@ -217,7 +212,6 @@ function choosevicostingitem(itemID) {
 
 function unreleased() { 
 	var vendorID = $(vendlookupform + " .vendorID").val();
-    console.log(vendorID);
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
 	var href = URI(config.urls.vendor.load.vi_unreleased).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
@@ -233,7 +227,6 @@ function unreleased() {
 
 function uninvoiced() { 
 	var vendorID = $(vendlookupform + " .vendorID").val();
-    console.log(vendorID);
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
 	var href = URI(config.urls.vendor.load.vi_uninvoiced).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
@@ -242,14 +235,13 @@ function uninvoiced() {
 		$(loadinto).loadin(href, function() {
 			hideajaxloading(); console.log(href);
 			$(modal).find('.modal-body').addClass('modal-results');
-			$(modal).resizemodal('lg').modal();
+			$(modal).resizemodal('xl').modal();
 		});
 	});
 }
 
 function monthsummary() { 
 	var vendorID = $(vendlookupform + " .vendorID").val();
-    console.log(vendorID);
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
 	var href = URI(config.urls.vendor.load.vi_24monthsummary).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
@@ -265,7 +257,6 @@ function monthsummary() {
 
 function docview() { 
 	var vendorID = $(vendlookupform + " .vendorID").val();
-    console.log(vendorID);
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
 	var href = URI(config.urls.vendor.load.vi_docview).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
