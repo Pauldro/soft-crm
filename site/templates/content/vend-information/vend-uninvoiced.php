@@ -17,63 +17,73 @@
 			$headercolumns = array_keys($uninvoicedjson['columns']['header']);
 		    $detailcolumns = array_keys($uninvoicedjson['columns']['details']);
 			
-			if (sizeof($uninvoicedjson['data']) > 0) {
-				
-				$tb = new Table('class=table table-striped table-bordered table-condensed table-excel|id=uninvoiced');
-				$tb->tablesection('thead');
-					$tb->tr();
-					$count = (count($uninvoicedjson['columns']['header'])) - 1;
-					foreach ($headercolumns as $column) {
-						$tb->th('class='.$config->textjustify[$uninvoicedjson['columns']['header'][$column]['headingjustify']], $uninvoicedjson['columns']['header'][$column]['heading']);
-						// needs this because errors were coming up for detail
-						$count--;
-						if ($count == 0){
-							break;
-						}
-					}
-					$tb->tr();
-					foreach ($detailcolumns as $column) {
-						$tb->th('class='.$config->textjustify[$uninvoicedjson['columns']['details'][$column]['headingjustify']], $uninvoicedjson['columns']['details'][$column]['heading']);
-					}
-				$tb->closetablesection('thead');
-				$tb->tablesection('tbody');
-					$maxrows = count($uninvoicedjson['data']['purchaseorders']);
-					for ($row = 1; $row < $maxrows; $row++) {
-						$tb->tr('');
-							$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['header']['Purchase Order Number']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['Purchase Order Number']);
-							$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['header']['Receipt Date']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['Receipt Date']);
-							$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['header']['Item ID']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['Item ID']);
-							$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['header']['Item Description 1']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['Item Description 1']);
-						$count = 0;
-						foreach ($uninvoicedjson['data']['purchaseorders'][$row]['details'] as $details) {
-							$count++;
-							$tb->tr('');
-								$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Unit of Measure']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['details'][$count]['Unit of Measure']);
-								$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Quantity Received']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['details'][$count]['Quantity Received']);
-								$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Quantity Invoiced']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['details'][$count]['Quantity Invoiced']);
-								$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Quantity Uninvoiced']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['details'][$count]['Quantity Uninvoiced']);
-								$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Unit Cost']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['details'][$count]['Unit Cost']);
-								$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Total Amount']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['details'][$count]['Total Amount']);
-						}
-						$tb->tr('');
-							$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Unit of Measure']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['totals']['Unit of Measure']);
-							$tb->td('');
-							$tb->td('');
-							$tb->td('');
-							$tb->td('');
-							$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Total Amount']['headingjustify']], $uninvoicedjson['data']['purchaseorders'][$row]['totals']['Total Amount']);
-						$tb->tr('class=last-section-row');
-						}
-					$tb->tr('class=bg-primary');
-						$tb->td('');
-						$tb->td('');
-						$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Unit of Measure']['headingjustify']], $uninvoicedjson['data']['vendortotals']['Unit of Measure']);
-						$tb->td('');
-						$tb->td('');
-						$tb->td('class='.$config->textjustify[$uninvoicedjson['columns']['details']['Total Amount']['headingjustify']], $uninvoicedjson['data']['vendortotals']['Total Amount']);
-				$tb->closetablesection('tbody');
-				echo $tb->close();
+			$headercount = count($headercolumns);
+			$detailcount = count($detailcolumns);
+			
+			if ($headercount > $detailcount) {
+				$maxcolumns = $headercount;
+			} else {
+				$maxcolumns = $detailcount;
 			}
+			
+				if (sizeof($uninvoicedjson['data']) > 0) {
+					
+					$tb = new Table('class=table table-striped table-bordered table-condensed table-excel|id=uninvoiced');
+					$tb->tablesection('thead');
+						$tb->tr();
+						foreach ($headercolumns as $column) {
+							$class = $config->textjustify[$uninvoicedjson['columns']['header'][$column]['headingjustify']];
+							$tb->th("class=$class", $uninvoicedjson['columns']['header'][$column]['heading']);
+						}
+						$tb->tr();
+						foreach ($detailcolumns as $column) {
+							$class = $config->textjustify[$uninvoicedjson['columns']['details'][$column]['headingjustify']];
+							$tb->th("class=$class", $uninvoicedjson['columns']['details'][$column]['heading']);
+						}
+					$tb->closetablesection('thead');
+					$tb->tablesection('tbody');
+						$maxrows = count($uninvoicedjson['data']['purchaseorders']);
+						for ($row = 1; $row < $maxrows; $row++) {
+							$tb->tr('');
+								foreach ($uninvoicedjson['data']['purchaseorders'][$row] as $order) {
+									if (!is_array($order)) {
+										$key = array_search($order, ($uninvoicedjson['data']['purchaseorders'][$row]));
+										$class = $config->textjustify[$uninvoicedjson['columns']['header'][$key]['datajustify']];
+										$tb->td("class=$class", $order);
+									} else {
+										$tb->td('');
+										break;
+									}
+								}
+							$detailmaxrows = count($uninvoicedjson['data']['purchaseorders'][$row]['details']);
+							for ($i = 1; $i < $detailmaxrows + 1; $i++) {
+								$tb->tr('');
+								foreach ($uninvoicedjson['data']['purchaseorders'][$row]['details'][$i] as $detail) {
+									$key = array_search($detail, ($uninvoicedjson['data']['purchaseorders'][$row]['details'][$i]));
+									$class = $config->textjustify[$uninvoicedjson['columns']['details'][$key]['datajustify']];
+									$tb->td("class=$class", $detail);
+								}
+							}
+							$tb->tr('');
+								foreach ($uninvoicedjson['data']['purchaseorders'][$row]['totals'] as $total) {
+									$key = array_search($total, ($uninvoicedjson['data']['purchaseorders'][$row]['totals']));
+									$class = $config->textjustify[$uninvoicedjson['columns']['details'][$key]['datajustify']];
+									$tb->td("class=$class", $total);
+								}
+							$tb->tr('class=last-section-row');
+								for ($x = 1; $x < $maxcolumns + 1; $x++) {
+									$tb->td('');
+								}
+							}
+						$tb->tr('class=bg-primary');
+							foreach ($uninvoicedjson['data']['vendortotals'] as $total) {
+								$key = array_search($total, ($uninvoicedjson['data']['vendortotals']));
+								$class = $config->textjustify[$uninvoicedjson['columns']['details'][$key]['datajustify']];
+								$tb->td("class=$class", $total);
+							}
+					$tb->closetablesection('tbody');
+					echo $tb->close();
+				}
 			}
 			
 		} else {
