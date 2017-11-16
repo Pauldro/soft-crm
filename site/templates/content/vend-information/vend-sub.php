@@ -1,5 +1,5 @@
 <?php 
-    $subfile = $config->jsonfilepath.session_id()."-vicost.json";
+    $subfile = $config->jsonfilepath.session_id()."-visub.json";
     // $subfile = $config->jsonfilepath."visub-visub.json";
 
     if (file_exists($subfile)) {
