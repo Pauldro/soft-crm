@@ -1,5 +1,5 @@
 <?php
-	$purchaseorderfile = $config->jsonfilepath.session_id()."--viunreleased.json";
+	$purchaseorderfile = $config->jsonfilepath.session_id()."-viunreleased.json";
 	// $purchaseorderfile = $config->jsonfilepath."viunrv-viunreleased.json";
 	
 	if ($config->ajax) {

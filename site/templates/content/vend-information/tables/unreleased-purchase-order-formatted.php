@@ -48,39 +48,49 @@
 						$tb->td();
 					}
 				}
-			}
-			foreach ($order['details'] as $detail) {
-				for ($x = 1; $x < $table['detail']['maxrows'] + 1; $x++) {
-	                $tb->tr('');
-	                for ($i = 1; $i < $table['maxcolumns'] + 1; $i++) {
-	                    if (isset($table['detail']['rows'][$x]['columns'][$i])) {
-	                        $column = $table['detail']['rows'][$x]['columns'][$i];
-	                        $class = $config->textjustify[$fieldsjson['data']['detail'][$column['id']]['datajustify']];
-	                        $colspan = $column['col-length'];
-	                        $celldata = Table::generatejsoncelldata($fieldsjson['data']['detail'][$column['id']]['type'], $detail, $column);
-	                        $tb->td('colspan='.$colspan.'|class='.$class, $celldata);
-	                        if ($colspan > 1) { $i = $i + ($colspan - 1); }
-	                    } else {
-	                        $tb->td();
-	                    }
-	                }
-	            }
-				// $ordernotes = $order['ordernotes'];
-	            // for ($x = 1; $x < $table['detail']['maxrows'] + 1; $x++) {
-	            //     $tb->tr('');
-	            //     for ($i = 1; $i < $table['maxcolumns'] + 1; $i++) {
-	            //         if (isset($table['detail']['rows'][$x]['columns'][$i])) {
-	            //             $column = $table['detail']['rows'][$x]['columns'][$i];
-	            //             $class = $config->textjustify[$fieldsjson['data']['detail'][$column['id']]['datajustify']];
-	            //             $colspan = $column['id'] == "Purchase Order Number" ? 2 : $column['col-length'];
-	            //             $celldata = Table::generatejsoncelldata($fieldsjson['data']['detail'][$column['id']]['type'], $ordernotes, $column);
-	            //             $tb->td('colspan='.$colspan.'|class='.$class, $celldata);
-	            //             if ($colspan > 1) { $i = $i + ($colspan - 1); }
-	            //         } else {
-	            //             $tb->td();
-	            //         }
-	            //     }
-	            // }
+				foreach ($order['details'] as $detail) {
+					for ($x = 1; $x < $table['detail']['maxrows'] + 1; $x++) {
+		                $tb->tr('');
+		                for ($i = 1; $i < $table['maxcolumns'] + 1; $i++) {
+		                    if (isset($table['detail']['rows'][$x]['columns'][$i])) {
+		                        $column = $table['detail']['rows'][$x]['columns'][$i];
+		                        $class = $config->textjustify[$fieldsjson['data']['detail'][$column['id']]['datajustify']];
+		                        $colspan = $column['col-length'];
+		                        $celldata = Table::generatejsoncelldata($fieldsjson['data']['detail'][$column['id']]['type'], $detail, $column);
+		                        $tb->td('colspan='.$colspan.'|class='.$class, $celldata);
+		                        if ($colspan > 1) { $i = $i + ($colspan - 1); }
+		                    } else {
+		                        $tb->td();
+		                    }
+		                }
+						foreach ($detail['detailnotes'] as $note) {
+							for ($y = 1; $y < $table['detail']['maxrows'] + 1; $y++) {
+								$tb->tr('');
+								for ($i = 1; $i < $table['maxcolumns'] + 1; $i++) {
+									if ($i == 2) {
+										$tb->td('', $note['Detail Notes']);
+									} else {
+										$tb->td('');
+									}
+								}
+							}	
+						} // end of detail notes
+		            }
+				} // end of details
+				
+				foreach ($order['ordernotes'] as $ordernote) {
+					for ($y = 1; $y < $table['detail']['maxrows'] + 1; $y++) {
+						$tb->tr('');
+						for ($i = 1; $i < $table['maxcolumns'] + 1; $i++) {
+							if ($i == 2) {
+								$tb->td('', $ordernote['Order Notes']);
+							} else {
+								$tb->td('');
+							}
+						}
+					}
+				}
+				
 	            $pototals = $order['pototals'];
 	            for ($x = 1; $x < $table['detail']['maxrows'] + 1; $x++) {
 	                $tb->tr('');
@@ -96,13 +106,14 @@
 	                        $tb->td();
 	                    }
 	                }
-	            }
-			}
+	            } // end of pototals
+			} // end of purchase order #
+			
             $tb->tr('class=last-section-row');
             for ($i = 1; $i < $table['maxcolumns'] + 1; $i++) {
                 $tb->td();
             }
-        }
+		}
         
         $vendortotal = $purchaseorderjson['data']['vendortotals'];
 			for ($x = 1; $x < $table['detail']['maxrows'] + 1; $x++) {
