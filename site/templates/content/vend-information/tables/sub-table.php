@@ -19,10 +19,14 @@
     		$count = count($subjson['data']['substitute items']);
     		for ($i = 1; $i < $count + 1; $i++) {
     			$title = $subjson['data']['substitute items'][$i]['sub item'];
-    			$tb->tr();
-    				$tb->td('class='.$config->textjustify[$subjson['columns']['substitute items']['sub item']['headingjustify']], "<b>$title</b>");
-    				$tb->td('class='.$config->textjustify[$subjson['columns']['substitute items']['sub desc']['headingjustify']], $subjson['data']['substitute items'][$i]['sub desc']);
-    				$tb->td('class='.$config->textjustify[$subjson['columns']['substitute items']['same/like']['headingjustify']], $subjson['data']['substitute items'][$i]['same/like']);
+    			if ($subjson['data']['substitute items'][$i]['same/like'] == 'Super') {
+                    $tb->tr('class=success');
+                } else {
+                    $tb->tr();
+                }
+				$tb->td('', "<b>$title</b>");
+				$tb->td('', $subjson['data']['substitute items'][$i]['sub desc']);
+				$tb->td('', $subjson['data']['substitute items'][$i]['same/like']);
     		}
     	$tb->closetablesection('tbody');
         $subitemstable = $tb->close();
@@ -34,10 +38,12 @@
             $count = count($subjson['data']['internal notes']);
             for ($i = 1; $i < $count + 1; $i++) {
                 $tb->tr();
-                    $tb->td('class='.$config->textjustify[$subjson['columns']['internal notes']['internal note']['headingjustify']], $subjson['data']['internal notes'][$i]['internal note']);
+                    $tb->td('', $subjson['data']['internal notes'][$i]['internal note']);
             }
         $tb->closetablesection('tbody');
         $notestable = $tb->close();
+    } else {
+        $notestable == false;
     }
 
 ?>

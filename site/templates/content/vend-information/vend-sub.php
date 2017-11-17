@@ -17,13 +17,13 @@
             if (isset($subitemstable)) {
                 echo $subitemstable;
             } else {
-                echo "<p>There are no substitutions for this item.</p>";
+                echo $page->bootstrap->createalert('warning', 'No Substitutions');
             }
             echo "<h3>Internal Notes</h3>";
             if (isset($notestable)) {
                 echo $notestable;
             } else {
-                echo "<p>There are no note for this item.</p>";
+                echo $page->bootstrap->createalert('warning', 'No Internal Notes');
             }
         }
     } else {
