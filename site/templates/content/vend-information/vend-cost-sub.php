@@ -2,10 +2,6 @@
 	$costfile = $config->jsonfilepath.session_id()."-vicost.json";
 	// $costfile = $config->jsonfilepath."vicst-vicost.json";
 	
-	if ($config->ajax) {
-		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
-	}
-	
 	if (file_exists($costfile)) {
 		// JSON file will be false if an error occurred during file_get_contents or json_decode
 		$costjson = json_decode(file_get_contents($costfile), true);
