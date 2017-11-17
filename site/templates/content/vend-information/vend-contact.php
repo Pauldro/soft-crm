@@ -54,13 +54,12 @@
 				if (!empty($contactjson['data']['shipfm'])) {
 					echo '<h2>Ship-To Contact Info</h2>';
 					foreach ($contactjson['data']['shipfm'] as $shipfm) {
-						echo '<h3>'.$shipfm['shipfmid'].' - '.$shipfm['shipfmname'].'</h3>';
+						echo '<h4>'.$shipfm['shipfmid'].' - '.$shipfm['shipfmname'].'</h4>';
 						foreach ($shipfm['shipfmcontacts'] as $contact) {
 							echo '<div class="row">';
 								echo '<div class="col-sm-6">';
 									$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
 									foreach ($shipfmleftcolumns as $column) {
-										$class =
 										$tb->tr();
 										$tb->td('class='.$config->textjustify[$contactjson['columns']['shipfm']['shipfmleft'][$column]['headingjustify']], $contactjson['columns']['shipfm']['shipfmleft'][$column]['heading']);
 										$tb->td('class='.$config->textjustify[$contactjson['columns']['shipfm']['shipfmleft'][$column]['datajustify']], $contact['shipfmleft'][$column]);
