@@ -1,6 +1,6 @@
 <?php 
     $tb = new Table('class=table table-striped table-condensed table-excel');
-    $tb->tr();
+    $tb->tr('class=bg-primary');
         $tb->td('', '<b>Item ID</b>');
         $tb->td('', $subjson['itemid']);
         $tb->td('colspan=2', $subjson['desc1']);
