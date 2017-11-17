@@ -14,16 +14,16 @@
             
             echo $subtable;
             echo "<h3>Substitutions</h3>";
-            if (isset($subitemstable)) {
+            if (!empty($subitemstable)) {
                 echo $subitemstable;
             } else {
-                echo $page->bootstrap->createalert('warning', 'No Substitutions');
+                echo $page->bootstrap->createalert('info', 'No Substitutions');
             }
             echo "<h3>Internal Notes</h3>";
-            if (isset($notestable)) {
+            if (!empty($notestable)) {
                 echo $notestable;
             } else {
-                echo $page->bootstrap->createalert('warning', 'No Internal Notes');
+                echo $page->bootstrap->createalert('info', 'No Internal Notes');
             }
         }
     } else {

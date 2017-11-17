@@ -15,18 +15,14 @@
     			$tb->th("class=$class", $column['heading']);
     		}
     	$tb->closetablesection('thead');
-    	$tb->tablesection('body');
+    	$tb->tablesection('tbody');
     		$count = count($subjson['data']['substitute items']);
     		for ($i = 1; $i < $count + 1; $i++) {
-    			$title = $subjson['data']['substitute items'][$i]['sub item'];
-    			if ($subjson['data']['substitute items'][$i]['same/like'] == 'Super') {
-                    $tb->tr('class=success');
-                } else {
-                    $tb->tr();
-                }
-				$tb->td('', "<b>$title</b>");
-				$tb->td('', $subjson['data']['substitute items'][$i]['sub desc']);
-				$tb->td('', $subjson['data']['substitute items'][$i]['same/like']);
+                $rowattr = $subjson['data']['substitute items'][$i]['same/like'] == 'Super' ? 'class=success' : '';
+                $tb->tr($rowattr);
+                    foreach ($subjson['data']['substitute items'][$i] as $item) {
+                        $tb->td('', $item);
+                    }
     		}
     	$tb->closetablesection('tbody');
         $subitemstable = $tb->close();
@@ -42,8 +38,6 @@
             }
         $tb->closetablesection('tbody');
         $notestable = $tb->close();
-    } else {
-        $notestable == false;
-    }
+    } 
 
 ?>
