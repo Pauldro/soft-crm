@@ -362,7 +362,7 @@
 		}
 	}
 
-	function getmax_custindexrecnbr() {
+	function get_max_custindexrecnbr() {
 		$sql = wire('database')->prepare("SELECT MAX(recno) FROM custindex");
 		$sql->execute();
 		return $sql->fetchColumn();
@@ -516,14 +516,14 @@
 		}
 	}
 
-	function hasanorderlocked($sessionID) {
+	function has_anorderlocked($sessionID) {
 		$sql = wire('database')->prepare("SELECT COUNT(*) FROM ordlock WHERE sessionid = :sessionID");
 		$switching = array(':sessionID' => $sessionID);
 		$sql->execute($switching);
 		return $sql->fetchColumn() > 0 ? true : false;
 	}
 
-	function getlockedordn($sessionID) {
+	function get_lockkedordn($sessionID) {
 		$sql = wire('database')->prepare("SELECT orderno FROM ordlock WHERE sessionid = :sessionID LIMIT 1");
 		$switching = array(':sessionID' => $sessionID);
 		$sql->execute($switching);
@@ -549,21 +549,21 @@
 /* =============================================================
 	QUOTES FUNCTIONS
 ============================================================ */
-	function hasaquotelocked($sessionID) {
+	function has_aquotelocked($sessionID) {
 		$sql = wire('database')->prepare("SELECT COUNT(*) FROM quotelock WHERE sessionid = :sessionID");
 		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
 
-	function getlockedquotenbr($sessionID) {
+	function get_lockedquotenbr($sessionID) {
 		$sql = wire('database')->prepare("SELECT quotenbr FROM quotelock WHERE sessionid = :sessionID");
 		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
 
-	function caneditquote($sessionID, $qnbr) {
+	function can_editquote($sessionID, $qnbr) {
 		$sql = wire('database')->prepare("SELECT COUNT(*) FROM quotelock WHERE sessionid = :sessionID AND quotenbr = :qnbr");
 		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr);
 		$sql->execute($switching);
@@ -597,7 +597,7 @@
 		}
 	}
 
-	function getquotecustomer($sessionID, $qnbr, $debug) {
+	function get_quotecustomer($sessionID, $qnbr, $debug) {
 		$sql = wire('database')->prepare("SELECT custid FROM quothed WHERE sessionid = :sessionID AND quotnbr = :qnbr");
 		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr); $withquotes = array(true, true);
 		if ($debug) {
@@ -608,7 +608,7 @@
 		}
 	}
 
-	function getquoteshipto($sessionID, $qnbr, $debug) {
+	function get_quoteshipto($sessionID, $qnbr, $debug) {
 		$sql = wire('database')->prepare("SELECT shiptoid FROM quothed WHERE sessionid = :sessionID AND quotnbr = :qnbr");
 		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr); $withquotes = array(true, true);
 		if ($debug) {
@@ -660,7 +660,7 @@
 		}
 	}
 
-	function getquotelinedetail($sessionID, $qnbr, $line, $debug) {
+	function get_quotelinedetail($sessionID, $qnbr, $line, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM quotdet WHERE sessionid = :sessionID AND quotenbr = :qnbr AND linenbr = :linenbr");
 		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr, ':linenbr' => $line); $withquotes = array(true, true, true);
 		if ($debug) {
@@ -671,7 +671,7 @@
 		}
 	}
 
-	function insertquoteline($sessionID, $qnbr, $linenbr, $debug) {
+	function insert_quoteline($sessionID, $qnbr, $linenbr, $debug) {
 		$sql = wire('database')->prepare("INSERT INTO quotdet (sessionid, quotenbr, linenbr) VALUES (:sessionID, :qnbr, :linenbr)");
 		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr, ':linenbr' => $linenbr); $withquotes = array(true, true, true);
 		if ($debug) {
@@ -682,7 +682,7 @@
 		}
 	}
 
-	function nextquotelinenbr($sessionID, $qnbr) {
+	function next_quotelinenbr($sessionID, $qnbr) {
 		$sql = wire('database')->prepare("SELECT MAX(linenbr) FROM quotdet WHERE sessionid = :sessionID AND quotenbr = :qnbr ");
 		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr); $withquotes = array(true, true);
 		$sql->execute($switching);
@@ -707,7 +707,7 @@
 	}
 
 	function edit_quoteline($sessionID, $qnbr, $newdetails, $debug) {
-		$originaldetail = getquotelinedetail(session_id(), $qnbr, $newdetails['linenbr'], false);
+		$originaldetail = get_quotelinedetail(session_id(), $qnbr, $newdetails['linenbr'], false);
 		$query = returnpreppedquery($originaldetail, $newdetails);
 		$sql = wire('database')->prepare("UPDATE quotdet SET ".$query['setstatement']." WHERE sessionid = :sessionID AND quotenbr = :qnbr AND linenbr = :linenbr");
 		$query['switching'][':sessionID'] = $sessionID; $query['switching'][':qnbr'] = $qnbr; $query['switching'][':linenbr'] = $newdetails['linenbr'];
@@ -774,7 +774,7 @@
 		}
 	}
 
-	function getdplusnotecount($sessionID, $key1, $key2, $type, $debug) {
+	function get_dplusnotecount($sessionID, $key1, $key2, $type, $debug) {
 		$sql = wire('database')->prepare("SELECT COUNT(*) FROM qnote WHERE sessionid = :sessionID AND key1 = :key1 AND key2 = :key2 AND rectype = :type");
 		$switching = array(':sessionID' => $sessionID, ':key1' => $key1, ':key2' => $key2, ':type' => $type);
 		$withquotes = array(true, true, true, true);
@@ -786,8 +786,8 @@
 		}
 	}
 
-	function hasdplusnote($sessionID, $key1, $key2, $type) {
-		if (getdplusnotecount($sessionID, $key1, $key2, $type, false)) {
+	function has_dplusnote($sessionID, $key1, $key2, $type) {
+		if (get_dplusnotecount($sessionID, $key1, $key2, $type, false)) {
 			return 'Y';
 		} else {
 			return 'N';
@@ -815,7 +815,7 @@
 		return returnsqlquery($sql->queryString, $switching, $withquotes);
 	}
 
-	function deletenote($sessionID, $key1, $key2, $form1, $form2, $form3, $form4, $form5, $rectype, $recnbr) {
+	function delete_note($sessionID, $key1, $key2, $form1, $form2, $form3, $form4, $form5, $rectype, $recnbr) {
 		$sql = wire('database')->prepare("DELETE FROM qnote WHERE sessionid = :sessionID AND key1 = :key1 AND key2 = :key2 AND form1 = :form1 AND form2 = :form2 AND form3 = :form3 AND form4 = :form4 AND form5 = :form5 AND recno = :recnbr AND rectype = :rectype");
 		$switching = array(':sessionID' => $sessionID, ':key1' => $key1, ':key2' => $key2, ':form1' => $form1, ':form2' => $form2, ':form3' => $form3, ':form4' => $form4, ':form5' => $form5, ':recnbr' => $recnbr, ':rectype' => $rectype);
 		$withquotes = array(true, true, true, true, true, true, true, true, true, true);
@@ -830,7 +830,7 @@
 		return $sql;
 	}
 
-	function insertdplusnote($sessionID, $key1, $key2, $form1, $form2, $form3, $form4, $form5, $note, $rectype, $recno, $date, $time, $width) {// FIXME USE PARAMATERS
+	function insert_dplusnote($sessionID, $key1, $key2, $form1, $form2, $form3, $form4, $form5, $note, $rectype, $recno, $date, $time, $width) {// FIXME USE PARAMATERS
 		$sql = wire('database')->prepare("INSERT INTO qnote (sessionid, notefld, key1, key2, form1, form2, form3, form4, form5, rectype, recno, date, time, colwidth) VALUES (:sessionID, :note,
 		:key1, :key2, :form1, :form2, :form3, :form4, :form5, :rectype, :recno, :date, :time, :width)");
 		$switching = array(':sessionID' => $sessionID, ':note' => $note, ':key1' => $key1, ':key2' => $key2, ':form1' => $form1, ':form2' => $form2, ':form3' => $form3, ':form4' => $form4, ':form5' => $form5, ':rectype' => $rectype, ':recno' => $recno, ':date' => $date, ':time' => $time, ':width' => $width);
@@ -875,7 +875,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getitemavailability($sessionID, $itemID, $debug) {
+	function get_itemavailability($sessionID, $itemID, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM whseavail WHERE sessionid = :sessionID AND itemid = :itemid");
 		$switching = array(':sessionID' => $sessionID, ':itemid' => $itemID); $withquotes = array(true, true);
 		$sql->execute($switching);
@@ -890,7 +890,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		USER ACTION FUNCTIONS
 	============================================================ */
 
-	function getuseractions($user, $querylinks, $limit, $page, $debug) {
+	function get_useractions($user, $querylinks, $limit, $page, $debug) {
 		$limiting = returnlimitstatement($limit, $page);
 		$query = returnwherelinks($querylinks);
 		$andlinks = $query['wherestatement'];
@@ -910,7 +910,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getuseractionscount($user, $querylinks, $debug) {
+	function get_useractionscount($user, $querylinks, $debug) {
 		$query = returnwherelinks($querylinks);
 		$andlinks = $query['wherestatement'];
 		$sql = wire('database')->prepare("SELECT COUNT(*) FROM useractions WHERE $andlinks");
@@ -924,7 +924,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function loaduseraction($id, $fetchclass, $debug) {
+	function load_useraction($id, $fetchclass, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM useractions WHERE id = :id");
 		$switching = array(':id' => $id); $withquotes = array(true);
 		if ($debug) {
@@ -938,8 +938,8 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function updateaction($actionID, $action, $debug) {
-		$originalaction = loaduseraction($actionID, false, false); // (id, bool fetchclass, bool debug)
+	function update_action($actionID, $action, $debug) {
+		$originalaction = load_useraction($actionID, false, false); // (id, bool fetchclass, bool debug)
 		$query = returnpreppedquery($originalaction, $action);
 		$sql = wire('database')->prepare("UPDATE useractions SET ".$query['setstatement']." WHERE id = :actionid");
 		$query['switching'][':actionid'] = $actionID;$query['withquotes'][] = true;
@@ -957,7 +957,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 
 	}
 
-	function updateactionlinks($oldlinks, $newlinks, $wherelinks, $debug) {
+	function update_actionlinks($oldlinks, $newlinks, $wherelinks, $debug) {
 		$query = returnupdatequery($newlinks, $oldlinks, $wherelinks);
 		$query['setstatement'] .= ', dateupdated = :date'; $query['switching'][':date'] = date("Y-m-d H:i:s"); $query['withquotes'][] = true;
 		$sql = wire('database')->prepare("UPDATE useractions SET ".$query['setstatement']." WHERE " . $query['wherestatement']);
@@ -974,7 +974,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function insertaction($action, $debug) {
+	function insert_action($action, $debug) {
 		$query = returninsertlinks($action);
 		$sql = wire('database')->prepare("INSERT INTO useractions (".$query['columnlist'].") VALUES (".$query['valuelist'].")");
 		$switching = $query['switching'];
@@ -995,7 +995,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		return $sql->fetchColumn();
 	}
 
-	function getparentaction($actionID, $debug) {
+	function get_parentaction($actionID, $debug) {
 		$sql = wire('database')->prepare("SELECT actionlink FROM useractions WHERE id = :id");
 		$switching = array(':id' => $actionID); $withquotes = array(true);
 		if ($debug) {
@@ -1008,7 +1008,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 /* =============================================================
 	VENDOR FUNCTIONS
 ============================================================ */
-	function getvendors($debug) {
+	function get_vendors($debug) {
 		$sql = wire('database')->prepare("SELECT * FROM vendors WHERE shipfrom = ''");
 		$switching = array(); $withquotes = array();
 		if ($debug) {
@@ -1019,7 +1019,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getvendorshipfroms($vendorID, $debug) {
+	function get_vendorshipfroms($vendorID, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM vendors WHERE vendid = :vendor AND shipfrom != ''");
 		$switching = array(':vendor' => $vendorID); $withquotes = array(true);
 		if ($debug) {
@@ -1058,7 +1058,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getunitofmeasurements($debug) {
+	function get_unitofmeasurements($debug) {
 		$sql = wire('database')->prepare("SELECT * FROM unitofmeasure");
 		if ($debug) {
 			return $sql->queryString;
@@ -1068,7 +1068,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getitemgroups($debug) {
+	function get_itemgroups($debug) {
 		$sql = wire('database')->prepare("SELECT * FROM itemgroup");
 		if ($debug) {
 			return $sql->queryString;
@@ -1088,7 +1088,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 /* =============================================================
 	CART FUNCTIONS
 ============================================================ */
-	function getcartheadcount($sessionID, $debug) {
+	function get_cartheadcount($sessionID, $debug) {
 		$sql = wire('database')->prepare("SELECT COUNT(*) FROM carthed WHERE sessionid = :sessionID");
 		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
 		$sql->execute($switching);
@@ -1099,7 +1099,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getcartcustomer($sessionID, $debug) {
+	function get_cartcustomer($sessionID, $debug) {
 		$sql = wire('database')->prepare("SELECT custid FROM carthed WHERE sessionid = :sessionID");
 		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
 		if ($debug) {
@@ -1110,7 +1110,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getcarthead($sessionID, $debug) {
+	function get_carthead($sessionID, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM carthed WHERE sessionid = :sessionID");
 		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
 		if ($debug) {
@@ -1121,8 +1121,8 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function editcarthead($sessionID, $carthead, $debug) {
-		$orginalcarthead = getcarthead($sessionID, false);
+	function edit_carthead($sessionID, $carthead, $debug) {
+		$orginalcarthead = get_carthead($sessionID, false);
 		$query = returnpreppedquery($originalcarthead, $carthead);
 		$sql = wire('database')->prepare("UPDATE carthed SET ".$query['setstatement']." WHERE sessionid = :sessionID");
 		$query['switching'][':sessionID'] = $sessionID; $query['withquotes'][] = true;
@@ -1136,7 +1136,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getcart($sessionID, $debug) {
+	function get_cart($sessionID, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM cartdet WHERE sessionid = :sessionID");
 		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
 		$sql->execute($switching);
@@ -1148,7 +1148,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 
 	}
 
-	function insertcarthead($sessionID, $custID, $shipID, $debug) {
+	function insert_carthead($sessionID, $custID, $shipID, $debug) {
 		$sql = wire('database')->prepare("INSERT INTO carthed (sessionid, custid, shiptoid, date, time) VALUES (:sessionID, :custID, :shipID, :date, :time)");
 		$switching = array(':sessionID' => $sessionID, ':custID' => $custID, ':shipID' => $shipID, ':date' => date('Ymd'), ':time' =>date('His')); $withquotes = array(true, true, true, false, false);
 
@@ -1160,7 +1160,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getcartline($sessionID, $linenbr, $debug) {
+	function get_cartline($sessionID, $linenbr, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM cartdet WHERE sessionid = :sessionID AND linenbr = :linenbr");
 		$switching = array(':sessionID' => $sessionID, ':linenbr' => $linenbr); $withquotes = array(true, true);
 		$sql->execute($switching);
@@ -1171,7 +1171,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function insertcartline($sessionID, $linenbr, $debug) {
+	function insert_cartline($sessionID, $linenbr, $debug) {
 		$sql = wire('database')->prepare("INSERT INTO cartdet (sessionid, linenbr) VALUES (:sessionID, :linenbr)");
 		$switching = array(':sessionID' => $sessionID, ':linenbr' => $linenbr); $withquotes = array(true, true);
 		if ($debug) {
@@ -1182,12 +1182,12 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getcartlinedetail($sessionID, $linenbr, $debug) {
-		return getcartline($sessionID, $linenbr, $debug);
+	function get_cartlinedetail($sessionID, $linenbr, $debug) {
+		return get_cartline($sessionID, $linenbr, $debug);
 	}
 
 	function edit_cartline($sessionID, $newdetails, $debug) {
-		$originaldetail = getcartlinedetail($sessionID, $newdetails['linenbr'], false);
+		$originaldetail = get_cartlinedetail($sessionID, $newdetails['linenbr'], false);
 		$query = returnpreppedquery($originaldetail, $newdetails);
 		$sql = wire('database')->prepare("UPDATE cartdet SET ".$query['setstatement']." WHERE sessionid = :sessionID AND linenbr = :linenbr");
 		$query['switching'][':sessionID'] = $sessionID; $query['switching'][':linenbr'] = $newdetails['linenbr'];
@@ -1202,14 +1202,14 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function nextcartlinenbr($sessionID) {
+	function next_cartlinenbr($sessionID) {
 		$sql = wire('database')->prepare("SELECT MAX(linenbr) FROM cartdet WHERE sessionid = :sessionID");
 		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
 		$sql->execute($switching);
 		return intval($sql->fetchColumn()) + 1;
 	}
 
-	function getcreatedordn($sessionID, $debug) {
+	function get_createdordn($sessionID, $debug) {
 		$sql = wire('database')->prepare("SELECT ordernbr FROM logperm WHERE sessionid = :sessionID");
 		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
 		$sql->execute($switching);
@@ -1266,7 +1266,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getorderdetails($sessionID, $ordn, $debug) {
+	function get_orderdetails($sessionID, $ordn, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM ordrdet WHERE sessionid = :sessionID AND orderno = :ordn");
 		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn); $withquotes = array(true, true);
 		$sql->execute($switching);
@@ -1277,7 +1277,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getorderlinedetail($sessionID, $ordn, $linenumber, $debug) {
+	function get_orderlinedetail($sessionID, $ordn, $linenumber, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM ordrdet WHERE sessionid = :sessionID AND orderno = :ordn AND linenbr = :linenbr");
 		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn, ':linenbr' => $linenumber); $withquotes = array(true, true, true);
 		if ($debug) {
@@ -1288,7 +1288,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getallorderdocs($sessionID, $ordn, $debug) {
+	function get_allorderdocs($sessionID, $ordn, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM orddocs WHERE sessionid = :sessionID AND orderno = :ordn ORDER BY itemnbr ASC");
 		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn); $withquotes = array(true, true);
 		if ($debug) {
@@ -1299,7 +1299,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getordertracking($sessionID, $ordn, $debug) {
+	function get_ordertracking($sessionID, $ordn, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM ordrtrk WHERE sessionid = :sessionID AND orderno = :ordn");
 		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn); $withquotes = array(true, true);
 		$sql->execute($switching);
@@ -1351,7 +1351,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function insertorderline($sessionID, $ordn, $linenbr, $debug) {
+	function insert_orderline($sessionID, $ordn, $linenbr, $debug) {
 		$sql = wire('database')->prepare("INSERT INTO ordrdet (sessionid, orderno, linenbr) VALUES (:sessionID, :ordn, :linenbr)");
 		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn, ':linenbr' => $linenbr); $withquotes = array(true, true, true);
 		if ($debug) {
@@ -1374,7 +1374,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getshipvias($sessionID) {
+	function get_shipvias($sessionID) {
 		$sql = wire('database')->prepare("SELECT code, via FROM shipvia WHERE sessionid = :sessionID");
 		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
 		$sql->execute($switching);
@@ -1384,13 +1384,13 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 /* =============================================================
 	MISC ORDER FUNCTIONS
 ============================================================ */
-	function getstates() {
+	function get_states() {
 		$sql = wire('database')->prepare("SELECT abbreviation as state, name FROM states");
 		$sql->execute();
 		return $sql->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	function getcountries() {
+	function get_countries() {
 		$sql = wire('database')->prepare("SELECT * FROM countries");
 		$sql->execute();
 		return $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -1401,7 +1401,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 /* =============================================================
 	ITEM FUNCTIONS
 ============================================================ */
-	function getiteminfo($sessionID, $itemID, $debug) {
+	function get_iteminfo($sessionID, $itemID, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM pricing WHERE sessionid = :sessionID AND itemid = :itemid LIMIT 1");
 		$switching = array(':sessionID' => $sessionID, ':itemid' => $itemID); $withquotes = array(true, true);
 		if ($debug) {
@@ -1412,7 +1412,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getitemfromim($itemID, $debug) {
+	function get_itemfromim($itemID, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM pricing WHERE itemid = :itemid LIMIT 1");
 		$switching = array(':itemid' => $itemID); $withquotes = array(true);
 		if ($debug) {
@@ -1454,7 +1454,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function validateitemid($itemID, $custID, $debug) {
+	function validate_itemid($itemID, $custID, $debug) {
 		if (empty($custID)) {
 			$sql = wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE UCASE(itemid) = UCASE(:itemID) AND originid = 'I'");
 			$switching = array(':itemID' => $itemID); $withquotes = array(true);
@@ -1498,7 +1498,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getitemdescription($itemID, $debug) {
+	function get_itemdescription($itemID, $debug) {
 		$sql = wire('database')->prepare("SELECT desc1 FROM itemsearch WHERE itemid = :itemid LIMIT 1");
 		$switching = array(':itemid' => $itemID); $withquotes = array(true);
 		if ($debug) {
@@ -1509,7 +1509,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getnextrecno($itemID, $nextorprev, $debug) {
+	function get_nextrecno($itemID, $nextorprev, $debug) {
 		if ($nextorprev == 'next') {
 			$sql = wire('database')->prepare("SELECT MAX(recno) + 1 FROM itemsearch WHERE itemid = :itemid");
 		} else {
@@ -1524,7 +1524,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getitembyrecno($recno, $debug) {
+	function get_itembyrecno($recno, $debug) {
 		$sql = wire('database')->prepare("SELECT itemid FROM itemsearch WHERE recno = :recno");
 		$switching = array(':recno' => $recno); $withquotes = array(true);
 		if ($debug) {
@@ -1539,7 +1539,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 	/* =============================================================
 		TABLE FORMATTER FUNCTIONS
 	============================================================ */
-	function getformatter($user, $formatter, $debug) {
+	function get_formatter($user, $formatter, $debug) {
 		$sql = wire('database')->prepare("SELECT data FROM tableformatter WHERE user = :user AND formattertype = :formatter LIMIT 1");
 		$switching = array(':user' => $user, ':formatter' => $formatter); $withquotes = array(true, true);
 		if ($debug) {
@@ -1550,7 +1550,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function addformatter($user, $formatter, $data, $debug) {
+	function add_formatter($user, $formatter, $data, $debug) {
 		$sql = wire('database')->prepare("INSERT INTO tableformatter (user, formattertype, data) VALUES (:user, :formatter, :data)");
 		$switching = array(':user' => $user, ':formatter' => $formatter, ':data' => $data); $withquotes = array(true, true, true);
 		if ($debug) {
@@ -1561,7 +1561,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function checkformatterifexists($user, $formatter, $debug) {
+	function check_formatterifexists($user, $formatter, $debug) {
 		$sql = wire('database')->prepare("SELECT COUNT(*) FROM tableformatter WHERE user = :user AND formattertype = :formatter");
 		$switching = array(':user' => $user, ':formatter' => $formatter); $withquotes = array(true, true);
 		if ($debug) {
@@ -1572,7 +1572,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getmaxtableformatterid($user, $formatter, $debug) {
+	function get_maxtableformatterid($user, $formatter, $debug) {
 		$sql = wire('database')->prepare("SELECT MAX(id) FROM tableformatter WHERE user = :user AND formattertype = :formatter");
 		$switching = array(':user' => $user, ':formatter' => $formatter); $withquotes = array(true, true);
 		if ($debug) {
@@ -1583,7 +1583,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function editformatter($user, $formatter, $data, $debug) {
+	function edit_formatter($user, $formatter, $data, $debug) {
 		$sql = wire('database')->prepare("UPDATE tableformatter SET data = :data WHERE user = :user AND formattertype =  :formatter");
 		$switching = array(':user' => $user, ':formatter' => $formatter, ':data' => $data); $withquotes = array(true, true, true);
 		if ($debug) {
@@ -1598,7 +1598,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 	/* =============================================================
 		USER CONFIGS FUNCTIONS
 	============================================================ */
-	function checkconfigifexists($user, $configuration, $debug) {
+	function check_configifexists($user, $configuration, $debug) {
 		$sql = wire('database')->prepare("SELECT COUNT(*) FROM userconfigs WHERE user = :user AND configtype = :config");
 		$switching = array(':user' => $user, ':config' => $configuration); $withquotes = array(true, true);
 		if ($debug) {
@@ -1609,7 +1609,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function getconfiguration($user, $configuration, $debug) {
+	function get_configuration($user, $configuration, $debug) {
 		$sql = wire('database')->prepare("SELECT data FROM userconfigs WHERE user = :user AND configtype = :config LIMIT 1");
 		$switching = array(':user' => $user, ':config' => $configuration); $withquotes = array(true, true);
 		if ($debug) {
