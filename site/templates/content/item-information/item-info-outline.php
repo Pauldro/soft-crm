@@ -6,6 +6,7 @@
 		$itemjson = false;
 	}
 ?>
+
 <div class="row">
    <?php if (100 == 2) : ?>
 	<div class="col-sm-2">
@@ -28,9 +29,13 @@
 					<tr>
 						<td></td><td><?php echo $itemjson['data']['description']; ?></td>
 					</tr>
-					<tr>
-						<td></td><td><?php echo $itemjson['data']['description2']; ?></td>
-					</tr>
+					
+					<?php if (!empty($itemjson['data']['description2'])) : ?>
+						<tr>
+							<td></td><td><?php echo $itemjson['data']['description2']; ?></td>
+						</tr>
+					<?php endif; ?>
+					
 					<tr>
 						<td class="control-label"><?php echo $itemjson['columns']['itemgroup']; ?></td> <td><?php echo $itemjson['data']['itemgroup']; ?></td>
 					</tr>

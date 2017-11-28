@@ -1,0 +1,24 @@
+{
+    "detail": {
+        "itemid": "8390",
+        "itemgroup": "999",
+        "pricegroup": "HDS",
+        "taxable": "Y",
+        "upc_code": "",
+        "kitbom": "No",
+        "asstcode": "",
+        "revision": "",
+        "primvend": "RDB100",
+        "primvendname": "ROBEC DISTRIBUTING CO",
+        "unitcost": "25.00",
+        "puruom": "EACH",
+        "weight": "0.0000",
+        "merged": "N",
+        "description": "COUNTER MAGNETIC SPINNER DSPLAY-BLK",
+        "description2": "",
+        "finish": "",
+        "material": "",
+        "specsheetflag": "N",
+        "specsheetname": ""
+    }
+}

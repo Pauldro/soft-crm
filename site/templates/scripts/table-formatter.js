@@ -3,7 +3,7 @@ if (tabletype == 'sales-order') {
 	tablejson = {maxcolumns:0, detail: {rowcount: 0, rows: []}};
 } else if (tabletype == 'sales-history') {
 	tablejson = {maxcolumns:0, detail: {rowcount: 0, rows: []}, lotserial: {rowcount: 0, rows: []}};
-} else if (tabletype == 'purchase-order' ||tabletype == 'purchase-orders') {
+} else if (tabletype == 'purchase-order') {
 	tablejson = {maxcolumns:0, detail: {rowcount: 0, rows: []}};
 } else if (tabletype == 'purchase-history') {
 	tablejson = {maxcolumns:0, detail: {rowcount: 0, rows: []}, lotserial: {rowcount: 0, rows: []}};
@@ -17,6 +17,8 @@ if (tabletype == 'sales-order') {
 	tablejson = {maxcolumns:0, header: {rowcount: 0, rows: []}, detail: {rowcount: 0, rows: []}, itemstatus: {rowcount: 0, rows: []}, purchaseorder: {rowcount: 0, rows: []}, total: {rowcount: 0, rows: []}, shipments: {rowcount: 0, rows: []} };
 } else if (tabletype == 'sales-history') {
 	tablejson = {maxcolumns:0, header: {rowcount: 0, rows: []}, detail: {rowcount: 0, rows: []}, lotserial: {rowcount: 0, rows: []}, total: {rowcount: 0, rows: []}, shipments: {rowcount: 0, rows: []} };
+} else if (tabletype == 'outline') {
+	tablejson = {maxcolumns:0, header: {rowcount: 0, rows: []}, detail: {rowcount: 0, rows: []} };
 }
 
 
