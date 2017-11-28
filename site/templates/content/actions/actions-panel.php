@@ -27,7 +27,7 @@
                             <?php $types = $pages->get('/activity/')->children(); ?>
                             <?php foreach ($types as $type) : ?>
 								<?php $selected = ($type->name == $actionpanel->actiontype) ? 'selected' : ''; ?>
-									<option value="<?= $type->name; ?>" <?= $selected; ?>><?= ucfirst($type->name); ?></option>
+								<option value="<?= $type->name; ?>" <?= $selected; ?>><?= ucfirst($type->name); ?></option>
                             <?php endforeach; ?>
                         </select>
 					</div>

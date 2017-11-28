@@ -13,7 +13,7 @@
 
 <div>
 	<ul class="nav nav-tabs" role="tablist">
-		<li role="presentation" class="active"><a href="#task" aria-controls="task" role="tab" data-toggle="tab">Task ID: <?= $taskid; ?></a></li>
+		<li role="presentation" class="active"><a href="#task" aria-controls="task" role="tab" data-toggle="tab">Task ID: <?= $taskID; ?></a></li>
 		<?php if (!empty($task->actionlineage)) : ?>
 			<li role="presentation"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">Task History</a></li>
 		<?php endif; ?>

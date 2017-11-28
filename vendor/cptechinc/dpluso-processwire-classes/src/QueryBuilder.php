@@ -8,12 +8,14 @@
             'insert',
             'between',
             'and',
-            'order',
+            'order ',
+            'cast',
+            'as',
             'by',
-            'or', 
+            'or ', 
             'asc',
             'desc',
-            'limit'   
+            'limit'
         );
         
         public function generate_query(atk4\dsql\Query $q, $querylinks, $orderby, $limit, $page) {
@@ -39,7 +41,7 @@
     		}
             
     		if ($limit) {
-                $q->limit($limit, $this->generate_offset($page));
+                $q->limit($limit, $this->generate_offset($page, $limit));
             }
             
             if (!empty($orderby)) {
@@ -68,7 +70,7 @@
             }
         }
         
-        protected function generate_offset($page) {
+        protected function generate_offset($page, $limit) {
             return $page > 1 ? ($page * $limit) - $limit : 0;
         }
         

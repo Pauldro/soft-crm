@@ -919,7 +919,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		$querybuilder = new QueryBuilder();
 		
 		if (wire('config')->cptechcustomer == 'stempf') {
-			$querybuilder->generate_query($q, $querylinks, "duedate-DESC", $limit, $page);
+			$querybuilder->generate_query($q, $querylinks, "duedate-ASC", $limit, $page);
 			$sql = wire('database')->prepare($q->render());
 		} else {
 			$querybuilder->generate_query($q, $querylinks, false, $limit, $page);

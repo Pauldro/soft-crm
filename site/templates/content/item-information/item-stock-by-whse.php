@@ -82,7 +82,7 @@
 						$tb->tr();
 						foreach ($whsecolumns as $column) {
 							$class = $config->textjustify[$whsestock['columns']['warehouse'][$column]['datajustify']];
-							$tb->th("class=$class", $whsestock['data']['zz'][$column]);
+							$tb->td("class=$class", $whsestock['data']['zz'][$column]);
 						}
 					$tb->closetablesection('tbody');
 					echo $tb->close();

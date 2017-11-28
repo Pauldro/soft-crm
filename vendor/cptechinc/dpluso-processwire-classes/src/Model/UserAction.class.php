@@ -215,6 +215,7 @@
  		
  		public static function remove_nondbkeys($array) {
 			unset($array['actionlineage']);
+			unset($array['structure']);
  			return $array;
  		}
  		

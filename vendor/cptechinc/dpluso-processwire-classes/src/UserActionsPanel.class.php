@@ -382,7 +382,7 @@
         }
         
         public function get_actions($debug = false) {
-             return getuseractions($this->assigneduserID, $this->querylinks, wire('session')->display, $this->pagenbr, $debug);
+            return get_useractions($this->assigneduserID, $this->querylinks, wire('session')->display, $this->pagenbr, $debug);
         }
         
         public function generate_pagenumberdescription() {

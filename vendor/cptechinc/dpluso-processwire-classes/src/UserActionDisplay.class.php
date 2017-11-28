@@ -58,7 +58,7 @@
         
         public function generate_rescheduletasklink($task) {
             $bootstrap = new Contento();
-            $href = $this->generate_viewactionjsonurl($task);
+            $href = $this->generate_rescheduleurl($task);
             $icon = $bootstrap->createicon('fa fa-calendar');
             return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-default reschedule-task", $icon. " Reschedule Task");
         }

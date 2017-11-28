@@ -7,6 +7,10 @@
             $this->querylinks = $querylinks;
         }
         
+        /** 
+         * [generate_actionsbytypearray description]
+         * @return array that has arrays that are composed of label of action type and how many of that action type are in the DB
+         */
         public function generate_actionsbytypearray() {
             $array = array();
             $actiontypes = wire('pages')->get('/activity/')->children('children.count>0');
@@ -36,6 +40,10 @@
                     'value' => intval($this->count_actions(false, array('completed' => 'R')))
                 )
             );
+        }
+        
+        public function get_actions($debug = false, $overridelinks = false) {
+            
         }
         
         public function count_actions($debug = false, $overridelinks = false) {
