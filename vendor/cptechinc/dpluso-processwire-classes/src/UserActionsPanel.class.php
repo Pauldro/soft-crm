@@ -377,7 +377,6 @@
                 } else {
                     return $this->count = count_useractions($this->userID, $querylinks, $debug);
                 }
-                
             }
         }
         

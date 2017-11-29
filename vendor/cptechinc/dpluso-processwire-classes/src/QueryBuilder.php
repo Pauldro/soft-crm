@@ -1,5 +1,5 @@
 <?php
-    class QueryBuilder {
+    class QueryBuilder extends atk4\dsql\Query {
         protected $sqlkeywords = array(
             'select',
             'from',
@@ -8,67 +8,67 @@
             'insert',
             'between',
             'and',
-            'order ',
+            'order',
             'cast',
             'as',
             'by',
-            'or ', 
+            'or', 
             'asc',
             'desc',
             'limit'
         );
         
-        public function generate_query(atk4\dsql\Query $q, $querylinks, $orderby, $limit, $page) {
+        public function generate_query($querylinks, $orderby, $limit, $page) {
     		foreach ($querylinks as $column => $val) {
                 if (!empty($val)) {
                     $whereinfo = $this->generate_where($val);
                     switch ($whereinfo['type']) {
                         case '=':
                             if (sizeof($whereinfo['values']) == 1) {
-                                $q->where($column, $whereinfo['values'][0]);
+                                $this->where($column, $whereinfo['values'][0]);
                             } else {
-                                $q->where($column, $whereinfo['values']);
+                                $this->where($column, $whereinfo['values']);
                             }                            
                             break;
                         case '!=':
-                            $q->where($column, '!=', $whereinfo['values']);
+                            $this->where($column, '!=', $whereinfo['values']);
                             break;
                         case '()':
-                            $q->where($column, $q->expr('between "[]" and "[]"', $whereinfo['values']));
+                            $this->where($column, $q->expr('between "[]" and "[]"', $whereinfo['values']));
                             break;
                     }
                 }
     		}
             
     		if ($limit) {
-                $q->limit($limit, $this->generate_offset($page, $limit));
+                $this->limit($limit, $this->generate_offset($page, $limit));
             }
             
             if (!empty($orderby)) {
-                $q->order($this->generate_orderby($orderby));
+                $this->order($this->generate_orderby($orderby));
             }
     	}
         
         public function generate_where($value) {
-            $filter = false;
-            if (strpos($value, '|') !== false) {
-                $filter = explode('|', $value);
-            }
-            
-            if ($filter) {
-                $value = explode(',', $filter[1]);
-                return array (
-                    'type' => $filter[0],
-                    'values' => $value
-                );
-            } else {
-                $value = explode(',', $value);
-                return array (
-                    'type' => '=',
-                    'values' => $value
-                );
-            }
-        }
+           $filter = false;
+           if (strpos($value, '|') !== false) {
+               $filter = explode('|', $value);
+           }
+           
+           if ($filter) {
+               $value = explode(',', $filter[1]);
+               return array (
+                   'type' => $filter[0],
+                   'values' => $value
+               );
+           } else {
+               $value = explode(',', $value);
+               return array (
+                   'type' => '=',
+                   'values' => $value
+               );
+           }
+       }
         
         protected function generate_offset($page, $limit) {
             return $page > 1 ? ($page * $limit) - $limit : 0;
@@ -83,13 +83,16 @@
             }
         }
         
-        public function returnsqlquery($sql, $oldtonew) {
-       		foreach ($oldtonew as $old => $new) {
-       			$sql = str_replace($old, $new, $sql);
+        public function generate_sqlquery() {
+            $sql = $this->render();
+            $sql = str_replace(',', ', ', $sql);
+            
+       		foreach ($this->params as $param => $value) {
+       			$sql = str_replace($param, "'".$value."'", $sql);
        		}
             
             foreach ($this->sqlkeywords as $keyword) {
-                $sql = str_replace($keyword, strtoupper($keyword), $sql);
+                $sql = preg_replace('/\b'.$keyword.'\b/', strtoupper($keyword), $sql);
             }
        		return $sql;
        	}

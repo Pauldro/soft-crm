@@ -922,22 +922,20 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 	}
 	
 	function get_useractions($user, $querylinks, $limit, $page, $debug) {
-		$q = (new atk4\dsql\Query())->table('useractions');
-		$querybuilder = new QueryBuilder();
+		$q = (new QueryBuilder())->table('useractions');
 		
 		if (wire('config')->cptechcustomer == 'stempf') {
-			$querybuilder->generate_query($q, $querylinks, "duedate-ASC", $limit, $page);
-			$sql = wire('database')->prepare($q->render());
+			$q->generate_query($querylinks, "duedate-ASC", $limit, $page);
 		} else {
-			$querybuilder->generate_query($q, $querylinks, false, $limit, $page);
-			$sql = wire('database')->prepare($q->render());
+			$q->generate_query($querylinks, false, $limit, $page);
 		}
 		
-		$switching = $q->params;
+		$sql = wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return $querybuilder->returnsqlquery($sql->queryString, $switching);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			$sql->setFetchMode(PDO::FETCH_CLASS, 'UserAction');
 			return $sql->fetchAll();
 		}
@@ -946,15 +944,15 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 	
 
 	function count_useractions($user, $querylinks, $debug) {
-		$query = returnwherelinks($querylinks);
-		$andlinks = $query['wherestatement'];
-		$sql = wire('database')->prepare("SELECT COUNT(*) FROM useractions WHERE $andlinks");
-		$switching = $query['switching'];
-		$withquotes = $query['withquotes'];
+		$q = (new QueryBuilder())->table('useractions');
+		$q->field($q->expr('COUNT(*)'));
+		$q->generate_query($querylinks, false, false, false);
+		$sql = wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			return $sql->fetchColumn();
 		}
 	}

@@ -128,7 +128,4 @@
         public function toArray() {
 			return (array) $this;
 		}
-        
     }
-    
-    
