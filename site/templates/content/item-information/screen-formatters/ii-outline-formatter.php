@@ -10,7 +10,6 @@
 	}
 	
 	$fieldsjson = json_decode(file_get_contents($config->companyfiles."json/iihfmattbl.json"), true);
-    
 	$columns = array_keys($fieldsjson['data']['header']);
 	
 	$examplejson = json_decode(file_get_contents($config->paths->content."item-information/screen-formatters/examples/ii-outline.json"), true);
@@ -27,17 +26,9 @@
 	<input type="hidden" name="cols" class="cols">
 	<div class="panel panel-default">
 		<div class="panel-heading"><h3 class="panel-title"><?php echo $page->title; ?></h3> </div>
-		<br>
-		<div class="row">
-			<div class="col-xs-12">
-				<div class="formatter-container">
-					<?php $table = 'header';
-						include $config->paths->content."item-information/screen-formatters/table.php"; 
-					?>
-				</div>
-			</div>
+		<div class="formatter-container">
+			<?php $table = 'header'; include $config->paths->content."item-information/screen-formatters/table.php"; ?>
 		</div>
-		
 	</div>
 	<button type="button" class="btn btn-info" onClick="previewtable('#ii-ol-form')"><i class="fa fa-table" aria-hidden="true"></i> Preview Table</button>
 	<button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> Save Configuration</button>

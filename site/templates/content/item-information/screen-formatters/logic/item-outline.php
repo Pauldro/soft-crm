@@ -6,7 +6,7 @@
 		$formatterjson = json_decode(file_get_contents($default), true);
 	}
 
-	$detailcolumns = array_keys($formatterjson['header']['columns']);
+	$headercolumns = array_keys($formatterjson['header']['columns']);
     
 	$fieldsjson = json_decode(file_get_contents($config->companyfiles."json/iihfmattbl.json"), true);
 
@@ -17,7 +17,7 @@
 
 	for ($i = 1; $i < $formatterjson['header']['rows'] + 1; $i++) {
 		$table['header']['rows'][$i] = array('columns' => array());
-		foreach($detailcolumns as $column) {
+		foreach($headercolumns as $column) {
 			if ($formatterjson['header']['columns'][$column]['line'] == $i) {
 				$col = array(
 					'id' => $column, 

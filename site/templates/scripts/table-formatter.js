@@ -18,7 +18,7 @@ if (tabletype == 'sales-order') {
 } else if (tabletype == 'sales-history') {
 	tablejson = {maxcolumns:0, header: {rowcount: 0, rows: []}, detail: {rowcount: 0, rows: []}, lotserial: {rowcount: 0, rows: []}, total: {rowcount: 0, rows: []}, shipments: {rowcount: 0, rows: []} };
 } else if (tabletype == 'outline') {
-	tablejson = {maxcolumns:0, detail: {rowcount: 0, rows: []}};
+	tablejson = {maxcolumns:0, header: {rowcount: 0, rows: []}, detail: {rowcount: 0, rows: []}};
 }
 
 
@@ -118,6 +118,11 @@ function drawformattable(json) {
 	tabledata += drawrowheadings(json.detail);
 	tabledata += drawtbody(json.detail);
 
+	if (tablejson.header) {
+		tabledata += drawrowheadings(json.header);
+		tabledata += drawtbody(json.header);
+	}
+	
 	if (tablejson.lotserial) {
 		tabledata += drawrowheadings(json.lotserial);
 		tabledata += drawtbody(json.lotserial);
