@@ -11,7 +11,7 @@
 	
 	$fieldsjson = json_decode(file_get_contents($config->companyfiles."json/iihfmattbl.json"), true);
     
-	$headercolumns = array_keys($fieldsjson['data']['header']);
+	$columns = array_keys($fieldsjson['data']['header']);
 	
 	$examplejson = json_decode(file_get_contents($config->paths->content."item-information/screen-formatters/examples/ii-outline.json"), true);
 
@@ -31,7 +31,7 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<div class="formatter-container">
-					<?php $table = 'header'; $columns = $headercolumns; 
+					<?php $table = 'header';
 						include $config->paths->content."item-information/screen-formatters/table.php"; 
 					?>
 				</div>
