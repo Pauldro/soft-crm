@@ -2,17 +2,17 @@
 	header('Content-Type: application/json');
 
 	$formatjson = json_decode(file_get_contents($config->companyfiles."json/iihfmattbl.json"), true);
-    
 	$headercolumns = array_keys($formatjson['data']['header']);
-	$postarray = array('cols' => 0, 'header' => array('rows' => 0, 'columns' => array()));
+	$postarray = array(
+		'cols' => 0, 
+		'header' => array('rows' => 0, 'columns' => array())
+	);
 
 	if ($input->requestMethod() == "POST") {
 		$maxrec = getmaxtableformatterid($user->loginid, 'ii-outline', false);
 		$postarray['cols'] = $input->post->int('cols');
-
-
 		$postarray['header']['rows'] = $input->post->int('header-rows');
-
+		$postarray['columns'] = array();
 
 		foreach ($headercolumns as $column) {
 			$postcolumn = str_replace(' ', '', $column);

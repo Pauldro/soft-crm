@@ -166,7 +166,7 @@ function countrows(form) {
 		form.find('.header-line').each(function(index) {
 			if ($(this).val() !== '' && $(this).val() !== '0') {
 				var row = $(this).closest('tr');
-				row.addClass('lotserial-line-'+$(this).val()).addClass('not-empty');
+				row.addClass('header-line-'+$(this).val()).addClass('not-empty');
 				if (parseInt($(this).val()) > tablejson.header.rowcount) { tablejson.header.rowcount = parseInt($(this).val()); }
 			}
 		});

@@ -1,5 +1,5 @@
 {
-    "cols": 16,
+    "cols": 13,
     "header": {
         "rows": 1,
         "columns": {
@@ -113,7 +113,7 @@
 			},
             "Weight": {
 				"line": 1,
-				"column": 12,
+				"column": 11,
 				"col-length": 1,
 				"label": "Weight",
 				"before-decimal": 6,
@@ -130,8 +130,8 @@
 				"date-format": false
 			},
             "Quantity per Case": {
-				"line": 1,
-				"column": 11,
+				"line": 0,
+				"column": 0,
 				"col-length": 1,
 				"label": "Qnt/Case",
 				"before-decimal": 6,
@@ -239,7 +239,7 @@
 			},
             "Primary Vendor Unit Cost": {
 				"line": 1,
-				"column": 14,
+				"column": 12,
 				"col-length": 1,
 				"label": "Unit Cost",
 				"before-decimal": 7,
@@ -248,7 +248,7 @@
 			},
             "Purchase Unit of Measure": {
 				"line": 1,
-				"column": 15,
+				"column": 13,
 				"col-length": 1,
 				"label": "Pur UOM",
 				"before-decimal": false,
@@ -625,8 +625,8 @@
 				"date-format": false
 			},
             "IN-COLOR Code": {
-				"line": 1,
-				"column": 13,
+				"line": 0,
+				"column": 0,
 				"col-length": 1,
 				"label": "Color",
 				"before-decimal": false,
@@ -751,8 +751,8 @@
 				"date-format": false
 			},
             "IN-IMAGNAME Code": {
-				"line": 1,
-				"column": 16,
+				"line": 0,
+				"column": 0,
 				"col-length": 1,
 				"label": "Imagname",
 				"before-decimal": false,
