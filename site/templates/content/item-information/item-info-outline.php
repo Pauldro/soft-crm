@@ -10,7 +10,7 @@
 		if ($itemjson['error']) {
 			echo $page->bootstrap->createalert('warning', $itemjson['errormsg']);
 		} else {
-			include $config->paths->content."item-information/item-display.php";
+			// include $config->paths->content."item-information/item-display.php";
 			$table = include $config->paths->content."item-information/screen-formatters/logic/item-outline.php"; 
 			include $config->paths->content."item-information/tables/item-outline-formatted.php"; 
 			include $config->paths->content."item-information/item-price-breaks.php";

@@ -10,17 +10,25 @@
     
 	$fieldsjson = json_decode(file_get_contents($config->companyfiles."json/iihfmattbl.json"), true);
 
+	/**
+	 * iihf formatter notes
+	 *
+	 * this formatter doesn't need the max columns value and it doesn't need the maxrows value for each section 
+	 */
 	$table = array(
-		'maxcolumns' => $formatterjson['cols'],
 		'header' => array(
-			'maxrows' => $formatterjson['header']['rows'], 
-			'rows' => array())
+			'sections' => array(
+				'1' => array(),
+				'2' => array(),
+				'3' => array(),
+				'4' => array()
+			)
+		)
 	);
-
-	for ($i = 1; $i < $formatterjson['header']['rows'] + 1; $i++) {
-		$table['header']['rows'][$i] = array('columns' => array());
+	
+	for ($i = 1; $i < 5; $i++) {
 		foreach($detailcolumns as $column) {
-			if ($formatterjson['header']['columns'][$column]['line'] == $i) {
+			if ($formatterjson['header']['columns'][$column]['column'] == $i) {
 				$col = array(
 					'id' => $column, 
 					'label' => $formatterjson['header']['columns'][$column]['label'], 
@@ -30,9 +38,10 @@
 					'after-decimal' => $formatterjson['header']['columns'][$column]['after-decimal'], 
 					'date-format' => $formatterjson['header']['columns'][$column]['date-format']
 				 );
-				$table['header']['rows'][$i]['columns'][$formatterjson['header']['columns'][$column]['column']] = $col;
+				$table['header']['sections'][$i][$formatterjson['header']['columns'][$column]['line']] = $col;
 			}
 		}
 	}
 
+	// echo json_encode($table);
 	return $table;
