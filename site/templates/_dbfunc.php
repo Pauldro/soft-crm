@@ -900,27 +900,6 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 	/* =============================================================
 		USER ACTION FUNCTIONS
 	============================================================ */
-
-	function getuseractions($user, $querylinks, $limit, $page, $debug) {
-		$limiting = returnlimitstatement($limit, $page);
-		$query = returnwherelinks($querylinks);
-		$andlinks = $query['wherestatement'];
-		if (wire('config')->cptechcustomer == 'stempf') {
-			$sql = wire('database')->prepare("SELECT * FROM useractions WHERE $andlinks ORDER BY duedate ASC $limiting");
-		} else {
-			$sql = wire('database')->prepare("SELECT * FROM useractions WHERE $andlinks $limiting");
-		}
-		$switching = $query['switching'];
-		$withquotes = $query['withquotes'];
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			$sql->setFetchMode(PDO::FETCH_CLASS, 'UserAction');
-			return $sql->fetchAll();
-		}
-	}
-	
 	function get_useractions($user, $querylinks, $limit, $page, $debug) {
 		$q = (new QueryBuilder())->table('useractions');
 		
@@ -940,8 +919,6 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 			return $sql->fetchAll();
 		}
 	}
-	
-	
 
 	function count_useractions($user, $querylinks, $debug) {
 		$q = (new QueryBuilder())->table('useractions');
@@ -957,66 +934,76 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function get_useraction($id, $fetchclass, $debug) {
-		$sql = wire('database')->prepare("SELECT * FROM useractions WHERE id = :id");
-		$switching = array(':id' => $id); $withquotes = array(true);
+	function get_useraction($id, $debug = false) {
+		$q = (new QueryBuilder())->table('useractions');
+		$q->where('id', $id);
+		$sql = wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
-			if ($fetchclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'UserAction');
-			}
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'UserAction');
 			return $sql->fetch();
 		}
 	}
-
-	function updateaction($actionID, $action, $debug) {
-		$originalaction = get_useraction($actionID, false, false); // (id, bool fetchclass, bool debug)
-		$query = returnpreppedquery($originalaction, $action);
-		$sql = wire('database')->prepare("UPDATE useractions SET ".$query['setstatement']." WHERE id = :actionid");
-		$query['switching'][':actionid'] = $actionID;$query['withquotes'][] = true;
+	
+	function edit_useraction(UserAction $updatedaction, $debug = false) { //FIX
+		$originalaction = get_useraction($updatedaction->id); // (id, bool fetchclass, bool debug)
+		$q = (new QueryBuilder())->table('useractions');
+		$q->mode('update');
+		$q->generate_setdifferencesquery($originalaction->toArray(), $updatedaction->toArray());
+		$sql = wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
+			return $q->generate_sqlquery();
 		} else {
-			$sql->execute($query['switching']);
+			$sql->execute($q->params);
 			$success = $sql->rowCount();
 			if ($success) {
-				return array("error" => false,  "sql" => returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']));
+				return array("error" => false,  "sql" => $q->generate_sqlquery($q->params));
 			} else {
-				return array("error" => true,  "sql" => returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']));
-			}
-		}
-
-	}
-
-	function updateactionlinks($oldlinks, $newlinks, $wherelinks, $debug) {
-		$query = returnupdatequery($newlinks, $oldlinks, $wherelinks);
-		$query['setstatement'] .= ', dateupdated = :date'; $query['switching'][':date'] = date("Y-m-d H:i:s"); $query['withquotes'][] = true;
-		$sql = wire('database')->prepare("UPDATE useractions SET ".$query['setstatement']." WHERE " . $query['wherestatement']);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
-		} else {
-			$sql->execute($query['switching']);
-			$success = $sql->rowCount();
-			if ($success) {
-				return array("error" => false,  "sql" => returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']));
-			} else {
-				return array("error" => true,  "sql" => returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']));
+				return array("error" => true,  "sql" => $q->generate_sqlquery($q->params));
 			}
 		}
 	}
+	
+	function update_useraction(UserAction $updatedaction, $debug = false) {
+		return edit_useraction($updatedaction, $debug);
+	}
 
-	function insert_useraction($action, $debug) {
-		$query = returninsertlinks($action);
-		$sql = wire('database')->prepare("INSERT INTO useractions (".$query['columnlist'].") VALUES (".$query['valuelist'].")");
-		$switching = $query['switching'];
-		$withquotes = $query['withquotes'];
+	function update_useractionlinks($oldlinks, $newlinks, $wherelinks, $debug) {
+		$q = (new QueryBuilder())->table('useractions');
+		$q->mode('update');
+		$q->generate_setdifferencesquery($oldlinks, $newlinks);
+		$q->generate_query($wherelinks);
+		$q->set('dateupdated', date("Y-m-d H:i:s"));
+		
+		$sql = wire('database')->prepare($q->render());
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery();
 		} else {
-			$sql->execute($switching);
-			return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'insertedid' => wire('database')->lastInsertId());
+			$sql->execute($q->params);
+			$success = $sql->rowCount();
+			if ($success) {
+				return array("error" => false,  "sql" => $q->generate_sqlquery($q->params));
+			} else {
+				return array("error" => true,  "sql" => $q->generate_sqlquery($q->params));
+			}
+		}
+	}
+	
+	function create_useraction(UserAction $action, $debug = false) {
+		$q = (new QueryBuilder())->table('useractions');
+		$q->mode('insert');
+		$q->generate_insertquery($action->toArray());
+		$sql = wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return array('sql' => $q->generate_sqlquery($q->params), 'insertedid' => wire('database')->lastInsertId());
 		}
 	}
 
@@ -1026,17 +1013,6 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		$withquotes = array(true, true);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
-	}
-
-	function getparentaction($actionID, $debug) {
-		$sql = wire('database')->prepare("SELECT actionlink FROM useractions WHERE id = :id");
-		$switching = array(':id' => $actionID); $withquotes = array(true);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return $sql->fetchColumn();
-		}
 	}
 /* =============================================================
 	VENDOR FUNCTIONS

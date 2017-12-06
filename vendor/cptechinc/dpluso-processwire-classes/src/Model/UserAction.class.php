@@ -213,10 +213,11 @@
 
 		public function get_actionlineage() {
 			if ($this->has_actionlink()) {
-				$parentid = getparentaction($this->id, false);
+				$parentid = $this->actionlink;
 				while ($parentid != '') {
 					$this->actionlineage[] = $parentid;
-					$parentid = getparentaction($parentid, false);
+					$parent = UserAction::get($parentid);
+					$parentid = $parent->actionlink;
 				}
 			}
 			return $this->actionlineage;
