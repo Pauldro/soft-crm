@@ -4,22 +4,15 @@
 
     switch ($input->urlSegment1) {
         case 'add':
-            switch($input->urlSegment2) {
-                case 'new':
-                    if (file_exists($config->paths->content."actions/actions/$config->cptechcustomer-new-action.php")) {
-                        include $config->paths->content."actions/actions/$config->cptechcustomer-new-action.php";
-                    } else {
-                        include $config->paths->content."actions/actions/new-action.php";
-                    }
-                    break;
-                default:
-                    include $config->paths->content."actions/actions/crud/add-action.php";
-                    break;
+            if ($input->requestMethod() == 'POST') { // CREATE IN CRUD
+                include $config->paths->content."actions/actions/crud/create-action.php";
+            } else { // SHOW FORM
+                include $config->paths->content."actions/actions/new-action.php";
             }
             break;
         case 'load':
             switch ($input->urlSegment2) {
-                case 'list':
+                case 'list': // READ IN CRUD
                     switch($input->urlSegment3) {
                         case 'user':
                             if ($config->ajax) {
@@ -74,18 +67,17 @@
                             break;
                     }
                     break;
-                default:
+                default: // READ IN CRUD
 					$actionID = $input->get->text('id');
-					$fetchclass = true;
-					$action = get_useraction($actionID, $fetchclass, false);
+					$action = UserAction::get($actionID);
 					$messagetemplate = "Viewing Action for {replace}";
 					$page->title = $action->generate_message($messagetemplate);
 
                     if ($config->ajax) {
-                        $page->body = $config->paths->content.'actions/actions/view-action.php';
+                        $page->body = $config->paths->content.'actions/actions/read-action.php';
 						include $config->paths->content.'common/modals/include-ajax-modal.php';
                     } else {
-                        $page->body = $config->paths->content.'actions/actions/view-action.php';
+                        $page->body = $config->paths->content.'actions/actions/read-action.php';
                         include $config->paths->content."common/include-blank-page.php";
                     }
                     break;

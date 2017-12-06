@@ -3,15 +3,11 @@
 	$actiondisplay = new UserActionDisplay($page->fullURL);
     
     $contactinfo = get_customercontact($action->customerlink, $action->shiptolink, $action->contactlink, false);
-	
-    if ($action->is_rescheduled()) {
-        $rescheduledtask = get_useraction($action->rescheduledlink, true, false);
-    }
 ?>
 
 <div>
 	<ul class="nav nav-tabs" role="tablist">
-		<li role="presentation" class="active"><a href="#action" aria-controls="action" role="tab" data-toggle="tab">Action ID: <?= $actionid; ?></a></li>
+		<li role="presentation" class="active"><a href="#action" aria-controls="action" role="tab" data-toggle="tab">Action ID: <?= $action->id; ?></a></li>
 	</ul>
 	<br>
 	<div class="tab-content">

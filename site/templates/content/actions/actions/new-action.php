@@ -1,33 +1,34 @@
 <?php
-	$actionlinks = UserAction::generate_classarray();
-	$actionlinks['actiontype'] = 'action';
-	$actionlinks['customerlink'] = $custID;
-	$actionlinks['shiptolink'] = $shipID;
-	$actionlinks['contactlink'] = $contactID;
-	$actionlinks['salesorderlink'] = $ordn;
-	$actionlinks['quotelink'] = $qnbr;
-	$actionlinks['notelink'] = $noteID;
-	$actionlinks['tasklink'] = $taskID;
-	$actionlinks['actionlink'] = $actionID;
+	$action = new UserAction();
+	$action->set('actiontype', 'actions');
+	$action->set('customerlink', $custID);
+	$action->set('shiptolink', $shipID);
+	$action->set('contactlink', $contactID);
+	$action->set('salesorderlink', $ordn);
+	$action->set('quotelink', $qnbr);
+	$action->set('actionlink', $actionID);
 
-	if (empty($actionlinks['customerlink'])) {
-		if (!empty($actionlinks['salesorderlink'])) {
-			$actionlinks['customerlink'] = get_custid_from_order(session_id(), $actionlinks['salesorderlink']);
-			$actionlinks['shiptolink'] = get_shiptoid_from_order(session_id(), $actionlinks['salesorderlink']);
-		} elseif (!empty($actionlinks['quotelink'])) {
-			$actionlinks['customerlink'] = getquotecustomer(session_id(), $actionlinks['quotelink']);
-			$actionlinks['shiptolink'] = getquoteshipto(session_id(), $actionlinks['salesorderlink'], false);
+	if (empty($action->customerlink)) {
+		if (!empty($action->salesorderlink)) {
+			$action->set('customerlink', get_custid_from_order(session_id(), $action->salesorderlink));
+			$action->set('shiptolink', get_shiptoid_from_order(session_id(), $action->salesorderlink));
+		} elseif (!empty($action->quotelink)) {
+			$action->set('customerlink', getquotecustomer(session_id(), $action->quotelink));
+			$action->set('shiptolink', getquoteshipto(session_id(), $action->salesorderlink, false));
 		}
 	}
 
-	if (!empty($actionlinks['customerlink']) && $config->cptechcustomer == 'stempf') {
-		$actionlinks['assignedto'] = get_customersalesperson($actionlinks['customerlink'], $actionlinks['shiptolink'], false);
+	if (!empty($action->customerlink) && $config->cptechcustomer == 'stempf') {
+		$action->set('assignedto', get_customersalesperson($action->customerlink, $action->shiptolink, false));
 	} else {
-		$actionlinks['assignedto'] = $user->loginid;
+		$action->set('assignedto', $user->loginid);
+	}
+
+	if (!empty($actionID)) {
+		$originalaction = UserAction::get($actionID);
+		$action->set('actionsubtype', $originalaction->actionsubtype);
 	}
 	
-	$action = UserAction::create_fromarray($actionlinks);
-
 	$message = "Creating an action for {replace}";
 	$page->title = $action->generate_message($message);
 	$page->body = $config->paths->content."actions/actions/forms/new-action-form.php";
