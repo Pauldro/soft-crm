@@ -19,8 +19,28 @@
             return $this->openandclose('i', "class=$class|aria-hidden=true", $content);
         }
         
-        public function button($class, $content =  '') {
-            return $this->openandclose('button', "class=$class", $content);
+        public function button($attributes, $content =  '') {
+            return $this->openandclose('button', $attributes, $content);
+        }
+        
+        public function input($attr = '') {
+            return $this->open('input', $attr);
+        }
+        
+        public function textarea($attributes, $content =  '') {
+            return $this->openandclose('textarea', $attributes, $content);
+        }
+        
+        public function select($attr = '', array $keyvalues, $selectvalue = null) {
+            $str = $this->open('select', $attr);
+            
+            foreach ($keyvalues as $key => $value) {
+                $optionattr = "value=$key";
+                $optionattr .= ($key == $selectvalue) ? "|selected=noparam" : '';
+                $str .= $this->openandclose('option', $optionattr, $value);
+            }
+            $str .= $this->close('select');
+            return $str;
         }
         
         public function createalert($type, $msg, $showclose = true) {

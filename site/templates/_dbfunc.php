@@ -996,7 +996,7 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 	function create_useraction(UserAction $action, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$q->mode('insert');
-		$q->generate_insertquery($action->toArray());
+		$q->generate_setvaluesquery($action->toArray());
 		$sql = wire('database')->prepare($q->render());
 		
 		if ($debug) {

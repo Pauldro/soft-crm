@@ -67,7 +67,7 @@
                         $class = $this->generate_rowclass($action);
                         
                         $tb->tr("class=$class");
-                        $tb->td('', date('m/d/Y H:i A', strtotime($action->datecompleted)));
+                        $tb->td('', date('m/d/Y H:i A', strtotime($action->datecreated)));
                         $tb->td('', ucfirst($action->generate_actionsubtypedescription()));
                         $tb->td('', $action->generate_regardingdescription());
                         $tb->td('', $this->generate_viewactionlink($action));
@@ -101,6 +101,7 @@
             }
             
             public function draw_taskstable($tasks) {
+                $form = $this->generate_changetaskstatusview();
                 $tb = new Table('class=table table-bordered table-condensed table-striped');
                 $tb->tablesection('thead');
                     $tb->tr();
@@ -123,7 +124,7 @@
                         $tb->td('', $this->generate_completetasklink($task));
                     }
                 $tb->closetablesection('tbody');
-                return $tb->close();
+                return $form . $tb->close();
             }
         
         /* =============================================================

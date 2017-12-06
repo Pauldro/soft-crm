@@ -52,7 +52,7 @@
 			$bootstrap = new Contento();
 			
 			$form = $bootstrap->open('div', 'class=form-group');
-			$form .= $bootstrap->openandclose('label','','Results Per Page');
+			$form .= $bootstrap->openandclose('label','','Results Per Page') . '&nbsp; &nbsp;';
 			$form .= $bootstrap->open('select', 'class=form-control input-sm results-per-page|name=results-per-page');
 			
 			foreach (wire('config')->showonpageoptions as $val) {

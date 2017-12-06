@@ -123,7 +123,7 @@
                 $actionpath = ($keepactiontype) ? $this->actiontype : '{replace}';
             }
             $url = new \Purl\Url($this->generate_refreshurl(true));
-            $url->path = wire('config')->pages->actions.$actionpath."/add/new/";
+            $url->path = wire('config')->pages->actions.$actionpath."/add/";
 			return $url->getUrl();
 		}
         
@@ -174,7 +174,18 @@
             CONTENT FUNCTIONS
         ============================================================ */
         public function generate_rowclass($action) {
-            return ($action->is_overdue() && $action->actiontype == 'tasks' && (!$action->is_rescheduled())) ?  'bg-warning' : '';
+            if ($action->actiontype == 'tasks') {
+                if ($action->is_rescheduled()) {
+                    return 'bg-info';
+                }
+                if ($action->is_overdue()) {
+                    return 'bg-warning';    
+                }
+                if ($action->is_completed()) {
+                    return 'bg-success';
+                }
+            }
+            return '';
         }
         
         public function generate_actionstable() {
@@ -317,12 +328,24 @@
              return $form->finish();
          }
          
+         public function generate_legend() {
+ 			$bootstrap = new Contento();
+ 			$tb = new Table('class=table table-bordered table-condensed table-striped');
+            $tb->tr('class=bg-warning')->td('', 'Task Overdue');
+            $tb->tr('class=bg-info')->td('', 'Task Rescheduled');
+            $tb->tr('class=bg-success')->td('', 'Task Completed');
+ 			$content = str_replace('"', "'", $tb->close());
+ 			$attr = "tabindex=0|role=button|class=btn btn-sm btn-info|data-toggle=popover|data-placement=bottom|data-trigger=focus";
+ 			$attr .= "|data-html=true|title=Icons Definition|data-content=$content";
+ 			return $bootstrap->openandclose('a', $attr, 'Icon Definitions');
+ 		}
+         
          /* =============================================================
             ACTION URLS
         ============================================================ */
          public function generate_completetasklink($task) {
              $bootstrap = new Contento();
-             $href = $this->generate_rescheduleurl($task);
+             $href = $this->generate_viewactionjsonurl($task);
              $icon = $bootstrap->createicon('fa fa-check-circle');
              $icon .= ' <span class="sr-only">Mark as Complete</span>';
              return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-xs btn-primary complete-action|title=Mark Task as Complete", $icon);

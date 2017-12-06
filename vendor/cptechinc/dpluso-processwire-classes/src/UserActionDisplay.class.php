@@ -12,6 +12,10 @@
         public function generate_viewactionurl($action) {
 			return wire('config')->pages->actions."$action->actiontype/load/?id=".$action->id;
 		}
+        
+        public function generate_editactionurl($action) {
+			return wire('config')->pages->actions."$action->actiontype/edit/?id=".$action->id;
+		}
 
 		public function generate_completionurl($action, $complete) {
 			return wire('config')->pages->actions."$action->actiontype/update/completion/?id=".$action->id."&complete=".$complete; //true or false
@@ -45,7 +49,14 @@
             $bootstrap = new Contento();
             $href = $this->generate_viewactionurl($action);
             $icon = $bootstrap->createicon('material-icons md-18', '&#xE02F;');
-            return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-xs btn-primary load-action|data-modal=$this->modal|title=View Task", $icon);
+            return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-xs btn-primary load-action|data-modal=$this->modal|title=View Action", $icon);
+        }
+        
+        public function generate_editactionlink($action) {
+            $bootstrap = new Contento();
+            $href = $this->generate_editactionurl($action);
+            $icon = $bootstrap->createicon('glyphicon glyphicon-pencil');
+            return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-primary load-action|data-modal=$this->modal|title=Edit Action", $icon. ' Edit Action');
         }
         
         public function generate_completetasklink($task) {

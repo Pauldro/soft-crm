@@ -45,6 +45,11 @@
 							</select>
 						<?php endif; ?>
 					</div>
+					<div class="col-sm-4 form-group">
+						<label>Table Legend</label>
+						<br>
+						<?= $actionpanel->generate_legend(); ?>
+					</div>
 				</div>
             </div>
 			 <div class="table-responsive">

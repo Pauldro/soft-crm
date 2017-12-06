@@ -18,7 +18,16 @@
             'limit'
         );
         
-        public function generate_query($querylinks, $orderby, $limit, $page) {
+        /**
+         * Updates the Query builder Query with the column conditionals
+         * Optionally adds the ORDER BY clause
+         * Optiionally adds the LIMIT clause
+         * @param  array  $querylinks [description]
+         * @param  boolean $orderby    String of the orderby e.g. columnname-ASC
+         * @param  boolean $limit      How many records to return ** OPTIONAL
+         * @param  boolean $page       What Page Number to start from
+         */
+        public function generate_query(array $querylinks, $orderby = false, $limit = false, $page = false) {
     		foreach ($querylinks as $column => $val) {
                 if (!empty($val)) {
                     $whereinfo = $this->generate_where($val);
@@ -49,6 +58,16 @@
             }
     	}
         
+        /**
+         * Parses $value to determine the type of column conditional to use 
+         * such as if this is a between or a != 
+         * @param  string $value with the conditional type followed by | and then value
+         * @return array        returns type and values in  array. Values is an ArrayAccess
+         *
+         * Example:
+         * $value = =|11
+         * $return = array('type' => '=', 'values' = array(11));
+         */
         public function generate_where($value) {
            $filter = false;
            if (strpos($value, '|') !== false) {
@@ -69,20 +88,61 @@
                );
            }
        }
+       
+       /**
+        * Loops through the array of key values and 
+        * uses the $this->set('') to set the column to the new value
+        * @param  array $querylinks associative array with the new corresponding values 
+        */
+       public function generate_setvaluesquery($querylinks) {
+           foreach ($querylinks as $column => $val) {
+               if (!empty($val)) {
+                   $this->set($column, $val);
+               }
+           }
+       }
+       
+       /**
+        * Loops through the $new associative array to determine
+        * if values are different at each key
+        * @param  array  $old original associative array with key -> value
+        * @param  array  $new updated associative array with key -> value
+        */
+       public function generate_setdifferencesquery(array $old, array $new) {
+           foreach ($new as $column => $val) {
+               if ($val != $old[$column]) {
+                   $this->set($column, $val);
+               }
+           }
+       }
         
+        /** 
+         * Retunrs the page offset by multiplying $page and $limit subtracted by $limit
+         * @param int $page page number
+         * @param int $limit number of records per page
+         */
         protected function generate_offset($page, $limit) {
             return $page > 1 ? ($page * $limit) - $limit : 0;
         }
         
+        /**
+         * Returns the Order By string by parsing the string 
+         * into the format needed : column (ASC|DESC) or blank
+         * @param  string $orderby e.g. columnname-ASC
+         * @return string          Blank or columnname ASC
+         */
         protected function generate_orderby($orderby) {
             if (!empty($orderby)) {
-                $orderbyarray = explode('-', $orderby);
-                return $orderbyarray[0] . ' ' .strtolower($orderbyarray[1]);
+                return str_replace('-', '', $orderby);
             } else {
                 return '';
             }
         }
-        
+        /**
+         * Parses the Paramterized query provided by $this->render()
+         * Returns it in a Easy to read format with SQL keywords in CAPS and spaces after commas
+         * @return string SQL Query
+         */
         public function generate_sqlquery() {
             $sql = $this->render();
             $sql = str_replace(',', ', ', $sql);

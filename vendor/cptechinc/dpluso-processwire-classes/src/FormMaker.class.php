@@ -5,30 +5,22 @@
         private static $count = 0;
         private $openform;
         
-        function __construct($attr = '', $openform = true) {
+        public function __construct($attr = '', $openform = true) {
             self::$count++;
             $this->formstring = $this->indent() . $openform ? $this->open('form', $attr) : '';
             $this->openform = $openform;
         }
         
         public function input($attr = '') {
-            $this->formstring .= $this->indent() . $this->open('input', $attr);
+            $this->formstring .= $this->indent() . parent::input($attr);
         }
         
         public function select($attr = '', array $keyvalues, $selectvalue = null) {
-            $this->formstring .= $this->indent() . $this->open('select', $attr);
-            
-            foreach ($keyvalues as $key => $value) {
-                $optionattr = "value=$key";
-                $optionattr .= ($key == $selectvalue) ? "|selected=noparam" : '';
-                $this->formstring .= $this->indent() . $this->openandclose('option', $optionattr, $value);
-            }
-            
-            $this->formstring .= $this->close('select');
+            $this->formstring .= $this->indent() . parent::select($attr, $keyvalues, $selectvalue);
         }
         
         public function button($attr = '', $content) {
-            $this->formstring .= $this->indent() . $this->openandclose('button', $attr, $content);
+            $this->formstring .= $this->indent() . parent::button($attr, $content);
         }
         
         public function add($str) {
