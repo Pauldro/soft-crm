@@ -11,6 +11,7 @@ class ComposerStaticInitbc1bd12326b6449f6f4b7d928a87cff9
         'bd8bf74d70613675ab92685140191001' => __DIR__ . '/../..' . '/src/DplusDateTime.class.php',
         'fcb8bf629f10208cb0cd7ed34611b338' => __DIR__ . '/../..' . '/src/Model/UserAction.class.php',
         '99cdb7b00d1b32397a34259baa6470e4' => __DIR__ . '/../..' . '/src/UserActionDisplay.class.php',
+        '49557a3707f725f68b5580097cf40c59' => __DIR__ . '/../..' . '/src/UserActionDisplayEdit.class.php',
         'd7eda4e360e3507d41e7e121f3158376' => __DIR__ . '/../..' . '/src/UserActionsPanel.class.php',
         '5bc366a5e2d6dd09e16d98d41a60cf13' => __DIR__ . '/../..' . '/src/UserActionsPanelCustomer.class.php',
         'ddb460775d744f6e4a2771bee4decbb1' => __DIR__ . '/../..' . '/src/UserActionsPanelContact.class.php',

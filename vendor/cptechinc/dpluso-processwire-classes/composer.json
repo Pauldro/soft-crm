@@ -10,6 +10,7 @@
 			"src/DplusDateTime.class.php",
 			"src/Model/UserAction.class.php",
 			"src/UserActionDisplay.class.php",
+			"src/UserActionDisplayEdit.class.php",
 			"src/UserActionsPanel.class.php",
 			"src/UserActionsPanelCustomer.class.php",
 			"src/UserActionsPanelContact.class.php",

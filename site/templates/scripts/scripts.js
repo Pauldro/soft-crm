@@ -13,6 +13,7 @@ $(document).ready(function() {
 		$('body').popover({selector: '[data-toggle="popover"]', placement: 'top'});
 
 		init_datepicker();
+		init_timepicker();
 		init_bootstraptoggle();
 
 		$('.phone-input').keyup(function() {
@@ -40,10 +41,12 @@ $(document).ready(function() {
 
 		$(config.modals.ajax).on('shown.bs.modal', function (event) {
 			init_datepicker();
+			init_timepicker();
 		});
 
 		$(config.modals.pricing).on('shown.bs.modal', function (event) { // DEPRECATED 8/22/2017 DELETE ON 9/1
 			init_datepicker();
+			init_timepicker();
 			init_bootstraptoggle();
 		});
 
@@ -710,6 +713,7 @@ $(document).ready(function() {
 	        var loadinto = config.modals.ajax+" .modal-content";
 	        $(loadinto).loadin(url, function() {
 	            $(modal).resizemodal('lg').modal();
+				init_datepicker();
 	        });
 	    });
 
@@ -745,7 +749,7 @@ $(document).ready(function() {
 							align: "center"
 						},
 						onClose: function() {
-							wait(500, function() {
+							wait(200, function() {
 								$(elementreload + " .actions-refresh").click();
 								$(modal).modal('hide');
 								if (config.appconfig.cptechcustomer != 'stempf') {
@@ -838,6 +842,7 @@ $(document).ready(function() {
  	function showajaxloading() {
 		var close = makeajaxclose("hideajaxloading()");
 		var loadingdiv = "<div class='loading'>"+loadingwheel+"</div>";
+		$('.modal').modal('hide');
 		$("<div class='modal-backdrop tribute loading-bkgd fade in'></div>").html(close+loadingdiv).appendTo('body');
 		listener.simple_combo("esc", function() { hideajaxloading(); });
 	}
@@ -918,7 +923,7 @@ $(document).ready(function() {
 			var element = $(this);
 			var parent = element.parent();
 			console.log('loading ' + element.returnelementdescription() + " from " + href);
-			parent.load(href, function() { callback(); });
+			parent.load(href, function() { init_datepicker(); init_timepicker(); callback(); });
 		},
 		returnelementdescription: function() {
 			var element = $(this);
@@ -1207,6 +1212,13 @@ function ucfirst(str) {
 				date: $(this).find('.date-input').val(),
 				allowPastDates: true,
 			});
+		});
+	}
+	
+	function init_timepicker() {
+		$('.timepicker').timepicker({
+			'scrollDefault': 'now' ,
+			'timeFormat': 'h:i A'
 		});
 	}
 

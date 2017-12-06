@@ -34,8 +34,8 @@
 	$config->styles->append(hashtemplatefile('styles/libraries.css'));
 	$config->styles->append(hashtemplatefile('styles/styles.css'));
 
-	//$config->scripts->append(hashtemplatefile('scripts/js-config.js'));
 	$config->scripts->append(hashtemplatefile('scripts/libraries.js'));
+	$config->scripts->append(hashtemplatefile('scripts/libs/timepicker.js'));
 	$config->scripts->append(hashtemplatefile('scripts/libs/key-listener.js'));
 	$config->scripts->append(hashtemplatefile('scripts/libs/datatables.js'));
 	$config->scripts->append(hashtemplatefile('scripts/classes.js'));
