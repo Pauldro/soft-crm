@@ -1,5 +1,5 @@
 <?php
-	
+
 	class UserAction {
 		public $id;
 		public $datecreated;
@@ -59,6 +59,18 @@
 			
 		}
 		
+		public function set($property, $value) {
+			if (property_exists($this, $property) !== true) {
+                $this->error("This property ($property) does not exist");
+                return false;
+            }
+			$this->$property = $value;
+		}
+		
+		public function has_id() {
+			return (!empty($this->id)) ? true : false;	
+		}
+		
 		public function has_customerlink() {
 			return (!empty($this->customerlink)) ? true : false;
 		}
@@ -98,6 +110,23 @@
 				return false;
 			}
 		}
+		
+		public function __get($property) {
+            if (property_exists($this, $property) !== true) {
+                $this->error("This property ($property) does not exist");
+                return false;
+            }
+            
+            $method = "get_{$property}";
+            if (method_exists($this, $method)) {
+                return $this->$method();
+            } elseif (property_exists($this, $property)) {
+                return $this->$property;
+            } else {
+                $this->error("This property ($property) is not accessible");
+                return false;
+            }
+        }
 		
 		public function generate_regardingdescription() {
 			$desc = '';
@@ -192,19 +221,38 @@
 			}
 			return $this->actionlineage;
 		}
+		/* =============================================================
+			DATABASE FUNCTIONS 
+		============================================================ */
+		public function update() {
+			return update_useraction($this);
+		}
+		
+		public function save() {
+			if ($this->has_id()) {
+				return update_useraction($this);
+			} else {
+				return create_useraction($this);
+			}
+		}
+		
+		public static function get($id) { // ALSO CONSTRUCTOR
+			return get_useraction($id);
+		}
 		
 		/* =============================================================
 			OTHER CONSTRUCTOR FUNCTIONS 
 		============================================================ */
 		public static function create_fromarray(array $array) {
-		   $myClass = get_class();
-		   $object  = new $myClass(); 
+			$myClass = get_class();
+			$object  = new $myClass(); 
 
-		   foreach ($array as $key => $val) {
-			   $object->$key = $val;
-		   }
-		   return $object;
+			foreach ($array as $key => $val) {
+				$object->$key = $val;
+			}
+			return $object;
 		}
+		
 		
 		/* =============================================================
  		   GENERATE ARRAY FUNCTIONS 
@@ -220,7 +268,13 @@
  		}
  		
  		public function toArray() {
- 			return (array) $this;
+			return $this::remove_nondbkeys((array) $this);
  		}
+		
+		protected function error($error, $level = E_USER_ERROR) {
+			$error = (strpos($error, 'DPLUSO [USERACTIONS]: ') !== 0 ? 'DPLUSO [USERACTIONS]: ' . $error : $error);
+			trigger_error($error, $level);
+			return;
+		}
 
 	}
