@@ -251,7 +251,7 @@
                      $class = $this->generate_rowclass($action);
                      
                      $tb->tr("class=$class");
-                     $tb->td('', date('m/d/Y H:i A', strtotime($action->datecompleted)));
+                     $tb->td('', date('m/d/Y g:i A', strtotime($note->datecreated)));
                      $tb->td('', ucfirst($action->generate_actionsubtypedescription()));
                      $tb->td('', $action->customerlink);
                      $tb->td('', $action->generate_regardingdescription());

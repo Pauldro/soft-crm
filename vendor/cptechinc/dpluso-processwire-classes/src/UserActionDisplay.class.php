@@ -34,7 +34,7 @@
 		}
 
 		public function generate_shiptourl($action) {
-			return $action->generate_customerurl($action) . "&shipID=".urlencode($action->shiptolink);
+			return $this->generate_customerurl($action) . "&shipID=".urlencode($action->shiptolink);
 		}
 
 		public function generate_contacturl($action) {

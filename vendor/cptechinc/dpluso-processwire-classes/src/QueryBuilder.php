@@ -133,7 +133,7 @@
          */
         protected function generate_orderby($orderby) {
             if (!empty($orderby)) {
-                return str_replace('-', '', $orderby);
+                return str_replace('-', ' ', $orderby);
             } else {
                 return '';
             }

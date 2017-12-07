@@ -13,7 +13,7 @@
                 }
             }
             
-            $content .= $bootstrap->open('input', "type=hidden|class=select-button-value required|name=actiontype|value=$action->actionsubtype");
+            $content .= $bootstrap->open('input', "type=hidden|class=select-button-value required|name=subtype|value=$action->actionsubtype");
             return $content;
         }
         

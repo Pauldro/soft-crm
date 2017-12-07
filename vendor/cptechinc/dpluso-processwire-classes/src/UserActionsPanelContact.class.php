@@ -68,7 +68,7 @@
                     $class = $this->generate_rowclass($action);
                     
                     $tb->tr("class=$class");
-                    $tb->td('', date('m/d/Y H:i A', strtotime($action->datecreated)));
+                    $tb->td('', date('m/d/Y g:i A', strtotime($action->datecreated)));
                     $tb->td('', ucfirst($action->generate_actionsubtypedescription()));
                     $tb->td('', $action->generate_regardingdescription());
                     $tb->td('', $this->generate_viewactionlink($action));
@@ -92,7 +92,7 @@
                     $class = $this->generate_rowclass($note);
                     
                     $tb->tr("class=$class");
-                    $tb->td('', date('m/d/Y H:i A', strtotime($note->datecreated)));
+                    $tb->td('', date('m/d/Y g:i A', strtotime($note->datecreated)));
                     $tb->td('', ucfirst($note->generate_actionsubtypedescription()));
                     $tb->td('', $note->generate_regardingdescription());
                     $tb->td('', $this->generate_viewactionlink($note));
