@@ -255,8 +255,8 @@
 			$oldlinks = array('customerlink' => $custID, 'shiptolink' => $shipID, 'contactlink' => $contactID);
 			$newlinks = array('customerlink' => $custID, 'shiptolink' => $shipID, 'contactlink' => $contact['contact']);
 			if ($response['changes']) {
-				$session->sql .= "<br>" . updateactionlinks($oldlinks, $newlinks, $oldlinks, true);
-				updateactionlinks($oldlinks, $newlinks, $oldlinks, false);
+				$session->sql .= "<br>" . update_useractionlinks($oldlinks, $newlinks, $oldlinks, true);
+				update_useractionlinks($oldlinks, $newlinks, $oldlinks, false);
 			}
 			$session->loc = $returnpage->getUrl();
 			break;

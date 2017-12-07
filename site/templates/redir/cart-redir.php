@@ -126,7 +126,7 @@
 			switch ($from) {
 				case 'salesorder':
 					$ordn = $input->get->text('ordn');
-					$custID = get_custid_from_order(session_id(), $ordn);
+					$custID = get_custidfromorder(session_id(), $ordn);
 					$details = get_orderdetails(session_id(), $ordn, true, false);
 					foreach ($details as $detail) {
 						$itemids[] = $detail->itemid;
@@ -172,7 +172,7 @@
 			$cartdetail['qtyordered'] = '0';
 			$session->sql = edit_cartline(session_id(), $cartdetail, false);
 			$session->loc = $config->pages->cart;
-			$custID = getcartcustomer(session_id(), false);
+			$custID = get_custidfromcart(session_id());
 			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'LINENO' => $input->post->linenbr, 'QTY' => '0');
 
 			$data['CUSTID'] = empty($custID) ? $config->defaultweb : $custID;

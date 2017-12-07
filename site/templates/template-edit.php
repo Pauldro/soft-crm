@@ -4,7 +4,7 @@
     switch ($page->name) { //$page->name is what we are editing
         case 'order':
             $ordn = $input->get->text('ordn');
-            $custID = get_custid_from_order(session_id(), $ordn);
+            $custID = get_custidfromorder(session_id(), $ordn);
             $editorderdisplay = new EditSalesOrderDisplay(session_id(), $page->fullURL, '#ajax-modal', $ordn);
         	$order = $editorderdisplay->get_order();
             if (!$order) {
