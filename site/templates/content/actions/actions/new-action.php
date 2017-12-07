@@ -10,11 +10,11 @@
 
 	if (empty($action->customerlink)) {
 		if (!empty($action->salesorderlink)) {
-			$action->set('customerlink', get_custid_from_order(session_id(), $action->salesorderlink));
-			$action->set('shiptolink', get_shiptoid_from_order(session_id(), $action->salesorderlink));
+			$action->set('customerlink', get_custidfromorder(session_id(), $action->salesorderlink));
+			$action->set('shiptolink', get_shiptoidfromorder(session_id(), $action->salesorderlink));
 		} elseif (!empty($action->quotelink)) {
-			$action->set('customerlink', getquotecustomer(session_id(), $action->quotelink));
-			$action->set('shiptolink', getquoteshipto(session_id(), $action->salesorderlink, false));
+			$action->set('customerlink', get_custidfromquote(session_id(), $action->quotelink));
+			$action->set('shiptolink', get_shiptoidfromquote(session_id(), $action->quotelink));
 		}
 	}
 
@@ -24,9 +24,11 @@
 		$action->set('assignedto', $user->loginid);
 	}
 
-	if (!empty($actionID)) {
-		$originalaction = UserAction::get($actionID);
-		$action->set('actionsubtype', $originalaction->actionsubtype);
+	if (!empty($action->actionlink)) {
+		$originalaction = UserAction::get($action->actionlink);
+		if ($originalaction->actiontype = 'actions') {
+			$action->set('actionsubtype', $originalaction->actionsubtype);
+		}
 	}
 	
 	$message = "Creating an action for {replace}";

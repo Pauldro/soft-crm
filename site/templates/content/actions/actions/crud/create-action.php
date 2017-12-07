@@ -6,7 +6,7 @@
 
         $action = new UserAction();
         $action->set('actiontype', 'actions');
-        $action->set('actionsubtype', $input->post->text('actiontype'));
+        $action->set('actionsubtype', $input->post->text('subtype'));
         $action->set('customerlink', $input->post->text('customerlink'));
         $action->set('shiptolink', $input->post->text('shiptolink'));
         $action->set('contactlink', $input->post->text('contactlink'));
@@ -23,9 +23,11 @@
 
         if (empty($action->customerlink)) {
         	if (!empty($action->salesorderlink)) {
-        		$action->set('customerlink', get_custid_from_order(session_id(), $action->salesorderlink));
+        		$action->set('customerlink', get_custidfromorder(session_id(), $action->salesorderlink));
+                $action->set('shiptolink', get_shiptoidfromorder(session_id(), $action->salesorderlink));
         	} elseif (!empty($action->quotelink)) {
-        		$action->set('customerlink', getquotecustomer(session_id(), $action->quotelink));
+        		$action->set('customerlink', get_custidfromquote(session_id(), $action->quotelink));
+                $action->set('shiptolink', get_shiptoidfromquote(session_id(), $action->quotelink));
         	}
         }
 
@@ -37,17 +39,11 @@
         $session->sql = $results['sql'];
         $action->set('id', $results['insertedid']);
         
-
         if ($results['insertedid'] > $maxrec) {
-            switch ($action) {
-                default:
-                    $error = false;
-                    $message = "<strong>Success!</strong><br> Your action for {replace} has been created";
-                    $icon = "glyphicon glyphicon-floppy-saved";
-                    $message = $action->generate_message($message);
-                    break;
-            }
-
+            $error = false;
+            $template = "<strong>Success!</strong><br> Your action for {replace} has been created";
+            $icon = "glyphicon glyphicon-floppy-saved";
+            $message = $action->generate_message($template);
         } else {
             $error = true;
             $message = "<strong>Error!</strong><br> Your action could not be created";
