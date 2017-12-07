@@ -4,17 +4,17 @@
     
     switch ($input->urlSegment1) {
         case 'add':
-            switch($input->urlSegment2) {
-                case 'new':
-                    if (file_exists($config->paths->content."actions/notes/$config->cptechcustomer-new-note.php")) {
-                        include $config->paths->content."actions/notes/$config->cptechcustomer-new-note.php";
-                    } else {
-                        include $config->paths->content."actions/notes/new-note.php";
-                    }
-                    break;
-                default:
-                    include $config->paths->content."actions/notes/crud/add-note.php";
-                    break;
+            if ($input->requestMethod() == 'POST') { // CREATE IN CRUD
+                include $config->paths->content."actions/notes/crud/create-note.php";
+            } else { // SHOW FORM
+                include $config->paths->content."actions/notes/new-note.php";
+            }
+            break;
+        case 'edit':
+            if ($input->requestMethod() == 'POST') {
+                include $config->paths->content."actions/notes/crud/update-note.php";
+            } else {
+                include $config->paths->content."actions/notes/edit-note.php";
             }
             break;
         case 'load':
@@ -76,8 +76,7 @@
                     break;
                 default:
 					$noteID = $input->get->text('id');
-					$fetchclass = true;
-					$note = get_useraction($noteID, $fetchclass, false);
+					$note = UserAction::get($noteID);
 					$messagetemplate = "Viewing Note for {replace}";
 					$page->title = $note->generate_message($messagetemplate);
 

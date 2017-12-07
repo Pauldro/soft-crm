@@ -1,50 +1,60 @@
 <?php
-	$salespersonjson = json_decode(file_get_contents($config->companyfiles."json/salespersontbl.json"), true);
-	$salespersoncodes = array_keys($salespersonjson['data']);
+	$editactiondisplay = new EditUserActionsDisplay($page->fullURL);
+	$action = $config->pages->actions."notes/add/";
+	$form = new FormMaker("action=$action|method=post|id=new-action-form|data-refresh=#actions-panel|data-modal=#ajax-modal");
+
+		$form->input("type=hidden|name=action|value=add-crm-note");
+		$form->input("type=hidden|name=customerlink|value=$note->customerlink");
+		$form->input("type=hidden|name=shiptolink|value=$note->shiptolink");
+		$form->input("type=hidden|name=contactlink|value=$note->contactlink");
+		$form->input("type=hidden|name=salesorderlink|value=$note->salesorderlink");
+		$form->input("type=hidden|name=quotelink|value=$note->quotelink");
+		$form->input("type=hidden|name=actionlink|value=$note->actionlink");
+		
+		$tb = new Table("class=table table-bordered table-striped");
+			$tb->tr();
+				$tb->td('', 'Note Create Date: ')->td('', date('m/d/Y g:i A'));
+			$tb->tr();
+				$tb->td('class=control-label', 'Assigned To: ')->td('', $editactiondisplay->generate_selectsalesperson($note->assignedto));
+			$tb->tr();
+				$tb->td('class=control-label', "Note Type <br> " . $page->bootstrap->openandclose('small', '', "(Click to Choose)"));
+				$tb->td('', $editactiondisplay->generate_selectsubtype($note));
+			
+			if (!empty($note->customerlink)) {
+				$tb->tr();
+				$icon = $page->bootstrap->createicon('glyphicon glyphicon-share');
+				$href = $page->bootstrap->openandclose('a', 'href='.$editactiondisplay->generate_customerurl($note), "$icon Go to Customer Page");
+				$tb->td('', 'Customer:')->td('',get_customername($note->customerlink)." ($note->customerlink)" . ' '. $href);
+			}
+			
+			if (!empty($note->shiptolink)) {
+				$tb->tr();
+				$tb->td('', 'Ship-to:')->td('', $page->bootstrap->openandclose('a', 'href='.$editactiondisplay->generate_shiptourl($note), get_shiptoname($note->customerlink, $note->shiptolink, false). " ($note->shiptolink)"));
+			}
+			
+			if (!empty($note->contactlink)) {
+				$tb->tr();
+				$tb->td('', 'Contact:')->td('', $note->contactlink);
+			}
+			
+			if (!empty($note->salesorderlink)) {
+				$tb->tr();
+				$tb->td('', 'Order #:')->td('', $note->salesorderlink);
+			}
+			
+			if (!empty($note->quotelink)) {
+				$tb->tr();
+				$tb->td('', 'Quote #:')->td('', $note->quotelink);
+			}
+			
+			$tb->tr();
+			$tb->td('class=control-label', 'Title')->td('', $page->bootstrap->input("type=text|name=title|class=form-control|value=$note->title"));
+			
+			$tb->tr();
+			$tb->td('colspan=2', $page->bootstrap->openandclose('label', 'class=control-label', 'Notes') ."<br>". $page->bootstrap->textarea('name=textbody|id=note|cols=30|rows=10|class=form-control note', $note->textbody));
+		$table = $tb->close();
+		
+		$form->add($table);
+		$form->button("type=submit|class=btn btn-success", $page->bootstrap->createicon('glyphicon glyphicon-floppy-disk'). " Save Changes");
+	echo $form->finish();
 ?>
-<form action="<?= $config->pages->actions."notes/add/"; ?>" method="post" id="new-action-form" data-refresh="#actions-panel" data-modal="#ajax-modal">
-	<input type="hidden" name="action" value="write-crm-note">
-	<input type="hidden" name="custlink" value="<?= $note->customerlink; ?>">
-	<input type="hidden" name="shiptolink" value="<?= $note->shiptolink; ?>">
-	<input type="hidden" name="contactlink" value="<?= $note->contactlink; ?>">
-	<input type="hidden" name="salesorderlink" value="<?= $note->salesorderlink; ?>">
-	<input type="hidden" name="quotelink" value="<?= $note->quotelink; ?>">
-	<input type="hidden" name="actionlink" value="<?= $note->actionlink; ?>">
-	<table class="table table-bordered table-striped">
-	    <tr>  <td>Note Create Date:</td> <td><?= date('m/d/Y g:i A'); ?></td> </tr>
-	    <tr>
-	        <td class="control-label">Assigned To:</td>
-	        <td>
-	            <select name="assignedto" class="form-control input-sm" style="width: 200px;">
-	                <?php foreach ($salespersoncodes as $salespersoncode) : ?>
-	                    <?php if ($salespersonjson['data'][$salespersoncode]['splogin'] == $note->assignedto) : ?>
-	                        <option value="<?= $salespersonjson['data'][$salespersoncode]['splogin']; ?>" selected><?= $salespersoncode.' - '.$salespersonjson['data'][$salespersoncode]['spname']; ?></option>
-	                    <?php else : ?>
-	                        <option value="<?= $salespersonjson['data'][$salespersoncode]['splogin']; ?>"><?= $salespersoncode.' - '.$salespersonjson['data'][$salespersoncode]['spname']; ?></option>
-	                    <?php endif; ?>
-	                <?php endforeach; ?>
-	            </select>
-	        </td>
-	    </tr>
-		<tr>
-			<td class="control-label">Note Type <br><small>(Click to choose)</small></td>
-			<td>
-				<?php include $config->paths->content."actions/notes/forms/select-note-type.php"; ?>
-			</td>
-		</tr>
-	    <?php include $config->paths->content."actions/notes/view/view-note-links.php"; ?>
-		<tr>
-			<td class="control-label">Title</td>
-			<td>
-				<input type="text" name="title" class="form-control">
-			</td>
-		</tr>
-	    <tr>
-	        <td colspan="2">
-	            <label for="" class="control-label">Notes</label>
-	            <textarea name="textbody" id="note" cols="30" rows="10" class="form-control note"> </textarea> <br>
-				<button type="submit" class="btn btn-success">Save Note</button>
-	        </td>
-	    </tr>
-	</table>
-</form>

@@ -1,32 +1,35 @@
 <?php
-	$notelinks = UserAction::generate_classarray();
-	$notelinks['actiontype'] = 'note';
-	$notelinks['customerlink'] = $custID;
-	$notelinks['shiptolink'] = $shipID;
-	$notelinks['contactlink'] = $contactID;
-	$notelinks['salesorderlink'] = $ordn;
-	$notelinks['quotelink'] = $qnbr;
-	$notelinks['notelink'] = $noteID;
-	$notelinks['tasklink'] = $taskID;
-	$notelinks['actionlink'] = $actionID;
+	$note = new UserAction();
+	$note->set('actiontype', 'notes');
+	$note->set('customerlink', $custID);
+	$note->set('shiptolink', $shipID);
+	$note->set('contactlink', $contactID);
+	$note->set('salesorderlink', $ordn);
+	$note->set('quotelink', $qnbr);
+	$note->set('actionlink', $actionID);
 
-	if (empty($notelinks['customerlink'])) {
-		if (!empty($notelinks['salesorderlink'])) {
-			$notelinks['customerlink'] = get_custid_from_order(session_id(), $notelinks['salesorderlink']);
-			$notelinks['shiptolink'] = get_shiptoid_from_order(session_id(), $notelinks['salesorderlink']);
-		} elseif (!empty($notelinks['quotelink'])) {
-			$notelinks['customerlink'] = getquotecustomer(session_id(), $notelinks['quotelink']);
-			$notelinks['shiptolink'] = getquoteshipto(session_id(), $notelinks['salesorderlink'], false);
+	if (empty($note->customerlink)) {
+		if (!empty($note->salesorderlink)) {
+			$note->set('customerlink', get_custidfromorder(session_id(), $note->salesorderlink));
+			$note->set('shiptolink', get_shiptoidfromorder(session_id(), $note->salesorderlink));
+		} elseif (!empty($note->quotelink)) {
+			$note->set('customerlink', get_custidfromquote(session_id(), $note->quotelink));
+			$note->set('shiptolink', get_shiptoidfromquote(session_id(), $note->quotelink));
 		}
 	}
 
-	if (!empty($notelinks['customerlink']) && $config->cptechcustomer == 'stempf') {
-		$notelinks['assignedto'] = get_customersalesperson($notelinks['customerlink'], $notelinks['shiptolink'], false);
+	if (!empty($note->customerlink) && $config->cptechcustomer == 'stempf') {
+		$note->set('assignedto', get_customersalesperson($note->customerlink, $note->shiptolink, false));
 	} else {
-		$notelinks['assignedto'] = $user->loginid;
+		$note->set('assignedto', $user->loginid);
 	}
-	
-	$note = UserAction::create_fromarray($notelinks);
+
+	if (!empty($note->actionlink)) {
+		$originalnote = UserAction::get($note->actionlink);
+		if ($originalnote->actiontype == 'notes') {
+			$note->set('actionsubtype', $originalnote->actionsubtype);
+		}
+	}
 
     $message = "Writing Note for {replace} ";
     $page->title = $note->generate_message($message);

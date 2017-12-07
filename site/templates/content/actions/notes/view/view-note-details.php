@@ -51,3 +51,4 @@
         </td>
     </tr>
 </table>
+<?= $notedisplay->generate_editactionlink($note); ?>

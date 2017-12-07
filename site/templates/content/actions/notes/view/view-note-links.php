@@ -2,7 +2,7 @@
     <tr>
 		<td>Customer:</td>
 		<td>
-  			<a href="<?= $note->generate_customerurl(); ?>">
+  			<a href="<?= $editactiondisplay->generate_customerurl($note); ?>">
   				<?= get_customername($custID)." ($custID)"; ?>
   			</a>
    		</td>
@@ -13,7 +13,7 @@
     <tr>
     	<td>Ship-to:</td>
 		<td>
-			<a href="<?= $note->generate_shiptourl(); ?>">
+			<a href="<?= $editactiondisplay->generate_shiptourl($note); ?>">
 				<?= get_shiptoname($custID, $shipID, false). " ($shipID)"; ?>
 			</a>
    		</td>
