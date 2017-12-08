@@ -1,29 +1,25 @@
 <?php
     header('Content-Type: application/json');
     $taskID = $input->get->id;
-    $task = get_useraction($taskID, false, false); // (id, bool fetchclass, bool debug)
+    $task = UserAction::get($taskID);
 
     if ($input->get->text('complete') == 'true') {
-        $task['datecompleted'] = date("Y-m-d H:i:s");
-        $task['completed'] = 'Y';
+        $task->set('datecompleted', date("Y-m-d H:i:s"));
+        $task->set('completed', 'Y');
     } else {
-        $task['datecompleted'] = '0000-00-00 00:00:00';
-        $task['completed'] = ' ';
+        $task->set('datecompleted', '0000-00-00 00:00:00');
+        $task->set('completed', ' ');
     }
 
-    if ($input->post) {
-        $task['reflectnote'] = $input->post->text('reflectnote');
+    if (!empty($input->post->reflectnote)) {
+        $task->set('reflectnote', $input->post->text('reflectnote'));
     }
 
-    $task['dateupdated'] = date("Y-m-d H:i:s");
+    $task->set('dateupdated', date("Y-m-d H:i:s"));
 
-
-
-    $response = updateaction($taskID, $task, false);
+    $response = $task->update();
 	$session->sql = $response['sql'];
-	$response['request_type'] = 'update';
-	$response['taskid'] = $taskID;
-    
+
     if ($response['error']) {
         $json = array (
 				'response' => array (
@@ -45,7 +41,6 @@
 				)
 			);
     }
-
+    
 	echo json_encode($json);
-
 ?>

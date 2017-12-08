@@ -654,7 +654,7 @@ $(document).ready(function() {
 						title: 'Confirm task as complete?',
 						html:
 							'<b>ID:</b> ' + json.response.action.id + '<br>' +
-							'<b>description:</b> ' + json.response.action.textbody,
+							'<b>Description:</b> ' + json.response.action.textbody,
 						type: 'question',
 						showCancelButton: true,
 						confirmButtonText: 'Confirm as Complete'

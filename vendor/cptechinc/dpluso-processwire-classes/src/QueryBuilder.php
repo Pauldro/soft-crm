@@ -15,7 +15,10 @@
             'or', 
             'asc',
             'desc',
-            'limit'
+            'limit',
+            'values',
+            'into',
+            'set'
         );
         
         /**
@@ -146,7 +149,7 @@
         public function generate_sqlquery() {
             $sql = $this->render();
             $sql = str_replace(',', ', ', $sql);
-            
+            $sql = str_replace('=', ' = ', $sql);
        		foreach ($this->params as $param => $value) {
        			$sql = str_replace($param, "'".$value."'", $sql);
        		}

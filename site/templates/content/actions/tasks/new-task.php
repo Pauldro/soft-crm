@@ -1,30 +1,34 @@
 <?php
-	$tasklinks = UserAction::generate_classarray();
-	$tasklinks['actiontype'] = 'task';
-	$tasklinks['customerlink'] = $custID;
-	$tasklinks['shiptolink'] = $shipID;
-	$tasklinks['contactlink'] = $contactID;
-	$tasklinks['salesorderlink'] = $ordn;
-	$tasklinks['quotelink'] = $qnbr;
-	$tasklinks['actionlink'] = $actionID;
+	$task = new UserAction();
+	$task->set('actiontype', 'tasks');
+	$task->set('customerlink', $custID);
+	$task->set('shiptolink', $shipID);
+	$task->set('contactlink', $contactID);
+	$task->set('salesorderlink', $ordn);
+	$task->set('quotelink', $qnbr);
+	$task->set('actionlink', $actionID);
 
-	if (empty($tasklinks['customerlink'])) {
-		if (!empty($tasklinks['salesorderlink'])) {
-			$tasklinks['customerlink'] = get_custid_from_order(session_id(), $tasklinks['salesorderlink']);
-			$tasklinks['shiptolink'] = get_shiptoid_from_order(session_id(), $tasklinks['salesorderlink']);
-		} elseif (!empty($tasklinks['quotelink'])) {
-			$tasklinks['customerlink'] = getquotecustomer(session_id(), $tasklinks['quotelink'], false);
-			$tasklinks['shiptolink'] = getquoteshipto(session_id(), $tasklinks['salesorderlink'], false);
+	if (empty($task->customerlink)) {
+		if (!empty($task->salesorderlink)) {
+			$task->set('customerlink', get_custidfromorder(session_id(), $task->salesorderlink));
+			$task->set('shiptolink', get_shiptoidfromorder(session_id(), $task->salesorderlink));
+		} elseif (!empty($task->quotelink)) {
+			$task->set('customerlink', get_custidfromquote(session_id(), $task->quotelink));
+			$task->set('shiptolink', get_shiptoidfromquote(session_id(), $task->quotelink));
 		}
 	}
 
-	if (!empty($tasklinks['customerlink']) && $config->cptechcustomer == 'stempf') {
-		$tasklinks['assignedto'] = get_customersalesperson($tasklinks['customerlink'], $tasklinks['shiptolink'], false);
+	if (!empty($task->customerlink) && $config->cptechcustomer == 'stempf') {
+		$task->set('assignedto', get_customersalesperson($task->customerlink, $task->shiptolink, false));
 	} else {
-		$tasklinks['assignedto'] = $user->loginid;
+		$task->set('assignedto', $user->loginid);
+	}
+
+	if (!empty($actionID)) {
+		$originaltask = UserAction::get($actionID);
+		$task->set('actionsubtype', $originaltask->actionsubtype);
 	}
 	
-	$task = UserAction::create_fromarray($tasklinks);
 
 	$message = "Creating a task for {replace} ";
 	$page->title = $task->generate_message($message);

@@ -4,12 +4,19 @@
     
     switch ($input->urlSegment1) {
         case 'add':
-            switch($input->urlSegment2) {
-                case 'new':
-                    include $config->paths->content."actions/tasks/new-task.php";
+            if ($input->requestMethod() == 'POST') { // CREATE IN CRUD
+                include $config->paths->content."actions/tasks/crud/create-task.php";
+            } else { // SHOW FORM
+                include $config->paths->content."actions/tasks/new-task.php";
+            }
+            break;
+        case 'update':
+            switch ($input->urlSegment2) {
+                case 'completion':
+                    include $config->paths->content."actions/tasks/crud/update-task-completion.php";
                     break;
-                default:
-                    include $config->paths->content."actions/tasks/crud/add-task.php";
+                case 'reschedule':
+                    include $config->paths->content."actions/tasks/reschedule-task.php";
                     break;
             }
             break;
@@ -72,8 +79,7 @@
                     break;
                 default:
 					$taskID = $input->get->text('id');
-					$fetchclass = true;
-					$task = get_useraction($taskID, $fetchclass, false);
+					$task = UserAction::get($taskID);
 					$messagetemplate = "Viewing Action for {replace}";
 					$page->title = $task->generate_message($messagetemplate);
 
@@ -84,16 +90,6 @@
                         $page->body = $config->paths->content.'actions/tasks/view-task.php';
                         include $config->paths->content."common/include-blank-page.php";
                     }
-                    break;
-            }
-            break;
-        case 'update':
-            switch ($input->urlSegment2) {
-                case 'completion':
-                    include $config->paths->content."actions/tasks/crud/update-completion.php";
-                    break;
-                case 'reschedule':
-                    include $config->paths->content."actions/tasks/reschedule-task.php";
                     break;
             }
             break;
