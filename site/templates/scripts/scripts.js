@@ -1205,6 +1205,16 @@ function ucfirst(str) {
 	function makeajaxclose(onclick) {
 		return '<div class="close"><a href="#" onclick="'+onclick+'"><i class="material-icons md-48 md-light"></i></a></div>';
 	}
+	
+	function disableEnterKey(e) {
+		var key;      
+		if(window.event) {
+			key = window.event.keyCode; //IE
+		} else {
+			key = e.which; //firefox      
+		}
+		return (key != 13);
+	}
 
 	function init_datepicker() {
 		$('.datepicker').each(function(index) {
