@@ -26,7 +26,6 @@
                 <tbody>
                     <?php foreach ($contacts as $contact) : ?>
                         <tr>
-
                             <td><a href="<?= $contact->generate_contacturl(); ?>"><?= $contact->contact; ?></a></td>
                             <td><a href="<?php $contact->generate_shiptourl();?>"><?= $contact->shiptoid; ?></a></td>
                             <td><?= $contact->generatephonedisplay(); ?></td>

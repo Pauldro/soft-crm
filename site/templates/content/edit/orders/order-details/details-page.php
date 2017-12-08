@@ -2,7 +2,7 @@
 	<div class="form-group"><?php include $config->paths->content.'edit/orders/order-details/order-details.php'; ?></div>
 	<div class="text-center form-group">
 		<?php $resultsurl = $config->pages->ajax.'load/products/item-search-results/order/?ordn='.$ordn.'&custID='.urlencode($order->custid).'&shipID='.urlencode($order->shiptoid); ?>
-		<button class="btn btn-primary" data-toggle="modal" data-target="#add-item-modal" data-addtype="order" data-resultsurl="<?= $resultsurl; ?>">
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#add-item-modal" data-addtype="order" data-resultsurl="<?= $resultsurl; ?>">
 			<span class="glyphicon glyphicon-plus"></span> Add Item
 		</button>
 	</div>
