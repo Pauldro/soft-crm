@@ -24,7 +24,32 @@
     		'orderfiles' => $config->pages->documentstorage,
     		'customer' => [
     			'page' => $config->pages->customer,
-    			'ci' => $config->pages->custinfo,
+    			'ci' => [
+                    'page' => $config->pages->custinfo,
+                    'load' => [
+        				'ci_customer' => "",
+        				'ci_buttons' => "",
+        				'ci_shiptos' => $config->pages->ajaxload."ci/ci-shiptos/",
+        				'ci_shiptoinfo' => $config->pages->ajaxload."ci/ci-shipto-info/",
+                        'ci_pricing' => $config->pages->ajaxload."ci/ci-pricing/",
+                        'ci_pricingform' => $config->pages->ajaxload."ci/ci-pricing-search/",
+        				'ci_shiptobuttons' => "",
+        				'ci_contacts' => $config->pages->ajaxload."ci/ci-contacts/",
+        				'ci_documents' => $config->pages->ajaxload."ci/ci-documents/",
+        				'ci_standingorders' => $config->pages->ajaxload."ci/ci-standing-orders/",
+        				'ci_credit' => $config->pages->ajaxload."ci/ci-credit/",
+        				'ci_openinvoices' => $config->pages->ajaxload."ci/ci-open-invoices/",
+                        'ci_orderdocuments' => $config->pages->ajaxload."ci/ci-documents/order/",
+        				'ci_paymenthistory' => $config->pages->ajaxload."ci/ci-payment-history/",
+        				'ci_quotes' => $config->pages->ajaxload."ci/ci-quotes/",
+                        'ci_salesorders' => $config->pages->ajaxload."ci/ci-sales-orders/",
+                        'ci_saleshistory' => $config->pages->ajaxload."ci/ci-sales-history/",
+                        'ci_custpo' => $config->pages->ajaxload."ci/ci-custpo/"
+                    ],
+                    'json' => [
+                        'ci_shiptolist' => $config->pages->ajaxjson."ci/ci-shipto-list/"
+                    ]
+                ],
     			'redir' => [
     				'ci_customer' => $config->pages->customer."redir/?action=ci-customer",
     				'ci_buttons' => $config->pages->customer."redir/?action=ci-buttons",
@@ -46,29 +71,44 @@
     			],
     			'load' => [
     				'loadindex' =>  $config->pages->ajaxload."customers/cust-index/",
-    				'ci_customer' => "",
-    				'ci_buttons' => "",
-    				'ci_shiptos' => $config->pages->ajaxload."ci/ci-shiptos/",
-    				'ci_shiptoinfo' => $config->pages->ajaxload."ci/ci-shipto-info/",
-                    'ci_pricing' => $config->pages->ajaxload."ci/ci-pricing/",
-                    'ci_pricingform' => $config->pages->ajaxload."ci/ci-pricing-search/",
-    				'ci_shiptobuttons' => "",
-    				'ci_contacts' => $config->pages->ajaxload."ci/ci-contacts/",
-    				'ci_documents' => $config->pages->ajaxload."ci/ci-documents/",
-    				'ci_standingorders' => $config->pages->ajaxload."ci/ci-standing-orders/",
-    				'ci_credit' => $config->pages->ajaxload."ci/ci-credit/",
-    				'ci_openinvoices' => $config->pages->ajaxload."ci/ci-open-invoices/",
-                    'ci_orderdocuments' => $config->pages->ajaxload."ci/ci-documents/order/",
-    				'ci_paymenthistory' => $config->pages->ajaxload."ci/ci-payment-history/",
-    				'ci_quotes' => $config->pages->ajaxload."ci/ci-quotes/",
-                    'ci_salesorders' => $config->pages->ajaxload."ci/ci-sales-orders/",
-                    'ci_saleshistory' => $config->pages->ajaxload."ci/ci-sales-history/",
-                    'ci_custpo' => $config->pages->ajaxload."ci/ci-custpo/"
     			]
     		],
     		'products' => [
     			'page' => $config->pages->products,
     			'iteminfo' => $config->pages->iteminfo,
+                'ii' => [
+                    'page' => $config->pages->iteminfo,
+                    'load' => [
+                        'ii_productresults' => $config->pages->ajaxload."ii/search-results/",
+            			'ii_select' => "", // NOT USED
+            			'ii_pricing' => $config->pages->ajaxload."ii/ii-pricing/",
+                        'ii_costing' => $config->pages->ajaxload."ii/ii-costing/",
+                        'ii_purchaseorder' => $config->pages->ajaxload."ii/ii-purchase-order/",
+            			'ii_quotes' => $config->pages->ajaxload."ii/ii-quotes/",
+            			'ii_purchasehistory' => $config->pages->ajaxload."ii/ii-purchase-history/",
+            			'ii_whereused' => $config->pages->ajaxload."ii/ii-where-used/",
+                        'ii_kitcomponents' => $config->pages->ajaxload."ii/ii-kit-components/",
+            			'ii_bom' => $config->pages->ajaxload."ii/ii-bom/",
+            			'ii_general' => $config->pages->ajaxload."ii/ii-general/",
+            			'ii_usage' => $config->pages->ajaxload."ii-usage/", //NOT USED part of ii_general
+            			'ii_notes' => $config->pages->ajaxload."ii-notes/", //NOT USED part of ii_general
+            			'ii_misc' => $config->pages->ajaxload."ii-misc/", //NOT USED part of ii_general
+            			'ii_activity' => $config->pages->ajaxload."ii/ii-activity/",
+            			'ii_activityform' => $config->pages->ajaxload."ii/ii-activity/form/",
+            			'ii_requirements' => $config->pages->ajaxload."ii/ii-requirements/",
+            			'ii_lotserial' => $config->pages->ajaxload."ii/ii-lot-serial/",
+            			'ii_salesorder' => $config->pages->ajaxload."ii/ii-sales-orders/",
+            			'ii_saleshistory' => $config->pages->ajaxload."ii/ii-sales-history/",
+            			'ii_saleshistoryform' => $config->pages->ajaxload."ii/ii-sales-history/form/", // NOT USED
+            			'ii_stock' => $config->pages->ajaxload."ii/ii-stock/",
+            			'ii_substitutes' => $config->pages->ajaxload."ii/ii-substitutes/",
+            			'ii_documents' => $config->pages->ajaxload."ii/ii-documents/",
+                        'ii_order_documents' => $config->pages->ajaxload."ii/ii-documents/order/"
+                    ],
+                    'json' => [
+                        'ii_moveitemdoc' => $config->pages->ajaxjson."ii/ii-move-document/",
+                    ]
+                ],
     			'redir' => [
     				'getitempricing' => $config->pages->products."redir/?action=get-item-price",
     				'ii_select' => $config->pages->products."redir/?action=ii-select",
@@ -106,8 +146,6 @@
     			'getorderdetails' => $config->pages->ajaxjson."order/details/",
     			'getquotehead' => $config->pages->ajaxjson."quote/quotehead/",
                 'getquotedetails' => $config->pages->ajaxjson."quote/details/",
-    			'ii_moveitemdoc' => $config->pages->ajaxjson."ii/ii-move-document/",
-    			'ci_shiptolist' => $config->pages->ajaxjson."ci/ci-shipto-list/",
                 'vendorshipfrom' => $config->pages->ajaxjson."vendor-shipfrom/",
                 'validateitemid' => $config->pages->ajaxjson."products/validate-itemid/",
                 'validateitems' => $config->pages->ajaxjson."products/validate-items/"
@@ -115,52 +153,40 @@
     		'load' => [
     			'productresults' => $config->pages->ajaxload."products/item-search-results/",
     			'editdetail' => $config->pages->ajaxload."edit-detail/", //DEPRECATED
-                'ii_productresults' => $config->pages->ajaxload."ii/search-results/",
-    			'ii_select' => "", // NOT USED
-    			'ii_pricing' => $config->pages->ajaxload."ii/ii-pricing/",
-                'ii_costing' => $config->pages->ajaxload."ii/ii-costing/",
-                'ii_purchaseorder' => $config->pages->ajaxload."ii/ii-purchase-order/",
-    			'ii_quotes' => $config->pages->ajaxload."ii/ii-quotes/",
-    			'ii_purchasehistory' => $config->pages->ajaxload."ii/ii-purchase-history/",
-    			'ii_whereused' => $config->pages->ajaxload."ii/ii-where-used/",
-                'ii_kitcomponents' => $config->pages->ajaxload."ii/ii-kit-components/",
-    			'ii_bom' => $config->pages->ajaxload."ii/ii-bom/",
-    			'ii_general' => $config->pages->ajaxload."ii/ii-general/",
-    			'ii_usage' => $config->pages->ajaxload."ii-usage/", //NOT USED part of ii_general
-    			'ii_notes' => $config->pages->ajaxload."ii-notes/", //NOT USED part of ii_general
-    			'ii_misc' => $config->pages->ajaxload."ii-misc/", //NOT USED part of ii_general
-    			'ii_activity' => $config->pages->ajaxload."ii/ii-activity/",
-    			'ii_activityform' => $config->pages->ajaxload."ii/ii-activity/form/",
-    			'ii_requirements' => $config->pages->ajaxload."ii/ii-requirements/",
-    			'ii_lotserial' => $config->pages->ajaxload."ii/ii-lot-serial/",
-    			'ii_salesorder' => $config->pages->ajaxload."ii/ii-sales-orders/",
-    			'ii_saleshistory' => $config->pages->ajaxload."ii/ii-sales-history/",
-    			'ii_saleshistoryform' => $config->pages->ajaxload."ii/ii-sales-history/form/", // NOT USED
-    			'ii_stock' => $config->pages->ajaxload."ii/ii-stock/",
-    			'ii_substitutes' => $config->pages->ajaxload."ii/ii-substitutes/",
-    			'ii_documents' => $config->pages->ajaxload."ii/ii-documents/",
-                'ii_order_documents' => $config->pages->ajaxload."ii/ii-documents/order/",
     		],
             'vendor' => [
                 'redir' => [
                     'vi_shipfrom' => $config->pages->vendor."redir/?action=vi-shipfrom",
-                    'vi_payment' => $config->pages->vendor."redir/?action=vi-payment",
-                    'vi_openinv' => $config->pages->vendor."redir/?action=vi-openinv",
-                    'vi_purchasehist' => $config->pages->vendor."redir/?action=vi-purchasehist"
+                    'vi_payment' => $config->pages->vendor."redir/?action=vi-payments",
+                    'vi_openinv' => $config->pages->vendor."redir/?action=vi-open-invoices",
+                    'vi_purchasehist' => $config->pages->vendor."redir/?action=vi-purchase-history",
+                    'vi_purchaseorder' => $config->pages->vendor."redir/?action=vi-purchase-orders",
+                    'vi_contact' => $config->pages->vendor."redir/?action=vi-contact",
+                    'vi_notes' => $config->pages->vendor."redir/?action=vi-notes",
+                    'vi_costing' => $config->pages->vendor."redir/?action=vi-costing",
+                    'vi_unreleased' => $config->pages->vendor."redir/?action=vi-unreleased-purchase-orders",
+                    'vi_uninvoiced' => $config->pages->vendor."redir/?action=vi-uninvoiced",
+                    'vi_24monthsummary' => $config->pages->vendor."redir/?action=vi-24monthsummary",
+                    'vi_docview' => $config->pages->vendor."redir/?action=vi-docview"
                 ],
                 'load' => [
                     'vi_shipfrom' => $config->pages->ajaxload."vi/vi-shipfrom/",
-                    'vi_payment' => $config->pages->ajaxload."vi/vi-payment/",
-                    'vi_openinv' => $config->pages->vajaxload."vi/vi-openinv/",
-                    'vi_purchasehist' => $config->pages->ajaxload."vi/vi-purchasehist/",
-                    'vi_purchasehist_form' => $config->pages->ajaxload."vi/vi-purchasehist/form/"
+                    'vi_payment' => $config->pages->ajaxload."vi/vi-payments/",
+                    'vi_openinv' => $config->pages->ajaxload."vi/vi-open-invoices/",
+                    'vi_purchasehist' => $config->pages->ajaxload."vi/vi-purchase-history/",
+                    'vi_purchasehist_form' => $config->pages->ajaxload."vi/vi-purchase-history/form/",
+                    'vi_purchaseorder' => $config->pages->ajaxload."vi/vi-purchase-orders/",
+                    'vi_contact' => $config->pages->ajaxload."vi/vi-contact/",
+                    'vi_notes' => $config->pages->ajaxload."vi/vi-notes/",
+                    'vi_costing' => $config->pages->ajaxload."vi/vi-costing/",
+                    'vi_costingform' => $config->pages->ajaxload."vi/vi-costing-search/",
+                    'vi_unreleased' => $config->pages->ajaxload."vi/vi-unreleased-purchase-orders/",
+                    'vi_uninvoiced' => $config->pages->ajaxload."vi/vi-uninvoiced/",
+                    'vi_24monthsummary' => $config->pages->ajaxload."vi/vi-24monthsummary/",
+                    'vi_docview' => $config->pages->ajaxload."vi/vi-docview/"
                 ],
                 'json' => [
-                    'vi_shipfromlist' => $config->pages->ajaxjson."vi/vi-shipfrom-list/",
-                    'vi_purchasehist' => $config->pages->ajaxload."vi/vi-purchasehist/"
-                ],
-                'json' => [
-                    'vi_shipfromlist' => $config->pages->ajaxjson."vi/vi-shipfrom-list"
+                    'vi_shipfromlist' => $config->pages->ajaxjson."vi/vi-shipfrom-list/"
                 ]
             ]
     	],
