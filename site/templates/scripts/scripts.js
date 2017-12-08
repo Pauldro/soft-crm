@@ -378,7 +378,7 @@ $(document).ready(function() {
 			switch (addtype) {
 				case 'cart':
 					$('#'+modal.attr('id')+ " .custID").val(custID);
-					title = "Add item to Cart";
+					title = "Add Item";
 					addnonstockURI.segment('cart');
 					addmultipleURI.segment('cart');
 					break;
