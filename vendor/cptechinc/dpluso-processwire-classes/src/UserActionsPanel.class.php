@@ -53,6 +53,7 @@
         
         function update_assignedtouserID($userID) {
             $this->assigneduserID = $userID;
+            $this->start_querylinks();
         }
         
 		function setup_completedtasks() {
@@ -251,7 +252,7 @@
                      $class = $this->generate_rowclass($action);
                      
                      $tb->tr("class=$class");
-                     $tb->td('', date('m/d/Y g:i A', strtotime($note->datecreated)));
+                     $tb->td('', date('m/d/Y g:i A', strtotime($action->datecreated)));
                      $tb->td('', ucfirst($action->generate_actionsubtypedescription()));
                      $tb->td('', $action->customerlink);
                      $tb->td('', $action->generate_regardingdescription());
@@ -306,7 +307,8 @@
                      $tb->td('', $task->customerlink);
                      $tb->td('', $task->generate_regardingdescription());
                      $tb->td('', $this->generate_viewactionlink($task));
-                     $tb->td('', $this->generate_completetasklink($task));
+                     $complete = ($task->is_completed()) ? '' : $this->generate_completetasklink($task);
+                     $tb->td('', $complete);
                  }
              $tb->closetablesection('tbody');
              return $form . $tb->close();

@@ -121,7 +121,8 @@
                         $tb->td('', $task->generate_actionsubtypedescription());
                         $tb->td('', $task->generate_regardingdescription());
                         $tb->td('', $this->generate_viewactionlink($task));
-                        $tb->td('', $this->generate_completetasklink($task));
+                        $complete = ($task->is_completed()) ? '' : $this->generate_completetasklink($task);
+                        $tb->td('', $complete);
                     }
                 $tb->closetablesection('tbody');
                 return $form . $tb->close();
