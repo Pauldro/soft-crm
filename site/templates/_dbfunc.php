@@ -1280,13 +1280,6 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		}
 	}
 
-	function get_customer_name_from_order($sessionID, $ordn) {
-		$sql = wire('database')->prepare("SELECT custname FROM ordrhed WHERE sessionid = :sessionID AND orderno = :ordn LIMIT 1");
-		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn);
-		$sql->execute($switching);
-		return $sql->fetchColumn();
-	}
-
 	function get_orderhead($sessionID, $ordn, $useclass = false, $debug) {
 		$sql = wire('database')->prepare("SELECT * FROM ordrhed WHERE sessionid = :sessionID AND orderno = :ordn AND type = 'O'");
 		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn); $withquotes = array(true, true);

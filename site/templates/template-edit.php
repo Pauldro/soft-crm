@@ -7,13 +7,14 @@
             $custID = get_custidfromorder(session_id(), $ordn);
             $editorderdisplay = new EditSalesOrderDisplay(session_id(), $page->fullURL, '#ajax-modal', $ordn);
         	$order = $editorderdisplay->get_order();
+            
             if (!$order) {
                 $page->title = "Order #" . $ordn . ' failed to load';
                 $page->body = '';
             } else {
                 $editorderdisplay->canedit = ($input->get->readonly) ? false : $order->can_edit();
                 $prefix = ($editorderdisplay->canedit) ? 'Editing' : 'Viewing';
-                $page->title = "$prefix Order #" . $ordn . ' for ' . get_customer_name_from_order(session_id(), $ordn);
+                $page->title = "$prefix Order #" . $ordn . ' for ' . get_customername($custID);
                 $config->scripts->append(hashtemplatefile('scripts/dplusnotes/order-notes.js'));
     			$config->scripts->append(hashtemplatefile('scripts/edit/card-validate.js'));
     			$config->scripts->append(hashtemplatefile('scripts/edit/edit-orders.js'));
