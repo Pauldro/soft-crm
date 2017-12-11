@@ -19,5 +19,4 @@
 	} else {
 		echo $page->bootstrap->createalert('warning', 'Information Not Available');
 	}
-	
 ?>

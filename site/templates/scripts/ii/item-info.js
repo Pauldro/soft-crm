@@ -42,9 +42,13 @@ $(function() {
 	$("body").on("submit", itemlookupform, function(e) {
 		e.preventDefault();
 		var itemID = $(this).find('.itemID').val();
+		var custID = $(itemlookupform + " .custID").val();
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
-		var href = URI($(this).attr('action')).addQuery('q', itemID).addQuery('modal', 'modal').normalizeQuery().toString();
+		var href = URI($(this).attr('action')).addQuery('q', itemID)
+											  .addQuery("custID", custID)
+											  .addQuery('modal', 'modal')
+											  .normalizeQuery().toString();
 		showajaxloading();
 		$(loadinto).loadin(href, function() {
 			hideajaxloading();
