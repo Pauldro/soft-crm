@@ -1,37 +1,57 @@
 <?php 
-    class FormMaker extends Contento {
-        use AttributeParser;
+    class FormMaker {
         private $formstring = '';
         private static $count = 0;
         private $openform;
+        public $bootstrap = false;
         
         public function __construct($attr = '', $openform = true) {
             self::$count++;
-            $this->formstring = $this->indent() . $openform ? $this->open('form', $attr) : '';
+            $this->bootstrap = new Contento();
+            $this->formstring = $this->indent() . $openform ? $this->bootstrap->open('form', $attr) : '';
             $this->openform = $openform;
         }
         
+        public function __call($name, $args){
+            if (in_array($name, $this->bootstrap->closeable)) {
+                if (!$args[1]) {
+                    $this->formstring .= $this->bootstrap->open($name, $args[0]); // OPEN ONLY
+                } else {
+                    $this->formstring .= $this->bootstrap->openandclose($name, $args[0], $args[1]); // CLOSE ONLY
+                }
+            } elseif (in_array($name, $this->bootstrap->emptytags)) {
+                $this->formstring .= $this->bootstrap->open($name, $args[0]);    
+            } else {
+                $this->error("This element $name is not defined to be called as a closing or open ended element");
+                return false;
+            }
+        }
+        
         public function input($attr = '') {
-            $this->formstring .= $this->indent() . parent::input($attr);
+            $this->formstring .= $this->indent() . $this->bootstrap->input($attr);
         }
         
         public function select($attr = '', array $keyvalues, $selectvalue = null) {
-            $this->formstring .= $this->indent() . parent::select($attr, $keyvalues, $selectvalue);
+            $this->formstring .= $this->indent() . $this->bootstrap->select($attr, $keyvalues, $selectvalue);
         }
         
         public function button($attr = '', $content) {
-            $this->formstring .= $this->indent() . parent::button($attr, $content);
+            $this->formstring .= $this->indent() . $this->bootstrap->button($attr, $content);
         }
         
         public function add($str) {
             $this->formstring .= $str;
         }
         
+        public function close($element) {
+            $this->formstring .= $this->bootstrap->close($element);
+        }
+        
         public function finish() {
             if (self::$count < 0) {
                 self::$count--;
                 if ($this->openform) {
-                    $this->formstring .= $this->close('form');
+                    $this->formstring .= $this->bootstrap->close('form');
                 }
             }
             return $this->formstring;
@@ -53,4 +73,10 @@
     		}
     		return $indent;
     	}
+        
+        protected function error($error, $level = E_USER_ERROR) {
+			$error = (strpos($error, 'DPLUSO [CONTENTO]: ') !== 0 ? 'DPLUSO [CONTENTO]: ' . $error : $error);
+			trigger_error($error, $level);
+			return;
+		}
     }

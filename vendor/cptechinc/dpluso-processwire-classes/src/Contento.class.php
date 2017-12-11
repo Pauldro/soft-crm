@@ -25,9 +25,26 @@
                 $this->opentag = $name;
                 return $this->open($name, $args[0]);    
             } else {
-                $this->error('This Element is not defined to be called as a closing or open ended element');
+                $this->error("This element $name is not defined to be called as a closing or open ended element");
                 return false;
             }
+        }
+        
+        public function __get($property) {
+            if (property_exists($this, $property) !== true) {
+               $this->error("This property ($property) does not exist");
+               return false;
+           }
+           
+           $method = "get_{$property}";
+           if (method_exists($this, $method)) {
+               return $this->$method();
+           } elseif (property_exists($this, $property)) {
+               return $this->$property;
+           } else {
+               $this->error("This property ($property) is not accessible");
+               return false;
+           }
         }
         
         public function open($element, $attributes) {
