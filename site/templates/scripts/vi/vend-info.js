@@ -76,6 +76,7 @@ function openinv() {
 	var vendorID = $(vendlookupform + " .vendorID").val();
 	var modal = config.modals.ajax;
 	var loadinto =  modal+" .modal-content";
+	console.log(config.urls.vendor.load.vi_openinv);
 	var href = URI(config.urls.vendor.load.vi_openinv).addQuery("vendorID", vendorID).addQuery('modal', 'modal').toString();
 	showajaxloading();
 	vi_openinv(vendorID, function() {

@@ -18,7 +18,8 @@
             'limit',
             'values',
             'into',
-            'set'
+            'set',
+            'is'
         );
         
         /**

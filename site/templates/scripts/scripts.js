@@ -921,6 +921,8 @@ $(document).ready(function() {
 			if (!options.formdata) {options.formdata = form.serialize();}
 			if (options.jsoncallback) {
 				$.post(options.action, options.formdata, function(json) {callback(json);});
+			} else if (options.html) {
+				$.post(options.action, options.formdata, function(html) {callback(html);});
 			} else {
 				$.post(options.action, options.formdata).done(callback());
 			}

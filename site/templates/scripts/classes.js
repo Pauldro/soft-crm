@@ -35,6 +35,14 @@ function dplusquotenotevalues(form, quotetf) {
     }
 }
 
+function PreviewColumn(colnumber, length, label, data, example) {
+	this.colnumber = colnumber;
+	this.length = length;
+	this.label = label;
+	this.data = data;
+	this.example = example;
+}
+
 function JsContento() {
     this.open = function(element, attr) {
         var attributes = this.parseattributes(attr);

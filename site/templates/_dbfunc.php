@@ -1589,6 +1589,21 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 			return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'insertedid' => wire('database')->lastInsertId());
 		}
 	}
+	
+	function does_tableformatterexist($userID, $formatter, $debug = false) {
+		$q = (new QueryBuilder())->table('tableformatter');
+		$q->field($q->expr('COUNT(*)'));
+		$q->where('user', $userID);
+		$q->where('formattertype', $formatter);
+		$sql = wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
 
 	function checkformatterifexists($user, $formatter, $debug) {
 		$sql = wire('database')->prepare("SELECT COUNT(*) FROM tableformatter WHERE user = :user AND formattertype = :formatter");
@@ -1600,7 +1615,22 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 			return $sql->fetchColumn();
 		}
 	}
-
+	
+	function get_maxtableformatterid($userID, $formatter, $debug = false) {
+		$q = (new QueryBuilder())->table('tableformatter');
+		$q->field($q->expr('MAX(id)'));
+		$q->where('user', $userID);
+		$q->where('formattertype', $formatter);
+		$sql = wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+	
 	function getmaxtableformatterid($user, $formatter, $debug) {
 		$sql = wire('database')->prepare("SELECT MAX(id) FROM tableformatter WHERE user = :user AND formattertype = :formatter");
 		$switching = array(':user' => $user, ':formatter' => $formatter); $withquotes = array(true, true);
@@ -1619,11 +1649,42 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
 			$sql->execute($switching);
-
 			return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'affectedrows' => $sql->rowCount() ? true : false);
 		}
 	}
-
+	
+	function update_formatter($userID, $formatter, $data, $debug = false) {
+		$q = (new QueryBuilder())->table('tableformatter');
+		$q->mode('update');
+		$q->set('data', $data);
+		$q->where('user', $userID);
+		$q->where('formattertype', $formatter);
+		$sql = wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return array('sql' => $q->generate_sqlquery($q->params), 'success' => $sql->rowCount() ? true : false, 'updated' => $sql->rowCount() ? true : false, 'querytype' => 'update');
+		}
+	}
+	
+	function create_formatter($userID, $formatter, $data, $debug = false) {
+		$q = (new QueryBuilder())->table('tableformatter');
+		$q->mode('insert');
+		$q->set('data', $data);
+		$q->set('user', $userID);
+		$q->set('formattertype', $formatter);
+		$sql = wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return array('sql' => $q->generate_sqlquery($q->params), 'success' => wire('database')->lastInsertId() > 0 ? true : false, 'id' => wire('database')->lastInsertId(), 'querytype' => 'create');
+		}
+	}
+	
 	/* =============================================================
 		USER CONFIGS FUNCTIONS
 	============================================================ */

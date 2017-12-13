@@ -28,7 +28,8 @@
 				$form->div('class=form-group', false);
 					$form->div('class=input-group custom-search-form', false);
 						$form->input("type=text|class=form-control not-round itemID|name=itemID|placeholder=Search ItemID, X-ref|value=$itemID");
-						$form->span('class=input-group-btn', $form->button('type=submit|class=btn btn-default not-round', $form->bootstrap->createicon('glyphicon glyphicon-search')));
+						$button = $form->bootstrap->button('type=submit|class=btn btn-default not-round', $form->bootstrap->createicon('glyphicon glyphicon-search'));
+						$form->span('class=input-group-btn', $button);
 					$form->close('div');
 				$form->close('div');
 				$form->input('type=hidden|class=prev-itemID|value='.getitembyrecno(getnextrecno($input->get->text('itemID'), "prev", false), false));
@@ -46,7 +47,7 @@
 	echo $page->bootstrap->open('div', 'class=row');
 		for ($i=2; $i<5; $i++) {
 			echo $page->bootstrap->open('div', 'class=col-sm-4 form-group');
-			$tb = new Table('class=table table-striped table-bordered table-condensed table-excel|id=');
+			$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
 			foreach ($table['header']['sections']["$i"] as $column) {
 				$tb->tr();
 				$class = $config->textjustify[$fieldsjson['data']['header'][$column['id']]['headingjustify']];

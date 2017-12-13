@@ -39,7 +39,7 @@
             $page->body = $config->paths->content."item-information/item-quotes.php";
             break;
 		 case 'ii-purchase-history': // $itemID provided by $input->get
-            $page->title = $itemID.'Purchase History Inquiry';
+            $page->title = $itemID.' Purchase History Inquiry';
             $page->body = $config->paths->content."item-information/item-purchase-history.php";
             break;
 		case 'ii-where-used': // $itemID provided by $input->get
@@ -81,12 +81,12 @@
             $page->body = $config->paths->content."item-information/item-sales-orders.php";
             break;
 		case 'ii-sales-history': // $itemID provided by $input->get
+            $custID = ($input->get->custID) ? $input->get->text('custID') : '';
 			if ($input->urlSegment(3) == 'form') {
-				if ($input->get->custID) { $custID = $input->get->text('custID'); } else { $custID = ''; }
 				$page->title = 'Search Item History';
 				$page->body = $config->paths->content."item-information/forms/item-history-form.php";
 			} else {
-				if ($input->get->custID) { $custID = $input->get->text('custID'); } else { $custID = ''; }
+                $tableformatter = $page->screenformatterfactory->generate_screenformatter('ii-sales-history');
 				$page->title = $itemID. ' Sales History Inquiry';
 				$page->body = $config->paths->content."item-information/item-history.php";
 			}

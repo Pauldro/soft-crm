@@ -100,8 +100,8 @@ $(function() {
 		$(formid).postform({formdata: false, jsoncallback: false}, function() { //form, overwriteformdata, returnjson, callback
 			$(modal).modal('hide');
 			$(loadinto).loadin(href, function() {
-				hideajaxloading();
-				wait(500, function() {
+				wait(2500, function() {
+					hideajaxloading();
 					$(modal).find('.modal-body').addClass('modal-results');
 					$(modal).resizemodal('lg').modal();
 					listener.listen();

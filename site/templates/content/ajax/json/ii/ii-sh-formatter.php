@@ -8,7 +8,7 @@
 
 	if ($input->requestMethod() == "POST") {
 		$maxrec = getmaxtableformatterid($user->loginid, 'ii-sales-history', false);
-		$postarray['cols'] = $input->post->int('cols');
+		$postarray['cols'] = 0;
 
 
 		$postarray['detail']['rows'] = $input->post->int('detail-rows');
@@ -22,6 +22,7 @@
 			$colnumber = $input->post->int($postcolumn.'-column');
 			$label = $input->post->text($postcolumn.'-label');
 			$dateformat = $beforedecimal = $afterdecimal = false;
+			
 			if ($formatjson['data']['detail'][$column]['type'] == 'D') {
 				$dateformat = $input->post->text($postcolumn.'-date-format');
 			} elseif ($formatjson['data']['detail'][$column]['type'] == 'N') {
@@ -29,7 +30,6 @@
 				$afterdecimal = $input->post->int($postcolumn.'-after-decimal');
 			}
 			$postarray['detail']['columns'][$column] = array('line' => $linenumber, 'column' => $colnumber, 'col-length' => $length, 'label' => $label, 'before-decimal' => $beforedecimal, 'after-decimal' => $afterdecimal, 'date-format' => $dateformat);
-
 		}
 
 		foreach ($lotserialcolumns as $column) {
@@ -46,7 +46,54 @@
 				$afterdecimal = $input->post->int($postcolumn.'-after-decimal');
 			}
 			$postarray['lotserial']['columns'][$column] = array('line' => $linenumber, 'column' => $colnumber, 'col-length' => $length, 'label' => $label, 'before-decimal' => $beforedecimal, 'after-decimal' => $afterdecimal, 'date-format' => $dateformat);
+		}
+		
+		$postarray['detail']['rows'] = 0;
+		foreach ($postarray['detail']['columns'] as $column) {
+			if ($column['line'] > $postarray['detail']['rows']) {
+				$postarray['detail']['rows'] = $column['line'];
+			}
+		}
+		
+		for ($i = 1; $i < ($postarray['detail']['rows'] + 1); $i++) {
+			$table['detail']['rows'][$i] = array('columns' => array());
+			foreach ($postarray['detail']['columns'] as $column) {
+				if ($column['line'] == $i) {
+					$table['detail']['rows'][$i]['columns'][$column['id']] = $column;
+				}
+			}
+		}
+		
+		foreach ($table['detail']['rows'] as $row) {
+			$columncount = 0;
+			foreach ($row['columns'] as $column) {
+				$columncount += $column['col-length'];
+			}
+			$postarray['cols'] = ($columncount > $postarray['cols']) ? $columncount : $postarray['cols'];
+		}
+		
+		$postarray['lotserial']['rows'] = 0;
+		foreach ($postarray['lotserial']['columns'] as $column) {
+			if ($column['line'] > $postarray['lotserial']['rows']) {
+				$postarray['lotserial']['rows'] = $column['line'];
+			}
+		}
+		
+		for ($i = 1; $i < ($postarray['lotserial']['rows'] + 1); $i++) {
+			$table['lotserial']['rows'][$i] = array('columns' => array());
+			foreach ($postarray['lotserial']['columns'] as $column) {
+				if ($column['line'] == $i) {
+					$table['lotserial']['rows'][$i]['columns'][$column['id']] = $column;
+				}
+			}
+		}
 
+		foreach ($table['lotserial']['rows'] as $row) {
+			$columncount = 0;
+			foreach ($row['columns'] as $column) {
+				$columncount += $column['col-length'];
+			}
+			$postarray['cols'] = ($columncount > $postarray['cols']) ? $columncount : $postarray['cols'];
 		}
 
 		if ($input->post->text('action') == 'add-formatter') {

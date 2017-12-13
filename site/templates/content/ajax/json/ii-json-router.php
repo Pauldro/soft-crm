@@ -21,7 +21,6 @@
 		case 'ii-outline-formatter':
 			include $config->paths->content . 'ajax/json/ii/ii-ol-formatter.php';
 			break;
-
 	}
 
 ?>

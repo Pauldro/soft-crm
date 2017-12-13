@@ -15,10 +15,8 @@
         
         public function __call($name, $args){
             if (in_array($name, $this->closeable)) {
-                if (isset($args[2])) {
-                    if ($args[2] === true) {
-                        return $this->open($name, $args[0]); // OPEN ONLY
-                    }
+                if (!$args[1]) {
+                    return $this->bootstrap->open($name, $args[0]); // OPEN ONLY
                 }
                 return $this->openandclose($name, $args[0], $args[1]); // CLOSE ONLY
             } elseif (in_array($name, $this->emptytags)) {

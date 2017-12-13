@@ -12,6 +12,7 @@
 		} else {
 			// include $config->paths->content."item-information/item-display.php";
 			$table = include $config->paths->content."item-information/screen-formatters/logic/item-outline.php"; 
+			echo json_encode($table);
 			include $config->paths->content."item-information/tables/item-outline-formatted.php"; 
 			include $config->paths->content."item-information/item-price-breaks.php";
 			include $config->paths->content."item-information/item-stock.php";

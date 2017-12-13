@@ -1,7 +1,8 @@
 {
-	"cols": 6,
+	"cols": 8,
 	"detail": {
 		"rows": 1,
+		"labelformat": "row",
 		"columns": {
 			"Invoice Number": {
 				"line": 1,

@@ -78,6 +78,11 @@
 	.fa-1-5x {font-size: 1.5em;}
 	.fa-15x {font-size: 15em;}
 	body.no-nav {margin-top: 0px;}
+	
+	.list-group-item-primary {
+		background-color: #2c3e50;
+		color: #ecf0f1;
+	}
 /*==============================================================
    PRINT STYLES
  =============================================================*/
