@@ -20,6 +20,8 @@
     			$config->scripts->append(hashtemplatefile('scripts/edit/edit-orders.js'));
     			$config->scripts->append(hashtemplatefile('scripts/edit/edit-pricing.js'));
     			$page->body = $config->paths->content."edit/orders/outline.php";
+                $itemlookup->set_customer($order->custid, $order->shiptoid);
+                $itemlookup->set_ordn($ordn);
             }
             break;
         case 'quote':
@@ -33,6 +35,8 @@
             $config->scripts->append(hashtemplatefile('scripts/dplusnotes/quote-notes.js'));
 			$config->scripts->append(hashtemplatefile('scripts/edit/edit-quotes.js'));
             $config->scripts->append(hashtemplatefile('scripts/edit/edit-pricing.js'));
+            $itemlookup->set_customer($quote->custid, $quote->shiptoid);
+            $itemlookup->set_qnbr($qnbr);
             break;
         case 'quote-to-order':
             $qnbr = $input->get->text('qnbr');
