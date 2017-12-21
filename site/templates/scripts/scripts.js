@@ -188,12 +188,28 @@ $(document).ready(function() {
 			
 			$(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
 				
-				$(ajaxloader.modal).resizemodal(ajaxloader.modalsize).modal();
+				
 				
 				if (button.hasClass('info-screen')) {
 					hideajaxloading();
 					$(ajaxloader.modal).find('.modal-body').addClass('modal-results');
 				}
+				$(ajaxloader.modal).resizemodal(ajaxloader.modalsize).modal();
+			});
+		});
+		
+		$("body").on("click", ".modal-load", function(e) {
+			e.preventDefault();
+			var button = $(this);
+			var ajaxloader = new ajaxloadedmodal(button);
+			
+			
+			ajaxloader.url = URI(ajaxloader.url).addQuery('modal', 'modal').normalizeQuery().toString();
+			
+			$(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
+				hideajaxloading();
+				$(ajaxloader.modal).find('.modal-body').addClass('modal-results');
+				$(ajaxloader.modal).resizemodal(ajaxloader.modalsize).modal();
 			});
 		});
 
@@ -477,11 +493,11 @@ $(document).ready(function() {
 			var input = $(this);
 			var thisform = input.parent('form');
 			var custID = thisform.find('input[name=custID]').val();
-			var shipID = thisform.find('input[name=shipID]').val();
+			//var shipID = thisform.find('input[name=shipID]').val();
 			var action = thisform.find('input[name=action]').val();
 			var href  = URI(thisform.attr('action')).addQuery('q', urlencode(input.val()))
 												   .addQuery('custID', urlencode(custID))
-												   .addQuery('shipID', urlencode(shipID))
+												   //.addQuery('shipID', urlencode(shipID))
 												   .addQuery('action', urlencode(action))
 												   .toString();
 			var loadinto = '#item-results';
@@ -830,6 +846,12 @@ $(document).ready(function() {
 /*==============================================================
  	AJAX FUNCTIONS
 =============================================================*/
+ 	function infofunctionnotavailable() {
+		var modal = $(config.modals.ajax);
+		modal.find('.modal-body').html("<h4>Function not available</h4>");
+		modal.resizemodal('lg').modal();
+	}
+	
 	function wait(time, callback) {
 		var timeoutID = window.setTimeout(callback, time);
 	}
@@ -1062,7 +1084,7 @@ $(document).ready(function() {
 	}
 
 	 function ii_kitcomponents(itemID, qty, callback) {
- 		var url = config.urls.products.redir.ii_kitcomponents+"&itemID="+urlencode(itemID)+"&qty="+urlencode(qty);
+ 		var url = config.urls.products.redir.ii_kit+"&itemID="+urlencode(itemID)+"&qty="+urlencode(qty);
  		$.get(url, function() { callback(); });
  	}
 	
