@@ -24,6 +24,23 @@
 		return $sql->fetch(PDO::FETCH_ASSOC);
 	}
 /* =============================================================
+	PERMISSION FUNCTIONS
+============================================================ */
+	function has_dpluspermission($loginID, $dplusfunction, $debug = false) {
+		$q = (new QueryBuilder())->table('funcperm');
+		$q->field($q->expr("IF(permission = 'Y',1,0)"));
+		$q->where('loginid', $loginID);
+		$q->where('function', $dplusfunction);
+		$sql = wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetch();
+		}
+	}
+/* =============================================================
 	CUSTOMER FUNCTIONS
 ============================================================ */
 	function can_accesscustomer($loginID, $restrictions, $custID, $debug) {
@@ -99,7 +116,7 @@
 		}
 	}
 
-	function count_shiptos($loginID, $restrictions, $custID, $debug) {
+	function count_shiptos($custID, $loginID, $restrictions, $debug = false) { // TODO use QueryBuilder
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
 			$sql = wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custperm WHERE custid = :custID AND shiptoid != '') t WHERE loginid = :loginID OR loginid = :shared ");
@@ -128,7 +145,7 @@
 		}
 	}
 
-	function get_customershiptos($custID, $loginID, $restrictions, $debug) {
+	function get_customershiptos($custID, $loginID, $restrictions, $debug = false) { // TODO use QueryBuilder
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM (SELECT * FROM custperm WHERE custid = :custID AND shiptoid != '') t WHERE loginid = :loginID OR loginid = :shared) GROUP BY custid, shiptoid");
@@ -143,11 +160,12 @@
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
 			$sql->execute($switching);
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'Customer');
+			return $sql->fetchAll();
 		}
 	}
 
-	function get_customercontacts($loginID, $restrictions, $custID, $debug) {
+	function get_customercontacts($loginID, $restrictions, $custID, $debug = false) {
 		$SHARED_ACCOUNTS = wire('config')->sharedaccounts;
 		if ($restrictions) {
 			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM (SELECT * FROM custperm WHERE custid = :custID) t WHERE loginid = :loginID OR loginid = :shared)");
@@ -182,22 +200,22 @@
 		if ($debug) { return returnsqlquery($sql->queryString, $switching, $withquotes); } else { if ($sql->fetchColumn() > 0){return true;} else {return false; } }
 	}
 
-	function get_customercontact($custID, $shipID, $contactID, $debug) {
+	function get_customercontact($custID, $shipID = '', $contactID = '', $debug = false) {
+		$q = (new QueryBuilder())->table('custindex');
+		$q->limit(1);
+		$q->where('custid', $custID);
+		$q->where('shiptoid', $shipID);
 		if (!empty($contactID)) {
-			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid = :shipID AND contact = :contactid LIMIT 1");
-			$switching = array(':custID' => $custID, ':shipID' => $shipID, ':contactid' => $contactID);
-			$withquotes = array(true, true, true);
-		} else {
-			$sql = wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid = :shipID LIMIT 1");
-			$switching = array(':custID' => $custID, ':shipID' => $shipID);
-			$withquotes = array(true, true);
+			$q->where('contact', $contactID);
 		}
-
+		$sql = wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
-			return $sql->fetch(PDO::FETCH_ASSOC);
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'Contact');
+			return $sql->fetch();
 		}
 	}
 
@@ -466,19 +484,21 @@
 		}
 	}
 
-	function get_customerordersorderby($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $orderby, $useclass, $debug) {
-		$limiting = returnlimitstatement($limit, $page);
-		$sql = wire('database')->prepare("SELECT ordrhed.*, CAST(odrsubtot AS DECIMAL(8,2)) AS subtotal FROM ordrhed WHERE sessionid = :sessionID AND custid = :custID AND type = 'O' ORDER BY $orderby $sortrule $limiting");
-		$switching = array(':sessionID' => $sessionID, ':custID' => $custID); $withquotes = array(true, true);
+	function get_customerordersorderby($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $orderby, $debug) {
+		$q = (new QueryBuilder())->table('ordrhed');
+		$q->where('sessionid', $sessionID);
+		$q->where('custid', $custID);
+		$q->where('type', 'O');
+		$q->limit($limit, $q->generate_offset($page, $limit));
+		$q->order($q->generate_orderby($orderby));
+		$sql = wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrder');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrder');
+			return $sql->fetchAll();
 		}
 	}
 
@@ -1057,6 +1077,21 @@ JOIN custpricehistory ON custpricehistory.sessionid = pricing.sessionid AND pric
 		} else {
 			$sql->execute();
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}
+	
+	function get_vendor($vendorID, $shipfromID = '', $debug = false) {
+		$q = (new QueryBuilder())->table('vendors');
+		$q->where('vendid', $vendorID);
+		$q->where('shipfrom', $shipfromID);
+		$sql = wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'Vendor');
+			return $sql->fetch();
 		}
 	}
 
