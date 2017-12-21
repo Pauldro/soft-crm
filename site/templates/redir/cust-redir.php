@@ -300,8 +300,7 @@
 		case 'ci-order-documents':
 			$ordn = $input->get->text('ordn');
 			$type = $input->get->text('type');
-			$typearray = array('open' => 'SO', 'hist' => 'AR', 'sales-order' => 'SO', 'sales-history' => 'AR');
-			$data = array('DBNAME' => $config->dbName, 'DOCVIEW' => false, 'FLD1CD' => $typearray[$type], 'FLD1DATA' => $ordn);
+			$data = array('DBNAME' => $config->dbName, 'DOCVIEW' => false, 'FLD1CD' => $config->documentstoragetypes[$type], 'FLD1DATA' => $ordn);
 			$session->loc = $config->pages->index;
 			break;
 		case 'ci-standing-orders':
