@@ -1,6 +1,12 @@
 <?php
 	$docfile = $config->jsonfilepath.session_id()."-docview.json";
 	//$docfile = $config->jsonfilepath."iiprc-iiprice.json";
+	if ($input->get->returnpage) {
+		$returnurl = urldecode($input->get->text('returnpage'));
+		$icon = $page->bootstrap->createicon('fa fa-arrow-circle-left');
+		$link = $page->bootstrap->openandclose('a', "href=$returnurl|class=h3 modal-load info-screen|data-modal=#ajax-modal|modal-size=xl", "$icon Go Back");
+		echo $page->bootstrap->openandclose('div', 'class=form-group', $link);
+	}
 	
 	if ($config->ajax) {
 		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
