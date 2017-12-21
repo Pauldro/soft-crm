@@ -1,36 +1,17 @@
 <?php
-	abstract class TableScreenFormatter {
-		protected $sessionID;
-		protected $userID;
-		protected $debug = false;
-        protected $tabletype = 'normal'; // grid or normal
-		protected $type = ''; 
-		protected $title = '';
-		protected $datafilename = ''; 
-		protected $fullfilepath = false;
-		protected $testprefix = ''; 
-		protected $json = false; // WILL BE JSON DECODED ARRAY
+	abstract class TableScreenFormatter extends TableScreenMaker {
 		protected $formatterfieldsfile = ''; 
 		protected $formatter = false; // WILL BE JSON DECODED ARRAY
-		protected $fields = false; // WILL BE JSON DECODED ARRAY
 		protected $tableblueprint = false; // WILL BE ARRAY
-		protected $datasections = array();
-		protected $jsfile; //
-		
-		public static $filedir = false;
-		public static $testfiledir = false;
-		public static $fieldfiledir = false;
 		
 		/* =============================================================
            CONSTRUCTOR AND SETTER FUNCTIONS
        ============================================================ */
 		public function __construct($sessionID) {
-			$this->sessionID = $sessionID;
-			$this->userID = wire('user')->loginid;
+			parent::__construct($sessionID);
 			$this->load_fields();
 			$this->load_formatter();
 			$this->generate_tableblueprint();
-			$this->load_filepath();
 		}
 		
 		public function set_debug($debug) {
@@ -45,26 +26,6 @@
 		/* =============================================================
           GETTER FUNCTIONS
        ============================================================ */
-		public function __get($property) {
-			if (property_exists($this, $property) !== true) {
-				$this->error("This property ($property) does not exist");
-				return false;
-			}
-			$method = "get_{$property}";
-			if (method_exists($this, $method)) {
-				return $this->$method();
-			} else {
-				return $this->$property;
-			}
-		}
-		
-		public function get_fields() {
-			if (!$this->fields) {
-                $this->load_fields();
-            }
-            return $this->fields;
-		}
-		
 		public function get_formatter() {
 			if (!$this->formatter) {
                 $this->load_formatter();
@@ -75,27 +36,15 @@
 		/* =============================================================
           PUBLIC FUNCTIONS
        	============================================================ */
-			public function load_filepath() {
-				$this->fullfilepath = ($this->debug) ? self::$testfiledir.$this->datafilename.".json" : self::$filedir.$this->sessionID."-".$this->datafilename.".json";
-			}
-			
-			public function process_json() {
-				$this->load_filepath();
-				$json = json_decode(file_get_contents($this->fullfilepath), true); 
-				$this->json = (!empty($json)) ? $json : array('error' => true, 'errormsg' => "The $this->title JSON contains errors. JSON ERROR: ".json_last_error());
-			}
-	        
-	        public function get_tableblueprint() {
-	            if (!$this->tableblueprint) {
-	                $this->generate_tableblueprint();
-	            }
-	            return $this->tableblueprint;
-	        }
-			
 			public function generate_formatterfrominput(WireInput $input) {
 				$this->formatter = false;
 				$postarray = $table = array('cols' => 0);
 				$tablesections = array_keys($this->fields['data']);
+				
+				if ($input->post->user) {
+					$userID = $input->post->text('user');
+					$this->set_userid($userID);
+				}
 				
 				foreach ($tablesections as $tablesection) {
 					$postarray[$tablesection] = array('rows' => 0, 'columns' => array());
@@ -155,10 +104,6 @@
 				$this->generate_tableblueprint();
 			}
 			
-			public function change_userID($userID) {
-				$this->userID = $userID;
-			}
-			
 			public function save($debug = false) {
 				$userID = wire('user')->loginid;
 				$userpermission = wire('pages')->get('/config/')->allow_userscreenformatter;
@@ -175,35 +120,37 @@
 				$response = $this->save();
 				
 				if ($response['success']) {
+					$msg = $this->userID == wire('user')->loginid ? "Your table ($this->type) configuration has been saved" : "The configuration for $this->userID has been saved";
 					$json = array (
 						'response' => array (
 							'error' => false,
 							'notifytype' => 'success',
 							'action' => $response['querytype'],
-							'message' => "Your table ($this->type) configuration has been saved",
+							'message' => $msg,
 							'icon' => 'glyphicon glyphicon-floppy-disk',
 						)
 					);
 				} else {
+					$msg = $this->userID == wire('user')->loginid ? "Your configuration ($this->type) was not able to be saved, you may have not made any discernable changes." : "The configuration for $this->userID was not able to be saved, you may have not made any discernable changes.";
 					$json = array (
 						'response' => array (
 							'error' => true,
 							'notifytype' => 'danger',
 							'action' => $response['querytype'],
-							'message' => "Your configuration ($this->type) was not able to be saved, you may have not made any discernable changes.",
+							'message' => $msg,
 							'icon' => 'glyphicon glyphicon-warning-sign',
 						)
 					);
 				}
 				return $json;
 			}
-		
+			
 		/* =============================================================
           INTERNAL FUNCTIONS
        	============================================================ */
-		protected function load_fields() {
-			$this->fields = json_decode(file_get_contents(self::$fieldfiledir."$this->formatterfieldsfile.json"), true);
-		}
+ 	   protected function load_fields() {
+ 		   $this->fields = json_decode(file_get_contents(self::$fieldfiledir."$this->formatterfieldsfile.json"), true);
+ 	   }
 	   
 		protected function load_formatter() {
 			if ($this->does_userhaveformatter()) {
@@ -224,11 +171,12 @@
 			
             foreach ($tablesections as $section) {
                 $columns = array_keys($this->formatter[$section]['columns']);
+				
                 $table[$section] = array(
 					'maxrows' => $this->formatter[$section]['rows'], 
 					'rows' => array()
 				);
-                
+            
                 for ($i = 1; $i < $this->formatter[$section]['rows'] + 1; $i++) {
             		$table[$section]['rows'][$i] = array('columns' => array());
             		foreach($columns as $column) {
@@ -252,36 +200,16 @@
 		/* =============================================================
 			DATABASE FUNCTIONS
 		============================================================ */
-			public function has_savedformatter() {
-				return does_tableformatterexist($this->userID, $this->type);
-			}
-			
-			protected function update($debug = false) {
-				return update_formatter($this->userID, $this->type, json_encode($this->formatter), $debug);
-			}
-			
-			protected function create($debug = false) {
-				return create_formatter($this->userID, $this->type, json_encode($this->formatter), $debug);
-			}
-			
-		/* =============================================================
-			CLASS FUNCTIONS
-		============================================================ */
-		protected function error($error, $level = E_USER_ERROR) {
-			$error = (strpos($error, 'DPLUSO[SCREEN-FORMATTER]: ') !== 0 ? 'DPLUSO[SCREEN-FORMATTER]: ' . $error : $error);
-			trigger_error($error, $level);
-			return;
+		public function has_savedformatter() {
+			return does_tableformatterexist($this->userID, $this->type);
 		}
 		
-		public static function set_filedirectory($dir) {
-			self::$filedir = $dir;
+		protected function update($debug = false) {
+			return update_formatter($this->userID, $this->type, json_encode($this->formatter), $debug);
 		}
 		
-		public static function set_testfiledirectory($dir) {
-			self::$testfiledir = $dir;
+		protected function create($debug = false) {
+			return create_formatter($this->userID, $this->type, json_encode($this->formatter), $debug);
 		}
-		
-		public static function set_fieldfiledirectory($dir) {
-			self::$fieldfiledir = $dir;
-		}
+			
 }
