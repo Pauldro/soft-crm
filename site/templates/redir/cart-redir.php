@@ -179,7 +179,7 @@
 			break;
         case 'create-sales-order':
 			$data = array('DBNAME' => $config->dbName, 'CREATESO' => false);
-           	//$session->loc = $config->pages->orders . "redir/?action=edit-new-order";
+           	$session->loc = $config->pages->orders . "redir/?action=edit-new-order";
             break;
 		case 'create-quote':
 			$data = array('DBNAME' => $config->dbName, 'CREATEQT' => false);

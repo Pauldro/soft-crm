@@ -333,10 +333,8 @@
 				} else {
 					$quotedetail['ordrqty'] = '0';
 				}
-
 				$session->sql = edit_quoteline(session_id(), $qnbr, $quotedetail, false);
 			}
-
 			$session->custID = $custID = get_custidfromquote(session_id(), $qnbr, false);
 			$data = array('DBNAME' => $config->dbName, 'QUOTETOORDER' => false, 'QUOTENO' => $qnbr, 'LINENO' => 'ALL');
 			$session->loc = $config->pages->orders."redir/?action=edit-new-order";
