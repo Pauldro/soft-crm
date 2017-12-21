@@ -39,7 +39,7 @@
 			$custID = $input->get->text('custID');
 			$page->title = get_customername($custID) . ' Open Invoice Inquiry';
             $tableformatter = $page->screenformatterfactory->generate_screenformatter('ci-open-invoices');
-			$page->body = $config->paths->content."cust-information/ci-open-invoices.php";
+			$page->body = $config->paths->content."cust-information/ci-formatted-screen.php";
 			break;
 		case 'ci-standing-orders':
 			$custID = $input->get->text('custID');
@@ -50,7 +50,7 @@
 			$custID = $input->get->text('custID');
 			$page->title = get_customername($custID) . ' Payment History Inquiry';
             $tableformatter = $page->screenformatterfactory->generate_screenformatter('ci-payment-history');
-			$page->body = $config->paths->content."cust-information/ci-payment-history.php";
+			$page->body = $config->paths->content."cust-information/ci-formatted-screen.php";
 			break;
 		case 'ci-documents':
 			$custID = $input->get->text('custID');
@@ -68,7 +68,7 @@
 			$custID = $input->get->text('custID');
 			$page->title = get_customername($custID) . ' Quote Inquiry';
             $tableformatter = $page->screenformatterfactory->generate_screenformatter('ci-quotes');
-			$page->body = $config->paths->content."cust-information/ci-quotes.php";
+			$page->body = $config->paths->content."cust-information/ci-formatted-screen.php";
 			break;
 		case 'ci-contacts':
 			$custID = $input->get->text('custID');
@@ -94,7 +94,7 @@
 			$custID = $input->get->text('custID');
 			$page->title = get_customername($custID) . ' Sales Order Inquiry';
             $tableformatter = $page->screenformatterfactory->generate_screenformatter('ci-sales-orders');
-			$page->body = $config->paths->content."cust-information/ci-sales-orders.php";
+			$page->body = $config->paths->content."cust-information/ci-formatted-screen.php";
 			break;
         case 'ci-sales-history':
 			$custID = $input->get->text('custID');
@@ -105,7 +105,7 @@
             } else {
                 $page->title = get_customername($custID) . ' Sales History Inquiry';
                 $tableformatter = $page->screenformatterfactory->generate_screenformatter('ci-sales-history');
-    			$page->body = $config->paths->content."cust-information/ci-sales-history.php";
+    			$page->body = $config->paths->content."cust-information/ci-formatted-screen.php";
             }
 			break;
         case 'ci-custpo':

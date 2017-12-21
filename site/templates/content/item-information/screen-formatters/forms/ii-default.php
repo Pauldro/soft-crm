@@ -1,12 +1,19 @@
 <?php
 	$datetypes = array('m/d/y' => 'MM/DD/YY', 'm/d/Y' => 'MM/DD/YYYY', 'm/d' => 'MM/DD', 'm/Y' => 'MM/YYYY')
 ?>
+<ol class="breadcrumb">
+	<li><a href="<?= $page->parent->parent->url; ?>"><?= $page->parent->parent->title; ?></a></li>
+	<li><a href="<?= $page->parent->url; ?>"><?= $page->parent->title; ?></a></li>
+	<li class="active"><?= $page->title; ?></li>
+</ol>
+
 <div class="formatter-response">
 	<div class="message"></div>
 </div>
 
-<form action="<?= $page->fullURL; ?>" method="POST" class="screen-formatter-form1">
+<form action="<?= $page->fullURL; ?>" method="POST" class="screen-formatter-form" id="screen-formatter-form">
     <input type="hidden" name="action" value="save-formatter">
+	<input type="hidden" name="user" value="<?= $user->loginid; ?>">
 	<div class="panel panel-default">
 		<div class="panel-heading"><h3 class="panel-title"><?php echo $page->title; ?></h3> </div>
 		<br>
@@ -33,6 +40,12 @@
 			</div>
 		</div>
 	</div>
-	<button type="button" class="btn btn-info" onclick="preview_tableformatter('.screen-formatter-form')"><i class="fa fa-table" aria-hidden="true"></i> Preview Table</button>
-	<button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> Save Configuration</button>
+	<button type="button" class="btn btn-info" onclick="preview_tableformatter()"><i class="fa fa-table" aria-hidden="true"></i> Preview Table</button>
+	<?php if ($pages->get('/config/')->allow_userscreenformatter) : ?>
+		<button type="submit" class="btn btn-success"><i class="glyphicon glyphicon-floppy-disk"></i> Save Configuration</button>
+	<?php endif; ?>
+
+	<?php if ($users->get("name=".$user->loginid)->hasPermission('setup-screen-formatter')) : ?>
+		<button type="button" class="btn btn-emerald" onclick="save_tableformatterfor('default')"><i class="glyphicon glyphicon-floppy-disk"></i> Save as Default</button>
+	<?php endif; ?>
 </form>

@@ -1,5 +1,5 @@
 <?php 
-	$tableformatter = $page->screenformatterfactory->generate_screenformatter('ii-sales-history');
+	$tableformatter = $page->screenformatterfactory->generate_screenformatter('ii-item-page');
 	
 	if ($input->requestMethod() == "POST") {
 		$tableformatter->generate_formatterfrominput($input);
@@ -7,7 +7,7 @@
 		
 		switch ($action) {
 			case 'preview':
-				$page->body = $config->paths->content."item-information/ii-sales-history.php";
+				$page->body = $config->paths->content."item-information/ii-item-page.php";
 				
 				if ($config->ajax) {
 					include $page->body;
@@ -16,13 +16,13 @@
 				}
 				break;
 			case 'save-formatter':
-				$maxid = get_maxtableformatterid($user->loginid, 'ii-sales-history');
+				$maxid = get_maxtableformatterid($user->loginid, 'ii-item-page');
 				$page->body = $tableformatter->save_andrespond();
 				include $config->paths->content.'common/include-json-page.php';
 				break;
 		}
 	} else {
-		$page->body = $config->paths->content."item-information/screen-formatters/forms/ii-default.php";
+		$page->body = $config->paths->content."item-information/screen-formatters/forms/ii-item-page.php";
 		$config->scripts->append(hashtemplatefile('scripts/table-formatter.js'));
 		include $config->paths->content.'common/include-page.php';
 	}

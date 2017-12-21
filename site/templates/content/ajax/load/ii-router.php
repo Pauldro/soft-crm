@@ -35,17 +35,17 @@
         case 'ii-purchase-orders': // $itemID provided by $input->get
             $page->title = $itemID. ' Purchase Order Inquiry';
             $tableformatter = $page->screenformatterfactory->generate_screenformatter('ii-purchase-orders');
-            $page->body = $config->paths->content."item-information/ii-purchase-orders.php";
+            $page->body = $config->paths->content."item-information/ii-formatted-screen.php";
             break;
 		case 'ii-quotes': // $itemID provided by $input->get
             $page->title = 'Viewing ' .$itemID . ' Quotes';
             $tableformatter = $page->screenformatterfactory->generate_screenformatter('ii-quotes');
-            $page->body = $config->paths->content."item-information/ii-quotes.php";
+            $page->body = $config->paths->content."item-information/ii-formatted-screen.php";
             break;
 		 case 'ii-purchase-history': // $itemID provided by $input->get
             $page->title = $itemID.' Purchase History Inquiry';
             $tableformatter = $page->screenformatterfactory->generate_screenformatter('ii-purchase-history');
-            $page->body = $config->paths->content."item-information/ii-purchase-history.php";
+            $page->body = $config->paths->content."item-information/ii-formatted-screen.php";
             break;
 		case 'ii-where-used': // $itemID provided by $input->get
             $page->title = $itemID.' Where Used Inquiry';
@@ -88,7 +88,7 @@
 		case 'ii-sales-orders': 
             $page->title = $itemID . ' Sales Order Inquiry';
             $tableformatter = $page->screenformatterfactory->generate_screenformatter('ii-sales-orders');
-            $page->body = $config->paths->content."item-information/ii-sales-orders.php";
+            $page->body = $config->paths->content."item-information/ii-formatted-screen.php";
             break;
 		case 'ii-sales-history': // $itemID provided by $input->get
             $custID = ($input->get->custID) ? $input->get->text('custID') : '';
@@ -98,7 +98,7 @@
 			} else {
                 $tableformatter = $page->screenformatterfactory->generate_screenformatter('ii-sales-history');
 				$page->title = $itemID. ' Sales History Inquiry';
-				$page->body = $config->paths->content."item-information/ii-sales-history.php";
+				$page->body = $config->paths->content."item-information/ii-formatted-screen.php";
 			}
 			break;
 		case 'ii-stock': // $itemID provided by $input->get

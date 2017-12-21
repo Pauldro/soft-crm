@@ -5,13 +5,13 @@
             $vendorID = $input->get->text('vendorID');
             $page->title = get_vendorname($vendorID) . ' Open Invoices';
             $tableformatter = $page->screenformatterfactory->generate_screenformatter('vi-open-invoices');
-            $page->body = $config->paths->content."vend-information/vi-open-invoices.php";
+            $page->body = $config->paths->content."vend-information/vi-formatted-screen.php";
             break;
         case 'vi-payments':
             $vendorID = $input->get->text('vendorID');
             $page->title = get_vendorname($vendorID) . ' Payment';
             $tableformatter = $page->screenformatterfactory->generate_screenformatter('vi-payment-history');
-            $page->body = $config->paths->content."vend-information/vi-payments-history.php";
+            $page->body = $config->paths->content."vend-information/vi-formatted-screen.php";
             break;
         case 'vi-shipfrom':
             $vendorID = $input->get->text('vendorID');
@@ -27,14 +27,14 @@
 			} else {
                 $page->title = get_vendorname($vendorID) . ' Purchase History';
                 $tableformatter = $page->screenformatterfactory->generate_screenformatter('vi-purchase-history');
-                $page->body = $config->paths->content."vend-information/vi-purchase-history.php";
+                $page->body = $config->paths->content."vend-information/vi-formatted-screen.php";
 			}
             break;
         case 'vi-purchase-orders':
             $vendorID = $input->get->text('vendorID');
             $page->title = get_vendorname($vendorID) . ' Purchase Orders';
             $tableformatter = $page->screenformatterfactory->generate_screenformatter('vi-purchase-orders');
-            $page->body = $config->paths->content."vend-information/vi-purchase-orders.php";
+            $page->body = $config->paths->content."vend-information/vi-formatted-screen.php";
             break;
         case 'vi-contact':
             $vendorID = $input->get->text('vendorID');
@@ -73,7 +73,7 @@
             $vendorID = $input->get->text('vendorID');
             $page->title = get_vendorname($vendorID) . ' Unreleased Purchase Orders';
             $tableformatter = $page->screenformatterfactory->generate_screenformatter('vi-unreleased-purchase-orders');
-            $page->body = $config->paths->content."vend-information/vi-unreleased-purchase-orders.php";
+            $page->body = $config->paths->content."vend-information/vi-formatted-screen.php";
             break;
         case 'vi-uninvoiced':
             $vendorID = $input->get->text('vendorID');
@@ -112,8 +112,3 @@
 		$config->scripts->append(hashtemplatefile('scripts/vi/vend-info.js'));
 		include $config->paths->content."common/include-blank-page.php";
 	}
-
-
-
-
- ?>
