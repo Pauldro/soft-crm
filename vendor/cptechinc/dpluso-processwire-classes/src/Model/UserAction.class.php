@@ -1,5 +1,4 @@
 <?php
-
 	class UserAction {
 		public $id;
 		public $datecreated;
@@ -243,16 +242,8 @@
 		
 		/* =============================================================
 			OTHER CONSTRUCTOR FUNCTIONS 
+            Inherits some from CreateFromObjectArrayTraits
 		============================================================ */
-		public static function create_fromarray(array $array) {
-			$myClass = get_class();
-			$object  = new $myClass(); 
-
-			foreach ($array as $key => $val) {
-				$object->$key = $val;
-			}
-			return $object;
-		}
 		
 		
 		/* =============================================================

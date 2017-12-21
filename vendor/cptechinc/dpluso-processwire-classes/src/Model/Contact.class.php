@@ -1,5 +1,7 @@
 <?php 
     class Contact {
+        use CreateFromObjectArrayTraits;
+        
         public $recno;
 		public $date;
 		public $time;
@@ -23,22 +25,40 @@
 		public $timesold;
 		public $lastsaledate;
 		public $email;
-
-        public $hasshipto = false;
-		public $hasphoneextension = false;
+        public $fieldaliases = array(
+            'custID' => 'custid',
+            'shipID' => 'shiptoid',
+        );
 
         public function __construct() {
-            if ($this->shiptoid != '') { $this->hasshipto = true; }
-			if ($this->cphext != '') { $this->hasphoneextension = true; }
-
+            
+        }
+        
+        public function __get($property) {
+            $method = "get_{$property}";
+            if (method_exists($this, $method)) {
+                return $this->$method();
+            } elseif (property_exists($this, $property)) {
+                return $this->$property;
+            } elseif (array_key_exists($property, $this->fieldaliases)) {
+                $realproperty = $this->fieldaliases[$property];
+                return $this->$realproperty;
+            } else {
+                $this->error("This property ($property) does not exist");
+                return false;
+            }
+        }
+        
+        public function get_customername() {
+            return (!empty($this->name)) ? $this->name : $this->custid;
         }
         
         /**
          * Returns if Contact has a shiptoid
          * @return boolean [description]
          */
-        protected function has_shipto() {
-            return ($this->shiptoid != '') ? true : false;
+        public function has_shipto() {
+            return (!empty($this->shiptoid));
         }
         
         /**
@@ -74,7 +94,7 @@
         }
 
 		function generateciloadurl() {
-			 if ($this->hasshipto) {
+			 if ($this->has_shipto()) {
                 return wire('config')->pages->customer."redir/?action=ci-customer&custID=".urlencode($this->custid)."&shipID=".urlencode($this->shiptoid);
             } else {
                 return wire('config')->pages->customer."redir/?action=ci-customer&custID=".urlencode($this->custid);
@@ -109,7 +129,7 @@
         }
 
 		public function generatephonedisplay() {
-			if ($this->hasphoneextension) {
+			if ($this->has_extension()) {
 				return $this->cphone . ' &nbsp; ' . $this->cphext;
 			} else {
 				return $this->cphone;
@@ -131,13 +151,26 @@
 					return "tel:".$this->cphone;
 					break;
 			}
-
 		}
 
-		function generateaddress() {
+		public function generateaddress() {
 			return $this->addr1 . ' ' . $this->addr2. ' ' . $this->ccity . ', ' . $this->cst . ' ' . $this->czip;
 		}
-
+        
+        /* =============================================================
+			OTHER CONSTRUCTOR FUNCTIONS 
+            Inherits some from CreateFromObjectArrayTraits
+		============================================================ */
+        
+        public static function load($custID, $shiptoID = '', $contactID = '') {
+            return get_customercontact($custID, $shiptoID, $contactID);
+        } 
+        
+        protected function error($error, $level = E_USER_ERROR) {
+			$error = (strpos($error, 'DPLUSO [CONTACTS]: ') !== 0 ? 'DPLUSO [CONTACTS]: ' . $error : $error);
+			trigger_error($error, $level);
+			return;
+		}
     }
 
 

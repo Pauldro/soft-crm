@@ -6,7 +6,11 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    '3a4188d2a2502199518e49fbee8686ef' => $baseDir . '/src/Contact.class.php',
+    '0db1bf76fb4af1e86d7c48ac93a7e789' => $baseDir . '/src/CreateFromObjectArray.trait.php',
+    '69ed03ba55021f05bdee38ec8cd64ccb' => $baseDir . '/src/AttributeParser.trait.php',
+    '7b7bc955fba3a7e831daa452678417b2' => $baseDir . '/src/Model/Vendor.class.php',
+    '16549aec784a66a31e2f46525b4e1d36' => $baseDir . '/src/Model/Contact.class.php',
+    '34090432ba33ef4a6717b80199aa69f2' => $baseDir . '/src/Model/Customer.class.php',
     'bd8bf74d70613675ab92685140191001' => $baseDir . '/src/DplusDateTime.class.php',
     'fcb8bf629f10208cb0cd7ed34611b338' => $baseDir . '/src/Model/UserAction.class.php',
     '99cdb7b00d1b32397a34259baa6470e4' => $baseDir . '/src/UserActionDisplay.class.php',
@@ -17,7 +21,6 @@ return array(
     '007ea2e0502804b422adfc565cfae4ff' => $baseDir . '/src/UserActionsPanelSalesOrder.class.php',
     '72669303e07f3a90b0de10980347a33f' => $baseDir . '/src/UserActionsPanelQuote.class.php',
     'b47bb3ae2f4ecae3848e4fd9238d9d31' => $baseDir . '/src/UserActionsPanelFactory.class.php',
-    '69ed03ba55021f05bdee38ec8cd64ccb' => $baseDir . '/src/AttributeParser.trait.php',
     'eb8d03c53cdb72c147e09f1b0f0a4664' => $baseDir . '/src/Contento.class.php',
     '844e4b9a6c755a6268a9eee4231dfbc0' => $baseDir . '/src/FormMaker.class.php',
     'aa379ad6ccdcfad1d4e2e16b532e1ce1' => $baseDir . '/src/Table.class.php',
@@ -57,4 +60,5 @@ return array(
     'b390a1d19d06d3b904a199423f7333d5' => $baseDir . '/src/QueryBuilder.php',
     '0fc8ec2fafa063f84b33c82ab1d68a25' => $baseDir . '/src/Report.class.php',
     '69b228a040ed5fb7f87edbe646451aee' => $baseDir . '/src/UserActionsReport.class.php',
+    'fe9c33ba53cea7f108c2733e70ba57fd' => $baseDir . '/src/ItemLookupModal.class.php',
 );

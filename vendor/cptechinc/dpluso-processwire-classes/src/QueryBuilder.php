@@ -121,11 +121,11 @@
        }
         
         /** 
-         * Retunrs the page offset by multiplying $page and $limit subtracted by $limit
+         * Returns the page offset by multiplying $page and $limit subtracted by $limit
          * @param int $page page number
          * @param int $limit number of records per page
          */
-        protected function generate_offset($page, $limit) {
+        public function generate_offset($page, $limit) {
             return $page > 1 ? ($page * $limit) - $limit : 0;
         }
         
@@ -135,7 +135,7 @@
          * @param  string $orderby e.g. columnname-ASC
          * @return string          Blank or columnname ASC
          */
-        protected function generate_orderby($orderby) {
+        public function generate_orderby($orderby) {
             if (!empty($orderby)) {
                 return str_replace('-', ' ', $orderby);
             } else {

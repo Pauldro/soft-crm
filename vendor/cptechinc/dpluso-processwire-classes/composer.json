@@ -6,7 +6,11 @@
     "homepage": "http://github.com/cptechinc/dpluso-processwire-classes",
 	"autoload": {
 		"files": [
-			"src/Contact.class.php",
+			"src/CreateFromObjectArray.trait.php",
+			"src/AttributeParser.trait.php",
+			"src/Model/Vendor.class.php",
+			"src/Model/Contact.class.php",
+			"src/Model/Customer.class.php",
 			"src/DplusDateTime.class.php",
 			"src/Model/UserAction.class.php",
 			"src/UserActionDisplay.class.php",
@@ -17,7 +21,6 @@
 			"src/UserActionsPanelSalesOrder.class.php",
 			"src/UserActionsPanelQuote.class.php",
 			"src/UserActionsPanelFactory.class.php",
-			"src/AttributeParser.trait.php",
 			"src/Contento.class.php",
 			"src/FormMaker.class.php",
 			"src/Table.class.php",
@@ -56,7 +59,8 @@
 			"src/OrderCreditCard.class.php",
 			"src/QueryBuilder.php",
 			"src/Report.class.php",
-			"src/UserActionsReport.class.php"
+			"src/UserActionsReport.class.php",
+			"src/ItemLookupModal.class.php"
 		]
 	}
 }

@@ -90,7 +90,7 @@
             $form->input("class=hidden|name=action|value=remove-line");
             $form->input("class=hidden|name=ordn|value=$order->orderno");
             $form->input("class=hidden|name=linenbr|value=$detail->linenbr");
-            $icon = $form->createicon('fa fa-trash fa-1-5x') . $form->openandclose('span', 'class=sr-only', 'Delete Line');
+            $icon = $form->bootstrap->createicon('fa fa-trash fa-1-5x') . $form->bootstrap->openandclose('span', 'class=sr-only', 'Delete Line');
             $form->button('type=submit|class=btn btn-sm btn-danger', $icon);
             return $form->finish();
         }

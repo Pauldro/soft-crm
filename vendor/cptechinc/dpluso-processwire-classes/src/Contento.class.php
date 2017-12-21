@@ -6,26 +6,29 @@
             'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'p', 'span', 'i', 'b', 'strong', 'code', 'pre',
             'div', 'nav', 'ol', 'ul', 'li', 'button',
             'table', 'tr', 'td', 'th', 'thead', 'tbody', 'tfoot',
-            'textarea', 'option'
+            'textarea', 'option', 'label', 'a'
         );
         
         protected $emptytags = array(
-            'input', 'img'
+            'input', 'img', 'br'
         );
         
-        public function __call($name, $args){
-            if (in_array($name, $this->closeable)) {
-                if (!$args[1]) {
-                    return $this->bootstrap->open($name, $args[0]); // OPEN ONLY
+        public function __call($name, $args) {
+            if (!method_exists($this, $name)) {
+                if (in_array($name, $this->closeable)) {
+                    if (!$args[1]) {
+                        return $this->open($name, $args[0]); // OPEN ONLY
+                    }
+                    return $this->openandclose($name, $args[0], $args[1]); // CLOSE ONLY
+                } elseif (in_array($name, $this->emptytags)) {
+                    $this->opentag = $name;
+                    return $this->open($name, $args[0]);    
+                } else {
+                    $this->error("This element $name is not defined to be called as a closing or open ended element");
+                    return false;
                 }
-                return $this->openandclose($name, $args[0], $args[1]); // CLOSE ONLY
-            } elseif (in_array($name, $this->emptytags)) {
-                $this->opentag = $name;
-                return $this->open($name, $args[0]);    
-            } else {
-                $this->error("This element $name is not defined to be called as a closing or open ended element");
-                return false;
             }
+            
         }
         
         public function __get($property) {
@@ -159,7 +162,7 @@
             $str.= $this->close('div');
         }
         
-        protected function indent() {
+        public function indent() {
             return '    ';
         }
         
