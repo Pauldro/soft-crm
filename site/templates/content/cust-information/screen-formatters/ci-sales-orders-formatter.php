@@ -1,5 +1,5 @@
 <?php 
-	$tableformatter = $page->screenformatterfactory->generate_screenformatter('ci-quotes');
+	$tableformatter = $page->screenformatterfactory->generate_screenformatter('ci-sales-orders');
 	
 	if ($input->requestMethod() == "POST") {
 		$tableformatter->generate_formatterfrominput($input);
@@ -7,7 +7,7 @@
 		
 		switch ($action) {
 			case 'preview':
-				$page->body = $config->paths->content."cust-information/ci-quotes.php";
+				$page->body = $config->paths->content."cust-information/ci-sales-orders.php";
 				
 				if ($config->ajax) {
 					include $page->body;
@@ -16,7 +16,7 @@
 				}
 				break;
 			case 'save-formatter':
-				$maxid = get_maxtableformatterid($user->loginid, 'ci-quotes');
+				$maxid = get_maxtableformatterid($user->loginid, 'ci-sales-orders');
 				$page->body = $tableformatter->save_andrespond();
 				include $config->paths->content.'common/include-json-page.php';
 				break;
