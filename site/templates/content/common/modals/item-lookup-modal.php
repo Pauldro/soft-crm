@@ -1,20 +1,20 @@
-<div class="modal fade" id="add-item-modal" tabindex="-1" role="dialog" aria-labelledby="add-item-modal-label">
+<div class="modal fade" id="item-lookup-modal" tabindex="-1" role="dialog" aria-labelledby="item-lookup-modal-label">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
             	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-            	<h4 class="modal-title" id="add-item-modal-label">Add Item to </h4>
+            	<h4 class="modal-title" id="item-lookup-modal-label">Add Item to <?= $itemlookup->type; ?></h4>
             </div>
             <div class="modal-body">
                 <div>
                     <div class="row">
                         <div class="col-xs-2">
-                            <a href="<?= $config->pages->ajax.'load/products/non-stock/form/'; ?>" class="btn btn-primary load-into-modal nonstock-btn" data-modal="#ajax-modal" data-modalsize="xl">
+                            <a href="<?= $itemlookup->generate_nonstockformurl(); ?>" class="btn btn-primary load-into-modal nonstock-btn" data-modal="#ajax-modal" data-modalsize="xl">
                                 <i class="fa fa-cube" aria-hidden="true"></i> Non-stock
                             </a>
                         </div>
                         <div class="col-xs-2">
-                            <a href="<?= $config->pages->ajax.'load/add-detail/'; ?>" class="btn btn-primary load-into-modal add-multiple-items" data-modal="#ajax-modal" data-modalsize="md">
+                            <a href="<?= $itemlookup->generate_addmultipleurl(); ?>" class="btn btn-primary load-into-modal add-multiple-items" data-modal="#ajax-modal" data-modalsize="md">
                                 <i class="fa fa-cube" aria-hidden="true"></i> Add Multiple
                             </a>
                         </div>
@@ -23,8 +23,9 @@
                                 <form action=""></form>
                                 <form action="<?= $config->pages->products."redir/"; ?>" id="add-item-search-form">
                                     <input type="hidden" name="action" value="item-search">
-                                    <input type="hidden" class="custID" name="custID">
-                                    <input type="hidden" class="resultsurl" name="resultsurl">
+                                    <input type="hidden" name="custID" value="<?= $itemlookup->custID; ?>" class="custID">
+                                    <input type="hidden" name="shipID" value="<?= $itemlookup->shipID; ?>" class="shipID">
+                                    <input type="hidden" class="resultsurl" name="resultsurl" value="<?= $itemlookup->generate_resultsurl(); ?>">
                                     <div class="row form-group">
                                         <div class="col-xs-12">
                                             <div class="input-group">
