@@ -117,7 +117,7 @@
                                 
                                 foreach ($detail['detailnotes'] as $ordernote) {
             						$tb->tr('class=show-notes');
-            						for ($i = 1; $i < $tableblueprint['maxcolumns'] + 1; $i++) {
+            						for ($i = 1; $i < $this->tableblueprint['cols'] + 1; $i++) {
             							if ($i == 2) {
             								$tb->td('colspan=2', $ordernote['Detail Notes']);
             								$i++;

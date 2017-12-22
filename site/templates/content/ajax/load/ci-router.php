@@ -73,7 +73,8 @@
 		case 'ci-contacts':
 			$custID = $input->get->text('custID');
 			$page->title = get_customername($custID) . ' Contacts Inquiry';
-			$page->body = $config->paths->content."cust-information/cust-contacts.php";
+            $tableformatter = $page->screenformatterfactory->generate_screenformatter('ci-contacts');
+			$page->body = $config->paths->content."cust-information/ci-formatted-screen.php";
 			break;
 		case 'ci-contacts':
 			$custID = $input->get->text('custID');
