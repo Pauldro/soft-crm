@@ -27,7 +27,9 @@
             'ii-activity' => 'II_ItemActivityScreen',
             'ii-stock' => 'II_ItemWarehouseStockScreen',
             'ii-requirements' => 'II_ItemRequirementsScreen',
-            'ii-kit' => 'II_ItemKitScreen'
+            'ii-kit' => 'II_ItemKitScreen',
+            
+            'ci-contacts' => 'CI_ContactsScreen'
         );
         
         public function __construct($sessionID) {
