@@ -42,6 +42,4 @@
         $page->body = $config->paths->content."vendor/ajax/load/vend-index/search-form.php";
         include $config->paths->content."common/include-toolbar-page.php";
     }
-    
-    
 ?>

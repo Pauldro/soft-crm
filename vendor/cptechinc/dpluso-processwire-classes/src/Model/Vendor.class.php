@@ -49,6 +49,16 @@
             return (!empty($this->shipfrom));    
         }
         
+        public function generate_viurl($withshipfrom = true) {
+            $url = new \Purl\Url(wire('config')->pages->vendorinfo);
+            $url->path->add($this->vendid);
+            
+            if ($withshipfrom) {
+                $url->path->add('shipfrom-'.$this->shipfrom);
+            }
+            return $url->getUrl();
+        }
+        
         public static function load($vendorID, $shipfromID = '') {
             return get_vendor($vendorID, $shipfromID);
         }

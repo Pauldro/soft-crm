@@ -88,7 +88,7 @@
         case 'vi-docview':
             $vendorID = $input->get->text('vendorID');
             $page->title = get_vendorname($vendorID) . ' Payment';
-            $page->body = $config->paths->content."vend-information/payment-history.php";
+            $page->body = $config->paths->content."vend-information/vend-documents.php";
             break;
         default:
             $page->title = 'Search for a vendor';
