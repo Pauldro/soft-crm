@@ -32,7 +32,7 @@ $(function() {
         } else {
             form.postform({}, function() { 
                 generateurl(function(url) { 
-                    console.log(url);
+                    window.location.href = url;
                 });
             })
         }

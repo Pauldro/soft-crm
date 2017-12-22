@@ -77,7 +77,7 @@
         
         public function generate_deletedetaillink(Order $quote, OrderDetail $detail) {
             $bootstrap = new Contento();
-            $icon = $bootstrap->createicon('fa fa-trash fa-1-5x') . $form->bootstrap->openandclose('span', 'class=sr-only', 'Delete Line');
+            $icon = $bootstrap->createicon('fa fa-trash fa-1-5x') . $bootstrap->openandclose('span', 'class=sr-only', 'Delete Line');
             $url = $this->generate_quotesredirurl();
             $url->query->setData(array('action' => 'remove-line-get', 'qnbr' => $quote->quotnbr, 'linenbr' => $detail->linenbr, 'page' => $this->pageurl->getUrl()));
             $href = $url->getUrl();

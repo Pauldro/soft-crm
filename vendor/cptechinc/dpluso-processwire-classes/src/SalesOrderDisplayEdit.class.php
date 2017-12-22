@@ -103,7 +103,7 @@
         
         public function generate_erroralert($order) {
             $bootstrap = new Contento();
-            $msg = $bootstrap->openandclose('b', '', 'Error!') . $order->errormsg;
+            $msg = $bootstrap->openandclose('b', '', 'Error!') .' '. $order->errormsg;
             return $bootstrap->createalert('danger', $msg, false);
         }
     }
