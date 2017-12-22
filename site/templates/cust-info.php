@@ -7,29 +7,7 @@
 		
 		if ($input->urlSegment(2)) {
             $shipID = urldecode(str_replace('shipto-', '', $input->urlSegment(2)));
-			
-			for ($i = 1; $i < sizeof($custshiptos['data']) + 1; $i++) {
-				if ($custshiptos['data']["$i"]['shipid'] == $shipID) {
-					$i++;
-					break;
-				}
-			}
-
-			if ($i > sizeof($custshiptos['data'])) {
-				$i = 1;
-			}
-			$nextshipid = $custshiptos['data']["$i"]['shipid'];
-		} else {
-			if (isset($custshiptos['data'])) {
-				if (sizeof($custshiptos['data'])) {
-					$nextshipid = $custshiptos['data']["1"]['shipid'];
-				} else {
-					$nextshipid = false;
-				}
-			} else {
-				$nextshipid = false;
-			}
-		}
+		} 
         
         $customer = Customer::load($custID, $shipID);
         

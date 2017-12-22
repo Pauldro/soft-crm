@@ -59,26 +59,29 @@
             $content = '';
             foreach ($this->json['data']['shipto'] as $shipto) {
                 $content .= $bootstrap->h3('',$shipto['shiptoid'].' - '.$shipto['shiptoname']);
-                $content .= $bootstrap->open('div','class=row');
-                    $content .= $bootstrap->open('div','class=col-sm-6'); // CUSTOMER LEFT
-                        $tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
-                        foreach (array_keys($this->json['columns']['shipto']['shiptoleft']) as $column) {
-                            $tb->tr();
-                            $tb->td('class='.wire('config')->textjustify[$this->json['columns']['shipto']['shiptoleft'][$column]['headingjustify']], $this->json['columns']['shipto']['shiptoleft'][$column]['heading']);
-                            $tb->td('class='.wire('config')->textjustify[$this->json['columns']['shipto']['shiptoleft'][$column]['datajustify']], $contact['shiptoleft'][$column]);
-                        }
-                        $content .= $tb->close();
-                    $content .= $bootstrap->close('div');
-                    $content .= $bootstrap->open('div','class=col-sm-6'); // CUSTOMER RIGHT
-                        $tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
-                        foreach (array_keys($this->json['columns']['shipto']['shiptoright']) as $column) {
-                            $tb->tr();
-                            $tb->td('class='.wire('config')->textjustify[$this->json['columns']['shipto']['shiptoright'][$column]['headingjustify']], $this->json['columns']['shipto']['shiptoright'][$column]['heading']);
-                            $tb->td('class='.wire('config')->textjustify[$this->json['columns']['shipto']['shiptoright'][$column]['datajustify']], $contact['shiptoright'][$column]);
-                        }
-                        $content .= $tb->close();
-                    $content .= $bootstrap->close('div');
-                $content .= $bootstrap->close('div');
+				foreach ($shipto['shiptocontacts'] as $contact) {
+					$content .= $bootstrap->open('div','class=row');
+	                    $content .= $bootstrap->open('div','class=col-sm-6'); // CUSTOMER LEFT
+	                        $tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+	                        foreach (array_keys($this->json['columns']['shipto']['shiptoleft']) as $column) {
+	                            $tb->tr();
+	                            $tb->td('class='.wire('config')->textjustify[$this->json['columns']['shipto']['shiptoleft'][$column]['headingjustify']], $this->json['columns']['shipto']['shiptoleft'][$column]['heading']);
+	                            $tb->td('class='.wire('config')->textjustify[$this->json['columns']['shipto']['shiptoleft'][$column]['datajustify']], $contact['shiptoleft'][$column]);
+	                        }
+	                        $content .= $tb->close();
+	                    $content .= $bootstrap->close('div');
+	                    $content .= $bootstrap->open('div','class=col-sm-6'); // CUSTOMER RIGHT
+	                        $tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+	                        foreach (array_keys($this->json['columns']['shipto']['shiptoright']) as $column) {
+	                            $tb->tr();
+	                            $tb->td('class='.wire('config')->textjustify[$this->json['columns']['shipto']['shiptoright'][$column]['headingjustify']], $this->json['columns']['shipto']['shiptoright'][$column]['heading']);
+	                            $tb->td('class='.wire('config')->textjustify[$this->json['columns']['shipto']['shiptoright'][$column]['datajustify']], $contact['shiptoright'][$column]);
+	                        }
+	                        $content .= $tb->close();
+	                    $content .= $bootstrap->close('div');
+	                $content .= $bootstrap->close('div');
+				}
+                
             }
             return $content;
         }
