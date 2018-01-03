@@ -41,7 +41,7 @@
 					}
 				}
 			$tb->closetablesection('tbody');
-			echo $tb->close();
+			return $tb->close();
         }
         
         public function generate_javascript() {
