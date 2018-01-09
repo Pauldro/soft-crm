@@ -19,16 +19,20 @@
 			$tb->tablesection('thead');
 				for ($x = 1; $x < $this->tableblueprint['detail']['maxrows'] + 1; $x++) {
 					$tb->tr();
+					$columncount = 0;
 					for ($i = 1; $i < $this->tableblueprint['cols'] + 1; $i++) {
 						if (isset($this->tableblueprint['detail']['rows'][$x]['columns'][$i])) {
 							$column = $this->tableblueprint['detail']['rows'][$x]['columns'][$i];
-							$class = wire('config')->textjustify[$this->fields['data']['detail'][$column['id']]['headingjustify']];
+							$class = Processwire\wire('config')->textjustify[$this->fields['data']['detail'][$column['id']]['headingjustify']];
 							$colspan = $column['col-length'];
 							$tb->th("colspan=$colspan|class=$class", $column['label']);
-							$i = ($colspan > 1) ? $i + ($colspan - 1) : $i;
 						} else {
-							$tb->th();
+							if ($columncount < $this->tableblueprint['cols']) {
+								$colspan = 1;
+								$tb->th();
+							}
 						}
+						$columncount += $colspan;
 					}
 				}
 			$tb->closetablesection('thead');
@@ -36,18 +40,22 @@
 				foreach($this->json['data']['purchaseorders'] as $order) {
 					foreach($order['details'] as $detail) {
 						for ($x = 1; $x < $this->tableblueprint['detail']['maxrows'] + 1; $x++) {
-							$tb->tr('');
+							$tb->tr();
+							$columncount = 0;
 							for ($i = 1; $i < $this->tableblueprint['cols'] + 1; $i++) {
 								if (isset($this->tableblueprint['detail']['rows'][$x]['columns'][$i])) {
 									$column = $this->tableblueprint['detail']['rows'][$x]['columns'][$i];
-									$class = wire('config')->textjustify[$this->fields['data']['detail'][$column['id']]['datajustify']];
+									$class = Processwire\wire('config')->textjustify[$this->fields['data']['detail'][$column['id']]['datajustify']];
 									$colspan = $column['col-length'];
 									$celldata = TableScreenMaker::generate_formattedcelldata($this->fields['data']['detail'][$column['id']]['type'], $detail, $column);
 									$tb->td("colspan=$colspan|class=$class", $celldata);
-									$i = ($colspan > 1) ? $i + ($colspan - 1) : $i;
 								} else {
-									$tb->td();
+									if ($columncount < $this->tableblueprint['cols']) {
+										$colspan = 1;
+										$tb->td();
+									}
 								}
+								$columncount += $colspan;
 							}
 						}
 					}
@@ -55,39 +63,43 @@
 					$pototals = $order['pototals'];
 					for ($x = 1; $x < $this->tableblueprint['detail']['maxrows'] + 1; $x++) {
 						$tb->tr('class=totals');
+						$columncount = 0;
 						for ($i = 1; $i < $this->tableblueprint['cols'] + 1; $i++) {
 							if (isset($this->tableblueprint['detail']['rows'][$x]['columns'][$i])) {
 								$column = $this->tableblueprint['detail']['rows'][$x]['columns'][$i];
-								$class = wire('config')->textjustify[$this->fields['data']['detail'][$column['id']]['datajustify']];
+								$class = Processwire\wire('config')->textjustify[$this->fields['data']['detail'][$column['id']]['datajustify']];
 								$colspan = $column['id'] == "Purchase Order Number" ? 2 : $column['col-length'];
 								$celldata = TableScreenMaker::generate_formattedcelldata($this->fields['data']['detail'][$column['id']]['type'], $pototals, $column);
 								$tb->td("colspan=$colspan|class=$class", $celldata);
-								$i = ($colspan > 1) ? $i + ($colspan - 1) : $i;
 							} else {
-								$tb->td();
+								if ($columncount < $this->tableblueprint['cols']) {
+									$colspan = 1;
+									$tb->td();
+								}
 							}
+							$columncount += $colspan;
 						}
-					}
-					$tb->tr('class=last-section-row');
-					for ($i = 1; $i < $this->tableblueprint['cols'] + 1; $i++) {
-						$tb->td();
 					}
 				}
 				
 				$vendortotal = $this->json['data']['vendortotals'];
 				for ($x = 1; $x < $this->tableblueprint['detail']['maxrows'] + 1; $x++) {
 					$tb->tr('class=totals');
+					$columncount = 0;
 					for ($i = 1; $i < $this->tableblueprint['cols'] + 1; $i++) {
 						if (isset($this->tableblueprint['detail']['rows'][$x]['columns'][$i])) {
 							$column = $this->tableblueprint['detail']['rows'][$x]['columns'][$i];
-							$class = wire('config')->textjustify[$this->fields['data']['detail'][$column['id']]['datajustify']];
+							$class = Processwire\wire('config')->textjustify[$this->fields['data']['detail'][$column['id']]['datajustify']];
 							$colspan = $column['id'] == "Purchase Order Number" ? 2 : $column['col-length'];
 							$celldata = TableScreenMaker::generate_formattedcelldata($this->fields['data']['detail'][$column['id']]['type'], $vendortotal, $column);
 							$tb->td("colspan=$colspan|class=$class", $celldata);
-							$i = ($colspan > 1) ? $i + ($colspan - 1) : $i;
 						} else {
-							$tb->td();
+							if ($columncount < $this->tableblueprint['cols']) {
+								$colspan = 1;
+								$tb->th();
+							}
 						}
+						$columncount += $colspan;
 					}
 				}
 				

@@ -21,7 +21,7 @@
 				$tb->tablesection('thead');
 					$tb->tr();
 					foreach($this->json['columns'] as $column)  {
-						$class = wire('config')->textjustify[$column['headingjustify']];
+						$class = Processwire\wire('config')->textjustify[$column['headingjustify']];
 						$tb->th("class=$class", $column['heading']);
 					}
 				$tb->closetablesection('thead');
@@ -29,7 +29,7 @@
 					foreach($warehouse['orders'] as $order) {
 						$tb->tr();
 						foreach(array_keys($this->json['columns']) as $column) {
-							$class = wire('config')->textjustify[$this->json['columns'][$column]['datajustify']];
+							$class = Processwire\wire('config')->textjustify[$this->json['columns'][$column]['datajustify']];
 							$tb->td("class=$class", $order[$column]);
 						}
 					}
@@ -50,20 +50,4 @@
 			$content .= $bootstrap->close('script');
 			return $content;
 		}
-        
-        public function generate_activityform($itemID, array $iiconfig) {
-            if (trim($iiconfig['activity']['date-options']['start-date']) != '') {
-                $date = date("m/d/y", strtotime($iiconfig['activity']['date-options']['start-date']));
-            } else {
-                $date = date("m/d/y", strtotime("-".$iiconfig['activity']['date-options']['days-back']." day"));
-            }
-            $action = wire('config')->pages->products."redir/";
-            $form = new FormMaker("action=$action|method=post|id=ii-item-activity-form");
-            $form->input("type=hidden|name=action|value=ii-activity");
-            $form->input("type=hidden|name=itemID|value=$itemID");
-            $content = $form->bootstrap->div('class=form-group', $form->bootstrap->p('', "Item $itemID"));
-            $content .= $form->bootstrap->div('class=form-group', $form->boostrap->label('', 'Starting Report Date') . $form->bootstrap->div('class=input-group date', $form->datepicker('date', $date)));
-            $form->add($form->bootstrap->div('class=row', $form->bootstrap->div('col-xs-10', $content)));
-            return $form->finish();
-        }
     }

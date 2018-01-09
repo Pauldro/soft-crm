@@ -30,6 +30,9 @@
         public $userID;
         public $assigneduserID;
         
+        /* =============================================================
+ 		   CONSTRUCTOR FUNCTIONS 
+ 	   ============================================================ */
         public function __construct($sessionID, $actiontype, \Purl\Url $pageurl, $throughajax, $isinmodal, $taskstatus = null) {
             $this->sessionID = $sessionID;
             $this->actiontype = $actiontype;
@@ -45,28 +48,31 @@
             $this->throughajax = $throughajax;
             $this->collapse = $throughajax ? '' : 'collapse';
             
-            $this->userID = wire('user')->loginid;
-            $this->assigneduserID = wire('user')->loginid;
+            $this->userID = Processwire\wire('user')->loginid;
+            $this->assigneduserID = Processwire\wire('user')->loginid;
             $this->setup_tasks($taskstatus);
             $this->start_querylinks();
         }
         
-        function update_assignedtouserID($userID) {
+        /* =============================================================
+ 		   SETTER FUNCTIONS 
+ 	   ============================================================ */
+        public function update_assignedtouserID($userID) {
             $this->assigneduserID = $userID;
             $this->start_querylinks();
         }
         
-		function setup_completedtasks() {
+		public function setup_completedtasks() {
             $this->taskstatus = 'Y';
 			$this->completed = true;
 		}
         
-        function setup_rescheduledtasks() {
+        public function setup_rescheduledtasks() {
             $this->taskstatus = 'R';
 			$this->rescheduled = true;
 		}
         
-        function setup_tasks($status) {
+        public function setup_tasks($status) {
             switch ($status) {
         		case 'Y':
         			$this->setup_completedtasks();
@@ -100,14 +106,11 @@
             }
         }
         
-        /* =============================================================
-           GENERATE URLS 
-           URLS ARE THE HREF VALUE 
-       ============================================================ */
+        /* GENERATE URLS - URLS ARE THE HREF VALUE */
        public function generate_refreshurl($keepactiontype = false) { 
             $actionpath = ($keepactiontype) ? $this->actiontype : '{replace}';
             $url = new \Purl\Url($this->pageurl->getUrl());
-            $url->path = wire('config')->pages->actions.$actionpath."/load/list/";
+            $url->path = Processwire\wire('config')->pages->actions.$actionpath."/load/list/";
             $url->path->add(rtrim($this->generate_insertafter(), '/'));
 			$url->query->remove('id');
             if ($this->assigneduserID != $this->userID) {
@@ -118,13 +121,13 @@
 		}
         
 		function generate_addactionurl($keepactiontype = false) {
-            if (wire('config')->cptechcustomer == 'stempf') {
+            if (Processwire\wire('config')->cptechcustomer == 'stempf') {
                 $actionpath = ($this->actiontype == 'all') ? 'tasks' : $this->actiontype;
             } else {
                 $actionpath = ($keepactiontype) ? $this->actiontype : '{replace}';
             }
             $url = new \Purl\Url($this->generate_refreshurl(true));
-            $url->path = wire('config')->pages->actions.$actionpath."/add/";
+            $url->path = Processwire\wire('config')->pages->actions.$actionpath."/add/";
 			return $url->getUrl();
 		}
         
@@ -135,9 +138,10 @@
         }
         
         /* =============================================================
-             GENERATE LINKS 
-             LINKS ARE THE HTML MARKUP FOR LINKS
-         ============================================================ */
+ 		   CLASS FUNCTIONS 
+ 	   ============================================================ */
+        
+        /* = GENERATE LINKS - LINKS ARE THE HTML MARKUP FOR LINKS */
          public function generate_refreshlink() {
              $bootstrap = new Contento();
              $href = $this->generate_refreshurl(true);
@@ -157,7 +161,7 @@
              $bootstrap = new Contento();
              $href = $this->generate_addactionurl();
              $icon = $bootstrap->createicon('material-icons md-18', '&#xE146;');
-             if (wire('config')->cptechcustomer == 'stempf') {
+             if (Processwire\wire('config')->cptechcustomer == 'stempf') {
                  return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs load-into-modal pull-right hidden-print|data-modal=$this->modal|role=button|title=Add Action", $icon);
              }
              return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs add-action pull-right hidden-print|data-modal=$this->modal|role=button|title=Add Action", $icon);
@@ -171,9 +175,7 @@
              return $bootstrap->openandclose('a', "href=$href|class=btn btn-warning btn-xs load-link pull-right hidden-print|title=button|title=Return to Your Actions|aria-label=Return to Your Actions|$ajaxdata", $icon.' Remove User lookup');
          }
          
-         /* =============================================================
-            CONTENT FUNCTIONS
-        ============================================================ */
+         /* CONTENT FUNCTIONS  */
         public function generate_rowclass($action) {
             if ($action->actiontype == 'tasks') {
                 if ($action->is_rescheduled()) {
@@ -319,14 +321,14 @@
              $ajaxdata = $this->generate_ajaxdataforcontento();
              $href = $this->generate_refreshurl(true);
              $form = new FormMaker('', false);
-             $form->add($form->open('div', 'class=panel-body'));
-                 $form->add($form->open('div', 'class=row'));
-                     $form->add($form->open('div', 'class=col-xs-4'));
-                         $form->add($form->openandclose('label', 'for=view-action-completion-status', 'View Completed Tasks'));
+             $form->add($form->bootstrap->open('div', 'class=panel-body'));
+                 $form->add($form->bootstrap->open('div', 'class=row'));
+                     $form->add($form->bootstrap->open('div', 'class=col-xs-4'));
+                         $form->add($form->bootstrap->openandclose('label', 'for=view-action-completion-status', 'View Completed Tasks'));
                          $form->select("id=view-action-completion-status|class=form-control input-sm|$ajaxdata|data-url=$href", $this->taskstatuses, $this->taskstatus);
-                     $form->add($form->close('div'));
-                 $form->add($form->close('div'));
-             $form->add($form->close('div'));
+                     $form->add($form->bootstrap->close('div'));
+                 $form->add($form->bootstrap->close('div'));
+             $form->add($form->bootstrap->close('div'));
              return $form->finish();
          }
          
@@ -342,9 +344,6 @@
  			return $bootstrap->openandclose('a', $attr, 'Icon Definitions');
  		}
          
-         /* =============================================================
-            ACTION URLS
-        ============================================================ */
          public function generate_completetasklink($task) {
              $bootstrap = new Contento();
              $href = $this->generate_viewactionjsonurl($task);
@@ -353,9 +352,6 @@
              return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-xs btn-primary complete-action|title=Mark Task as Complete", $icon);
          }
              
-         /* =============================================================
-            PANEL LOGIC
-        ============================================================ */
         /** 
          * Generates insertafter string for Paginator object to put the pagination string after
          * @return string 
@@ -391,7 +387,6 @@
             return true;
         }
         
-        
         public function count_actions($debug = false, $overridelinks = false) {
             $querylinks = $overridelinks ? array_merge($this->querylinks, $overridelinks) : $this->querylinks;
             if ($debug) {
@@ -406,7 +401,7 @@
         }
         
         public function get_actions($debug = false) {
-            return get_useractions($this->assigneduserID, $this->querylinks, wire('session')->display, $this->pagenbr, $debug);
+            return get_useractions($this->assigneduserID, $this->querylinks, Processwire\wire('session')->display, $this->pagenbr, $debug);
         }
         
         public function generate_pagenumberdescription() {

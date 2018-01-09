@@ -16,10 +16,10 @@
             $content = '';
 			$this->generate_tableblueprint();
 		    
-			foreach ($this->json['data'] as $whse) {
+			foreach ($this->json['data'] as $whseid => $whse) {
 				$content .= $bootstrap->h3('', $whse['Whse Name']);
                 
-                $tb = new Table('class=table table-striped table-bordered table-condensed table-excel|id='.key($this->json['data']));
+                $tb = new Table("class=table table-striped table-bordered table-condensed table-excel|id=$whseid");
             	$tb->tablesection('thead');
             		for ($x = 1; $x < $this->tableblueprint['detail']['maxrows'] + 1; $x++) {
             			$tb->tr();
@@ -27,7 +27,7 @@
             			for ($i = 1; $i < $this->tableblueprint['cols'] + 1; $i++) {
             				if (isset($this->tableblueprint['detail']['rows'][$x]['columns'][$i])) {
             					$column = $this->tableblueprint['detail']['rows'][$x]['columns'][$i];
-            					$class = wire('config')->textjustify[$this->fields['data']['detail'][$column['id']]['headingjustify']];
+            					$class = Processwire\wire('config')->textjustify[$this->fields['data']['detail'][$column['id']]['headingjustify']];
             					$colspan = $column['col-length'];
             					$tb->th("colspan=$colspan|class=$class", $column['label']);
             				} else {
@@ -48,7 +48,7 @@
             				for ($i = 1; $i < $this->tableblueprint['cols'] + 1; $i++) {
             					if (isset($this->tableblueprint['header']['rows'][$x]['columns'][$i])) {
             						$column = $this->tableblueprint['header']['rows'][$x]['columns'][$i];
-            						$class = wire('config')->textjustify[$this->fields['data']['header'][$column['id']]['datajustify']];
+            						$class = Processwire\wire('config')->textjustify[$this->fields['data']['header'][$column['id']]['datajustify']];
             						$colspan = $column['col-length'];
             						$celldata = strlen($column['label']) ? '<b>'.$column['label'].'</b>: ' : '';
             						$celldata .= TableScreenMaker::generate_formattedcelldata($this->fields['data']['header'][$column['id']]['type'], $quote, $column);
@@ -70,7 +70,7 @@
             					for ($i = 1; $i < $this->tableblueprint['cols'] + 1; $i++) {
             						if (isset($this->tableblueprint['detail']['rows'][$x]['columns'][$i])) {
             							$column = $this->tableblueprint['detail']['rows'][$x]['columns'][$i];
-            							$class = wire('config')->textjustify[$this->fields['data']['detail'][$column['id']]['datajustify']];
+            							$class = Processwire\wire('config')->textjustify[$this->fields['data']['detail'][$column['id']]['datajustify']];
             							$colspan = $column['col-length'];
             							$celldata = TableScreenMaker::generate_formattedcelldata($this->fields['data']['detail'][$column['id']]['type'], $item, $column);
             							$tb->td("colspan=$colspan|class=$class", $celldata);

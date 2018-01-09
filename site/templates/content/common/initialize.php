@@ -10,5 +10,5 @@
 	TableScreenMaker::set_testfiledirectory($config->paths->vendor."cptechinc/dpluso-screen-formatters/src/examples/");
 	TableScreenMaker::set_fieldfiledirectory($config->companyfiles."json/");
 
-	$config->pages = new Paths($config->rootURL);
+	$config->pages = new Processwire\Paths($config->rootURL);
 	include $config->paths->templates."configs/nav-config.php"; 

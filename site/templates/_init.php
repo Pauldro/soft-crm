@@ -25,7 +25,7 @@
 	
 	$page->bootstrap = new Contento();
 	$page->stringerbell = new StringerBell();
-	$page->screenformatterfactory = new ScreenFormatterFactory(session_id());
+	$page->screenformatterfactory = new \ScreenFormatterFactory(session_id());
 
 	$page->querystring = $querystring = $page->fullURL->query;
 	$page->PageURL = $page->httpUrl.'?'.$page->querystring;
@@ -34,18 +34,14 @@
 	$config->styles->append('https://fonts.googleapis.com/icon?family=Material+Icons');
 	$config->styles->append(hashtemplatefile('styles/libraries.css'));
 	$config->styles->append(hashtemplatefile('styles/styles.css'));
-
+    
 	$config->scripts->append(hashtemplatefile('scripts/libraries.js'));
 	$config->scripts->append(hashtemplatefile('scripts/libs/timepicker.js'));
 	$config->scripts->append(hashtemplatefile('scripts/libs/key-listener.js'));
 	$config->scripts->append(hashtemplatefile('scripts/libs/datatables.js'));
 	$config->scripts->append(hashtemplatefile('scripts/classes.js'));
-	
-	if (file_exists($config->paths->templates."scripts/$config->dplusocompany-scripts.js")) {
-		$config->scripts->append(hashtemplatefile("scripts/$config->dplusocompany-scripts.js"));
-	} else {
-		$config->scripts->append(hashtemplatefile('scripts/scripts.js'));
-	}
+	$config->scripts->append(hashtemplatefile('scripts/scripts.js'));
+	$config->scripts->append(hashtemplatefile('scripts/dplus-notes.js'));
 
 	//$config->scripts->append($config->urls->modules . 'Inputfield/InputfieldCKEditor/ckeditor-4.6.1/ckeditor.js'));
 
