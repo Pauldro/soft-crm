@@ -109,7 +109,8 @@
 		}
 
 		public function can_edit() {
-			return $this->editord == 'Y' ? true : false;
+			$config = Processwire\wire('pages')->get('/config/')->child("name=sales-orders");
+			return $config->allow_edit ? ($this->editord == 'Y' ? true : false) : false;
 		}
 
 		public function is_phoneintl() {

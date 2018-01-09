@@ -83,8 +83,8 @@
 		}
 
 		public function can_edit() {
-			//return $this->editord == 'Y' ? true : false;
-			return true;
+			$quoteconfig = Processwire\wire('pages')->get('/config/')->child("name=quotes");
+            return $quoteconfig->allow_edit;
 		}
 
 		// public function is_phoneintl() {
