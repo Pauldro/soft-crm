@@ -30,7 +30,7 @@
                 // } elseif ($this->tablesorter->orderby == 'expdate') {
                 //    $quotes = get_customerquotesexpdate($this->sessionID, $this->custID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $useclass, $debug);
                 } else {
-                    $quotes = get_customerquotesorderby($this->sessionID, $this->custID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $debug);
+                    $quotes = get_customerquotesorderby($this->sessionID, $this->custID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $useclass, $debug);
                 }
             } else {
                 $quotes = get_customerquotes($this->sessionID, $this->custID, Processwire\wire('session')->display, $this->pagenbr, $useclass, $debug);

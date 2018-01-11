@@ -684,7 +684,7 @@
 		
 	// function get_customerquotesexpdate() {}
 	
-	function get_customerquotesorderby($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $orderby, $debug) {
+	function get_customerquotesorderby($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $orderby, $useclass = true, $debug) {
 		$limiting = returnlimitstatement($limit, $page);
 		$sql = Processwire\wire('database')->prepare("SELECT * FROM quothed WHERE sessionid = :sessionID AND custid = :custID ORDER BY $orderby $sortrule $limiting");
 		$switching = array(':sessionID' => $sessionID, ':custID' => $custID); $withquotes = array(true, true);
