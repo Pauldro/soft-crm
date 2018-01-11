@@ -18,6 +18,7 @@
 				<td><?= $quote->quotdate; ?></td>
 				<td><?= $quote->revdate; ?></td>
 				<td><?= $quote->expdate; ?></td>
+				<td><?= $quote->subtotal; ?></td>
 				<td><?= $quotepanel->generate_loaddplusnoteslink($quote, '0'); ?></td>
 				<td><?= $quotepanel->generate_editlink($quote); ?></td>
 			</tr>
