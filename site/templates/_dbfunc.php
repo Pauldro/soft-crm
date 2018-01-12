@@ -711,6 +711,22 @@
 		}
 	}
 	
+	function get_customerquotessubtotal($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug) {
+		$limiting = returnlimitstatement($limit, $page);
+		$sql = Processwire\wire('database')->prepare("SELECT subtotal, CAST(subtotal as DECIMAL(10,2)) as quotesubtotal, quothed.* FROM quothed WHERE sessionid = :sessionID AND custid = :custID ORDER BY quotesubtotal $sortrule ".$limiting);
+		$switching = array(':sessionID' => $sessionID, ':custID' => $custID); $withquotes = array(true, true);
+		if ($debug) {
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
+		} else {
+			$sql->execute($switching);
+			if ($useclass) {
+				$sql->setFetchMode(PDO::FETCH_CLASS, 'Quote');
+				return $sql->fetchAll();
+			}
+			return $sql->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}
+	
 	function get_customerquotesorderby($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $orderby, $useclass = true, $debug) {
 		$limiting = returnlimitstatement($limit, $page);
 		$sql = Processwire\wire('database')->prepare("SELECT * FROM quothed WHERE sessionid = :sessionID AND custid = :custID ORDER BY $orderby $sortrule $limiting");
