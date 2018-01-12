@@ -426,8 +426,7 @@
 
 	function get_salesrepordersorderdate($sessionID, $limit = 10, $page = 1, $sortrule, $useclass, $debug) {
 		$limiting = returnlimitstatement($limit, $page);
-		$sql = Processwire\wire('database')->prepare("SELECT orderdate, STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder, orderno, custpo, shiptoid, sname, saddress, saddress2, scity, sst, szip, havenote,
-					status, havetrk, havedoc, odrsubtot, odrtax, odrfrt, odrmis, odrtotal, error, errormsg, shipdate, custid, custname, invdate, editord FROM ordrhed
+		$sql = Processwire\wire('database')->prepare("SELECT orderdate, STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder, ordrhed.* FROM ordrhed
 					WHERE sessionid = :sessionID AND type = :type ORDER BY dateoforder $sortrule " . $limiting);
 		$switching = array(':sessionID' => $sessionID, ':type' => 'O'); $withquotes = array(true, true);
 		if ($debug) {
@@ -517,7 +516,7 @@
 
 	function get_customerordersorderdate($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug) {
 		$limiting = returnlimitstatement($limit, $page);
-		$sql = Processwire\wire('database')->prepare("SELECT orderdate, STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder, orderno, custpo, shiptoid, sname, saddress, saddress2, scity, sst, szip, havenote, status, havetrk, havedoc, odrsubtot, odrtax, odrfrt, odrmis, odrtotal, error, errormsg, shipdate, custid, custname, invdate, editord FROM ordrhed WHERE sessionid = :sessionID AND custid = :custID AND type = 'O' ORDER BY dateoforder $sortrule ".$limiting);
+		$sql = Processwire\wire('database')->prepare("SELECT orderdate, STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder, ordrhed.* FROM ordrhed WHERE sessionid = :sessionID AND custid = :custID AND type = 'O' ORDER BY dateoforder $sortrule ".$limiting);
 		$switching = array(':sessionID' => $sessionID, ':custID' => $custID); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -653,7 +652,7 @@
 		$sql = Processwire\wire('database')->prepare("SELECT * FROM quothed WHERE sessionid = :sessionID AND custid = :custID $limiting");
 		$switching = array(':sessionID' => $sessionID, ':custID' => $custID); $withquotes = array(true, true);
 		if ($debug) {
-			returnsqlquery($sql->queryString, $switching, $withquotes);
+			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
 			$sql->execute($switching);
 			if ($useclass) {
@@ -666,7 +665,7 @@
 	
 	function get_customerquotesquotedate($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug) {
 		$limiting = returnlimitstatement($limit, $page);
-		$sql = Processwire\wire('database')->prepare("SELECT quotnbr, shiptoid, quotdate, revdate, expdate, subtotal, notes FROM quothed WHERE sessionid = :sessionID AND custid = :custID ORDER BY quotdate $sortrule ".$limiting);
+		$sql = Processwire\wire('database')->prepare("SELECT quotdate, STR_TO_DATE(quotdate, '%m/%d/%Y') as quotedate, quothed.* FROM quothed WHERE sessionid = :sessionID AND custid = :custID ORDER BY quotedate $sortrule ".$limiting);
 		$switching = array(':sessionID' => $sessionID, ':custID' => $custID); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -682,7 +681,7 @@
 	
 	function get_customerquotesrevdate($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug) {
 		$limiting = returnlimitstatement($limit, $page);
-		$sql = Processwire\wire('database')->prepare("SELECT quotnbr, shiptoid, quotdate, revdate, expdate, subtotal, notes FROM quothed WHERE sessionid = :sessionID AND custid = :custID ORDER BY revdate $sortrule ".$limiting);
+		$sql = Processwire\wire('database')->prepare("SELECT revdate, STR_TO_DATE(revdate, '%m/%d/%Y') as reviewdate, quothed.* FROM quothed WHERE sessionid = :sessionID AND custid = :custID ORDER BY reviewdate $sortrule ".$limiting);
 		$switching = array(':sessionID' => $sessionID, ':custID' => $custID); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -698,7 +697,7 @@
 		
 	function get_customerquotesexpdate($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug) {
 		$limiting = returnlimitstatement($limit, $page);
-		$sql = Processwire\wire('database')->prepare("SELECT quotnbr, shiptoid, quotdate, revdate, expdate, subtotal, notes FROM quothed WHERE sessionid = :sessionID AND custid = :custID ORDER BY expdate $sortrule ".$limiting);
+		$sql = Processwire\wire('database')->prepare("SELECT expdate, STR_TO_DATE(expdate, '%m/%d/%Y') as expiredate, quothed.* FROM quothed WHERE sessionid = :sessionID AND custid = :custID ORDER BY expiredate $sortrule ".$limiting);
 		$switching = array(':sessionID' => $sessionID, ':custID' => $custID); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
