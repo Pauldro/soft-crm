@@ -28,9 +28,7 @@
                 } elseif ($this->tablesorter->orderby == 'revdate') {
                     $quotes = get_customerquotesrevdate($this->sessionID, $this->custID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $useclass, $debug);
                 } elseif ($this->tablesorter->orderby == 'expdate') {
-                    $quotes = get_customerquotesexpdate($this->sessionID, $this->custID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $useclass, $debug);
-                } elseif ($this->tablesorter->orderby == 'subtotal') {
-                    $quotes = get_customerquotessubtotal($this->sessionID, $this->custID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $useclass, $debug);    
+                    $quotes = get_customerquotesexpdate($this->sessionID, $this->custID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $useclass, $debug); 
                 } else {
                     $quotes = get_customerquotesorderby($this->sessionID, $this->custID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $useclass, $debug);
                 }
