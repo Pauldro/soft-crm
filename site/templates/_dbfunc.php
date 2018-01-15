@@ -425,14 +425,24 @@
 	}
 
 	function get_salesrepordersorderdate($sessionID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug = false) {
-		$limiting = returnlimitstatement($limit, $page);
-		$sql = Processwire\wire('database')->prepare("SELECT orderdate, STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder, ordrhed.* FROM ordrhed
-					WHERE sessionid = :sessionID AND type = :type ORDER BY dateoforder $sortrule " . $limiting);
-		$switching = array(':sessionID' => $sessionID, ':type' => 'O'); $withquotes = array(true, true);
+		$q = (new QueryBuilder())->table('ordrhed');
+		$q->field('orderdate');
+		$q->field($q->expr("STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder, ordrhed.*"));
+		$q->where('sessionid', $sessionID);
+		$q->where('type', 'O');
+		$q->limit($limit, $q->generate_offset($page, $limit));
+		$q->order('dateoforder ' . $sortrule);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		
+		// $limiting = returnlimitstatement($limit, $page);
+		// $sql = Processwire\wire('database')->prepare("SELECT orderdate, STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder, ordrhed.* FROM ordrhed
+		//			WHERE sessionid = :sessionID AND type = :type ORDER BY dateoforder $sortrule " . $limiting);
+		// $switching = array(':sessionID' => $sessionID, ':type' => 'O'); $withquotes = array(true, true);
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			if ($useclass) {
 				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrder');
 				return $sql->fetchAll();
@@ -442,13 +452,23 @@
 	}
 
 	function get_salesrepordersorderby($sessionID, $limit = 10, $page = 1, $sortrule, $orderby, $useclass = false, $debug = false) {
-		$limiting = returnlimitstatement($limit, $page);
-		$sql = Processwire\wire('database')->prepare("SELECT ordrhed.*, CAST(odrsubtot AS DECIMAL(8,2)) AS subtotal FROM ordrhed WHERE sessionid = :sessionID  AND type = :type ORDER BY $orderby $sortrule " . $limiting);
-		$switching = array(':sessionID' => $sessionID, ':type' => 'O'); $withquotes = array(true, true);
+		$q = (new QueryBuilder())->table('ordrhed');
+		$q->field('ordrhed.*');
+		$q->field($q->expr("CAST(odrsubtot AS DECIMAL(8,2)) AS subtotal"));
+		$q->where('sessionid', $sessionID);
+		$q->where('type', 'O');
+		$q->limit($limit, $q->generate_offset($page, $limit));
+		$q->order($orderby .' '. $sortrule);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		// $limiting = returnlimitstatement($limit, $page);
+		// $sql = Processwire\wire('database')->prepare("SELECT ordrhed.*, CAST(odrsubtot AS DECIMAL(8,2)) AS subtotal FROM ordrhed WHERE sessionid = :sessionID  AND type = :type ORDER BY $orderby $sortrule " . $limiting);
+		// $switching = array(':sessionID' => $sessionID, ':type' => 'O'); $withquotes = array(true, true);
+		
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			if ($useclass) {
 				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrder');
 				return $sql->fetchAll();
@@ -458,19 +478,37 @@
 	}
 
 	function get_salesreporders($sessionID, $limit = 10, $page = 1, $useclass = false, $debug = false) {
-		$limiting = returnlimitstatement($limit, $page);
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM ordrhed WHERE sessionid = :sessionID AND type = :type ".$limiting);
-		$switching = array(':sessionID' => $sessionID, ':type' => 'O'); $withquotes = array(true, true);
+		$q = (new QueryBuilder())->table('ordrhed');
+		$q->field('*');
+		$q->where('sessionid', $sessionID);
+		$q->where('type', 'O');
+		$q->limit($limit, $q->generate_offset($page, $limit));
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			if ($useclass) {
 				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrder');
 				return $sql->fetchAll();
 			}
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
+		
+		// $limiting = returnlimitstatement($limit, $page);
+		// $sql = Processwire\wire('database')->prepare("SELECT * FROM ordrhed WHERE sessionid = :sessionID AND type = :type ".$limiting);
+		// $switching = array(':sessionID' => $sessionID, ':type' => 'O'); $withquotes = array(true, true);
+		// if ($debug) {
+		// 	return returnsqlquery($sql->queryString, $switching, $withquotes);
+		// } else {
+		// 	$sql->execute($switching);
+		// 	if ($useclass) {
+		// 		$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrder');
+		// 		return $sql->fetchAll();
+		// 	}
+		// 	return $sql->fetchAll(PDO::FETCH_ASSOC);
+		// }
 	}
 
 	function count_customerorders($sessionID, $custID, $debug) {
@@ -525,7 +563,7 @@
 		}
 	}
 
-	function get_customerordersorderdate($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug = false) {
+	function get_customerordersorderdate($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug) {
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->field('ordrhed.*');
 		$q->field($q->expr("STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder"));
