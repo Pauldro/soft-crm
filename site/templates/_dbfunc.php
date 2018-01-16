@@ -426,8 +426,8 @@
 
 	function get_salesrepordersorderdate($sessionID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
-		$q->field('orderdate');
-		$q->field($q->expr("STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder, ordrhed.*"));
+		$q->field('ordrhed.*');
+		$q->field($q->expr("STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder"));
 		$q->where('sessionid', $sessionID);
 		$q->where('type', 'O');
 		$q->limit($limit, $q->generate_offset($page, $limit));
