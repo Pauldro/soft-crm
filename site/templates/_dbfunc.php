@@ -434,11 +434,6 @@
 		$q->order('dateoforder ' . $sortrule);
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
-		
-		// $limiting = returnlimitstatement($limit, $page);
-		// $sql = Processwire\wire('database')->prepare("SELECT orderdate, STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder, ordrhed.* FROM ordrhed
-		//			WHERE sessionid = :sessionID AND type = :type ORDER BY dateoforder $sortrule " . $limiting);
-		// $switching = array(':sessionID' => $sessionID, ':type' => 'O'); $withquotes = array(true, true);
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -460,10 +455,6 @@
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order($orderby .' '. $sortrule);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
-		// $limiting = returnlimitstatement($limit, $page);
-		// $sql = Processwire\wire('database')->prepare("SELECT ordrhed.*, CAST(odrsubtot AS DECIMAL(8,2)) AS subtotal FROM ordrhed WHERE sessionid = :sessionID  AND type = :type ORDER BY $orderby $sortrule " . $limiting);
-		// $switching = array(':sessionID' => $sessionID, ':type' => 'O'); $withquotes = array(true, true);
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -495,20 +486,6 @@
 			}
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
-		
-		// $limiting = returnlimitstatement($limit, $page);
-		// $sql = Processwire\wire('database')->prepare("SELECT * FROM ordrhed WHERE sessionid = :sessionID AND type = :type ".$limiting);
-		// $switching = array(':sessionID' => $sessionID, ':type' => 'O'); $withquotes = array(true, true);
-		// if ($debug) {
-		// 	return returnsqlquery($sql->queryString, $switching, $withquotes);
-		// } else {
-		// 	$sql->execute($switching);
-		// 	if ($useclass) {
-		// 		$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrder');
-		// 		return $sql->fetchAll();
-		// 	}
-		// 	return $sql->fetchAll(PDO::FETCH_ASSOC);
-		// }
 	}
 
 	function count_customerorders($sessionID, $custID, $debug) {
