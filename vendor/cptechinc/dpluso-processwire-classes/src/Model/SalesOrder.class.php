@@ -91,7 +91,7 @@
 		public $btzip;
 		public $prntfmt;
 		public $prntfmtdisp;
-		public $dummy;       
+		public $dummy;
 		
 		/* =============================================================
  		   GETTER FUNCTIONS 
@@ -131,5 +131,3 @@
 			return $array;
 		}
 	}
-	
-	
