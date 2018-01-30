@@ -25,14 +25,6 @@ $(function() {
         calculateextendedprice();
         if ($(fields.price).val() < $(fields.minprice)) {
             console.log('Does not meet Minimum Price');
-            if (config.edit.show_minprice_error) {
-                $(fields.price).closest('tr').addClass('has-error');
-                var descriptionrow = "<tr class='has-error'>"
-                                     +"<td class='control-label'>Error: </td>"
-                                     +"<td><p class='form-control-static text-danger'>Does not meet Minimum Price</p></td>"
-                                     + "</tr>";
-                $(fields.price).closest('tr').before(descriptionrow);
-            }
         }
     });
 
