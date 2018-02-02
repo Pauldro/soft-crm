@@ -16,14 +16,13 @@
 				</select>
 			</td>
 		</tr>
-   		<?php include $config->paths->content.'edit/quotes/quotehead/phone-intl.php'; ?>
     	<?php include $config->paths->content.'edit/quotes/quotehead/phone-domestic.php'; ?>
     <?php else : ?>
     	<?php include $config->paths->content.'edit/quotes/quotehead/phone-domestic.php'; ?>
     <?php endif; ?>
     <tr>
     	<td class="control-label">Contact Email</td>
-        <td> <input type="email" name="contact-email" class="form-control input-sm email" value="<?= $quote->emailadr; ?>"> </td>
+        <td> <input type="text" name="contact-email" class="form-control input-sm email" value="<?= $quote->emailadr; ?>"> </td>
     </tr>
 </table>
 
