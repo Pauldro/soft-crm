@@ -2,712 +2,712 @@
     "fields": {
         "sessionid": {
             "label": "Session ID",
-            "required": "false",
-            "datatype": "Text-numeric",
+            "required": true,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "recno": {
             "label": "Record Number",
-            "required": "false",
-            "datatype": "Text-numeric",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "date": {
             "label": "Date",
-            "required": "false",
-            "datatype": "Date",
+            "required": false,
+            "datatype": "D",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": "m/d/Y"
         },
         "time": {
             "label": "Time",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "type": {
             "label": "Type",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "custid": {
             "label": "Customer ID",
-            "required": "false",
-            "datatype": "Text-numeric",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "shiptoid": {
             "label": "Ship-to ID",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "custname": {
             "label": "Customer Name",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "date": {
             "label": "Date",
-            "required": "false",
-            "datatype": "Date",
+            "required": false,
+            "datatype": "D",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": "m/d/Y"
         },
         "orderno": {
             "label": "Sales Order",
-            "required": "false",
-            "datatype": "Text-numeric",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "custpo": {
             "label": "Customer PO",
-            "required": "false",
-            "datatype": "Text-numeric",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "custref": {
             "label": "Cust Ref",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "status": {
             "label": "Status",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "orderdate": {
             "label": "Order Date",
-            "required": "false",
-            "datatype": "Date",
+            "required": false,
+            "datatype": "D",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": "m/d/Y"
         },
         "careof": {
             "label": "Careof",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "quotdate": {
             "label": "Quote Date",
-            "required": "false",
-            "datatype": "Date",
+            "required": false,
+            "datatype": "D",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": "m/d/Y"
         },
         "invdate": {
             "label": "Invoice Date",
-            "required": "false",
-            "datatype": "Date",
+            "required": false,
+            "datatype": "D",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": "m/d/Y"
         },
         "shipdate": {
             "label": "Ship Date",
-            "required": "false",
-            "datatype": "Date",
+            "required": false,
+            "datatype": "D",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": "m/d/Y"
         },
         "revdate": {
             "label": "Rev Date",
-            "required": "false",
-            "datatype": "Date",
+            "required": false,
+            "datatype": "D",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": "m/d/Y"
         },
         "expdate": {
             "label": "Exp Date",
-            "required": "false",
-            "datatype": "Date",
+            "required": false,
+            "datatype": "D",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": "m/d/Y"
         },
         "havedoc": {
             "label": "Has Docs",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "havetrk": {
             "label": "Tracking",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "odrsubtot": {
             "label": "Order Subtotal",
-            "required": "false",
-            "datatype": "Numeric",
+            "required": false,
+            "datatype": "N",
             "before-decimal": 7,
             "after-decimal": 3,
             "date-format": false
         },
         "odrtax": {
             "label": "Order Tax",
-            "required": "false",
-            "datatype": "Numeric",
+            "required": false,
+            "datatype": "N",
             "before-decimal": 7,
             "after-decimal": 3,
             "date-format": false
         },
         "odrfrt": {
             "label": "Order Format",
-            "required": "false",
-            "datatype": "Numeric",
+            "required": false,
+            "datatype": "N",
             "before-decimal": 7,
             "after-decimal": 3,
             "date-format": false
         },
         "odrmis": {
             "label": "Order Mis",
-            "required": "false",
-            "datatype": "Numeric",
+            "required": false,
+            "datatype": "N",
             "before-decimal": 7,
             "after-decimal": 3,
             "date-format": false
         },
         "odrtotal": {
             "label": "Order Total",
-            "required": "false",
-            "datatype": "Numeric",
+            "required": false,
+            "datatype": "N",
             "before-decimal": 7,
             "after-decimal": 3,
             "date-format": false
         },
         "havenote": {
             "label": "Have Note",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "editord": {
             "label": "Edit",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "error": {
             "label": "Error",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "errormsg": {
             "label": "Error Message",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "sconame": {
             "label": "Sco Name",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "sname": {
             "label": "S Name",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "saddress": {
             "label": "S Address",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "saddress2": {
             "label": "S Address2",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "scity": {
             "label": "S City",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "sst": {
             "label": "S State",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "szip": {
             "label": "S Zip",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "scountry": {
             "label": "S Country",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "contact": {
             "label": "Contact",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "phintl": {
             "label": "Intl Phone",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "phone": {
             "label": "Phone",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "extension": {
             "label": "Extension",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "faxnumber": {
             "label": "Fax Number",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "email": {
             "label": "Email",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "releasenbr": {
             "label": "Release Num",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "shipviacd": {
             "label": "Ship via CD",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "shipviadesc": {
             "label": "Ship via Desc",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "priccode": {
             "label": "Price Code",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "pricdesc": {
             "label": "Price Desc",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "pricdisp": {
             "label": "Price Disp",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "taxcode": {
             "label": "Tax Code",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "taxcodedesc": {
             "label": "TaxCodeDesc",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "taxcodedisp": {
             "label": "TaxCodeDisp",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "termcode": {
             "label": "TermCode",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "termtype": {
             "label": "TermType",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "termdesc": {
             "label": "TermDesc",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "rqstdate": {
             "label": "Request Date",
-            "required": "false",
-            "datatype": "Date",
+            "required": false,
+            "datatype": "D",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": "m/d/Y"
         },
         "shipcom": {
             "label": "ShipCom",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "sp1": {
             "label": "SalesRep",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "sp1name": {
             "label": "SalesRepName",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "sp2": {
             "label": "SalesRep2",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "sp2name": {
             "label": "SalesRep2Name",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "sp2disp": {
             "label": "SalesRepDisp",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "sp3": {
             "label": "SalesRep3",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "sp3name": {
             "label": "SalesRep3Name",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "sp3disp": {
             "label": "SalesRep3Disp",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "fob": {
             "label": "FOB",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "deliverydesc": {
             "label": "DeliveryDesc",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "whse": {
             "label": "Warehouse",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "ccno": {
             "label": "CreditCardNo",
-            "required": "false",
-            "datatype": "Text-Numeric",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "xpdate": {
             "label": "CCExpDate",
-            "required": "false",
-            "datatype": "Date",
+            "required": false,
+            "datatype": "D",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": "m/d/Y"
         },
         "ccvalidcode": {
             "label": "CC Code",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "ccapproval": {
             "label": "CCApproval",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "costtot": {
             "label": "Cost Total",
-            "required": "false",
-            "datatype": "Numeric",
+            "required": false,
+            "datatype": "N",
             "before-decimal": 7,
             "after-decimal": 3,
             "date-format": false
         },
         "totdisc": {
             "label": "Total Disc",
-            "required": "false",
-            "datatype": "Numeric",
+            "required": false,
+            "datatype": "N",
             "before-decimal": 7,
             "after-decimal": 3,
             "date-format": false
         },
         "paytype": {
             "label": "PayType",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "srcdatefrom": {
             "label": "SrcDateFrom",
-            "required": "false",
-            "datatype": "Date",
+            "required": false,
+            "datatype": "D",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": "m/d/Y"
         },
         "srcdatethru": {
             "label": "SrcDateThru",
-            "required": "false",
-            "datatype": "Date",
+            "required": false,
+            "datatype": "D",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": "m/d/Y"
         },
         "btname": {
             "label": "BillName",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "btadr1": {
             "label": "BillAddress",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "btadr2": {
             "label": "BillAddress2",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "btadr3": {
             "label": "BillAddress3",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "btctry": {
             "label": "BillCountry",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "btcity": {
             "label": "BillCity",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "btstate": {
             "label": "BillState",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "btzip": {
             "label": "BillZip",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "prntfmt": {
             "label": "PrintFormat",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false
         },
         "prntfmtdisp": {
             "label": "PrintFormatDisp",
-            "required": "false",
-            "datatype": "Text",
+            "required": false,
+            "datatype": "C",
             "before-decimal": false,
             "after-decimal": false,
             "date-format": false

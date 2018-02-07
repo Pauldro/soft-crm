@@ -33,7 +33,7 @@
     	<td class="control-label">Sales Person</td> <td> <p class="form-control-static"><?= $order->sp1; ?> - <?= $order->sp1name; ?></p> </td>
     </tr>
 	<tr>
-    	<td class="control-label">Cust PO<b class="text-danger">*</b></td> <td> <input type="text" name="custpo" class="form-control input-sm required" value="<?= $order->custpo; ?>"> </td>
+    	<td class="control-label"><?= $formconfig->fields['fields']['custpo']['label']; ?> <b class="text-danger">*</b></td> <td> <input type="text" name="custpo" class="form-control input-sm <?php echo $formconfig->generate_showrequiredclass('custpo'); ?>" value="<?= $order->custpo; ?>"> </td>
     </tr>
     <tr>
     	<td class="control-label">Release #</td> <td> <input type="text" name="release-number" class="form-control input-sm" value="<?= $order->releasenbr; ?>"> </td>
