@@ -155,6 +155,14 @@ $(document).ready(function() {
 				window.location.href = href;
 			}
 		});
+		
+		$("body").on("change", ".required", function() {
+			if ($(this).val() != '') {
+				$(this).closest('tr').removeClass('has-error');
+			} else if ($(this).val() == '') {
+				$(this).closest('tr').addClass('has-error');
+			}
+		});
 
 	/*==============================================================
 	  AJAX LOAD FUNCTIONS

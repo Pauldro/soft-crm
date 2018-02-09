@@ -71,6 +71,10 @@
             return $this->fields['fields'][$key]['required'] ? 'required' : '';
         }
         
+        public function generate_asterisk($key) {
+            return $this->fields['fields'][$key]['required'] ? '&nbsp;<b class="text-danger">*</b>' : '';
+        }
+        
         /* =============================================================
     		CRUD FUNCTIONS
     	============================================================ */
