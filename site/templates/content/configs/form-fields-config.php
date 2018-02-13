@@ -1,6 +1,5 @@
 <?php 
     $formtype = $page->parent->name;
-    $formtype = 'sales-order';
     $formconfig = new FormFieldsConfig($formtype);
     $datetypes = array('m/d/y' => 'MM/DD/YY', 'm/d/Y' => 'MM/DD/YYYY', 'm/d' => 'MM/DD', 'm/Y' => 'MM/YYYY')
 ?>

@@ -33,7 +33,7 @@
             "date-format": false
         },
         "quotnbr": {
-            "label": "Quote Num",
+            "label": "Quote No",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -57,7 +57,7 @@
             "date-format": false
         },
         "btname": {
-            "label": "BillName",
+            "label": "Billing Name",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -65,7 +65,7 @@
             "date-format": false
         },
         "btadr1": {
-            "label": "BillAddress",
+            "label": "Billing Address",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -73,7 +73,7 @@
             "date-format": false
         },
         "btadr2": {
-            "label": "BillAddress2",
+            "label": "Billing Address 2",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -81,7 +81,7 @@
             "date-format": false
         },
         "btadr3": {
-            "label": "BillAddress3",
+            "label": "Billing Address 3",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -89,7 +89,7 @@
             "date-format": false
         },
         "btctry": {
-            "label": "BillCountry",
+            "label": "Billing Country",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -97,7 +97,7 @@
             "date-format": false
         },
         "btcity": {
-            "label": "BillCity",
+            "label": "Billing City",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -105,7 +105,7 @@
             "date-format": false
         },
         "btstate": {
-            "label": "BillState",
+            "label": "Billing State",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -113,7 +113,7 @@
             "date-format": false
         },
         "btzip": {
-            "label": "BillZip",
+            "label": "Billing Zip",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -129,7 +129,7 @@
             "date-format": false
         },
         "stname": {
-            "label": "ShipName",
+            "label": "Shipping Name",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -137,7 +137,7 @@
             "date-format": false
         },
         "stadr1": {
-            "label": "ShipAddress",
+            "label": "Shipping Address",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -145,7 +145,7 @@
             "date-format": false
         },
         "stadr2": {
-            "label": "ShipAddress2",
+            "label": "Shipping Address 2",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -153,7 +153,7 @@
             "date-format": false
         },
         "stadr3": {
-            "label": "ShipAddress3",
+            "label": "Shipping Address 3",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -161,7 +161,7 @@
             "date-format": false
         },
         "stctry": {
-            "label": "ShipCountry",
+            "label": "Shipping Country",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -169,7 +169,7 @@
             "date-format": false
         },
         "stcity": {
-            "label": "ShipCity",
+            "label": "Shipping City",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -177,7 +177,7 @@
             "date-format": false
         },
         "ststate": {
-            "label": "ShipState",
+            "label": "Shipping State",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -185,7 +185,7 @@
             "date-format": false
         },
         "stzip": {
-            "label": "ShipZip",
+            "label": "Shipping Zip",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -233,7 +233,7 @@
             "date-format": false
         },
         "quotdate": {
-            "label": "QuoteDate",
+            "label": "Quote Date",
             "required": false,
             "datatype": "D",
             "before-decimal": false,
@@ -241,7 +241,7 @@
             "date-format": "m/d/Y"
         },
         "revdate": {
-            "label": "RevDate",
+            "label": "Review Date",
             "required": false,
             "datatype": "D",
             "before-decimal": false,
@@ -249,7 +249,7 @@
             "date-format": "m/d/Y"
         },
         "expdate": {
-            "label": "ExpDate",
+            "label": "Expire Date",
             "required": false,
             "datatype": "D",
             "before-decimal": false,
@@ -257,7 +257,7 @@
             "date-format": "m/d/Y"
         },
         "priccode": {
-            "label": "PriceCode",
+            "label": "Price Code",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -265,7 +265,7 @@
             "date-format": false
         },
         "priccodedesc": {
-            "label": "PriceCodeDesc",
+            "label": "Price Code Desc",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -273,7 +273,7 @@
             "date-format": false
         },
         "taxcode": {
-            "label": "TaxCode",
+            "label": "Tax Code",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -281,7 +281,7 @@
             "date-format": false
         },
         "taxcodedesc": {
-            "label": "TaxCodeDesc",
+            "label": "Tax Code Desc",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -289,7 +289,7 @@
             "date-format": false
         },
         "termcode": {
-            "label": "TermCode",
+            "label": "Term Code",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -297,7 +297,7 @@
             "date-format": false
         },
         "termcodedesc": {
-            "label": "TermCodeDesc",
+            "label": "Term Code Desc",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -305,7 +305,7 @@
             "date-format": false
         },
         "sviacode": {
-            "label": "SViaCode",
+            "label": "Ship Via Code",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -313,7 +313,7 @@
             "date-format": false
         },
         "sviacodedesc": {
-            "label": "SviaCodeDesc",
+            "label": "Svia Code Desc",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -329,7 +329,7 @@
             "date-format": false
         },
         "sp1pct": {
-            "label": "SalesRepContact",
+            "label": "Sales Rep Contact",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -337,7 +337,7 @@
             "date-format": false
         },
         "sp1name": {
-            "label": "SalesRepName",
+            "label": "Sales Rep Name",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -345,7 +345,7 @@
             "date-format": false
         },
         "sp2": {
-            "label": "SalesRep2",
+            "label": "Sales Re p2",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -353,7 +353,7 @@
             "date-format": false
         },
         "sp2pct": {
-            "label": "SalesRep2Contact",
+            "label": "Sales Rep 2 Contact",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -361,7 +361,7 @@
             "date-format": false
         },
         "sp2name": {
-            "label": "SalesRep2Name",
+            "label": "Sales Rep 2 Name",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -369,7 +369,7 @@
             "date-format": false
         },
         "sp3": {
-            "label": "SalesRep3",
+            "label": "Sales Rep 3",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -377,7 +377,7 @@
             "date-format": false
         },
         "sp3pct": {
-            "label": "SalesRep3Contact",
+            "label": "Sales Rep 3 Contact",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -385,7 +385,7 @@
             "date-format": false
         },
         "sp3name": {
-            "label": "SalesRep3Name",
+            "label": "Sales Rep 3 Name",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -401,7 +401,7 @@
             "date-format": false
         },
         "deliverydesc": {
-            "label": "DeliveryDesc",
+            "label": "Delivery Desc",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -425,7 +425,7 @@
             "date-format": false
         },
         "custref": {
-            "label": "CustRef",
+            "label": "Cust Reference",
             "required": false,
             "datatype": "C",
             "before-decimal": false,
@@ -465,7 +465,7 @@
             "date-format": false
         },
         "salestax": {
-            "label": "Salestax",
+            "label": "Sales Tax",
             "required": false,
             "datatype": "N",
             "before-decimal": 7,
@@ -505,7 +505,7 @@
             "date-format": false
         },
         "margin_amt": {
-            "label": "MarginAmt",
+            "label": "Margin Amount",
             "required": false,
             "datatype": "N",
             "before-decimal": 7,
@@ -513,7 +513,7 @@
             "date-format": false
         },
         "margin_pct": {
-            "label": "MarginPct",
+            "label": "Margin Percent",
             "required": false,
             "datatype": "N",
             "before-decimal": 3,
