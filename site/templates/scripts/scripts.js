@@ -283,7 +283,7 @@ $(document).ready(function() {
 			});
 		});
 
-		$("body").on("submit", "#order-search-form", function(e)  { //FIXME
+		$("body").on("submit", "#order-filter-form", function(e)  { //FIXME Barbara - changed from order-search-form
 			e.preventDefault();
 			var form = "#"+$(this).attr('id');
 			var loadinto = $(this).data('loadinto');

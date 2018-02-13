@@ -192,28 +192,31 @@
 			//so if we are searching order# then the searchType will be ORDERNBR and the cobol program will know to fill our mysql based on ordernbr
 
 			$data = array('DBNAME' => $config->dbName, 'ORDRHED' => false, 'CUSTID' => $custID, $searchtype => $searchterm);
-			switch ($orderstatus) {
-				case 'O':
-					$os = 'Open Orders';
-					$session->{'ordertype'} = 'O';
-					break;
-				case 'AS':
-					$os = 'Open Orders';
-					$session->{'ordertype'} = 'O';
-					$orderStatus = 'O';
-					break;
-				case 'B':
-					$os = 'Booked Orders';
-					$session->{'ordertype'} = 'B';
-					break;
-				case 'S':
-					$os = 'Shipped Orders';
-					$session->{'ordertype'} = 'S';
-					break;
-				default:
-					$os = 'Both Open and Shipped Orders';
-					$session->{'ordertype'} = '';
-			}
+			
+			// ----------------- ORDER SEARCH FORM -----------------
+			// switch ($orderstatus) {
+			// 	case 'O':
+			// 		$os = 'Open Orders';
+			// 		$session->{'ordertype'} = 'O';
+			// 		break;
+			// 	case 'AS':
+			// 		$os = 'Open Orders';
+			// 		$session->{'ordertype'} = 'O';
+			// 		$orderStatus = 'O';
+			// 		break;
+			// 	case 'B':
+			// 		$os = 'Booked Orders';
+			// 		$session->{'ordertype'} = 'B';
+			// 		break;
+			// 	case 'S':
+			// 		$os = 'Shipped Orders';
+			// 		$session->{'ordertype'} = 'S';
+			// 		break;
+			// 	default:
+			// 		$os = 'Both Open and Shipped Orders';
+			// 		$session->{'ordertype'} = '';
+			// }
+			
 			$data['TYPE'] = $orderstatus;
 
 			if ($searchterm == '' ) {
