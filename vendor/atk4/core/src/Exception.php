@@ -18,7 +18,6 @@ class Exception extends \Exception
      */
     private $params = [];
 
-    /** @var array */
     public $trace2; // because PHP's use of final() sucks!
 
     /**
@@ -31,7 +30,7 @@ class Exception extends \Exception
     public function __construct(
         $message = '',
         $code = 0,
-        /* \Throwable */ $previous = null
+        \Exception $previous = null
     ) {
         if (is_array($message)) {
             // message contain additional parameters
@@ -43,26 +42,6 @@ class Exception extends \Exception
         $this->trace2 = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT);
     }
 
-    /**
-     * Change message (subject) of a current exception. Primary use is
-     * for localization purposes.
-     *
-     * @param string $message
-     *
-     * @return $this
-     */
-    public function setMessage($message)
-    {
-        $this->message = $message;
-
-        return $this;
-    }
-
-    /**
-     * Return trace array.
-     *
-     * @return array
-     */
     public function getMyTrace()
     {
         return $this->trace2;

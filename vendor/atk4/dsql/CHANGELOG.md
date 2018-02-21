@@ -1,24 +1,3 @@
-## 1.1.5
-
-- Migrate to Agile Core 1.3
-
-## 1.1.4
-
-- Migrate to Agile Core 1.2
-
-## 1.1.3
-
-- Added release script
-
-## 1.1.2
-
- - Fix how getDebugQuery() works without sql-formatter
- - Fix Query::dsql will return instance of same class if you extend. #116
-
-## 1.1.1
-
-Bugfix and README.md update.
-
 ## 1.1.0
 
 This version now officially supports PHP 7.1, as well as adding

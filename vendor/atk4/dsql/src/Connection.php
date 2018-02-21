@@ -171,7 +171,6 @@ class Connection
     public function atomic($f)
     {
         $this->beginTransaction();
-
         try {
             $res = call_user_func($f);
             $this->commit();
@@ -179,7 +178,6 @@ class Connection
             return $res;
         } catch (\Exception $e) {
             $this->rollBack();
-
             throw $e;
         }
     }

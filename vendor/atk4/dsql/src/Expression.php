@@ -241,7 +241,6 @@ class Expression implements \ArrayAccess, \IteratorAggregate
                 case 'none':
                     return $sql_code;
             }
-
             throw new Exception([
                 '$escape_mode value is incorrect',
                 'escape_mode' => $escape_mode,
@@ -478,7 +477,7 @@ class Expression implements \ArrayAccess, \IteratorAggregate
             $result = $d;  // output as-is
         }
         if (!$html) {
-            return str_replace('#lte#', '<=', strip_tags(str_replace('<=', '#lte#', $result), '<>'));
+            return strip_tags($result, '<>');
         }
 
         return $result;
@@ -562,7 +561,6 @@ class Expression implements \ArrayAccess, \IteratorAggregate
                     'query' => $this->getDebugQuery(),
                 ]);
                 $new->by_exception = $e;
-
                 throw $new;
             }
 

@@ -23,6 +23,20 @@
 		$sql->execute($switching);
 		return $sql->fetch(PDO::FETCH_ASSOC);
 	}
+	
+	function has_restrictedcustomers($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('logperm');
+		$q->field($q->expr("IF(restrictcustomers = 'Y',1,0)"));
+		$q->where('sessionid', $sessionID);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
 /* =============================================================
 	PERMISSION FUNCTIONS
 ============================================================ */
@@ -84,7 +98,7 @@
 		return $sql->fetchColumn();
 	}
 
-	function get_shiptoname($custID, $shipID, $debug) {
+	function get_shiptoname($custID, $shipID, $debug = false) {
 		$sql = Processwire\wire('database')->prepare("SELECT name FROM custindex WHERE custid = :custID AND shiptoid = :shipID LIMIT 1");
 		$switching = array(':custID' => $custID, ':shipID' => $shipID); $withquotes = array(true, true);
 		if ($debug) {
@@ -162,6 +176,24 @@
 			$sql->execute($switching);
 			$sql->setFetchMode(PDO::FETCH_CLASS, 'Customer');
 			return $sql->fetchAll();
+		}
+	}
+	
+	function get_topxsellingshiptos($sessionID, $custID, $count, $debug = false) {
+		$loginID = (Processwire\wire('user')->hascontactrestrictions) ? Processwire\wire('user')->loginid : 'admin';
+		$q = (new QueryBuilder())->table('custperm');
+		$q->where('loginid', $loginID);
+		$q->where('custid', $custID);
+		$q->where('shiptoid', '!=', '');
+		$q->limit($count);
+		$q->order('amountsold DESC');
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
 
@@ -366,22 +398,20 @@
 		}
 	}
 
-	function get_topxsellingcustomers($loginID, $numberofcustomers, $restrictions, $debug = false) {
-		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
-		if ($restrictions) {
-			$sql = Processwire\wire('database')->prepare("SELECT custid, shiptoid, name, amountsold, timesold, lastsaledate FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) GROUP BY custid, shiptoid ORDER BY CAST(amountsold as Decimal(10,8)) DESC LIMIT $numberofcustomers");
-			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS); $withquotes = array(true, true);
-		} else {
-			$sql = Processwire\wire('database')->prepare("SELECT custid, shiptoid, name, amountsold, timesold, lastsaledate FROM custindex GROUP BY custid, shiptoid ORDER BY CAST(amountsold as Decimal(10,8)) DESC LIMIT $numberofcustomers");
-			$switching = array(); $withquotes = array();
-		}
+	function get_topxsellingcustomers($sessionID, $numberofcustomers, $debug = false) {
+		$loginID = (Processwire\wire('user')->hascontactrestrictions) ? Processwire\wire('user')->loginid : 'admin';
+		$q = (new QueryBuilder())->table('custperm');
+		$q->where('loginid', $loginID);
+		$q->where('shiptoid', '');
+		$q->limit($numberofcustomers);
+		$q->order('amountsold DESC');
+		$sql = Processwire\wire('database')->prepare($q->render());
 
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
-			$sql->setFetchMode(PDO::FETCH_CLASS, 'Customer');
-			return $sql->fetchAll();
+			$sql->execute($q->params);
+			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
 
@@ -414,12 +444,15 @@
 	ORDERS FUNCTIONS
 ============================================================ */
 	function count_salesreporders($sessionID, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT IF(COUNT(DISTINCT(custid)) > 1,COUNT(*),0) as count FROM ordrhed WHERE sessionid = :sessionID AND type = :type");
-		$switching = array(':sessionID' => $sessionID, ':type' => 'O'); $withquotes = array(true, true);
+		$q = (new QueryBuilder())->table('ordrhed');
+		$q->field($q->expr('IF (COUNT(*) = 1, 1, IF(COUNT(DISTINCT(custid)) > 1, COUNT(*), 0)) as count'));
+		$q->where('sessionid', $sessionID);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			return $sql->fetchColumn();
 		}
 	}
@@ -1860,31 +1893,61 @@
 	/* =============================================================
 		ITEM MASTER FUNCTIONS
 	============================================================ */
-	function search_itm($q, $onlyitemid, $custID, $limit, $page, $debug) {
-		$limiting = returnlimitstatement($limit, $page);
-		$search = '%'.str_replace(' ', '%', $q).'%';
+	function search_items($query, $custID, $limit, $page, $debug = false) {
+		$search = '%'.str_replace(' ', '%', $query).'%';
+		$q = (new QueryBuilder())->table('itemsearch');
+		
 		if (empty($custID)) {
-			if ($onlyitemid) {
-				$sql = Processwire\wire('database')->prepare("SELECT * FROM itemsearch WHERE UCASE(itemid) LIKE UCASE(:search) AND origintype IN ('I', 'V') GROUP BY itemid $limiting");
-				$switching = array(':search' => $search); $withquotes = array(true);
-			} else {
-				$sql = Processwire\wire('database')->prepare("SELECT * FROM itemsearch WHERE UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND origintype IN ('I', 'V') GROUP BY itemid $limiting");
-				$switching = array(':search' => $search); $withquotes = array(true);
-			}
+			$q->where('origintype', ['I', 'V']);
+			$q->where(
+		        $q
+		        ->orExpr()
+		        ->where($q->expr("UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]))
+		        ->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]))
+		    );
 		} else {
-			if ($onlyitemid) {
-				$sql = Processwire\wire('database')->prepare("SELECT * FROM itemsearch WHERE (originid = (:custID) AND UCASE(refitemid) LIKE UCASE(:search)) OR (UCASE(itemid) like UCASE(:search)) GROUP BY itemid $limiting ");
-				$switching = array(':search' => $search, ':custID' => $custID); $withquotes = array(true, true);
-			} else {
-				$sql = Processwire\wire('database')->prepare("SELECT * FROM itemsearch WHERE (UCASE(CONCAT(itemid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND origintype IN ('I', 'V')) OR (UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND originid = :custID) GROUP BY itemid $limiting");
-				$switching = array(':search' => $search, ':custID' => $custID); $withquotes = array(true, true);
-			}
+			$q->where('origintype', ['I', 'V', 'C']);
+			$q->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]));
 		}
+		$q->order($q->expr("itemid LIKE UCASE([]) DESC", [$search]));
+		$q->group('itemid');
+		$q->limit($limit, $q->generate_offset($page, $limit));
+		
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'XRefItem');
+			return $sql->fetchAll();
+		}
+	}
+	
+	function count_searchitems($q, $custID, $debug = false) {
+		$search = '%'.str_replace(' ', '%', $q).'%';
+		$q = (new QueryBuilder())->table('itemsearch');
+		$q->field('COUNT(DISTINCT(itemid))');
+		
+		if (empty($custID)) {
+			$q->where('origintype', ['I', 'V']);
+			$q->where(
+		        $q
+		        ->orExpr()
+		        ->where($q->expr("UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]))
+		        ->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]))
+		    );
+		} else {
+			$q->where('origintype', ['I', 'V', 'C']);
+			$q->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]));
+		}
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
 		}
 	}
 
@@ -1897,33 +1960,6 @@
 			$switching = array(':itemID' => $itemID, ':custID' => $custID); $withquotes = array(true, true);
 		}
 
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return $sql->fetchColumn();
-		}
-	}
-
-	function search_itmcount($q, $onlyitemid, $custID, $debug) {
-		$search = '%'.str_replace(' ', '%', $q).'%';
-		if (empty($custID)) {
-			if ($onlyitemid) {
-				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE UCASE(itemid) LIKE UCASE(:search) AND origintype IN ('I', 'V') GROUP BY itemid $limiting");
-				$switching = array(':search' => $search); $withquotes = array(true);
-			} else {
-				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND origintype IN ('I', 'V')");
-				$switching = array(':search' => $search); $withquotes = array(true);
-			}
-		} else {
-			if ($onlyitemid) {
-				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE (originid = (:custID) AND UCASE(refitemid) LIKE UCASE(:search)) OR (UCASE(itemid) like UCASE(:search))");
-				$switching = array(':search' => $search, ':custID' => $custID); $withquotes = array(true, true);
-			} else {
-				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE (UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND origintype IN ('I', 'V')) OR (UCASE(CONCAT(itemid, ' ', refitemid, ' ', originid, ' ', desc1, ' ', desc2)) LIKE UCASE(:search) AND originid = :custID)");
-				$switching = array(':search' => $search, ':custID' => $custID); $withquotes = array(true, true);
-			}
-		}
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -2112,5 +2148,85 @@
 		} else {
 			$sql->execute($switching);
 			return $sql->fetchColumn();
+		}
+	}
+
+  /* =============================================================
+		CUSTOMER JSON CONFIGS
+	============================================================ */
+	function does_customerconfigexist($config, $debug = false) {
+		$q = (new QueryBuilder())->table('customerconfigs');
+		$q->field($q->expr('COUNT(*)'));
+		$q->where('configtype', $config);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+
+	function get_customerconfig($config, $debug = false) {
+		$q = (new QueryBuilder())->table('customerconfigs');
+		$q->field('data');
+		$q->where('configtype', $config);
+		$q->limit(1);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+	
+	function update_customerconfig($config, $data, $debug = false) {
+		$q = (new QueryBuilder())->table('customerconfigs');
+		$q->mode('update');
+		$q->set('data', $data);
+		$q->where('configtype', $config);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return array('sql' => $q->generate_sqlquery($q->params), 'success' => $sql->rowCount() ? true : false, 'updated' => $sql->rowCount() ? true : false, 'querytype' => 'update');
+		}
+	}
+	
+	function create_customerconfig($config, $data, $debug = false) {
+		$q = (new QueryBuilder())->table('customerconfigs');
+		$q->mode('insert');
+		$q->set('data', $data);
+		$q->set('configtype', $config);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return array('sql' => $q->generate_sqlquery($q->params), 'success' => Processwire\wire('database')->lastInsertId() > 0 ? true : false, 'id' => Processwire\wire('database')->lastInsertId(), 'querytype' => 'create');
+		}
+	}
+
+	/* =============================================================
+		LOGM FUNCTIONS
+	============================================================ */
+	function get_logmuser($loginID, $debug = false) {
+		$q = (new QueryBuilder())->table('logm');
+		$q->where('loginid', $loginID);
+
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'LogmUser');
+			return $sql->fetch();
 		}
 	}

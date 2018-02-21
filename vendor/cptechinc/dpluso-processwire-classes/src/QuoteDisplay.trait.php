@@ -83,6 +83,9 @@
         }
         
         public function generate_orderquotelink(Order $quote) {
+            if (!has_dpluspermission(Processwire\wire('user')->loginid, 'eso')) {
+                return false;
+            }
             $bootstrap = new Contento();
             $href = $this->generate_orderquoteurl($quote);
             $icon = $bootstrap->createicon('glyphicon glyphicon-print');
@@ -106,6 +109,21 @@
         public function generate_viewprinturl(Order $quote) {
             $url = new \Purl\Url($this->generate_loaddetailsurl($quote));
             $url->query->set('print', 'true');
+            return $url->getUrl();
+        }
+        
+        public function generate_viewprintpage(Order $quote) {
+            $url = new \Purl\Url($this->pageurl->getUrl());
+            $url->path = wire('config')->pages->print."quote/";
+            $url->query->set('qnbr', $quote->quotnbr);
+            $url->query->set('print', 'true');
+            return $url->getUrl();
+        }
+        
+        public function generate_sendemailurl(Order $quote) {
+            $url = new \Purl\Url(wire('config')->pages->email."quote/");
+            $url->query->set('qnbr', $quote->quotnbr);
+            $url->query->set('referenceID', $this->sessionID);
             return $url->getUrl();
         }
         
