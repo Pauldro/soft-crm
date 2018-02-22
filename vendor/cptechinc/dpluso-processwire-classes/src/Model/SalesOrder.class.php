@@ -89,7 +89,7 @@
 		}
 		
 		public function update_payment($debug = false) {
-			return edit_orderhead_credit($sessionID, $this->orderno, $this->paytype, $this->cardnumber, $this->cardexpire, $this->cardcode, $debug) ;
+			return edit_orderhead_credit($sessionID, $this->orderno, $this->paymenttype, $this->cardnumber, $this->cardexpire, $this->cardcode, $debug) ;
 		}
 		
 		public function has_changes() {
