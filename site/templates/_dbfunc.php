@@ -1921,10 +1921,10 @@
 	function edit_orderhead_credit($sessionID, $ordn, $paytype, $ccno, $expdate, $ccv, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->mode('update');
-		$q->set('paytype', $paytype);
-		$q->set('ccno', $q->expr('AES_ENCRYPT([], HEX([]))', [$ccno, $sessionID]));
-		$q->set('xpdate', $q->expr('AES_ENCRYPT([], HEX([]))', [$expdate, $sessionID]));
-		$q->set('ccvalidcode', $q->expr('AES_ENCRYPT([], HEX([]))', [$ccv, $sessionID]));
+		$q->set('paymenttype', $paytype);
+		$q->set('cardnumber', $q->expr('AES_ENCRYPT([], HEX([]))', [$ccno, $sessionID]));
+		$q->set('cardexpire', $q->expr('AES_ENCRYPT([], HEX([]))', [$expdate, $sessionID]));
+		$q->set('cardcode', $q->expr('AES_ENCRYPT([], HEX([]))', [$ccv, $sessionID]));
 		$q->where('orderno', $ordn);
 		$q->where('sessionid', $sessionID);
 		
@@ -1965,8 +1965,8 @@
 		}
 	}
 
-	function get_ordercreditcard($sessionID, $ordn, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT sessionid, AES_DECRYPT(ccno , HEX(sessionid)) AS cardnumber, AES_DECRYPT(ccvalidcode , HEX(sessionid)) AS cardcode, AES_DECRYPT(xpdate, HEX(sessionid)) AS expiredate FROM ordrhed WHERE sessionid = :sessionID AND orderno = :ordn AND type = 'O'");
+	function get_ordercreditcard($sessionID, $ordn, $debug) { //CHANGE TO QUERYBUILDER
+		$sql = Processwire\wire('database')->prepare("SELECT sessionid, AES_DECRYPT(cardnumber , HEX(sessionid)) AS cardnumber, AES_DECRYPT(cardcode , HEX(sessionid)) AS cardcode, AES_DECRYPT(cardexpire, HEX(sessionid)) AS expiredate FROM ordrhed WHERE sessionid = :sessionID AND orderno = :ordn AND type = 'O'");
 		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn); $withquotes = array(true, true);
 		$sql->execute($switching);
 		if ($debug) {
