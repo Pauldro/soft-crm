@@ -54,4 +54,19 @@
 		public static function load($sessionID, $ordn, $linenbr, $debug = false) {
 			return get_orderdetail($sessionID, $ordn, $linenbr, $debug);
 		}
+		public function update($debug = false) {
+			return update_orderdetail($this->sessionid, $this, $debug);
+		}
+		
+		public function has_changes() {
+			$properties = array_keys(get_object_vars($this));
+			$detail = self::load($sessionID, $linenbr, $debug);
+			
+			foreach ($properties as $property) {
+				if ($this->$property != $detail->$property) {
+					return true;
+				}
+			}
+			return false;
+		}
 	}

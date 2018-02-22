@@ -1869,6 +1869,30 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
+	
+	function update_orderdetail($sessionID, $detail, $debug = false) {
+		$originaldetail = SalesOrder::load($sessionID, $detail->linenbr);
+		$properties = array_keys($order->_toArray());
+		$q = (new QueryBuilder())->table('cartdet');
+		$q->mode('update');
+		foreach ($properties as $property) {
+			if ($order->$property != $originaldetail->$property) {
+				$q->set($property, $detail->$property);
+			}
+		}
+		$q->where('orderno', $detail->orderno);
+		$q->where('sessionid', $detail->sessionid);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			if ($detail->has_changes()) {
+				$sql->execute($q->params);
+			}
+			return $q->generate_sqlquery($q->params);
+		}
+	}
 
 	function edit_orderhead($sessionID, $ordn, $order, $debug = false) {
 		$orginalorder = SalesOrder::load($sessionID, $ordn);

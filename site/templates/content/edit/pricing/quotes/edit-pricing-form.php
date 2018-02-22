@@ -134,7 +134,7 @@
 				</table>
 			</div>
 
-			<?php if ($linedetail['can-edit']) :?>
+			<?php if ($linedetail->can_edit();) :?>
 		    	<button type="submit" class="btn btn-success btn-block"><i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Save Changes</button>
 				<br>
 				<button type="button" class="btn btn-danger btn-block remove-item"><i class="fa fa-trash" aria-hidden="true"></i> Delete Line</button>
