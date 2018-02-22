@@ -18,22 +18,22 @@
         case 'order':
             $ordn = $input->get->text('ordn');
             $custID = get_custidfromorder(session_id(), $ordn);
-            $linedetail = SalesOrder::load(session_id(), $ordn);
+            $linedetail = SalesOrderDetail::load(session_id(), $ordn, $linenbr);
             if (can_editorder(session_id(), $ordn, false) && $ordn == getlockedordn(session_id())) {
-                $linedetail['can-edit'] = true;
+                // $linedetail['can-edit'] = true;
                 $formaction = $config->pages->orders."redir/";
-                $page->title = 'Edit Pricing for '. $linedetail['itemid'];
+                $page->title = 'Edit Pricing for '. $linedetail->itemid;
             } else {
-                $linedetail['can-edit'] = false;
+                // $linedetail['can-edit'] = false;
                 $formaction = '';
-                $page->title = 'Viewing Details for '. $linedetail['itemid'];
+                $page->title = 'Viewing Details for '. $linedetail->itemid;
             }
 			$page->body = $config->paths->content."edit/pricing/edit-pricing-form.php";
             break;
 		case 'quote':
 			$qnbr = $input->get->text('qnbr');
 			$custID = get_custidfromquote(session_id(), $qnbr);
-			$linedetail = Quote::load(session_id(), $qnbr);;
+			$linedetail = QuoteDetail::load(session_id(), $qnbr);;
             $linedetail['can-edit'] = true;
 			$formaction = $config->pages->quotes."redir/";
             $page->title = 'Edit Pricing for '. $linedetail['itemid'];

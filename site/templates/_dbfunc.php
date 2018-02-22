@@ -1871,9 +1871,9 @@
 	}
 	
 	function update_orderdetail($sessionID, $detail, $debug = false) {
-		$originaldetail = SalesOrder::load($sessionID, $detail->linenbr);
+		$originaldetail = SalesOrderDetail::load($sessionID, $detail->linenbr);
 		$properties = array_keys($order->_toArray());
-		$q = (new QueryBuilder())->table('cartdet');
+		$q = (new QueryBuilder())->table('ordrdet');
 		$q->mode('update');
 		foreach ($properties as $property) {
 			if ($order->$property != $originaldetail->$property) {
