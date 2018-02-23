@@ -255,7 +255,7 @@
 			$quotedetail = getquotelinedetail(session_id(), $qnbr, $linenbr, false);
 			$quotedetail->quotprice = $input->post->text('price');
 			$quotedetail->discpct =  $input->post->text('discount');
-			$quotedetail->quotunit = $input->post->text('qty');
+			$quotedetail->quotqty = $input->post->text('qty');
 			$quotedetail->ordrqty = $input->post->text('qty');
 			$quotedetail->rshipdate = $input->post->text('rqstdate');
 			$quotedetail->whse = $input->post->text('whse');

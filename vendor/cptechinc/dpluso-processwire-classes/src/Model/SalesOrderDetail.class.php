@@ -54,6 +54,7 @@
 		public static function load($sessionID, $ordn, $linenbr, $debug = false) {
 			return get_orderdetail($sessionID, $ordn, $linenbr, $debug);
 		}
+		
 		public function update($debug = false) {
 			return update_orderdetail($this->sessionid, $this, $debug);
 		}
