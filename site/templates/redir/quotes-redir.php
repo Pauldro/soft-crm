@@ -252,7 +252,7 @@
 				$linenbr = $input->get->text('linenbr');
 			}
 
-			$quotedetail = getquotelinedetail(session_id(), $qnbr, $linenbr, false);
+			$quotedetail = QuoteDetail::load(session_id(), $qnbr, $linenbr);
 			$quotedetail->quotprice = $input->post->text('price');
 			$quotedetail->discpct =  $input->post->text('discount');
 			$quotedetail->quotqty = $input->post->text('qty');
@@ -275,7 +275,7 @@
 				$quotedetail->desc2 = $input->post->text('desc2');
 			}
 
-			$session->sql = edit_quoteline(session_id(), $qnbr, $quotedetail, false);
+			$session->sql = $quotedetail->update();
 			$session->detail = $quotedetail;
 			$custID = get_custidfromquote(session_id(), $qnbr, false);
 			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'CUSTID' => $custID);
