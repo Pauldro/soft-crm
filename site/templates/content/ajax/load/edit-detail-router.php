@@ -33,11 +33,12 @@
 		case 'quote':
 			$qnbr = $input->get->text('qnbr');
 			$custID = get_custidfromquote(session_id(), $qnbr);
-			$linedetail = QuoteDetail::load(session_id(), $qnbr);;
-            $linedetail['can-edit'] = true;
+			$linedetail = QuoteDetail::load(session_id(), $qnbr, $linenbr);
+            // $linedetail['can-edit'] = true;
 			$formaction = $config->pages->quotes."redir/";
-            $page->title = 'Edit Pricing for '. $linedetail['itemid'];
+            $page->title = 'Edit Pricing for '. $linedetail->itemid;
 			$page->body = $config->paths->content."edit/pricing/quotes/edit-pricing-form.php";
+            break;
     }
 
 	if ($config->ajax) {

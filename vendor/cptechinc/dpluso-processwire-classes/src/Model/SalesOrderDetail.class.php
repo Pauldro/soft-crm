@@ -27,6 +27,7 @@
 		protected $quotdiscpct;
 		protected $ponbr;
 		protected $poref;
+		protected $notes; // this needs to be removed from the MySQL tables
 		
 		/* =============================================================
 			GETTER FUNCTIONS
@@ -49,6 +50,16 @@
 		}
 		
 		/* =============================================================
+			GENERATE ARRAY FUNCTIONS 
+			The following are defined CreateClassArrayTraits
+			public static function generate_classarray()
+			public function _toArray()
+		============================================================ */
+		public static function remove_nondbkeys($array) {
+			return $array;
+		}
+		
+		/* =============================================================
 			CRUD FUNCTIONS
 		============================================================ */
 		public static function load($sessionID, $ordn, $linenbr, $debug = false) {
@@ -61,7 +72,7 @@
 		
 		public function has_changes() {
 			$properties = array_keys(get_object_vars($this));
-			$detail = self::load($sessionID, $linenbr, $debug);
+			$detail = self::load($this->sessionid, $this->linenbr, $this->orderno, false);
 			
 			foreach ($properties as $property) {
 				if ($this->$property != $detail->$property) {
