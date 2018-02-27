@@ -1,4 +1,9 @@
 <?php 
+	/**
+	 * Contact Class
+	 * Used to generate data and provides functions
+	 * that allow data extraction about that contact
+	 */
     class Contact {
         use CreateFromObjectArrayTraits;
 		use CreateClassArrayTraits;
