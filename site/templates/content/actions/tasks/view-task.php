@@ -5,7 +5,7 @@
     $contactinfo = get_customercontact($task->customerlink, $task->shiptolink, $task->contactlink, false);
 
     if ($task->is_rescheduled()) {
-        $rescheduledtask = UserAction::get($task->rescheduledlink);
+        $rescheduledtask = UserAction::loadt($task->rescheduledlink);
     }
     
     $task->get_actionlineage();

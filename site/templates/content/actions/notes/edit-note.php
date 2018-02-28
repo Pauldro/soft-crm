@@ -1,6 +1,6 @@
 <?php	
 	$id = $input->get->text('id');
-	$note = UserAction::get($id);
+	$note = UserAction::load($id);
 
     $message = "Writing Note for {replace} ";
     $page->title = $note->generate_message($message);

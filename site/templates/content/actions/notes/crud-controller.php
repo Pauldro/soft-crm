@@ -76,7 +76,7 @@
                     break;
                 default:
 					$noteID = $input->get->text('id');
-					$note = UserAction::get($noteID);
+					$note = UserAction::load($noteID);
 					$messagetemplate = "Viewing Note for {replace}";
 					$page->title = $note->generate_message($messagetemplate);
 

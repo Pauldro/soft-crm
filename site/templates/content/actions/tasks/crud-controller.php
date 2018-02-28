@@ -79,7 +79,7 @@
                     break;
                 default:
 					$taskID = $input->get->text('id');
-					$task = UserAction::get($taskID);
+					$task = UserAction::load($taskID);
 					$messagetemplate = "Viewing Action for {replace}";
 					$page->title = $task->generate_message($messagetemplate);
 
