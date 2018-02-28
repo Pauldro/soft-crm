@@ -25,7 +25,7 @@
 	}
 
 	if (!empty($note->actionlink)) {
-		$originalnote = UserAction::get($note->actionlink);
+		$originalnote = UserAction::load($note->actionlink);
 		if ($originalnote->actiontype == 'notes') {
 			$note->set('actionsubtype', $originalnote->actionsubtype);
 		}

@@ -3,7 +3,7 @@
     
     $actionID = $input->get->id;
     $actiondisplay = new UserActionDisplay($page->fullURL);
-    $action = UserAction::get($actionID);
+    $action = UserAction::load($actionID);
 
     if ($action) {
         $urls = array(

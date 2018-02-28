@@ -217,18 +217,18 @@
 		}
         
         /* =============================================================
-			OTHER CONSTRUCTOR FUNCTIONS 
-            Inherits some from CreateFromObjectArrayTraits
-		============================================================ */
+			CRUD FUNCTIONS
+		============================================================ */	
 		/**
 		 * Loads an object with this class using the parameters as provided
-		 * @param  string $custID    CustomerID
-		 * @param  string $shiptoID  Shipto ID (can be blank)
-		 * @param  string $contactID Contact ID (can be blank)
-		 * @return Contact
+		 * @param  [type]  $custID    CustomerID
+		 * @param  string  $shiptoID  Shipto ID (can be blank)
+		 * @param  string  $contactID Contact ID (can be blank)
+		 * @param  bool $debug     Determines if query will execute and if sQL is returned or Contact object
+		 * @return Contact            SQL query string
 		 */
-        public static function load($custID, $shiptoID = '', $contactID = '') {
-            return get_customercontact($custID, $shiptoID, $contactID);
+        public static function load($custID, $shiptoID = '', $contactID = '', $debug = false) {
+            return get_customercontact($custID, $shiptoID, $contactID, $debug);
         }
         
         /* =============================================================
@@ -243,7 +243,7 @@
 		 * to remove keys that are not in the database
 		 * This is used by database classes for update
 		 * @param  array $array array of the class properties
-		 * @return array]        with certain keys removed
+		 * @return array        with certain keys removed
 		 */
  		public static function remove_nondbkeys($array) {
 			unset($array['fieldaliases']);

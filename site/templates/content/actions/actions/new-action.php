@@ -25,7 +25,7 @@
 	}
 
 	if (!empty($action->actionlink)) {
-		$originalaction = UserAction::get($action->actionlink);
+		$originalaction = UserAction::load($action->actionlink);
 		if ($originalaction->actiontype = 'actions') {
 			$action->set('actionsubtype', $originalaction->actionsubtype);
 		}

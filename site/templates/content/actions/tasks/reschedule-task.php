@@ -1,6 +1,6 @@
 <?php
     $actionID = $input->get->text('id');
-    $task = UserAction::get($actionID);
+    $task = UserAction::load($actionID);
     
     $message = "Rescheduling a task for {replace}";
     $page->title = $task->generate_message($message);

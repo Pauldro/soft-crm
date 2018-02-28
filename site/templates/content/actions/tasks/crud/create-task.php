@@ -43,7 +43,7 @@
 		if ($results['insertedid'] > $maxrec) {
 			switch ($action) {
 				case 'reschedule-task':
-					$originaltask = UserAction::get($task->actionlink);
+					$originaltask = UserAction::load($task->actionlink);
 					$originaltask->set('datecompleted', '0000-00-00 00:00:00');
 					$originaltask->set('dateupdated', date("Y-m-d H:i:s"));
 					$originaltask->set('completed', 'R');
