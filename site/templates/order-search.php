@@ -1,10 +1,10 @@
 <?php 
     switch ($page->name) { //$page->name is what we are editing
-            case 'order':
+            case 'sales-orders':
                 $ordn = $input->get->text('ordn');
-                $page->body = $config->paths->content.'search/sales-orders/search-orders.php';
+                $page->body = $config->paths->content.'search/sales-order/search-orders.php';
                 break;
-            case 'quote':
+            case 'quotes':
                 $qnbr = $input->get->text('qnbr');
                 $page->body = $config->paths->content.'search/quotes/search-quotes.php';
                 break;

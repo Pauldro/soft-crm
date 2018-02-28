@@ -13,8 +13,6 @@
             <input type="hidden" name="action" value="search-cust-orders">
             <input type="hidden" name="shipID" value="<?php echo $shipID; ?>">
             
-            <!-- TODO: needs a CSS class to move down in line with the first cell -->
-            </br></br> 
             <h4>Order Status :</h4>
             <label for="">New</label>
             <input class="pull-right" type="checkbox" name="status[]" value="New"></br>
