@@ -143,8 +143,8 @@
 			$cartdetail = CartDetail::load(session_id(), $linenbr);
 			$cartdetail->price = $input->post->text('price');
 			$cartdetail->discpct =  $input->post->text('discount');
-			$cartdetail->qty = $qty;
-			$cartdetail->rshipdate = $input->post->text('rqst-date');
+			$cartdetail->qty = $input->post->text('qty');
+			$cartdetail->rshipdate = $input->post->text('rqstdate');
 			$cartdetail->whse = $input->post->text('whse');
 			$cartdetail->spcord = $input->post->text('specialorder');
 			$cartdetail->linenbr = $input->post->text('linenbr');
