@@ -19,7 +19,7 @@
             <?php if (strlen($detail->vendoritemid)) { echo ' '.$detail->vendoritemid."<br>";} ?>
             <?= $detail->desc1. ' ' . $detail->desc2 ; ?>
         </td>
-        <td class="text-right"><?= intval($detail->qtyordered); ?></td>
+        <td class="text-right"><?= intval($detail->qty); ?></td>
         <td class="text-right">$ <?= formatmoney($detail->price);?></td>
         <td class="text-right"><?= intval($detail->qtybackord); ?></td>
         <td class="text-right"><?= intval($detail->qtyshipped); ?></td>
@@ -37,7 +37,7 @@
                         <b><a href="<?= $config->pathtofiles.$itemdoc['pathname'];; ?>" title="Click to View Document" target="_blank" ><?php echo $itemdoc['title']; ?></a></b>
                     </td>
                     <td align="right"><?= $itemdoc['createdate']; ?></td>
-                    <td align="right"><?= DplusDateTime::formatdplustime($itemdoc['createtime']) ?></td>
+                    <td align="right"><?= DplusDateTime::format_dplustime($itemdoc['createtime']) ?></td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>

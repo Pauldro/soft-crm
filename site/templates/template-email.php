@@ -7,7 +7,7 @@
         $emailer->set_subject($input->post->text('subject'));
         $emailer->set_emailto($input->post->text('email'), $input->post->text('emailname'));
         $emailer->set_body($input->post->text('message'));
-        $emailer->set_bcc('paul@cptechinc.com', 'Paul Gomez');
+        $emailer->set_selfbcc(true);
     }
     
     switch ($page->name) { //$page->name is what we are printing

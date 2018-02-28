@@ -27,22 +27,22 @@
 		<div class="page-header"><h3>Bill-to</h3></div>
 		<address>
 			<?= $order->custname; ?><br>
-			<?= $order->btadr1; ?><br>
-			<?php if (strlen($order->btadr2) > 0) : ?>
-				<?= $order->btadr2; ?><br>
+			<?= $order->billaddress; ?><br>
+			<?php if (strlen($order->billaddress2) > 0) : ?>
+				<?= $order->billaddress2; ?><br>
 			<?php endif; ?>
-			<?= $order->btcity.", ".$order->btstate." ".$order->btzip; ?>
+			<?= $order->billcity.", ".$order->billstate." ".$order->billzip; ?>
 		</address>
 	</div>
 	<div class="col-sm-6">
 		<div class="page-header"><h3>Ship-to</h3></div>
 		<address>
-			<?= $order->sname; ?><br>
-			<?= $order->saddress; ?><br>
-			<?php if (strlen($order->saddress2) > 0) : ?>
-				<?= $order->saddress2; ?><br>
+			<?= $order->shipname; ?><br>
+			<?= $order->shipaddress; ?><br>
+			<?php if (strlen($order->shipaddress2) > 0) : ?>
+				<?= $order->shipaddress2; ?><br>
 			<?php endif; ?>
-			<?= $order->scity.", ".$order->sst." ".$order->szip; ?>
+			<?= $order->shipcity.", ".$order->shipstate." ".$order->shipzip; ?>
 		</address>
 	</div>
 </div>
@@ -66,25 +66,25 @@
 			<td>
 				<?= $orderdisplay->generate_detailvieweditlink($order, $detail); ?>
 			</td>
-			<td class="text-right"> <?= intval($detail->qtyordered) ; ?> </td>
+			<td class="text-right"> <?= intval($detail->qty) ; ?> </td>
 			<td class="text-right">$ <?= formatmoney($detail->price); ?></td>
-			<td class="text-right">$ <?= formatmoney($detail->price * intval($detail->qtyordered)) ?> </td>
+			<td class="text-right">$ <?= formatmoney($detail->price * intval($detail->qty)) ?> </td>
 		</tr>
 	<?php endforeach; ?>
 	<tr>
-		<td></td> <td><b>Subtotal</b></td> <td colspan="3" class="text-right">$ <?= formatmoney($order->odrsubtot); ?></td>
+		<td></td> <td><b>Subtotal</b></td> <td colspan="3" class="text-right">$ <?= formatmoney($order->subtotal); ?></td>
 	</tr>
 	<tr>
-		<td></td><td><b>Tax</b></td> <td colspan="3" class="text-right">$ <?= formatmoney($order->odrtax); ?></td>
+		<td></td><td><b>Tax</b></td> <td colspan="3" class="text-right">$ <?= formatmoney($order->salestax); ?></td>
 	</tr>
 	<tr>
-		<td></td><td><b>Freight</b></td> <td colspan="3" class="text-right">$ <?= formatmoney($order->odrfrt); ?></td>
+		<td></td><td><b>Freight</b></td> <td colspan="3" class="text-right">$ <?= formatmoney($order->freight); ?></td>
 	</tr>
 	<tr>
-		<td></td><td><b>Misc.</b></td> <td colspan="3" class="text-right">$ <?= formatmoney($order->odrmis); ?></td>
+		<td></td><td><b>Misc.</b></td> <td colspan="3" class="text-right">$ <?= formatmoney($order->misccost); ?></td>
 	</tr>
 	<tr>
-		<td></td><td><b>Total</b></td> <td colspan="3" class="text-right">$ <?= formatmoney($order->odrtotal); ?></td>
+		<td></td><td><b>Total</b></td> <td colspan="3" class="text-right">$ <?= formatmoney($order->ordertotal); ?></td>
 	</tr>
 </table>
 <hr>

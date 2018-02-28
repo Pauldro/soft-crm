@@ -3,115 +3,64 @@
 		use CreateFromObjectArrayTraits;
 		use CreateClassArrayTraits;
 		
-		public $sessionid;
-		public $recno;
-		public $date;
-		public $time;
-		public $type;
-		public $custid;
-		public $shiptoid;
-		public $custname;
-		public $orderno;
-		public $custpo;
-		public $custref;
-		public $status;
-		public $orderdate;
-		public $careof;
-		public $quotdate;
-		public $invdate;
-		public $shipdate;
-		public $revdate;
-		public $expdate;
-		public $havedoc;
-		public $havetrk;
-		public $odrsubtot;
-		public $odrtax;
-		public $odrfrt;
-		public $odrmis;
-		public $odrtotal;
-		public $havenote;
-		public $editord;
-		public $error;
-		public $errormsg;
-		public $sconame;
-		public $sname;
-		public $saddress;
-		public $saddress2;
-		public $scity;
-		public $sst;
-		public $szip;
-		public $scountry;
-		public $contact;
-		public $phintl;
-		public $phone;
-		public $extension;
-		public $faxnumber;
-		public $email;
-		public $releasenbr;
-		public $shipviacd;
-		public $shipviadesc;
-		public $priccode;
-		public $pricdesc;
-		public $pricdisp;
-		public $taxcode;
-		public $taxcodedesc;
-		public $taxcodedisp;
-		public $termcode;
-		public $termtype;
-		public $termdesc;
-		public $rqstdate;
-		public $shipcom;
-		public $sp1;
-		public $sp1name;
-		public $sp2;
-		public $sp2name;
-		public $sp2disp;
-		public $sp3;
-		public $sp3name;
-		public $sp3disp;
-		public $fob;
-		public $deliverydesc;
-		public $whse;
-		public $ccno;
-		public $xpdate;
-		public $ccvalidcode;
-		public $ccapproval;
-		public $costtot;
-		public $totdisc;
-		public $paytype;
-		public $srcdatefrom;
-		public $srcdatethru;
-		public $btname;
-		public $btadr1;
-		public $btadr2;
-		public $btadr3;
-		public $btctry;
-		public $btcity;
-		public $btstate;
-		public $btzip;
-		public $prntfmt;
-		public $prntfmtdisp;
-		public $dummy;
+		protected $type;
+		protected $custname;
+		protected $orderno;
+		protected $orderdate;
+		protected $careof;
+		protected $invdate;
+		protected $shipdate;
+		protected $revdate;
+		protected $expdate;
+		protected $hasdocuments;
+		protected $hastracking;
+		protected $editord;
+		protected $sconame;
+		protected $phintl;
+		protected $extension;
+		protected $releasenbr;
+		protected $pricedisp;
+		protected $taxcodedisp;
+		protected $termtype;
+		protected $rqstdate;
+		protected $shipcom;
+		protected $fob;
+		protected $deliverydesc;
+		protected $cardnumber;
+		protected $cardexpire;
+		protected $cardcode;
+		protected $cardapproval;
+		protected $totalcost;
+		protected $totaldiscount;
+		protected $paymenttype;
+		protected $srcdatefrom;
+		protected $srcdatethru;
+		protected $prntfmt;
+		protected $prntfmtdisp;
+		
+		// Properties needed by MYSQL to sort
+		protected $dateoforder;
+		
 		
 		/* =============================================================
- 		   GETTER FUNCTIONS 
- 	   	============================================================ */
+			GETTER FUNCTIONS 
+		============================================================ */
 		public function has_documents() {
-			return $this->havedoc == 'Y' ? true : false;
+			return $this->hasdocuments == 'Y' ? true : false;
 		}
 
 		public function has_tracking() {
-			return $this->havetrk == 'Y' ? true : false;
+			return $this->hastracking == 'Y' ? true : false;
 		}
-
+		
 		public function has_notes() {
-			return $this->havenote == 'Y' ? true : false;
+			return $this->hasnotes == 'Y' ? true : false;
 		}
 
 		public function can_edit() {
 			$config = Processwire\wire('pages')->get('/config/')->child("name=sales-orders");
 			$allowed = $config->allow_edit;
-			if (!$config->allow_edit) {
+			if ($config->allow_edit) {
 				$allowed = has_dpluspermission(wire('user')->loginid, 'eso');
 			}
 			return $allowed ? ($this->editord == 'Y' ? true : false) : false;
@@ -119,10 +68,6 @@
 
 		public function is_phoneintl() {
 			return $this->phintl == 'Y' ? true : false;
-		}
-
-		public function has_error() {
-			return $this->error == 'Y' ? true : false;
 		}
 		
 		/* =============================================================
@@ -136,9 +81,29 @@
 		}
 		
 		/* =============================================================
-           CRUD FUNCTIONS
-       ============================================================ */
-        public static function load($sessionID, $ordn) {
-            return get_orderhead($sessionID, $ordn, true, false);
-        }
+			CRUD FUNCTIONS
+		============================================================ */
+		public static function load($sessionID, $ordn, $debug = false) {
+			return get_orderhead($sessionID, $ordn, true, $debug);
+		}
+		
+		public function update($debug = false) {
+			return edit_orderhead($this->sessionid, $this->orderno, $this, $debug);
+		}
+		
+		public function update_payment($debug = false) {
+			return edit_orderhead_credit($sessionID, $this->orderno, $this->paymenttype, $this->cardnumber, $this->cardexpire, $this->cardcode, $debug) ;
+		}
+		
+		public function has_changes() {
+			$properties = array_keys(get_object_vars($this));
+			$order = SalesOrder::load($this->sessionid, $this->orderno);
+			
+			foreach ($properties as $property) {
+				if ($this->$property != $order->$property) {
+					return true;
+				}
+			}
+			return false;
+		}
 	}

@@ -1,7 +1,7 @@
 <?php
     header('Content-Type: application/json');
     $taskID = $input->get->id;
-    $task = UserAction::get($taskID);
+    $task = UserAction::load($taskID);
 
     if ($input->get->text('complete') == 'true') {
         $task->set('datecompleted', date("Y-m-d H:i:s"));

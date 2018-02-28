@@ -69,7 +69,7 @@
                     break;
                 default: // READ IN CRUD
 					$actionID = $input->get->text('id');
-					$action = UserAction::get($actionID);
+					$action = UserAction::load($actionID);
 					$messagetemplate = "Viewing Action for {replace}";
 					$page->title = $action->generate_message($messagetemplate);
 

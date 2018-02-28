@@ -25,7 +25,7 @@
 	}
 
 	if (!empty($actionID)) {
-		$originaltask = UserAction::get($actionID);
+		$originaltask = UserAction::load($actionID);
 		$task->set('actionsubtype', $originaltask->actionsubtype);
 	}
 	

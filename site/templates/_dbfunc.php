@@ -443,7 +443,7 @@
 /* =============================================================
 	ORDERS FUNCTIONS
 ============================================================ */
-	function count_salesreporders($sessionID, $debug) {
+	function count_userorders($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->field($q->expr('IF (COUNT(*) = 1, 1, IF(COUNT(DISTINCT(custid)) > 1, COUNT(*), 0)) as count'));
 		$q->where('sessionid', $sessionID);
@@ -457,7 +457,7 @@
 		}
 	}
 
-	function get_salesrepordersorderdate($sessionID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug = false) {
+	function get_userordersorderdate($sessionID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->field('ordrhed.*');
 		$q->field($q->expr("STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder"));
@@ -479,10 +479,10 @@
 		}
 	}
 
-	function get_salesrepordersorderby($sessionID, $limit = 10, $page = 1, $sortrule, $orderby, $useclass = false, $debug = false) {
+	function get_userordersorderby($sessionID, $limit = 10, $page = 1, $sortrule, $orderby, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->field('ordrhed.*');
-		$q->field($q->expr("CAST(odrsubtot AS DECIMAL(8,2)) AS subtotal"));
+		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
 		$q->where('sessionid', $sessionID);
 		$q->where('type', 'O');
 		$q->limit($limit, $q->generate_offset($page, $limit));
@@ -669,15 +669,21 @@
 		return (intval($sql->fetchColumn()) + 1);
 	}
 
-	function get_order_docs($sessionID, $ordn, $debug) { // FIXME USE PARAMATERS
-		$sql = "SELECT * FROM orddocs WHERE sessionid = '$sessionID' AND orderno = '$ordn' AND itemnbr = '' ";
+	function get_orderdocs($sessionID, $ordn, $debug = false) {
+		$q = (new QueryBuilder())->table('orddocs');
+		$q->where('sessionid', $sessionID);
+		$q->where('orderno', $ordn);
+		$q->where('itemnbr', '');
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return $sql;
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$results = Processwire\wire('database')->query($sql);
-			return $results;
+			$sql->execute($q->params);
+			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
+	
 /* =============================================================
 	QUOTES FUNCTIONS
 ============================================================ */
@@ -702,7 +708,7 @@
 		return $sql->fetchColumn();
 	}
 	
-	function count_salesrepquotes($sessionID, $debug = false) {
+	function count_userquotes($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('COUNT(*)');
 		$q->where('sessionid', $sessionID);
@@ -717,7 +723,7 @@
 		}
 	}
 	
-	function get_salesrepquotes($sessionID, $limit, $page, $useclass = false, $debug = false) {
+	function get_userquotes($sessionID, $limit, $page, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->where('sessionid', $sessionID);
 		$q->limit($limit, $q->generate_offset($page, $limit));
@@ -735,13 +741,13 @@
 		}
 	}
 	
-	function get_salesrepquotesquotedate($sessionID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug = false) {
+	function get_userquotesquotedate($sessionID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
 		$q->field($q->expr("STR_TO_DATE(quotdate, '%m/%d/%Y') as quotedate"));
 		$q->where('sessionid', $sessionID);
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		$q->order('quotedate', $sortrule, $limiting);
+		$q->order('quotedate', $sortrule);
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
 		if ($debug) {
@@ -756,13 +762,13 @@
 		}
 	}
 	
-	function get_salesrepquotesrevdate($sessionID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug = false) {
+	function get_userquotesrevdate($sessionID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
 		$q->field($q->expr("STR_TO_DATE(revdate, '%m/%d/%Y') as reviewdate"));
 		$q->where('sessionid', $sessionID);
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		$q->order('reviewdate', $sortrule, $limiting);
+		$q->order('reviewdate', $sortrule);
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
 		if ($debug) {
@@ -777,13 +783,13 @@
 		}
 	}
 		
-	function get_salesrepquotesexpdate($sessionID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug = false) {
+	function get_userquotesexpdate($sessionID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
 		$q->field($q->expr("STR_TO_DATE(expdate, '%m/%d/%Y') as expiredate"));
 		$q->where('custid', $custID);
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		$q->order('expiredate', $sortrule, $limiting);
+		$q->order('expiredate', $sortrule);
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
 		if ($debug) {
@@ -798,7 +804,7 @@
 		}
 	}
 	
-	function get_salesrepquotesorderby($sessionID, $limit = 10, $page = 1, $sortrule, $orderby, $useclass = true, $debug = false) {
+	function get_userquotesorderby($sessionID, $limit = 10, $page = 1, $sortrule, $orderby, $useclass = true, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->where('sessionid', $sessionID);
 		$q->limit($limit, $q->generate_offset($page, $limit));
@@ -970,12 +976,15 @@
 	}
 
 	function get_quotehead($sessionID, $qnbr, $useclass = false, $debug = false) {
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM quothed WHERE sessionid = :sessionID AND quotnbr = :qnbr");
-		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr); $withquotes = array(true, true);
+		$q = (new QueryBuilder())->table('quothed');
+		$q->where('sessionid', $sessionID);
+		$q->where('quotnbr', $qnbr);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			if ($useclass) {
 				$sql->setFetchMode(PDO::FETCH_CLASS, 'Quote');
 				return $sql->fetch();
@@ -1009,6 +1018,22 @@
 			return $sql->fetch(PDO::FETCH_ASSOC);
 		}
 	}
+	
+	function get_quotedetail($sessionID, $qnbr, $linenbr, $debug = false) {
+		$q = (new QueryBuilder())->table('quotdet');
+		$q->where('sessionid', $sessionID);
+		$q->where('quotenbr', $qnbr);
+		$q->where('linenbr', $linenbr);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'QuoteDetail');
+			return $sql->fetch();
+		}
+	}
 
 	function getquotelinedetail($sessionID, $qnbr, $line, $debug) {
 		$sql = Processwire\wire('database')->prepare("SELECT * FROM quotdet WHERE sessionid = :sessionID AND quotenbr = :qnbr AND linenbr = :linenbr");
@@ -1040,7 +1065,7 @@
 	}
 
 	function edit_quotehead($sessionID, $qnbr, Quote $quote, $debug = false) {
-		$originalquote = Quote::load(session_id(), $qnbr);
+		$originalquote = Quote::load($sessionID, $qnbr);
 		$properties = array_keys($quote->_toArray());
 		$q = (new QueryBuilder())->table('quothed');
 		$q->mode('update');
@@ -1065,11 +1090,12 @@
 	}
 
 	function edit_quoteline($sessionID, $qnbr, $newdetails, $debug) {
-		$originaldetail = getquotelinedetail(session_id(), $qnbr, $newdetails['linenbr'], false);
+		$originaldetail = getquotelinedetail($sessionID, $qnbr, $newdetails['linenbr'], false);
 		$query = returnpreppedquery($originaldetail, $newdetails);
 		$sql = Processwire\wire('database')->prepare("UPDATE quotdet SET ".$query['setstatement']." WHERE sessionid = :sessionID AND quotenbr = :qnbr AND linenbr = :linenbr");
 		$query['switching'][':sessionID'] = $sessionID; $query['switching'][':qnbr'] = $qnbr; $query['switching'][':linenbr'] = $newdetails['linenbr'];
 		$query['withquotes'][] = true; $query['withquotes'][]= true; $query['withquotes'][] = true;
+		
 		if ($debug) {
 			return	returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
 		} else {
@@ -1080,10 +1106,35 @@
 		}
 	}
 
+	function update_quotedetail($sessionID, $detail, $debug = false) {
+		$originaldetail = QuoteDetail::load($sessionID, $detail->quotenbr, $detail->linenbr);
+		$properties = array_keys($detail->_toArray());
+		$q = (new QueryBuilder())->table('quotdet');
+		$q->mode('update');
+		foreach ($properties as $property) {
+			if ($detail != $originaldetail->$property) {
+				$q->set($property, $detail->$property);
+			}
+		}
+		$q->where('quotenbr', $detail->quotenbr);
+		$q->where('sessionid', $detail->sessionid);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			if ($detail->has_changes()) {
+				$sql->execute($q->params);
+			}
+			return $q->generate_sqlquery($q->params);
+		}
+	}
+
 	function insert_orderlock($sessionID, $recnbr, $ordn, $userID, $date, $time, $debug) {
 		$sql = Processwire\wire('database')->prepare("INSERT INTO ordlock (sessionid, recno, date, time, orderno, userid) VALUES (:sessionID, :recnbr, :date, :time, :orderno, :userID)");
 		$switching = array(':sessionID' => $sessionID, ':recnbr' => $recnbr, ':date' => $time, ':time' => $time, ':orderno' => $ordn, ':userID' => $userID);
 		$withquotes = array(true, true, true, true, true, true);
+		
 		if ($debug) {
 			return	returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -1096,6 +1147,7 @@
 		$sql = Processwire\wire('database')->prepare("DELETE FROM ordlock WHERE sessionid = :sessionID AND orderno = :ordn AND userid = :userID");
 		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn, ':userID' => $userID);
 		$withquotes = array(true, true, true);
+		
 		if ($debug) {
 			return	returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -1103,7 +1155,6 @@
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		}
 	}
-
 
 /* =============================================================
 	QNOTES FUNCTIONS
@@ -1563,13 +1614,16 @@
 /* =============================================================
 	CART FUNCTIONS
 ============================================================ */
-	function getcartheadcount($sessionID, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM carthed WHERE sessionid = :sessionID");
-		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
-		$sql->execute($switching);
+	function count_carthead($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('carthed');
+		$q->field("COUNT(*)");
+		$q->where('sessionid', $sessionID);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
+			$sql->execute($q->params);
 			return $sql->fetchColumn();
 		}
 	}
@@ -1587,14 +1641,20 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function getcarthead($sessionID, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM carthed WHERE sessionid = :sessionID");
-		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
+	
+	function get_carthead($sessionID, $useclass = false, $debug = false) {
+		$q = (new QueryBuilder())->table('carthed');
+		$q->where('sessionid', $sessionID);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
+			if ($useclass) {
+				$sql->setFetchMode(PDO::FETCH_CLASS, 'CartQuote'); // CAN BE SalesOrder|SalesOrderEdit
+				return $sql->fetch();
+			}
 			return $sql->fetch(PDO::FETCH_ASSOC);
 		}
 	}
@@ -1613,28 +1673,54 @@
 			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
 		}
 	}
-
-	function getcart($sessionID, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM cartdet WHERE sessionid = :sessionID");
-		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
-		$sql->execute($switching);
+	
+	function get_cartdetails($sessionID, $useclass = false, $debug = false) {
+		$q = (new QueryBuilder())->table('cartdet');
+		$q->where('sessionid', $sessionID);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
+			$sql->execute($q->params);
+			if ($useclass) {
+				$sql->setFetchMode(PDO::FETCH_CLASS, 'CartDetail'); // CAN BE SalesOrder|SalesOrderEdit
+				return $sql->fetchAll();
+			}
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
-
+	}
+	
+	function get_cartdetail($sessionID, $linenbr, $debug = false) {
+		$q = (new QueryBuilder())->table('cartdet');
+		$q->where('sessionid', $sessionID);
+		$q->where('linenbr', $linenbr);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'CartDetail');
+			return $sql->fetch();
+		}
 	}
 
-	function insertcarthead($sessionID, $custID, $shipID, $debug) {
-		$sql = Processwire\wire('database')->prepare("INSERT INTO carthed (sessionid, custid, shiptoid, date, time) VALUES (:sessionID, :custID, :shipID, :date, :time)");
-		$switching = array(':sessionID' => $sessionID, ':custID' => $custID, ':shipID' => $shipID, ':date' => date('Ymd'), ':time' =>date('His')); $withquotes = array(true, true, true, false, false);
-
+	function insert_carthead($sessionID, $custID, $shipID, $debug) {
+		$q = (new QueryBuilder())->table('carthed');
+		$q->mode('insert');
+		$q->set('sessionid', $sessionID);
+		$q->set('custid', $custID);
+		$q->set('shiptoid', $shipID);
+		$q->set('date', date('Ymd'));
+		$q->set('time', date('His'));
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			$sql->execute($q->params);
+			return $q->generate_sqlquery($q->params);
 		}
 	}
 
@@ -1679,6 +1765,30 @@
 			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
 		}
 	}
+	
+	function update_cartdetail($sessionID, $detail, $debug = false) {
+		$originaldetail = CartDetail::load($sessionID, $detail->linenbr);
+		$properties = array_keys($detail->_toArray());
+		$q = (new QueryBuilder())->table('cartdet');
+		$q->mode('update');
+		foreach ($properties as $property) {
+			if ($detail != $originaldetail->$property) {
+				$q->set($property, $detail->$property);
+			}
+		}
+		$q->where('orderno', $detail->orderno);
+		$q->where('sessionid', $detail->sessionid);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			if ($detail->has_changes()) {
+				$sql->execute($q->params);
+			}
+			return $q->generate_sqlquery($q->params);
+		}
+	}
 
 	function nextcartlinenbr($sessionID) {
 		$sql = Processwire\wire('database')->prepare("SELECT MAX(linenbr) FROM cartdet WHERE sessionid = :sessionID");
@@ -1697,8 +1807,6 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-
 
 /* =============================================================
 	EDIT ORDER FUNCTIONS
@@ -1754,52 +1862,116 @@
 			return $sql->fetch(PDO::FETCH_ASSOC);
 		}
 	}
-
-	function getallorderdocs($sessionID, $ordn, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM orddocs WHERE sessionid = :sessionID AND orderno = :ordn ORDER BY itemnbr ASC");
-		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn); $withquotes = array(true, true);
+	
+	function get_orderdetail($sessionID, $ordn, $linenbr, $debug = false) {
+		$q = (new QueryBuilder())->table('ordrdet');
+		$q->where('sessionid', $sessionID);
+		$q->where('orderno', $ordn);
+		$q->where('linenbr', $linenbr);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrderDetail');
+			return $sql->fetch();
+		}
+	}
+
+	function get_allorderdocs($sessionID, $ordn, $debug = false) {
+		$q = (new QueryBuilder())->table('orddocs');
+		$q->where('sessionid', $sessionID);
+		$q->where('orderno', $ordn);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
 
-	function getordertracking($sessionID, $ordn, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM ordrtrk WHERE sessionid = :sessionID AND orderno = :ordn");
-		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn); $withquotes = array(true, true);
-		$sql->execute($switching);
+	function get_ordertracking($sessionID, $ordn, $debug = false) {
+		$q = (new QueryBuilder())->table('ordrtrk');
+		$q->where('sessionid', $sessionID);
+		$q->where('orderno', $ordn);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
+			$sql->execute($q->params);
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-
-	function edit_orderhead($sessionID, $ordn, $order, $debug) {
-		$orginalorder = get_orderhead(session_id(), $ordn, false, false);
-		$query = returnpreppedquery($orginalorder, $order);
-		$sql = Processwire\wire('database')->prepare("UPDATE ordrhed SET ".$query['setstatement']." WHERE sessionid = :sessionID AND orderno = :ordn");
-		$query['switching'][':sessionID'] = $sessionID; $query['switching'][':ordn'] = $ordn;
-		$query['withquotes'][] = true; $query['withquotes'][]= true;
-
-		if ($debug) {
-			return	returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
-		} else {
-			if ($query['changecount'] > 0) {
-				$sql->execute($query['switching']);
+	
+	function update_orderdetail($sessionID, $detail, $debug = false) {
+		$originaldetail = SalesOrderDetail::load($sessionID, $detail->orderno, $detail->linenbr);
+		$properties = array_keys($detail->_toArray());
+		$q = (new QueryBuilder())->table('ordrdet');
+		$q->mode('update');
+		foreach ($properties as $property) {
+			if ($detail != $originaldetail->$property) {
+				$q->set($property, $detail->$property);
 			}
-			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
+		}
+		$q->where('orderno', $detail->orderno);
+		$q->where('sessionid', $detail->sessionid);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			if ($detail->has_changes()) {
+				$sql->execute($q->params);
+			}
+			return $q->generate_sqlquery($q->params);
 		}
 	}
 
-	function edit_orderhead_credit($sessionID, $ordn, $paytype, $ccno, $xpd, $ccv) {
-		$sql = Processwire\wire('database')->prepare("UPDATE ordrhed SET paytype = :paytype, ccno = AES_ENCRYPT(:ccno, HEX(:sessionID)), xpdate = AES_ENCRYPT(:xpd, HEX(:sessionID)), ccvalidcode = AES_ENCRYPT(:ccv, HEX(:sessionID)) WHERE sessionid = :sessionID AND orderno = :ordn");
-		$switching = array(':paytype' => $paytype, ':ccno' => $ccno, ':sessionID' => $sessionID, ':xpd' => $xpd, ':ccv' => $ccv, ':sessionID' => $sessionID, ':ordn' => $ordn);
-		$withquotes = array(true ,true, true, true, true, true,true);
-		$sql->execute($switching);
-		return returnsqlquery($sql->queryString, $switching, $withquotes);
+	function edit_orderhead($sessionID, $ordn, $order, $debug = false) {
+		$orginalorder = SalesOrder::load($sessionID, $ordn);
+		$properties = array_keys($order->_toArray());
+		$q = (new QueryBuilder())->table('ordrhed');
+		$q->mode('update');
+		foreach ($properties as $property) {
+			if ($order->$property != $orginalorder->$property) {
+				$q->set($property, $order->$property);
+			}
+		}
+		$q->where('orderno', $order->orderno);
+		$q->where('sessionid', $order->sessionid);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			if ($order->has_changes()) {
+				$sql->execute($q->params);
+			}
+			return $q->generate_sqlquery($q->params);
+		}
+	}
+
+	function edit_orderhead_credit($sessionID, $ordn, $paytype, $ccno, $expdate, $ccv, $debug = false) {
+		$q = (new QueryBuilder())->table('ordrhed');
+		$q->mode('update');
+		$q->set('paymenttype', $paytype);
+		$q->set('cardnumber', $q->expr('AES_ENCRYPT([], HEX([]))', [$ccno, $sessionID]));
+		$q->set('cardexpire', $q->expr('AES_ENCRYPT([], HEX([]))', [$expdate, $sessionID]));
+		$q->set('cardcode', $q->expr('AES_ENCRYPT([], HEX([]))', [$ccv, $sessionID]));
+		$q->where('orderno', $ordn);
+		$q->where('sessionid', $sessionID);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			$sql->execute($q->params);
+			return $q->generate_sqlquery($q->params);
+		}
 	}
 
 	function edit_orderline($sessionID, $ordn, $newdetails, $debug) {
@@ -1829,8 +2001,8 @@
 		}
 	}
 
-	function get_ordercreditcard($sessionID, $ordn, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT sessionid, AES_DECRYPT(ccno , HEX(sessionid)) AS cardnumber, AES_DECRYPT(ccvalidcode , HEX(sessionid)) AS cardcode, AES_DECRYPT(xpdate, HEX(sessionid)) AS expiredate FROM ordrhed WHERE sessionid = :sessionID AND orderno = :ordn AND type = 'O'");
+	function get_ordercreditcard($sessionID, $ordn, $debug) { //CHANGE TO QUERYBUILDER
+		$sql = Processwire\wire('database')->prepare("SELECT sessionid, AES_DECRYPT(cardnumber , HEX(sessionid)) AS cardnumber, AES_DECRYPT(cardcode , HEX(sessionid)) AS cardcode, AES_DECRYPT(cardexpire, HEX(sessionid)) AS expiredate FROM ordrhed WHERE sessionid = :sessionID AND orderno = :ordn AND type = 'O'");
 		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn); $withquotes = array(true, true);
 		$sql->execute($switching);
 		if ($debug) {

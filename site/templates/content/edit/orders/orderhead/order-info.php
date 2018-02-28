@@ -54,7 +54,7 @@
         </td>
     </tr>
 	<tr>
-    	<td class="control-label">Terms Code</td> <td class="value text-right"><?= $order->termcode; ?> - <?= $order->termdesc; ?></td>
+    	<td class="control-label">Terms Code</td> <td class="value text-right"><?= $order->termcode; ?> - <?= $order->termcodedesc; ?></td>
     </tr>
     <tr>
     	<td class="control-label">Order Date</td> <td class="value text-right"><?= $order->orderdate; ?></td>
@@ -84,9 +84,9 @@
             <td class="control-label">Payment Type</td>
             <td>
                 <select name="paytype" class="form-control input-sm required" onChange="showcredit(this.value)">
-                    <option value="<?= $order->paytype; ?>">-- Choose Payment Type -- </option>
-                    <option value="billacc" <?php if ($order->paytype == 'bill') echo 'selected'; ?> >Bill To Account</option>
-                    <option value="cc" <?php if ($order->paytype == 'cc') {echo 'selected';} ?>>Credit Card</option>
+                    <option value="<?= $order->paymenttype; ?>">-- Choose Payment Type -- </option>
+                    <option value="billacc" <?php if ($order->paymenttype == 'bill') echo 'selected'; ?> >Bill To Account</option>
+                    <option value="cc" <?php if ($order->paymenttype == 'cc') {echo 'selected';} ?>>Credit Card</option>
                 </select>
             </td>
         </tr>
