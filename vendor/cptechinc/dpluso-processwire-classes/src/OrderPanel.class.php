@@ -10,6 +10,7 @@
         public $pagenbr;
         public $activeID = false;
         public $count;
+        public $filters;
         
         public function __construct($sessionID, \Purl\Url $pageurl, $modal, $loadinto, $ajax) {
             parent::__construct($sessionID, $pageurl);
