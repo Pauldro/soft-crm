@@ -42,6 +42,7 @@
 			public function _toArray()
 		============================================================ */
 		public static function remove_nondbkeys($array) {
+			unset($array['totalprice']);
 			return $array;
 		}
 		
@@ -58,7 +59,7 @@
 		
 		public function has_changes() {
 			$properties = array_keys(get_object_vars($this));
-			$detail = self::load($this->sessionid, $this->linenbr, $this->quotenbr, false);
+			$detail = self::load($this->sessionid, $this->quotenbr, $this->linenbr, false);
 			
 			foreach ($properties as $property) {
 				if ($this->$property != $detail->$property) {

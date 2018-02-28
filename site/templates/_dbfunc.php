@@ -1019,7 +1019,7 @@
 		}
 	}
 	
-	function get_quotedetail($sessionID, $linenbr, $qnbr, $debug = false) {
+	function get_quotedetail($sessionID, $qnbr, $linenbr, $debug = false) {
 		$q = (new QueryBuilder())->table('quotdet');
 		$q->where('sessionid', $sessionID);
 		$q->where('quotenbr', $qnbr);
@@ -1116,7 +1116,7 @@
 				$q->set($property, $detail->$property);
 			}
 		}
-		$q->where('quotenbr', $detail->orderno);
+		$q->where('quotenbr', $detail->quotenbr);
 		$q->where('sessionid', $detail->sessionid);
 		$sql = Processwire\wire('database')->prepare($q->render());
 		

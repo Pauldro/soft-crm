@@ -266,8 +266,6 @@
 			$quotedetail->shipfromid = $input->post->text('shipfromid');
 			$quotedetail->vendoritemid = $input->post->text('itemID');
 			$quotedetail->nsitemgroup = $input->post->text('group');
-			$quotedetail->ponbr = $input->post->text('ponbr');
-			$quotedetail->poref = $input->post->text('poref');
 			$quotedetail->uom = $input->post->text('uofm');
 
 			if ($quotedetail->spcord != 'N') {
@@ -275,9 +273,9 @@
 				$quotedetail->desc2 = $input->post->text('desc2');
 			}
 
+			$custID = get_custidfromquote(session_id(), $qnbr);
 			$session->sql = $quotedetail->update();
-			$session->detail = $quotedetail;
-			$custID = get_custidfromquote(session_id(), $qnbr, false);
+			// $session->detail = $quotedetail;
 			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'CUSTID' => $custID);
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
