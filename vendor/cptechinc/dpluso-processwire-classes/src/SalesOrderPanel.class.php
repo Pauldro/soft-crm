@@ -3,6 +3,28 @@
 		use SalesOrderDisplayTraits;
 		
 		public $orders = array();
+		public $filterable = array(
+			'custpo' => array(
+				'querytype' => 'between',
+				'datatype' => 'char'
+			),
+			'custid' => array(
+				'querytype' => 'between',
+				'datatype' => 'char'
+			),
+			'orderno' => array(
+				'querytype' => 'between',
+				'datatype' => 'char'
+			),
+			'orderdate' => array(
+				'querytype' => 'between',
+				'datatype' => 'date'
+			),
+			'status' => array(
+				'querytype' => 'in',
+				'datatype' => 'char'
+			)
+		);
 		
 		public function __construct($sessionID, \Purl\Url $pageurl, $modal, $loadinto, $ajax) {
 			parent::__construct($sessionID, $pageurl, $modal, $loadinto, $ajax);
@@ -13,7 +35,7 @@
 			SalesOrderPanelInterface Functions
 		============================================================ */
 		public function get_ordercount($debug = false) {
-			$count = count_userorders($this->sessionID, $debug);
+			$count = count_userorders($this->sessionID, $this->filters, $this->filterable, $debug);
 			return $debug ? $count : $this->count = $count;
 		}
 		
@@ -21,16 +43,16 @@
 			$useclass = true;
 			if ($this->tablesorter->orderby) {
 				if ($this->tablesorter->orderby == 'orderdate') {
-					$orders = get_userordersorderdate($this->sessionID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $useclass, $debug);
+					$orders = get_userordersorderdate($this->sessionID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $useclass, $debug);
 				} else {
-					$orders = get_userordersorderby($this->sessionID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $useclass, $debug);
+					$orders = get_userordersorderby($this->sessionID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $this->filters, $this->filterable, $useclass, $debug);
 				}
 			} else {
 				// DEFAULT BY ORDER DATE SINCE SALES ORDER # CAN BE ROLLED OVER
 				$this->tablesorter->sortrule = 'DESC'; 
 				//$this->tablesorter->orderby = 'orderno';
 				//$orders = get_salesrepordersorderby($this->sessionID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $useclass, $debug);
-				$orders = get_userordersorderdate($this->sessionID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $useclass, $debug);
+				$orders = get_userordersorderdate($this->sessionID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $useclass, $debug);
 			}
 			return $debug ? $orders : $this->orders = $orders;
 		}
@@ -148,6 +170,16 @@
 			$form->input("type=hidden|name=desc|value=$detail->desc1");
 			$form->button("type=submit|class=btn btn-primary btn-xs", $form->bootstrap->createicon('glyphicon glyphicon-shopping-cart'). $form->bootstrap->openandclose('span', 'class=sr-only', 'Submit Reorder'));
 			return $form->finish();
+		}
+		
+		public function generate_filter(WireInput $input) {
+			parent::generate_filter($input);
+			
+			if (isset($this->filters['orderdate'])) {
+				if (empty($this->filters['orderdate'][1])) {
+					$this->filters['orderdate'][1] = date('m/d/Y');
+				}
+			}
 		}
 		
 		/* =============================================================

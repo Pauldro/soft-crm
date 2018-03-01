@@ -443,10 +443,13 @@
 /* =============================================================
 	ORDERS FUNCTIONS
 ============================================================ */
-	function count_userorders($sessionID, $debug = false) {
+	function count_userorders($sessionID, $filter = false, $filtertypes = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->field($q->expr('IF (COUNT(*) = 1, 1, IF(COUNT(DISTINCT(custid)) > 1, COUNT(*), 0)) as count'));
 		$q->where('sessionid', $sessionID);
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
 		if ($debug) {
@@ -457,12 +460,15 @@
 		}
 	}
 
-	function get_userordersorderdate($sessionID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug = false) {
+	function get_userordersorderdate($sessionID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->field('ordrhed.*');
 		$q->field($q->expr("STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder"));
 		$q->where('sessionid', $sessionID);
 		$q->where('type', 'O');
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('dateoforder ' . $sortrule);
 		$sql = Processwire\wire('database')->prepare($q->render());
@@ -479,12 +485,15 @@
 		}
 	}
 
-	function get_userordersorderby($sessionID, $limit = 10, $page = 1, $sortrule, $orderby, $useclass = false, $debug = false) {
+	function get_userordersorderby($sessionID, $limit = 10, $page = 1, $sortrule, $orderby, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->field('ordrhed.*');
 		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
 		$q->where('sessionid', $sessionID);
 		$q->where('type', 'O');
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order($orderby .' '. $sortrule);
 		$sql = Processwire\wire('database')->prepare($q->render());
@@ -501,11 +510,13 @@
 		}
 	}
 
-	function get_salesreporders($sessionID, $limit = 10, $page = 1, $useclass = false, $debug = false) {
+	function get_userorders($sessionID, $limit = 10, $page = 1, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
-		$q->field('*');
 		$q->where('sessionid', $sessionID);
 		$q->where('type', 'O');
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = Processwire\wire('database')->prepare($q->render());
 		

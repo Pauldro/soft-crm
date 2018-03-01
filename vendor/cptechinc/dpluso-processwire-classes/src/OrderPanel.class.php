@@ -10,7 +10,7 @@
 		public $pagenbr;
 		public $activeID = false;
 		public $count;
-		public $filter = false; // Will be instance of array
+		public $filters = false; // Will be instance of array
 		
 		public function __construct($sessionID, \Purl\Url $pageurl, $modal, $loadinto, $ajax) {
 			parent::__construct($sessionID, $pageurl, $modal);
@@ -80,5 +80,29 @@
 		
 		public function generate_ajaxdataforcontento() {
 			return str_replace(' ', '|', str_replace("'", "", str_replace('"', '', $this->ajaxdata)));
+		}
+		
+		public function generate_filter(WireInput $input) {
+			if (!$input->get->filter) {
+				$this->filterable = false;
+				return;
+			} else {
+				$this->filters = array();
+				foreach ($this->filterable as $filter => $type) {
+					if (!empty($input->get->$filter)) {
+						$this->filters[$filter] = $input->get->$filter;
+					}
+				}
+			}
+		}
+		
+		public function get_filtervalue($filtername, $index = 0) {
+			if (empty($this->filters)) return '';
+			return (isset($this->filters[$filtername])) ? $this->filters[$filtername][$index] : '';
+		}
+		
+		public function has_filtervalue($filtername, $value) {
+			if (empty($this->filters)) return false;
+			return (isset($this->filters[$filtername])) ? in_array($value, $this->filters[$filtername]) : false;
 		}
 	}

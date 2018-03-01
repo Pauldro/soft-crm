@@ -65,6 +65,27 @@
             }
     	}
         
+        public function generate_filters($filters, $filtertypes) {
+            foreach ($filters as $filter => $filtervalue) {
+                switch ($filtertypes[$filter]['querytype']) {
+                    case 'between':
+                        if (sizeof($filtervalue) == 1) {
+                            $this->where($filter, $filtervalue[0]);
+                        } else {
+                            if ($filtertypes[$filter]['datatype'] == 'date') {
+                                $this->where($this->expr("STR_TO_DATE($filter, '%m/%d/%Y') between STR_TO_DATE([], '%m/%d/%Y') and STR_TO_DATE([], '%m/%d/%Y')", $filtervalue));
+                            } else {
+                                $this->where($this->expr("$filter between [] and []", $filtervalue));
+                            }
+                        }
+                        break;
+                    case 'in':
+                        $this->where($filter, $filtervalue);
+                        break;
+                }
+            }
+        }
+        
         /**
          * Parses $value to determine the type of column conditional to use 
          * such as if this is a between or a != 

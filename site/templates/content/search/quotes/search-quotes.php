@@ -10,6 +10,7 @@
     <div class="row">
         <div class="col-sm-2"> 
             <form action="<?php echo $page->fullURL->getUrl(); ?>" method="get" id="quote-search-form" data-loadinto="#quotes-panel" data-focus="#quotes-panel" data-modal="#ajax-modal" class="fuelux">
+                <input type="hidden" name="filter" value="filter">
                 <h4>Quote # :</h4>
                 <input class="form-control form-group inline input-sm" type="text" name="quoteno-low" value="" placeholder="From Quote #">
                 <input class="form-control form-group inline input-sm" type="text" name="quoteno-high" value="" placeholder="Through Quote #">
