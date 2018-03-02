@@ -21,6 +21,7 @@
 			),
 			'orderdate' => array(
 				'querytype' => 'between',
+				'datatype' => 'date',
 				'label' => 'Order Date'
 			),
 			'status' => array(
@@ -146,6 +147,13 @@
 			$url = new \Purl\Url($this->generate_loaddetailsurltrait($order));
 			$url->query->set('page', $this->pagenbr);
 			$url->query->set('orderby', $this->tablesorter->orderbystring);
+			
+			if (!empty($this->filters)) {
+				$url->query->set('filter', 'filter');
+				foreach ($this->filters as $filter => $value) {
+					$url->query->set($filter, implode('|', $value));
+				}
+			}
 			return $url->getUrl();
 		}
 		

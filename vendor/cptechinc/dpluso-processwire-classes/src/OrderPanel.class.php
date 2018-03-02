@@ -13,6 +13,7 @@
 		public $activeID = false;
 		public $count;
 		public $filters = false; // Will be instance of array
+		public $filterable;
 		public $paneltype;
 		
 		public function __construct($sessionID, \Purl\Url $pageurl, $modal, $loadinto, $ajax) {
@@ -98,7 +99,12 @@
 				$this->filters = array();
 				foreach ($this->filterable as $filter => $type) {
 					if (!empty($input->get->$filter)) {
-						$this->filters[$filter] = $input->get->$filter;
+						if (!is_array($input->get->$filter)) {
+							$value = $input->get->text($filter);
+							$this->filters[$filter] = explode('|', $value);
+						} else {
+							$this->filters[$filter] = $input->get->$filter;
+						}
 					}
 				}
 			}

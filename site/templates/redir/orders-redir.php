@@ -10,11 +10,23 @@
 	// USED FOR MAINLY ORDER LISTING FUNCTIONS
 	$pagenumber = (!empty($input->get->page) ? $input->get->int('page') : 1);
 	$sortaddon = (!empty($input->get->orderby) ? '&orderby=' . $input->get->text('orderby') : '');
+	$filteraddon = '';
+	if ($input->get->filter) {
+		$orderpanel = new SalesOrderPanel(session_id(), $page->fullURL, '', '', '');
+		$orderpanel->generate_filter($input);
+		
+		if (!empty($orderpanel->filters)) {
+			$filteraddon = "&filter=filter";
+			foreach ($orderpanel->filters as $filter => $value) {
+				$filteraddon .= "&$filter=".implode('|', $value);
+			}
+		}
+	}
 
-	$linkaddon = $sortaddon;
+	$linkaddon = $sortaddon . $filteraddon;
 	$session->{'from-redirect'} = $page->url;
 	$session->remove('order-search');
-
+	$session->filters = $filteraddon;
 	$filename = session_id();
 
 	/**

@@ -30,8 +30,8 @@
                 <div class="col-sm-6">
                     <?= $paginator->generate_showonpage(); ?>
                 </div>
-                <div class="col-sm-4">
-					<button class="btn btn-primary toggle-order-search" type="button" data-toggle="collapse" data-target="#orders-search-div" aria-expanded="false" aria-controls="orders-search-div">Toggle Search <i class="fa fa-search" aria-hidden="true"></i></button>
+                <div class="col-sm-6">
+					<button class="btn btn-primary toggle-order-search pull-right" type="button" data-toggle="collapse" data-target="#orders-search-div" aria-expanded="false" aria-controls="orders-search-div">Toggle Search <i class="fa fa-search" aria-hidden="true"></i></button>
                 </div>
             </div>
 			<div id="orders-search-div" class="<?= (empty($orderpanel->filters)) ? 'collapse' : ''; ?>">

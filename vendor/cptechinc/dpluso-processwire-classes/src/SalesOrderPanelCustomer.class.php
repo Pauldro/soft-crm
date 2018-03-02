@@ -2,27 +2,57 @@
 	class CustomerSalesOrderPanel extends SalesOrderPanel implements OrderPanelCustomerInterface {
 		use OrderPanelCustomerTraits;
 		
+		public $orders = array();
+		public $filterable = array(
+			'custpo' => array(
+				'querytype' => 'between',
+				'datatype' => 'char',
+				'label' => 'Cust PO'
+			),
+			'custid' => array(
+				'querytype' => 'between',
+				'datatype' => 'char',
+				'label' => 'CustID'
+			),
+			'orderno' => array(
+				'querytype' => 'between',
+				'datatype' => 'char',
+				'label' => 'Order #'
+			),
+			'orderdate' => array(
+				'querytype' => 'between',
+				'datatype' => 'date',
+				'label' => 'Order Date'
+			),
+			'status' => array(
+				'querytype' => 'in',
+				'datatype' => 'char',
+				'label' => 'Status'
+			)
+		);
+		
 		/* =============================================================
 			SalesOrderPanelInterface Functions
 		============================================================ */
 		public function get_ordercount($debug = false) {
-			$this->count = count_customerorders($this->sessionID, $this->custID, $debug);
+			$count = count_customerorders($this->sessionID, $this->custID, $this->filters, $this->filterable, $debug);
+			return $debug ? $count : $this->count = $count;
 		}
 		
 		public function get_orders($debug = false) {
 			$useclass = true;
 			if ($this->tablesorter->orderby) {
 				if ($this->tablesorter->orderby == 'orderdate') {
-					$orders = get_customerordersorderdate($this->sessionID, $this->custID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $useclass, $debug);
+					$orders = get_customerordersorderdate($this->sessionID, $this->custID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $useclass, $debug);
 				} else {
-					$orders = get_customerordersorderby($this->sessionID, $this->custID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $useclass, $debug);
+					$orders = get_customerordersorderby($this->sessionID, $this->custID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $this->filters, $this->filterable, $useclass, $debug);
 				}
 			} else {
 				// DEFAULT BY ORDER DATE SINCE SALES ORDER # CAN BE ROLLED OVER
 				$this->tablesorter->sortrule = 'DESC';
 				// $this->tablesorter->orderby = 'orderno';
 				//$orders = get_customerordersorderby($this->sessionID, $this->custID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $useclass, $debug);
-				$orders = get_customerordersorderdate($this->sessionID, $this->custID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $useclass, $debug);
+				$orders = get_customerordersorderdate($this->sessionID, $this->custID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $useclass, $debug);
 			}
 			return $debug ? $orders : $this->orders = $orders;
 		}
@@ -62,6 +92,16 @@
 				return '';
 			}
 			return '';
+		}
+		
+		public function generate_filter(WireInput $input) {
+			parent::generate_filter($input);
+			
+			if (isset($this->filters['orderdate'])) {
+				if (empty($this->filters['orderdate'][1])) {
+					$this->filters['orderdate'][1] = date('m/d/Y');
+				}
+			}
 		}
 		
 		/* =============================================================

@@ -338,11 +338,14 @@ $(document).ready(function() {
 			var form = $(this);
 			var loadinto = form.data('loadinto');
 			var focuson = form.data('focus');
-			var href = URI(form.attr('action')).query('').query(form.serialize()).query(cleanparams).query(remove_emptyparams);
+			var action = URI(form.attr('action'));
+			var orderby = URI.parseQuery(URI(action).search()).orderby; // Keep the orderby param value before clearing it
+			var href = action.query('').query(form.serialize()).query(cleanparams).query(remove_emptyparams);
+			
 			if (Object.keys(href.query(true)).length == 1) {
 				href.query('');
 			}
-			href = href.toString();
+			href = href.addQuery('orderby', orderby).toString(); // Add orderby param
 			$(loadinto).loadin(href, function() {
 				if (focuson.length > 0) {
 					$('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000);

@@ -17,8 +17,9 @@
 			<input class="pull-right" type="checkbox" name="status[]" value="Verify" <?= ($orderpanel->has_filtervalue('status', 'Verify')) ? 'checked' : ''; ?>>
 		</div>
 		<div class="col-sm-2">
-			<h4>Cust PO</h4>
-			<input class="form-control inline input-sm" type="text" name="custpo[]" value="<?= $orderpanel->get_filtervalue('custpo'); ?>" placeholder="Cust PO">
+			<h4>Order #</h4>
+			<input class="form-control form-group inline input-sm" type="text" name="orderno[]" value="<?= $orderpanel->get_filtervalue('orderno'); ?>" placeholder="From Order #">
+			<input class="form-control form-group inline input-sm" type="text" name="orderno[]" value="<?= $orderpanel->get_filtervalue('orderno', 1); ?>" placeholder="Through Order #">
 		</div>
 		<div class="col-sm-2">
 			<h4>Cust ID</h4>
@@ -26,9 +27,8 @@
 			<input class="form-control form-group inline input-sm" type="text" name="custid[]" value="<?= $orderpanel->get_filtervalue('custid', 1); ?>" placeholder="Through CustID">
 		</div>
 		<div class="col-sm-2">
-			<h4>Order #</h4>
-			<input class="form-control form-group inline input-sm" type="text" name="orderno[]" value="<?= $orderpanel->get_filtervalue('orderno'); ?>" placeholder="From Order #">
-			<input class="form-control form-group inline input-sm" type="text" name="orderno[]" value="<?= $orderpanel->get_filtervalue('orderno', 1); ?>" placeholder="Through Order #">
+			<h4>Cust PO</h4>
+			<input class="form-control inline input-sm" type="text" name="custpo[]" value="<?= $orderpanel->get_filtervalue('custpo'); ?>" placeholder="Cust PO">
 		</div>
 		<div class="col-sm-4">
             <h4>Order Date</h4>
@@ -46,5 +46,6 @@
             </div>
         </div>
 	</div>
+	</br>
 	<button class="btn btn-success btn-block" type="submit">Search <i class="fa fa-search" aria-hidden="true"></i></button>
 </form>
