@@ -30,16 +30,21 @@
 			<input class="form-control form-group inline input-sm" type="text" name="orderno[]" value="<?= $orderpanel->get_filtervalue('orderno'); ?>" placeholder="From Order #">
 			<input class="form-control form-group inline input-sm" type="text" name="orderno[]" value="<?= $orderpanel->get_filtervalue('orderno', 1); ?>" placeholder="Through Order #">
 		</div>
-		<div class="col-sm-2">
-			<h4>Order Date</h4>
-			<label class="control-label">From Date </label>
-			<?php $name = 'orderdate[]'; $value = $orderpanel->get_filtervalue('orderdate'); ?>
-			<?php include $config->paths->content."common/date-picker.php"; ?>
-
-			<label class="control-label">Through Date </label>
-			<?php $name = 'orderdate[]'; $value = $orderpanel->get_filtervalue('orderdate', 1); ?>
-			<?php include $config->paths->content."common/date-picker.php"; ?></br>
-		</div>
+		<div class="col-sm-4">
+            <h4>Order Date</h4>
+            <div class="row">
+                <div class="col-sm-6">
+        			<?php $name = 'orderdate[]'; $value = $orderpanel->get_filtervalue('orderdate'); ?>
+        			<?php include $config->paths->content."common/date-picker.php"; ?>
+                    <label class="small text-muted">From Date </label>
+                </div>
+                <div class="col-sm-6">
+        			<?php $name = 'orderdate[]'; $value = $orderpanel->get_filtervalue('orderdate', 1); ?>
+        			<?php include $config->paths->content."common/date-picker.php"; ?>
+                    <label class="small text-muted">Through Date </label>
+        		</div>
+            </div>
+        </div>
 	</div>
 	<button class="btn btn-success btn-block" type="submit">Search <i class="fa fa-search" aria-hidden="true"></i></button>
 </form>
