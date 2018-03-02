@@ -69,6 +69,8 @@
             foreach ($filters as $filter => $filtervalue) {
                 switch ($filtertypes[$filter]['querytype']) {
                     case 'between':
+						$filtervalue = array_filter($filtervalue);
+						
                         if (sizeof($filtervalue) == 1) {
                             $this->where($filter, $filtervalue[0]);
                         } else {
@@ -189,7 +191,7 @@
 		public static function generate_filterdescription($key, $val, $filtertypes) {
 			switch ($filtertypes[$key]['querytype']) {
 				case 'between':
-					if (sizeof($val) == 1) {
+					if (sizeof(array_filter($val)) == 1) {
 						return " ".$filtertypes[$key]['label'] ." = " . $val[0];
 					} else {
 						return " ".$filtertypes[$key]['label'] . " between " . $val[0] . " and " . $val[1];

@@ -12,6 +12,7 @@
     	<?php if (!empty($orderpanel->filters)) : ?>
         	<a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">
 				<?= $orderpanel->generate_filterdescription(); ?> <span class="caret"></span> <span class="badge"><?= $orderpanel->count; ?></span>
+				&nbsp; &nbsp; <?= $orderpanel->generate_refreshlink(); ?>
             </a>
     	<?php elseif ($orderpanel->count > 0) : ?>
             <a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">Your Orders <span class="caret"></span></a> &nbsp; <span class="badge"> <?= $orderpanel->count; ?></span> &nbsp; | &nbsp;
@@ -21,7 +22,7 @@
         <?php endif; ?>
 		&nbsp; &nbsp;
 		<?= $orderpanel->generate_lastloadeddescription(); ?>
-        <span class="pull-right"><?= $orderpanel->generate_pagenumberdescription(); ?></span>
+        <span class="pull-right"><?= $orderpanel->generate_pagenumberdescription(); ?> </span>
     </div>
     <div id="orders-div" class="<?= $orderpanel->collapse; ?>">
         <div class="panel-body">

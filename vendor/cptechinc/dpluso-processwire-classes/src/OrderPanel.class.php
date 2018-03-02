@@ -1,6 +1,6 @@
-use ProcessWire\Wire;
-
 <?php 
+	use ProcessWire\Wire;
+	
 	abstract class OrderPanel extends OrderDisplay {
 		public $focus;
 		public $loadinto;
