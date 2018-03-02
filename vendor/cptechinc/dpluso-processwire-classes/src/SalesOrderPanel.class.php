@@ -6,23 +6,27 @@
 		public $filterable = array(
 			'custpo' => array(
 				'querytype' => 'between',
-				'datatype' => 'char'
+				'datatype' => 'char',
+				'label' => 'Cust PO'
 			),
 			'custid' => array(
 				'querytype' => 'between',
-				'datatype' => 'char'
+				'datatype' => 'char',
+				'label' => 'CustID'
 			),
 			'orderno' => array(
 				'querytype' => 'between',
-				'datatype' => 'char'
+				'datatype' => 'char',
+				'label' => 'Order #'
 			),
 			'orderdate' => array(
 				'querytype' => 'between',
-				'datatype' => 'date'
+				'label' => 'Order Date'
 			),
 			'status' => array(
 				'querytype' => 'in',
-				'datatype' => 'char'
+				'datatype' => 'char',
+				'label' => 'Status'
 			)
 		);
 		

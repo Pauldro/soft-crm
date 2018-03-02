@@ -332,6 +332,23 @@ $(document).ready(function() {
 				});
 			});
 		});
+		
+		$("body").on("submit", ".orders-search-form", function(e)  { //FIXME Barbara - changed from order-search-form
+			e.preventDefault();
+			var form = $(this);
+			var loadinto = form.data('loadinto');
+			var focuson = form.data('focus');
+			var href = URI(form.attr('action')).query('').query(form.serialize()).query(cleanparams).query(remove_emptyparams);
+			if (Object.keys(href.query(true)).length == 1) {
+				href.query('');
+			}
+			href = href.toString();
+			$(loadinto).loadin(href, function() {
+				if (focuson.length > 0) {
+					$('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000);
+				}
+			});
+		});
 
 		$("body").on("submit", ".item-reorder", function(e) {
 			e.preventDefault();
@@ -1104,6 +1121,18 @@ $(document).ready(function() {
 		});
 		return result;
 	};
+	
+	var remove_emptyparams = function(data) {
+		var result = {};
+		Object.keys(data).filter(function(key) {
+			return Boolean(data[key]) && data[key].length;
+		}).forEach(function(key) {
+			if (data[key] != '') {
+				result[key] = data[key];
+			}
+		});
+		return result;
+	}
 
 
 /*==============================================================

@@ -1,3 +1,5 @@
+use ProcessWire\Wire;
+
 <?php 
 	abstract class OrderPanel extends OrderDisplay {
 		public $focus;
@@ -11,6 +13,7 @@
 		public $activeID = false;
 		public $count;
 		public $filters = false; // Will be instance of array
+		public $paneltype;
 		
 		public function __construct($sessionID, \Purl\Url $pageurl, $modal, $loadinto, $ajax) {
 			parent::__construct($sessionID, $pageurl, $modal);
@@ -82,9 +85,14 @@
 			return str_replace(' ', '|', str_replace("'", "", str_replace('"', '', $this->ajaxdata)));
 		}
 		
-		public function generate_filter(WireInput $input) {
+		/**
+		 * Looks through the $input->get for properties that have the same name
+		 * as filterable properties, then we populate $this->filter with the key and value
+		 * @param  ProcessWire\WireInput $input Use the get property to get at the $_GET[] variables
+		 */
+		public function generate_filter(ProcessWire\WireInput $input) {
 			if (!$input->get->filter) {
-				$this->filterable = false;
+				$this->filters = false;
 				return;
 			} else {
 				$this->filters = array();
@@ -104,5 +112,15 @@
 		public function has_filtervalue($filtername, $value) {
 			if (empty($this->filters)) return false;
 			return (isset($this->filters[$filtername])) ? in_array($value, $this->filters[$filtername]) : false;
+		}
+		
+		public function generate_filterdescription() {
+			if (empty($this->filters)) return '';
+			$desc = 'Searching Sales Orders with';
+			
+			foreach ($this->filters as $filter => $value) {
+				$desc .= " " . QueryBuilder::generate_filterdescription($filter, $value, $this->filterable);
+			}
+			return $desc;
 		}
 	}

@@ -8,7 +8,7 @@
 <form action="<?= $config->pages->customer.'redir/'; ?>" method="post">
     <input type="hidden" name="action" value="add-customer">
     <div class="row">
-        <div class="col-xs-6">
+        <div class="col-sm-6">
            <legend>Bill-To</legend>
             <table class="table table-striped table-bordered table-condensed">
                 <tbody>
@@ -76,7 +76,7 @@
            </table>
         </div> <!-- end bill to column -->
 
-        <div class="col-xs-6">
+        <div class="col-sm-6">
            <legend>Ship-To</legend>
             <table class="table table-striped table-bordered table-condensed">
                 <tbody>
@@ -120,7 +120,20 @@
                             </select>
                         </td>
                     </tr>
+                </tbody>
+           </table>
+        </div> <!-- end shit to column -->
+    </div> <!-- end top row-->
+    <br>
+    <div class="row">
+		<div class="col-sm-6">
+			<table class="table table-striped table-bordered table-condensed">
+                <tbody>
                     <tr>
+                        <td class="control-label">Contact Name</td>
+                        <td><input type="text" class="form-control input-sm required" name="shipto-name" value=""></td>
+                    </tr>
+					<tr>
                         <td class="control-label">Phone</td>
                         <td><input type="tel" class="form-control input-sm phone-input" name="shipto-phone" value=""></td>
                     </tr>
@@ -138,42 +151,15 @@
                     </tr>
                 </tbody>
            </table>
-        </div> <!-- end shit to column -->
-    </div> <!-- end top row-->
-    <br>
-    <div class="row">
-        <div class="col-xs-6">
-           <legend>Salesperson Information</legend>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-6">
+		</div>
+        <div class="col-sm-6">
+			<legend>Salesperson Information</legend>
             <table class="table table-striped table-bordered table-condensed">
                 <tbody>
                     <tr>
                         <td class="control-label">Salesperson1</td>
                         <td>
                             <select name="salesperson1" class="form-control input-sm">
-                                <?php foreach ($salespersoncodes as $salespersoncode) : ?>
-                                    <option value="<?= $salespersonjson['data'][$salespersoncode]['splogin']; ?>"><?= $salespersoncode.' - '.$salespersonjson['data'][$salespersoncode]['spname']; ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="control-label">Salesperson2</td>
-                        <td>
-                            <select name="salesperson2" class="form-control input-sm">
-                                <?php foreach ($salespersoncodes as $salespersoncode) : ?>
-                                    <option value="<?= $salespersonjson['data'][$salespersoncode]['splogin']; ?>"><?= $salespersoncode.' - '.$salespersonjson['data'][$salespersoncode]['spname']; ?></option>
-                                <?php endforeach; ?>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="control-label">Salesperson3</td>
-                        <td>
-                            <select name="salesperson3" class="form-control input-sm">
                                 <?php foreach ($salespersoncodes as $salespersoncode) : ?>
                                     <option value="<?= $salespersonjson['data'][$salespersoncode]['splogin']; ?>"><?= $salespersoncode.' - '.$salespersonjson['data'][$salespersoncode]['spname']; ?></option>
                                 <?php endforeach; ?>

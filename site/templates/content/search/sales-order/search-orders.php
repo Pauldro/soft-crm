@@ -50,7 +50,6 @@
         </form>
     </div>
     <div class="col-sm-10">
-		<?php include $config->paths->content.'salesrep/orders/orders-table.php'; ?>
-        <?= $paginator; ?>
+		<?php include $config->paths->content.'salesrep/orders/orders-panel.php'; ?>
     </div>
 </div>

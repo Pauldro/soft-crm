@@ -185,4 +185,20 @@
             }
        		return $sql;
        	}
+		
+		public static function generate_filterdescription($key, $val, $filtertypes) {
+			switch ($filtertypes[$key]['querytype']) {
+				case 'between':
+					if (sizeof($val) == 1) {
+						return " ".$filtertypes[$key]['label'] ." = " . $val[0];
+					} else {
+						return " ".$filtertypes[$key]['label'] . " between " . $val[0] . " and " . $val[1];
+					}
+					break;
+				case 'in':
+					$values = implode(', ', $val);
+					return " ".$filtertypes[$key]['label'] ." IN ($values)";
+					break;
+			}
+		}
     }
