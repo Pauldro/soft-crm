@@ -753,9 +753,12 @@
 		}
 	}
 	
-	function get_userquotes($sessionID, $limit, $page, $useclass = false, $debug = false) {
+	function get_userquotes($sessionID, $limit, $page = 1, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->where('sessionid', $sessionID);
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
@@ -771,11 +774,14 @@
 		}
 	}
 	
-	function get_userquotesquotedate($sessionID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug = false) {
+	function get_userquotesquotedate($sessionID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
 		$q->field($q->expr("STR_TO_DATE(quotdate, '%m/%d/%Y') as quotedate"));
 		$q->where('sessionid', $sessionID);
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('quotedate', $sortrule);
 		$sql = Processwire\wire('database')->prepare($q->render());
@@ -792,11 +798,14 @@
 		}
 	}
 	
-	function get_userquotesrevdate($sessionID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug = false) {
+	function get_userquotesrevdate($sessionID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
 		$q->field($q->expr("STR_TO_DATE(revdate, '%m/%d/%Y') as reviewdate"));
 		$q->where('sessionid', $sessionID);
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('reviewdate', $sortrule);
 		$sql = Processwire\wire('database')->prepare($q->render());
@@ -813,11 +822,14 @@
 		}
 	}
 		
-	function get_userquotesexpdate($sessionID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug = false) {
+	function get_userquotesexpdate($sessionID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
 		$q->field($q->expr("STR_TO_DATE(expdate, '%m/%d/%Y') as expiredate"));
 		$q->where('custid', $custID);
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('expiredate', $sortrule);
 		$sql = Processwire\wire('database')->prepare($q->render());
@@ -834,9 +846,12 @@
 		}
 	}
 	
-	function get_userquotesorderby($sessionID, $limit = 10, $page = 1, $sortrule, $orderby, $useclass = true, $debug = false) {
+	function get_userquotesorderby($sessionID, $limit = 10, $page = 1, $sortrule, $orderby, $filter = false, $filtertypes = false, $useclass = true, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->where('sessionid', $sessionID);
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order($orderby, $sortrule, $limiting);
 		$sql = Processwire\wire('database')->prepare($q->render());
@@ -868,10 +883,13 @@
 		}
 	}
 
-	function get_customerquotes($sessionID, $custID, $limit, $page, $useclass = false, $debug = false) {
+	function get_customerquotes($sessionID, $custID, $limit = 10, $page = 1, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->where('sessionid', $sessionID);
 		$q->where('custid', $custID);
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
@@ -887,12 +905,15 @@
 		}
 	}
 	
-	function get_customerquotesquotedate($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug = false) {
+	function get_customerquotesquotedate($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
 		$q->field($q->expr("STR_TO_DATE(quotdate, '%m/%d/%Y') as quotedate"));
 		$q->where('sessionid', $sessionID);
 		$q->where('custid', $custID);
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('quotedate', $sortrule);
 		$sql = Processwire\wire('database')->prepare($q->render());
@@ -909,13 +930,16 @@
 		}
 	}
 	
-	function get_customerquotesrevdate($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug = false) {
+	function get_customerquotesrevdate($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
 		$q->field('revdate');
 		$q->field($q->expr("STR_TO_DATE(revdate, '%m/%d/%Y') as reviewdate"));
 		$q->where('sessionid', $sessionID);
 		$q->where('custid', $custID);
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('reviewdate', $sortrule);
 		$sql = Processwire\wire('database')->prepare($q->render());
@@ -932,13 +956,16 @@
 		}
 	}
 		
-	function get_customerquotesexpdate($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $useclass = false, $debug = false) {
+	function get_customerquotesexpdate($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
 		$q->field('expdate');
 		$q->field($q->expr("STR_TO_DATE(expdate, '%m/%d/%Y') as expiredate"));
 		$q->where('sessionid', $sessionID);
 		$q->where('custid', $custID);
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('expiredate', $sortrule);
 		$sql = Processwire\wire('database')->prepare($q->render());
@@ -955,10 +982,13 @@
 		}
 	}
 	
-	function get_customerquotesorderby($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $orderby, $useclass = true, $debug = false) {
+	function get_customerquotesorderby($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $orderby, $filter = false, $filtertypes = false, $useclass = true, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->where('sessionid', $sessionID);
 		$q->where('custid', $custID);
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order($orderby, $sortrule);
 		$sql = Processwire\wire('database')->prepare($q->render());

@@ -2,6 +2,7 @@
 	$quotepanel = new RepQuotePanel(session_id(), $page->fullURL, '#ajax-modal', "#quotes-panel", $config->ajax);
 	$quotepanel->pagenbr = $input->pageNum;
 	$quotepanel->activeID = !empty($input->get->qnbr) ? $input->get->text('qnbr') : false;
+	$quotepanel->generate_filter($input);
 	$quotepanel->get_quotecount();
 	
 	$paginator = new Paginator($quotepanel->pagenbr, $quotepanel->count, $quotepanel->pageurl->getUrl(), $quotepanel->paginationinsertafter, $quotepanel->ajaxdata);
@@ -28,15 +29,13 @@
                 <div class="col-sm-6">
                     <?= $paginator->generate_showonpage(); ?>
                 </div>
-                <div class="col-sm-4">
-					<?php if (100 == 1) : // TODO Add quotesearch link ?>
-						<?= $quotepanel->generate_searchlink(); ?>
-	                    <?php if ($session->quotessearch) : ?>
-		                    <?= $quotepanel->generate_clearsearchlink(); ?>
-	                    <?php endif; ?>
-					<?php endif; ?>
+				<div class="col-sm-6">
+					<button class="btn btn-primary toggle-order-search pull-right" type="button" data-toggle="collapse" data-target="#quotes-search-div" aria-expanded="false" aria-controls="orders-search-div">Toggle Search <i class="fa fa-search" aria-hidden="true"></i></button>
                 </div>
             </div>
+			<div id="quotes-search-div" class="<?= (empty($quotepanel->filters)) ? 'collapse' : ''; ?>">
+				<?php include $config->paths->content.'salesrep/quotes/quotes-search-form.php'; ?>
+			</div>
         </div>
         <div class="table-responsive">
             <?php include $config->paths->content.'salesrep/quotes/quotes-table.php'; ?>

@@ -3,6 +3,38 @@
 		use QuoteDisplayTraits;
 		
 		public $quotes = array();
+		public $filterable = array(
+			'quotnbr' => array(
+				'querytype' => 'between',
+				'datatype' => 'char',
+				'label' => 'Quote #'
+			),
+			'custid' => array(
+				'querytype' => 'between',
+				'datatype' => 'char',
+				'label' => 'CustID'
+			),
+			'ordertotal' => array(
+				'querytype' => 'between',
+				'datatype' => 'char',
+				'label' => 'Order Total'
+			),
+			'quotdate' => array(
+				'querytype' => 'between',
+				'datatype' => 'date',
+				'label' => 'Quote Date'
+			),
+			'revdate' => array(
+				'querytype' => 'between',
+				'datatype' => 'date',
+				'label' => 'Review Date'
+			),
+			'expdate' => array(
+				'querytype' => 'between',
+				'datatype' => 'date',
+				'label' => 'Expire Date'
+			)
+		);
 		
 		public function __construct($sessionID, \Purl\Url $pageurl, $modal, $loadinto, $ajax) {
 			parent::__construct($sessionID, $pageurl, $modal, $loadinto, $ajax);
@@ -23,7 +55,7 @@
 			LINKS ARE HTML LINKS, AND URLS ARE THE URLS THAT THE HREF VALUE
 		============================================================ */
 		public function get_quotecount($debug = false) {
-			$count = count_userquotes($this->sessionID, $debug);
+			$count = count_userquotes($this->sessionID, $this->filters, $this->filterable, $debug);
 			return $debug ? $count : $this->count = $count;
 		}
 		
@@ -31,16 +63,16 @@
 			$useclass = true;
 			if ($this->tablesorter->orderby) {
 				if ($this->tablesorter->orderby == 'quotdate') {
-					$quotes = get_userquotesquotedate($this->sessionID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $useclass, $debug);
+					$quotes = get_userquotesquotedate($this->sessionID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $useclass, $debug);
 				} elseif ($this->tablesorter->orderby == 'revdate') {
-					$quotes = get_userquotesrevdate($this->sessionID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $useclass, $debug);
+					$quotes = get_userquotesrevdate($this->sessionID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $useclass, $debug);
 				} elseif ($this->tablesorter->orderby == 'expdate') {
-					$quotes = get_userquotesexpdate($this->sessionID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $useclass, $debug); 
+					$quotes = get_userquotesexpdate($this->sessionID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $useclass, $debug); 
 				} else {
-					$quotes = get_userquotesorderby($this->sessionID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $useclass, $debug);
+					$quotes = get_userquotesorderby($this->sessionID, Processwire\wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $this->filters, $this->filterable, $useclass, $debug);
 				}
 			} else {
-				$quotes = get_userquotes($this->sessionID, Processwire\wire('session')->display, $this->pagenbr, $useclass, $debug);
+				$quotes = get_userquotes($this->sessionID, Processwire\wire('session')->display, $this->pagenbr, $this->filters, $this->filterable, $useclass, $debug);
 			}
 			return $debug ? $quotes: $this->quotes = $quotes;
 		}
@@ -138,6 +170,13 @@
 			$url = new \Purl\Url($this->generate_loaddetailsurltrait($quote));
 			$url->query->set('page', $this->pagenbr);
 			$url->query->set('orderby', $this->tablesorter->orderbystring);
+			
+			if (!empty($this->filters)) {
+				$url->query->set('filter', 'filter');
+				foreach ($this->filters as $filter => $value) {
+					$url->query->set($filter, implode('|', $value));
+				}
+			}
 			return $url->getUrl();
 		}
 		
@@ -221,5 +260,23 @@
 				}
 			}
 			return '';
+		}
+		
+		public function generate_filter(WireInput $input) {
+			parent::generate_filter($input);
+			
+			if (isset($this->filters['quotdate'])) {
+				if (empty($this->filters['quotdate'][1])) {
+					$this->filters['quotdate'][1] = date('m/d/Y');
+				}
+			} elseif (isset($this->filters['revdate'])) {
+				if (empty($this->filters['revdate'][1])) {
+					$this->filters['revdate'][1] = date('m/d/Y');
+				}
+			} elseif (isset($this->filters['expdate'])) {
+				if (empty($this->filters['expdate'][1])) {
+					$this->filters['expdate'][1] = date('m/d/Y');
+				}
+			}
 		}
 	}
