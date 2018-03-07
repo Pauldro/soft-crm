@@ -337,21 +337,21 @@
 	
 		if ($restrictions) {
 			if (Processwire\wire('config')->cptechcustomer == 'stempf') {
-				$sql = Processwire\wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext), '-', '')) LIKE UCASE(:search) GROUP BY custid, shiptoid ORDER BY custid <> '$keyword' $limiting");
+				$sql = Processwire\wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', city, ' ', state, ' ', zip, ' ', phone, ' ', contact, ' ', source, ' ', extension), '-', '')) LIKE UCASE(:search) GROUP BY custid, shiptoid ORDER BY custid <> '$keyword' $limiting");
 			} elseif (Processwire\wire('config')->cptechcustomer == 'stat') { 
-				$sql = Processwire\wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext), '-', '')) LIKE UCASE(:search) GROUP BY custid $limiting"); 
+				$sql = Processwire\wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', city, ' ', state, ' ', zip, ' ', phone, ' ', contact, ' ', source, ' ', extension), '-', '')) LIKE UCASE(:search) GROUP BY custid $limiting"); 
 			} else {
-				$sql = Processwire\wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext), '-', '')) LIKE UCASE(:search) ORDER BY custid <> '$keyword' $limiting");
+				$sql = Processwire\wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', city, ' ', state, ' ', zip, ' ', phone, ' ', contact, ' ', source, ' ', extension), '-', '')) LIKE UCASE(:search) ORDER BY custid <> '$keyword' $limiting");
 			}
 			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':search' => $search);
 			$withquotes = array(true, true, true);
 		} else {
 			if (Processwire\wire('config')->cptechcustomer == 'stempf') {
-				$sql = Processwire\wire('database')->prepare("SELECT * FROM custindex WHERE UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext), '-', '')) LIKE UCASE(:search) GROUP BY custid, shiptoid ORDER BY custid <> '$keyword' $limiting");
+				$sql = Processwire\wire('database')->prepare("SELECT * FROM custindex WHERE UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', city, ' ', state, ' ', zip, ' ', phone, ' ', contact, ' ', source, ' ', extension), '-', '')) LIKE UCASE(:search) GROUP BY custid, shiptoid ORDER BY custid <> '$keyword' $limiting");
 			} elseif (wire('config')->cptechcustomer == 'stat') {
-				$sql = Processwire\wire('database')->prepare("SELECT * FROM custindex WHERE UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext), '-', '')) LIKE UCASE(:search) GROUP BY custid $limiting");
+				$sql = Processwire\wire('database')->prepare("SELECT * FROM custindex WHERE UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', city, ' ', state, ' ', zip, ' ', phone, ' ', contact, ' ', source, ' ', extension), '-', '')) LIKE UCASE(:search) GROUP BY custid $limiting");
 			} else {
-				$sql = Processwire\wire('database')->prepare("SELECT * FROM custindex WHERE UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext), '-', '')) LIKE UCASE(:search) ORDER BY custid <> '$keyword' $limiting");
+				$sql = Processwire\wire('database')->prepare("SELECT * FROM custindex WHERE UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', city, ' ', state, ' ', zip, ' ', phone, ' ', contact, ' ', source, ' ', extension), '-', '')) LIKE UCASE(:search) ORDER BY custid <> '$keyword' $limiting");
 			}
 			$switching = array(':search' => $search); $withquotes = array(true);
 		}
@@ -371,21 +371,21 @@
 
 		if ($restrictions) {
 			if (Processwire\wire('config')->cptechcustomer == 'stempf') {
-				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custindex GROUP BY custid, shiptoid) t WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext), '-', '')) LIKE UCASE(:search)");
+				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custindex GROUP BY custid, shiptoid) t WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', city, ' ', state, ' ', zip, ' ', phone, ' ', contact, ' ', source, ' ', extension), '-', '')) LIKE UCASE(:search)");
 			} elseif (Processwire\wire('config')->cptechcustomer == 'stat') {
-				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custindex) t WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext), '-', '')) LIKE UCASE(:search)");
+				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custindex) t WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', city, ' ', state, ' ', zip, ' ', phone, ' ', contact, ' ', source, ' ', extension), '-', '')) LIKE UCASE(:search)");
 			} else {
-				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext), '-', '')) LIKE UCASE(:search)");
+				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', city, ' ', state, ' ', zip, ' ', phone, ' ', contact, ' ', source, ' ', extension), '-', '')) LIKE UCASE(:search)");
 			}
 			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':search' => $search);
 			$withquotes = array(true, true, true, true);
 		} else {
 			if (Processwire\wire('config')->cptechcustomer == 'stempf') {
-				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custindex GROUP BY custid, shiptoid) t WHERE UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext), '-', '')) LIKE UCASE(:search)");
+				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custindex GROUP BY custid, shiptoid) t WHERE UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', city, ' ', state, ' ', zip, ' ', phone, ' ', contact, ' ', source, ' ', extension), '-', '')) LIKE UCASE(:search)");
 			} elseif (wire('config')->cptechcustomer == 'stat') {
-				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custindex) t WHERE UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext), '-', '')) LIKE UCASE(:search)");
+				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custindex) t WHERE UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', city, ' ', state, ' ', zip, ' ', phone, ' ', contact, ' ', source, ' ', extension), '-', '')) LIKE UCASE(:search)");
 			} else {
-				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', ccity, ' ', cst, ' ', czip, ' ', cphone, ' ', contact, ' ', source, ' ', cphext), '-', '')) LIKE UCASE(:search)");
+				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', city, ' ', state, ' ', zip, ' ', phone, ' ', contact, ' ', source, ' ', extension), '-', '')) LIKE UCASE(:search)");
 			}
 			$switching = array(':search' => $search); $withquotes = array(true);
 		}
@@ -415,7 +415,7 @@
 		}
 	}
 
-	function insert_newcustindexrecord($customer, $debug) {
+	function insert_newcustindexrecord($customer, $debug) { // DEPRECATED 3/5/2018
 		$query = returninsertlinks($customer);
 		$sql = Processwire\wire('database')->prepare("INSERT INTO custindex (".$query['columnlist'].") VALUES (".$query['valuelist'].")");
 		$switching = $query['switching']; $withquotes = $query['withquotes'];
@@ -426,18 +426,69 @@
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		}
 	}
+	
+	function insert_customerindexrecord(Contact $customer, $debug = false) {
+		$properties = array_keys($customer->_toArray());
+		$q = (new QueryBuilder())->table('custindex');
+		$q->mode('insert');
+		
+		foreach ($properties as $property) {
+			if (!empty($customer->$property)) {
+				$q->set($property, $customer->$property);
+			}
+		}
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			$sql->execute($q->params);
+			return $q->generate_sqlquery($q->params);
+		}
+	}
+	
+	function update_contact(Contact $contact, $debug = false) {
+		$originalcontact = Contact::load($contact->custid, $contact->shiptoid, $contact->contact);
+		$properties = array_keys($contact->_toArray());
+		$q = (new QueryBuilder())->table('custindex');
+		$q->mode('update');
+		foreach ($properties as $property) {
+			if ($contact->$property != $originalcontact->$property) {
+				$q->set($property, $contact->$property);
+			}
+		}
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			if ($contact->has_changes()) {
+				$sql->execute($q->params);
+			}
+			return $q->generate_sqlquery($q->params);
+		}
+	}
 
-	function getmax_custindexrecnbr() {
-		$sql = Processwire\wire('database')->prepare("SELECT MAX(recno) FROM custindex");
-		$sql->execute();
-		return $sql->fetchColumn();
+	function get_maxcustindexrecnbr($debug = false) {
+		$q = (new QueryBuilder())->table('custindex');
+		$q->field($q->expr('MAX(recno)'));
+		$sql = Processwire\wire('database')->prepare($q->render());
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			$sql->execute();
+			return $sql->fetchColumn();
+		}
 	}
 
 	function edit_custindexcustid($originalcustID, $newcustID) {
-		$sql = Processwire\wire('database')->prepare("UPDATE custindex SET custid = :newcustid WHERE custid = :originalcustid");
-		$switching = array(':newcustid' => $newcustID, ':originalcustid' => $originalcustID); $withquotes = array(true, true);
-		$sql->execute($switching);
-		return returnsqlquery($sql->queryString, $switching, $withquotes);
+		$q = (new QueryBuilder())->table('custindex');
+		$q->mode('update');
+		$q->set('custid', $newcustID);
+		$q->where('custid', $originalcustID);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql->execute($q->params);
+		return $q->generate_sqlquery();
 	}
 
 /* =============================================================
@@ -553,6 +604,7 @@
 
 	function get_customerorders($sessionID, $custID, $limit = 10, $page = 1, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
+		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
 		$q->where('sessionid', $sessionID);
 		$q->where('custid', $custID);
 		$q->where('type', 'O');
@@ -853,7 +905,7 @@
 			$q->generate_filters($filter, $filtertypes);
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		$q->order($orderby, $sortrule, $limiting);
+		$q->order($orderby, $sortrule);
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
 		if ($debug) {
@@ -1106,22 +1158,26 @@
 		}
 	}
 
-	function insertquoteline($sessionID, $qnbr, $linenbr, $debug) {
-		$sql = Processwire\wire('database')->prepare("INSERT INTO quotdet (sessionid, quotenbr, linenbr) VALUES (:sessionID, :qnbr, :linenbr)");
-		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr, ':linenbr' => $linenbr); $withquotes = array(true, true, true);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'insertedid' => Processwire\wire('database')->lastInsertId());
-		}
-	}
-
 	function nextquotelinenbr($sessionID, $qnbr) {
 		$sql = Processwire\wire('database')->prepare("SELECT MAX(linenbr) FROM quotdet WHERE sessionid = :sessionID AND quotenbr = :qnbr ");
 		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr); $withquotes = array(true, true);
 		$sql->execute($switching);
 		return intval($sql->fetchColumn()) + 1;
+	}
+	
+	function count_quotedetails($sessionID, $qnbr, $debug = false) {
+		$q = (new QueryBuilder())->table('quotdet');
+		$q->field($q->expr('COUNT(*)'));
+		$q->where('quotenbr', $qnbr);
+		$q->where('sessionid', $sessionID);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
 	}
 
 	function edit_quotehead($sessionID, $qnbr, Quote $quote, $debug = false) {
@@ -1149,35 +1205,43 @@
 		}
 	}
 
-	function edit_quoteline($sessionID, $qnbr, $newdetails, $debug) {
-		$originaldetail = getquotelinedetail($sessionID, $qnbr, $newdetails['linenbr'], false);
-		$query = returnpreppedquery($originaldetail, $newdetails);
-		$sql = Processwire\wire('database')->prepare("UPDATE quotdet SET ".$query['setstatement']." WHERE sessionid = :sessionID AND quotenbr = :qnbr AND linenbr = :linenbr");
-		$query['switching'][':sessionID'] = $sessionID; $query['switching'][':qnbr'] = $qnbr; $query['switching'][':linenbr'] = $newdetails['linenbr'];
-		$query['withquotes'][] = true; $query['withquotes'][]= true; $query['withquotes'][] = true;
-		
-		if ($debug) {
-			return	returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
-		} else {
-			if ($query['changecount'] > 0) {
-				$sql->execute($query['switching']);
-			}
-			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
-		}
-	}
-
-	function update_quotedetail($sessionID, $detail, $debug = false) {
+	function update_quotedetail($sessionID, QuoteDetail $detail, $debug = false) {
 		$originaldetail = QuoteDetail::load($sessionID, $detail->quotenbr, $detail->linenbr);
 		$properties = array_keys($detail->_toArray());
 		$q = (new QueryBuilder())->table('quotdet');
 		$q->mode('update');
 		foreach ($properties as $property) {
-			if ($detail != $originaldetail->$property) {
+			if ($detail->$property != $originaldetail->$property) {
 				$q->set($property, $detail->$property);
 			}
 		}
 		$q->where('quotenbr', $detail->quotenbr);
 		$q->where('sessionid', $detail->sessionid);
+		$q->where('recno', $detail->recno);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			if ($detail->has_changes()) {
+				$sql->execute($q->params);
+			}
+			return $q->generate_sqlquery($q->params);
+		}
+	}
+	
+	function insert_quotedetail($sessionID, QuoteDetail $detail, $debug = false) {
+		$properties = array_keys($detail->_toArray());
+		$q = (new QueryBuilder())->table('quotdet');
+		$q->mode('insert');
+		foreach ($properties as $property) {
+			if (!empty($detail->$property) || strlen($detail->$property)) {
+				$q->set($property, $detail->$property);
+			}
+		}
+		$q->where('quotenbr', $detail->quotenbr);
+		$q->where('sessionid', $detail->sessionid);
+		$q->where('recno', $detail->recno);
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
 		if ($debug) {
@@ -1795,7 +1859,7 @@
 		}
 	}
 
-	function insertcartline($sessionID, $linenbr, $debug) {
+	function insertcartline($sessionID, $linenbr, $debug) { // DEPRECATED 3/6/2018
 		$sql = Processwire\wire('database')->prepare("INSERT INTO cartdet (sessionid, linenbr) VALUES (:sessionID, :linenbr)");
 		$switching = array(':sessionID' => $sessionID, ':linenbr' => $linenbr); $withquotes = array(true, true);
 		if ($debug) {
@@ -1832,9 +1896,30 @@
 		$q = (new QueryBuilder())->table('cartdet');
 		$q->mode('update');
 		foreach ($properties as $property) {
-			if ($detail != $originaldetail->$property) {
+			if ($detail->$property != $originaldetail->$property) {
 				$q->set($property, $detail->$property);
 			}
+		}
+		$q->where('orderno', $detail->orderno);
+		$q->where('sessionid', $detail->sessionid);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			if ($detail->has_changes()) {
+				$sql->execute($q->params);
+			}
+			return $q->generate_sqlquery($q->params);
+		}
+	}
+	
+	function insert_cartdetail($sessionID, CartDetail $detail, $debug = false) {
+		$properties = array_keys($detail->_toArray());
+		$q = (new QueryBuilder())->table('cartdet');
+		$q->mode('insert');
+		foreach ($properties as $property) {
+			$q->set($property, $detail->$property);
 		}
 		$q->where('orderno', $detail->orderno);
 		$q->where('sessionid', $detail->sessionid);
@@ -1857,13 +1942,27 @@
 		return intval($sql->fetchColumn()) + 1;
 	}
 
-	function getcreatedordn($sessionID, $debug) {
+	function getcreatedordn($sessionID, $debug) { // DEPRECATED 3/6/2018
 		$sql = Processwire\wire('database')->prepare("SELECT ordernbr FROM logperm WHERE sessionid = :sessionID");
 		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
 		$sql->execute($switching);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
+			return $sql->fetchColumn();
+		}
+	}
+	
+	function get_createdordn($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('logperm');
+		$q->field('ordernbr');
+		$q->where('sessionid', $sessionID);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			$sql->execute($q->params);
 			return $sql->fetchColumn();
 		}
 	}
@@ -1883,7 +1982,7 @@
 		}
 	}
 	
-	function get_orderhead($sessionID, $ordn, $useclass = false, $debug) {
+	function get_orderhead($sessionID, $ordn, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->where('sessionid', $sessionID);
 		$q->where('orderno', $ordn);
@@ -1979,6 +2078,7 @@
 		}
 		$q->where('orderno', $detail->orderno);
 		$q->where('sessionid', $detail->sessionid);
+		$q->where('linenbr', $detail->linenbr);
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
 		if ($debug) {
@@ -2061,8 +2161,8 @@
 		}
 	}
 
-	function get_ordercreditcard($sessionID, $ordn, $debug) { //CHANGE TO QUERYBUILDER
-		$sql = Processwire\wire('database')->prepare("SELECT sessionid, AES_DECRYPT(cardnumber , HEX(sessionid)) AS cardnumber, AES_DECRYPT(cardcode , HEX(sessionid)) AS cardcode, AES_DECRYPT(cardexpire, HEX(sessionid)) AS expiredate FROM ordrhed WHERE sessionid = :sessionID AND orderno = :ordn AND type = 'O'");
+	function get_ordercreditcard($sessionID, $ordn, $debug) {
+		$sql = Processwire\wire('database')->prepare("SELECT sessionid, AES_DECRYPT(cardnumber, HEX(sessionid)) AS cardnumber, AES_DECRYPT(cardnumber , HEX(sessionid)) AS cardcode, AES_DECRYPT(cardexpire, HEX(sessionid)) AS expiredate FROM ordrhed WHERE sessionid = :sessionID AND orderno = :ordn AND type = 'O'");
 		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn); $withquotes = array(true, true);
 		$sql->execute($switching);
 		if ($debug) {

@@ -186,9 +186,6 @@ $(document).ready(function() {
 				$(this).closest('tr').addClass('has-error');
 			}
         });
-		
-      
-
 	/*==============================================================
 	  AJAX LOAD FUNCTIONS
 	=============================================================*/
@@ -240,8 +237,6 @@ $(document).ready(function() {
 			e.preventDefault();
 			var button = $(this);
 			var ajaxloader = new ajaxloadedmodal(button);
-			
-			
 			ajaxloader.url = URI(ajaxloader.url).addQuery('modal', 'modal').normalizeQuery().toString();
 			
 			$(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
@@ -534,7 +529,7 @@ $(document).ready(function() {
 		});
 
 		/*==============================================================
-		 CI/II FUNCTIONS
+			CI/II FUNCTIONS
 		=============================================================*/
 		$("body").on("keyup", ".ii-item-search", function() {
 			var thisform = $(this).closest('form');
@@ -629,7 +624,8 @@ $(document).ready(function() {
 				var href = URI(thisform.attr('action')).addQuery('q', $(this).val())
 													   .addQuery('function', pagefunction)
 													   .toString();
-				$(loadinto).loadin(href+' '+loadinto, function() { });
+				$(loadinto).loadin(href+' '+loadinto, function() { 
+				});
 		});
 
 		$('body').on('click', '.load-doc', function(e) {
@@ -655,7 +651,7 @@ $(document).ready(function() {
 
 
 		/*==============================================================
-		  ACTION FUNCTIONS
+			ACTION FUNCTIONS
 		=============================================================*/
 		$("body").on("change", "#actions-panel .change-action-type, #actions-modal-panel .change-action-type", function() {
 			var select = $(this);
@@ -710,14 +706,14 @@ $(document).ready(function() {
 				inputPlaceholder: 'Select Action Type',
 				showCancelButton: true,
 				inputValidator: function (value) {
-			    return new Promise(function (resolve, reject) {
-			      if (value.length) {
-			        resolve();
-			      } else {
-			        reject('You need to select an Action Type')
-			      }
-			    })
-			  }
+					return new Promise(function (resolve, reject) {
+						if (value.length) {
+							resolve();
+						} else {
+							reject('You need to select an Action Type')
+						}
+					});
+				}
 			}).then(function (result) {
 				var regexhref = button.attr('href');
 				var href = URI(regexhref.replace(/{replace}/g, result)).addQuery('modal', 'modal').toString();
@@ -766,16 +762,32 @@ $(document).ready(function() {
 						confirmButtonText: 'Confirm as Complete'
 					}).then(function() {
 						swal({
-						  title: "Leave Reflection Note?",
-						  text: "Enter note or leave blank",
-						  input: 'textarea',
-						  showCancelButton: true
+							title: "Leave Reflection Note?",
+							text: "Enter note or leave blank",
+							input: 'textarea',
+							showCancelButton: true
 						}).then(function (text) {
-						  if (text) {
-						    $.post(json.response.action.urls.completion, {reflectnote: text})
-								.done(function(json) {
+							if (text) {
+								$.post(json.response.action.urls.completion, {reflectnote: text})
+									.done(function(json) {
+										$('.actions-refresh').click(); 
+										$(config.modals.ajax).modal('hide');
+										$.notify({
+											// options
+											title: ucfirst(json.response.notifytype)+"!",
+											icon: json.response.icon,
+											message: json.response.message
+										},{
+											element: "body",
+											type: json.response.notifytype,
+											timer: 1000,
+										});
+									});
+							} else {
+								$.get(json.response.action.urls.completion, function(json) { 
 									$('.actions-refresh').click(); 
 									$(config.modals.ajax).modal('hide');
+									console.log(json);
 									$.notify({
 										// options
 										title: ucfirst(json.response.notifytype)+"!",
@@ -787,24 +799,8 @@ $(document).ready(function() {
 										timer: 1000,
 									});
 								});
-						} else {
-							$.get(json.response.action.urls.completion, function(json) { 
-								$('.actions-refresh').click(); 
-								$(config.modals.ajax).modal('hide');
-								console.log(json);
-								$.notify({
-									// options
-									title: ucfirst(json.response.notifytype)+"!",
-									icon: json.response.icon,
-									message: json.response.message
-								},{
-									element: "body",
-									type: json.response.notifytype,
-									timer: 1000,
-								});
-							});
-						}
-						swal.close();
+							}
+							swal.close();
 						}).catch(swal.noop);
 					}).catch(swal.noop); //FOR CANCEL
 				}
@@ -885,9 +881,9 @@ $(document).ready(function() {
 			var select = $(this);
 			$('#new-action-form').find('input[name="assignedto"]').val(select.val());
 		});
-
+		
 	/*==============================================================
- 		EDIT LINE ITEM FUNCTIONS
+		EDIT LINE ITEM FUNCTIONS
 	=============================================================*/
 		$(".page").on("click", ".update-line", function(e) {
 			e.preventDefault();
@@ -917,9 +913,9 @@ $(document).ready(function() {
 });
 
 /*==============================================================
- 	AJAX FUNCTIONS
+	AJAX FUNCTIONS
 =============================================================*/
- 	function infofunctionnotavailable() {
+	function infofunctionnotavailable() {
 		var modal = $(config.modals.ajax);
 		modal.find('.modal-body').html("<h4>Function not available</h4>");
 		modal.resizemodal('lg').modal();
@@ -983,7 +979,7 @@ $(document).ready(function() {
 		$.fn.serializeform = function(overrides) {
 			// Get the parameters as an array
 			var newParams = this.serializeArray();
-
+			
 			for(var key in overrides) {
 				var newVal = overrides[key]
 				// Find and replace `content` if there
@@ -993,7 +989,6 @@ $(document).ready(function() {
 						break;
 					}
 				}
-
 				// Add it if it wasn't there
 				if (index >= newParams.length) {
 					newParams.push({
@@ -1002,7 +997,6 @@ $(document).ready(function() {
 					});
 				}
 			}
-
 			// Convert to URL-encoded string
 			return $.param(newParams);
 		}
@@ -1067,7 +1061,6 @@ $(document).ready(function() {
             var custID = $(this).find('input[name="custID"]').val();
             var valid = true;
 			var form = $(this);
-			
 			form.postform({formdata: false, jsoncallback: true, action: config.urls.json.validateitems}, function(json) {
 				form.attr('data-invaliditems', json.invalid);
 				form.find('.itemid').each(function() {
@@ -1080,9 +1073,12 @@ $(document).ready(function() {
 				form.attr('data-checked', 'true');
 				if (json.invalid) {
 	                form.find('.response').createalertpanel('Double Check your itemIDs', '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>', 'warning');
-	            }
-				callback();
+	            } else {
+					form.find('.response').createalertpanel('All your items are valid, verify and submit', '', 'success');
+	            } 
+				
 			});
+			callback();
         }
 	});
 
@@ -1093,7 +1089,7 @@ $(document).ready(function() {
 	}
 
 /*==============================================================
- 	TOOLBAR FUNCTIONS
+	TOOLBAR FUNCTIONS
 =============================================================*/
 	function showtoolbar() {
 		var close = makeajaxclose("hidetoolbar()");
@@ -1109,7 +1105,7 @@ $(document).ready(function() {
 	}
 
 /*==============================================================
- 	URL FUNCTIONS
+	URL FUNCTIONS
 =============================================================*/
 	function urlencode(str) {
 		return encodeURIComponent(str);
@@ -1139,16 +1135,16 @@ $(document).ready(function() {
 
 
 /*==============================================================
- 	CUST INDEX FUNCTIONS
+	CUST INDEX FUNCTIONS
 =============================================================*/
 	function pickcustomer(custID, sourcepage) {
 		var loadinto = config.modals.ajax + ' .modal-content';
 		var url = URI(config.urls.customer.load.loadindex).addQuery('custID', custID).addQuery('source', sourcepage).toString();
-        $(loadinto).loadin(url, function() {  });
-    }
+		$(loadinto).loadin(url, function() {});
+	}
 
 /*==============================================================
-   ITEM FUNCTIONS
+	ITEM FUNCTIONS
 =============================================================*/
 	function chooseitemwhse(itemID, whse) { // TODO
 		var form = '#'+itemID+"-form";
@@ -1166,12 +1162,12 @@ $(document).ready(function() {
 	}
 
 	 function ii_kitcomponents(itemID, qty, callback) {
- 		var url = config.urls.products.redir.ii_kit+"&itemID="+urlencode(itemID)+"&qty="+urlencode(qty);
- 		$.get(url, function() { callback(); });
- 	}
+		var url = config.urls.products.redir.ii_kit+"&itemID="+urlencode(itemID)+"&qty="+urlencode(qty);
+		$.get(url, function() { callback(); });
+	}
 	
 /*==============================================================
- 	REORDER FUNCTIONS
+	REORDER FUNCTIONS
 =============================================================*/
 	function reorder(ordn) {
 		//var url = URI(config.urls.cart.redir.reorder).addQuery('from', 'salesorder').addQuery('ordn', ordn);
@@ -1202,16 +1198,43 @@ $(document).ready(function() {
 		pricing();
 	}
 /*==============================================================
- 	STRING FUNCTIONS
+	STRING FUNCTIONS
 =============================================================*/
-function ucfirst(str) {
-    var pieces = str.split(" ");
-    for ( var i = 0; i < pieces.length; i++ ) {
-        var j = pieces[i].charAt(0).toUpperCase();
-        pieces[i] = j + pieces[i].substr(1);
-    }
-    return pieces.join(" ");
-}
+	function validate_email(email) {
+		var emailregex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/;
+		return emailregex.test(email);
+	}
+	
+	function formatphone(input) {
+		// Strip all characters from the input except digits
+		input = input.replace(/\D/g,'');
+
+		// Trim the remaining input to ten characters, to preserve phone number format
+		input = input.substring(0,10);
+
+		// Based upon the length of the string, we add formatting as necessary
+		var size = input.length;
+		if (size == 0){
+			input = input;
+		} else if(size < 4){
+			input = input;
+		} else if(size < 7){
+			input = input.substring(0,3)+'-'+input.substring(3,6);
+		} else {
+			input = input.substring(0,3)+'-'+input.substring(3,6)+'-'+input.substring(6,10);
+		}
+		return input;
+	}
+	
+	function ucfirst(str) {
+		var pieces = str.split(" ");
+		for ( var i = 0; i < pieces.length; i++ ) {
+			var j = pieces[i].charAt(0).toUpperCase();
+			pieces[i] = j + pieces[i].substr(1);
+		}
+		return pieces.join(" ");
+	}
+	
 	function getordinalsuffix(i) {
 		var j = i % 10, k = i % 100;
 		if (j == 1 && k != 11) { return i + "st"; }
@@ -1231,32 +1254,41 @@ function ucfirst(str) {
 		   return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(n - i).toFixed(c).slice(2) : "");
 	 };
 
-	 function formatphone(input) {
-        // Strip all characters from the input except digits
-        input = input.replace(/\D/g,'');
-
-        // Trim the remaining input to ten characters, to preserve phone number format
-        input = input.substring(0,10);
-
-        // Based upon the length of the string, we add formatting as necessary
-        var size = input.length;
-        if (size == 0){
-            input = input;
-        } else if(size < 4){
-            input = input;
-        } else if(size < 7){
-            input = input.substring(0,3)+'-'+input.substring(3,6);
-        } else {
-            input = input.substring(0,3)+'-'+input.substring(3,6)+'-'+input.substring(6,10);
-        }
-        return input;
-	}
-
 /*==============================================================
- 	FORM FUNCTIONS
+	FORM FUNCTIONS
 =============================================================*/
 	function comparefieldvalues(field1, field2) {
 		if ($(field1).val() == $(field2).val()) { return true; } else { return false; }
+	}
+	
+	function disableEnterKey(e) {
+		var key;      
+		if(window.event) {
+			key = window.event.keyCode; //IE
+		} else {
+			key = e.which; //firefox      
+		}
+		return (key != 13);
+	}
+
+	function init_datepicker() {
+		$('.datepicker').each(function(index) {
+			$(this).datepicker({
+				date: $(this).find('.date-input').val(),
+				allowPastDates: true,
+			});
+		});
+	}
+	
+	function init_timepicker() {
+		$('.timepicker').timepicker({
+			'scrollDefault': 'now',
+			'timeFormat': 'h:i A'
+		});
+	}
+
+	function init_bootstraptoggle() {
+		$('.check-toggle').bootstrapToggle({on: 'Yes', off: 'No', onstyle: 'info'});
 	}
 
 	$.fn.extend({
@@ -1272,6 +1304,7 @@ function ucfirst(str) {
 					missingfields.push(row.find('.control-label').text());
 				}
 			});
+			
 			if (missingfields.length > 0) {
 				var message = 'Please Check the following fields: <br>';
 				for (var i = 0; i < missingfields.length; i++) {
@@ -1286,10 +1319,8 @@ function ucfirst(str) {
 		}
 	});
 
-
-
 /*==============================================================
- 	CONTENT FUNCTIONS
+	CONTENT FUNCTIONS
 =============================================================*/
 	$.fn.extend({
 		animatecss: function (animationName) {
@@ -1332,36 +1363,6 @@ function ucfirst(str) {
 
 	function makeajaxclose(onclick) {
 		return '<div class="close"><a href="#" onclick="'+onclick+'"><i class="material-icons md-48 md-light"></i></a></div>';
-	}
-	
-	function disableEnterKey(e) {
-		var key;      
-		if(window.event) {
-			key = window.event.keyCode; //IE
-		} else {
-			key = e.which; //firefox      
-		}
-		return (key != 13);
-	}
-
-	function init_datepicker() {
-		$('.datepicker').each(function(index) {
-			$(this).datepicker({
-				date: $(this).find('.date-input').val(),
-				allowPastDates: true,
-			});
-		});
-	}
-	
-	function init_timepicker() {
-		$('.timepicker').timepicker({
-			'scrollDefault': 'now' ,
-			'timeFormat': 'h:i A'
-		});
-	}
-
-	function init_bootstraptoggle() {
-		$('.check-toggle').bootstrapToggle({on: 'Yes', off: 'No', onstyle: 'info'});
 	}
 
 	function duplicateitem(list) {

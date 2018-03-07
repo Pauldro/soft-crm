@@ -1,0 +1,14 @@
+{
+	"name": "cptechinc/dpluso-processwire-classes",
+    "type": "library",
+    "description": "Classes for Sending Fax Requests to Interfax",
+    "keywords": ["fax", "dplus-faxing", "interfax"],
+    "homepage": "http://github.com/cptechinc/dpluso-processwire-classes",
+	"autoload": {
+		"files": [
+			"src/DplusFaxer.class.php",
+			"src/DplusInterfaxFaxer.class.php",
+            "src/DplusFaxFileReader.class.php"
+		]
+	}
+}
