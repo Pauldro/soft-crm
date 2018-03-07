@@ -89,7 +89,7 @@
 		/* =============================================================
 			SETTER FUNCTIONS
 		============================================================ */
-		public function __set($property, $value) {
+		public function set($property, $value) {
 			if (property_exists($this, $property) !== true) {
 				$this->error("This property ($property) does not exist ");
 				return false;
