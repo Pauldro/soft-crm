@@ -46,6 +46,12 @@
             </div>
         </div>
 	</div>
-	</br>
-	<button class="btn btn-success btn-block" type="submit">Search <i class="fa fa-search" aria-hidden="true"></i></button>
+	<div class="form-group">
+		<button class="btn btn-success btn-block" type="submit">Search <i class="fa fa-search" aria-hidden="true"></i></button>
+	</div>
+	<?php if ($input->get->filter) : ?>
+        <div>
+            <?= $quotepanel->generate_clearsearchlink(); ?>
+        </div>
+    <?php endif; ?>
 </form>
