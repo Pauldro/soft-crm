@@ -5,7 +5,7 @@
 	<tbody>
 		<?php if (isset($input->get->qnbr)) : ?>
 			<?php if ($quotepanel->count == 0 && $input->get->text('qnbr') == '') : ?>
-				<tr> <td colspan="8" class="text-center">No Quotes found! Try using a date range to find the quotes(s) you are looking for.</td> </tr>
+				<tr> <td colspan="9" class="text-center">No Quotes found! Try using a date range to find the quotes(s) you are looking for.</td> </tr>
 			<?php endif; ?>
 		<?php endif; ?>
 

@@ -334,13 +334,23 @@ $(document).ready(function() {
 			var loadinto = form.data('loadinto');
 			var focuson = form.data('focus');
 			var action = URI(form.attr('action'));
-			var orderby = URI.parseQuery(URI(action).search()).orderby; // Keep the orderby param value before clearing it
+			var ordertype = form.data('ordertype'); // sales-orders | quotes
+			var queries = URI.parseQuery(URI(action).search())
+			var orderby = queries.orderby; // Keep the orderby param value before clearing it
+
 			var href = action.query('').query(form.serialize()).query(cleanparams).query(remove_emptyparams);
 			
 			if (Object.keys(href.query(true)).length == 1) {
 				href.query('');
 			}
+			
+			if (ordertype == 'sales-orders') {
+				href.addQuery('ordn', queries.ordn);
+			} else if (ordertype == 'quotes') {
+				href.addQuery('qnbr', queries.qnbr);
+			}
 			href = href.addQuery('orderby', orderby).toString(); // Add orderby param
+			
 			$(loadinto).loadin(href, function() {
 				if (focuson.length > 0) {
 					$('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000);

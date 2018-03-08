@@ -3,6 +3,7 @@
 		use QuoteDisplayTraits;
 		
 		public $quotes = array();
+		public $paneltype = 'quote';
 		public $filterable = array(
 			'quotnbr' => array(
 				'querytype' => 'between',
@@ -258,6 +259,7 @@
 				if (Processwire\wire('session')->{'quotes-loaded-for'} == Processwire\wire('user')->loginid) {
 					return 'Last Updated : ' . Processwire\wire('session')->{'quotes-updated'};
 				}
+				return '';
 			}
 			return '';
 		}
@@ -269,13 +271,20 @@
 				if (empty($this->filters['quotdate'][1])) {
 					$this->filters['quotdate'][1] = date('m/d/Y');
 				}
-			} elseif (isset($this->filters['revdate'])) {
+			} 
+			if (isset($this->filters['revdate'])) {
 				if (empty($this->filters['revdate'][1])) {
 					$this->filters['revdate'][1] = date('m/d/Y');
 				}
-			} elseif (isset($this->filters['expdate'])) {
+			} 
+			if (isset($this->filters['expdate'])) {
 				if (empty($this->filters['expdate'][1])) {
 					$this->filters['expdate'][1] = date('m/d/Y');
+				}
+			}
+			if (isset($this->filters['ordertotal'])) {
+				if (!strlen($this->filters['ordertotal'][1])) {
+					$this->filters['ordertotal'][1] = get_maxquotetotal($this->sessionID);
 				}
 			}
 		}

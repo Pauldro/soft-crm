@@ -3,6 +3,7 @@
 		use SalesOrderDisplayTraits;
 		
 		public $orders = array();
+		public $paneltype = 'sales-order';
 		public $filterable = array(
 			'custpo' => array(
 				'querytype' => 'between',

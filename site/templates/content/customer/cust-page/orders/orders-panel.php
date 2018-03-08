@@ -10,10 +10,10 @@
 ?>
 <div class="panel panel-primary not-round" id="orders-panel">
     <div class="panel-heading" id="orders-panel-heading">
-    	<?php if ($session->ordersearch) : ?>
+    	<?php if ($input->get->filter) : ?>
         	<a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">
-				Searching for <?= $session->ordersearch; ?> <span class="caret"></span> <span class="badge"><?= $orderpanel->count; ?></span>
-            </a>  |
+				<?= $orderpanel->generate_filterdescription(); ?> <span class="caret"></span> <span class="badge"><?= $orderpanel->count; ?></span> &nbsp; | &nbsp;
+            </a> 
 			<?= $orderpanel->generate_refreshlink(); ?>
     	<?php elseif ($orderpanel->count > 0) : ?>
             <a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">Customer Orders <span class="caret"></span></a> <span class="badge"> <?= $orderpanel->count; ?></span> &nbsp; | &nbsp;

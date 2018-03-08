@@ -96,17 +96,9 @@
 		public function generate_filter(WireInput $input) {
 			parent::generate_filter($input);
 			
-			if (isset($this->filters['quotdate'])) {
-				if (empty($this->filters['quotdate'][1])) {
-					$this->filters['quotdate'][1] = date('m/d/Y');
-				}
-			} elseif (isset($this->filters['revdate'])) {
-				if (empty($this->filters['revdate'][1])) {
-					$this->filters['revdate'][1] = date('m/d/Y');
-				}
-			} elseif (isset($this->filters['expdate'])) {
-				if (empty($this->filters['expdate'][1])) {
-					$this->filters['expdate'][1] = date('m/d/Y');
+			if (isset($this->filters['ordertotal'])) {
+				if (!strlen($this->filters['ordertotal'][1])) {
+					$this->filters['ordertotal'][1] = get_maxquotetotal($this->sessionID, $this->custID);
 				}
 			}
 		}

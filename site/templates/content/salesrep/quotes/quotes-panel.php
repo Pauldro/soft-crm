@@ -9,10 +9,11 @@
 ?>
 <div class="panel panel-primary not-round" id="quotes-panel">
     <div class="panel-heading not-round" id="quotes-panel-heading">
-    	<?php if ($session->{'quote-search'}) : ?>
+    	<?php if ($input->get->filter) : ?>
         	<a href="#quotes-div" data-parent="#quotes-panel" data-toggle="collapse">
-				Searching for <?= $session->{'quote-search'}; ?> <span class="caret"></span> <span class="badge"><?= $quotepanel->count; ?></span>
+				<?= $quotepanel->generate_filterdescription(); ?> <span class="caret"></span> <span class="badge"><?= $quotepanel->count; ?></span> &nbsp; | &nbsp;
             </a>
+			<?= $quotepanel->generate_refreshlink(); ?>
     	<?php elseif ($quotepanel->count > 0) : ?>
             <a href="#quotes-div" data-parent="#quotes-panel" data-toggle="collapse">Your Quotes <span class="caret"></span></a> &nbsp; <span class="badge"><?= $quotepanel->count; ?></span> &nbsp; | &nbsp;
             <?= $quotepanel->generate_refreshlink(); ?>

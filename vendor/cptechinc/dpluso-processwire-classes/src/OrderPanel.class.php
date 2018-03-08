@@ -105,6 +105,10 @@
 						} else {
 							$this->filters[$filter] = $input->get->$filter;
 						}
+					} elseif (is_array($input->get->$filter)) {
+						if (strlen($input->get->$filter[0])) {
+							$this->filters[$filter] = $input->get->$filter;
+						}
 					}
 				}
 			}
@@ -122,11 +126,15 @@
 		
 		public function generate_filterdescription() {
 			if (empty($this->filters)) return '';
-			$desc = 'Searching Sales Orders with';
+			$desc = 'Searching '.$this->generate_paneltypedescription().' with';
 			
 			foreach ($this->filters as $filter => $value) {
 				$desc .= " " . QueryBuilder::generate_filterdescription($filter, $value, $this->filterable);
 			}
 			return $desc;
+		}
+		
+		public function generate_paneltypedescription() {
+			return ucfirst(str_replace('-', ' ', $this->paneltype.'s'));
 		}
 	}

@@ -790,11 +790,30 @@
 		return $sql->fetchColumn();
 	}
 	
-	function count_userquotes($sessionID, $debug = false) {
+	function count_userquotes($sessionID, $filter = false, $filtertypes = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('COUNT(*)');
 		$q->where('sessionid', $sessionID);
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
+		$sql = Processwire\wire('database')->prepare($q->render());
 		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+	
+	function get_maxquotetotal($sessionID, $custID = false, $debug = false) {
+		$q = (new QueryBuilder())->table('quothed');
+		$q->field('MAX(ordertotal)');
+		$q->where('sessionid', $sessionID);
+		if ($custID) {
+			$q->where('custid', $custID);
+		}
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
 		if ($debug) {
@@ -920,11 +939,14 @@
 		}
 	}
 
-	function count_customerquotes($sessionID, $custID, $debug = false) {
+	function count_customerquotes($sessionID, $custID, $filter = false, $filtertypes = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('COUNT(*)');
 		$q->where('sessionid', $sessionID);
 		$q->where('custid', $custID);
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
 		if ($debug) {

@@ -1,4 +1,4 @@
-<form action="<?= $orderpanel->pageurl->getUrl(); ?>"  method="get" data-loadinto="#orders-panel" data-focus="#orders-panel" data-modal="#ajax-modal" class="orders-search-form">
+<form action="<?= $orderpanel->pageurl->getUrl(); ?>"  method="get" data-ordertype="sales-orders" data-loadinto="#orders-panel" data-focus="#orders-panel" data-modal="#ajax-modal" class="orders-search-form">
 	<input type="hidden" name="filter" value="filter">
 	
 	<div class="row">
