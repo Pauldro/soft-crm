@@ -189,6 +189,10 @@
 			parent::generate_filter($input);
 			
 			if (isset($this->filters['orderdate'])) {
+				if (empty($this->filters['orderdate'][0])) {
+					$this->filters['orderdate'][0] = date('m/d/Y', strtotime(get_minorderdate($this->sessionID, 'orderdate')));
+				}
+				
 				if (empty($this->filters['orderdate'][1])) {
 					$this->filters['orderdate'][1] = date('m/d/Y');
 				}

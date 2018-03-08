@@ -25,20 +25,14 @@
 			<h4>Cust PO</h4>
 			<input class="form-control inline input-sm" type="text" name="custpo[]" value="<?= $orderpanel->get_filtervalue('custpo'); ?>" placeholder="Cust PO">
 		</div>
-		<div class="col-sm-4">
+		<div class="col-sm-2">
             <h4>Order Date</h4>
-            <div class="row">
-                <div class="col-sm-6">
-        			<?php $name = 'orderdate[]'; $value = $orderpanel->get_filtervalue('orderdate'); ?>
-        			<?php include $config->paths->content."common/date-picker.php"; ?>
-                    <label class="small text-muted">From Date </label>
-                </div>
-                <div class="col-sm-6">
-        			<?php $name = 'orderdate[]'; $value = $orderpanel->get_filtervalue('orderdate', 1); ?>
-        			<?php include $config->paths->content."common/date-picker.php"; ?>
-                    <label class="small text-muted">Through Date </label>
-        		</div>
-            </div>
+			<?php $name = 'orderdate[]'; $value = $orderpanel->get_filtervalue('orderdate'); ?>
+			<?php include $config->paths->content."common/date-picker.php"; ?>
+            <label class="small text-muted">From Date </label>
+			<?php $name = 'orderdate[]'; $value = $orderpanel->get_filtervalue('orderdate', 1); ?>
+			<?php include $config->paths->content."common/date-picker.php"; ?>
+            <label class="small text-muted">Through Date </label>
         </div>
 	</div>
     <div class="form-group">
@@ -46,7 +40,7 @@
     </div>
 	<?php if ($input->get->filter) : ?>
         <div>
-            <?= $quotepanel->generate_clearsearchlink(); ?>
+            <?= $orderpanel->generate_clearsearchlink(); ?>
         </div>
     <?php endif; ?>
 </form>

@@ -708,6 +708,23 @@
 		}
 	}
 
+	function get_minorderdate($sessionID, $field, $custID = false, $debug = false) {
+		$q = (new QueryBuilder())->table('ordrhed');
+		$q->field($q->expr("MIN(STR_TO_DATE($field, '%m/%d/%Y'))"));
+		$q->where('sessionid', $sessionID);
+		if ($custID) {
+			$q->where('custid', $custID);
+		}
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+
 	function get_orderdetails($sessionID, $ordn, $useclass = false, $debug) {
 		$sql = Processwire\wire('database')->prepare("SELECT * FROM ordrdet WHERE sessionid = :sessionID AND orderno = :ordn");
 		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn); $withquotes = array(true, true);
@@ -810,6 +827,23 @@
 	function get_maxquotetotal($sessionID, $custID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('MAX(ordertotal)');
+		$q->where('sessionid', $sessionID);
+		if ($custID) {
+			$q->where('custid', $custID);
+		}
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+	
+	function get_minquotedate($sessionID, $field, $custID = false, $debug = false) {
+		$q = (new QueryBuilder())->table('quothed');
+		$q->field($q->expr("MIN(STR_TO_DATE($field, '%m/%d/%Y'))"));
 		$q->where('sessionid', $sessionID);
 		if ($custID) {
 			$q->where('custid', $custID);

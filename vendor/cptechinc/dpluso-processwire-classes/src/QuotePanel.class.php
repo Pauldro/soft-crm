@@ -268,23 +268,42 @@
 			parent::generate_filter($input);
 			
 			if (isset($this->filters['quotdate'])) {
+				if (empty($this->filters['quotdate'][0])) {
+					$this->filters['quotdate'][0] = date('m/d/Y', strtotime(get_minquotedate($this->sessionID, 'quotdate')));
+				}
+				
 				if (empty($this->filters['quotdate'][1])) {
 					$this->filters['quotdate'][1] = date('m/d/Y');
 				}
-			} 
+			}
+			
 			if (isset($this->filters['revdate'])) {
+				if (empty($this->filters['revdate'][0])) {
+					$this->filters['revdate'][0] = date('m/d/Y', strtotime(get_minquotedate($this->sessionID, 'revdate')));
+				}
+				
 				if (empty($this->filters['revdate'][1])) {
 					$this->filters['revdate'][1] = date('m/d/Y');
 				}
-			} 
+			}
+			
 			if (isset($this->filters['expdate'])) {
+				if (empty($this->filters['expdate'][0])) {
+					$this->filters['expdate'][0] = date('m/d/Y', strtotime(get_minquotedate($this->sessionID, 'expdate')));
+				}
+				
 				if (empty($this->filters['expdate'][1])) {
 					$this->filters['expdate'][1] = date('m/d/Y');
 				}
 			}
+			
 			if (isset($this->filters['ordertotal'])) {
 				if (!strlen($this->filters['ordertotal'][1])) {
 					$this->filters['ordertotal'][1] = get_maxquotetotal($this->sessionID);
+				}
+				
+				if (!strlen($this->filters['ordertotal'][0])) {
+					$this->filters['ordertotal'][0] = '0.00';
 				}
 			}
 		}
