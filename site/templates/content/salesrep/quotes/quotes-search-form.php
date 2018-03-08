@@ -19,32 +19,33 @@
 		</div>
 		<div class="col-sm-2">
 			<h4>Quote Date :</h4>
-		    <label class="control-label">From Date </label>
 		    <?php $name = 'quotdate[]'; $value = $quotepanel->get_filtervalue('quotdate'); ?>
 		    <?php include $config->paths->content."common/date-picker.php"; ?>
-		    <label class="control-label">Through Date </label>
+            <label class="small text-muted">From Date </label>
 		    <?php $name = 'quotdate[]'; $value = $quotepanel->get_filtervalue('quotdate', 1); ?>
-		    <?php include $config->paths->content."common/date-picker.php"; ?></br>
+		    <?php include $config->paths->content."common/date-picker.php"; ?>
+            <label class="small text-muted">Through Date </label>
 		</div>
 		<div class="col-sm-2">
 			<h4>Review Date :</h4>
-		    <label class="control-label">From Date </label>
 		    <?php $name = 'revdate[]'; $value = $quotepanel->get_filtervalue('revdate'); ?>
 		    <?php include $config->paths->content."common/date-picker.php"; ?>
-		    <label class="control-label">Through Date </label>
+            <label class="small text-muted">From Date </label>
 		    <?php $name = 'revdate[]'; $value = $quotepanel->get_filtervalue('revdate', 1); ?>
-		    <?php include $config->paths->content."common/date-picker.php"; ?></br>
+		    <?php include $config->paths->content."common/date-picker.php"; ?>
+            <label class="small text-muted">Through Date </label>
 		</div>
 		<div class="col-sm-2">
 			<h4>Expire Date :</h4>
-		    <label class="control-label">From Date </label>
 		    <?php $name = 'expdate[]'; $value = $quotepanel->get_filtervalue('expdate'); ?>
 		    <?php include $config->paths->content."common/date-picker.php"; ?>
-		    <label class="control-label">Through Date </label>
+            <label class="small text-muted">From Date </label>
 		    <?php $name = 'expdate[]'; $value = $quotepanel->get_filtervalue('expdate', 1); ?>
-		    <?php include $config->paths->content."common/date-picker.php"; ?></br>
+		    <?php include $config->paths->content."common/date-picker.php"; ?>
+            <label class="small text-muted">Through Date </label>
 		</div>
 	</div>
+    </br>
     <div class="form-group">
     	<button class="btn btn-success btn-block" type="submit">Search <i class="fa fa-search" aria-hidden="true"></i></button>
     </div>
