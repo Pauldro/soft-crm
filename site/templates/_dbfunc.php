@@ -1738,6 +1738,20 @@
 		}
 	}
 	
+	function count_cartdetails($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('cartdet');
+		$q->field('COUNT(*)');
+		$q->where('sessionid', $sessionID);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+	
 	function get_cartdetails($sessionID, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('cartdet');
 		$q->where('sessionid', $sessionID);
@@ -1830,7 +1844,7 @@
 		}
 	}
 	
-	function update_cartdetail($sessionID, $detail, $debug = false) {
+	function update_cartdetail($sessionID, CartDetail $detail, $debug = false) {
 		$originaldetail = CartDetail::load($sessionID, $detail->linenbr);
 		$properties = array_keys($detail->_toArray());
 		$q = (new QueryBuilder())->table('cartdet');
@@ -1840,8 +1854,9 @@
 				$q->set($property, $detail->$property);
 			}
 		}
-		$q->where('orderno', $detail->orderno);
 		$q->where('sessionid', $detail->sessionid);
+		$q->where('orderno', $detail->orderno);
+		$q->where('linenbr', $detail->linenbr);
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
 		if ($debug) {
@@ -1859,18 +1874,16 @@
 		$q = (new QueryBuilder())->table('cartdet');
 		$q->mode('insert');
 		foreach ($properties as $property) {
-			$q->set($property, $detail->$property);
+			if (strlen($detail->$property)) {
+				$q->set($property, $detail->$property);
+			}
 		}
-		$q->where('orderno', $detail->orderno);
-		$q->where('sessionid', $detail->sessionid);
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
-			if ($detail->has_changes()) {
-				$sql->execute($q->params);
-			}
+			$sql->execute($q->params);
 			return $q->generate_sqlquery($q->params);
 		}
 	}
