@@ -11,7 +11,6 @@
 			$this->config = $config;
 		}
 		
-		
 		public function empty_cart() {
 			$fields = array(
 				'action' => 'empty-cart',
