@@ -23,7 +23,43 @@
 	* 	case 'add-customer':
 	* 		DBNAME=$config->DBNAME
 	* 		NEWCUSTOMER
-	* 		break;
+	*		BILLTONAME=$customer-name
+	*		BILLTOADDRESS1=$customer-addr1
+	*		BILLTOADDRESS2=$customer-addr2
+	*		BILLTOADDRESS3=$billtoaddress3
+	*		BILLTOCITY=$customer-city
+	*		BILLTOSTATE=$customer-state
+	*		BILLTOZIP=$customer-zip
+	*		BILLTOCOUNTRY=$billtocountry
+	*		BILLTOPHONE=$customer-phone
+	*		BILLTOFAX=$customer-faxnbr
+	*		BILLTOEMAIL=$customer-email
+	*		SHIPTOID=$shipto-shiptoid
+	*		SHIPTONAME=$shipto-name
+	*		SHIPTOADDRESS1=$shipto-addr1
+	*		SHIPTOADDRESS2=$shipto-addr2
+	*		SHIPTOADDRESS3=$shiptoaddress3
+	*		SHIPTOCITY=$shipto-city
+	*		SHIPTOSTATE=$shipto-state
+	*		SHIPTOZIP=$shipto-zip
+	*		SHIPTOCOUNTRY=$shipto-country
+	*		SHIPTOPHONE=$shipto-phone
+	*		SHIPTOFAX=$shipto-faxnbr
+	*		SHIPTOEMAIL=$shipto-email
+	*		SALESPERSON1=$salesperson1
+	*		SALESPERSON2=$salesperson2
+	*		SALESPERSON3=$salesperson3
+	*		PRICECODE=$pricecode
+	*		CONTACT=$customer-contact
+	*		ARCONTACT="Y" : "N"
+	*		DUNCONTACT="Y" : "N"
+	*		BUYCONTACT="Y" : "N"
+	*		CERCONTACT=$input-post-text(cercontact)
+	*		ACKCONTACT="Y" : "N"
+	*		EXTENSION=$contactext
+	*		TITLE=$contacttitle
+	*		NOTES=
+	*		break;
 	* 	case 'load-new-customer':
 	*		DBNAME=$config->DBNAME
 	*		CUSTID=$custID
@@ -37,6 +73,24 @@
 	*		CARTCUST
 	*		CUSTID=$custID
 	*		SHIPID=$shipID
+	*		break;
+	*	case 'add-contact':
+	*		DBNAME=$config->DBNAME
+	*		ADDCONTACT
+	*		CUSTID=$custID
+	*		SHIPID=$shipID
+	*		CONTACT=$contactID
+	*		TITLE=$title
+	*		PHONE=$phone
+	*		EXTENSION=$extension
+	*		FAX=$fax
+	*		EMAIL=$email
+	*		CELLPHONE=$cellphone
+	*		ARCONTACT= Y | N ** ONLY BILLTO 
+	*		DUNCONTACT= Y | N ** ONLY BILLTO 
+	*		ACKCONTACT= Y | N ** ONLY BILLTO 
+	*		BUYCONTACT= P | Y | N
+	*		CERCONTACT= Y | N
 	*		break;
 	*	case 'edit-contact':
 	*		DBNAME=$config->DBNAME
@@ -261,6 +315,43 @@
 			} else {
 				$session->loc = $config->pages->cart;
 			}
+			break;
+		case 'add-contact':
+			$contact = new Contact();
+			$contact->set('custid', $custID);
+			$contact->set('shiptoid', $shipID);
+			$contact->set_contacttype();
+			$contact->set('contact', $input->post->text('contact-name'));
+			$contact->set('phone', $input->post->text('contact-phone'));
+			$contact->set('extension', $input->post->text('contact-extension'));
+			$contact->set('faxnbr', $input->post->text('contact-fax'));
+			$contact->set('cellphone', $input->post->text('contact-cellphone'));
+			$contact->set('email', $input->post->text('contact-email'));
+			$contact->set('arcontact', $input->post->text('arcontact') == 'Y' ? "Y" : "N");
+			$contact->set('duncontact', $input->post->text('duncontact') == 'Y' ? "Y" : "N");
+			$contact->set('buycontact', $input->post->text('buycontact'));
+			$contact->set('cercontact', $input->post->text('cercontact') == 'Y' ? "Y" : "N");
+			$contact->set('ackcontact', $input->post->text('ackcontact') == 'Y' ? "Y" : "N");
+			$contact->create();
+			
+			$data = array(
+				'DBNAME' => $config->dbName, 
+				'ADDCONTACT' => false, 
+				'CUSTID' => $custID, 
+				'SHIPID' => $shipID, 
+				'CONTACT' => $contact->contact,
+				'TITLE' => $contact->title,
+				'PHONE' => str_replace('-', '', $contact->phone), 
+				'EXTENSION' => $contact->extension,
+				'FAX' => str_replace('-', '', $contact->faxnbr), 
+				'EMAIL' => $contact->email,
+				'CELLPHONE' => str_replace('-', '', $contact->cellphone),
+				'ARCONTACT' => $contact->arcontact,
+				'DUNCONTACT' => $contact->duncontact,
+				'ACKCONTACT' => $contact->ackcontact,
+				'BUYCONTACT' => $contact->buycontact,
+				'CERCONTACT' => $contact->certcontact,
+			);
 			break;
 		case 'edit-contact':
 			$custID = $input->post->text('custID');

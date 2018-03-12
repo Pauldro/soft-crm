@@ -57,6 +57,35 @@
 /* =============================================================
 	CUSTOMER FUNCTIONS
 ============================================================ */
+	function is_custindexloaded($debug = false) {
+		$q = (new QueryBuilder())->table('custindex');
+		$q->field('COUNT(*)');
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}
+	
+	function count_custperm($userID = false, $debug = false) {
+		$q = (new QueryBuilder())->table('custperm');
+		$q->field('COUNT(*)');
+		if ($userID) {
+			$q->where('loginid', $userID);
+		}
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}
+	
 	function can_accesscustomer($loginID, $restrictions, $custID, $debug) {
 		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
 		if ($restrictions) {
@@ -232,7 +261,7 @@
 		if ($debug) { return returnsqlquery($sql->queryString, $switching, $withquotes); } else { if ($sql->fetchColumn() > 0){return true;} else {return false; } }
 	}
 
-	function get_customercontact($custID, $shipID = '', $contactID = '', $debug = false) {
+	function get_customercontact($custID, $shiptoID = '', $contactID = '', $debug = false) {
 		$q = (new QueryBuilder())->table('custindex');
 		$q->limit(1);
 		$q->where('custid', $custID);
@@ -240,6 +269,33 @@
 		if (!empty($contactID)) {
 			$q->where('contact', $contactID);
 		}
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'Contact');
+			return $sql->fetch();
+		}
+	}
+	
+	/**
+	 * Gets the primary contact for that Customer Shipto.
+	 * ** NOTE each Customer and Customer Shipto may have one Primary buyer
+	 * @param  string  $custID   Customer ID
+	 * @param  bool $shiptoID Shipto ID ** optional
+	 * @param  bool $debug    Determines if query will execute and if SQL is returned or Contact object
+	 * @return Contact            Or SQL QUERY
+	 */
+	function get_primarybuyercontact($custID, $shiptoID = false, $debug = false) {
+		$q = (new QueryBuilder())->table('custindex');
+		$q->limit(1);
+		$q->where('custid', $custID);
+		if (!empty($shiptoID)) {
+			$q->where('shiptoid', $shiptoID);
+		}
+		$q->where('buyingcontact', 'P');
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
 		if ($debug) {
