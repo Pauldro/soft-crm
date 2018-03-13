@@ -496,11 +496,17 @@
 ============================================================ */
 	function count_userorders($sessionID, $filter = false, $filtertypes = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
-		$q->field($q->expr('IF (COUNT(*) = 1, 1, IF(COUNT(DISTINCT(custid)) > 1, COUNT(*), 0)) as count'));
-		$q->where('sessionid', $sessionID);
+		$expression = $q->expr('IF (COUNT(*) = 1, 1, IF(COUNT(DISTINCT(custid)) > 1, COUNT(*), 0)) as count');
 		if (!empty($filter)) {
+			if (isset($filter['custid'])) {
+				if (sizeof(array_values(array_filter($filter['custid'], 'strlen'))) == 1) {
+					$expression = $q->expr('COUNT(*)');
+				}
+			}
 			$q->generate_filters($filter, $filtertypes);
 		}
+		$q->field($expression);
+		$q->where('sessionid', $sessionID);
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
 		if ($debug) {
@@ -515,6 +521,8 @@
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->field('ordrhed.*');
 		$q->field($q->expr("STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder"));
+		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
+		$q->field($q->expr("CAST(ordertotal AS DECIMAL(8,2)) AS ordertotal"));
 		$q->where('sessionid', $sessionID);
 		$q->where('type', 'O');
 		if (!empty($filter)) {
@@ -540,6 +548,7 @@
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->field('ordrhed.*');
 		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
+		$q->field($q->expr("CAST(ordertotal AS DECIMAL(8,2)) AS ordertotal"));
 		$q->where('sessionid', $sessionID);
 		$q->where('type', 'O');
 		if (!empty($filter)) {
@@ -563,6 +572,9 @@
 
 	function get_userorders($sessionID, $limit = 10, $page = 1, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
+		$q->field('ordrhed.*');
+		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
+		$q->field($q->expr("CAST(ordertotal AS DECIMAL(8,2)) AS ordertotal"));
 		$q->where('sessionid', $sessionID);
 		$q->where('type', 'O');
 		if (!empty($filter)) {
@@ -604,7 +616,9 @@
 
 	function get_customerorders($sessionID, $custID, $limit = 10, $page = 1, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
+		$q->field('ordrhed.*');
 		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
+		$q->field($q->expr("CAST(ordertotal AS DECIMAL(8,2)) AS ordertotal"));
 		$q->where('sessionid', $sessionID);
 		$q->where('custid', $custID);
 		$q->where('type', 'O');
@@ -630,6 +644,7 @@
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->field('ordrhed.*');
 		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
+		$q->field($q->expr("CAST(ordertotal AS DECIMAL(8,2)) AS ordertotal"));
 		$q->where('sessionid', $sessionID);
 		$q->where('custid', $custID);
 		$q->where('type', 'O');
@@ -656,6 +671,8 @@
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->field('ordrhed.*');
 		$q->field($q->expr("STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder"));
+		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
+		$q->field($q->expr("CAST(ordertotal AS DECIMAL(8,2)) AS ordertotal"));
 		$q->where('sessionid', $sessionID);
 		$q->where('custid', $custID);
 		$q->where('type', 'O');
@@ -698,6 +715,23 @@
 		$q->field('shiptoid');
 		$q->where('sessionid', $sessionID);
 		$q->where('orderno', $ordn);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+
+	function get_maxordertotal($sessionID, $custID = false, $debug = false) {
+		$q = (new QueryBuilder())->table('ordrhed');
+		$q->field('MAX(DECIMAL(ordertotal))');
+		$q->where('sessionid', $sessionID);
+		if ($custID) {
+			$q->where('custid', $custID);
+		}
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
 		if ($debug) {
@@ -809,7 +843,16 @@
 	
 	function count_userquotes($sessionID, $filter = false, $filtertypes = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
-		$q->field('COUNT(*)');
+		$expression = $q->expr('IF (COUNT(*) = 1, 1, IF(COUNT(DISTINCT(custid)) > 1, COUNT(*), 0)) as count');
+		if (!empty($filter)) {
+			if (isset($filter['custid'])) {
+				if (sizeof(array_values(array_filter($filter['custid'], 'strlen'))) == 1) {
+					$expression = $q->expr('COUNT(*)');
+				}
+			}
+			$q->generate_filters($filter, $filtertypes);
+		}
+		$q->field($expression);
 		$q->where('sessionid', $sessionID);
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
@@ -826,7 +869,7 @@
 	
 	function get_maxquotetotal($sessionID, $custID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
-		$q->field('MAX(ordertotal)');
+		$q->field('MAX(DECIMAL(ordertotal))');
 		$q->where('sessionid', $sessionID);
 		if ($custID) {
 			$q->where('custid', $custID);
@@ -860,6 +903,8 @@
 	
 	function get_userquotes($sessionID, $limit, $page = 1, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
+		$q->field('quothed.*');
+		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
 		$q->where('sessionid', $sessionID);
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
@@ -883,6 +928,7 @@
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
 		$q->field($q->expr("STR_TO_DATE(quotdate, '%m/%d/%Y') as quotedate"));
+		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
 		$q->where('sessionid', $sessionID);
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
@@ -907,6 +953,7 @@
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
 		$q->field($q->expr("STR_TO_DATE(revdate, '%m/%d/%Y') as reviewdate"));
+		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
 		$q->where('sessionid', $sessionID);
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
@@ -931,6 +978,7 @@
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
 		$q->field($q->expr("STR_TO_DATE(expdate, '%m/%d/%Y') as expiredate"));
+		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
 		$q->where('custid', $custID);
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
@@ -953,6 +1001,8 @@
 	
 	function get_userquotesorderby($sessionID, $limit = 10, $page = 1, $sortrule, $orderby, $filter = false, $filtertypes = false, $useclass = true, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
+		$q->field('quothed.*');
+		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
 		$q->where('sessionid', $sessionID);
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
@@ -993,6 +1043,8 @@
 
 	function get_customerquotes($sessionID, $custID, $limit = 10, $page = 1, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
+		$q->field('quothed.*');
+		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
 		$q->where('sessionid', $sessionID);
 		$q->where('custid', $custID);
 		if (!empty($filter)) {
@@ -1017,6 +1069,7 @@
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
 		$q->field($q->expr("STR_TO_DATE(quotdate, '%m/%d/%Y') as quotedate"));
+		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
 		$q->where('sessionid', $sessionID);
 		$q->where('custid', $custID);
 		if (!empty($filter)) {
@@ -1041,8 +1094,8 @@
 	function get_customerquotesrevdate($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
-		$q->field('revdate');
 		$q->field($q->expr("STR_TO_DATE(revdate, '%m/%d/%Y') as reviewdate"));
+		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
 		$q->where('sessionid', $sessionID);
 		$q->where('custid', $custID);
 		if (!empty($filter)) {
@@ -1067,8 +1120,8 @@
 	function get_customerquotesexpdate($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
-		$q->field('expdate');
 		$q->field($q->expr("STR_TO_DATE(expdate, '%m/%d/%Y') as expiredate"));
+		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
 		$q->where('sessionid', $sessionID);
 		$q->where('custid', $custID);
 		if (!empty($filter)) {
@@ -1092,6 +1145,8 @@
 	
 	function get_customerquotesorderby($sessionID, $custID, $limit = 10, $page = 1, $sortrule, $orderby, $filter = false, $filtertypes = false, $useclass = true, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
+		$q->field('quothed.*');
+		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
 		$q->where('sessionid', $sessionID);
 		$q->where('custid', $custID);
 		if (!empty($filter)) {

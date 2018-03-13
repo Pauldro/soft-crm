@@ -26,6 +26,11 @@
 			<input class="form-control inline input-sm" type="text" name="custpo[]" value="<?= $orderpanel->get_filtervalue('custpo'); ?>" placeholder="Cust PO">
 		</div>
 		<div class="col-sm-2">
+			<h4>Order Total</h4>
+			<input class="form-control form-group inline input-sm" type="text" name="ordertotal[]" value="<?= $orderpanel->get_filtervalue('ordertotal'); ?>" placeholder="From Order Total">
+			<input class="form-control form-group inline input-sm" type="text" name="ordertotal[]" value="<?= $orderpanel->get_filtervalue('ordertotal', 1); ?>" placeholder="Through Order Total">
+		</div>
+		<div class="col-sm-2">
             <h4>Order Date</h4>
 			<?php $name = 'orderdate[]'; $value = $orderpanel->get_filtervalue('orderdate'); ?>
 			<?php include $config->paths->content."common/date-picker.php"; ?>
@@ -35,6 +40,7 @@
             <label class="small text-muted">Through Date </label>
         </div>
 	</div>
+	</br>
     <div class="form-group">
     	<button class="btn btn-success btn-block" type="submit">Search <i class="fa fa-search" aria-hidden="true"></i></button>
     </div>

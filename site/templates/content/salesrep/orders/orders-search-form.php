@@ -23,12 +23,27 @@
 		</div>
 		<div class="col-sm-2">
 			<h4>Cust ID</h4>
-			<input class="form-control form-group inline input-sm" type="text" name="custid[]" value="<?= $orderpanel->get_filtervalue('custid'); ?>" placeholder="From CustID">
-			<input class="form-control form-group inline input-sm" type="text" name="custid[]" value="<?= $orderpanel->get_filtervalue('custid', 1); ?>" placeholder="Through CustID">
+			<div class="input-group form-group">
+	            <input class="form-control form-group inline input-sm" type="text" name="custid[]" id="sales-order-cust-from" value="<?= $orderpanel->get_filtervalue('custid'); ?>" placeholder="From CustID">
+	            <span class="input-group-btn">
+	            	<button type="button" class="btn btn-default input-sm not-round get-custid-search" data-field="#sales-order-cust-from"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span> <span class="sr-only">Search</span> </button>
+	            </span>
+	        </div>
+			<div class="input-group form-group">
+	            <input class="form-control form-group inline input-sm" type="text" name="custid[]" id="sales-order-cust-to" value="<?= $orderpanel->get_filtervalue('custid', 1); ?>" placeholder="Through CustID">
+	            <span class="input-group-btn">
+	            	<button type="button" class="btn btn-default input-sm not-round get-custid-search" data-field="#sales-order-cust-to"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span> <span class="sr-only">Search</span> </button>
+	            </span>
+	        </div>
 		</div>
 		<div class="col-sm-2">
 			<h4>Cust PO</h4>
 			<input class="form-control inline input-sm" type="text" name="custpo[]" value="<?= $orderpanel->get_filtervalue('custpo'); ?>" placeholder="Cust PO">
+		</div>
+		<div class="col-sm-2">
+			<h4>Order Total</h4>
+			<input class="form-control form-group inline input-sm" type="text" name="ordertotal[]" value="<?= $orderpanel->get_filtervalue('ordertotal'); ?>" placeholder="From Order Total">
+			<input class="form-control form-group inline input-sm" type="text" name="ordertotal[]" value="<?= $orderpanel->get_filtervalue('ordertotal', 1); ?>" placeholder="Through Order Total">
 		</div>
 		<div class="col-sm-2">
             <h4>Order Date</h4>
@@ -40,6 +55,7 @@
             <label class="small text-muted">Through Date </label>
         </div>
 	</div>
+	</br>
 	<div class="form-group">
 		<button class="btn btn-success btn-block" type="submit">Search <i class="fa fa-search" aria-hidden="true"></i></button>
 	</div>

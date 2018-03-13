@@ -117,7 +117,10 @@
 		
 		public function get_filtervalue($filtername, $index = 0) {
 			if (empty($this->filters)) return '';
-			return (isset($this->filters[$filtername])) ? $this->filters[$filtername][$index] : '';
+			if (isset($this->filters[$filtername])) {
+				return (isset($this->filters[$filtername][$index])) ? $this->filters[$filtername][$index] : '';
+			}
+			return '';
 		}
 		
 		public function has_filtervalue($filtername, $value) {
@@ -136,6 +139,6 @@
 		}
 		
 		public function generate_paneltypedescription() {
-			return ucfirst(str_replace('-', ' ', $this->paneltype.'s'));
+			return ucwords(str_replace('-', ' ', $this->paneltype.'s'));
 		}
 	}

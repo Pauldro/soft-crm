@@ -9,7 +9,7 @@
 	$paginator = new Paginator($orderpanel->pagenbr, $orderpanel->count, $orderpanel->pageurl->getUrl(), $orderpanel->paginationinsertafter, $orderpanel->ajaxdata);
 ?>
 <div class="panel panel-primary not-round" id="orders-panel">
-    <div class="panel-heading" id="orders-panel-heading">
+    <div class="panel-heading not-round" id="orders-panel-heading">
     	<?php if ($input->get->filter) : ?>
         	<a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">
 				<?= $orderpanel->generate_filterdescription(); ?> <span class="caret"></span> <span class="badge"><?= $orderpanel->count; ?></span> &nbsp; | &nbsp;

@@ -20,6 +20,11 @@
 				'datatype' => 'char',
 				'label' => 'Order #'
 			),
+			'ordertotal' => array(
+				'querytype' => 'between',
+				'datatype' => 'numeric',
+				'label' => 'Order Total'
+			),
 			'orderdate' => array(
 				'querytype' => 'between',
 				'datatype' => 'date',
@@ -195,6 +200,16 @@
 				
 				if (empty($this->filters['orderdate'][1])) {
 					$this->filters['orderdate'][1] = date('m/d/Y');
+				}
+			}
+			
+			if (isset($this->filters['ordertotal'])) {
+				if (!strlen($this->filters['ordertotal'][0])) {
+					$this->filters['ordertotal'][0] = '0.00';
+				}
+				
+				if (!strlen($this->filters['ordertotal'][1])) {
+					$this->filters['ordertotal'][1] = get_maxordertotal($this->sessionID);
 				}
 			}
 		}

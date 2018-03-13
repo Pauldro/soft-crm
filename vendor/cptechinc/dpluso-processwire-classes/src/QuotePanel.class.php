@@ -17,7 +17,7 @@
 			),
 			'ordertotal' => array(
 				'querytype' => 'between',
-				'datatype' => 'char',
+				'datatype' => 'numeric',
 				'label' => 'Order Total'
 			),
 			'quotdate' => array(
@@ -298,12 +298,12 @@
 			}
 			
 			if (isset($this->filters['ordertotal'])) {
-				if (!strlen($this->filters['ordertotal'][1])) {
-					$this->filters['ordertotal'][1] = get_maxquotetotal($this->sessionID);
-				}
-				
 				if (!strlen($this->filters['ordertotal'][0])) {
 					$this->filters['ordertotal'][0] = '0.00';
+				}
+				
+				if (!strlen($this->filters['ordertotal'][1])) {
+					$this->filters['ordertotal'][1] = get_maxquotetotal($this->sessionID);
 				}
 			}
 		}

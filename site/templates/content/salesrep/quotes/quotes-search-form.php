@@ -9,8 +9,18 @@
 		</div>
 		<div class="col-sm-2">
 			<h4>Cust ID</h4>
-			<input class="form-control form-group inline input-sm" type="text" name="custid[]" value="<?= $quotepanel->get_filtervalue('custid'); ?>" placeholder="From CustID">
-			<input class="form-control form-group inline input-sm" type="text" name="custid[]" value="<?= $quotepanel->get_filtervalue('custid', 1); ?>" placeholder="Through CustID">
+			<div class="input-group form-group">
+	            <input class="form-control form-group inline input-sm" type="text" name="custid[]" id="quote-cust-from" value="<?= $quotepanel->get_filtervalue('custid'); ?>" placeholder="From CustID">
+	            <span class="input-group-btn">
+	            	<button type="button" class="btn btn-default input-sm not-round get-custid-search" data-field="#quote-cust-from"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span> <span class="sr-only">Search</span> </button>
+	            </span>
+	        </div>
+			<div class="input-group form-group">
+	            <input class="form-control form-group inline input-sm" type="text" name="custid[]" id="quote-cust-to" value="<?= $quotepanel->get_filtervalue('custid', 1); ?>" placeholder="Through CustID">
+	            <span class="input-group-btn">
+	            	<button type="button" class="btn btn-default input-sm not-round get-custid-search" data-field="#quote-cust-to"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span> <span class="sr-only">Search</span> </button>
+	            </span>
+	        </div>
 		</div>
 		<div class="col-sm-2">
 			<h4>Quote Total :</h4>

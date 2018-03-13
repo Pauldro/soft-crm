@@ -26,7 +26,7 @@
 			),
 			'ordertotal' => array(
 				'querytype' => 'between',
-				'datatype' => 'char',
+				'datatype' => 'numeric',
 				'label' => 'Order Total'
 			)
 		);

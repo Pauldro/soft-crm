@@ -69,14 +69,16 @@
             foreach ($filters as $filter => $filtervalue) {
                 switch ($filtertypes[$filter]['querytype']) {
                     case 'between':
-						$filtervalue = array_filter($filtervalue, 'strlen');
+						$filtervalue = array_values(array_filter($filtervalue, 'strlen'));
 						
-                        if (sizeof($filtervalue) == 1) {
+						if (sizeof($filtervalue) == 1) {
                             $this->where($filter, $filtervalue[0]);
                         } else {
                             if ($filtertypes[$filter]['datatype'] == 'date') {
                                 $this->where($this->expr("STR_TO_DATE($filter, '%m/%d/%Y') between STR_TO_DATE([], '%m/%d/%Y') and STR_TO_DATE([], '%m/%d/%Y')", $filtervalue));
-                            } else {
+                            } else if ($filtertypes[$filter]['datatype'] == 'numeric') {
+                                $this->where($this->expr("$filter between CAST([] as UNSIGNED) and CAST([] as UNSIGNED)", $filtervalue));
+                            } else {    
                                 $this->where($this->expr("$filter between [] and []", $filtervalue));
                             }
                         }
@@ -191,7 +193,8 @@
 		public static function generate_filterdescription($key, $val, $filtertypes) {
 			switch ($filtertypes[$key]['querytype']) {
 				case 'between':
-					if (sizeof(array_filter($val, 'strlen')) == 1) {
+					$val = array_values(array_filter($val, 'strlen'));
+					if (sizeof($val) == 1) {
 						return " ".$filtertypes[$key]['label'] ." = " . $val[0];
 					} else {
 						return " ".$filtertypes[$key]['label'] . " between " . $val[0] . " and " . $val[1];
