@@ -1491,7 +1491,6 @@
 	
 	function add_qnote($sessionID, Qnote $qnote, $debug = false) {
 		$q = (new QueryBuilder())->table('qnote');
-		wire('session')->obj = json_encode(get_object_vars($qnote));
 		$q->mode('insert');
 		$qnote->recno = get_maxqnoterecnbr($qnote->sessionid, $qnote->key1, $qnote->key2, $qnote->rectype) + 1;
 		
