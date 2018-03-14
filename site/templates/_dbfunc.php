@@ -265,7 +265,7 @@
 		$q = (new QueryBuilder())->table('custindex');
 		$q->limit(1);
 		$q->where('custid', $custID);
-		$q->where('shiptoid', $shipID);
+		$q->where('shiptoid', $shiptoID);
 		if (!empty($contactID)) {
 			$q->where('contact', $contactID);
 		}
@@ -513,6 +513,29 @@
 				$q->set($property, $contact->$property);
 			}
 		}
+		$q->where('custid', $contact->custid);
+		$q->where('shiptoid', $contact->shiptoid);
+		$q->where('contact', $contact->contact);
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			if ($contact->has_changes()) {
+				$sql->execute($q->params);
+			}
+			return $q->generate_sqlquery($q->params);
+		}
+	}
+	
+	function change_contactid(Contact $contact, $contactID, $debug = false) {
+		$originalcontact = Contact::load($contact->custid, $contact->shiptoid, $contact->contact);
+		$q = (new QueryBuilder())->table('custindex');
+		$q->mode('update');
+		$q->set('contact', $contactID);
+		$q->where('custid', $contact->custid);
+		$q->where('shiptoid', $contact->shiptoid);
+		$q->where('contact', $contact->contact);
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
 		if ($debug) {

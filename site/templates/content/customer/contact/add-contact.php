@@ -56,7 +56,7 @@
 					</tr>
 					<tr>
 						<?php if ($primarycontact) : ?>
-							<td class="control-label">Buying Contact <a class="small" href="<?= $primarycontact->generate_contacturl(); ?>">[<?= $primarycontact->contact; ?>]</a></td>
+							<td class="control-label">Buying Contact <a class="small" href="<?= $primarycontact->generate_contacturl(); ?>" target="_blank">[View Primary]</a></td>
 						<?php else : ?>
 							<td class="control-label">Buying Contact</td>
 						<?php endif; ?>

@@ -61,6 +61,7 @@
 		 * @var string Y | N
 		 */
 		public $ackcontact;
+		
 		public $dummy;
         public $fieldaliases = array(
             'custID' => 'custid',
@@ -325,6 +326,10 @@
 		 */
 		public function update($debug = false) {
 			return update_contact($this, $debug);
+		}
+		
+		public function change_contactid($contactID, $debug = false) {
+			return change_contactid($this, $contactID, $debug);
 		}
 		
 		/**

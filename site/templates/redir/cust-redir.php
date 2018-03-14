@@ -328,9 +328,9 @@
 			$contact->set('cellphone', $input->post->text('contact-cellphone'));
 			$contact->set('email', $input->post->text('contact-email'));
 			$contact->set('arcontact', $input->post->text('arcontact') == 'Y' ? "Y" : "N");
-			$contact->set('duncontact', $input->post->text('duncontact') == 'Y' ? "Y" : "N");
-			$contact->set('buycontact', $input->post->text('buycontact'));
-			$contact->set('cercontact', $input->post->text('cercontact') == 'Y' ? "Y" : "N");
+			$contact->set('dunningcontact', $input->post->text('duncontact') == 'Y' ? "Y" : "N");
+			$contact->set('buyingcontact', $input->post->text('buycontact'));
+			$contact->set('certcontact', $input->post->text('cercontact') == 'Y' ? "Y" : "N");
 			$contact->set('ackcontact', $input->post->text('ackcontact') == 'Y' ? "Y" : "N");
 			$contact->create();
 			
@@ -347,9 +347,9 @@
 				'EMAIL' => $contact->email,
 				'CELLPHONE' => str_replace('-', '', $contact->cellphone),
 				'ARCONTACT' => $contact->arcontact,
-				'DUNCONTACT' => $contact->duncontact,
+				'DUNCONTACT' => $contact->dunningcontact,
 				'ACKCONTACT' => $contact->ackcontact,
-				'BUYCONTACT' => $contact->buycontact,
+				'BUYCONTACT' => $contact->buyingcontact,
 				'CERCONTACT' => $contact->certcontact,
 			);
 			break;
@@ -357,13 +357,26 @@
 			$custID = $input->post->text('custID');
 			$shipID = $input->post->text('shipID');
 			$contactID = $input->post->text('contactID');
-			$contact = get_customercontact($custID, $shipID, $contactID, false);
-			$contact->contact = $input->post->text('name');
-			$contact->phone = str_replace('-', '', $input->post->text('phone'));
-			$contact->extension = $input->post->text('extension');
-			$contact->cellphone = str_replace('-', '', $input->post->text('cellphone'));
-			$contact->email = $input->post->text('email');
+			$newcontactID = $input->post->text('contact-name');
+			
+			$contact = Contact::load($custID, $shipID, $contactID, false);
+			$contact->set('title', $input->post->text('contact-title'));
+			$contact->set('phone', $input->post->text('contact-phone'));
+			$contact->set('extension', $input->post->text('contact-extension'));
+			$contact->set('faxnbr', $input->post->text('contact-fax'));
+			$contact->set('cellphone', $input->post->text('contact-cellphone'));
+			$contact->set('email', $input->post->text('contact-email'));
+			$contact->set('arcontact', $input->post->text('arcontact') == 'Y' ? "Y" : "N");
+			$contact->set('dunningcontact', $input->post->text('duncontact') == 'Y' ? "Y" : "N");
+			$contact->set('buyingcontact', $input->post->text('buycontact'));
+			$contact->set('certcontact', $input->post->text('cercontact') == 'Y' ? "Y" : "N");
+			$contact->set('ackcontact', $input->post->text('ackcontact') == 'Y' ? "Y" : "N");
+			
 			$session->sql = $contact->update();
+			if ($newcontactID != $contact->contact) {
+				$session->sql = $contact->change_contactid($newcontactID);
+				$contact->set('contact', $newcontactID);
+			}
 			
 			$data = array(
 				'DBNAME' => $config->dbName, 
@@ -372,10 +385,17 @@
 				'SHIPID' => $shipID, 
 				'CONTACT' => $contactID, 
 				'NAME' => $contact->contact, 
-				'PHONE' => $contact->phone, 
-				'EXTENSION' => $contact->extension, 
-				'CELLPHONE' => $contact->cellphone, 
-				'EMAIL' => $contact->email
+				'TITLE' => $contact->title,
+				'PHONE' => str_replace('-', '', $contact->phone), 
+				'EXTENSION' => $contact->extension,
+				'FAX' => str_replace('-', '', $contact->faxnbr), 
+				'EMAIL' => $contact->email,
+				'CELLPHONE' => str_replace('-', '', $contact->cellphone),
+				'ARCONTACT' => $contact->arcontact,
+				'DUNCONTACT' => $contact->dunningcontact,
+				'ACKCONTACT' => $contact->ackcontact,
+				'BUYCONTACT' => $contact->buyingcontact,
+				'CERCONTACT' => $contact->certcontact
 			);
 			$returnpage = new \Purl\Url($input->post->text('page'));
 			$returnpage->query->set('id', $contact->contact);
