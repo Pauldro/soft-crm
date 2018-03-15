@@ -88,6 +88,6 @@
 		============================================================ */
 		public static function get_customernamefromid($custID, $shiptoID = '') {
 			$customer = self::load($custID, $shiptoID);
-			return $customer->get_customername();
+			return $customer ? $customer->get_customername() : '';
 		}
     }
