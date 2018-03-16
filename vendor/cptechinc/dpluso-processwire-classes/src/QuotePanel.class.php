@@ -302,8 +302,12 @@
 					$this->filters['ordertotal'][0] = '0.00';
 				}
 				
-				if (!strlen($this->filters['ordertotal'][1])) {
-					$this->filters['ordertotal'][1] = get_maxquotetotal($this->sessionID);
+				if (isset($this->filters['ordertotal'][1])) {
+					if (!strlen($this->filters['ordertotal'][1])) {
+						$this->filters['ordertotal'][1] = get_maxquotetotal($this->sessionID);
+					}
+				} else {
+					$this->filters['ordertotal'][1] = $this->filters['ordertotal'][0];
 				}
 			}
 			

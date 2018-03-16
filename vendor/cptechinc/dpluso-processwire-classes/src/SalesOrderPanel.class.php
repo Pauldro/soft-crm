@@ -208,8 +208,12 @@
 					$this->filters['ordertotal'][0] = '0.00';
 				}
 				
-				if (!strlen($this->filters['ordertotal'][1])) {
-					$this->filters['ordertotal'][1] = get_maxordertotal($this->sessionID);
+				if (isset($this->filters['ordertotal'][1])) {
+					if (!strlen($this->filters['ordertotal'][1])) {
+						$this->filters['ordertotal'][1] = get_maxordertotal($this->sessionID);
+					}
+				} else {
+					$this->filters['ordertotal'][1] = $this->filters['ordertotal'][0];
 				}
 			}
 		}
