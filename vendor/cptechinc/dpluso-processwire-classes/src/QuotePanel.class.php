@@ -306,5 +306,15 @@
 					$this->filters['ordertotal'][1] = get_maxquotetotal($this->sessionID);
 				}
 			}
+			
+			if (isset($this->filters['custid'])) {
+				if (empty($this->filters['custid'][1])) {
+					$this->filters['custid'][1] = $this->filters['custid'][0];
+				}
+				
+				if (empty($this->filters['custid'][0])) {
+					$this->filters['custid'][0] = $this->filters['custid'][1];
+				}
+			}
 		}
 	}
