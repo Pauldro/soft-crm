@@ -1,6 +1,7 @@
 <?php 
     class Customer extends Contact {
         use CreateFromObjectArrayTraits;
+		
         /* =============================================================
 			GETTER FUNCTIONS 
 		============================================================ */
@@ -45,6 +46,12 @@
             return $this->get_name() . (($this->has_shipto()) ? ' Ship-to: ' . $this->shiptoid : '');
         }
 		
+		/** 
+		 * Generates an array for the Sales Data for this Customer
+		 * so it can be used in Morris.js to draw up a pie chart
+		 * @param  float $value Amount
+		 * @return array        has the Name, value, custid and shiptoid in an array
+		 */
 		public function generate_piesalesdata($value) {
 			return array(
 				'label' => $this->get_name(),
@@ -53,13 +60,34 @@
 				'shiptoid' => $this->shiptoid
 			);
 		}
+		
+		/**
+		 * Return URL to the add Contact form
+		 * @return string  Add Contact URL
+		 */
+		public function generate_addcontacturl() {
+			$url = new \Purl\Url(Processwire\wire('config')->pages->contact.'add/');
+            $url->query->set('custID', $this->custid);
+            
+            if ($this->has_shipto()) {
+                $url->query->set('shipID', $this->shiptoid);
+            } 
+            return $url->getUrl();
+		}
         
         /* =============================================================
 			OTHER CONSTRUCTOR FUNCTIONS 
             Inherits some from CreateFromObjectArrayTraits
 		============================================================ */
         public static function load($custID, $shiptoID = '', $contactID = '', $debug = false) {
-            return self::create_fromobject(get_customercontact($custID, $shiptoID, $contactID));
-        } 
-        
+            return get_customer($custID, $shiptoID, $contactID, $debug);
+        }
+		
+		/* =============================================================
+			STATIC FUNCTIONS
+		============================================================ */
+		public static function get_customernamefromid($custID, $shiptoID = '') {
+			$customer = self::load($custID, $shiptoID);
+			return $customer ? $customer->get_customername() : '';
+		}
     }

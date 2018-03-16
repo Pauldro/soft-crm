@@ -3,8 +3,8 @@
         use CreateFromObjectArrayTraits;
 		use CreateClassArrayTraits;
 		use ThrowErrorTrait;
-        
-        public $recno;
+		
+		public $recno;
 		public $date;
 		public $time;
 		public $splogin1;
@@ -30,17 +30,51 @@
 		public $typecode;
 		public $faxnbr;
 		public $title;
+		
+		/**
+		 * Contact for Accounts Receivable [Billto only]
+		 * @var string Y | N
+		 */
 		public $arcontact;
-		public $dunningcontact;
+		
+		/**
+		 * Contact for Dunning [Billto only]
+		 * @var string Y | N
+		 */
+		public $dunningcontact; 
+		
+		/**
+		 * Contact for Buying
+		 * NOTE each Customer and Customer Shipto may have one [P]rimary buyer
+		 * @var string P | Y | N
+		 */
 		public $buyingcontact;
+		
+		/**
+		 * Contact for Certificates 
+		 * @var string Y | N
+		 */
 		public $certcontact;
+		
+		/**
+		 * Contact for Acknowledgments [Billto only]
+		 * @var string Y | N
+		 */
 		public $ackcontact;
+		
 		public $dummy;
         public $fieldaliases = array(
             'custID' => 'custid',
             'shipID' => 'shiptoid',
         );
         
+		public static $types = array(
+			'customer' => 'C',
+			'customer-contact' => 'CC',
+			'customer-shipto' => 'CS',
+			'shipto-contact' => 'SC'
+		);
+		
         /* =============================================================
 			GETTER FUNCTIONS 
 		============================================================ */
@@ -111,14 +145,22 @@
                 return false;
             }
 		}
-        
-        /* =============================================================
+		
+		/**
+		 * Determines the Source of the Contact 
+		 * CS means shipto CC is Contact Customer
+		 */
+		public function set_contacttype() {
+			$this->source = $this->has_shipto() ? 'CS' : 'CC';
+		}
+
+		/* =============================================================
 			CLASS FUNCTIONS
 		============================================================ */
 		/**
 		 * Generates the URL to the customer page which currently
 		 * goes to load the CI Page.
-		 * @return string 
+		 * @return string Customer Page URL
 		 */
         public function generate_customerurl() {
             return $this->generate_ciloadurl();
@@ -126,7 +168,7 @@
 		
 		/**
 		 * Generates the customer URL but also defines the Shiptoid in the URL
-		 * @return string
+		 * @return string Customer Shipto Page URL
 		 */
         public function generate_shiptourl() {
             return $this->generate_customerurl() . "&shipID=".urlencode($this->shiptoid);
@@ -134,7 +176,7 @@
 		
 		/**
 		 * Generates URL to the contact page
-		 * @return string
+		 * @return string Contact Page URL
 		 */
         public function generate_contacturl() {
             $url = new \Purl\Url(Processwire\wire('config')->pages->contact);
@@ -149,7 +191,7 @@
 		
 		/** 
 		 * Generates the load customer URL to get to the CI PAGE
-		 * @return string
+		 * @return string CI PAGE URL
 		 */
 	    public function generate_ciloadurl() {
             $url = $this->generate_redirurl();
@@ -212,7 +254,7 @@
 		 */
 		public function generate_phonedisplay() {
 			if ($this->has_extension()) {
-				return $this->phone . ' &nbsp; ' . $this->extension;
+				return $this->phone . ' Ext. ' . $this->extension;
 			} else {
 				return $this->phone;
 			}
@@ -223,19 +265,19 @@
 		 * @param  string $method two main groups : phone / email
 		 * @return string         url with with the protocol defined
 		 */
-		public function generate_contactmethodurl($method) {
+		public function generate_contactmethodurl($method = false) {
 			switch ($method) {
 				case 'cell':
-					return "tel:".$this->cellphone;
+					return "tel:".str_replace('-', '', $this->cellphone);
 					break;
 				case 'phone':
-					return "tel:".$this->phone;
+					return "tel:".str_replace('-', '', $this->phone);
 					break;
 				case 'email':
 					return "mailto:".$this->email;
 					break;
 				default:
-					return "tel:".$this->phone;
+					return "tel:".str_replace('-', '', $this->phone);
 					break;
 			}
 		}
@@ -247,33 +289,46 @@
 		public function generate_address() {
 			return $this->addr1 . ' ' . $this->addr2. ' ' . $this->city . ', ' . $this->state . ' ' . $this->zip;
 		}
-        
+		
 		/* =============================================================
 			CRUD FUNCTIONS
 		============================================================ */
 		/**
 		 * Creates a new contact in the database
-		 * @param  boolean $debug Determines if query will execute and if sQL is returned or Contact object
+		 * @param  bool $debug Determines if query will execute and if sQL is returned or Contact object
 		 * @return Contact         OR SQL QUERY
 		 */
 		public function create($debug = false) {
 			return insert_customerindexrecord($this, $debug);
 		}
+		
 		/**
 		 * Loads an object with this class using the parameters as provided
 		 * @param  string  $custID    CustomerID
-		 * @param  string  $shiptoID  Shipto ID (can be blank)
-		 * @param  string  $contactID Contact ID (can be blank)
+		 * @param  string  $shiptoID  ShiptoID  **Optional
+		 * @param  string  $contactID Contact Name **Optional
 		 * @param  bool $debug     Determines if query will execute and if sQL is returned or Contact object
-		 * @return Contact            SQL query string
+		 * @return Contact           Or SQL query string
 		 */
         public static function load($custID, $shiptoID = '', $contactID = '', $debug = false) {
             return get_customercontact($custID, $shiptoID, $contactID, $debug);
         }
 		
 		/**
+		 * Returns the primary Contact of a Customer Shipto
+		 * ** NOTE each Customer and Customer Shipto may have one Primary buyer
+		 * @param  string  $custID CustomerID
+		 * @param  string  $shiptoID ShiptoID **Optional
+		 * @param  bool $debug  Determines if query will execute and if sQL is returned or Contact object
+		 * @return Contact          Or SQL query string
+		 */
+		public static function load_primarycontact($custID, $shiptoID = '', $debug = false) {
+			return get_primarybuyercontact($custID, $shiptoID, $debug);
+		} 
+		
+		/**
 		 * Updates the Contact in the database
-		 * @param  boolean $debug Determines if query will execute and if sQL is returned or Contact object
+		 * @param  bool $debug Determines if query will execute and if sQL is returned or Contact object
 		 * @return Contact         SQL query string
 		 */
 		public function update($debug = false) {
@@ -281,8 +336,18 @@
 		}
 		
 		/**
+		 * Updates the Contact ID
+		 * @param  string  $contactID Contact ID
+		 * @param  bool $debug     Determines if query will execute and if sQL is returned or Contact object
+		 * @return string            SQL Query
+		 */
+		public function change_contactid($contactID, $debug = false) {
+			return change_contactid($this, $contactID, $debug);
+		}
+		
+		/**
 		 * Checks if there are changes between this contact and the database record
-		 * @return boolean Whether contact has changes from database
+		 * @return bool Whether contact has changes from database
 		 */
 		public function has_changes() {
 			$properties = array_keys($this->_toArray());
