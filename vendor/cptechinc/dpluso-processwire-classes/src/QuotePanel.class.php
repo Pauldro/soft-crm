@@ -15,10 +15,10 @@
 				'datatype' => 'char',
 				'label' => 'CustID'
 			),
-			'ordertotal' => array(
+			'subtotal' => array(
 				'querytype' => 'between',
 				'datatype' => 'numeric',
-				'label' => 'Order Total'
+				'label' => 'Quote Total'
 			),
 			'quotdate' => array(
 				'querytype' => 'between',
@@ -265,6 +265,7 @@
 		}
 		
 		public function generate_filter(ProcessWire\WireInput $input) {
+			$stringerbell = new StringerBell();
 			parent::generate_filter($input);
 			
 			if (isset($this->filters['quotdate'])) {
@@ -297,23 +298,18 @@
 				}
 			}
 			
-			if (isset($this->filters['ordertotal'])) {
-				if (!strlen($this->filters['ordertotal'][0])) {
-					$this->filters['ordertotal'][0] = '0.00';
+			if (isset($this->filters['subtotal'])) {
+				
+				if (!strlen($this->filters['subtotal'][0])) {
+					$this->filters['subtotal'][0] = '0.00';
 				}
 				
-				if (!strlen($this->filters['ordertotal'][1])) {
-					$this->filters['ordertotal'][1] = get_maxquotetotal($this->sessionID);
-				}
-			}
-			
-			if (isset($this->filters['custid'])) {
-				if (empty($this->filters['custid'][1])) {
-					$this->filters['custid'][1] = $this->filters['custid'][0];
-				}
-				
-				if (empty($this->filters['custid'][0])) {
-					$this->filters['custid'][0] = $this->filters['custid'][1];
+				for ($i = 0; $i < (sizeof($this->filters['subtotal']) + 1); $i++) {
+					if (isset($this->filters['subtotal'][$i])) {
+						if (strlen($this->filters['subtotal'][$i])) {
+							$this->filters['subtotal'][$i] = number_format($this->filters['subtotal'][$i], 2, '.', '');
+						}
+					}
 				}
 			}
 		}
