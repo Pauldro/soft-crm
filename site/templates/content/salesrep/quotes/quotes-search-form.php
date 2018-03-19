@@ -27,13 +27,13 @@
 			<div class="input-group form-group">
 	            <input class="form-control form-group inline input-sm" type="text" name="subtotal[]" id="quote-total-min" value="<?= $quotepanel->get_filtervalue('subtotal'); ?>" placeholder="From Quote Total">
 	            <span class="input-group-btn">
-	            	<button type="button" class="btn btn-default input-sm not-round"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span> <span class="sr-only">Search</span> </button>
+	            	<button type="button" class="btn btn-default input-sm not-round" onclick="$('#quote-total-min').val('<?= get_minquotetotal(session_id()); ?>')"> <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> <span class="sr-only">Search</span> </button>
 	            </span>
 	        </div>
 			<div class="input-group form-group">
 	            <input class="form-control form-group inline input-sm" type="text" name="subtotal[]" id="quote-total-max" value="<?= $quotepanel->get_filtervalue('subtotal', 1); ?>" placeholder="Through Quote Total">
 	            <span class="input-group-btn">
-	            	<button type="button" class="btn btn-default input-sm not-round"> <span class="glyphicon glyphicon-search" aria-hidden="true"></span> <span class="sr-only">Search</span> </button>
+	            	<button type="button" class="btn btn-default input-sm not-round" onclick="$('#quote-total-max').val('<?= get_maxquotetotal(session_id()); ?>')"> <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span> <span class="sr-only">Search</span> </button>
 	            </span>
 	        </div>
 		</div>

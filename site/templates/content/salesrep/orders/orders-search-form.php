@@ -42,8 +42,18 @@
 		</div>
 		<div class="col-sm-2">
 			<h4>Order Total</h4>
-			<input class="form-control form-group inline input-sm" type="text" name="ordertotal[]" value="<?= $orderpanel->get_filtervalue('ordertotal'); ?>" placeholder="From Order Total">
-			<input class="form-control form-group inline input-sm" type="text" name="ordertotal[]" value="<?= $orderpanel->get_filtervalue('ordertotal', 1); ?>" placeholder="Through Order Total">
+			<div class="input-group form-group">
+				<input class="form-control form-group inline input-sm" type="text" name="ordertotal[]" id="order-total-min" value="<?= $orderpanel->get_filtervalue('ordertotal'); ?>" placeholder="From Order Total">
+	            <span class="input-group-btn">
+	            	<button type="button" class="btn btn-default input-sm not-round" onclick="$('#order-total-min').val('<?= get_minordertotal(session_id()); ?>')"> <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> <span class="sr-only">Min</span> </button>
+	            </span>
+	        </div>
+			<div class="input-group form-group">
+				<input class="form-control form-group inline input-sm" type="text" name="ordertotal[]" id="order-total-max" value="<?= $orderpanel->get_filtervalue('ordertotal', 1); ?>" placeholder="Through Order Total">
+	            <span class="input-group-btn">
+	            	<button type="button" class="btn btn-default input-sm not-round" onclick="$('#order-total-max').val('<?= get_maxordertotal(session_id()); ?>')"> <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span> <span class="sr-only">Max</span> </button>
+	            </span>
+	        </div>
 		</div>
 		<div class="col-sm-2">
             <h4>Order Date</h4>
