@@ -856,11 +856,8 @@
 
 	function get_maxordertotal($sessionID, $custID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
-<<<<<<< HEAD
 		$q->field($q->expr("MAX(CAST(ordertotal AS DECIMAL(8,2))) AS ordertotal"));
-=======
 		$q->field($q->expr('MAX(CAST(ordertotal AS DECIMAL(8,2)))'));
->>>>>>> 6c5f8d0d04c99ce077e18fcaf5b9ccb8b463c347
 		$q->where('sessionid', $sessionID);
 		if ($custID) {
 			$q->where('custid', $custID);
