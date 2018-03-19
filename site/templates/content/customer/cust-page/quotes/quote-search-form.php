@@ -1,5 +1,5 @@
 <form action="<?= $quotepanel->pageurl->getUrl(); ?>" method="get" data-ordertype="quotes" data-loadinto="#quotes-panel" data-focus="#quotes-panel" data-modal="#ajax-modal" class="orders-search-form">
-    <input type="hidden" name="filter" value="filter">
+    <input type="hidden" name="filter" value="filter"> 
 	
 	<div class="row">
 		<div class="col-sm-2">
@@ -39,13 +39,13 @@
             <div class="input-group form-group">
                 <input class="form-control form-group inline input-sm" type="text" name="subtotal[]" id="cust-quote-total-min" value="<?= $quotepanel->get_filtervalue('subtotal'); ?>" placeholder="From Quote Total">
 	            <span class="input-group-btn">
-	            	<button type="button" class="btn btn-default input-sm not-round" onclick="$('#cust-quote-total-min').val('<?= get_mminquotetotal(session_id()); ?>')"> <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> <span class="sr-only">Search</span> </button>
+	            	<button type="button" class="btn btn-default input-sm not-round" onclick="$('#cust-quote-total-min').val('<?= get_minquotetotal(session_id(), "$custID"); ?>')"> <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> <span class="sr-only">Search</span> </button>
 	            </span>
 	        </div>
             <div class="input-group form-group">
                 <input class="form-control form-group inline input-sm" type="text" name="subtotal[]" id="cust-quote-total-max" value="<?= $quotepanel->get_filtervalue('subtotal', 1); ?>" placeholder="Through Quote Total">
 	            <span class="input-group-btn">
-	            	<button type="button" class="btn btn-default input-sm not-round" onclick="$('#cust-quote-total-max').val('<?= get_maxquotetotal(session_id()); ?>')"> <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span> <span class="sr-only">Search</span> </button>
+	            	<button type="button" class="btn btn-default input-sm not-round" onclick="$('#cust-quote-total-max').val('<?= get_maxquotetotal(session_id(), "$custID"); ?>')"> <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span> <span class="sr-only">Search</span> </button>
 	            </span>
 	        </div>
 		</div>
