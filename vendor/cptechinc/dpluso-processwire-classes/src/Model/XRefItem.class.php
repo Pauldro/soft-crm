@@ -1,21 +1,79 @@
 <?php 
+	/**
+	 * Class for Items that reside in the itemsearch table
+	 */
     class XRefItem {
         use CreateFromObjectArrayTraits;
 		use CreateClassArrayTraits;
 		use ThrowErrorTrait;
         
+		/**
+		 * Part or Item (ID or #)
+		 * @var string
+		 */
         protected $itemid;
+		
+		/**
+		 * Where itemid originates
+		 * Item | Customer | Vendor
+		 * @var [type]
+		 */
         protected $origintype;
+		
+		/**
+		 * Referenced Item ID
+		 * @var string
+		 */
         protected $refitemid;
+		
+		/** 
+		 * Item Description
+		 * @var string
+		 */
         protected $desc1;
+		
+		/**
+		 * Item Description
+		 * @var string
+		 */
         protected $desc2;
+		
+		/**
+		 * Image Name
+		 * @var string
+		 */
         protected $image;
+		
+		/**
+		 * Date updted In Database
+		 * @var int
+		 */
         protected $create_date;
+		
+		/**
+		 * Time updated in Database
+		 * @var int
+		 */
         protected $create_time;
+		
+		/**
+		 * Aliases that properties might use or have
+		 * so the __get function can lookup and find
+		 * @var array
+		 */
         public $fieldaliases = array(
             'itemID' => 'itemid',
         );
         
+		/* ============================================================
+			GETTER FUNCTIONS
+		============================================================ */
+		/**
+		 * Looks and returns property value, also looks through
+		 * $this->aliases
+		 * @param  string $property Property name to get value from
+		 * @return mixed           Value of Property
+		 */
         public function __get($property) {
             $method = "get_{$property}";
             if (method_exists($this, $method)) {
@@ -28,21 +86,35 @@
             }
         }
         
+		/**
+		 * Checks if Item image exists if not use the image not found
+		 * @return string path/to/image
+		 */
         public function generate_imagesrc() {
-            if (file_exists(wire('config')->imagefiledirectory.$this->image)) {
-                return Processwire\wire('config')->imagedirectory.$this->image;
+            if (file_exists(Dpluswire::wire('config')->imagefiledirectory.$this->image)) {
+                return Dpluswire::wire('config')->imagedirectory.$this->image;
             } else {
-                return Processwire\wire('config')->imagedirectory.wire('config')->imagenotfound;
+                return Dpluswire::wire('config')->imagedirectory.Dpluswire::wire('config')->imagenotfound;
             }
         }
         
+		/**
+		 * Returns URL to Load the Item Information page for this item
+		 * @param  mixed $custID Provide Customer ID if pricing and other things need to be for particular customer
+		 * @return string         II Load URL
+		 */
         public function generate_iiselecturl($custID = false) {
-            $url = new \Purl\Url(wire('config')->pages->products."redir/?action=ii-select");
+            $url = new \Purl\Url(Dpluswire::wire('config')->pages->products."redir/?action=ii-select");
             if (!empty($custID)) $url->query->set('custID', $custID);
             $url->query->set('itemID', $this->itemid);
             return $url->getUrl();
         }
         
+		/**
+		 * Returns the string for javascript function for this particular item for CI
+		 * @param  string $action Action to to run
+		 * @return string         Javascript function with this itemid parameterized
+		 */
         public function generate_cionclick($action) {
             switch($action) {
                 case 'ci-pricing':
@@ -57,6 +129,23 @@
             }
             return $onclick;
         }
+		
+		/**
+		 * Returns the string for javascript function for this particular item for VI
+		 * @param  string $action Action to to run
+		 * @return string         Javascript function with this itemid parameterized
+		 */
+		public function generate_vionclick($action) {
+			switch($action) {
+				case 'vi-costing':
+					$onclick = "choosevicostingitem('".$this->itemid."')";
+					break;
+                default:
+                    $onclick = "choosevicostingitem('".$this->itemid."')";
+                    break;
+            }
+            return $onclick;
+		}
         
         
         /* ============================================================
@@ -65,6 +154,12 @@
 			public static function generate_classarray()
 			public function _toArray()
 		============================================================ */
+		/**
+		 * Takes the array given and removes keys that are not used
+		 * by the database for this class
+		 * @param  array $array Before Removing KEys
+		 * @return array      With Keys Removed
+		 */
  		public static function remove_nondbkeys($array) {
 			unset($array['fieldaliases']);
  			return $array;

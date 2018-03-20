@@ -1,5 +1,9 @@
 <?php 
-	class Order {
+	/**
+	 * Base Class for Orders and Quotes to share similar properties
+	 * and define functions they will extend.
+	 */
+	abstract class Order {
 		use ThrowErrorTrait;
 		
 		protected $sessionid;
@@ -62,6 +66,12 @@
 		/* =============================================================
 			GETTER FUNCTIONS
 		============================================================ */
+		/**
+		 * Looks and returns property value, also looks through
+		 * $this->aliases
+		 * @param  string $property Property name to get value from
+		 * @return mixed           Value of Property
+		 */
 		public function __get($property) {
 			$method = "get_{$property}";
 			if (method_exists($this, $method)) {
@@ -74,18 +84,35 @@
 			}
 		}
 		
+		/**
+		 * Checks if property is isset, used for if outside of this class if empty() is called on protected property
+		 * @param  string  $property property to check 
+		 * @return bool           if $this->$property isset()
+		 */
 		public function __isset($property){
-		    return isset($this->$property);
+			return isset($this->$property);
 		} 
-
+		
+		/**
+		 * Returns if Order has notes attached
+		 * @return bool Y = true | N = false
+		 */
 		public function has_notes() {
 			return $this->hasnotes == 'Y' ? true : false;
 		}
 		
+		/**
+		 * Returns if Order has error
+		 * @return bool Y = true | N = false
+		 */
 		public function has_error() {
 			return $this->error == 'Y' ? true : false;
 		}
 		
+		/**
+		 * Returns if Order has shiptoid defined
+		 * @return bool 
+		 */
 		public function has_shipto() {
 			return (!empty($this->shiptoid));
 		}
@@ -93,6 +120,11 @@
 		/* =============================================================
 			SETTER FUNCTIONS
 		============================================================ */
+		/**
+		 * Set the value for a property
+		 * @param string $property property to assign the value to
+		 * @param mixed $value    value to assign to property
+		 */
 		public function set($property, $value) {
 			if (property_exists($this, $property) !== true) {
 				$this->error("This property ($property) does not exist ");

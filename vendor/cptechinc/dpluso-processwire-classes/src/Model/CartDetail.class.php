@@ -2,20 +2,92 @@
 	class CartDetail extends OrderDetail implements OrderDetailInterface {
 		use CreateFromObjectArrayTraits;
 		use CreateClassArrayTraits;
-	
+		
+		/**
+		 * Cart Order $
+		 * Will be sessionid
+		 * @var string
+		 */
 		protected $orderno;
+		
+		/**
+		 * Price of Item
+		 * @var float
+		 */
 		protected $price;
+		
+		/**
+		 * Item Quantity
+		 * @var int
+		 */
 		protected $qty;
+		
+		/**
+		 * Quantity Shipped
+		 * will be 0
+		 * @var int
+		 */
 		protected $qtyshipped;
+		
+		/**
+		 * Quantity backordered
+		 * will be 0
+		 * @var int
+		 */
 		protected $qtybackord;
+		
+		/**
+		 * If Item has Documents
+		 * @var string Y | N
+		 */
 		protected $hasdocuments;
+		
+		/**
+		 * Quantity Available | In Stock
+		 * @var int
+		 */
 		protected $qtyavail;
+		
+		/**
+		 * Item Cost
+		 * @var float
+		 */
 		protected $cost;
+		
+		/**
+		 * Coupon or Promo code applied
+		 * @var string
+		 */
 		protected $promocode;
+		
+		/**
+		 * Tax Code Percent
+		 * @var float
+		 */
 		protected $taxcodeperc;
+		
+		/**
+		 * Unit of Measurement
+		 * @var string
+		 */
 		protected $uomconv;
+		
+		/**
+		 * [protected description]
+		 * @var string
+		 */
 		protected $catlgid;
+		
+		/**
+		 * Purchase Order Number for item
+		 * @var string
+		 */
 		protected $ponbr;
+		
+		/**
+		 * Purchase Order Reference for item
+		 * @var string
+		 */
 		protected $poref;
 				
 		/* =============================================================
@@ -46,7 +118,7 @@
 		 * @return bool Calls to Database for Qnote Count for this line #
 		 */
 		public function has_notes() {
-			return has_dplusnote($this->sessionid, $this->sessionid, $this->linenbr, Processwire\wire('config')->dplusnotes['cart']['type']) == 'Y' ? true : false;
+			return has_dplusnote($this->sessionid, $this->sessionid, $this->linenbr, DplusWire::wire('config')->dplusnotes['cart']['type']) == 'Y' ? true : false;
 		}
 		
 		/**
@@ -60,9 +132,18 @@
 		/* =============================================================
 			GENERATE DPLUS DATA FUNCTIONS 
 		============================================================ */
-			
+			/**
+			 * Generates the array for writing Data to Dplus
+			 * @param  string  $custID Customer ID
+			 * @param  mixed $shipID ShiptoID or false
+			 * @return array          [description]
+			 */
 			function generate_editdetaildata($custID, $shipID = false) {
-				$data = array('DBNAME' => Processwire\wire('config')->dbName, 'CARTDET' => false, 'LINENO' => $this->linenbr);
+				$data = array(
+					'DBNAME' => DplusWire::wire('config')->dbName, 
+					'CARTDET' => false, 
+					'LINENO' => $this->linenbr
+				);
 				$data['CUSTID'] = empty($custID) ? $config->defaultweb : $custID;
 				if (!empty($shipID)) {$data['SHIPTOID'] = $shipID; }
 				return $data;
@@ -113,6 +194,7 @@
 		public static function load($sessionID, $linenbr, $debug = false) {
 			return get_cartdetail($sessionID, $linenbr, $debug);
 		}
+		
 		/**
 		 * CartDetail submits changes to the record in the Database
 		 * @param  bool $debug Whether SQL executes or not
@@ -121,6 +203,7 @@
 		public function update($debug = false) {
 			return update_cartdetail($this->sessionid, $this, $debug);
 		}
+		
 		/**
 		 * Checks if changes were made to the Cart Detail
 		 * @return bool If this has any differences from original record
