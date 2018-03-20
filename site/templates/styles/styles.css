@@ -114,6 +114,9 @@
 		.container.page {
 			    padding-bottom: 50px;
 		}
+		.table > tr.active > th, .table > tr.active > td {
+				background-color: #ecf0f1 !important;
+		}
 	}
 	.address-header {
 		margin: 21px 0 10px;
