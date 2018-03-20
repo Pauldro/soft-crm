@@ -36,7 +36,7 @@
 			<div class="input-group form-group">
 				<input class="form-control form-group inline input-sm" type="text" name="ordertotal[]" id="cust-order-total-max" value="<?= $orderpanel->get_filtervalue('ordertotal', 1); ?>" placeholder="Through Order Total">
 	            <span class="input-group-btn">
-	            	<button type="button" class="btn btn-default input-sm not-round" onclick="$('#cust-order-total-max').val('<?= get_maxordertotal(session_id(), "$custID"); ?>')"> <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span> <span class="sr-only">Max</span> </button>
+	            	<button type="button" class="btn btn-default input-sm not-round" onclick="$('#cust-order-total-max').val('<?= get_maxordertotal(session_id(), "$custID"); ?>')"> <span class="fa fa-angle-double-up" aria-hidden="true"></span> <span class="sr-only">Max</span> </button>
 	            </span>
 	        </div>
 		</div>
