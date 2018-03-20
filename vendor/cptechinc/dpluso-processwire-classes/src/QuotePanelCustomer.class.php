@@ -24,7 +24,7 @@
 				'datatype' => 'date',
 				'label' => 'Expire Date'
 			),
-			'ordertotal' => array(
+			'subtotal' => array(
 				'querytype' => 'between',
 				'datatype' => 'numeric',
 				'label' => 'Order Total'
@@ -93,12 +93,12 @@
 			return '';
 		}
 		
-		public function generate_filter(WireInput $input) {
+		public function generate_filter(Processwire\WireInput $input) {
 			parent::generate_filter($input);
 			
-			if (isset($this->filters['ordertotal'])) {
-				if (!strlen($this->filters['ordertotal'][1])) {
-					$this->filters['ordertotal'][1] = get_maxquotetotal($this->sessionID, $this->custID);
+			if (isset($this->filters['subtotal'])) {
+				if (!strlen($this->filters['subtotal'][1])) {
+					$this->filters['subtotal'][1] = get_maxquotetotal($this->sessionID, $this->custID);
 				}
 			}
 		}

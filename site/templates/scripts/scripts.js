@@ -337,9 +337,7 @@ $(document).ready(function() {
 			var ordertype = form.data('ordertype'); // sales-orders | quotes
 			var queries = URI.parseQuery(URI(action).search())
 			var orderby = queries.orderby; // Keep the orderby param value before clearing it
-
 			var href = action.query('').query(form.serialize()).query(cleanparams).query(remove_emptyparams);
-			
 			if (Object.keys(href.query(true)).length == 1) {
 				href.query('');
 			}
@@ -1385,7 +1383,7 @@ $(document).ready(function() {
 		$(container).height(height);
 	}
 
-	function setchildheightequaltoparent(parent, child) {
+	function c(parent, child) {
 		$(parent).each(function() {
 			var parentheight = $(this).actual('height');
 			$(this).find(child).height(parentheight);

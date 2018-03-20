@@ -191,6 +191,7 @@
 		}
 		
 		public function generate_filter(WireInput $input) {
+			$stringerbell = new StringerBell();
 			parent::generate_filter($input);
 			
 			if (isset($this->filters['orderdate'])) {
@@ -208,8 +209,12 @@
 					$this->filters['ordertotal'][0] = '0.00';
 				}
 				
-				if (!strlen($this->filters['ordertotal'][1])) {
-					$this->filters['ordertotal'][1] = get_maxordertotal($this->sessionID);
+				for ($i = 0; $i < (sizeof($this->filters['ordertotal']) + 1); $i++) {
+					if (isset($this->filters['ordertotal'][$i])) {
+						if (strlen($this->filters['ordertotal'][$i])) {
+							$this->filters['ordertotal'][$i] = number_format($this->filters['ordertotal'][$i], 2, '.', '');
+						}
+					}
 				}
 			}
 		}

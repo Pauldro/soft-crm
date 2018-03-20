@@ -1,6 +1,7 @@
 <?php 
     class Customer extends Contact {
         use CreateFromObjectArrayTraits;
+		
         /* =============================================================
 			GETTER FUNCTIONS 
 		============================================================ */
@@ -65,7 +66,7 @@
 		 * @return string  Add Contact URL
 		 */
 		public function generate_addcontacturl() {
-			$url = new \Purl\Url(Processwire\wire('config')->pages->contact.'add/');
+			$url = new \Purl\Url(DplusWire::wire('config')->pages->contact.'add/');
             $url->query->set('custID', $this->custid);
             
             if ($this->has_shipto()) {
@@ -74,19 +75,30 @@
             return $url->getUrl();
 		}
         
-        /* =============================================================
-			OTHER CONSTRUCTOR FUNCTIONS 
-            Inherits some from CreateFromObjectArrayTraits
+		/* =============================================================
+			CRUD FUNCTIONS
 		============================================================ */
+		/**
+		 * Loads an object with this class using the parameters as provided
+		 * @param  string $custID    CustomerID
+		 * @param  string $shiptoID  Shipto ID (can be blank)
+		 * @param  string $contactID Contact ID (can be blank)
+		 * @param  bool   $debug Determines if Query Runs and if Customer Object is returned or SQL Query
+		 * @return Customer
+		 */
         public static function load($custID, $shiptoID = '', $contactID = '', $debug = false) {
-            return self::create_fromobject(get_customercontact($custID, $shiptoID, $contactID));
+            return get_customer($custID, $shiptoID, $contactID, $debug);
         }
+		
+		public static function change_custidfrom($currentID, $newcustID, $debug = false) {
+			return change_custindexcustid($currentID, $newcustID);
+		}
 		
 		/* =============================================================
 			STATIC FUNCTIONS
 		============================================================ */
 		public static function get_customernamefromid($custID, $shiptoID = '') {
 			$customer = self::load($custID, $shiptoID);
-			return $customer->get_customername();
+			return $customer ? $customer->get_customername() : '';
 		}
     }

@@ -119,7 +119,28 @@
 			return 1;
 		}
 	}
-
+	function get_customer($custID, $shiptoID = false, $debug = false) {
+		$q = (new QueryBuilder())->table('custindex');	
+		$q->where('custid', $custID);
+		
+		if ($shiptoID) {
+			$q->where('shiptoid', $shiptoID);
+			$q->where('source', Contact::$types['customer-shipto']);
+		} else {
+			$q->where('source', Contact::$types['customer']);
+		}
+		
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'Customer');
+			return $sql->fetch();
+		}
+	}
+	
 	function get_customername($custID) {
 		$sql = Processwire\wire('database')->prepare("SELECT name FROM custindex WHERE custid = :custID LIMIT 1");
 		$switching = array(':custID' => $custID);
@@ -138,7 +159,7 @@
 		}
 	}
 
-	function get_customerinfo($sessionID, $custID, $debug) {
+	function get_customerinfo($sessionID, $custID, $debug) { // DEPRECATE 
 		$sql = Processwire\wire('database')->prepare("SELECT custindex.*, customer.dateentered FROM custindex JOIN customer ON custindex.custid = customer.custid WHERE custindex.custid = :custID AND customer.sessionid = :sessionID LIMIT 1");
 		$switching = array(':sessionID' => $sessionID, ':custID' => $custID); $withquotes = array(true, true);
 		if ($debug) {
@@ -225,22 +246,52 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
+	
+	function count_customercontacts($loginID, $restrictions, $custID, $debug = false) {
+		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
+		$q = (new QueryBuilder())->table('custindex');
+		$q->field('COUNT(*)');
+		
+		if ($restrictions) {
+			$custquery = (new QueryBuilder())->table('custperm')->where('custid', $custID);
+			$permquery = (new QueryBuilder())->table($custquery, 'custpermcust');
+			$permquery->field('custid, shiptoid');
+			$permquery->where('loginid', [$loginID, $SHARED_ACCOUNTS]);
+			$q->where('(custid, shiptoid)','in', $permquery);
+		} else {
+			$q->where('custid', $custID);
+		}
+		
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
 
 	function get_customercontacts($loginID, $restrictions, $custID, $debug = false) {
 		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
+		$q = (new QueryBuilder())->table('custindex');
+		
 		if ($restrictions) {
-			$sql = Processwire\wire('database')->prepare("SELECT * FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM (SELECT * FROM custperm WHERE custid = :custID) t WHERE loginid = :loginID OR loginid = :shared)");
-			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS);
-			$withquotes = array(true, true, true);
+			$custquery = (new QueryBuilder())->table('custperm')->where('custid', $custID);
+			$permquery = (new QueryBuilder())->table($custquery, 'custpermcust');
+			$permquery->field('custid, shiptoid');
+			$permquery->where('loginid', [$loginID, $SHARED_ACCOUNTS]);
+			$q->where('(custid, shiptoid)','in', $permquery);
 		} else {
-			$sql = Processwire\wire('database')->prepare("SELECT * FROM custindex WHERE custid = :custID");
-			$switching = array(':custID' => $custID); $withquotes = array(true);
+			$q->where('custid', $custID);
 		}
-
+		
+		$sql = Processwire\wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			$sql->setFetchMode(PDO::FETCH_CLASS, 'Contact');
 			return $sql->fetchAll();
 		}
@@ -560,14 +611,18 @@
 		}
 	}
 
-	function edit_custindexcustid($originalcustID, $newcustID) {
+	function change_custindexcustid($originalcustID, $newcustID, $debug = false) {
 		$q = (new QueryBuilder())->table('custindex');
 		$q->mode('update');
 		$q->set('custid', $newcustID);
-		$q->where('custid', $originalcustID);
+		$q->where('custid', substr($originalcustID, 0, 6));
 		$sql = Processwire\wire('database')->prepare($q->render());
-		$sql->execute($q->params);
-		return $q->generate_sqlquery();
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			$sql->execute($q->params);
+			return $q->generate_sqlquery();
+		}
 	}
 
 /* =============================================================
@@ -577,11 +632,7 @@
 		$q = (new QueryBuilder())->table('ordrhed');
 		$expression = $q->expr('IF (COUNT(*) = 1, 1, IF(COUNT(DISTINCT(custid)) > 1, COUNT(*), 0)) as count');
 		if (!empty($filter)) {
-			if (isset($filter['custid'])) {
-				if (sizeof(array_values(array_filter($filter['custid'], 'strlen'))) == 1) {
-					$expression = $q->expr('COUNT(*)');
-				}
-			}
+			$expression = $q->expr('COUNT(*)');
 			$q->generate_filters($filter, $filtertypes);
 		}
 		$q->field($expression);
@@ -761,7 +812,6 @@
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('dateoforder ' . $sortrule);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -806,13 +856,28 @@
 
 	function get_maxordertotal($sessionID, $custID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
-		$q->field('MAX(DECIMAL(ordertotal))');
+		$q->field($q->expr("MAX(CAST(ordertotal AS DECIMAL(8,2))) AS ordertotal"));
 		$q->where('sessionid', $sessionID);
 		if ($custID) {
 			$q->where('custid', $custID);
 		}
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+	
+	function get_minordertotal($sessionID, $custID = false, $debug = false) {
+		$q = (new QueryBuilder())->table('ordrhed');
+		$q->field($q->expr("MIN(CAST(ordertotal AS DECIMAL(8,2))) AS ordertotal"));
+		$q->where('sessionid', $sessionID);
+		if ($custID) {
+			$q->where('custid', $custID);
+		}
+		$sql = Processwire\wire('database')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -924,11 +989,7 @@
 		$q = (new QueryBuilder())->table('quothed');
 		$expression = $q->expr('IF (COUNT(*) = 1, 1, IF(COUNT(DISTINCT(custid)) > 1, COUNT(*), 0)) as count');
 		if (!empty($filter)) {
-			if (isset($filter['custid'])) {
-				if (sizeof(array_values(array_filter($filter['custid'], 'strlen'))) == 1) {
-					$expression = $q->expr('COUNT(*)');
-				}
-			}
+			$expression = $q->expr('COUNT(*)');
 			$q->generate_filters($filter, $filtertypes);
 		}
 		$q->field($expression);
@@ -948,13 +1009,29 @@
 	
 	function get_maxquotetotal($sessionID, $custID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
-		$q->field('MAX(DECIMAL(ordertotal))');
+		$q->field($q->expr("MAX(CAST(subtotal AS DECIMAL(8,2))) AS subtotal"));
 		$q->where('sessionid', $sessionID);
 		if ($custID) {
 			$q->where('custid', $custID);
 		}
 		$sql = Processwire\wire('database')->prepare($q->render());
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+	
+	function get_minquotetotal($sessionID, $custID = false, $debug = false) {
+		$q = (new QueryBuilder())->table('quothed');
+		$q->field($q->expr("MIN(CAST(subtotal AS DECIMAL(8,2))) AS subtotal"));
 		
+		$q->where('sessionid', $sessionID);
+		if ($custID) {
+			$q->where('custid', $custID);
+		}
+		$sql = Processwire\wire('database')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2104,7 +2181,7 @@
 			}
 		}
 		$q->where('sessionid', $detail->sessionid);
-		$q->where('orderno', $detail->orderno);
+	//	$q->where('orderno', $detail->orderno);
 		$q->where('linenbr', $detail->linenbr);
 		$sql = Processwire\wire('database')->prepare($q->render());
 		
@@ -2333,33 +2410,6 @@
 		} else {
 			$sql->execute($q->params);
 			return $q->generate_sqlquery($q->params);
-		}
-	}
-
-	function edit_orderline($sessionID, $ordn, $newdetails, $debug) {
-		$originaldetail = getorderlinedetail($sessionID, $ordn, $newdetails['linenbr'], false);
-		$query = returnpreppedquery($originaldetail, $newdetails);
-		$sql = Processwire\wire('database')->prepare("UPDATE ordrdet SET ".$query['setstatement']." WHERE sessionid = :sessionID AND orderno = :ordn AND linenbr = :linenbr");
-		$query['switching'][':sessionID'] = $sessionID; $query['switching'][':ordn'] = $ordn; $query['switching'][':linenbr'] = $newdetails['linenbr'];
-		$query['withquotes'][] = true; $query['withquotes'][]= true; $query['withquotes'][] = true;
-		if ($debug) {
-			return	returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
-		} else {
-			if ($query['changecount'] > 0) {
-				$sql->execute($query['switching']);
-			}
-			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
-		}
-	}
-
-	function insertorderline($sessionID, $ordn, $linenbr, $debug) {
-		$sql = Processwire\wire('database')->prepare("INSERT INTO ordrdet (sessionid, orderno, linenbr) VALUES (:sessionID, :ordn, :linenbr)");
-		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn, ':linenbr' => $linenbr); $withquotes = array(true, true, true);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'insertedid' => Processwire\wire('database')->lastInsertId());
 		}
 	}
 
