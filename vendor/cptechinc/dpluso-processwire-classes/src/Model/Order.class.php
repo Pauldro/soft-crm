@@ -1,10 +1,13 @@
 <?php 
 	/**
-	 * Base Class for Orders and Quotes to share similar properties
-	 * and define functions they will extend.
+	 * Class to Set up and define what Quotes, CartQuote, and Sales Orders Need to do and provide them
+	 * with shared functions and properties that they can extend
 	 */
 	abstract class Order {
 		use ThrowErrorTrait;
+		use MagicMethodTraits;
+		use CreateFromObjectArrayTraits;
+		use CreateClassArrayTraits;
 		
 		protected $sessionid;
 		protected $recno;
@@ -67,33 +70,6 @@
 			GETTER FUNCTIONS
 		============================================================ */
 		/**
-		 * Looks and returns property value, also looks through
-		 * $this->aliases
-		 * @param  string $property Property name to get value from
-		 * @return mixed           Value of Property
-		 */
-		public function __get($property) {
-			$method = "get_{$property}";
-			if (method_exists($this, $method)) {
-				return $this->$method();
-			} elseif (property_exists($this, $property)) {
-				return $this->$property;
-			} else {
-				$this->error("This property ($property) does not exist");
-				return false;
-			}
-		}
-		
-		/**
-		 * Checks if property is isset, used for if outside of this class if empty() is called on protected property
-		 * @param  string  $property property to check 
-		 * @return bool           if $this->$property isset()
-		 */
-		public function __isset($property){
-			return isset($this->$property);
-		} 
-		
-		/**
 		 * Returns if Order has notes attached
 		 * @return bool Y = true | N = false
 		 */
@@ -119,18 +95,6 @@
 		
 		/* =============================================================
 			SETTER FUNCTIONS
+			MagicMethodTraits has set()
 		============================================================ */
-		/**
-		 * Set the value for a property
-		 * @param string $property property to assign the value to
-		 * @param mixed $value    value to assign to property
-		 */
-		public function set($property, $value) {
-			if (property_exists($this, $property) !== true) {
-				$this->error("This property ($property) does not exist ");
-				return false;
-			}
-			$this->$property = $value;
-		}
-		
 	}

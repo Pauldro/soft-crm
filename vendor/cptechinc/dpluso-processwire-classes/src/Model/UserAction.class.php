@@ -1,8 +1,12 @@
 <?php
+	/**
+	 * Class for Notes and Tasks
+	 */
 	class UserAction {
+		use ThrowErrorTrait;
+		use MagicMethodTraits;
 		use CreateFromObjectArrayTraits;
 		use CreateClassArrayTraits;
-		use ThrowErrorTrait;
 		
 		public $id;
 		public $datecreated;
@@ -34,29 +38,10 @@
 		/* =============================================================
 			SETTER FUNCTIONS 
 		============================================================ */
-		public function set($property, $value) {
-			if (property_exists($this, $property) !== true) {
-                $this->error("This property ($property) does not exist");
-                return false;
-            }
-			$this->$property = $value;
-		}
 		
 		/* =============================================================
 			GETTER FUNCTIONS 
 		============================================================ */
-		public function __get($property) {
-            $method = "get_{$property}";
-            if (method_exists($this, $method)) {
-                return $this->$method();
-            } elseif (property_exists($this, $property)) {
-                return $this->$property;
-            } else {
-                $this->error("This property ($property) does not exist");
-                return false;
-            }
-        }
-		
 		/**
 		 * Returns if UserAction has something in the ID property
 		 * @return bool
@@ -183,8 +168,8 @@
 				if (empty($this->assignedto)) {
 					$replace = 'Yourself ';
 				} else {
-					if ($this->assignedto != Processwire\wire('user')->loginid) {
-						$replace = 'User: ' . Processwire\wire('user')->loginid;
+					if ($this->assignedto != Dpluswire::wire('user')->loginid) {
+						$replace = 'User: ' . Dpluswire::wire('user')->loginid;
 					} else {
 						$replace = 'Yourself ';
 					}
@@ -231,15 +216,15 @@
 		public function generate_actionsubtypedescription() {
 			switch ($this->actiontype) {
 				case 'tasks':
-					$subpage = Processwire\wire('pages')->get("/activity/$this->actiontype/$this->actionsubtype/");
+					$subpage = Dpluswire::wire('pages')->get("/activity/$this->actiontype/$this->actionsubtype/");
 					return $subpage->subtypeicon.' '.$subpage->actionsubtypelabel;
 					break;
 				case 'notes':
-					$subpage = Processwire\wire('pages')->get("/activity/$this->actiontype/$this->actionsubtype/");
+					$subpage = Dpluswire::wire('pages')->get("/activity/$this->actiontype/$this->actionsubtype/");
 					return $subpage->subtypeicon.' '.$subpage->actionsubtypelabel;
 					break;
 				/* case 'actions': // DEPRECATED 02/21/2018
-					$subpage = Processwire\wire('pages')->get("/activity/$this->actiontype/$this->actionsubtype/");
+					$subpage = Dpluswire::wire('pages')->get("/activity/$this->actiontype/$this->actionsubtype/");
 					return $subpage->subtypeicon.' '.$subpage->actionsubtypelabel;
 					break; */
 				default:
@@ -270,6 +255,7 @@
 		 * Returns SQL Query for Creating with the properties
 		 * @param  bool $debug Determines if query will execute
 		 * @return string         SQL INSERT QUERY 
+		 * @uses Create (CRUD)
 		 */
 		public function create($debug = false) {
 			return create_useraction($this, $debug);
@@ -277,9 +263,10 @@
 		
 		/**
 		 * Retrieves an object of this Class from the Database
-		 * @param  int  $id ID of the UserAction to load
+		 * @param  int  $id    ID of the UserAction to load
 		 * @param  bool $debug Determines if query will execute
-		 * @return UserAction         Or SQL QUERY
+		 * @return UserAction  Or SQL QUERY
+		 * @uses Read (CRUD)
 		 */
 		public static function load($id, $debug = false) {
 			return get_useraction($id, $debug);
@@ -288,7 +275,8 @@
 		/**
 		 * Returns SQL Query for Updating Actions with the properties
 		 * @param  bool $debug Determines if query will execute
-		 * @return string         SQL UPDATE QUERY updating changed properties
+		 * @return string      SQL UPDATE QUERY updating changed properties
+		 * @uses Update (CRUD)
 		 */
 		public function update($debug = false) {
 			return update_useraction($this, $debug);
@@ -299,6 +287,7 @@
 		 * function determines if user action needs to be updated or created
 		 * @param  bool $debug Determines if query will execute
 		 * @return string         SQL UPDATE | INSERT QUERY updating changed properties
+		 * @uses Update OR Create (CRUD)
 		 */
 		public function save($debug = false) {
 			if ($this->has_id()) {
@@ -307,8 +296,6 @@
 				return create_useraction($this, $debug);
 			}
 		}
-		
-		
 		
 		/* =============================================================
 			GENERATE ARRAY FUNCTIONS 

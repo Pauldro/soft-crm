@@ -1,8 +1,8 @@
 <?php 
+	/**
+	 * Class for the Individual Items in the User's Cart
+	 */
 	class CartDetail extends OrderDetail implements OrderDetailInterface {
-		use CreateFromObjectArrayTraits;
-		use CreateClassArrayTraits;
-		
 		/**
 		 * Cart Order $
 		 * Will be sessionid
@@ -132,22 +132,23 @@
 		/* =============================================================
 			GENERATE DPLUS DATA FUNCTIONS 
 		============================================================ */
-			/**
-			 * Generates the array for writing Data to Dplus
-			 * @param  string  $custID Customer ID
-			 * @param  mixed $shipID ShiptoID or false
-			 * @return array          [description]
-			 */
-			function generate_editdetaildata($custID, $shipID = false) {
-				$data = array(
-					'DBNAME' => DplusWire::wire('config')->dbName, 
-					'CARTDET' => false, 
-					'LINENO' => $this->linenbr
-				);
-				$data['CUSTID'] = empty($custID) ? $config->defaultweb : $custID;
-				if (!empty($shipID)) {$data['SHIPTOID'] = $shipID; }
-				return $data;
-			}
+		/**
+		 * Generates the array for writing Data to Dplus
+		 * @param  string  $custID Customer ID
+		 * @param  mixed $shipID ShiptoID or false
+		 * @return array          [description]
+		 */
+		function generate_editdetaildata($custID, $shipID = false) {
+			$data = array(
+				'DBNAME' => DplusWire::wire('config')->dbName, 
+				'CARTDET' => false, 
+				'LINENO' => $this->linenbr
+			);
+			$data['CUSTID'] = empty($custID) ? $config->defaultweb : $custID;
+			if (!empty($shipID)) {$data['SHIPTOID'] = $shipID; }
+			return $data;
+		}
+			
 		/* =============================================================
 			GENERATE ARRAY FUNCTIONS 
 			The following are defined CreateClassArrayTraits
@@ -155,11 +156,12 @@
 			public function _toArray()
 		============================================================ */
 		/**
-		 * Takes an array, usually has the same keys as the object, then it unsets
-		 * keys that aren't used in the DATABASE returning an array of keys that match up
-		 * to the Cart Detail Table
-		 * @param  array $array Has the same keys as the properties Cart Detail class
-		 * @return array        Same Array but with keys unrelated to the table are removed
+		 * Mainly called by the _toArray() function which makes an array
+		 * based of the properties of the class, but this function filters the array
+		 * to remove keys that are not in the database
+		 * This is used by database classes for update
+		 * @param  array $array array of the class properties
+		 * @return array        with certain keys removed
 		 */
 		public static function remove_nondbkeys($array) {
 			unset($array['sublinenbr']);
@@ -177,8 +179,8 @@
 		============================================================ */
 		/**
 		 * Creates a Cart Detail record in the Database
-		 * @param  bool $debug Whether SQL executes or not
-		 * @return string         Query for the INSERT Operation
+		 * @param  bool   $debug Whether SQL executes or not
+		 * @return string Query for the INSERT Operation
 		 */
 		public function create($debug = false) {
 			return insert_cartdetail($this->sessionid, $this, $debug);
@@ -187,9 +189,9 @@
 		/**
 		 * Reads the Cart Detail from the Database
 		 * @param  string  $sessionID Session ID
-		 * @param  int  $linenbr   Line # to load
-		 * @param  bool $debug     Whether to return SQL query or CartDetail object
-		 * @return CartDetail            Or Query for retrieving record
+		 * @param  int     $linenbr   Line # to load
+		 * @param  bool    $debug     Whether to return SQL query or CartDetail object
+		 * @return CartDetail         Or SQL Query for retrieving record
 		 */
 		public static function load($sessionID, $linenbr, $debug = false) {
 			return get_cartdetail($sessionID, $linenbr, $debug);
@@ -197,8 +199,8 @@
 		
 		/**
 		 * CartDetail submits changes to the record in the Database
-		 * @param  bool $debug Whether SQL executes or not
-		 * @return string         Query for the INSERT Operation
+		 * @param  bool   $debug Whether SQL executes or not
+		 * @return string Query for the INSERT Operation
 		 */
 		public function update($debug = false) {
 			return update_cartdetail($this->sessionid, $this, $debug);
