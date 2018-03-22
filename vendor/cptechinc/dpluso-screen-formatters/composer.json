@@ -39,7 +39,11 @@
 			"src/vi/PurchaseHistoryFormatter.class.php",
 			"src/vi/PaymentHistoryFormatter.class.php",
 			"src/vi/OpenInvoicesFormatter.class.php",
-			"src/vi/UnreleasedPurchaseOrdersFormatted.class.php"
+			"src/vi/UnreleasedPurchaseOrdersFormatted.class.php",
+			"src/item/ItemPricing.class.php",
+			"src/item/ItemStock.class.php",
+			"src/item/ItemPurchaseHistory.class.php",
+			"src/item/ItemKitComponents.class.php"
 		]
 	}
 }
