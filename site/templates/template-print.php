@@ -24,16 +24,13 @@
     
     $emailurl->query->set('subject', urlencode($page->title));
     
-    if ($input->get->print) {
-        $page->fullURL->query->remove('print');
+    if (!$input->get->text('view') == 'pdf') {
         $url = new Purl\Url($page->fullURL->getUrl());
-        $url->query->remove('print');
         $url->query->set('referenceID', $sessionID);
-    
-        $pdfmaker = new PDFMaker($sessionID, $url->getUrl());
+    	$url->query->set('view', 'pdf');
+		
+        $pdfmaker = new PDFMaker($sessionID, $page->name, $url->getUrl());
         $result = $pdfmaker->process();
-
-        $page->title = '';
     }
     
     include $config->paths->content.'common/include-print-page.php';

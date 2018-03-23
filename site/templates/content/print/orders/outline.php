@@ -9,8 +9,10 @@
 </div>
 <div class="row">
 	<div class="col-xs-6">
-		<?php if (!$input->get->print) : ?>
+		<?php if ((!$input->get->text('view') == 'pdf')) : ?>
 			<a href="<?= $emailurl->getUrl(); ?>" class="btn btn-primary load-into-modal hidden-print" data-modal="#ajax-modal"><i class="glyphicon glyphicon-envelope" aria-hidden="true"></i> Send as Email</a>
+			&nbsp;&nbsp;
+			<a href="<?= $config->documentstorage.$pdfmaker->filename; ?>" target="_blank" class="btn btn-primary hidden-print"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> View PDF</a>
 		<?php endif; ?>
 	</div>
 	

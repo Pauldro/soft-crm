@@ -23,6 +23,7 @@
 		 * @var bool
 		 */
 		protected $hasfile;
+		
 		/**
 		 * Where the file is located usually want to stick to one file directory
 		 * @var string path of the file directory on server
@@ -125,7 +126,7 @@
 		 * @return string Directory This instance is using for files
 		 */
 		public function get_filedirectory() {
-			return $this->filedirectory;
+			return self::$filedirectory;
 		}
 		
 		/* =============================================================
@@ -216,7 +217,7 @@
 		 * @param string $dir directory path
 		 */
 		public function set_filedirectory($dir) {
-			$this->filedirectory = $dir;
+			self::$filedirectory = $dir;
 		}
 		
 		/* =============================================================

@@ -1,6 +1,8 @@
 <?php 
 	class PDFMaker extends mikehaertl\wkhtmlto\Pdf {
 		use ThrowErrorTrait;
+		use MagicMethodTraits;
+		
 		/**
 		 * URL of Page to convert to PDF
 		 * @var string
@@ -12,6 +14,19 @@
 		 * @var string
 		 */
 		protected $sessionID = false;
+		
+		/**
+		 * File Type is a descriptor to add to the end of the file
+		 * IE quote
+		 * @var string
+		 */
+		protected $filetype;
+		
+		/**
+		 * What the File name will be
+		 * @var string
+		 */
+		protected $filename;
 		
 		/**
 		 * Options to provide to wkhtmltopdf
@@ -31,9 +46,10 @@
 			),
 		);
 		
-		public function __construct($sessionID, $url) {
+		public function __construct($sessionID, $filetype, $url) {
 			parent::__construct($this->options);
 			$this->sessionID = $sessionID;
+			$this->filetype = $filetype;
 			$this->url = $url;
 		}
 		
@@ -42,7 +58,8 @@
 		 * @return string file
 		 */
 		public function process() {
-			$file = DplusWire::wire('config')->documentstoragedirectory.$this->sessionID.".pdf";
+			$file = DplusWire::wire('config')->documentstoragedirectory.$this->sessionID."-$this->filetype".".pdf";
+			$this->filename = $this->sessionID."-$this->filetype".".pdf";
 			
 			if (file_exists($file)) {
 				unlink($file);
