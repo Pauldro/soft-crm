@@ -13,13 +13,7 @@ site/templates/template-test.php
 site/templates/redir/test-redir.php
 
 # Processwire Directories
-site/modules/CronjobDatabaseBackup
-site/modules/Helloworld
-site/modules/InputfieldCKEditor
-site/modules/JqueryDatatables-master
-site/modules/ModulesManager
-site/modules/ProcessDatabaseBackups
-site/modules/ProcessExportProfile
+site/modules
 site/assets
 wire
 
