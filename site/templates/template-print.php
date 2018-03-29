@@ -1,4 +1,5 @@
 <?php
+	$salespersonjson = json_decode(file_get_contents($config->companyfiles."json/salespersontbl.json"), true);
     $sessionID = $input->get->referenceID ? $input->get->text('referenceID') : session_id();
     $emailurl = new \Purl\Url($config->pages->ajaxload."email/email-file-form/");
     $emailurl->query->set('referenceID', $sessionID);
