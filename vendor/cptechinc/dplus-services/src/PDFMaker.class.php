@@ -46,6 +46,14 @@
 			),
 		);
 		
+		/**
+		 * Folders for each document type
+		 * @var array
+		 */
+		public static $folders = array(
+			'quote' => 'CUSTQT'
+		);
+		
 		public function __construct($sessionID, $filetype, $url) {
 			parent::__construct($this->options);
 			$this->sessionID = $sessionID;

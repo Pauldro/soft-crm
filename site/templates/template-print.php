@@ -32,6 +32,22 @@
 		
         $pdfmaker = new PDFMaker($sessionID, $page->name, $url->getUrl());
         $result = $pdfmaker->process();
+		
+		switch ($page->name) { //$page->name is what we are printing
+	        case 'quote':
+				$folders = PDFMaker::$folders;
+				$url = new Purl\Url($page->fullURL->getUrl());
+				$url->path = $config->pages->account."redir/";
+				$url->query->setData(array(
+					'action' => 'store-document',
+					'filetype' => $folders[$page->name],
+					'field1' => $qnbr,
+					'file' => $pdfmaker->filename,
+					'sessionID' => $sessionID
+				));
+				curl_redir($url->getUrl());
+	            break;
+	    }
     }
     
     include $config->paths->content.'common/include-print-page.php';
