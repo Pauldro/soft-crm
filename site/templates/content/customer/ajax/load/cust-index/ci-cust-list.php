@@ -8,9 +8,11 @@
 ?>
 
 <div id="cust-results">
-	<div class="form-group">
-		<a href="<?= $config->pages->customer.'add/'; ?>" class="btn btn-primary"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Customer</a>
-	</div>
+	<?php if ($appconfig->allow_customeradd) : ?>
+		<div class="form-group">
+			<a href="<?= $config->pages->customer.'add/'; ?>" class="btn btn-primary"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Customer</a>
+		</div>
+	<?php endif; ?>
     <div class="table-responsive">
         <table id="cust-index" class="table table-striped table-bordered">
             <thead>
