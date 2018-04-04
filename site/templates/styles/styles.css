@@ -93,6 +93,10 @@
 /*==============================================================
 	PRINT STYLES
 =============================================================*/
+	.container.page.print {
+		padding-bottom: 50px;
+	}
+
 	@media print {
 		body {height: auto; font-size: 12px;}
 		a[href]:after {

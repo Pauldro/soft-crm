@@ -26,7 +26,7 @@
 				<tr> <td class="col-xs-6"><label>Shipping Method:</label></td> <td class="col-xs-6 text-right"><?= $quote->shipviadesc; ?></td></tr>
 				<tr> <td class="col-xs-6"><label>Payment Terms:</label></td> <td class="col-xs-6 text-right"><?= $quote->termcodedesc; ?></td></tr>
 				<tr> <td class="col-xs-6"><label>Salesperson:</label></td> <td class="col-xs-6 text-right"><?= $quote->sp1name; ?></td></tr>
-				<tr> <td class="col-xs-6"><label>Salesperson Email:</label></td> <td class="col-xs-6 text-right"><?= $salespersonjson['data'][$quote->sp1]['spemail']; ?></td></tr>
+				<tr> <td class="col-xs-6"><label>Salesperson Email:</label></td> <td class="col-xs-6 text-right"><?= $salespersonjson['data'][strtoupper($quote->sp1)]['spemail']; ?></td></tr>
 			</table>
 		</div>
 	</div>
@@ -104,4 +104,5 @@
 		</table>
 	</div>
 </div>
-	
+
+<p class="text-center">Shipping charges and any applicable sales taxes are not included in this quote</p>
