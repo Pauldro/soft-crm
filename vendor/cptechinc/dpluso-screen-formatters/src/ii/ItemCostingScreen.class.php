@@ -1,3 +1,9 @@
+{
+    "gatewayid": {
+        "id": 102,
+        "type": "FieldtypeText",
+        "flags": 0,
+        "name": "gatewayid",
 <?php 
      class II_ItemCostingScreen extends TableScreenMaker {
 		protected $tabletype = 'normal'; // grid or normal
@@ -51,7 +57,7 @@
 				$tb = new Table('class=table table-striped table-bordered table-condensed table-excel no-bottom');
 				$tb->tablesection('thead')->tr();
 					foreach ($this->json['columns']['warehouse'] as $column) {
-						$class = Dpluswire::wire(('config')->textjustify[$column['headingjustify']];
+						$class = DplusWire::wire('config')->textjustify[$column['headingjustify']];
 						$tb->th("class=$class", $column['heading']);
 					}
 				$tb->closetablesection('thead');
@@ -59,7 +65,7 @@
 					foreach ($whse['lots'] as $lot) {
 						$tb->tr();
 						foreach ($warehousecolumns as $column) {
-							$class = Dpluswire::wire(('config')->textjustify[$this->json['columns']['warehouse'][$column]['datajustify']];
+							$class = DplusWire::wire('config')->textjustify[$this->json['columns']['warehouse'][$column]['datajustify']];
 							$tb->td("class=$class", $lot[$column]);
 						}
 					}
@@ -92,7 +98,7 @@
 						$tb->tr();
 						$tb->tablesection('thead');
 							foreach ($this->json['columns']['vendor'] as $column) {
-								$class = Dpluswire::wire(('config')->textjustify[$column['headingjustify']];
+								$class = DplusWire::wire('config')->textjustify[$column['headingjustify']];
 								$tb->th("class=$class", $column['heading']);
 							}
 						$tb->closetablesection('thead');
@@ -100,7 +106,7 @@
 							foreach ($vendor['vend cost breaks'] as $costbreak) {
 								$tb->tr();
 								foreach (array_keys($this->json['columns']['vendor']) as $column) {
-									$class = Dpluswire::wire(('config')->textjustify[$this->json['columns']['vendor'][$column]['datajustify']];
+									$class = DplusWire::wire('config')->textjustify[$this->json['columns']['vendor'][$column]['datajustify']];
 									$tb->td("class=$class", $costbreak[$column]);
 								}
 							}
@@ -118,7 +124,7 @@
 			$tb->tr();
 			$tb->tablesection('thead');
 				foreach ($this->json['columns']['last purchase'] as $column) {
-					$class = Dpluswire::wire(('config')->textjustify[$column['headingjustify']];
+					$class = DplusWire::wire('config')->textjustify[$column['headingjustify']];
 					$tb->th("class=$class", $column['heading']);
 				}
 			$tb->closetablesection('thead');
@@ -126,7 +132,7 @@
 				foreach ($this->json['data']['last purchase'] as $lastpurchase) {
 					$tb->tr();
 					foreach (array_keys($this->json['columns']['last purchase']) as $column) {
-						$class = Dpluswire::wire(('config')->textjustify[$this->json['columns']['last purchase'][$column]['datajustify']];
+						$class = DplusWire::wire('config')->textjustify[$this->json['columns']['last purchase'][$column]['datajustify']];
 						$tb->td("class=$class", $lastpurchase[$column]);
 					}
 				}
