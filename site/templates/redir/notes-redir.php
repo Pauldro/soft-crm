@@ -97,12 +97,12 @@
 			$key1 = $input->post->text('key1');
 			$key2 = $input->post->text('key2');
 			$note = Qnote::load(session_id(), $key1, $key2, $type, $recnbr);
-			$note->set('form1') = $input->post->form1 ? "Y" : "N"; 
-			$note->set('form2') = $input->post->form2 ? "Y" : "N";
-			$note->set('form3') = $input->post->form3 ? "Y" : "N"; 
-			$note->set('form4') = $input->post->form4 ? "Y" : "N";
-			$note->set('form5') = ($note->rectype == Qnote::get_qnotetype('sales-order')) ? '' : ($input->post->form5 ? "Y" : "N");
-			$note->set('notefld') = addslashes($input->post->text('note'));
+			$note->set('form1', $input->post->form1 ? "Y" : "N"); 
+			$note->set('form2', $input->post->form2 ? "Y" : "N");
+			$note->set('form3', $input->post->form3 ? "Y" : "N"); 
+			$note->set('form4', $input->post->form4 ? "Y" : "N");
+			$note->set('form5', ($note->rectype == Qnote::get_qnotetype('sales-order')) ? '' : ($input->post->form5 ? "Y" : "N"));
+			$note->set('notefld', addslashes($input->post->text('note')));
 			$session->sql = $note->update();
 			
 			$data = array(
@@ -121,16 +121,16 @@
 			break;
 		case 'add-note':
 			$note = new QNote();
-			$note->set('sessionid') = $sessionID;
-			$note->set('rectype') = $input->post->text('type');
-			$note->set('key1') = $input->post->text('key1');
-			$note->set('key2') = $input->post->text('key2');
-			$note->set('form1') = $input->post->form1 ? "Y" : "N"; 
-			$note->set('form2') = $input->post->form2 ? "Y" : "N";
-			$note->set('form3') = $input->post->form3 ? "Y" : "N"; 
-			$note->set('form4') = $input->post->form4 ? "Y" : "N";  
-			$note->set('form5') = ($note->rectype == Qnote::get_qnotetype('sales-order')) ? '' : ($input->post->form5 ? "Y" : "N");
-			$note->set('notefld') = addslashes($input->post->text('note'));
+			$note->set('sessionid', $sessionID);
+			$note->set('rectype', $input->post->text('type'));
+			$note->set('key1', $input->post->text('key1'));
+			$note->set('key2', $input->post->text('key2'));
+			$note->set('form1', $input->post->form1 ? "Y" : "N"); 
+			$note->set('form2', $input->post->form2 ? "Y" : "N");
+			$note->set('form3', $input->post->form3 ? "Y" : "N"); 
+			$note->set('form4', $input->post->form4 ? "Y" : "N");  
+			$note->set('form5', ($note->rectype == Qnote::get_qnotetype('sales-order')) ? '' : ($input->post->form5 ? "Y" : "N"));
+			$note->set('notefld', addslashes($input->post->text('note')));
 			$session->sql = $note->create();
 			
 			$data = array(

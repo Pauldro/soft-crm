@@ -935,14 +935,16 @@
 
 	function get_maxordertotal($sessionID, $custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
-		$q->field($q->expr("MAX(CAST(ordertotal AS DECIMAL(8,2))) AS ordertotal"));
 		$q->where('sessionid', $sessionID);
-		if ($custID) {
+		
+		if (!empty($custID)) {
 			$q->where('custid', $custID);
+			
+			if (!(empty($shipID))) {
+				$q->where('shiptoid', $shipID);
+			}
 		}
-		if ($shipID) {
-			$q->where('shiptoid', $shipID);
-		}
+		
 		$sql = DplusWire::wire('database')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -954,13 +956,14 @@
 
 	function get_minordertotal($sessionID, $custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
-		$q->field($q->expr("MIN(CAST(ordertotal AS DECIMAL(8,2))) AS ordertotal"));
 		$q->where('sessionid', $sessionID);
-		if ($custID) {
+		
+		if (!empty($custID)) {
 			$q->where('custid', $custID);
-		}
-		if ($shipID) {
-			$q->where('shiptoid', $shipID);
+			
+			if (!(empty($shipID))) {
+				$q->where('shiptoid', $shipID);
+			}
 		}
 		$sql = DplusWire::wire('database')->prepare($q->render());
 		if ($debug) {
@@ -1449,13 +1452,14 @@
 	
 	function get_maxquotetotal($sessionID, $custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
-		$q->field($q->expr("MAX(CAST(subtotal AS DECIMAL(8,2))) AS subtotal"));
 		$q->where('sessionid', $sessionID);
-		if ($custID) {
+		
+		if (!empty($custID)) {
 			$q->where('custid', $custID);
-		}
-		if ($shipID) {
-			$q->where('shiptoid', $shipID);
+			
+			if (!empty($shipID)) {
+				$q->where('shiptoid', $shipID);
+			}
 		}
 		$sql = DplusWire::wire('database')->prepare($q->render());
 		if ($debug) {
@@ -1468,14 +1472,14 @@
 	
 	function get_minquotetotal($sessionID, $custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
-		$q->field($q->expr("MIN(CAST(subtotal AS DECIMAL(8,2))) AS subtotal"));
-		
 		$q->where('sessionid', $sessionID);
-		if ($custID) {
+		
+		if (!empty($custID)) {
 			$q->where('custid', $custID);
-		}
-		if ($shipID) {
-			$q->where('shiptoid', $shipID);
+			
+			if (!empty($shipID)) {
+				$q->where('shiptoid', $shipID);
+			}
 		}
 		$sql = DplusWire::wire('database')->prepare($q->render());
 		if ($debug) {
@@ -1506,13 +1510,12 @@
 	function get_userquotes($sessionID, $limit, $page = 1, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
-		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
 		$q->where('sessionid', $sessionID);
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1530,14 +1533,14 @@
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
 		$q->field($q->expr("STR_TO_DATE(quotdate, '%m/%d/%Y') as quotedate"));
-		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
 		$q->where('sessionid', $sessionID);
+		
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('quotedate', $sortrule);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1579,14 +1582,12 @@
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
 		$q->field($q->expr("STR_TO_DATE(expdate, '%m/%d/%Y') as expiredate"));
-		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
-		$q->where('custid', $custID);
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('expiredate', $sortrule);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1603,7 +1604,6 @@
 	function get_userquotesorderby($sessionID, $limit = 10, $page = 1, $sortrule, $orderby, $filter = false, $filtertypes = false, $useclass = true, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
-		$q->field($q->expr("CAST(subtotal AS DECIMAL(8,2)) AS subtotal"));
 		$q->where('sessionid', $sessionID);
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);

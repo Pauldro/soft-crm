@@ -26,7 +26,7 @@ use Purl\Url;
 		}
 	}
 
-	$linkaddon = $sortaddon;
+	$linkaddon = $sortaddon . $filteraddon;
 	$session->{'from-redirect'} = $page->url;
 	$session->remove('quote-search');
 	$session->filters = $filteraddon;
