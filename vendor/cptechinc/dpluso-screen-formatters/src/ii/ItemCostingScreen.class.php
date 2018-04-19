@@ -1,9 +1,3 @@
-{
-    "gatewayid": {
-        "id": 102,
-        "type": "FieldtypeText",
-        "flags": 0,
-        "name": "gatewayid",
 <?php 
      class II_ItemCostingScreen extends TableScreenMaker {
 		protected $tabletype = 'normal'; // grid or normal
