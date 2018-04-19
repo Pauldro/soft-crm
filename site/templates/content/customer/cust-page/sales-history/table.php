@@ -1,7 +1,6 @@
-
 <table class="table table-striped table-bordered table-condensed order-listing-table">
 	<thead>
-		<?php include $config->paths->content.'dashboard/sales-history/thead-rows.php'; ?>
+		<?php include $config->paths->content.'customer/cust-page/sales-history/thead-rows.php'; ?>
 	</thead>
 	<tbody>
 		<?php if ($orderpanel->count == 0 && $input->get->text('ordn') == '') : ?>
@@ -13,8 +12,7 @@
 			<tr class="<?= $orderpanel->generate_rowclass($order); ?>" id="<?= $order->orderno; ?>">
 				<td class="text-center"><?= $orderpanel->generate_expandorcollapselink($order); ?></td>
 				<td><?= $order->orderno; ?></td>
-				<td><a href="<?= $orderpanel->generate_customerurl($order); ?>"><?= $order->custid; ?></a> <span class="glyphicon glyphicon-share" aria-hidden="true"></span><br><?= get_customername($order->custid); ?></td>
-				<td><?= $order->custpo; ?></td>
+				<td colspan="2"><?= $order->custpo; ?></td>
 				<td>
 					<a href="<?= $orderpanel->generate_customershiptourl($order); ?>"><?= $order->shiptoid; ?></a>
 					<?= $orderpanel->generate_shiptopopover($order); ?>
@@ -32,15 +30,15 @@
 
 			<?php if ($order->orderno == $input->get->text('ordn')) : ?>
 				<?php if ($input->get->show == 'documents' && (!$input->get('item-documents'))) : ?>
-					<?php include $config->paths->content.'dashboard/sales-history/documents-rows.php'; ?>
+					<?php include $config->paths->content.'customer/cust-page/sales-history/documents-rows.php'; ?>
 				<?php endif; ?>
 
-				<?php include $config->paths->content.'dashboard/sales-history/detail-rows.php'; ?>
+				<?php include $config->paths->content.'customer/cust-page/sales-history/detail-rows.php'; ?>
 
-				<?php include $config->paths->content.'dashboard/sales-history/totals-rows.php'; ?>
+				<?php include $config->paths->content.'customer/cust-page/sales-history/totals-rows.php'; ?>
 
 				<?php if ($input->get->text('show') == 'tracking') : ?>
-					<?php include $config->paths->content.'dashboard/sales-history/tracking-rows.php'; ?>
+					<?php include $config->paths->content.'customer/cust-page/sales-history/tracking-rows.php'; ?>
 				<?php endif; ?>
 
 				<?php if ($order->error == 'Y') : ?>
