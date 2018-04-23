@@ -2277,6 +2277,43 @@
 	/* =============================================================
 		USER ACTION FUNCTIONS
 	============================================================ */
+	function get_actions($filters, $filterable, $limit, $page, $debug = false) {
+		$q = (new QueryBuilder())->table('useractions');
+		$q->generate_filters($filters, $filterable);
+
+		if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
+			$this->order($this->generate_orderby("duedate-ASC"));
+		}
+		if ($limit) {
+			$q->limit($limit, $q->generate_offset($page, $limit));
+		}
+		
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'UserAction');
+			return $sql->fetchAll();
+		}
+	}
+	
+	function count_actions($filters, $filterable, $debug = false) {
+		$q = (new QueryBuilder())->table('useractions');
+		$q->field($q->expr('COUNT(*)'));
+		$q->generate_filters($filters, $filterable);
+		
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+	
 	function get_useractions($user, $querylinks, $limit, $page, $debug) {
 		$q = (new QueryBuilder())->table('useractions');
 		
@@ -3565,7 +3602,7 @@
 		$q->where('bookdate', date('Ymd'));
 		
 		if (DplusWire::wire('user')->hascontactrestrictions) {
-			$q->where('salesperson1', DplusWire::wire('user')->salespersonid);
+			$q->where('salesrep', DplusWire::wire('user')->salespersonid);
 		}
 		
 		$q->where('custid', $custID);

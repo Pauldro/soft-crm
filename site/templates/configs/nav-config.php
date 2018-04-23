@@ -33,6 +33,7 @@
     $config->pages->orders = $config->urls->root . 'user/orders/';
     $config->pages->quotes = $config->urls->root . 'user/quotes/';
     $config->pages->actions = $config->urls->root . 'activity/';
+	$config->pages->activity = $config->urls->root . 'activity/';
     $config->pages->documentation = $config->urls->root . "documentation/";
     $config->pages->documentstorage = $config->documentstorage;
     $config->pages->vendor = $config->urls->root . "vendors/";

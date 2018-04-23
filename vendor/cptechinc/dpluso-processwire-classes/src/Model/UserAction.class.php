@@ -34,7 +34,7 @@
 		public $rescheduledlink;
 		
 		public $actionlineage = array();
-		
+		public static $dateformat = "Y-m-d H:i:s";
 		/* =============================================================
 			SETTER FUNCTIONS 
 		============================================================ */
@@ -313,6 +313,7 @@
 		 */
  		public static function remove_nondbkeys($array) {
 			unset($array['actionlineage']);
+			unset($array['dateformat']);
  			return $array;
  		}
 	}

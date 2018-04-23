@@ -1,8 +1,12 @@
 <?php 
     class UserActionDisplay {
-        public $modal = '#ajax-modal';
-        public $pageurl = false;
-        public $userID;
+		use ThrowErrorTrait;
+		use MagicMethodTraits;
+		use AttributeParser;
+		
+        protected $modal = '#ajax-modal';
+        protected $pageurl = false;
+        protected $userID;
         
 		/* =============================================================
 			CONSTRUCTOR FUNCTIONS

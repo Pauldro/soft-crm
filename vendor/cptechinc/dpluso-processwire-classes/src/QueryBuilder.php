@@ -75,12 +75,12 @@
 		 * @uses
 		 */
 		public function generate_dateformat($filter, $filtertypes) {
-			$find = array('m', 'd', 'Y');
+			$find = array('m', 'd', 'Y', 'H', 'i', 's');
 			$format = isset($filtertypes[$filter]['date-format']) ? $filtertypes[$filter]['date-format'] : 'm/d/Y';
 			$sqlformat = $format;
 			
 			foreach ($find as $code) {
-				$sqlformat = str_replace($code, '%'.$code, $sqlformat);
+				$sqlformat = str_replace($code, "%$code", $sqlformat);
 			}
 			return $sqlformat;
 		}
@@ -94,7 +94,9 @@
 						if (sizeof($filtervalue) == 1) {
                             $this->where($filter, $filtervalue[0]);
                         } else {
-                            if ($filtertypes[$filter]['datatype'] == 'date') {
+							if ($filtertypes[$filter]['datatype'] == 'mysql-date') {
+								$this->where($this->expr("$filter between STR_TO_DATE([], '%m/%d/%Y') and STR_TO_DATE([], '%m/%d/%Y')", $filtervalue));
+                            } elseif ($filtertypes[$filter]['datatype'] == 'date') {
 								$dateformat = $this->generate_dateformat($filter, $filtertypes);
 								$this->where($this->expr("STR_TO_DATE($filter, '$dateformat') between STR_TO_DATE([], '%m/%d/%Y') and STR_TO_DATE([], '%m/%d/%Y')", $filtervalue));
                             } else if ($filtertypes[$filter]['datatype'] == 'numeric') {
