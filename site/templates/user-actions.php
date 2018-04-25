@@ -6,5 +6,5 @@
     $qnbr = ($input->get->qnbr) ? $qnbr = $input->get->text('qnbr') : '';
     $actionID = ($input->get->actionID) ? $input->get->text('actionID') : '';
     $assigneduserID = ($input->get->assignedto) ? $input->get->text('assignedto') : $user->loginid;
-	
+    
 	include $config->paths->content.'user-actions/crud-router.php';

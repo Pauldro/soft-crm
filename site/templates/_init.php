@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 /**
  * Initialization file for template files
@@ -9,7 +9,7 @@
  * You can initialize anything you want to here. In the case of this beginner profile,
  * we are using it just to include another file with shared functions.
  *
- */	
+ */
 	include_once("./_func.php"); // include our shared functions
 	include_once("./_dbfunc.php");
 	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/utfport.php"); // UTF8 conversion library functions
@@ -22,7 +22,7 @@
 	if (!empty($config->filename) && $config->filename != '/') {
 		$page->fullURL->join($config->filename);
 	}
-	
+
 	$page->bootstrap = new Contento();
 	$page->stringerbell = new StringerBell();
 	$page->screenformatterfactory = new \ScreenFormatterFactory(session_id());
@@ -35,7 +35,7 @@
 	$config->styles->append(hashtemplatefile('styles/libraries.css'));
 	$config->styles->append(hashtemplatefile('styles/libs/bootstrap-select.css'));
 	$config->styles->append(hashtemplatefile('styles/styles.css'));
-    
+
 	$config->scripts->append(hashtemplatefile('scripts/libraries.js'));
 	$config->scripts->append(hashtemplatefile('scripts/libs/timepicker.js'));
 	$config->scripts->append(hashtemplatefile('scripts/libs/key-listener.js'));
@@ -45,7 +45,7 @@
 	$config->scripts->append(hashtemplatefile('scripts/libs/bootstrap-select.js'));
 	$config->scripts->append(hashtemplatefile('scripts/scripts.js'));
 	$config->scripts->append(hashtemplatefile('scripts/dplus-notes.js'));
-	
+
 
 	//$config->scripts->append($config->urls->modules . 'Inputfield/InputfieldCKEditor/ckeditor-4.6.1/ckeditor.js'));
 
@@ -61,7 +61,7 @@
 	if ($input->get->modal) {
 		$config->modal = true;
 	}
-	
+	if ($input->get->json) {
+		$config->json = true;
+	}
 	$itemlookup = new ItemLookupModal();
-	
-	

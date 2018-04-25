@@ -1,19 +1,19 @@
 <?php
 	// $task is loaded by Crud Controller
     $taskdisplay = new UserActionDisplay($page->fullURL);
-    
+
     $contactinfo = get_customercontact($task->customerlink, $task->shiptolink, $task->contactlink, false);
 
     if ($task->is_rescheduled()) {
         $rescheduledtask = UserAction::loadt($task->rescheduledlink);
     }
-    
+
     $task->get_actionlineage();
 ?>
 
 <div>
 	<ul class="nav nav-tabs" role="tablist">
-		<li role="presentation" class="active"><a href="#task" aria-controls="task" role="tab" data-toggle="tab">Task ID: <?= $taskID; ?></a></li>
+		<li role="presentation" class="active"><a href="#task" aria-controls="task" role="tab" data-toggle="tab">Task ID: <?= $id; ?></a></li>
 		<?php if (!empty($task->actionlineage)) : ?>
 			<li role="presentation"><a href="#history" aria-controls="history" role="tab" data-toggle="tab">Task History</a></li>
 		<?php endif; ?>
