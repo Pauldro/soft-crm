@@ -10,15 +10,25 @@
 			break;
 		case 'update':
 			if ($input->requestMethod() == 'POST') { // CREATE IN CRUD
-				$config->json = true;      
+				$config->json = true;
+				$id = $input->post->text('id');
+				$action = UserAction::load($id);
+				$type = UserAction::$types[$action->actiontype];
 				$page->body = $config->paths->content."user-actions/crud/update/$type.php";
 			} else {
 				$id = $input->get->text('id');
+				$action = UserAction::load($id);
 				$type = UserAction::$types[$action->actiontype];
 				$$type = $action;
-				$message = "Writing {$$type} for {replace} ";
-				$page->title = $note->generate_message($message);
-				include $config->paths->content."user-actions/crud/update/$type-form-router.php";
+
+				if ($input->get->complete) {
+					$config->json = true;
+					$page->body = $config->paths->content."user-actions/crud/update/$type.php";
+				} else {
+					$message = "Writing $type for {replace} ";
+					$page->title = $action->generate_message($message);
+					include $config->paths->content."user-actions/crud/update/$type-form-router.php";
+				}
 			}
 			break;
 		default: // READ IN CRUD

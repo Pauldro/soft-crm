@@ -1,8 +1,7 @@
 <?php
 	$editactiondisplay = new EditUserActionsDisplay($page->fullURL);
-	$action = $config->pages->actions."notes/edit/";
 ?>
-<form action="<?= $action; ?>" method="post" data-refresh="#actions-panel" data-modal="#ajax-modal" onKeyPress="return disable_enterkey(event)">
+<form action="<?= $editactiondisplay->generate_posteditactionurl(); ?>" method="post" id="new-action-form" data-refresh="#actions-panel" data-modal="#ajax-modal" onKeyPress="return disable_enterkey(event)">
 	<input type="hidden" name="action" value="edit-crm-note">
 	<input type="hidden" name="id" value="<?= $note->id; ?>">
 	<input type="hidden" name="customerlink" value="<?= $note->customerlink; ?>">
@@ -22,7 +21,7 @@
 		</tr>
 		<tr>
 			<td>Note Type <br> <small>(Click to Choose)</small></td>
-			<td><?= $editactiondisplay->generate_selectsubtype($note)); ?></td>
+			<td><?= $editactiondisplay->generate_selectsubtype($note); ?></td>
 		</tr>
 		<?php if (!empty($note->customerlink)) : ?>
 			<tr>
@@ -38,7 +37,6 @@
 					<td><a href="<?= $editactiondisplay->generate_shiptourl($note); ?>"><?= Customer::load($note->customerlink, $note->shiptolink). " ($note->shiptolink)"; ?></a></td>
 				</tr>
 			<?php endif; ?>
-
 			<?php if (!empty($note->contactlink)) : ?>
 				<tr>
 					<td>Contact: </td>
@@ -46,14 +44,13 @@
 				</tr>
 			<?php endif; ?>
 		<?php endif; ?>
-
-		<?php if (!empty($note->salesorderlink) : ?>
+		<?php if (!empty($note->salesorderlink)) : ?>
 			<tr>
 				<td>Sales Order #: </td>
 				<td><?= $note->salesorderlink; ?>/td>
 			</tr>
 		<?php endif; ?>
-		<?php if (!empty($note->quotelink) : ?>
+		<?php if (!empty($note->quotelink)) : ?>
 			<tr>
 				<td>Quote #: </td>
 				<td><?= $note->quotelink; ?>/td>
@@ -63,7 +60,6 @@
 			<td class="control-label">Title</td>
 			<td><input type="text" name="title" class="form-control" value="<?= $note->title; ?>"></td>
 		</tr>
-
 		<tr>
 			<td colspan="2">
 				<label class="control-label">Notes</label> <br>

@@ -34,7 +34,7 @@
 		 * @return string         URL where action can be edited from
 		 */
 		public function generate_editactionurl(UserAction $action) {
-			return DplusWire::wire('config')->pages->actions."$action->actiontype/edit/?id=".$action->id;
+			return DplusWire::wire('config')->pages->useractions."update/?id=".$action->id;
 		}
 
 		/**
@@ -44,7 +44,7 @@
 		 * @return string               URL
 		 */
 		public function generate_completionurl(UserAction $action, $complete) {
-			return DplusWire::wire('config')->pages->actions."$action->actiontype/update/completion/?id=".$action->id."&complete=".$complete; //true or false
+			return DplusWire::wire('config')->pages->useractions."update/?id=".$action->id."&complete=".$complete; //true or false
 		}
 
 		/**
@@ -53,7 +53,7 @@
 		 * @return string            URL
 		 */
 		public function generate_rescheduleurl(UserAction $action) {
-			return DplusWire::wire('config')->pages->actions."$action->actiontype/update/reschedule/?id=".$action->id;
+			return DplusWire::wire('config')->pages->useractions."update/?id=".$action->id;
 		}
 
 		/**
@@ -130,7 +130,7 @@
             $href = $this->generate_editactionurl($action);
             $icon = $bootstrap->createicon('glyphicon glyphicon-pencil');
             $type = ucfirst(UserAction::$types[$action->actiontype]);
-            return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-primary load-action|data-modal=$this->modal|title=Edit Action", $icon. " Edit $type");
+            return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-primary modal-load|data-modal=$this->modal|title=Edit Action", $icon. " Edit $type");
         }
 
 		/**
@@ -150,7 +150,7 @@
             $bootstrap = new Contento();
             $href = $this->generate_rescheduleurl($task);
             $icon = $bootstrap->createicon('fa fa-calendar');
-            return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-default reschedule-task", $icon. " Reschedule Task");
+            return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-default modal-load|data-modal=$this->modal|", $icon. " Reschedule Task");
         }
 
         public function generate_customerpagelink(UserAction $action) {
