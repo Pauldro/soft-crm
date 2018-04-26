@@ -2432,14 +2432,17 @@
 /* =============================================================
 	VENDOR FUNCTIONS
 ============================================================ */
-	function getvendors($debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM vendors WHERE shipfrom = ''");
-		$switching = array(); $withquotes = array();
+	function get_vendors($debug) {
+		$q = (new QueryBuilder())->table('vendors');
+		$q->where('shipfrom', '');
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute();
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'Vendor');
+			return $sql->fetchAll();
 		}
 	}
 	
@@ -2447,7 +2450,7 @@
 		$q = (new QueryBuilder())->table('vendors');
 		$q->where('vendid', $vendorID);
 		$q->where('shipfrom', $shipfromID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2496,22 +2499,26 @@
 		}
 	}
 
-	function getunitofmeasurements($debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM unitofmeasure");
+	function get_unitofmeasurements($debug) {
+		$q = (new QueryBuilder())->table('unitofmeasure');
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return $sql->queryString;
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute();
+			$sql->execute($q->params);
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
 
-	function getitemgroups($debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM itemgroup");
+	function get_itemgroups($debug) {
+		$q = (new QueryBuilder())->table('itemgroup');
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return $sql->queryString;
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute();
+			$sql->execute($q->params);
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
