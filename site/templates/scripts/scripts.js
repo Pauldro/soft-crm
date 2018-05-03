@@ -182,6 +182,23 @@ $(document).ready(function() {
 				$(this).closest('tr').addClass('has-error');
 			}
         });
+
+		$("body").on("submit", ".form-ajax", function(e) {
+			e.preventDefault();
+			var form = $(this);
+			var formurl = URI(form.attr('action'));
+			var focus = form.data('focus');
+			var loadinto = form.data('loadinto');
+			var querystring = formurl.query() + "&"+ form.serialize();
+			formurl.query(querystring).normalizeQuery();
+			href = formurl.toString();
+			console.log(loadinto);
+			$(loadinto).loadin(href, function() {
+				if (focuson.length > 0) {
+					$('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000);
+				}
+			});
+		});
 	/*==============================================================
 	  AJAX LOAD FUNCTIONS
 	=============================================================*/
@@ -796,8 +813,8 @@ $(document).ready(function() {
 				cancelButtonClass: 'btn btn-sm btn-danger',
 				inputClass: 'form-control',
 				inputOptions: {
-					'tasks': 'Task',
-					'notes': 'Note'
+					'task': 'Task',
+					'note': 'Note'
 				},
 				inputPlaceholder: 'Select Action Type',
 				showCancelButton: true,
@@ -812,7 +829,7 @@ $(document).ready(function() {
 				}
 			}).then(function (result) {
 				var regexhref = button.attr('href');
-				var href = URI(regexhref.replace(/{replace}/g, result)).addQuery('modal', 'modal').toString();
+				var href = URI(regexhref).addQuery('type', result).addQuery('modal', 'modal').toString();
 				var modal = button.data('modal');
 				var loadinto =  modal+" .modal-content";
 				$(loadinto).loadin(href, function() {

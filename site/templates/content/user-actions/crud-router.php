@@ -5,7 +5,8 @@
 			if ($input->requestMethod() == 'POST') { // CREATE IN CRUD
 				include $config->paths->content."actions/actions/crud/create-action.php";
 			} else { // SHOW FORM
-				include $config->paths->content."actions/actions/new-action.php";
+				$type = $input->get->text('type');
+				$page->body = $config->paths->content."user-actions/crud/create/$type-form.php";
 			}
 			break;
 		case 'update':
@@ -34,13 +35,11 @@
 		default: // READ IN CRUD
 			if ($input->get->id) {
 				$id = $input->get->text('id');
-
 				$action = UserAction::load($id);
-				$messagetemplate = "Viewing Action for {replace}";
-				$page->title = $action->generate_message($messagetemplate);
 				$type = UserAction::$types[$action->actiontype];
-				$page->body = $config->paths->content."user-actions/crud/read/$type.php";
 				$$type = $action;
+				$page->title = $action->generate_message("Viewing Action for {replace}");
+				$page->body = $config->paths->content."user-actions/crud/read/$type.php";
 			} else {
 				if ($ordn) {
 

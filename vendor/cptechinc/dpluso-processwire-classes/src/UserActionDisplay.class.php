@@ -84,7 +84,7 @@
 		 */
 		public function generate_customerurl(UserAction $action) {
 			$customer = Customer::load($action->customerlink);
-			return $customer->generate_customerurl();
+			return $customer ? $customer->generate_customerurl() : '';
 		}
 
 		/**
@@ -95,7 +95,7 @@
 		 */
 		public function generate_shiptourl(UserAction $action) {
 			$customer = Customer::load($action->customerlink, $action->shiptolink);
-			return $customer->generate_customerurl();
+			return $customer ? $customer->generate_customerurl() : '';
 		}
 
 		/**
@@ -104,8 +104,8 @@
 		 * @return string             Contact page URL
 		 */
 		public function generate_contacturl(UserAction $action) {
-			$customer = Contact::load($action->customerlink, $action->shiptolink, $action->contactlink);
-			return $customer->generate_contacturl();
+			$contact = Contact::load($action->customerlink, $action->shiptolink, $action->contactlink);
+			return $contact ? $contact->generate_contacturl() : '';
 		}
 
 		/**
