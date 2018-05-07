@@ -2314,42 +2314,10 @@
 		}
 	}
 
-	function count_daynotes($day, $filters, $filterable, $debug = false) {
-		$q = (new QueryBuilder())->table('useractions');
-		$q->field($q->expr('COUNT(*)'));
-		$q->generate_filters($filters, $filterable);
-		$q->where('actiontype', 'notes');
-		$q->where('datecreated', $q->expr("STR_TO_DATE([], '%Y-%m-%d')", [$day]));
-		$sql = DplusWire::wire('database')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			return $sql->fetchColumn();
-		}
-	}
-
-	function count_daytasks($day, $filters, $filterable, $debug = false) {
-		$q = (new QueryBuilder())->table('useractions');
-		$q->field($q->expr('COUNT(*)'));
-		$q->generate_filters($filters, $filterable);
-		$q->where('actiontype', 'tasks');
-
-		$sql = DplusWire::wire('database')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			return $sql->fetchColumn();
-		}
-	}
-
 	function count_dayallactions($day, $filters, $filterable, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
-		$taskquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', 'tasks')->where('duedate', $q->expr("STR_TO_DATE([], '%Y-%m-%d')", [$day]));
-		$actionsquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', '!=', 'tasks')->where('datecreated', $q->expr("STR_TO_DATE([], '%Y-%m-%d')", [$day]));
+		$taskquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', 'tasks')->where($q->expr('DATE(duedate)'), $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('duedate', $filterable)]));
+		$actionsquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', '!=', 'tasks')->where($q->expr('DATE(datecreated)'), $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('datecreated', $filterable)]));
 
 		$q->field($q->expr('COUNT(*)'));
 		$q->where(
@@ -2365,43 +2333,11 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function get_daynotes($day, $filters, $filterable, $debug = false) {
-		$q = (new QueryBuilder())->table('useractions');
-		$q->generate_filters($filters, $filterable);
-		$q->where('actiontype', 'notes');
-		$q->where('datecreated', $q->expr("STR_TO_DATE([], '%Y-%m-%d')", [$day]));
-		$sql = DplusWire::wire('database')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			$sql->setFetchMode(PDO::FETCH_CLASS, 'UserAction');
-			return $sql->fetchAll();
-		}
-	}
-
-	function get_daytasks($day, $filters, $filterable, $debug = false) {
-		$q = (new QueryBuilder())->table('useractions');
-		$q->generate_filters($filters, $filterable);
-		$q->where('actiontype', 'tasks');
-		$q->where('duedate', $q->expr("STR_TO_DATE([], '%Y-%m-%d')", [$day]));
-		$sql = DplusWire::wire('database')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			$sql->setFetchMode(PDO::FETCH_CLASS, 'UserAction');
-			return $sql->fetchAll();
-		}
-	}
-
+	
 	function get_dayallactions($day, $filters, $filterable, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
-		$taskquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', 'tasks')->where('duedate', $q->expr("STR_TO_DATE([], '%Y-%m-%d')", [$day]));
-		$actionsquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', '!=', 'tasks')->where('datecreated', $q->expr("STR_TO_DATE([], '%Y-%m-%d')", [$day]));
+		$taskquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', 'tasks')->where($q->expr('DATE(duedate)'), $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('duedate', $filterable)]));
+		$actionsquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', '!=', 'tasks')->where($q->expr('DATE(datecreated)'), $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('datecreated', $filterable)]));
 
 		$q->where(
 			$q->orExpr()->where('id', 'in', $taskquery)->where('id', 'in', $actionsquery)

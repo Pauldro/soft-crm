@@ -122,7 +122,25 @@
 			)
 		);
 
-		protected $taskstatuses = array('Y' => 'Completed', 'N' => 'Not Completed', 'R' => 'Rescheduled');
+		/**
+		 * Task Status and the possible values they could have
+		 * @var [type]
+		 */
+		protected $taskstatuses = array(
+			'completed' => array(
+				'value' => 'Y',
+				'label' => 'Completed'
+			),
+			'incomplete' => array (
+				'value' => '',
+				'label' => 'Incomplete'
+			),
+			'rescheduled' => array(
+				'value' => 'R',
+				'label' => 'Rescheduled'
+			)
+		);
+
 
 		protected $panelID = 'actions-panel';
 		protected $panelbody = 'actions';
@@ -148,6 +166,7 @@
 			$this->ajaxdata = "data-loadinto='$this->loadinto' data-focus='$this->focus'";
 			$this->collapse = $throughajax ? '' : 'collapse';
 			$this->generate_filter($input);
+			$this->setup_pageurl();
 			$this->count_actions();
 		}
 
@@ -236,6 +255,22 @@
 			return $url->getUrl();
 		}
 
+		public function generate_dayviewscheduledtasks($date) {
+			$date = $date ? date('m/d/Y', strtotime($date)) : date('m/d/Y');
+			$url = new Purl\Url($this->generate_dayviewurl($date));
+			$url->query->set('actiontype', array('tasks'));
+			$url->query->set('duedate', array($date));
+			return $url->getUrl();
+		}
+
+		public function generate_daynotescreated($date) {
+			$date = $date ? date('m/d/Y', strtotime($date)) : date('m/d/Y');
+			$url = new Purl\Url($this->generate_dayviewurl($date));
+			$url->query->set('actiontype', array('notes'));
+			$url->query->set('datecreated', array($date));
+			return $url->getUrl();
+		}
+
 		/**
 		 * Returns the URL to view the panel in List View
 		 * @return string URL to load List View
@@ -255,7 +290,7 @@
 		 */
 		public function generate_refreshlink() {
 			$bootstrap = new Contento();
-			$href = $this->generate_refreshurl(true);
+			$href = $this->generate_refreshurl();
 			$icon = $bootstrap->createicon('material-icons md-18', '&#xE86A;');
 			$ajaxdata = $this->generate_ajaxdataforcontento();
 			return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs load-link actions-refresh pull-right hidden-print|title=button|title=Refresh Actions|aria-label=Refresh Actions|$ajaxdata", $icon);
@@ -267,10 +302,11 @@
 		 */
 		public function generate_printlink() {
 			$bootstrap = new Contento();
-			$href = $this->generate_refreshurl(true);
+			$href = $this->generate_refreshurl();
 			$icon = $bootstrap->createicon('glyphicon glyphicon-print');
 			return $bootstrap->openandclose('a', "href=$href|class=h3|target=_blank", $icon." View Printable");
 		}
+
 
 		public function generate_addlink() {
 			if (get_class($this) == 'UserActionsPanel') return '';
@@ -366,11 +402,13 @@
 		}
 
 		public function get_dayallactions($day, $debug = false) {
-			return get_dayallactions(date('m/d/Y', strtotime($day)), $this->filters, $this->filterable);
+			return get_dayallactions($day, $this->filters, $this->filterable, $debug);
 		}
 
 		public function count_daytasks($day, $debug = false) {
-			return count_daytasks($day, $this->filters, $this->filterable, $debug);
+			$filters = $this->filters;
+			$filters['actiontype'] = array('tasks');
+			return count_dayallactions($day, $filters, $this->filterable, $debug);
 		}
 
 		/**
@@ -380,7 +418,9 @@
 		 * @return array         array of UserActions | SQL Query
 		 */
 		public function get_daytasks($day, $debug = false) {
-			return get_daytasks($day, $this->filters, $this->filterable, $debug);
+			$filters = $this->filters;
+			$filters['actiontype'] = array('tasks');
+			return count_dayallactions($day, $filters, $this->filterable, $debug);
 		}
 
 		/**
@@ -393,7 +433,8 @@
 			$filters = $this->filters;
 			unset($filters['completed']);
 			$filters['duedate'] = array($day);
-			return count_daytasks($day, $filters, $this->filterable, $debug);
+			$filters['actiontype'] = array('tasks');
+			return count_dayallactions($day, $filters, $this->filterable, $debug);
 		}
 
 		/**
@@ -404,9 +445,10 @@
 		 */
 		public function count_dayrescheduledtasks($day, $debug = false) {
 			$filters = $this->filters;
+			$filters['actiontype'] = array('tasks');
 			$filters['completed'] = array('R');
 			$filters['dateupdated'] = array($day);
-			return count_daytasks($day, $filters, $this->filterable, $debug);
+			return count_dayallactions($day, $filters, $this->filterable, $debug);
 		}
 
 		/**
@@ -417,9 +459,10 @@
 		 */
 		public function count_daycompletedtasks($day, $debug = false) {
 			$filters = $this->filters;
+			$filters['actiontype'] = array('tasks');
 			$filters['completed'] = array('Y');
 			$filters['datecompleted'] = array($day);
-			return count_daytasks($day, $filters, $this->filterable, $debug);
+			return count_dayallactions($day, $filters, $this->filterable, $debug);
 		}
 
 		/**
@@ -429,7 +472,11 @@
 		 * @return int            Number of Notes made that day | SQL Query
 		 */
 		public function count_daynotes($day, $debug = false) {
-			return count_daynotes($day, $this->filters, $this->filterable, $debug);
+			$filters = $this->filters;
+			unset($filters['completed']);
+			$filters['actiontype'] = array('notes');
+			$filters['datecreated'] = array($day);
+			return count_dayallactions($day, $filters, $this->filterable, $debug);
 		}
 
 		/**
@@ -439,7 +486,11 @@
 		 * @return array         array of Notes | SQL Query
 		 */
 		public function get_daynotes($day, $debug = false) {
-			return get_daynotes($day, $this->filters, $this->filterable, $debug);
+			$filters = $this->filters;
+			unset($filters['completed']);
+			$filters['actiontype'] = array('notes');
+			$filters['datecreated'] = array($day);
+			return get_dayallactions($day, $filters, $this->filterable, $debug);
 		}
 
 		/**
@@ -549,32 +600,34 @@
 
 				$content = $bootstrap->div('class=day-number text-right', $currentday);
 				$class = 'day';
+				$listitems = '';
 
 				if ($date == date('m/d/Y')) {
 					$class = 'day active';
-					$listitems = '';
-
-					if ($this->count_daynotes($date)) {
-						$listitems .= $bootstrap->li('role=presentation', 'Notes '.$bootstrap->span('class=badge pull-right', $this->count_daynotes($date)).'<br>');
-					}
-
-					if ($this->count_dayscheduledtasks($date)) {
-						$listitems .= $bootstrap->li('role=presentation', 'Tasks '.$bootstrap->span('class=badge pull-right', $this->count_dayscheduledtasks($date)).'<br>');
-					}
-
-					if ($this->count_dayrescheduledtasks($date)) {
-						$listitems .= $bootstrap->li('role=presentation', 'Tasks Rescheduled'.$bootstrap->span('class=badge bg-info pull-right', $this->count_dayrescheduledtasks($date)).'<br>');
-					}
-
-					$list = $bootstrap->ul('class=list-unstyled', $listitems);
-
-					$content .= $bootstrap->div('class=day-list', $list);
-					if ($this->count_dayallactions($date) || $this->count_dayrescheduledtasks($date)) {
-						$href = $this->generate_dayviewurl($date);
-						$ajaxdata = $this->generate_ajaxdataforcontento();
-						$content .= $bootstrap->div('class=action-bar', $bootstrap->a("href=$href|class=btn btn-xs btn-block btn-primary load-link|$ajaxdata", 'View Actions'));
-					}
 				}
+
+				if ($this->count_daynotes($date)) {
+					$listitems .= $bootstrap->li('role=presentation', 'Notes '.$bootstrap->span('class=badge pull-right', $this->count_daynotes($date)).'<br>');
+				}
+
+				if ($this->count_dayscheduledtasks($date)) {
+					$listitems .= $bootstrap->li('role=presentation', 'Tasks '.$bootstrap->span('class=badge pull-right', $this->count_dayscheduledtasks($date)).'<br>');
+				}
+
+				if ($this->count_dayrescheduledtasks($date)) {
+					$listitems .= $bootstrap->li('role=presentation', 'Tasks Rescheduled'.$bootstrap->span('class=badge bg-info pull-right', $this->count_dayrescheduledtasks($date)).'<br>');
+				}
+
+				$list = $bootstrap->ul('class=list-unstyled', $listitems);
+
+				$content .= $bootstrap->div('class=day-list', $list);
+
+				if ($this->count_dayallactions($date) || $this->count_dayrescheduledtasks($date) || $this->count_dayscheduledtasks($date)) {
+					$href = $this->generate_dayviewurl($date);
+					$ajaxdata = $this->generate_ajaxdataforcontento();
+					$content .= $bootstrap->div('class=action-bar', $bootstrap->a("href=$href|class=btn btn-xs btn-block btn-primary load-link|$ajaxdata", 'View Actions'));
+				}
+
 				$tb->td("class=$class", $content);
 				// Increment counters
 				$currentday++;

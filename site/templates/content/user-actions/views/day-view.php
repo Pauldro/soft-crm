@@ -10,17 +10,30 @@
 	<div class="row">
 		<div class="col-sm-6">
 			<?php if (date('m/d/Y', strtotime($day)) != date('m/d/Y')) : ?>
-				<a href="<?= $actionpanel->generate_dayviewurl(date('m/d/Y')); ?>" class="load-link" data-loadinto="#actions-panel" data-focus="#actions-panel"><b>Go to Today</b> <i class="glyphicon glyphicon-calendar"></i></a>
+				<a href="<?= $actionpanel->generate_dayviewurl(date('m/d/Y')); ?>" class="load-link" data-loadinto="#actions-panel" data-focus="#actions-panel">
+					<b>Go to Today</b> <i class="fa fa-calendar-o" aria-hidden="true"></i>
+				</a>
+				&nbsp;
 			<?php endif; ?>
 			<a href="<?= $actionpanel->generate_calendarviewurl(); ?>" class="load-link" data-loadinto="#actions-panel" data-focus="#actions-panel"><b>View Calendar</b></a> <i class="fa fa-calendar" aria-hidden="true"></i>
 		</div>
 		<div class="col-sm-6">
-			<button type="button" class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#<?= $actionpanel->panelid.'-filter'; ?>" aria-expanded="false" aria-controls="<?= $actionpanel->panelid.'-filter'; ?>">
+			<button type="button" class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#<?= $actionpanel->panelID.'-filter'; ?>" aria-expanded="false" aria-controls="<?= $actionpanel->panelID.'-filter'; ?>">
 				Toggle Filter
 			</button>
+			&nbsp; &nbsp;
+			<form action="<?= $actionpanel->generate_refreshurl(); ?>" class="form-ajax form-inline display-inline-block" data-loadinto="<?= $actionpanel->loadinto; ?>" data-focus="<?= $actionpanel->focus; ?>">
+			    <input type="hidden" name="filter" value="filter">
+	            <label class="control-label">Go to Date</label> &nbsp; &nbsp;
+	            <div class="input-group date" style="width: 180px;">
+	                <?php $name = 'day'; $value = ''; ?>
+	                <?php include $config->paths->content."common/date-picker.php"; ?>
+	            </div>
+	            <button type="submit" class="btn btn-sm btn-success">Go</button>
+			</form>
 		</div>
 	</div>
-	<div class="<?= $input->get->filter ? '' : 'collapse'; ?> form-group" id="<?= $actionpanel->panelid.'-filter'; ?>">
+	<div class="<?= $input->get->filter ? '' : 'collapse'; ?> form-group" id="<?= $actionpanel->panelID.'-filter'; ?>">
 		<?php include $config->paths->content."user-actions/views/$actionpanel->paneltype/day/search-form.php"; ?>
 	</div>
 	<div class="row">
@@ -31,7 +44,7 @@
 			<h3>Overview</h3>
 			<table class="table table-condensed table-striped table-bordered">
 				<tr>
-					<td>Notes Created</td> <td><?= $actionpanel->count_daynotes($day); ?></td>
+					<td>Notes Created <a href="<?= $actionpanel->generate_daynotescreated($day); ?>" class="load-link" data-loadinto="#actions-panel" data-focus="#actions-panel">View</a></td> <td><?= $actionpanel->count_daynotes($day); ?></td>
 				</tr>
 				<tr>
 					<td>Tasks Scheduled for <?= date('m/d/Y', strtotime($day)); ?></td> <td><?= $actionpanel->count_dayscheduledtasks($day); ?></td>
@@ -43,7 +56,6 @@
 					<td>Tasks Rescheduled</td> <td><?= $actionpanel->count_dayrescheduledtasks($day); ?></td>
 				</tr>
 			</table>
-			<?= $actionpanel->count_dayrescheduledtasks($day, true); ?>
 		</div>
 	</div>
 </div>

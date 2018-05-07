@@ -1,11 +1,6 @@
 <table class="table table-bordered table-condensed table-striped">
     <tr>
-        <th>Due</th>
-        <th>Type</th>
-        <th>Subtype</th>
-        <th>Customer</th>
-        <th>Regarding / Title</th>
-        <th>View</th>
+        <th>Due</th> <th>Type</th> <th>Subtype</th> <th>Customer</th> <th>Regarding / Title</th> <th>View</th>
     </tr>
     <?php if (!$actionpanel->count_dayallactions($day)) : ?>
         <tr>
