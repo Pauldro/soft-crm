@@ -6,7 +6,9 @@
 	}
 
 	if ($config->ajax && $input->post->text('action') != 'preview') {
-		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
+		$url = new Purl\Url($page->fullURL->getUrl());
+		$url->query->set('View', 'print');
+		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($url->getUrl(), 'View Printable Version'));
 	}
 	
 	if (file_exists($tableformatter->fullfilepath)) {
@@ -16,7 +18,8 @@
 		if ($tableformatter->json['error']) {
 			echo $page->bootstrap->createalert('warning', $tableformatter->json['errormsg']);
 		} else {
-			echo $tableformatter->generate_screen();
+			$print = $input->get->text('view') == 'print' ? true : false;
+			echo $tableformatter->generate_screen($print);
             echo $tableformatter->generate_javascript();
 		}
 	} else {
