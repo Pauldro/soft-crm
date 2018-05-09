@@ -186,6 +186,10 @@ $(document).ready(function() {
 				$(this).closest('tr').addClass('has-error');
 			}
         });
+
+        $("body").on('keypress', 'form input', function(e) {
+			return e.which !== 13;
+		});
 	/*==============================================================
 	  AJAX LOAD FUNCTIONS
 	=============================================================*/
