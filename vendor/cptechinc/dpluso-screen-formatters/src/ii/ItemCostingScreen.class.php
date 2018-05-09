@@ -53,9 +53,9 @@
 		public function generate_whsesection() {
 			$bootstrap = new Contento();
 			$content = '';
-			if (!isset($this->json['warehouse'])) return $content;
+			if (!isset($this->json['data']['warehouse'])) return $content;
 			
-			foreach ($this->json['warehouse'] as $whse) {
+			foreach ($this->json['data']['warehouse'] as $whse) {
 				$content .= '<h3>'.$whse['whse name'].'</h3>'; 
 				$tb = new Table('class=table table-striped table-bordered table-condensed table-excel no-bottom');
 				$tb->tablesection('thead')->tr();
@@ -67,7 +67,7 @@
 				$tb->tablesection('tbody');
 					foreach ($whse['lots'] as $lot) {
 						$tb->tr();
-						foreach ($warehousecolumns as $column) {
+						foreach (array_keys($this->json['columns']['warehouse']) as $column) {
 							$class = DplusWire::wire('config')->textjustify[$this->json['columns']['warehouse'][$column]['datajustify']];
 							$tb->td("class=$class", $lot[$column]);
 						}
