@@ -1,19 +1,26 @@
 <?php
+	$print = $input->get->text('view') == 'print' ? true : false;
+	
 	$iiusageformatter = $page->screenformatterfactory->generate_screenformatter('ii-usage');
+	$iiusageformatter->set_printpage($print);
 	$iiusageformatter->process_json();
 	
 	$iinotesformatter = $page->screenformatterfactory->generate_screenformatter('ii-notes');
+	$iinotesformatter->set_printpage($print);
 	$iinotesformatter->process_json();
 	
 	$iimiscformatter = $page->screenformatterfactory->generate_screenformatter('ii-misc');
+	$iimiscformatter->set_printpage($print);
 	$iimiscformatter->process_json();
 	
 	if ($config->ajax) {
-		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
+		$url = new Purl\Url($page->fullURL->getUrl());
+		$url->query->set('view', 'print');
+		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($url->getUrl(), 'View Printable Version'));
 	}
- ?>
 
-<?= $iiusageformatter->generate_iteminfotable(); ?>
+	$iiusageformatter->generate_iteminfotable();
+ ?>
 
 <!-- if print screen goes to else statement -->
 <?php if ($config->ajax) : ?>
@@ -41,15 +48,15 @@
 	</div>
 	<?= $iiusageformatter->generate_javascript(); ?>
 <?php else : ?>
-	<h3>Usage</h3>
+	<h2 class="page-header">Usage</h2>
 	<div id="usage">
 		<?= $iiusageformatter->process_andgeneratescreen(); ?>
 	</div>
-	<h3>Notes</h3>
+	<h2 class="page-header">Notes</h2>
 	<div id="notes">
 		<?= $iinotesformatter->process_andgeneratescreen(); ?>
 	</div>
-	<h3>Misc</h3>
+	<h2 class="page-header">Misc</h2>
 	<div id="misc">
 		<?= $iimiscformatter->process_andgeneratescreen(); ?>
 	</div>
