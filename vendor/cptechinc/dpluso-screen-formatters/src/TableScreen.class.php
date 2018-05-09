@@ -22,6 +22,12 @@
 		protected $debug = false;
 		
 		/**
+		 * format for print page?
+		 * @var bool
+		 */
+		protected $forprint = false;
+		
+		/**
 		 * Table Type
 		 * @var string normal | grid
 		 */
@@ -126,6 +132,14 @@
 		public function set_debug($debug) {
 			$this->debug = $debug;
 			$this->load_filepath();
+		}
+		
+		/** 
+		 * Turn debug on or Off
+		 * @param bool $debug
+		 */
+		public function set_printpage($forprint = false) {
+			$this->forprint = $forprint;
 		}
 		
 		/* =============================================================

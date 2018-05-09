@@ -18,7 +18,8 @@
 		if ($tableformatter->json['error']) {
 			echo $page->bootstrap->createalert('warning', $tableformatter->json['errormsg']);
 		} else {
-			$print = $input->get->text('view') == 'print' ? true : false;
+			$print = $input->get->text('View') == 'print' ? true : false;
+			$tableformatter->set_printpage($print);
 			echo $tableformatter->generate_screen($print);
             echo $tableformatter->generate_javascript();
 		}

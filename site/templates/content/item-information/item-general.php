@@ -15,26 +15,42 @@
 
 <?= $iiusageformatter->generate_iteminfotable(); ?>
 
-<div>
-	<ul class="nav nav-tabs" role="tablist">
-		<li role="presentation" class="active"><a href="#usage" aria-controls="usage" role="tab" data-toggle="tab">Usage</a></li>
-		<li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
-		<li role="presentation"><a href="#misc" aria-controls="misc" role="tab" data-toggle="tab">Misc</a></li>
-	</ul>
+<!-- if print screen goes to else statement -->
+<?php if ($config->ajax) : ?>
+	<div>
+		<ul class="nav nav-tabs" role="tablist">
+			<li role="presentation" class="active"><a href="#usage" aria-controls="usage" role="tab" data-toggle="tab">Usage</a></li>
+			<li role="presentation"><a href="#notes" aria-controls="notes" role="tab" data-toggle="tab">Notes</a></li>
+			<li role="presentation"><a href="#misc" aria-controls="misc" role="tab" data-toggle="tab">Misc</a></li>
+		</ul>
 
-	<div class="tab-content">
-		<div role="tabpanel" class="tab-pane active" id="usage">
-			<br>
-			<?= $iiusageformatter->process_andgeneratescreen(); ?>
-		</div>
-		<div role="tabpanel" class="tab-pane" id="notes">
-			<br>
-			<?= $iinotesformatter->process_andgeneratescreen(); ?>
-		</div>
-		<div role="tabpanel" class="tab-pane" id="misc">
-			<br>
-			<?= $iimiscformatter->process_andgeneratescreen(); ?>
+		<div class="tab-content">
+			<div role="tabpanel" class="tab-pane active" id="usage">
+				<br>
+				<?= $iiusageformatter->process_andgeneratescreen(); ?>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="notes">
+				<br>
+				<?= $iinotesformatter->process_andgeneratescreen(); ?>
+			</div>
+			<div role="tabpanel" class="tab-pane" id="misc">
+				<br>
+				<?= $iimiscformatter->process_andgeneratescreen(); ?>
+			</div>
 		</div>
 	</div>
-</div>
-<?= $iiusageformatter->generate_javascript(); ?>
+	<?= $iiusageformatter->generate_javascript(); ?>
+<?php else : ?>
+	<h3>Usage</h3>
+	<div id="usage">
+		<?= $iiusageformatter->process_andgeneratescreen(); ?>
+	</div>
+	<h3>Notes</h3>
+	<div id="notes">
+		<?= $iinotesformatter->process_andgeneratescreen(); ?>
+	</div>
+	<h3>Misc</h3>
+	<div id="misc">
+		<?= $iimiscformatter->process_andgeneratescreen(); ?>
+	</div>
+<?php endif; ?>
