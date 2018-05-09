@@ -935,6 +935,7 @@
 
 	function get_maxordertotal($sessionID, $custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
+		$q->field($q->expr('MAX(ordertotal)'));
 		$q->where('sessionid', $sessionID);
 		
 		if (!empty($custID)) {
@@ -956,6 +957,7 @@
 
 	function get_minordertotal($sessionID, $custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
+		$q->field($q->expr('MIN(ordertotal)'));
 		$q->where('sessionid', $sessionID);
 		
 		if (!empty($custID)) {
@@ -1452,6 +1454,7 @@
 	
 	function get_maxquotetotal($sessionID, $custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
+		$q->field($q->expr('MAX(ordertotal)'));
 		$q->where('sessionid', $sessionID);
 		
 		if (!empty($custID)) {
@@ -1472,6 +1475,7 @@
 	
 	function get_minquotetotal($sessionID, $custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
+		$q->field($q->expr('MIN(ordertotal)'));
 		$q->where('sessionid', $sessionID);
 		
 		if (!empty($custID)) {
