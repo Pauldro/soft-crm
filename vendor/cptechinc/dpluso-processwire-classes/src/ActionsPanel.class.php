@@ -192,6 +192,26 @@
 			$url->path = DplusWire::wire('config')->pages->useractions;
 			return $url->getUrl();
 		}
+		
+		
+		public function generate_loadurl() { 
+			$url = new \Purl\Url($this->pageurl);
+			$url->query->remove('filter');
+			foreach (array_keys($this->filterable) as $filtercolumns) {
+				$url->query->remove($filtercolumns);
+			}
+			return $url->getUrl();
+		}
+		
+		public function generate_clearfilterlink() {
+			$bootstrap = new Contento();
+			$href = $this->generate_loadurl();
+			$icon = $bootstrap->createicon('fa fa-times');
+			$ajaxdata = $this->generate_ajaxdataforcontento();
+			return $bootstrap->openandclose('a', "href=$href|class=load-link btn btn-sm btn-warning btn-block|$ajaxdata", "Clear Filter $icon");
+		}
+		
+		
 
 		/**
 		 * Returns URL to load add new action[type=$this->actiontype] form

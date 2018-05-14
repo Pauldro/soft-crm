@@ -20,7 +20,7 @@
 			<h2 class="text-center"><strong><?= date('F', strtotime($date)); ?> <?= $year; ?></strong></h2>
 			<?php if (date('M-Y', strtotime($date)) != date('M-Y')) : ?>
 				<div class="text-center">
-					<a href="<?= $actionpanel->generate_addmonthurl(date('m/d/Y'), 0); ?>" class="load-link" data-loadinto="<?= $actionpanel->loadinto; ?>" data-focus="<?= $actionpanel->focus; ?>">Go to this month</a> <i class="fa fa-calendar-o" aria-hidden="true"></i>
+					<a href="<?= $actionpanel->generate_addmonthurl(date('m/d/Y'), 0); ?>" class="load-link" data-loadinto="<?= $actionpanel->loadinto; ?>" data-focus="<?= $actionpanel->focus; ?>">Go to Current Month</a> <i class="fa fa-calendar-o" aria-hidden="true"></i>
 				</div>
 			<?php endif; ?>
 		</div>

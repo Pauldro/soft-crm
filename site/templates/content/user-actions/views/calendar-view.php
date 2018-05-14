@@ -20,7 +20,7 @@
 			<h2 class="text-center"><strong><?= date('F', strtotime($date)); ?> <?= $year; ?></strong></h2>
 			<?php if (date('M-Y', strtotime($date)) != date('M-Y')) : ?>
 				<div class="text-center">
-					<a href="<?= $actionpanel->generate_addmonthurl(date('m/d/Y'), 0); ?>" class="load-link" data-loadinto="<?= $actionpanel->loadinto; ?>" data-focus="<?= $actionpanel->focus; ?>">Go to this month</a> <i class="fa fa-calendar-o" aria-hidden="true"></i>
+					<a href="<?= $actionpanel->generate_addmonthurl(date('m/d/Y'), 0); ?>" class="load-link" data-loadinto="<?= $actionpanel->loadinto; ?>" data-focus="<?= $actionpanel->focus; ?>">Go to Current Month</a> <i class="fa fa-calendar-o" aria-hidden="true"></i>
 				</div>
 			<?php endif; ?>
 		</div>
@@ -37,23 +37,23 @@
 			<?php endif; ?>
 		</div>
 		<div class="col-sm-6">
-			<button type="button" class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#<?= $actionpanel->panelID.'-filter'; ?>" aria-expanded="false" aria-controls="<?= $actionpanel->panelID.'-filter'; ?>">
+			<button type="button" class="btn btn-sm btn-primary pull-right" data-toggle="collapse" data-target="#<?= $actionpanel->panelID.'-filter'; ?>" aria-expanded="false" aria-controls="<?= $actionpanel->panelID.'-filter'; ?>">
 				Toggle Filter
 			</button>
-			&nbsp; &nbsp;
-			<form action="<?= $actionpanel->generate_refreshurl(); ?>" class="form-ajax form-inline display-inline-block" data-loadinto="<?= $actionpanel->loadinto; ?>" data-focus="<?= $actionpanel->focus; ?>">
-			    <input type="hidden" name="filter" value="filter">
-				<input type="hidden" name="view" value="day">
-	            <label class="control-label">Go to Date</label> &nbsp; &nbsp;
-	            <div class="input-group date" style="width: 180px;">
-	                <?php $name = 'day'; $value = ''; ?>
-	                <?php include $config->paths->content."common/date-picker.php"; ?>
-	            </div>
-	            <button type="submit" class="btn btn-sm btn-success">Go</button>
-			</form>
 		</div>
 	</div>
+	</br>
 	<div class="<?= $input->get->filter ? '' : 'collapse'; ?> form-group" id="<?= $actionpanel->panelID.'-filter'; ?>">
+		<form action="<?= $actionpanel->generate_refreshurl(); ?>" class="form-ajax form-inline display-inline-block form-group" data-loadinto="<?= $actionpanel->loadinto; ?>" data-focus="<?= $actionpanel->focus; ?>">
+			<input type="hidden" name="filter" value="filter">
+			<input type="hidden" name="view" value="day">
+			<label class="control-label">Go to Date</label> &nbsp; &nbsp;
+			<div class="input-group date" style="width: 180px;">
+				<?php $name = 'day'; $value = ''; ?>
+				<?php include $config->paths->content."common/date-picker.php"; ?>
+			</div>
+			<button type="submit" class="btn btn-sm btn-success">Go</button>&nbsp; &nbsp;
+		</form>
 		<?php include $config->paths->content."user-actions/views/$actionpanel->paneltype/calendar/search-form.php"; ?>
 	</div>
 	<?= $actionpanel->generate_calendar($month, $year);?>

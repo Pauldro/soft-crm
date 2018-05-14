@@ -18,19 +18,18 @@
 			<a href="<?= $actionpanel->generate_calendarviewurl(); ?>" class="load-link" data-loadinto="#actions-panel" data-focus="#actions-panel"><b>View Calendar</b></a> <i class="fa fa-calendar" aria-hidden="true"></i>
 		</div>
 		<div class="col-sm-6">
-			<button type="button" class="btn btn-sm btn-primary" data-toggle="collapse" data-target="#<?= $actionpanel->panelID.'-filter'; ?>" aria-expanded="false" aria-controls="<?= $actionpanel->panelID.'-filter'; ?>">
+			<form action="<?= $actionpanel->generate_refreshurl(); ?>" class="form-ajax form-inline display-inline-block" data-loadinto="<?= $actionpanel->loadinto; ?>" data-focus="<?= $actionpanel->focus; ?>">
+				<input type="hidden" name="filter" value="filter">
+				<label class="control-label">Go to Date</label> &nbsp; &nbsp;
+				<div class="input-group date" style="width: 180px;">
+					<?php $name = 'day'; $value = ''; ?>
+					<?php include $config->paths->content."common/date-picker.php"; ?>
+				</div>
+				<button type="submit" class="btn btn-sm btn-success">Go</button>
+			</form>
+			<button type="button" class="btn btn-sm btn-primary pull-right" data-toggle="collapse" data-target="#<?= $actionpanel->panelID.'-filter'; ?>" aria-expanded="false" aria-controls="<?= $actionpanel->panelID.'-filter'; ?>">
 				Toggle Filter
 			</button>
-			&nbsp; &nbsp;
-			<form action="<?= $actionpanel->generate_refreshurl(); ?>" class="form-ajax form-inline display-inline-block" data-loadinto="<?= $actionpanel->loadinto; ?>" data-focus="<?= $actionpanel->focus; ?>">
-			    <input type="hidden" name="filter" value="filter">
-	            <label class="control-label">Go to Date</label> &nbsp; &nbsp;
-	            <div class="input-group date" style="width: 180px;">
-	                <?php $name = 'day'; $value = ''; ?>
-	                <?php include $config->paths->content."common/date-picker.php"; ?>
-	            </div>
-	            <button type="submit" class="btn btn-sm btn-success">Go</button>
-			</form>
 		</div>
 	</div>
 	<div class="<?= $input->get->filter ? '' : 'collapse'; ?> form-group" id="<?= $actionpanel->panelID.'-filter'; ?>">
@@ -38,6 +37,7 @@
 	</div>
 	<div class="row">
 		<div class="col-sm-6">
+			<h3>&nbsp;</h3>
 			<?php include $config->paths->content."user-actions/views/$actionpanel->paneltype/day/tables/$actionpanel->actiontype.php"; ?>
 		</div>
 		<div class="col-sm-6">
