@@ -192,26 +192,6 @@
 			$url->path = DplusWire::wire('config')->pages->useractions;
 			return $url->getUrl();
 		}
-		
-		
-		public function generate_loadurl() { 
-			$url = new \Purl\Url($this->pageurl);
-			$url->query->remove('filter');
-			foreach (array_keys($this->filterable) as $filtercolumns) {
-				$url->query->remove($filtercolumns);
-			}
-			return $url->getUrl();
-		}
-		
-		public function generate_clearfilterlink() {
-			$bootstrap = new Contento();
-			$href = $this->generate_loadurl();
-			$icon = $bootstrap->createicon('fa fa-times');
-			$ajaxdata = $this->generate_ajaxdataforcontento();
-			return $bootstrap->openandclose('a', "href=$href|class=load-link btn btn-sm btn-warning btn-block|$ajaxdata", "Clear Filter $icon");
-		}
-		
-		
 
 		/**
 		 * Returns URL to load add new action[type=$this->actiontype] form
@@ -241,6 +221,19 @@
 			$date->modify("$modify month");
 			$url = new Purl\Url($this->pageurl->getUrl());
 			$url->query->set('month', $date->format('M-Y'));
+			return $url->getUrl();
+		}
+		
+		/**
+		 * Returns URL to load panel without filtered search
+		 * @return string                 URL to load panel without filtered search
+		 */
+		public function generate_loadurl() { 
+			$url = new \Purl\Url($this->pageurl);
+			$url->query->remove('filter');
+			foreach (array_keys($this->filterable) as $filtercolumns) {
+				$url->query->remove($filtercolumns);
+			}
 			return $url->getUrl();
 		}
 		
@@ -318,6 +311,18 @@
 			$icon = $bootstrap->createicon('material-icons md-18', '&#xE86A;');
 			$ajaxdata = $this->generate_ajaxdataforcontento();
 			return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs load-link actions-refresh pull-right hidden-print|title=button|title=Refresh Actions|aria-label=Refresh Actions|$ajaxdata", $icon);
+		}
+
+		/**
+		 * Returns HTML Link to clear the filters from day search
+		 * @return string  HTML Link
+		 */
+		public function generate_clearfilterlink() {
+			$bootstrap = new Contento();
+			$href = $this->generate_loadurl();
+			$icon = $bootstrap->createicon('fa fa-times');
+			$ajaxdata = $this->generate_ajaxdataforcontento();
+			return $bootstrap->openandclose('a', "href=$href|class=load-link btn btn-sm btn-warning btn-block|$ajaxdata", "Clear Filter $icon");
 		}
 
 		/**
