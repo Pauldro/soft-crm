@@ -3,7 +3,7 @@
 	$salespersoncodes = array_keys($salespersonjson['data']);
 	$paginator = new Paginator($actionpanel->pagenbr, $actionpanel->count, $actionpanel->generate_refreshurl(), $actionpanel->paginateafter, $actionpanel->ajaxdata);
 	
-	$view = $input->get->text('view');
+	$actionpanel->set_view($input->get->text('view'));
 ?>
 <div class="panel panel-primary not-round" id="<?= $actionpanel->panelID; ?>">
 	<div class="panel-heading not-round" id="<?= $actionpanel->panelID.'-heading'; ?>">
@@ -21,7 +21,7 @@
 	</div>
 	<div class="<?= $actionpanel->collapse; ?>" id="actions-panel-body">
 		<?php
-			switch ($view) {
+			switch ($actionpanel->view) {
 				case 'day':
 					include $config->paths->content."user-actions/views/day-view.php";
 					break;

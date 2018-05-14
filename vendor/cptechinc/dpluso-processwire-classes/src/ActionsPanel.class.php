@@ -141,10 +141,10 @@
 			)
 		);
 
-
 		protected $panelID = 'actions-panel';
 		protected $panelbody = 'actions';
 		protected $paneltype = 'user';
+		protected $view = 'day';
 
 		/* =============================================================
 			CONSTRUCTOR FUNCTIONS
@@ -199,13 +199,13 @@
 		 */
 		public function generate_addactionurl() {
 			if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
-				$actiontype = ($this->actiontype == 'all') ? 'tasks' : $this->actiontype;
+				$actiontype = ($this->actiontype == 'all') ? 'task' : $this->actiontype;
 			} else {
 				$actiontype = '';
 			}
 			$url = new \Purl\Url($this->generate_refreshurl());
 			$url->path = DplusWire::wire('config')->pages->useractions."add/";
-			$url->query->set('actiontype', $actiontype);
+			$url->query->set('type', $actiontype);
 			return $url->getUrl();
 		}
 
@@ -222,6 +222,10 @@
 			$url = new Purl\Url($this->pageurl->getUrl());
 			$url->query->set('month', $date->format('M-Y'));
 			return $url->getUrl();
+		}
+		
+		public function set_view($view) {
+			$this->view = !empty($view) ? $view : $this->view;
 		}
 
 		/* =============================================================

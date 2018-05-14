@@ -1,8 +1,6 @@
 <?php
 	$editactiondisplay = new EditUserActionsDisplay($page->fullURL);
-	$task = new UserAction('tasks', $user->loginid);
 	$task->set('actiontype', 'tasks');
-	$task->set('assignedto', $user->loginid);
 ?>
 <div>
 	<ul class="nav nav-tabs" role="tablist">
@@ -21,7 +19,7 @@
 				<input type="hidden" name="actionlink" value="<?= $task->id; ?>">
 				<div class="response"></div>
 				<table class="table table-bordered table-striped">
-					<tr>  <td class="control-label">Task Date:</td> <td><?php echo date('m/d/Y g:i A'); ?></td> </tr>
+					<tr>  <td class="control-label">Task Date:</td> <td><?= date('m/d/Y g:i A'); ?></td> </tr>
 					<tr>
 						<td class="control-label">Assigned To:</td>
 						<td>

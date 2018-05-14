@@ -1,11 +1,21 @@
 <?php
-
 	switch ($input->urlSegment1) {
 		case 'add':
 			if ($input->requestMethod() == 'POST') { // CREATE IN CRUD
 				include $config->paths->content."actions/actions/crud/create-action.php";
 			} else { // SHOW FORM
 				$type = $input->get->text('type');
+				$action = new UserAction();
+				$action->set('assignedto', $user->loginid);
+				$action->set('customerlink', $input->get->text('custID'));
+				$action->set('shiptolink', $input->get->text('shiptoID'));
+				$action->set('contactlink', $input->get->text('contactID'));
+				$action->set('salesorderlink', $input->get->text('ordn'));
+				$action->set('quotelink', $input->get->text('qnbr'));
+				$action->set('actionlink', $input->get->text('actionID'));
+				$$type = $action;
+
+				$page->title = $action->generate_message("Creating $type for {replace}");
 				$page->body = $config->paths->content."user-actions/crud/create/$type-form.php";
 			}
 			break;
@@ -45,10 +55,12 @@
 
 				} elseif ($qnbr) {
 
-				} elseif ($contactID) {
-
-				} elseif ($custID) {
-
+				} elseif ($input->get->contactID) {
+					
+				} elseif ($input->get->custID) {
+					$actionpanel = new CustomerActionsPanel(session_id(), $page->fullURL, $input, $config->ajax);
+					$actionpanel->set_customer($input->get->text('custID'), $input->get->text('shiptoID'));
+					$page->body = $config->paths->content.'user-actions/user-actions-panel.php';
 				} else {
 					$actionpanel = new ActionsPanel(session_id(), $page->fullURL, $input, $config->ajax);
 					$page->body = $config->paths->content.'user-actions/user-actions-panel.php';

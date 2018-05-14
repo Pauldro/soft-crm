@@ -56,6 +56,16 @@
 				'datatype' => 'mysql-date',
 				'label' => 'Due Date',
 				'date-format' => "m/d/Y H:i:s"
+			),
+            'customerlink' => array(
+				'querytype' => 'in',
+				'datatype' => 'text',
+				'label' => 'Customer Link'
+			),
+            'shiptolink' => array(
+				'querytype' => 'in',
+				'datatype' => 'text',
+				'label' => 'Ship-to Link'
 			)
 		);
         
@@ -63,7 +73,7 @@
 		* Type Identifier
 		* @var string
 		*/
-        protected $type = 'customer';
+        protected $paneltype = 'customer';
         protected $input; 
         
         /* =============================================================
@@ -85,10 +95,24 @@
         /* =============================================================
 			SETTER FUNCTIONS
 		============================================================ */
-        public function set_customer($custID, $shiptiID = '') {
+        /**
+		 * Manipulates $this->pageurl path and query data as needed
+		 * then sets $this->paginateafter value
+		 * @return void
+		 */
+		public function setup_pageurl() {
+			$this->paginateafter = $this->paginateafter;
+            $this->pageurl->query->set('custID', $this->custID);
+            if (!(empty($this->shiptoID))) {
+                $this->pageurl->query->set('shiptoID', $this->shiptoID);
+            }
+		}
+        
+        public function set_customer($custID, $shiptoID = '') {
             $this->custID = $custID;
             $this->shiptoID = $shiptoID;
             $this->generate_filter($this->input);
+            $this->setup_pageurl();
         }
         
         public function generate_filter(ProcessWire\WireInput $input) {
@@ -98,3 +122,33 @@
                 $this->filters['shiptolink'] = array($this->shiptoID);
             }
 		}
+        
+        /**
+		 * Returns URL to load add new action[type=$this->actiontype] form
+		 * @return string                 URL to load add new action[type=$this->actiontype] form
+		 */
+		public function generate_addactionurl() {
+			$url = new Purl\Url(parent::generate_addactionurl());
+            $url->query->set('custID', $this->custID);
+            if (!empty($this->shiptoID)) {
+                $url->query->set('shiptoID', $this->shiptoID);
+            }
+            return $url->getUrl();
+		}
+        
+        /**
+		* Generates title for Panel
+		* @return string
+		*/
+		public function generate_title() {
+			return 'Customer Actions';
+		}
+        
+        /**
+		* Returns if the panel should have the add link
+		* @return bool
+		*/
+		public function should_haveaddlink() {
+			return true;
+		}
+    }
