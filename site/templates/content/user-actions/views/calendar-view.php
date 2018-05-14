@@ -32,9 +32,7 @@
 	</div>
 	<div class="row">
 		<div class="col-sm-6">
-			<?php if (date('m/d/Y', strtotime($date)) != date('m/d/Y')) : ?>
-				<a href="<?= $actionpanel->generate_dayviewurl(date('m/d/Y')); ?>" class="load-link" data-loadinto="#actions-panel" data-focus="#actions-panel"><b>Go to Today</b> <i class="glyphicon glyphicon-calendar"></i></a>
-			<?php endif; ?>
+			<a href="<?= $actionpanel->generate_dayviewurl(date('m/d/Y')); ?>" class="load-link" data-loadinto="#actions-panel" data-focus="#actions-panel"><b>Go to Today</b> <i class="glyphicon glyphicon-calendar"></i></a>
 		</div>
 		<div class="col-sm-6">
 			<button type="button" class="btn btn-sm btn-primary pull-right" data-toggle="collapse" data-target="#<?= $actionpanel->panelID.'-filter'; ?>" aria-expanded="false" aria-controls="<?= $actionpanel->panelID.'-filter'; ?>">
