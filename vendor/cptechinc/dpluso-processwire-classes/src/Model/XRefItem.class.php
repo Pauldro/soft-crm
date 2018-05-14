@@ -1,4 +1,4 @@
-<?php 
+<?php
 	/**
 	 * Class for Items that reside in the itemsearch table
 	 */
@@ -6,63 +6,63 @@
         use CreateFromObjectArrayTraits;
 		use CreateClassArrayTraits;
 		use ThrowErrorTrait;
-        
+
 		/**
 		 * Part or Item (ID or #)
 		 * @var string
 		 */
         protected $itemid;
-		
+
 		/**
 		 * Where itemid originates
 		 * (V)endor | (Item) | (C)ustomer
 		 * @var string
 		 */
         protected $origintype;
-		
+
 		/**
 		 * he ItemID / Part # used by Vendor or Customer
 		 * @var string
 		 */
         protected $refitemid;
-		
-		/** 
+
+		/**
 		 * Item Description
 		 * @var string
 		 */
         protected $desc1;
-		
+
 		/**
 		 * Secondary Item Description
 		 * @var string
 		 */
         protected $desc2;
-		
+
 		/**
 		 * Image filename
 		 * @var string
 		 */
         protected $image;
-		
+
 		/**
 		 * Date updted In Database
 		 * @var int
 		 */
         protected $create_date;
-		
+
 		/**
 		 * Time updated in Database
 		 * @var int
 		 */
         protected $create_time;
-		
+
 		/**
 		 * If Item is Active
-		 * @var string 
+		 * @var string
 		 * (A)ctive | (D)elete when empty | (I)nactive
 		 */
         protected $activestatus;
-		
+
 		/**
 		 * Aliases that properties might use or have
 		 * so the __get function can lookup and find
@@ -71,7 +71,7 @@
         public $fieldaliases = array(
             'itemID' => 'itemid',
         );
-        
+
 		/* ============================================================
 			GETTER FUNCTIONS
 		============================================================ */
@@ -92,31 +92,31 @@
                 return false;
             }
         }
-        
+
 		/**
 		 * Checks if Item image exists if not use the image not found
 		 * @return string path/to/image
 		 */
         public function generate_imagesrc() {
-            if (file_exists(Dpluswire::wire('config')->imagefiledirectory.$this->image)) {
-                return Dpluswire::wire('config')->imagedirectory.$this->image;
+            if (file_exists(DplusWire::wire('config')->imagefiledirectory.$this->image)) {
+                return DplusWire::wire('config')->imagedirectory.$this->image;
             } else {
-                return Dpluswire::wire('config')->imagedirectory.Dpluswire::wire('config')->imagenotfound;
+                return DplusWire::wire('config')->imagedirectory.DplusWire::wire('config')->imagenotfound;
             }
         }
-        
+
 		/**
 		 * Returns URL to Load the Item Information page for this item
 		 * @param  mixed $custID Provide Customer ID if pricing and other things need to be for particular customer
 		 * @return string         II Load URL
 		 */
         public function generate_iiselecturl($custID = false) {
-            $url = new \Purl\Url(Dpluswire::wire('config')->pages->products."redir/?action=ii-select");
+            $url = new \Purl\Url(DplusWire::wire('config')->pages->products."redir/?action=ii-select");
             if (!empty($custID)) $url->query->set('custID', $custID);
             $url->query->set('itemID', $this->itemid);
             return $url->getUrl();
         }
-        
+
 		/**
 		 * Returns the string for javascript function for this particular item for CI
 		 * @param  string $action Action to to run
@@ -136,7 +136,7 @@
             }
             return $onclick;
         }
-		
+
 		/**
 		 * Returns the string for javascript function for this particular item for VI
 		 * @param  string $action Action to to run
@@ -153,10 +153,10 @@
             }
             return $onclick;
 		}
-        
-        
+
+
         /* ============================================================
-			GENERATE ARRAY FUNCTIONS 
+			GENERATE ARRAY FUNCTIONS
 			The following are defined CreateClassArrayTraits
 			public static function generate_classarray()
 			public function _toArray()
@@ -171,7 +171,7 @@
 			unset($array['fieldaliases']);
  			return $array;
  		}
-		
+
 		/* ============================================================
 			CRUD FUNCTIONS
 		============================================================ */

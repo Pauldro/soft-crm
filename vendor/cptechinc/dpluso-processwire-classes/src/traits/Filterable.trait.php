@@ -1,4 +1,4 @@
-<?php 
+<?php
 	trait Filterable {
 		/**
 		 * Looks through the $input->get for properties that have the same name
@@ -26,8 +26,8 @@
 				}
 			}
 		}
-		
-		
+
+
 		/**
 		 * Looks through the $input->get for properties that have the same name
 		 * as filterable properties, then we populate $this->filter with the key and value
@@ -54,7 +54,7 @@
 				}
 			}
 		}
-		
+
 		/**
 		 * Grab the value of the filter at index
 		 * Goes through the $this->filters array, looks at index $filtername
@@ -70,7 +70,7 @@
 			}
 			return '';
 		}
-		
+
 		/**
 		 * Checks if $this->filters has value of $value
 		 * @param  string $key        string

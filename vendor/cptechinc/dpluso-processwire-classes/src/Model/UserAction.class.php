@@ -166,7 +166,7 @@
 			$replace .= $this->has_contactlink() ? " Contact: " . $this->contactlink : '';
 			$replace .= $this->has_salesorderlink() ? " Sales Order #" . $this->salesorderlink : '';
 			$replace .= $this->has_quotelink() ? " Quote #" . $this->quotelink : '';
-			$replace .= $this->has_actionlink() ? " Action #" . $this->actionlink : '';
+			// $replace .= $this->has_actionlink() ? " Action #" . $this->actionlink : '';
 			$replace = trim($replace);
 
 			if (empty($replace)) {
@@ -243,15 +243,16 @@
 		 * @return array UserActions
 		 */
 		public function get_actionlineage() {
+			$lineage = array();
 			if ($this->has_actionlink()) {
 				$parentid = $this->actionlink;
 				while ($parentid != '') {
-					$this->actionlineage[] = $parentid;
+					$lineage[] = $parentid;
 					$parent = UserAction::load($parentid);
 					$parentid = $parent->actionlink;
 				}
 			}
-			return $this->actionlineage;
+			return $lineage;
 		}
 		/* =============================================================
 			CRUD FUNCTIONS
