@@ -35,7 +35,7 @@
         </div>
         <div class="col-xs-6">
             <?php if ($input->get->filter) : ?>
-                <a href="#" class="btn btn-sm btn-warning btn-block"><i class="fa fa-times" aria-hidden="true"></i> Clear Filter</a>
+                <?php echo $actionpanel->generate_clearfilterlink(); ?>
             <?php endif; ?>
         </div>
     </div>
