@@ -60,7 +60,9 @@
 				} elseif ($qnbr) {
 
 				} elseif ($input->get->contactID) {
-
+					$actionpanel = new ContactActionsPanel(session_id(), $page->fullURL, $input, $config->ajax);
+					$actionpanel->set_contact($input->get->text('custID'), $input->get->text('shiptoID'), $input->get->text('contactID'));
+					$page->body = $config->paths->content.'user-actions/user-actions-panel.php';
 				} elseif ($input->get->custID) {
 					$actionpanel = new CustomerActionsPanel(session_id(), $page->fullURL, $input, $config->ajax);
 					$actionpanel->set_customer($input->get->text('custID'), $input->get->text('shiptoID'));
