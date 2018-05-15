@@ -2320,7 +2320,10 @@
 
 	function count_dayallactions($day, $filters, $filterable, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
-		$taskquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', 'tasks')->where($q->expr('DATE(duedate)'), $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('duedate', $filterable)]));
+		$taskquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', 'tasks');
+		if (!isset($filters['datecompleted'])) {
+			$taskquery->where($q->expr('DATE(duedate)'), $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('duedate', $filterable)]));
+		}
 		$actionsquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', '!=', 'tasks')->where($q->expr('DATE(datecreated)'), $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('datecreated', $filterable)]));
 
 		$q->field($q->expr('COUNT(*)'));
@@ -2340,7 +2343,10 @@
 
 	function get_dayallactions($day, $filters, $filterable, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
-		$taskquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', 'tasks')->where($q->expr('DATE(duedate)'), $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('duedate', $filterable)]));
+		$taskquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', 'tasks');
+		if (!isset($filters['datecompleted'])) {
+			$taskquery->where($q->expr('DATE(duedate)'), $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('duedate', $filterable)]));
+		}
 		$actionsquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', '!=', 'tasks')->where($q->expr('DATE(datecreated)'), $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('datecreated', $filterable)]));
 
 		$q->where(

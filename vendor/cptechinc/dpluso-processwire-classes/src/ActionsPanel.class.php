@@ -251,7 +251,7 @@
 
 		/**
 		 * Returns URL to load add new action[type=$this->actiontype] form
-		 * @return string                 URL to load add new action[type=$this->actiontype] form
+		 * @return string URL to load add new action[type=$this->actiontype] form
 		 */
 		public function generate_addactionurl() {
 			if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
@@ -444,7 +444,7 @@
 		public function get_daytasks($day, $debug = false) {
 			$filters = $this->filters;
 			$filters['actiontype'] = array('tasks');
-			return count_dayallactions($day, $filters, $this->filterable, $debug);
+			return get_dayallactions($day, $filters, $this->filterable, $debug);
 		}
 
 		/**
@@ -573,6 +573,20 @@
 			$icon = $bootstrap->createicon('material-icons md-18', '&#xE86A;');
 			$ajaxdata = $this->generate_ajaxdataforcontento();
 			return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs load-link actions-refresh pull-right hidden-print|title=button|title=Refresh Actions|aria-label=Refresh Actions|$ajaxdata", $icon);
+		}
+
+		/**
+		 * Returns HTML Link to Add a new action
+		 * @return string HTML Link
+		 */
+		public function generate_addlink() {
+			$bootstrap = new Contento();
+			$href = $this->generate_addactionurl();
+			$icon = $bootstrap->createicon('material-icons md-18', '&#xE146;');
+			if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
+				return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs load-into-modal pull-right hidden-print|data-modal=$this->modal|role=button|title=Add Action", $icon);
+			}
+			return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs add-action pull-right hidden-print|data-modal=$this->modal|role=button|title=Add Action", $icon);
 		}
 
 		/**
