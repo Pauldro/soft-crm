@@ -2,7 +2,10 @@
 	switch ($input->urlSegment1) {
 		case 'add':
 			if ($input->requestMethod() == 'POST') { // CREATE IN CRUD
-				include $config->paths->content."actions/actions/crud/create-action.php";
+				$config->json = true;
+				// MOST Actions will have a verb-type format. ex. create-task reschedule-task
+				$type = preg_replace("(\w+-)", '', $input->post->text('action'));
+				$page->body = $config->paths->content."user-actions/crud/create/$type.php";
 			} else { // SHOW FORM
 				$type = $input->get->text('type');
 				$action = new UserAction();
@@ -38,6 +41,7 @@
 				} else {
 					$message = "Writing $type for {replace} ";
 					$page->title = $action->generate_message($message);
+					$editactiondisplay = new EditUserActionsDisplay($page->fullURL);
 					include $config->paths->content."user-actions/crud/update/$type-form-router.php";
 				}
 			}
@@ -56,7 +60,7 @@
 				} elseif ($qnbr) {
 
 				} elseif ($input->get->contactID) {
-					
+
 				} elseif ($input->get->custID) {
 					$actionpanel = new CustomerActionsPanel(session_id(), $page->fullURL, $input, $config->ajax);
 					$actionpanel->set_customer($input->get->text('custID'), $input->get->text('shiptoID'));

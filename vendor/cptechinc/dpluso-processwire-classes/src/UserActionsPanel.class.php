@@ -10,18 +10,18 @@
         public $partialid = 'actions';
         public $modal = '#ajax-modal';
         public $pageurl = false;
-        
+
         public $ajaxdata;
         public $throughajax = false;
         public $loadintomodal = false;
         public $collapse = 'collapse';
         //public $tablesorter; // Will be instatnce of TablePageSorter
-        
+
         public $pagenbr = 0;
         public $count = 0;
-        
+
         public $paginator = false;
-        
+
         public $completed = false;
         public $rescheduled = false;
         public $taskstatus = 'N';
@@ -29,9 +29,9 @@
         public $taskstatuses = array('Y' => 'Completed', 'N' => 'Not Completed', 'R' => 'Rescheduled');
         public $userID;
         public $assigneduserID;
-        
+
         /* =============================================================
- 		   CONSTRUCTOR FUNCTIONS 
+ 		   CONSTRUCTOR FUNCTIONS
  	   ============================================================ */
         public function __construct($sessionID, $actiontype, \Purl\Url $pageurl, $throughajax, $isinmodal, $taskstatus = null) {
             $this->sessionID = $sessionID;
@@ -47,31 +47,31 @@
 			$this->ajaxdata = 'data-loadinto="'.$this->loadinto.'" data-focus="'.$this->focus.'"';
             $this->throughajax = $throughajax;
             $this->collapse = $throughajax ? '' : 'collapse';
-            
+
             $this->userID = Processwire\wire('user')->loginid;
             $this->assigneduserID = Processwire\wire('user')->loginid;
             $this->setup_tasks($taskstatus);
             $this->start_querylinks();
         }
-        
+
         /* =============================================================
- 		   SETTER FUNCTIONS 
+ 		   SETTER FUNCTIONS
  	   ============================================================ */
         public function update_assignedtouserID($userID) {
             $this->assigneduserID = $userID;
             $this->start_querylinks();
         }
-        
+
 		public function setup_completedtasks() {
             $this->taskstatus = 'Y';
 			$this->completed = true;
 		}
-        
+
         public function setup_rescheduledtasks() {
             $this->taskstatus = 'R';
 			$this->rescheduled = true;
 		}
-        
+
         public function setup_tasks($status) {
             switch ($status) {
         		case 'Y':
@@ -82,7 +82,7 @@
         			break;
         	}
         }
-        
+
         public function generate_databasetaskstatus() {
             if ($this->actiontype == 'tasks') {
                 switch ($this->taskstatus) {
@@ -96,7 +96,7 @@
                 return '';
             }
         }
-        
+
         public function start_querylinks() {
             $this->querylinks = UserAction::generate_classarray();
             $this->querylinks['assignedto'] = $this->assigneduserID;
@@ -105,9 +105,9 @@
                 $this->querylinks['actiontype'] = $this->actiontype;
             }
         }
-        
+
         /* GENERATE URLS - URLS ARE THE HREF VALUE */
-       public function generate_refreshurl($keepactiontype = false) { 
+       public function generate_refreshurl($keepactiontype = false) {
             $actionpath = ($keepactiontype) ? $this->actiontype : '{replace}';
             $url = new \Purl\Url($this->pageurl->getUrl());
             $url->path = Processwire\wire('config')->pages->actions.$actionpath."/load/list/";
@@ -119,7 +119,7 @@
 			if ($this->loadintomodal) { $url->query->set('modal', 'modal'); }
 			return $url->getUrl();
 		}
-        
+
 		function generate_addactionurl($keepactiontype = false) {
             if (Processwire\wire('config')->cptechcustomer == 'stempf') {
                 $actionpath = ($this->actiontype == 'all') ? 'tasks' : $this->actiontype;
@@ -130,15 +130,15 @@
             $url->path = Processwire\wire('config')->pages->actions.$actionpath."/add/";
 			return $url->getUrl();
 		}
-        
+
         public function generate_removeassigneduserIDurl() {
             $url = new \Purl\Url($this->generate_refreshurl(true));
             $url->query->remove('assignedto');
             return $url->getUrl();
         }
-        
+
         /* =============================================================
-			CLASS FUNCTIONS 
+			CLASS FUNCTIONS
 		============================================================ */
         /* = GENERATE LINKS - LINKS ARE THE HTML MARKUP FOR LINKS */
          public function generate_refreshlink() {
@@ -148,25 +148,25 @@
              $ajaxdata = $this->generate_ajaxdataforcontento();
              return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs load-link actions-refresh pull-right hidden-print|title=button|title=Refresh Actions|aria-label=Refresh Actions|$ajaxdata", $icon);
          }
-         
+
          public function generate_printlink() {
              $bootstrap = new Contento();
              $href = $this->generate_refreshurl(true);
              $icon = $bootstrap->createicon('glyphicon glyphicon-print');
              return $bootstrap->openandclose('a', "href=$href|class=h3|target=_blank", $icon." View Printable");
          }
-         
+
          function generate_addlink() {
 			 if (get_class($this) == 'UserActionsPanel') return '';
              $bootstrap = new Contento();
              $href = $this->generate_addactionurl();
              $icon = $bootstrap->createicon('material-icons md-18', '&#xE146;');
-             if (Dpluswire::wire('config')->cptechcustomer == 'stempf') {
+             if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
                  return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs load-into-modal pull-right hidden-print|data-modal=$this->modal|role=button|title=Add Action", $icon);
              }
              return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs add-action pull-right hidden-print|data-modal=$this->modal|role=button|title=Add Action", $icon);
          }
-         
+
          public function generate_removeassigneduserIDlink() {
              $bootstrap = new Contento();
              $href = $this->generate_removeassigneduserIDurl();
@@ -174,7 +174,7 @@
              $ajaxdata = $this->generate_ajaxdataforcontento();
              return $bootstrap->openandclose('a', "href=$href|class=btn btn-warning btn-xs load-link pull-right hidden-print|title=button|title=Return to Your Actions|aria-label=Return to Your Actions|$ajaxdata", $icon.' Remove User lookup');
          }
-         
+
          /* CONTENT FUNCTIONS  */
         public function generate_rowclass($action) {
             if ($action->actiontype == 'tasks') {
@@ -182,7 +182,7 @@
                     return 'bg-info';
                 }
                 if ($action->is_overdue()) {
-                    return 'bg-warning';    
+                    return 'bg-warning';
                 }
                 if ($action->is_completed()) {
                     return 'bg-success';
@@ -190,7 +190,7 @@
             }
             return '';
         }
-        
+
         public function generate_actionstable() {
             $actions = $this->get_actions();
              $table = false;
@@ -210,7 +210,7 @@
              }
              return $table;
          }
-         
+
          public function draw_allactionstable($actions) {
              $tb = new Table('class=table table-bordered table-condensed table-striped');
              $tb->tablesection('thead');
@@ -222,7 +222,7 @@
                      $tb->tr();
                      $tb->td('colspan=6|class=text-center h4', 'No related actions found');
                  }
-                 
+
                  foreach ($actions as $action) {
                      $class = $this->generate_rowclass($action);
                      $tb->tr("class=$class");
@@ -236,7 +236,7 @@
              $tb->closetablesection('tbody');
              return $tb->close();
          }
-         
+
          public function draw_actionstable($actions) { // DEPRECATED 02/21/2018
              $tb = new Table('class=table table-bordered table-condensed table-striped');
              $tb->tablesection('thead');
@@ -248,10 +248,10 @@
                      $tb->tr();
                      $tb->td('colspan=5|class=text-center h4', 'No related actions found');
                  }
-                 
+
                  foreach ($actions as $action) {
                      $class = $this->generate_rowclass($action);
-                     
+
                      $tb->tr("class=$class");
                      $tb->td('', date('m/d/Y g:i A', strtotime($action->datecreated)));
                      $tb->td('', ucfirst($action->generate_actionsubtypedescription()));
@@ -262,7 +262,7 @@
              $tb->closetablesection('tbody');
              return $tb->close();
          }
-         
+
          public function draw_notestable($notes) {
              $tb = new Table('class=table table-bordered table-condensed table-striped');
              $tb->tablesection('thead');
@@ -273,10 +273,10 @@
                  if (!sizeof($this->count)) {
                      $tb->td('colspan=4|class=text-center h4', 'No related actions found');
                  }
-                 
+
                  foreach ($notes as $note) {
                      $class = $this->generate_rowclass($note);
-                     
+
                      $tb->tr("class=$class");
                      $tb->td('', ucfirst($note->generate_actionsubtypedescription()));
                      $tb->td('', $note->customerlink.' - '.Customer::get_customernamefromid($note>customerlink, '', false));
@@ -286,7 +286,7 @@
              $tb->closetablesection('tbody');
              return $tb->close();
          }
-         
+
          public function draw_taskstable($tasks) {
              $form = $this->generate_changetaskstatusview();
              $tb = new Table('class=table table-bordered table-condensed table-striped');
@@ -298,7 +298,7 @@
                  if (!sizeof($this->count)) {
                      $tb->td('colspan=6|class=text-center h4', 'No related actions found');
                  }
-                 
+
                  foreach ($tasks as $task) {
                      $class = $this->generate_rowclass($task);
                      $tb->tr("class=$class");
@@ -313,7 +313,7 @@
              $tb->closetablesection('tbody');
              return $form . $tb->close();
          }
-         
+
          public function generate_changetaskstatusview() {
              $bootstrap = new Contento();
              $ajaxdata = $this->generate_ajaxdataforcontento();
@@ -329,7 +329,7 @@
              $form->add($form->bootstrap->close('div'));
              return $form->finish();
          }
-         
+
          public function generate_legend() {
  			$bootstrap = new Contento();
  			$tb = new Table('class=table table-bordered table-condensed table-striped');
@@ -341,7 +341,7 @@
  			$attr .= "|data-html=true|title=Icons Definition|data-content=$content";
  			return $bootstrap->openandclose('a', $attr, 'Icon Definitions');
  		}
-         
+
          public function generate_completetasklink(UserAction $task) {
              $bootstrap = new Contento();
              $href = $this->generate_viewactionjsonurl($task);
@@ -349,15 +349,15 @@
              $icon .= ' <span class="sr-only">Mark as Complete</span>';
              return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-xs btn-primary complete-action|title=Mark Task as Complete", $icon);
          }
-             
-        /** 
+
+        /**
          * Generates insertafter string for Paginator object to put the pagination string after
-         * @return string 
+         * @return string
          */
-		public function generate_insertafter() { 
+		public function generate_insertafter() {
 			return $this::$type . "/";
 		}
-        
+
         /**
          * Checks if USER and the and $this->assigneduserID are equal
          * and if not return true
@@ -366,16 +366,16 @@
         public function should_haveremoveuserIDlink() {
             return ($this->userID != $this->assigneduserID) ? true : false;
         }
-        
-        /** 
+
+        /**
          * Generates title for Panel
          * Will be overwritten by children
-         * @return string 
+         * @return string
          */
 		public function generate_title() {
 			return 'Your Actions';
 		}
-        
+
         /**
          * Returns if the panel should have the add link
          * Will be overwritten by children
@@ -384,7 +384,7 @@
         public function should_haveaddlink() {
             return true;
         }
-        
+
         public function count_actions($debug = false, $overridelinks = false) {
             $querylinks = $overridelinks ? array_merge($this->querylinks, $overridelinks) : $this->querylinks;
             if ($debug) {
@@ -397,15 +397,15 @@
                 }
             }
         }
-        
+
         public function get_actions($debug = false) {
             return get_useractions($this->assigneduserID, $this->querylinks, DplusWire::wire('session')->display, $this->pagenbr, $debug);
         }
-        
+
         public function generate_pagenumberdescription() {
             return ($this->pagenbr > 1) ? "Page $this->pagenbr" : '';
         }
-        
+
         public function generate_ajaxdataforcontento() {
             return str_replace(' ', '|', str_replace("'", "", str_replace('"', '', $this->ajaxdata)));
         }

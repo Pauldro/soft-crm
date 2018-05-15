@@ -1,4 +1,8 @@
 <?php
+	/**
+	 * Class for dealing with the display of arrays of UserAction
+	 * Content
+	 */
 	class ActionsPanel extends UserActionDisplay {
 		use Filterable;
 		use AttributeParser;
@@ -124,7 +128,7 @@
 
 		/**
 		 * Task Status and the possible values they could have
-		 * @var [type]
+		 * @var array
 		 */
 		protected $taskstatuses = array(
 			'completed' => array(
@@ -141,9 +145,31 @@
 			)
 		);
 
+		/**
+		 * Panel element ID
+		 * NOTE: used for AJAX
+		 * @var string
+		 */
 		protected $panelID = 'actions-panel';
+
+		/**
+		 * Panel Body Element
+		 * @var string
+		 */
 		protected $panelbody = 'actions';
+
+		/**
+		 * Panel Type
+		 * Who or what the actions are being filtered to
+		 * @var string
+		 */
 		protected $paneltype = 'user';
+
+		/**
+		 * What kind of view to start with
+		 * day | calendar | list
+		 * @var string
+		 */
 		protected $view = 'day';
 
 		/* =============================================================
@@ -171,227 +197,8 @@
 		}
 
 		/* =============================================================
-			SETTER FUNCTIONS
+			GETTER FUNCTIONS
 		============================================================ */
-		/**
-		 * Manipulates $this->pageurl path and query data as needed
-		 * then sets $this->paginateafter value
-		 * @return void
-		 */
-		public function setup_pageurl() {
-			$this->paginateafter = $this->paginateafter;
-		}
-
-		/* GENERATE URLS - URLS ARE THE HREF VALUE */
-		/**
-		 * Returns URL of the panel's state
-		 * @return string URL
-		 */
-		public function generate_refreshurl() {
-			$url = new \Purl\Url($this->pageurl->getUrl());
-			$url->path = DplusWire::wire('config')->pages->useractions;
-			return $url->getUrl();
-		}
-
-		/**
-		 * Returns URL to load add new action[type=$this->actiontype] form
-		 * @return string                 URL to load add new action[type=$this->actiontype] form
-		 */
-		public function generate_addactionurl() {
-			if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
-				$actiontype = ($this->actiontype == 'all') ? 'task' : $this->actiontype;
-			} else {
-				$actiontype = '';
-			}
-			$url = new \Purl\Url($this->generate_refreshurl());
-			$url->path = DplusWire::wire('config')->pages->useractions."add/";
-			$url->query->set('type', $actiontype);
-			return $url->getUrl();
-		}
-
-		/**
-		 * Returns URL to go to a month by adding to $date's month
-		 * @param  string  $date String formatted date
-		 * @param  int     $add  Number of months to add, can be negative
-		 * @return string        URL to view calendar at month that is $add months from $date
-		 */
-		public function generate_addmonthurl($date, $add = 1) {
-			$date = $date ? new DateTime($date) : new DateTime();
-			$modify = $add > 0 ? "+$add" : "$add";
-			$date->modify("$modify month");
-			$url = new Purl\Url($this->pageurl->getUrl());
-			$url->query->set('month', $date->format('M-Y'));
-			return $url->getUrl();
-		}
-		
-		/**
-		 * Returns URL to load panel without filtered search
-		 * @return string                 URL to load panel without filtered search
-		 */
-		public function generate_loadurl() { 
-			$url = new \Purl\Url($this->pageurl);
-			$url->query->remove('filter');
-			foreach (array_keys($this->filterable) as $filtercolumns) {
-				$url->query->remove($filtercolumns);
-			}
-			return $url->getUrl();
-		}
-		
-		public function set_view($view) {
-			$this->view = !empty($view) ? $view : $this->view;
-		}
-
-		/* =============================================================
-			CLASS FUNCTIONS
-		============================================================ */
-		/**
-		 * Returns the URL to view the actions in a calendar view
-		 * @return string URL to calendar view
-		 */
-		public function generate_calendarviewurl() {
-			$url = new Purl\Url($this->generate_refreshurl());
-			$url->query->set('view', 'calendar');
-			if ($url->query->get('day')) {
-				$monthyear = date('M-Y', strtotime($url->query->get('day')));
-				$url->query->set('month', $monthyear);
-				$url->query->remove('day');
-			}
-			return $url->getUrl();
-		}
-
-		/**
-		 * Returns the URL to view the actions in a day view
-		 * @param  string $date Datetime string usually in (m/d/Y) format
-		 * @return string       URL to day view
-		 */
-		public function generate_dayviewurl($date) {
-			$date = $date ? date('m/d/Y', strtotime($date)) : date('m/d/Y');
-			$url = new Purl\Url($this->generate_refreshurl());
-			$url->query->set('view', 'day');
-			$url->query->set('day', $date);
-			return $url->getUrl();
-		}
-
-		public function generate_dayviewscheduledtasks($date) {
-			$date = $date ? date('m/d/Y', strtotime($date)) : date('m/d/Y');
-			$url = new Purl\Url($this->generate_dayviewurl($date));
-			$url->query->set('actiontype', array('tasks'));
-			$url->query->set('duedate', array($date));
-			return $url->getUrl();
-		}
-
-		public function generate_daynotescreated($date) {
-			$date = $date ? date('m/d/Y', strtotime($date)) : date('m/d/Y');
-			$url = new Purl\Url($this->generate_dayviewurl($date));
-			$url->query->set('actiontype', array('notes'));
-			$url->query->set('datecreated', array($date));
-			return $url->getUrl();
-		}
-
-		/**
-		 * Returns the URL to view the panel in List View
-		 * @return string URL to load List View
-		 */
-		public function generate_listviewurl() {
-			$url = new Purl\Url($this->generate_refreshurl());
-			$url->query->remove('day');
-			$url->query->remove('month');
-			$url->query->set('view', 'list');
-			return $url->getUrl();
-		}
-
-		/* = GENERATE LINKS - LINKS ARE THE HTML MARKUP FOR LINKS */
-		/**
-		 * Returns HTML Link to refresh the panel
-		 * @return string  HTML Link
-		 */
-		public function generate_refreshlink() {
-			$bootstrap = new Contento();
-			$href = $this->generate_refreshurl();
-			$icon = $bootstrap->createicon('material-icons md-18', '&#xE86A;');
-			$ajaxdata = $this->generate_ajaxdataforcontento();
-			return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs load-link actions-refresh pull-right hidden-print|title=button|title=Refresh Actions|aria-label=Refresh Actions|$ajaxdata", $icon);
-		}
-
-		/**
-		 * Returns HTML Link to clear the filters from day search
-		 * @return string  HTML Link
-		 */
-		public function generate_clearfilterlink() {
-			$bootstrap = new Contento();
-			$href = $this->generate_loadurl();
-			$icon = $bootstrap->createicon('fa fa-times');
-			$ajaxdata = $this->generate_ajaxdataforcontento();
-			return $bootstrap->openandclose('a', "href=$href|class=load-link btn btn-sm btn-warning btn-block|$ajaxdata", "Clear Filter $icon");
-		}
-
-		/**
-		 * Returns a HTML Link to view the Printable version of this Page
-		 * @return string HTML Link to Print Page
-		 */
-		public function generate_printlink() {
-			$bootstrap = new Contento();
-			$href = $this->generate_refreshurl();
-			$icon = $bootstrap->createicon('glyphicon glyphicon-print');
-			return $bootstrap->openandclose('a', "href=$href|class=h3|target=_blank", $icon." View Printable");
-		}
-
-
-		public function generate_addlink() {
-			if (get_class($this) == 'UserActionsPanel') return '';
-			$bootstrap = new Contento();
-			$href = $this->generate_addactionurl();
-			$icon = $bootstrap->createicon('material-icons md-18', '&#xE146;');
-			if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
-				return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs load-into-modal pull-right hidden-print|data-modal=$this->modal|role=button|title=Add Action", $icon);
-			}
-			return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs add-action pull-right hidden-print|data-modal=$this->modal|role=button|title=Add Action", $icon);
-		}
-
-		public function generate_removeassigneduserIDlink() {
-			$bootstrap = new Contento();
-			$href = $this->generate_removeassigneduserIDurl();
-			$icon = $bootstrap->createicon('fa fa-user-times');
-			$ajaxdata = $this->generate_ajaxdataforcontento();
-			return $bootstrap->openandclose('a', "href=$href|class=btn btn-warning btn-xs load-link pull-right hidden-print|title=button|title=Return to Your Actions|aria-label=Return to Your Actions|$ajaxdata", $icon.' Remove User lookup');
-		}
-
-		/* CONTENT FUNCTIONS  */
-		public function generate_rowclass($action) {
-			if ($action->actiontype == 'tasks') {
-				if ($action->is_rescheduled()) {
-					return 'bg-info';
-				}
-				if ($action->is_overdue()) {
-					return 'bg-warning';
-				}
-				if ($action->is_completed()) {
-					return 'bg-success';
-				}
-			}
-			return '';
-		}
-
-		public function generate_legend() {
-			$bootstrap = new Contento();
-			$tb = new Table('class=table table-bordered table-condensed table-striped');
-			$tb->tr('class=bg-warning')->td('', 'Task Overdue');
-			$tb->tr('class=bg-info')->td('', 'Task Rescheduled');
-			$tb->tr('class=bg-success')->td('', 'Task Completed');
-			$content = str_replace('"', "'", $tb->close());
-			$attr = "tabindex=0|role=button|class=btn btn-sm btn-info|data-toggle=popover|data-placement=bottom|data-trigger=focus";
-			$attr .= "|data-html=true|title=Icons Definition|data-content=$content";
-			return $bootstrap->openandclose('a', $attr, 'Icon Definitions');
-		}
-
-		public function generate_completetasklink(UserAction $task) {
-			$bootstrap = new Contento();
-			$href = $this->generate_viewactionjsonurl($task);
-			$icon = $bootstrap->createicon('fa fa-check-circle');
-			$icon .= ' <span class="sr-only">Mark as Complete</span>';
-			return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-xs btn-primary complete-action|title=Mark Task as Complete", $icon);
-		}
-
 		/**
 		* Generates title for Panel
 		* Will be overwritten by children
@@ -410,30 +217,218 @@
 			return false;
 		}
 
+		/**
+		 * Returns Page Number the List is on along with the preceding string Page
+		 * @return string Page $this->pagenbr | (blank)
+		 */
+		public function generate_pagenumberdescription() {
+			return ($this->pagenbr > 1) ? "Page $this->pagenbr" : '';
+		}
+
+		/* GENERATE URLS - URLS ARE THE HREF VALUE */
+		/**
+		 * Returns URL of the panel's state
+		 * @return string URL
+		 */
+		public function generate_refreshurl() {
+			$url = new \Purl\Url($this->pageurl->getUrl());
+			$url->path = DplusWire::wire('config')->pages->useractions;
+			return $url->getUrl();
+		}
+
+		/**
+		 * Returns URL to load panel without filtered search
+		 * @return string  URL to load panel without filtered search
+		 */
+		public function generate_loadurl() {
+			$url = new \Purl\Url($this->pageurl);
+			$url->query->remove('filter');
+			foreach (array_keys($this->filterable) as $filtercolumns) {
+				$url->query->remove($filtercolumns);
+			}
+			return $url->getUrl();
+		}
+
+		/**
+		 * Returns URL to load add new action[type=$this->actiontype] form
+		 * @return string                 URL to load add new action[type=$this->actiontype] form
+		 */
+		public function generate_addactionurl() {
+			if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
+				$actiontype = ($this->actiontype == 'all') ? 'task' : $this->actiontype;
+			} else {
+				$actiontype = '';
+			}
+			$url = new \Purl\Url($this->generate_refreshurl());
+			$url->path = DplusWire::wire('config')->pages->useractions."add/";
+			$url->query = '';
+			$url->query->set('type', $actiontype);
+			return $url->getUrl();
+		}
+
+		/**
+		 * Returns URL to load the current view without any filters applied
+		 * @return string URL
+		 */
+		public function generate_clearfilterurl() {
+			$url = new \Purl\Url($this->generate_refreshurl());
+			$view = $url->query->get('view') ? $url->query->get('view') : $this->view;
+			$url->query = '';
+			$url->query->set('view', $view);
+			return $url->getUrl();
+		}
+
+		/**
+		 * Returns the URL to view the actions in a calendar view
+		 * @return string URL to calendar view
+		 */
+		public function generate_calendarviewurl() {
+			$url = new Purl\Url($this->generate_refreshurl());
+			$url->query->set('view', 'calendar');
+			if ($url->query->get('day')) {
+				$monthyear = date('M-Y', strtotime($url->query->get('day')));
+				$url->query->set('month', $monthyear);
+				$url->query->remove('day');
+			}
+			return $url->getUrl();
+		}
+
+		/**
+		 * Returns URL to go to a month by adding to $date's month
+		 * @param  string  $date String formatted date
+		 * @param  int     $add  Number of months to add, can be negative
+		 * @return string        URL to view calendar at month that is $add months from $date
+		 */
+		public function generate_addmonthurl($date, $add = 1) {
+			$date = $date ? new DateTime($date) : new DateTime();
+			$modify = $add > 0 ? "+$add" : "$add";
+			$date->modify("$modify month");
+			$url = new Purl\Url($this->pageurl->getUrl());
+			$url->query->set('month', $date->format('M-Y'));
+			return $url->getUrl();
+		}
+
+		/**
+		 * Returns the URL to view the actions in a day view
+		 * @param  string $date Datetime string usually in (m/d/Y) format
+		 * @return string       URL to day view
+		 */
+		public function generate_dayviewurl($date) {
+			$date = $date ? date('m/d/Y', strtotime($date)) : date('m/d/Y');
+			$url = new Purl\Url($this->generate_refreshurl());
+			$url->query->set('view', 'day');
+			$url->query->set('day', $date);
+			return $url->getUrl();
+		}
+
+		/**
+		 * Returns the URL to view the a date's scheduled tasks
+		 * @param  string $date date string (usually in m/d/Y)
+		 * @return string       URL
+		 */
+		public function generate_dayviewscheduledtasksurl($date) {
+			$date = $date ? date('m/d/Y', strtotime($date)) : date('m/d/Y');
+			$url = new Purl\Url($this->generate_dayviewurl($date));
+			$url->query->set('filter', 'filter');
+			$url->query->set('actiontype', 'tasks');
+			$url->query->set('duedate', $date);
+			$url->query->set('completed', 'Y||R');
+			return $url->getUrl();
+		}
+
+		/**
+		 * Returns URL to view notes created that day
+		 * @param  string $date date string (usually in m/d/Y)
+		 * @return string       URL
+		 */
+		public function generate_daynotescreatedurl($date) {
+			$date = $date ? date('m/d/Y', strtotime($date)) : date('m/d/Y');
+			$url = new Purl\Url($this->generate_dayviewurl($date));
+			$url->query->set('actiontype', 'notes');
+			$url->query->set('datecreated', $date);
+			return $url->getUrl();
+		}
+
+		/**
+		 * Returns the URL to view the panel in List View
+		 * @return string  URL to load List View
+		 */
+		public function generate_listviewurl() {
+			$url = new Purl\Url($this->generate_refreshurl());
+			$url->query->remove('day');
+			$url->query->remove('month');
+			$url->query->set('view', 'list');
+			return $url->getUrl();
+		}
+
 		/* =============================================================
-			CLASS DATABASE FUNCTIONS
+			SETTER FUNCTIONS
+		============================================================ */
+		/**
+		 * Manipulates $this->pageurl path and query data as needed
+		 * then sets $this->paginateafter value
+		 * @return void
+		 */
+		public function setup_pageurl() {
+			$this->paginateafter = $this->paginateafter;
+		}
+
+		/**
+		 * Sets the view
+		 * @param string $view day | list | calendar
+		 */
+		public function set_view($view) {
+			$this->view = !empty($view) ? $view : $this->view;
+		}
+
+
+		/* =============================================================
+			DATABASE FUNCTIONS
 		============================================================ */
 		/**
 		 * Returns the number of UserActions that meet the $this->filter
-		 * @param  bool   $debug Wether to return number or SQL Query
-		 * @return int        number of UserActions | SQL Query
+		 * @param  bool  $debug Return count or return SQL Query?
+		 * @return int          Number of UserActions | SQL Query
 		 */
 		public function count_actions($debug = false) {
 			return $debug ? count_actions($this->filters, $this->filterable, $debug) : $this->count = count_actions($this->filters, $this->filterable, $debug);
 		}
 
+		/**
+		 * Returns an array of UserAction that meet the $this->filter
+		 * @param  bool   $debug Return UserActions | return SQL Query?
+		 * @return array         Array of UserAction
+		 */
 		public function get_actions($debug = false) {
 			return get_actions($this->filters, $this->filterable, DplusWire::wire('session')->display, $this->pagenbr, $debug);
 		}
 
+		/**
+		 * Returns the number of all the UserAction for that day
+		 * @param  string $day   Datetime string (usually in m/d/Y)
+		 * @param  bool   $debug Return count or return SQL Query?
+		 * @return int           Count of All Actions for that day | SQL Query
+		 */
 		public function count_dayallactions($day, $debug = false) {
 			return count_dayallactions($day, $this->filters, $this->filterable, $debug);
 		}
 
+		/**
+		 * Returns an array of UserAction for that day
+		 * @param  string $day   Datetime string (usually in m/d/Y)
+		 * @param  bool   $debug Return UserActions | return SQL Query?
+		 * @return array         Array of UserAction | SQL Query?
+		 */
 		public function get_dayallactions($day, $debug = false) {
 			return get_dayallactions($day, $this->filters, $this->filterable, $debug);
 		}
 
+		/**
+		 * Returns the number of all the UserAction[type=tasks] for that day
+		 * @param  string $day   Datetime string (usually in m/d/Y)
+		 * @param  bool   $debug Return UserActions | return SQL Query?
+		 * @return int           Number of UserAction[type=tasks] for that day  | SQL Query?
+		 */
 		public function count_daytasks($day, $debug = false) {
 			$filters = $this->filters;
 			$filters['actiontype'] = array('tasks');
@@ -443,7 +438,7 @@
 		/**
 		 * Returns UserActions [type=tasks] that meet the $this->filter criteria
 		 * @param  string $day   Date time string usually formatted (m/d/Y)
-		 * @param  bool   $debug Whether to return array of UserActions or SQL Query
+		 * @param  bool   $debug Whether to return array of UserActions | SQL Query
 		 * @return array         array of UserActions | SQL Query
 		 */
 		public function get_daytasks($day, $debug = false) {
@@ -455,7 +450,7 @@
 		/**
 		 * Returns of the number of UserActions[type=tasks] scheduled for that day
 		 * @param  string  $day  Date time string usually formatted (m/d/Y)
-		 * @param  bool   $debug Whether to return Number or SQL Query
+		 * @param  bool   $debug Whether to return Number | SQL Query
 		 * @return int           Number of Tasks scheduled for that day | SQL Query
 		 */
 		public function count_dayscheduledtasks($day, $debug = false) {
@@ -469,7 +464,7 @@
 		/**
 		 * Returns of the number of UserActions[type=tasks] rescheduled that day
 		 * @param  string  $day  Date time string usually formatted (m/d/Y)
-		 * @param  bool   $debug Whether to return Number or SQL Query
+		 * @param  bool   $debug Whether to return Number | SQL Query
 		 * @return int           Number of Tasks rescheduled that day | SQL Query
 		 */
 		public function count_dayrescheduledtasks($day, $debug = false) {
@@ -522,14 +517,9 @@
 			return get_dayallactions($day, $filters, $this->filterable, $debug);
 		}
 
-		/**
-		 * Returns Page Number the List is on along with the preceding string Page
-		 * @return string Page $this->pagenbr | (blank)
-		 */
-		public function generate_pagenumberdescription() {
-			return ($this->pagenbr > 1) ? "Page $this->pagenbr" : '';
-		}
-
+		/* =============================================================
+			CLASS FUNCTIONS
+		============================================================ */
 		public function generate_filter(ProcessWire\WireInput $input) {
 			$this->generate_defaultfilter($input);
 
@@ -569,6 +559,100 @@
 			}
 		}
 
+		/* =============================================================
+			CONTENT FUNCTIONS
+		============================================================ */
+		/* = GENERATE LINKS - LINKS ARE THE HTML MARKUP FOR LINKS */
+		/**
+		 * Returns HTML Link to refresh the panel
+		 * @return string  HTML Link
+		 */
+		public function generate_refreshlink() {
+			$bootstrap = new Contento();
+			$href = $this->generate_refreshurl();
+			$icon = $bootstrap->createicon('material-icons md-18', '&#xE86A;');
+			$ajaxdata = $this->generate_ajaxdataforcontento();
+			return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs load-link actions-refresh pull-right hidden-print|title=button|title=Refresh Actions|aria-label=Refresh Actions|$ajaxdata", $icon);
+		}
+
+		/**
+		 * Returns HTML Link to clear the filters from day search
+		 * @return string  HTML Link
+		 */
+		public function generate_clearfilterlink() {
+			$bootstrap = new Contento();
+			$href = $this->generate_loadurl();
+			$icon = $bootstrap->createicon('fa fa-times');
+			$ajaxdata = $this->generate_ajaxdataforcontento();
+			return $bootstrap->openandclose('a', "href=$href|class=load-link btn btn-sm btn-warning btn-block|$ajaxdata", "Clear Filter $icon");
+		}
+
+		/**
+		 * Returns a HTML Link to view the Printable version of this Page
+		 * @return string  HTML Link to Print Page
+		 */
+		public function generate_printlink() {
+			$bootstrap = new Contento();
+			$href = $this->generate_refreshurl();
+			$icon = $bootstrap->createicon('glyphicon glyphicon-print');
+			return $bootstrap->openandclose('a', "href=$href|class=h3|target=_blank", $icon." View Printable");
+		}
+
+
+		public function generate_completetasklink(UserAction $task) {
+			$bootstrap = new Contento();
+			$href = $this->generate_viewactionjsonurl($task);
+			$icon = $bootstrap->createicon('fa fa-check-circle');
+			$icon .= ' <span class="sr-only">Mark as Complete</span>';
+			return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-xs btn-primary complete-action|title=Mark Task as Complete", $icon);
+		}
+
+		/**
+		 * Returns Bootstrap popover element with the the possible row classes and their meaning
+		 * @return string HTML Link
+		 */
+		public function generate_legend() {
+			$bootstrap = new Contento();
+			$tb = new Table('class=table table-bordered table-condensed table-striped');
+			$tb->tr('class=bg-warning')->td('', 'Task Overdue');
+			$tb->tr('class=bg-info')->td('', 'Task Rescheduled');
+			$tb->tr('class=bg-success')->td('', 'Task Completed');
+			$content = str_replace('"', "'", $tb->close());
+			$attr = "tabindex=0|role=button|class=btn btn-sm btn-info|data-toggle=popover|data-placement=bottom|data-trigger=focus";
+			$attr .= "|data-html=true|title=Icons Definition|data-content=$content";
+			return $bootstrap->openandclose('a', $attr, 'Icon Definitions');
+		}
+
+		/**
+		 * Returns the row class for the action
+		 * based on if the action is rescheduled, overdue
+		 * @param  UserAction  $action action to be looked that
+		 * @return string      CSS class for the action
+		 * @uses UserAction is_rescheduled() -> bg-info | is_overdue() -> bg-warning | is_completed() -> bg-success
+		 */
+		public function generate_rowclass(UserAction $action) {
+			if ($action->actiontype == 'tasks') {
+				if ($action->is_rescheduled()) {
+					return 'bg-info';
+				}
+				if ($action->is_overdue()) {
+					return 'bg-warning';
+				}
+				if ($action->is_completed()) {
+					return 'bg-success';
+				}
+			}
+			return '';
+		}
+
+		/**
+		 * Returns a calendar made with Contento
+		 * for the the current month, year
+		 * @param  int   $month  2 digit year with zero in front if needed
+		 * @param  int   $year   4 digit year
+		 * @return string        HTML Table representatino of the calendar
+		 * @uses Contento
+		 */
 		public function generate_calendar($month, $year) {
 			$bootstrap = new Contento();
 
@@ -580,7 +664,7 @@
 			$firstday = mktime(0, 0, 0,$month, 1, $year);
 
 			// How many days does this month contain?
-			$monthdaycount = date('t',$firstday);
+			$monthdaycount = date('t', $firstday);
 
 			// Retrieve some information about the first day of the
 			// month in question.

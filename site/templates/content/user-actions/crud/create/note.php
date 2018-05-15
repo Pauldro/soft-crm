@@ -6,7 +6,6 @@
 
 		$note = new UserAction();
 		$note->set('actiontype', 'notes');
-		$note->set('id', $input->post->text('id'));
 		$note->set('actionsubtype', $input->post->text('subtype'));
 		$note->set('customerlink', $input->post->text('customerlink'));
 		$note->set('shiptolink', $input->post->text('shiptolink'));
@@ -15,6 +14,7 @@
 		$note->set('quotelink', $input->post->text('quotelink'));
 		$note->set('title', $input->post->text('title'));
 		$note->set('textbody', $input->post->purify('textbody'));
+		$note->set('actionlink', $input->post->text('actionlink'));
 		$note->set('datecreated', date("Y-m-d H:i:s"));
 		$note->set('assignedto', $input->post->text('assignedto'));
 		$note->set('createdby', $user->loginid);
@@ -30,26 +30,29 @@
 			}
 		}
 
-		$results = $note->save();
-		$session->sql = $results['sql'];
+		$maxrec = UserAction::get_maxid($user->loginid);
 
-		if (!$results['error']) {
+		$results = $note->save();
+
+		$session->insertedid = $results['insertedid'];
+		$session->sql = $results['sql'];
+		$note->set('id', $results['insertedid']);
+
+		if ($results['insertedid'] > $maxrec) {
 			$error = false;
-			$notifytype = 'success';
-			$message = "<strong>Success!</strong><br> Your note for {replace} has been updated";
+			$message = "<strong>Success!</strong><br> Your note for {replace} has been created";
 			$icon = "glyphicon glyphicon-floppy-saved";
 			$message = $note->generate_message($message);
 		} else {
 			$error = true;
-			$notifytype = 'danger';
-			$message = "<strong>Error!</strong><br> Your note could not be updated";
+			$message = "<strong>Error!</strong><br> Your note could not be created";
 			$icon = "glyphicon glyphicon-warning-sign";
 		}
 
 		$json = array (
 			'response' => array (
 				'error' => $error,
-				'notifytype' => $notifytype,
+				'notifytype' => 'success',
 				'message' => $message,
 				'icon' => $icon,
 				'actionid' => $note->id,
@@ -61,7 +64,7 @@
 			'response' => array (
 				'error' => true,
 				'notifytype' => 'danger',
-				'message' => '<strong>Error!</strong><br> Your note could not be updated because data was not sent',
+				'message' => '<strong>Error!</strong><br> Your note could not be created',
 				'icon' => 'glyphicon glyphicon-warning-sign',
 			)
 		);

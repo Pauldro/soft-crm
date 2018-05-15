@@ -1,7 +1,7 @@
 <?php
 	$count = 0;
-	$tasklineage = $task->actionlineage;
-
+	$tasklineage = $task->get_actionlineage();
+	
 	foreach ($tasklineage as $taskid) {
 		$task = UserAction::load($taskid);
 		$contact = Contact::load($task->customerlink, $task->shiptolink, $task->contactlink);
@@ -10,7 +10,7 @@
 			$rescheduledtask = UserAction::load($task->rescheduledlink);
 		}
 
-		$config->paths->content."user-actions/crud/read/task-details.php";
+		include $config->paths->content."user-actions/crud/read/task-details.php";
 		$count++;
 
 		if ($count < sizeof($tasklineage)) {

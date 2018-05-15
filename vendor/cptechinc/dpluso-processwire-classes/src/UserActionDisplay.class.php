@@ -53,7 +53,7 @@
 		 * @return string            URL
 		 */
 		public function generate_rescheduleurl(UserAction $action) {
-			return DplusWire::wire('config')->pages->useractions."update/?id=".$action->id;
+			return DplusWire::wire('config')->pages->useractions."update/?id=$action->id&edit=reschedule";
 		}
 
 		/**
@@ -117,7 +117,7 @@
             $bootstrap = new Contento();
             $href = $this->generate_viewactionurl($action);
             $icon = $bootstrap->createicon('material-icons md-18', '&#xE02F;');
-            return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-xs btn-primary load-into-modal|data-modal=$this->modal|title=View Action", $icon);
+            return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-xs btn-primary modal-load|data-modal=$this->modal|title=View Action", $icon);
         }
 
 		/**

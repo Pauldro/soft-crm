@@ -131,7 +131,7 @@
 			$q->where('source', Contact::$types['customer']);
 		}
 
-		$sql = Dpluswire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -143,14 +143,14 @@
 	}
 
 	function get_customername($custID) {
-		$sql = Dpluswire::wire('database')->prepare("SELECT name FROM custindex WHERE custid = :custID LIMIT 1");
+		$sql = DplusWire::wire('database')->prepare("SELECT name FROM custindex WHERE custid = :custID LIMIT 1");
 		$switching = array(':custID' => $custID);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
 
 	function get_shiptoname($custID, $shipID, $debug = false) {
-		$sql = Dpluswire::wire('database')->prepare("SELECT name FROM custindex WHERE custid = :custID AND shiptoid = :shipID LIMIT 1");
+		$sql = DplusWire::wire('database')->prepare("SELECT name FROM custindex WHERE custid = :custID AND shiptoid = :shipID LIMIT 1");
 		$switching = array(':custID' => $custID, ':shipID' => $shipID); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -161,7 +161,7 @@
 	}
 
 	function get_customerinfo($sessionID, $custID, $debug) { // DEPRECATE
-		$sql = Dpluswire::wire('database')->prepare("SELECT custindex.*, customer.dateentered FROM custindex JOIN customer ON custindex.custid = customer.custid WHERE custindex.custid = :custID AND customer.sessionid = :sessionID LIMIT 1");
+		$sql = DplusWire::wire('database')->prepare("SELECT custindex.*, customer.dateentered FROM custindex JOIN customer ON custindex.custid = customer.custid WHERE custindex.custid = :custID AND customer.sessionid = :sessionID LIMIT 1");
 		$switching = array(':sessionID' => $sessionID, ':custID' => $custID); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -239,14 +239,14 @@
 	}
 
 	function get_topxsellingshiptos($sessionID, $custID, $count, $debug = false) {
-		$loginID = (Dpluswire::wire('user')->hascontactrestrictions) ? Processwire\wire('user')->loginid : 'admin';
+		$loginID = (DplusWire::wire('user')->hascontactrestrictions) ? Processwire\wire('user')->loginid : 'admin';
 		$q = (new QueryBuilder())->table('custperm');
 		$q->where('loginid', $loginID);
 		$q->where('custid', $custID);
 		$q->where('shiptoid', '!=', '');
 		$q->limit($count);
 		$q->order('amountsold DESC');
-		$sql = Dpluswire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -257,7 +257,7 @@
 	}
 
 	function count_customercontacts($loginID, $restrictions, $custID, $debug = false) {
-		$SHARED_ACCOUNTS = Dpluswire::wire('config')->sharedaccounts;
+		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
 		$q = (new QueryBuilder())->table('custindex');
 		$q->field('COUNT(*)');
 
@@ -282,7 +282,7 @@
 	}
 
 	function get_customercontacts($loginID, $restrictions, $custID, $debug = false) {
-		$SHARED_ACCOUNTS = Dpluswire::wire('config')->sharedaccounts;
+		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
 		$q = (new QueryBuilder())->table('custindex');
 
 		if ($restrictions) {
@@ -295,7 +295,7 @@
 			$q->where('custid', $custID);
 		}
 
-		$sql = Dpluswire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -329,7 +329,7 @@
 		if (!empty($contactID)) {
 			$q->where('contact', $contactID);
 		}
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2337,7 +2337,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_dayallactions($day, $filters, $filterable, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$taskquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', 'tasks')->where($q->expr('DATE(duedate)'), $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('duedate', $filterable)]));
@@ -2417,7 +2417,7 @@
 		$q->generate_setdifferencesquery($oldlinks, $newlinks);
 		$q->generate_query($wherelinks);
 		$q->set('dateupdated', date("Y-m-d H:i:s"));
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -2436,22 +2436,29 @@
 		$q = (new QueryBuilder())->table('useractions');
 		$q->mode('insert');
 		$q->generate_setvaluesquery($action->_toArray());
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			return array('sql' => $q->generate_sqlquery($q->params), 'insertedid' => Processwire\wire('database')->lastInsertId());
+			return array('sql' => $q->generate_sqlquery($q->params), 'insertedid' => DplusWire::wire('database')->lastInsertId());
 		}
 	}
 
-	function get_useractions_maxrec($loginID) {
-		$sql = Processwire\wire('database')->prepare("SELECT MAX(id) AS id FROM useractions WHERE createdby = :login");
-		$switching = array(':login' => $loginID);
-		$withquotes = array(true, true);
-		$sql->execute($switching);
-		return $sql->fetchColumn();
+	function get_maxuseractionid($loginID, $debug = false) {
+		$q = (new QueryBuilder())->table('useractions');
+		$q->field($q->expr('MAX(id)'));
+		$q->where('createdby', $loginID);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		$sql->execute($q->params);
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
 	}
 /* =============================================================
 	VENDOR FUNCTIONS

@@ -3,11 +3,11 @@
 </div>
 <div class="row">
 	<div class="col-sm-12 form-group">
-		<?php include $config->paths->content.'customer/contact/contact-card.php'; ?> 
+		<?php include $config->paths->content.'customer/contact/contact-card.php'; ?>
 	</div>
 	<div class="col-sm-12">
 		<?php $actionpanel = new ContactActionsPanel(session_id(), $page->fullURL, $input); ?>
-		<?php $actionpanel->set_contact($contact->custid, $contact->shiptoid, $contact->name); ?>
+		<?php $actionpanel->set_contact($contact->custid, $contact->shiptoid, $contact->contact); ?>
 		<?php include $config->paths->content."user-actions/user-actions-panel.php"; ?>
 	</div>
 </div>

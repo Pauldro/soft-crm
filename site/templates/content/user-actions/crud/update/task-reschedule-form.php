@@ -1,6 +1,3 @@
-<?php
-	$editactiondisplay = new EditUserActionsDisplay($page->fullURL);
-?>
 <div>
 	<ul class="nav nav-tabs" role="tablist">
 		<li role="presentation" class="active"><a href="#task" aria-controls="task" role="tab" data-toggle="tab">Task</a></li>
@@ -8,8 +5,8 @@
 	<br>
 	<div class="tab-content">
 		<div role="tabpanel" class="tab-pane active" id="task">
-			<form action="<?= $config->pages->actions."tasks/add/"; ?>" method="POST" id="new-action-form" data-refresh="#actions-panel" data-modal="#ajax-modal" onKeyPress="return disable_enterkey(event)">
-				<input type="hidden" name="action" value="write-task">
+			<form action="<?= $config->pages->useractions."add/"; ?>" method="POST" id="new-action-form" data-refresh="#actions-panel" data-modal="#ajax-modal" onKeyPress="return disable_enterkey(event)">
+				<input type="hidden" name="action" value="reschedule-task">
 				<input type="hidden" name="customerlink" value="<?= $task->customerlink; ?>">
 				<input type="hidden" name="shiptolink" value="<?= $task->shiptolink; ?>">
 				<input type="hidden" name="contactlink" value="<?= $task->contactlink; ?>">
@@ -18,7 +15,7 @@
 				<input type="hidden" name="actionlink" value="<?= $task->id; ?>">
 				<div class="response"></div>
 				<table class="table table-bordered table-striped">
-					<tr>  <td class="control-label">Task Date:</td> <td><?php echo date('m/d/Y g:i A'); ?></td> </tr>
+					<tr>  <td class="control-label">Task Date:</td> <td><?= date(UserAction::$datedisplayformat); ?></td> </tr>
 					<tr>
 						<td class="control-label">Assigned To:</td>
 						<td>

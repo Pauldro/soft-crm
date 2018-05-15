@@ -303,6 +303,16 @@
 			}
 		}
 
+		/**
+		 * Returns the Newest ID for the login provided
+		 * @param  string $loginID User Login
+		 * @param  bool   $debug   Return SQL Query?
+		 * @return int             Max User ID
+		 */
+		public static function get_maxid($loginID, $debug = false) {
+			return get_maxuseractionid($loginID, $debug);
+		}
+
 		/* =============================================================
 			GENERATE ARRAY FUNCTIONS
 			The following are defined CreateClassArrayTraits

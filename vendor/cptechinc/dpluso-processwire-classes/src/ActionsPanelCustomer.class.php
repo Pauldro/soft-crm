@@ -1,19 +1,18 @@
-<?php 
-    class CustomerActionsPanel extends ActionsPanel {
-    
-        /**
+<?php
+	class CustomerActionsPanel extends ActionsPanel {
+		/**
 		* Customer Identifier
 		* @var string
 		*/
-        protected $custID;
-        
-        /**
+		protected $custID;
+
+		/**
 		* Ship-to Identifier
 		* @var string
 		*/
-        protected $shiptoID;
-        
-        /**
+		protected $shiptoID;
+
+		/**
 		 * Array of filterable columns and their attributes
 		 * @var array
 		 */
@@ -57,26 +56,32 @@
 				'label' => 'Due Date',
 				'date-format' => "m/d/Y H:i:s"
 			),
-            'customerlink' => array(
+			'customerlink' => array(
 				'querytype' => 'in',
 				'datatype' => 'text',
 				'label' => 'Customer Link'
 			),
-            'shiptolink' => array(
+			'shiptolink' => array(
 				'querytype' => 'in',
 				'datatype' => 'text',
 				'label' => 'Ship-to Link'
 			)
 		);
-        
-        /**
-		* Type Identifier
-		* @var string
-		*/
-        protected $paneltype = 'customer';
-        protected $input; 
-        
-        /* =============================================================
+
+		/**
+		 * Panel Type
+		 * Who or what the actions are being filtered to
+		 * @var string
+		 */
+		protected $paneltype = 'customer';
+
+		/**
+		 * Wire Input for generating filtter
+		 * @var ProcessWire/WireInput
+		 */
+		protected $input;
+
+		/* =============================================================
 			CONSTRUCTOR FUNCTIONS
 		============================================================ */
 		/**
@@ -88,67 +93,86 @@
 		 * @param string                $panelID     Panel element ID
 		 */
 		public function __construct($sessionID, \Purl\Url $pageurl, ProcessWire\WireInput $input, $throughajax = false, $panelID = '') {
-            parent::__construct($sessionID, $pageurl, $input, $throughajax, $panelID);
-            $this->input = $input;
+			parent::__construct($sessionID, $pageurl, $input, $throughajax, $panelID);
+			$this->input = $input;
 		}
-        
-        /* =============================================================
-			SETTER FUNCTIONS
+
+		/* =============================================================
+			GETTER FUNCTIONS
 		============================================================ */
-        /**
-		 * Manipulates $this->pageurl path and query data as needed
-		 * then sets $this->paginateafter value
-		 * @return void
-		 */
-		public function setup_pageurl() {
-			$this->paginateafter = $this->paginateafter;
-            $this->pageurl->query->set('custID', $this->custID);
-            if (!(empty($this->shiptoID))) {
-                $this->pageurl->query->set('shiptoID', $this->shiptoID);
-            }
-		}
-        
-        public function set_customer($custID, $shiptoID = '') {
-            $this->custID = $custID;
-            $this->shiptoID = $shiptoID;
-            $this->generate_filter($this->input);
-            $this->setup_pageurl();
-        }
-        
-        public function generate_filter(ProcessWire\WireInput $input) {
-			parent::generate_filter($input);
-			$this->filters['customerlink'] = array($this->custID);
-            if (!empty($this->shiptoID)) {
-                $this->filters['shiptolink'] = array($this->shiptoID);
-            }
-		}
-        
-        /**
-		 * Returns URL to load add new action[type=$this->actiontype] form
-		 * @return string                 URL to load add new action[type=$this->actiontype] form
-		 */
-		public function generate_addactionurl() {
-			$url = new Purl\Url(parent::generate_addactionurl());
-            $url->query->set('custID', $this->custID);
-            if (!empty($this->shiptoID)) {
-                $url->query->set('shiptoID', $this->shiptoID);
-            }
-            return $url->getUrl();
-		}
-        
-        /**
+		/**
 		* Generates title for Panel
 		* @return string
 		*/
 		public function generate_title() {
 			return 'Customer Actions';
 		}
-        
-        /**
+
+		/**
 		* Returns if the panel should have the add link
 		* @return bool
 		*/
 		public function should_haveaddlink() {
 			return true;
 		}
-    }
+
+		/**
+		 * Returns URL to load add new action[type=$this->actiontype] form
+		 * @return string                 URL to load add new action[type=$this->actiontype] form
+		 */
+		public function generate_addactionurl() {
+			$url = new Purl\Url(parent::generate_addactionurl());
+			$url->query->set('custID', $this->custID);
+			if (!empty($this->shiptoID)) {
+				$url->query->set('shiptoID', $this->shiptoID);
+			}
+			return $url->getUrl();
+		}
+
+		public function generate_clearfilterurl() {
+			$url = new Purl\Url(parent::generate_clearfilterurl());
+			$url->query->set('custID', $this->custID);
+			if (!empty($this->shiptoID)) {
+				$url->query->set('shiptoID', $this->shiptoID);
+			}
+			return $url->getUrl();
+		}
+		/* =============================================================
+			SETTER FUNCTIONS
+		============================================================ */
+		/**
+		 * Manipulates $this->pageurl path and query data as needed
+		 * then sets $this->paginateafter value
+		 * @return void
+		 */
+		public function setup_pageurl() {
+			$this->paginateafter = $this->paginateafter;
+			$this->pageurl->query->set('custID', $this->custID);
+			if (!(empty($this->shiptoID))) {
+				$this->pageurl->query->set('shiptoID', $this->shiptoID);
+			}
+		}
+
+		/**
+		 * Set the Customer and Shipto IDs to set the filter and $this->pageurl
+		 * @param string $custID   Customer Identifier
+		 * @param string $shiptoID Shipto Identifier
+		 */
+		public function set_customer($custID, $shiptoID = '') {
+			$this->custID = $custID;
+			$this->shiptoID = $shiptoID;
+			$this->generate_filter($this->input);
+			$this->setup_pageurl();
+		}
+
+		/* =============================================================
+			CLASS FUNCTIONS
+		============================================================ */
+		public function generate_filter(ProcessWire\WireInput $input) {
+			parent::generate_filter($input);
+			$this->filters['customerlink'] = array($this->custID);
+			if (!empty($this->shiptoID)) {
+				$this->filters['shiptolink'] = array($this->shiptoID);
+			}
+		}
+	}

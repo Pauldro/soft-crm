@@ -7,7 +7,7 @@
             <td colspan="6" class="text-center h4">No notes found for this day</td>
         </tr>
     <?php else : ?>
-        <?php foreach ($actionpanel->get_daynotes($day) as $note) : ?>
+        <?php foreach ($actionpanel->get_dayallactions($day) as $note) : ?>
             <tr class="<?= $actionpanel->generate_rowclass($note); ?>">
                 <td><?= date('m/d/Y g:i A', strtotime($note->datecreated)); ?></td>
                 <td><?= ucfirst($note->generate_actionsubtypedescription()); ?></td>

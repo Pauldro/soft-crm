@@ -44,10 +44,12 @@
 			<h3>Overview</h3>
 			<table class="table table-condensed table-striped table-bordered">
 				<tr>
-					<td>Notes Created <a href="<?= $actionpanel->generate_daynotescreated($day); ?>" class="load-link" data-loadinto="#actions-panel" data-focus="#actions-panel">View</a></td> <td><?= $actionpanel->count_daynotes($day); ?></td>
+					<td>Notes Created <a href="<?= $actionpanel->generate_daynotescreatedurl($day); ?>" class="load-link" data-loadinto="#actions-panel" data-focus="#actions-panel">View</a> <i class="fa fa-binoculars" aria-hidden="true"></i> </td>
+					<td><?= $actionpanel->count_daynotes($day); ?></td>
 				</tr>
 				<tr>
-					<td>Tasks Scheduled for <?= date('m/d/Y', strtotime($day)); ?></td> <td><?= $actionpanel->count_dayscheduledtasks($day); ?></td>
+					<td>Tasks Scheduled for <?= date('m/d/Y', strtotime($day)); ?> <a href="<?= $actionpanel->generate_dayviewscheduledtasksurl($day); ?>" class="load-link" data-loadinto="#actions-panel" data-focus="#actions-panel">View</a> <i class="fa fa-binoculars" aria-hidden="true"></i> </td> 
+					<td><?= $actionpanel->count_dayscheduledtasks($day); ?> </td>
 				</tr>
 				<tr>
 					<td>Tasks Completed</td> <td><?= $actionpanel->count_daycompletedtasks($day); ?></td>

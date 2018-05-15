@@ -1,13 +1,13 @@
 <table class="table table-bordered table-condensed table-striped">
     <tr>
-        <th>Due</th> <th>Subtype</th> <th>Regarding / Title</th> <th>View / Complete</th>
+        <th>Due</th> <th>Subtype</th> <th>Regarding / Title</th> <th colspan="2">View / Complete</th>
     </tr>
     <?php if (!$actionpanel->count_dayallactions($day)) : ?>
         <tr>
             <td colspan="6" class="text-center h4">No tasks found for this day</td>
         </tr>
     <?php else : ?>
-        <?php foreach ($actionpanel->get_daytasks($day) as $task) : ?>
+        <?php foreach ($actionpanel->get_dayallactions($day) as $task) : ?>
             <tr class="<?= $actionpanel->generate_rowclass($task); ?>">
                 <td><?= $task->generate_duedatedisplay('m/d/Y'); ?></td>
                 <td><?= ucfirst($task->generate_actionsubtypedescription()); ?></td>

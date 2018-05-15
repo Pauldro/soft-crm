@@ -4,7 +4,7 @@
 	$task = UserAction::load($taskID);
 
 	if ($input->get->text('complete') == 'true') {
-		$task->set('datecompleted', date("Y-m-d H:i:s"));
+		$task->set('datecompleted', date(UserAction::$dateformat));
 		$task->set('completed', 'Y');
 	} else {
 		$task->set('datecompleted', '0000-00-00 00:00:00');
@@ -15,7 +15,7 @@
 		$task->set('reflectnote', $input->post->text('reflectnote'));
 	}
 
-	$task->set('dateupdated', date("Y-m-d H:i:s"));
+	$task->set('dateupdated', date(UserAction::$dateformat));
 
 	$response = $task->update();
 	$session->sql = $response['sql'];

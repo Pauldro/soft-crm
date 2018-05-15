@@ -1365,12 +1365,16 @@ $(document).ready(function() {
 
 	function disable_enterkey(e) {
 		var key;
-		if(window.event) {
+		if (window.event) {
 			key = window.event.keyCode; //IE
 		} else {
 			key = e.which; //firefox
 		}
-		return (key != 13);
+		if (e.target.localName != 'textarea') {
+			return (key != 13);
+		} else {
+			return true;
+		}
 	}
 
 	function init_datepicker() {
