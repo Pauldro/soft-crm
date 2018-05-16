@@ -96,6 +96,12 @@
 			return $url->getUrl();
 		}
 
+		public function generate_clearfilterurl() {
+			$url = new Purl\Url(parent::generate_clearfilterurl());
+			$url->query->set('contactID', $this->contactID);
+			return $url->getUrl();
+		}
+
 		/* =============================================================
 			SETTER FUNCTIONS
 		============================================================ */

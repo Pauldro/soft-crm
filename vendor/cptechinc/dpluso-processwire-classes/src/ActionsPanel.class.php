@@ -255,7 +255,7 @@
 		 */
 		public function generate_addactionurl() {
 			if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
-				$actiontype = ($this->actiontype == 'all') ? 'task' : $this->actiontype;
+				$actiontype = ($this->actiontype == 'all') ? 'task' : rtrim($this->actiontype, 's');
 			} else {
 				$actiontype = '';
 			}

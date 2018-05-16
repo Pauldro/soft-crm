@@ -55,8 +55,10 @@
 				$page->title = $action->generate_message("Viewing Action for {replace}");
 				$page->body = $config->paths->content."user-actions/crud/read/$type.php";
 			} else {
-				if ($ordn) {
-
+				if ($input->get->ordn) {
+					$actionpanel = new SalesOrderActionsPanel(session_id(), $page->fullURL, $input, $config->ajax);
+					$actionpanel->set_ordn($input->get->text('ordn'));
+					$page->body = $config->paths->content.'user-actions/user-actions-panel.php';
 				} elseif ($qnbr) {
 
 				} elseif ($input->get->contactID) {
