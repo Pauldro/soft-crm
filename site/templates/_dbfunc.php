@@ -85,6 +85,41 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
+
+	function insert_custperm(Contact $customer, $debug = false) {
+		$q = (new QueryBuilder())->table('custperm');
+		$q->mode('insert');
+		$q->set('loginid', DplusWire::wire('user')->loginid);
+		$q->set('custid', $customer->custid);
+		$q->set('salesper1', $customer->splogin1);
+
+		if (!empty($customer->shiptoid)) {
+			$q->set('shiptoid', $customer->shiptoid);
+		}
+
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $q->generate_sqlquery($q->params);
+		}
+	}
+
+	function change_custpermcustid($originalcustID, $newcustID, $debug = false) {
+		$q = (new QueryBuilder())->table('custperm');
+		$q->mode('update');
+		$q->set('custid', $newcustID);
+		$q->where('custid', $originalcustID);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			$sql->execute($q->params);
+			return $q->generate_sqlquery();
+		}
+	}
 	
 	function can_accesscustomer($loginID, $restrictions, $custID, $debug) {
 		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
@@ -194,6 +229,7 @@
 		}
 		$q->field('COUNT(*)');
 		$sql = DplusWire::wire('database')->prepare($q->render());
+		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
