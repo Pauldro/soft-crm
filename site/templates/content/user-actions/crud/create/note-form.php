@@ -36,7 +36,7 @@
             <td colspan="2" class="control-label">
                 <label for="" class="control-label">Notes</label>
                 <textarea name="textbody" id="note" cols="30" rows="10" class="form-control note required"> </textarea> <br>
-                <button type="submit" class="btn btn-success">Create Task</button>
+                <button type="submit" class="btn btn-success">Create Note</button>
             </td>
         </tr>
     </table>
