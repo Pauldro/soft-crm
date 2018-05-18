@@ -1,5 +1,5 @@
 <?php
-	$contactscount = count_distinctcustindex($user->loginid, $user->hascontactrestrictions, false);
+	$contactscount = count_distinctcustindex();
 	if ($input->get->q) {
 		$searchcount = count_searchcustindex($user->loginid, $user->hascontactrestrictions, $input->get->text('q'), false);
 		$resultscount = $searchcount;

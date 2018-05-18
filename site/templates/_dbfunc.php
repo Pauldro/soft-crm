@@ -1,5 +1,6 @@
 <?php
 	use atk4\dsql\Query;
+use atk4\dsql\Expression;
 /* =============================================================
 	LOGIN FUNCTIONS
 ============================================================ */
@@ -23,13 +24,13 @@
 		$sql->execute($switching);
 		return $sql->fetch(PDO::FETCH_ASSOC);
 	}
-	
+
 	function has_restrictedcustomers($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('logperm');
 		$q->field($q->expr("IF(restrictcustomers = 'Y',1,0)"));
 		$q->where('sessionid', $sessionID);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -46,7 +47,7 @@
 		$q->where('loginid', $loginID);
 		$q->where('function', $dplusfunction);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -61,7 +62,7 @@
 		$q = (new QueryBuilder())->table('custindex');
 		$q->field('COUNT(*)');
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -69,7 +70,7 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function count_custperm($userID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('custperm');
 		$q->field('COUNT(*)');
@@ -77,7 +78,7 @@
 			$q->where('loginid', $userID);
 		}
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -120,17 +121,25 @@
 			return $q->generate_sqlquery();
 		}
 	}
-	
-	function can_accesscustomer($loginID, $restrictions, $custID, $debug) {
-		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
-		if ($restrictions) {
-			$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custperm WHERE custid = :custID) t WHERE loginid = :loginID OR loginid = :shared");
-			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS);
-			$withquotes = array(true, true, true);
+
+	function can_accesscustomer($custID, $shiptoID = '', $loginID = '',  $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
+
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep'] && DplusWire::wire('pages')->get('/config/')->restrict_allowedcustomers) {
+			$custquery = (new QueryBuilder())->table('custperm')->where('custid', $custID);
+			if (!empty($shiptoID)) {
+				$custquery->where('shiptoid', $shiptoID );
+			}
+
+			$q = (new QueryBuilder())->table($custquery, 'customerperm');
+			$q->field($q->expr('COUNT(*)'));
+			$q->where('loginid', 'in', [$loginID, DplusWire::wire('config')->sharedaccounts]);
+			$sql = DplusWire::wire('database')->prepare($q->render());
 			if ($debug) {
-				return returnsqlquery($sql->queryString, $switching, $withquotes);
+				return $q->generate_sqlquery($q->params);
 			} else {
-				$sql->execute($switching);
+				$sql->execute($q->params);
 				return $sql->fetchColumn();
 			}
 		} else {
@@ -138,36 +147,19 @@
 		}
 	}
 
-	function can_accesscustomershipto($loginID, $restrictions, $custID, $shipID, $debug) {
-		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
-		if ($restrictions) {
-			$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custperm WHERE custid = :custID AND shiptoid = :shipID) t WHERE loginid = :loginID OR loginid = :shared");
-			$switching = array(':custID' => $custID, ':shipID' => $shipID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS);
-			$withquotes = array(true, true, true, true, true);
-			if ($debug) {
-				return returnsqlquery($sql->queryString, $switching, $withquotes);
-			} else {
-				$sql->execute($switching);
-				return $sql->fetchColumn();
-			}
-		} else {
-			return 1;
-		}
-	}
-	
 	function get_customer($custID, $shiptoID = false, $debug = false) {
-		$q = (new QueryBuilder())->table('custindex');	
+		$q = (new QueryBuilder())->table('custindex');
 		$q->where('custid', $custID);
-		
+
 		if ($shiptoID) {
 			$q->where('shiptoid', $shiptoID);
 			$q->where('source', Contact::$types['customer-shipto']);
 		} else {
 			$q->where('source', Contact::$types['customer']);
 		}
-		
+
 		$sql = Dpluswire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -176,7 +168,7 @@
 			return $sql->fetch();
 		}
 	}
-	
+
 	function get_customername($custID) {
 		$sql = Dpluswire::wire('database')->prepare("SELECT name FROM custindex WHERE custid = :custID LIMIT 1");
 		$switching = array(':custID' => $custID);
@@ -195,7 +187,7 @@
 		}
 	}
 
-	function get_customerinfo($sessionID, $custID, $debug) { // DEPRECATE 
+	function get_customerinfo($sessionID, $custID, $debug) { // DEPRECATE
 		$sql = Dpluswire::wire('database')->prepare("SELECT custindex.*, customer.dateentered FROM custindex JOIN customer ON custindex.custid = customer.custid WHERE custindex.custid = :custID AND customer.sessionid = :sessionID LIMIT 1");
 		$switching = array(':sessionID' => $sessionID, ':custID' => $custID); $withquotes = array(true, true);
 		if ($debug) {
@@ -218,7 +210,7 @@
 
 	function count_shiptos($custID, $loginID, $debug = false) { // TODO use QueryBuilder
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$custquery = (new QueryBuilder())->table('custperm')->where('custid', $custID)->where('shiptoid', '!=', '');
 			$q = (new QueryBuilder())->table($custquery, 'custpermcust');
@@ -229,7 +221,7 @@
 		}
 		$q->field('COUNT(*)');
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -252,7 +244,7 @@
 	function get_customershiptos($custID, $loginID, $debug = false) { // TODO use QueryBuilder
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
 		$q = (new QueryBuilder())->table('custindex');
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$custquery = (new QueryBuilder())->table('custperm')->where('custid', $custID)->where('shiptoid', '!=', '');
 			$permquery = (new QueryBuilder())->table($custquery, 'custpermcust');
@@ -264,7 +256,7 @@
 		}
 		$q->group('custid, shiptoid');
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -273,7 +265,7 @@
 			return $sql->fetchAll();
 		}
 	}
-	
+
 	function get_topxsellingshiptos($sessionID, $custID, $count, $debug = false) {
 		$loginID = (Dpluswire::wire('user')->hascontactrestrictions) ? Processwire\wire('user')->loginid : 'admin';
 		$q = (new QueryBuilder())->table('custperm');
@@ -283,7 +275,7 @@
 		$q->limit($count);
 		$q->order('amountsold DESC');
 		$sql = Dpluswire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -291,24 +283,33 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
-	function count_customercontacts($loginID, $restrictions, $custID, $debug = false) {
-		$SHARED_ACCOUNTS = Dpluswire::wire('config')->sharedaccounts;
+
+	/**
+	 * Counts the number of Contacts the loginID can access
+	 * @param  string $custID  Customer ID
+	 * @param  string $loginID User Login ID if blank, will default to current user
+	 * @param  bool   $debug   Run in debug? If true will return SQL Query
+	 * @return int             Number of contacts for that Customer
+	 */
+	function count_customercontacts($custID, $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
+
 		$q = (new QueryBuilder())->table('custindex');
 		$q->field('COUNT(*)');
-		
-		if ($restrictions) {
+
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep'] && DplusWire::wire('pages')->get('/config/')->restrict_allowedcustomers) {
 			$custquery = (new QueryBuilder())->table('custperm')->where('custid', $custID);
 			$permquery = (new QueryBuilder())->table($custquery, 'custpermcust');
 			$permquery->field('custid, shiptoid');
-			$permquery->where('loginid', [$loginID, $SHARED_ACCOUNTS]);
+			$permquery->where('loginid', [$loginID, DplusWire::wire('config')->sharedaccounts]);
 			$q->where('(custid, shiptoid)','in', $permquery);
 		} else {
 			$q->where('custid', $custID);
 		}
-		
-		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -317,11 +318,21 @@
 		}
 	}
 
-	function get_customercontacts($loginID, $restrictions, $custID, $debug = false) {
-		$SHARED_ACCOUNTS = Dpluswire::wire('config')->sharedaccounts;
+	/**
+	 * Returns the Contacts the loginID can access
+	 * @param  string $custID  Customer ID
+	 * @param  string $loginID User Login ID if blank, will default to current user
+	 * @param  bool   $debug   Run in debug? If true will return SQL Query
+	 * @return array             array of contacts for that Customer
+	 */
+	function get_customercontacts($custID, $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
+		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
+
 		$q = (new QueryBuilder())->table('custindex');
-		
-		if ($restrictions) {
+
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep'] && DplusWire::wire('pages')->get('/config/')->restrict_allowedcustomers) {
 			$custquery = (new QueryBuilder())->table('custperm')->where('custid', $custID);
 			$permquery = (new QueryBuilder())->table($custquery, 'custpermcust');
 			$permquery->field('custid, shiptoid');
@@ -330,9 +341,9 @@
 		} else {
 			$q->where('custid', $custID);
 		}
-		
-		$sql = Dpluswire::wire('database')->prepare($q->render());
-		
+
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -342,19 +353,31 @@
 		}
 	}
 
-	function can_accesscustomercontact($loginID, $restrictions, $custID, $shipID, $contactID, $debug) {
-		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
-		if ($restrictions) {
-			$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM (SELECT * FROM custperm WHERE custid = :custID) t WHERE loginid = :loginID OR loginid = :shared) AND shiptoid = :shipID AND contact = :contactID");
-			$switching = array(':custID' => $custID, ':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':shipID' => $shipID, ':contactID' => $contactID);
-			$withquotes = array(true, true, true, true, true);
+	function can_accesscustomercontact($custID, $shiptoID, $contactID, $loginID, $debug) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
+		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
+
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep'] && DplusWire::wire('pages')->get('/config/')->restrict_allowedcustomers) {
+			$custquery = (new QueryBuilder())->table('custperm')->where('custid', $custID);
+			$permquery = (new QueryBuilder())->table($custquery, 'custpermcust')->field('custid, shiptoid');
+			$permquery->where('loginid', 'in', [$loginID, $SHARED_ACCOUNTS]);
+			$q = (new QueryBuilder())->table('custindex');
+			$q->field($q->expr('COUNT(*)'));
+			$q->where('(custid, shiptoid)','in', $permquery);
+			$q->where('shiptoid', $shiptoID);
+			$q->where('contact', $contactID);
+			$sql = DplusWire::wire('database')->prepare($q->render());
+
+			if ($debug) {
+				return $q->generate_sqlquery($q->params);
+			} else {
+				$sql->execute($q->params);
+				return $sql->fetchColumn();
+			}
 		} else {
-			$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE custid = :custID AND shiptoid = :shipID AND contact = :contactID");
-			$switching = array(':custID' => $custID, ':shipID' => $shipID, ':contactID' => $contactID);
-			$withquotes = array(true, true, true);
+			return 1;
 		}
-		$sql->execute($switching);
-		if ($debug) { return returnsqlquery($sql->queryString, $switching, $withquotes); } else { if ($sql->fetchColumn() > 0){return true;} else {return false; } }
 	}
 
 	function get_customercontact($custID, $shiptoID = '', $contactID = '', $debug = false) {
@@ -366,7 +389,7 @@
 			$q->where('contact', $contactID);
 		}
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -375,7 +398,7 @@
 			return $sql->fetch();
 		}
 	}
-	
+
 	/**
 	 * Gets the primary contact for that Customer Shipto.
 	 * ** NOTE each Customer and Customer Shipto may have one Primary buyer
@@ -393,7 +416,7 @@
 		}
 		$q->where('buyingcontact', 'P');
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -402,11 +425,11 @@
 			return $sql->fetch();
 		}
 	}
-	
+
 	function get_customerbuyersendusers($loginID, $custID, $shiptoID = false, $debug = false) {
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
 		$q = (new QueryBuilder())->table('custindex');
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$custquery = (new QueryBuilder())->table('custperm')->where('custid', $custID);
 			if (!empty($shiptoID)) {
@@ -424,9 +447,9 @@
 		}
 		$q->where('buyingcontact', '!=', 'N');
 		$q->where('certcontact', 'Y');
-		
+
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -435,12 +458,12 @@
 			return $sql->fetchAll();
 		}
 	}
-	
+
 	function search_customerbuyersendusers($loginID, $query, $custID, $shiptoID = false, $debug = false) {
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
 		$search = '%'.$query.'%';
 		$q = (new QueryBuilder())->table('custindex');
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$custquery = (new QueryBuilder())->table('custperm')->where('custid', $custID);
 			if (!empty($shiptoID)) {
@@ -461,7 +484,7 @@
 		$q->where('certcontact', 'Y');
 		$q->where($q->expr("UCASE(REPLACE(CONCAT($fieldstring), '-', '')) LIKE []", [$search]));
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -470,7 +493,7 @@
 			return $sql->fetchAll();
 		}
 	}
-	
+
 	function edit_customercontact($custID, $shipID, $contactID, $contact, $debug = false) {
 		$originalcontact = get_customercontact($custID, $shipID, $contactID, false);
 		$q = (new QueryBuilder())->table('custindex');
@@ -480,7 +503,7 @@
 		$q->where('shiptoid', $shipID);
 		$q->where('contact', $contactID);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -509,67 +532,76 @@
 /* =============================================================
 	CUST INDEX FUNCTIONS
 ============================================================ */
-	function get_distinctcustindexpaged($loginID, $limit = 10, $page = 1, $restrictions, $debug) {
-		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
-		$limiting = returnlimitstatement($limit, $page);
+	function get_distinctcustindexpaged($limit = 10, $page = 1, $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
+		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
 
-		if ($restrictions) {
-			$sql = Processwire\wire('database')->prepare("SELECT * FROM custindex WHERE custid IN (SELECT DISTINCT(custid) FROM custperm WHERE loginid = :loginID OR loginid = :shared) GROUP BY custid ".$limiting);
-			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS);
-			$withquotes = array(true, true);
-		} else {
-			$sql = Processwire\wire('database')->prepare("SELECT * FROM custindex WHERE shiptoid = '' GROUP BY custid " . $limiting);
-			$switching = array(); $withquotes = array();
+		$q = (new QueryBuilder())->table('custindex');
+
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep'] && DplusWire::wire('pages')->get('/config/')->restrict_allowedcustomers) {
+			$custpermquery = (new QueryBuilder())->table('custperm');
+			$custpermquery->field($q->expr('DISTINCT(custid)'));
+			$custpermquery->where('loginid', 'in', [$loginID, $SHARED_ACCOUNTS]);
+
+			$q->where('custid','in', $custpermquery);
 		}
+		$q->limit($limit, $q->generate_offset($page, $limit));
+		$q->group('custid');
+
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			$sql->setFetchMode(PDO::FETCH_CLASS, 'Contact');
 			return $sql->fetchAll();
 		}
 	}
 
-	function count_distinctcustindex($loginID, $restrictions, $debug) {
-		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
-		if ($restrictions) {
-			$sql = Processwire\wire('database')->prepare("SELECT COUNT(DISTINCT(custid)) FROM custindex WHERE custid IN (SELECT DISTINCT(custid) FROM custperm WHERE loginid = :loginID OR loginid = :shared)");
-			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS);
-			$withquotes = array(true, true);
-		} else {
-			$sql = Processwire\wire('database')->prepare("SELECT COUNT(DISTINCT(custid)) FROM custindex WHERE shiptoid = ''");
-			$switching = array(); $withquotes = array();
+	function count_distinctcustindex($loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
+		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
+		$q = (new QueryBuilder())->table('custindex');
+		$q->field($q->expr('COUNT(DISTINCT(custid))'));
+
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep'] && DplusWire::wire('pages')->get('/config/')->restrict_allowedcustomers) {
+			$custpermquery = (new QueryBuilder())->table('custperm');
+			$custpermquery->field($q->expr('DISTINCT(custid)'));
+			$custpermquery->where('loginid', 'in', [$loginID, $SHARED_ACCOUNTS]);
+			$q->where('custid','in', $custpermquery);
 		}
 
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			return $sql->fetchColumn();
 		}
 	}
-	
-	function search_custindexpaged($loginID, $limit = 10, $page = 1, $restrictions, $keyword, $debug) {
+
+	function search_custindexpaged($keyword, $limit = 10, $page = 1, $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
-		$limiting = returnlimitstatement($limit, $page);
-		$query = addslashes($keyword);
-		$search = '%'.str_replace(' ', '%', str_replace('-', '', $query)).'%';
+
+		$search = '%'.str_replace(' ', '%', str_replace('-', '', addslashes($keyword))).'%';
 		$q = (new QueryBuilder())->table('custindex');
-		
-		if ($restrictions) {
+
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep'] && DplusWire::wire('pages')->get('/config/')->restrict_allowedcustomers) {
 			$permquery = (new QueryBuilder())->table('custperm');
 			$permquery->field('custid, shiptoid');
 			$permquery->where('loginid', [$loginID, $SHARED_ACCOUNTS]);
 			$q->where('(custid, shiptoid)','in', $permquery);
-		} else {
-			
 		}
-		$fieldstring = implode(", ' ', ", array_keys(Contact::generate_classarray()));
 		
+		$fieldstring = implode(", ' ', ", array_keys(Contact::generate_classarray()));
+
 		$q->where($q->expr("UCASE(REPLACE(CONCAT($fieldstring), '-', '')) LIKE UCASE([])", [$search]));
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		
+
 		if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
 			$q->group('custid, shiptoid');
 			$q->order($q->expr('custid <> []', [$query]));
@@ -587,7 +619,7 @@
 			return $sql->fetchAll();
 		}
 	}
-	
+
 	function count_searchcustindex($loginID, $restrictions, $keyword, $debug) {
 		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
 		$search = '%'.str_replace(' ', '%', str_replace('-', '', $keyword)).'%';
@@ -649,19 +681,19 @@
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		}
 	}
-	
+
 	function insert_customerindexrecord(Contact $customer, $debug = false) {
 		$properties = array_keys($customer->_toArray());
 		$q = (new QueryBuilder())->table('custindex');
 		$q->mode('insert');
-		
+
 		foreach ($properties as $property) {
 			if (!empty($customer->$property)) {
 				$q->set($property, $customer->$property);
 			}
 		}
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -669,7 +701,7 @@
 			return $q->generate_sqlquery($q->params);
 		}
 	}
-	
+
 	function update_contact(Contact $contact, $debug = false) {
 		$originalcontact = Contact::load($contact->custid, $contact->shiptoid, $contact->contact);
 		$properties = array_keys($contact->_toArray());
@@ -684,7 +716,7 @@
 		$q->where('shiptoid', $contact->shiptoid);
 		$q->where('contact', $contact->contact);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -694,7 +726,7 @@
 			return $q->generate_sqlquery($q->params);
 		}
 	}
-	
+
 	function change_contactid(Contact $contact, $contactID, $debug = false) {
 		$originalcontact = Contact::load($contact->custid, $contact->shiptoid, $contact->contact);
 		$q = (new QueryBuilder())->table('custindex');
@@ -704,7 +736,7 @@
 		$q->where('shiptoid', $contact->shiptoid);
 		$q->where('contact', $contact->contact);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -754,7 +786,7 @@
 		$q->field($expression);
 		$q->where('sessionid', $sessionID);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -775,7 +807,7 @@
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('dateoforder ' . $sortrule);
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -799,7 +831,7 @@
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order($orderby .' '. $sortrule);
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -821,7 +853,7 @@
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -847,7 +879,7 @@
 			$q->generate_filters($filter, $filtertypes);
 		}
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -870,7 +902,7 @@
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -898,7 +930,7 @@
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order($orderby .' '. $sortrule);
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -938,14 +970,14 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_custidfromorder($sessionID, $ordn, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->field('custid');
 		$q->where('sessionid', $sessionID);
 		$q->where('orderno', $ordn);
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -953,14 +985,14 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_shiptoidfromorder($sessionID, $ordn, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->field('shiptoid');
 		$q->where('sessionid', $sessionID);
 		$q->where('orderno', $ordn);
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -973,15 +1005,15 @@
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->field($q->expr('MAX(ordertotal)'));
 		$q->where('sessionid', $sessionID);
-		
+
 		if (!empty($custID)) {
 			$q->where('custid', $custID);
-			
+
 			if (!(empty($shipID))) {
 				$q->where('shiptoid', $shipID);
 			}
 		}
-		
+
 		$sql = DplusWire::wire('database')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -995,10 +1027,10 @@
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->field($q->expr('MIN(ordertotal)'));
 		$q->where('sessionid', $sessionID);
-		
+
 		if (!empty($custID)) {
 			$q->where('custid', $custID);
-			
+
 			if (!(empty($shipID))) {
 				$q->where('shiptoid', $shipID);
 			}
@@ -1023,7 +1055,7 @@
 			$q->where('shiptoid', $shipID);
 		}
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1067,7 +1099,7 @@
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
-	
+
 	function get_nextorderlock($sessionID) {
 		$sql = Processwire\wire('database')->prepare("SELECT MAX(recno) FROM ordlock WHERE sessionid = :sessionID LIMIT 1");
 		$switching = array(':sessionID' => $sessionID);
@@ -1081,7 +1113,7 @@
 		$q->where('orderno', $ordn);
 		$q->where('itemnbr', '');
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1089,7 +1121,7 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 /* =============================================================
 	SALES HISTORY FUNCTIONS
 ============================================================ */
@@ -1098,7 +1130,7 @@
 		$q->field('COUNT(*)');
 		$q->where('orderno', $ordn);
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1106,13 +1138,13 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_custidfromsaleshistory($ordn, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('custid');
 		$q->where('orderno', $ordn);
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1120,7 +1152,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_minsaleshistoryorderdate($sessionID, $field, $custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field($q->expr("MIN(STR_TO_DATE(CAST($field as CHAR(12)), '%Y%m%d'))"));
@@ -1131,7 +1163,7 @@
 			$q->where('shiptoid', $shipID);
 		}
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1139,7 +1171,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_maxsaleshistoryordertotal($sessionID, $custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field($q->expr("MAX(ordertotal)"));
@@ -1157,7 +1189,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_minsaleshistoryordertotal($sessionID, $custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field($q->expr("MIN(ordertotal)"));
@@ -1175,11 +1207,11 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function count_usersaleshistory($sessionID, $filter = false, $filtertypes = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('COUNT(*)');
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$q->where('sp1', DplusWire::wire('user')->salespersonid);
 		}
@@ -1187,7 +1219,7 @@
 			$q->generate_filters($filter, $filtertypes);
 		}
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1195,10 +1227,10 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_usersaleshistory($sessionID, $limit = 10, $page = 1, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$q->where('sp1', DplusWire::wire('user')->salespersonid);
 		}
@@ -1207,7 +1239,7 @@
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1219,7 +1251,7 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_usersaleshistoryorderby($sessionID, $limit = 10, $page = 1, $sortrule, $orderby, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		if (DplusWire::wire('user')->hascontactrestrictions) {
@@ -1230,9 +1262,9 @@
 		}
 		$q->order($orderby .' '. $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		
+
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1244,12 +1276,12 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_usersaleshistoryinvoicedate($sessionID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('saleshist.*');
 		$q->field($q->expr("STR_TO_DATE(invdate, '%Y%m%d') as dateofinvoice"));
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$q->where('sp1', DplusWire::wire('user')->salespersonid);
 		}
@@ -1259,7 +1291,7 @@
 		$q->order('dateofinvoice ' . $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1271,7 +1303,7 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_usersaleshistoryorderdate($sessionID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('saleshist.*');
@@ -1285,7 +1317,7 @@
 		$q->order('dateoforder ' . $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1297,25 +1329,25 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function count_customersaleshistory($sessionID, $custID, $shiptoID = '', $filter = false, $filtertypes = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('COUNT(*)');
 		$q->where('custid', $custID);
-		
+
 		if (!empty($shiptoID)) {
 			$q->where('shiptoid', $shiptoID);
 		}
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$q->where('sp1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
 		}
-		
+
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1323,11 +1355,11 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_customersaleshistory($sessionID, $custID, $shiptoID = '', $limit = 10, $page = 1, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->where('custid', $custID);
-		
+
 		if (!empty($shiptoID)) {
 			$q->where('shiptoid', $shiptoID);
 		}
@@ -1339,7 +1371,7 @@
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1351,11 +1383,11 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_customersaleshistoryorderby($sessionID, $custID, $shiptoID = '', $limit = 10, $page = 1, $sortrule, $orderby, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->where('custid', $custID);
-		
+
 		if (!empty($shiptoID)) {
 			$q->where('shiptoid', $shiptoID);
 		}
@@ -1368,7 +1400,7 @@
 		$q->order($orderby .' '. $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1380,13 +1412,13 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_customersaleshistoryinvoicedate($sessionID, $custID, $shiptoID = '', $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('saleshist.*');
 		$q->field($q->expr("STR_TO_DATE(invdate, '%Y%m%d') as dateofinvoice"));
 		$q->where('custid', $custID);
-		
+
 		if (!empty($shiptoID)) {
 			$q->where('shiptoid', $shiptoID);
 		}
@@ -1399,7 +1431,7 @@
 		$q->order('dateofinvoice ' . $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1411,13 +1443,13 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_customersaleshistoryorderdate($sessionID, $custID, $shiptoID = '', $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('saleshist.*');
 		$q->field($q->expr("STR_TO_DATE(orderdate, '%Y%m%d') as dateoforder"));
 		$q->where('custid', $custID);
-		
+
 		if (!empty($shiptoID)) {
 			$q->where('shiptoid', $shiptoID);
 		}
@@ -1430,7 +1462,7 @@
 		$q->order('dateoforder ' . $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1465,7 +1497,7 @@
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
-	
+
 	function count_userquotes($sessionID, $filter = false, $filtertypes = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$expression = $q->expr('IF (COUNT(*) = 1, 1, IF(COUNT(DISTINCT(custid)) > 1, COUNT(*), 0)) as count');
@@ -1479,7 +1511,7 @@
 			$q->generate_filters($filter, $filtertypes);
 		}
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1487,15 +1519,15 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_maxquotetotal($sessionID, $custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field($q->expr('MAX(ordertotal)'));
 		$q->where('sessionid', $sessionID);
-		
+
 		if (!empty($custID)) {
 			$q->where('custid', $custID);
-			
+
 			if (!empty($shipID)) {
 				$q->where('shiptoid', $shipID);
 			}
@@ -1508,15 +1540,15 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_minquotetotal($sessionID, $custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field($q->expr('MIN(ordertotal)'));
 		$q->where('sessionid', $sessionID);
-		
+
 		if (!empty($custID)) {
 			$q->where('custid', $custID);
-			
+
 			if (!empty($shipID)) {
 				$q->where('shiptoid', $shipID);
 			}
@@ -1529,7 +1561,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_minquotedate($sessionID, $field, $custID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field($q->expr("MIN(STR_TO_DATE($field, '%m/%d/%Y'))"));
@@ -1538,7 +1570,7 @@
 			$q->where('custid', $custID);
 		}
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1546,7 +1578,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_userquotes($sessionID, $limit, $page = 1, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
@@ -1556,7 +1588,7 @@
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1568,20 +1600,20 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_userquotesquotedate($sessionID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
 		$q->field($q->expr("STR_TO_DATE(quotdate, '%m/%d/%Y') as quotedate"));
 		$q->where('sessionid', $sessionID);
-		
+
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('quotedate', $sortrule);
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1593,7 +1625,7 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_userquotesrevdate($sessionID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
@@ -1605,7 +1637,7 @@
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('reviewdate', $sortrule);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1617,7 +1649,7 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-		
+
 	function get_userquotesexpdate($sessionID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
@@ -1628,7 +1660,7 @@
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('expiredate', $sortrule);
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1640,7 +1672,7 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_userquotesorderby($sessionID, $limit = 10, $page = 1, $sortrule, $orderby, $filter = false, $filtertypes = false, $useclass = true, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
@@ -1651,7 +1683,7 @@
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order($orderby, $sortrule);
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1676,7 +1708,7 @@
 			$q->generate_filters($filter, $filtertypes);
 		}
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1697,7 +1729,7 @@
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1709,7 +1741,7 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_customerquotesquotedate($sessionID, $custID, $shipID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
@@ -1725,7 +1757,7 @@
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('quotedate', $sortrule);
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1737,7 +1769,7 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_customerquotesrevdate($sessionID, $custID, $shipID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
@@ -1753,7 +1785,7 @@
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('reviewdate', $sortrule);
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1765,7 +1797,7 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-		
+
 	function get_customerquotesexpdate($sessionID, $custID, $shipID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('quothed.*');
@@ -1781,7 +1813,7 @@
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('expiredate', $sortrule);
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1793,7 +1825,7 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_customerquotesorderby($sessionID, $custID, $shipID, $limit = 10, $page = 1, $sortrule, $orderby, $filter = false, $filtertypes = false, $useclass = true, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->where('sessionid', $sessionID);
@@ -1807,7 +1839,7 @@
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order($orderby, $sortrule);
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1819,14 +1851,14 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_custidfromquote($sessionID, $qnbr, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('custid');
 		$q->where('sessionid', $sessionID);
 		$q->where('quotnbr', $qnbr);
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1834,14 +1866,14 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_shiptoidfromquote($sessionID, $qnbr, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('shiptoid');
 		$q->where('sessionid', $sessionID);
 		$q->where('quotnbr', $qnbr);
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1855,7 +1887,7 @@
 		$q->where('sessionid', $sessionID);
 		$q->where('quotnbr', $qnbr);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1893,14 +1925,14 @@
 			return $sql->fetch(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_quotedetail($sessionID, $qnbr, $linenbr, $debug = false) {
 		$q = (new QueryBuilder())->table('quotdet');
 		$q->where('sessionid', $sessionID);
 		$q->where('quotenbr', $qnbr);
 		$q->where('linenbr', $linenbr);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1927,14 +1959,14 @@
 		$sql->execute($switching);
 		return intval($sql->fetchColumn()) + 1;
 	}
-	
+
 	function count_quotedetails($sessionID, $qnbr, $debug = false) {
 		$q = (new QueryBuilder())->table('quotdet');
 		$q->field($q->expr('COUNT(*)'));
 		$q->where('quotenbr', $qnbr);
 		$q->where('sessionid', $sessionID);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -1948,7 +1980,7 @@
 		$properties = array_keys($quote->_toArray());
 		$q = (new QueryBuilder())->table('quothed');
 		$q->mode('update');
-		
+
 		foreach ($properties as $property) {
 			if ($quote->$property != $originalquote->$property) {
 				$q->set($property, $quote->$property);
@@ -1982,7 +2014,7 @@
 		$q->where('sessionid', $detail->sessionid);
 		$q->where('recno', $detail->recno);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -1992,7 +2024,7 @@
 			return $q->generate_sqlquery($q->params);
 		}
 	}
-	
+
 	function insert_quotedetail($sessionID, QuoteDetail $detail, $debug = false) {
 		$properties = array_keys($detail->_toArray());
 		$q = (new QueryBuilder())->table('quotdet');
@@ -2006,7 +2038,7 @@
 		$q->where('sessionid', $detail->sessionid);
 		$q->where('recno', $detail->recno);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -2021,7 +2053,7 @@
 		$sql = Processwire\wire('database')->prepare("INSERT INTO ordlock (sessionid, recno, date, time, orderno, userid) VALUES (:sessionID, :recnbr, :date, :time, :orderno, :userID)");
 		$switching = array(':sessionID' => $sessionID, ':recnbr' => $recnbr, ':date' => $time, ':time' => $time, ':orderno' => $ordn, ':userID' => $userID);
 		$withquotes = array(true, true, true, true, true, true);
-		
+
 		if ($debug) {
 			return	returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -2034,7 +2066,7 @@
 		$sql = Processwire\wire('database')->prepare("DELETE FROM ordlock WHERE sessionid = :sessionID AND orderno = :ordn AND userid = :userID");
 		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn, ':userID' => $userID);
 		$withquotes = array(true, true, true);
-		
+
 		if ($debug) {
 			return	returnsqlquery($sql->queryString, $switching, $withquotes);
 		} else {
@@ -2053,7 +2085,7 @@
 		$q->where('key2', $key2);
 		$q->where('rectype', $type);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2065,7 +2097,7 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_qnote($sessionID, $key1, $key2, $type, $recnbr, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('qnote');
 		$q->where('sessionid', $sessionID);
@@ -2074,7 +2106,7 @@
 		$q->where('rectype', $type);
 		$q->where('recno', $recnbr);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2086,7 +2118,7 @@
 			return $sql->fetch(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function count_qnotes($sessionID, $key1, $key2, $type, $debug = false) {
 		$q = (new QueryBuilder())->table('qnote');
 		$q->field($q->expr('COUNT(*)'));
@@ -2095,7 +2127,7 @@
 		$q->where('key2', $key2);
 		$q->where('rectype', $type);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2111,7 +2143,7 @@
 			return 'N';
 		}
 	}
-	
+
 	function update_note($sessionID, Qnote $qnote, $debug = false) {
 		$originalnote = Qnote::load($sessionID, $qnote->key1, $qnote->key2, $qnote->rectype, $qnote->recno); // LOADS as Class
 		$q = (new QueryBuilder())->table('qnote');
@@ -2127,43 +2159,43 @@
 		$q->where('form5', $qnote->form5);
 		$q->where('recno', $qnote->recno);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
 			return array(
-				'sql' => $q->generate_sqlquery($q->params), 
-				'success' => $sql->rowCount() ? true : false, 
-				'updated' => $sql->rowCount() ? true : false, 
+				'sql' => $q->generate_sqlquery($q->params),
+				'success' => $sql->rowCount() ? true : false,
+				'updated' => $sql->rowCount() ? true : false,
 				'querytype' => 'update'
 			);
 		}
 	}
-	
+
 	function add_qnote($sessionID, Qnote $qnote, $debug = false) {
 		$q = (new QueryBuilder())->table('qnote');
 		$q->mode('insert');
 		$qnote->recno = get_maxqnoterecnbr($qnote->sessionid, $qnote->key1, $qnote->key2, $qnote->rectype) + 1;
-		
+
 		foreach ($qnote->_toArray() as $property => $value) {
 			$q->set($property, $value);
 		}
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
 			return array(
-				'sql' => $q->generate_sqlquery($q->params), 
-				'success' => $sql->rowCount() ? true : false, 
-				'updated' => $sql->rowCount() ? true : false, 
+				'sql' => $q->generate_sqlquery($q->params),
+				'success' => $sql->rowCount() ? true : false,
+				'updated' => $sql->rowCount() ? true : false,
 				'querytype' => 'insert'
 			);
 		}
 	}
-	
+
 	function get_maxqnoterecnbr($sessionID, $key1, $key2, $rectype, $debug = false) {
 		$q = (new QueryBuilder())->table('qnote');
 		$q->field($q->expr('MAX(recno)'));
@@ -2172,7 +2204,7 @@
 		$q->where('key2', $key2);
 		//$q->where('rectype', $rectype);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2180,7 +2212,7 @@
 			return intval($sql->fetchColumn());
 		}
 	}
-	
+
 	function delete_note($sessionID, Qnote $qnote, $debug = false) {
 		$q = (new QueryBuilder())->table('qnote');
 		$q->mode('delete');
@@ -2195,15 +2227,15 @@
 		$q->where('recno', $qnote->recno);
 		$q->where('rectype', $qnote->rectype);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
 			return array(
-				'sql' => $q->generate_sqlquery($q->params), 
-				'success' => $sql->rowCount() ? true : false, 
-				'updated' => $sql->rowCount() ? true : false, 
+				'sql' => $q->generate_sqlquery($q->params),
+				'success' => $sql->rowCount() ? true : false,
+				'updated' => $sql->rowCount() ? true : false,
 				'querytype' => 'update'
 			);
 		}
@@ -2217,7 +2249,7 @@
 		$q->where('sessionid', $sessionID);
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2226,13 +2258,13 @@
 			return $sql->fetchAll();
 		}
 	}
-	
+
 	function count_itemsearchresults($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('pricing');
 		$q->field($q->expr('COUNT(*)'));
 		$q->where('sessionid', $sessionID);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2240,14 +2272,14 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function count_itemhistory($sessionID, $itemID, $debug = false) {
 		$q = (new QueryBuilder())->table('custpricehistory');
 		$q->field($q->expr('COUNT(*)'));
 		$q->where('sessionid', $sessionID);
 		$q->where('itemid', $itemID);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2255,28 +2287,28 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_itemhistoryfield($sessionID, $itemID, $field, $debug = false) {
 		$q = (new QueryBuilder())->table('custpricehistory');
 		$q->field($field);
 		$q->where('sessionid', $sessionID);
 		$q->where('itemid', $itemID);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
 			return $sql->fetchColumn();
-		}	
+		}
 	}
-	
+
 	function get_itemavailability($sessionID, $itemID, $debug = false) {
 		$q = (new QueryBuilder())->table('whseavail');
 		$q->where('sessionid', $sessionID);
 		$q->where('itemid', $itemID);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2284,13 +2316,13 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_commissionprices($itemID, $debug = false) {
 		$q = (new QueryBuilder())->table('commprice');
 		$q->where('itemid', $itemID);
 		$q->order('percent DESC');
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2298,13 +2330,13 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_pricingitem($sessionID, $itemID, $debug = false) {
 		$q = (new QueryBuilder())->table('pricing');
 		$q->where('sessionid', $sessionID);
 		$q->where('itemid', $itemID);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2319,15 +2351,15 @@
 	============================================================ */
 	function get_useractions($user, $querylinks, $limit, $page, $debug) {
 		$q = (new QueryBuilder())->table('useractions');
-		
+
 		if (Processwire\wire('config')->cptechcustomer == 'stempf') {
 			$q->generate_query($querylinks, "duedate-ASC", $limit, $page);
 		} else {
 			$q->generate_query($querylinks, false, $limit, $page);
 		}
-		
+
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2342,7 +2374,7 @@
 		$q->field($q->expr('COUNT(*)'));
 		$q->generate_query($querylinks, false, false, false);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2355,7 +2387,7 @@
 		$q = (new QueryBuilder())->table('useractions');
 		$q->where('id', $id);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2364,7 +2396,7 @@
 			return $sql->fetch();
 		}
 	}
-	
+
 	function edit_useraction(UserAction $updatedaction, $debug = false) {
 		$originalaction = get_useraction($updatedaction->id); // (id, bool fetchclass, bool debug)
 		$q = (new QueryBuilder())->table('useractions');
@@ -2372,7 +2404,7 @@
 		$q->generate_setdifferencesquery($originalaction->_toArray(), $updatedaction->_toArray());
 		$q->where('id', $updatedaction->id);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -2385,7 +2417,7 @@
 			}
 		}
 	}
-	
+
 	function update_useraction(UserAction $updatedaction, $debug = false) {
 		return edit_useraction($updatedaction, $debug);
 	}
@@ -2397,7 +2429,7 @@
 		$q->generate_query($wherelinks);
 		$q->set('dateupdated', date("Y-m-d H:i:s"));
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -2410,13 +2442,13 @@
 			}
 		}
 	}
-	
+
 	function create_useraction(UserAction $action, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$q->mode('insert');
 		$q->generate_setvaluesquery($action->_toArray());
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2448,13 +2480,13 @@
 			return $sql->fetchAll();
 		}
 	}
-	
+
 	function get_vendor($vendorID, $shipfromID = '', $debug = false) {
 		$q = (new QueryBuilder())->table('vendors');
 		$q->where('vendid', $vendorID);
 		$q->where('shipfrom', $shipfromID);
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2474,7 +2506,7 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function search_vendorspaged($limit = 10, $page = 1, $keyword, $debug) {
 		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
 		$limiting = returnlimitstatement($limit, $page);
@@ -2488,7 +2520,7 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function count_searchvendors($keyword, $debug) {
 		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
 		$search = '%'.str_replace(' ', '%',$keyword).'%';
@@ -2505,7 +2537,7 @@
 	function get_unitofmeasurements($debug) {
 		$q = (new QueryBuilder())->table('unitofmeasure');
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2517,7 +2549,7 @@
 	function get_itemgroups($debug) {
 		$q = (new QueryBuilder())->table('itemgroup');
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2525,7 +2557,7 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_vendorname($vendorID) {
 		$sql = Processwire\wire('database')->prepare("SELECT name FROM vendors WHERE vendid = :vendorID LIMIT 1");
 		$switching = array(':vendorID' => $vendorID);
@@ -2541,7 +2573,7 @@
 		$q->field("COUNT(*)");
 		$q->where('sessionid', $sessionID);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2549,13 +2581,13 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_custidfromcart($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('carthed');
 		$q->field($q->expr('custid'));
 		$q->where('sessionid', $sessionID);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2563,12 +2595,12 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_carthead($sessionID, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('carthed');
 		$q->where('sessionid', $sessionID);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2595,13 +2627,13 @@
 			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
 		}
 	}
-	
+
 	function count_cartdetails($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('cartdet');
 		$q->field('COUNT(*)');
 		$q->where('sessionid', $sessionID);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2609,12 +2641,12 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_cartdetails($sessionID, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('cartdet');
 		$q->where('sessionid', $sessionID);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2626,13 +2658,13 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_cartdetail($sessionID, $linenbr, $debug = false) {
 		$q = (new QueryBuilder())->table('cartdet');
 		$q->where('sessionid', $sessionID);
 		$q->where('linenbr', $linenbr);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2651,7 +2683,7 @@
 		$q->set('date', date('Ymd'));
 		$q->set('time', date('His'));
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2701,7 +2733,7 @@
 			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
 		}
 	}
-	
+
 	function update_cartdetail($sessionID, CartDetail $detail, $debug = false) {
 		$originaldetail = CartDetail::load($sessionID, $detail->linenbr);
 		$properties = array_keys($detail->_toArray());
@@ -2716,7 +2748,7 @@
 	//	$q->where('orderno', $detail->orderno);
 		$q->where('linenbr', $detail->linenbr);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -2726,7 +2758,7 @@
 			return $q->generate_sqlquery($q->params);
 		}
 	}
-	
+
 	function insert_cartdetail($sessionID, CartDetail $detail, $debug = false) {
 		$properties = array_keys($detail->_toArray());
 		$q = (new QueryBuilder())->table('cartdet');
@@ -2737,7 +2769,7 @@
 			}
 		}
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -2763,13 +2795,13 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_createdordn($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('logperm');
 		$q->field('ordernbr');
 		$q->where('sessionid', $sessionID);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -2792,13 +2824,13 @@
 			if ($column != 'Y') { return false; } else { return true; }
 		}
 	}
-	
+
 	function get_orderhead($sessionID, $ordn, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->where('sessionid', $sessionID);
 		$q->where('orderno', $ordn);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2832,14 +2864,14 @@
 			return $sql->fetch(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_orderdetail($sessionID, $ordn, $linenbr, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrdet');
 		$q->where('sessionid', $sessionID);
 		$q->where('orderno', $ordn);
 		$q->where('linenbr', $linenbr);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2854,7 +2886,7 @@
 		$q->where('sessionid', $sessionID);
 		$q->where('orderno', $ordn);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2868,7 +2900,7 @@
 		$q->where('sessionid', $sessionID);
 		$q->where('orderno', $ordn);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2876,7 +2908,7 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function update_orderdetail($sessionID, $detail, $debug = false) {
 		$originaldetail = SalesOrderDetail::load($sessionID, $detail->orderno, $detail->linenbr);
 		$properties = array_keys($detail->_toArray());
@@ -2891,7 +2923,7 @@
 		$q->where('sessionid', $detail->sessionid);
 		$q->where('linenbr', $detail->linenbr);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -2915,7 +2947,7 @@
 		$q->where('orderno', $order->orderno);
 		$q->where('sessionid', $order->sessionid);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -2936,7 +2968,7 @@
 		$q->where('orderno', $ordn);
 		$q->where('sessionid', $sessionID);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -3012,7 +3044,7 @@
 	function search_items($query, $custID, $limit, $page, $debug = false) {
 		$search = '%'.str_replace(' ', '%', $query).'%';
 		$q = (new QueryBuilder())->table('itemsearch');
-		
+
 		if (empty($custID)) {
 			$q->where('origintype', ['I', 'V']);
 			$q->where(
@@ -3028,9 +3060,9 @@
 		$q->order($q->expr("itemid LIKE UCASE([]) DESC", [$search]));
 		$q->group('itemid');
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		
+
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3039,12 +3071,12 @@
 			return $sql->fetchAll();
 		}
 	}
-	
+
 	function count_searchitems($q, $custID, $debug = false) {
 		$search = '%'.str_replace(' ', '%', $q).'%';
 		$q = (new QueryBuilder())->table('itemsearch');
 		$q->field('COUNT(DISTINCT(itemid))');
-		
+
 		if (empty($custID)) {
 			$q->where('origintype', ['I', 'V']);
 			$q->where(
@@ -3058,7 +3090,7 @@
 			$q->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]));
 		}
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3146,14 +3178,14 @@
 			return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'insertedid' => Processwire\wire('database')->lastInsertId());
 		}
 	}
-	
+
 	function does_tableformatterexist($userID, $formatter, $debug = false) {
 		$q = (new QueryBuilder())->table('tableformatter');
 		$q->field($q->expr('COUNT(*)'));
 		$q->where('user', $userID);
 		$q->where('formattertype', $formatter);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3172,14 +3204,14 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_maxtableformatterid($userID, $formatter, $debug = false) {
 		$q = (new QueryBuilder())->table('tableformatter');
 		$q->field($q->expr('MAX(id)'));
 		$q->where('user', $userID);
 		$q->where('formattertype', $formatter);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3187,7 +3219,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function getmaxtableformatterid($user, $formatter, $debug) {
 		$sql = Processwire\wire('database')->prepare("SELECT MAX(id) FROM tableformatter WHERE user = :user AND formattertype = :formatter");
 		$switching = array(':user' => $user, ':formatter' => $formatter); $withquotes = array(true, true);
@@ -3209,7 +3241,7 @@
 			return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'affectedrows' => $sql->rowCount() ? true : false);
 		}
 	}
-	
+
 	function update_formatter($userID, $formatter, $data, $debug = false) {
 		$q = (new QueryBuilder())->table('tableformatter');
 		$q->mode('update');
@@ -3217,7 +3249,7 @@
 		$q->where('user', $userID);
 		$q->where('formattertype', $formatter);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3225,7 +3257,7 @@
 			return array('sql' => $q->generate_sqlquery($q->params), 'success' => $sql->rowCount() ? true : false, 'updated' => $sql->rowCount() ? true : false, 'querytype' => 'update');
 		}
 	}
-	
+
 	function create_formatter($userID, $formatter, $data, $debug = false) {
 		$q = (new QueryBuilder())->table('tableformatter');
 		$q->mode('insert');
@@ -3233,7 +3265,7 @@
 		$q->set('user', $userID);
 		$q->set('formattertype', $formatter);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3241,7 +3273,7 @@
 			return array('sql' => $q->generate_sqlquery($q->params), 'success' => Processwire\wire('database')->lastInsertId() > 0 ? true : false, 'id' => Processwire\wire('database')->lastInsertId(), 'querytype' => 'create');
 		}
 	}
-	
+
 	/* =============================================================
 		USER CONFIGS FUNCTIONS
 	============================================================ */
@@ -3275,7 +3307,7 @@
 		$q->field($q->expr('COUNT(*)'));
 		$q->where('configtype', $config);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3290,7 +3322,7 @@
 		$q->where('configtype', $config);
 		$q->limit(1);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3298,14 +3330,14 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function update_customerconfig($config, $data, $debug = false) {
 		$q = (new QueryBuilder())->table('customerconfigs');
 		$q->mode('update');
 		$q->set('data', $data);
 		$q->where('configtype', $config);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3313,14 +3345,14 @@
 			return array('sql' => $q->generate_sqlquery($q->params), 'success' => $sql->rowCount() ? true : false, 'updated' => $sql->rowCount() ? true : false, 'querytype' => 'update');
 		}
 	}
-	
+
 	function create_customerconfig($config, $data, $debug = false) {
 		$q = (new QueryBuilder())->table('customerconfigs');
 		$q->mode('insert');
 		$q->set('data', $data);
 		$q->set('configtype', $config);
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3337,7 +3369,7 @@
 		$q->where('loginid', $loginID);
 
 		$sql = Processwire\wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3346,7 +3378,7 @@
 			return $sql->fetch();
 		}
 	}
-	
+
 	/* =============================================================
 		LOGM FUNCTIONS
 	============================================================ */
@@ -3354,20 +3386,20 @@
 		$q = (new QueryBuilder())->table('bookingd');
 		$q->field('COUNT(*)');
 		$q->where('bookdate', date('Ymd'));
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$q->where('salesperson1', DplusWire::wire('user')->salespersonid);
 		}
-		
+
 		if (!empty($custID)) {
 			$q->where('custid', $custID);
 			if (!empty($shiptoID)) {
 				$q->where('shiptoid', $shiptoID);
 			}
 		}
-		
+
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3375,14 +3407,14 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_userbookings($sessionID, $filter, $filtertypes, $interval = '', $debug = false) {
 		$q = (new QueryBuilder())->table('bookingr');
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$q->where('salesrep', DplusWire::wire('user')->salespersonid);
 		}
-		
+
 		$q->generate_filters($filter, $filtertypes);
 
 		switch ($interval) {
@@ -3397,7 +3429,7 @@
 				$q->group('bookdate');
 				break;
 		}
-		
+
 		$sql = DplusWire::wire('database')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3406,14 +3438,14 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_bookingtotalsbycustomer($sessionID, $filter, $filtertypes, $interval = '', $debug = false) {
 		$q = (new QueryBuilder())->table('bookingc');
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$q->where('salesrep', DplusWire::wire('user')->salespersonid);
 		}
-		
+
 		$q->generate_filters($filter, $filtertypes);
 
 		switch ($interval) {
@@ -3428,7 +3460,7 @@
 				$q->group('bookdate');
 				break;
 		}
-		
+
 		$sql = DplusWire::wire('database')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3437,26 +3469,26 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function count_daybookingordernumbers($sessionID, $date, $custID = false, $shiptoID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('bookingd');
 		$q->field($q->expr('COUNT(DISTINCT(salesordernbr))'));
 
 		$q->where('bookdate', date('Ymd', strtotime($date)));
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$q->where('salesperson1', DplusWire::wire('user')->salespersonid);
 		}
-		
+
 		if (!empty($custID)) {
 			$q->where('custid', $custID);
 			if (!empty($shiptoID)) {
 				$q->where('shiptoid', $shiptoID);
 			}
 		}
-		
+
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3464,7 +3496,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_daybookingordernumbers($sessionID, $date, $custID = false, $shiptoID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('bookingd');
 		$q->field($q->expr('DISTINCT(salesordernbr)'));
@@ -3472,20 +3504,20 @@
 		$q->field('custid');
 		$q->field('shiptoid');
 		$q->where('bookdate', date('Ymd', strtotime($date)));
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$q->where('salesperson1', DplusWire::wire('user')->salespersonid);
 		}
-		
+
 		if (!empty($custID)) {
 			$q->where('custid', $custID);
 			if (!empty($shiptoID)) {
 				$q->where('shiptoid', $shiptoID);
 			}
 		}
-		
+
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3493,25 +3525,25 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_bookingdayorderdetails($sessionID, $ordn, $date, $custID = false, $shiptoID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('bookingd');
 		$q->where('bookdate', date('Ymd', strtotime($date)));
 		$q->where('salesordernbr', $ordn);
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$q->where('salesperson1', DplusWire::wire('user')->salespersonid);
 		}
-		
+
 		if (!empty($custID)) {
 			$q->where('custid', $custID);
 			if (!empty($shiptoID)) {
 				$q->where('shiptoid', $shiptoID);
 			}
 		}
-		
+
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3519,18 +3551,18 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_customerbookings($sessionID, $custID, $shipID, $filter, $filtertypes, $interval = '', $debug = false) {
 		$q = (new QueryBuilder())->table('bookingc');
 		$q->where('custid', $custID);
 		if (!empty($shipID)) {
 			$q->where('shiptoid', $shipID);
 		}
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$q->where('salesrep', DplusWire::wire('user')->salespersonid);
 		}
-		
+
 		$q->generate_filters($filter, $filtertypes);
 
 		switch ($interval) {
@@ -3545,7 +3577,7 @@
 				$q->group('bookdate');
 				break;
 		}
-		
+
 		$sql = DplusWire::wire('database')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3554,24 +3586,24 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function get_customerdaybookingordernumbers($sessionID, $date, $custID, $shipID, $debug = false) {
 		$q = (new QueryBuilder())->table('bookingd');
 		$q->field($q->expr('DISTINCT(salesordernbr)'));
 		$q->field('bookdate');
 		$q->where('bookdate', date('Ymd', strtotime($date)));
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$q->where('salesperson1', DplusWire::wire('user')->salespersonid);
 		}
-		
+
 		$q->where('custid', $custID);
 		if (!empty($shipID)) {
 			$q->where('shiptoid', $shipID);
 		}
-		
+
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3579,24 +3611,24 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	function count_customerdaybookingordernumbers($sessionID, $date, $custID, $shipID, $debug = false) {
 		$q = (new QueryBuilder())->table('bookingd');
 		$q->field($q->expr('COUNT(DISTINCT(salesordernbr))'));
 
 		$q->where('bookdate', date('Ymd', strtotime($date)));
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$q->where('salesperson1', DplusWire::wire('user')->salespersonid);
 		}
-		
+
 		$q->where('custid', $custID);
 		if (!empty($shipID)) {
 			$q->where('shiptoid', $shipID);
 		}
-		
+
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3604,24 +3636,24 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function count_customertodaysbookings($sessionID, $custID, $shipID, $debug = false) {
 		$q = (new QueryBuilder())->table('bookingc');
 		$q->field('COUNT(*)');
-		
+
 		$q->where('bookdate', date('Ymd'));
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$q->where('salesrep', DplusWire::wire('user')->salespersonid);
 		}
-		
+
 		$q->where('custid', $custID);
 		if (!empty($shipID)) {
 			$q->where('shiptoid', $shipID);
 		}
-		
+
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3629,21 +3661,21 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_bookingtotalsbyshipto($sessionID, $custID, $shipID, $filter, $filtertypes, $interval = '', $debug = false) {
 		$q = (new QueryBuilder())->table('bookingc');
-		
+
 		$q->where('custid', $custID);
 		if (!empty($shipID)) {
 			$q->where('shiptoid', $shipID);
 		}
-		
+
 		if (DplusWire::wire('user')->hascontactrestrictions) {
 			$q->where('salesrep', DplusWire::wire('user')->salespersonid);
 		} else {
-			
+
 		}
-		
+
 		$q->generate_filters($filter, $filtertypes);
 
 		switch ($interval) {
@@ -3659,7 +3691,7 @@
 				$q->group('bookdate');
 				break;
 		}
-		
+
 		$sql = DplusWire::wire('database')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);

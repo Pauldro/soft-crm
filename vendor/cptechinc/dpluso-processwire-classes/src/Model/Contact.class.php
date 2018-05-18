@@ -1,4 +1,4 @@
-<?php 
+<?php
 	/**
 	 * Class for dealing with Contacts in Dpluso
 	 * Contacts are loaded from custindex
@@ -8,7 +8,7 @@
 		use CreateClassArrayTraits;
 		use ThrowErrorTrait;
 		use MagicMethodTraits;
-		
+
 		public $recno;
 		public $date;
 		public $time;
@@ -32,45 +32,45 @@
 		public $typecode;
 		public $faxnbr;
 		public $title;
-		
+
 		/**
 		 * Contact for Accounts Receivable [Billto only]
 		 * @var string Y | N
 		 */
 		public $arcontact;
-		
+
 		/**
 		 * Contact for Dunning [Billto only]
 		 * @var string Y | N
 		 */
-		public $dunningcontact; 
-		
+		public $dunningcontact;
+
 		/**
 		 * Contact for Buying
 		 * NOTE each Customer and Customer Shipto may have one [P]rimary buyer
 		 * @var string P | Y | N
 		 */
 		public $buyingcontact;
-		
+
 		/**
-		 * Contact for Certificates 
+		 * Contact for Certificates
 		 * @var string Y | N
 		 */
 		public $certcontact;
-		
+
 		/**
 		 * Contact for Acknowledgments [Billto only]
 		 * @var string Y | N
 		 */
 		public $ackcontact;
-		
+
 		public $dummy;
         public $fieldaliases = array(
             'custID' => 'custid',
             'shipID' => 'shiptoid',
         );
-        
-		/** 
+
+		/**
 		 * Contact Types
 		 * @var array
 		 */
@@ -80,19 +80,19 @@
 			'customer-shipto' => 'CS',
 			'shipto-contact' => 'SC'
 		);
-		
+
         /* =============================================================
-			GETTER FUNCTIONS 
+			GETTER FUNCTIONS
 		============================================================ */
 		/**
-		 * Grabs the name of the customer off the contact object, and if blank, 
+		 * Grabs the name of the customer off the contact object, and if blank,
 		 * it will just return custid
 		 * @return string customername
 		 */
         public function get_customername() {
             return (!empty($this->name)) ? $this->name : $this->custid;
         }
-        
+
         /**
          * Returns if Contact has a shiptoid
          * @return bool [description]
@@ -100,15 +100,15 @@
         public function has_shipto() {
             return (!empty($this->shiptoid));
         }
-        
+
         /**
-         * Returns if contact has phone extension 
+         * Returns if contact has phone extension
          * @return bool [description]
          */
         public function has_extension() {
             return (!empty($this->extension)) ? true : false;
         }
-		
+
 		/**
          * Returns if contact has cell phone
          * @return bool [description]
@@ -116,61 +116,61 @@
         public function has_cellphone() {
             return (!empty($this->cellphone)) ? true : false;
         }
-		
+
 		/**
 		 * Returns if Contact is the AR Contact
-		 * @return bool 
+		 * @return bool
 		 */
 		public function is_arcontact() {
 			return ($this->arcontact == 'Y') ? true : false;
 		}
-		
+
 		/**
 		 * Returns if Contact is the Dunning Contact
-		 * @return bool 
+		 * @return bool
 		 */
 		public function is_dunningcontact() {
 			return ($this->dunning == 'Y') ? true : false;
 		}
-		
+
 		/**
 		 * Returns if Contact is a buying Contact
-		 * @return bool 
+		 * @return bool
 		 */
 		public function is_buyingcontact() {
 			return ($this->buyingcontact == 'Y' || $this->buyingcontact == 'P') ? true : false;
 		}
-		
+
 		/**
 		 * Returns if Contact is the Primary Buyer Contact
-		 * @return bool 
+		 * @return bool
 		 */
 		public function is_primarybuyer() {
 			return ($this->buyingcontact == 'P') ? true : false;
 		}
-		
+
 		/**
 		 * Returns if Contact is the Certificate Contact
 		 * At Stat it's the End User
-		 * @return bool 
+		 * @return bool
 		 */
 		public function is_certcontact() {
 			return ($this->certcontact == 'Y') ? true : false;
 		}
-		
+
 		/**
 		 * Returns if Contact is the Acknowledgment Contact
-		 * @return bool 
+		 * @return bool
 		 */
 		public function is_ackcontact() {
 			return ($this->ackcontact == 'Y') ? true : false;
 		}
-		
+
 		/* =============================================================
-			SETTER FUNCTIONS 
+			SETTER FUNCTIONS
 		============================================================ */
 		/**
-		 * Determines the Source of the Contact 
+		 * Determines the Source of the Contact
 		 * CS means shipto CC is Contact Customer
 		 */
 		public function set_contacttype() {
@@ -188,7 +188,7 @@
         public function generate_customerurl() {
             return $this->generate_ciloadurl();
         }
-		
+
 		/**
 		 * Generates the customer URL but also defines the Shiptoid in the URL
 		 * @return string Customer Shipto Page URL
@@ -196,7 +196,7 @@
         public function generate_shiptourl() {
             return $this->generate_customerurl() . "&shipID=".urlencode($this->shiptoid);
         }
-		
+
 		/**
 		 * Generates URL to the contact page
 		 * @return string Contact Page URL
@@ -204,15 +204,15 @@
         public function generate_contacturl() {
             $url = new \Purl\Url(Dpluswire::wire('config')->pages->contact);
             $url->query->set('custID', $this->custid);
-            
+
             if ($this->has_shipto()) {
                 $url->query->set('shipID', $this->shiptoid);
-            } 
+            }
             $url->query->set('id', $this->contact);
             return $url->getUrl();
         }
-		
-		/** 
+
+		/**
 		 * Generates the load customer URL to get to the CI PAGE
 		 * @return string CI PAGE URL
 		 */
@@ -220,15 +220,15 @@
             $url = $this->generate_redirurl();
             $url->query->set('action', 'ci-customer');
             $url->query->set('custID', $this->custid);
-            
+
 			if ($this->has_shipto()) {
                 $url->query->set('shipID', $this->shiptoid);
             }
             return $url->getUrl();
 		}
-        
+
 		/**
-		 * URL to redirect page to set the customer for the cart, 
+		 * URL to redirect page to set the customer for the cart,
 		 * redirects to the cart
 		 * @return string
 		 */
@@ -236,21 +236,21 @@
             $url = $this->generate_redirurl();
             $url->query->set('action', 'shop-as-customer');
             $url->query->set('custID', $this->custid);
-            
+
 			if ($this->has_shipto()) {
                 $url->query->set('shipID', $this->shiptoid);
             }
             return $url->getUrl();
         }
-        
+
 		/**
 		 * URL to the customer redirect page, will be used by other functions to extend on
 		 * @return string Customer redirect URL
 		 */
         public function generate_redirurl() {
-            return new \Purl\Url(Dpluswire::wire('config')->pages->customer."redir/");
+            return new \Purl\Url(DplusWire::wire('config')->pages->customer."redir/");
         }
-        
+
         /**
          * Outputs the javascript function name with parameter
          * @param  string $function which II function
@@ -269,9 +269,9 @@
                     break;
             }
         }
-		
+
 		/**
-		 * Returns Phone with extension 
+		 * Returns Phone with extension
 		 * or without it depending if it has one
 		 * @return string Phone (with extension)
 		 */
@@ -282,7 +282,7 @@
 				return $this->phone;
 			}
 		}
-		
+
 		/**
 		 * Takes the method type and makes a proper URL depending on the method
 		 * @param  string $method two main groups : phone / email
@@ -304,7 +304,7 @@
 					break;
 			}
 		}
-		
+
 		/**
 		 * Generates a one line address string
 		 * @return string
@@ -312,7 +312,7 @@
 		public function generate_address() {
 			return $this->addr1 . ' ' . $this->addr2. ' ' . $this->city . ', ' . $this->state . ' ' . $this->zip;
 		}
-		
+
 		/**
 		 * Returns a display title for end users or buyers
 		 * @return string display title
@@ -325,11 +325,11 @@
 			} elseif ($this->is_certcontact()) {
 				if (Dpluswire::wire('config')->dpluscustomer == 'stat') {
 					$title = 'End User';
-				}	
+				}
 			}
 			return $title;
 		}
-		
+
 		/* =============================================================
 			CRUD FUNCTIONS
 		============================================================ */
@@ -343,7 +343,7 @@
             $this->custid = substr($this->custid, 0, 6);
 			return insert_customerindexrecord($this, $debug) . " - " . insert_custperm($this, $debug);
 		}
-		
+
 		/**
 		 * Loads an object with this class using the parameters as provided
 		 * @param  string  $custID    CustomerID
@@ -355,7 +355,20 @@
         public static function load($custID, $shiptoID = '', $contactID = '', $debug = false) {
             return get_customercontact($custID, $shiptoID, $contactID, $debug);
         }
-		
+
+        /**
+         * Returns if User has access to contact
+         * @param  string $custID    Customer ID
+         * @param  string $shiptoID  Customer shipto ID
+         * @param  string $contactID Customer (shipto) Contact ID
+         * @param  string $loginID   User Login ID
+         * @param  bool   $debug     Run in debug?
+         * @return bool              TRUE | FALSE | SQL QUERY
+         */
+        public static function can_useraccess($custID, $shiptoID = '', $contactID = '', $loginID = '', $debug = false) {
+            return can_accesscustomercontact($custID, $shiptoID, $contactID, $loginID, $debug);
+        }
+
 		/**
 		 * Returns the primary Contact of a Customer Shipto
 		 * ** NOTE each Customer and Customer Shipto may have one Primary buyer
@@ -366,8 +379,8 @@
 		 */
 		public static function load_primarycontact($custID, $shiptoID = '', $debug = false) {
 			return get_primarybuyercontact($custID, $shiptoID, $debug);
-		} 
-		
+		}
+
 		/**
 		 * Updates the Contact in the database
 		 * @param  bool $debug Determines if query will execute and if sQL is returned or Contact object
@@ -376,7 +389,7 @@
 		public function update($debug = false) {
 			return update_contact($this, $debug);
 		}
-		
+
 		/**
 		 * Updates the Contact ID
 		 * @param  string  $contactID Contact ID
@@ -386,7 +399,7 @@
 		public function change_contactid($contactID, $debug = false) {
 			return change_contactid($this, $contactID, $debug);
 		}
-		
+
 		/**
 		 * Checks if there are changes between this contact and the database record
 		 * @return bool Whether contact has changes from database
@@ -394,7 +407,7 @@
 		public function has_changes() {
 			$properties = array_keys($this->_toArray());
 			$contact = self::load($this->custid, $this->shiptoid, $this->contact);
-			
+
 			foreach ($properties as $property) {
 				if ($this->$property != $contact->$property) {
 					return true;
@@ -402,9 +415,9 @@
 			}
 			return false;
 		}
-        
+
         /* =============================================================
-			GENERATE ARRAY FUNCTIONS 
+			GENERATE ARRAY FUNCTIONS
 			The following are defined CreateClassArrayTraits
 			public static function generate_classarray()
 			public function _toArray()

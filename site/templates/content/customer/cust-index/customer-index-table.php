@@ -10,9 +10,9 @@
 			<?php if ($resultscount > 0) : ?>
 				<?php
 					if ($input->get->q) {
-						$customer_records = search_custindexpaged($user->loginid, $config->showonpage, $input->pageNum, $user->hascontactrestrictions, $input->get->q, false);
+						$customer_records = search_custindexpaged($input->get->text('q'), $config->showonpage, $input->pageNum);
 					} else {
-						$customer_records = get_distinctcustindexpaged($user->loginid, $config->showonpage, $input->pageNum, $user->hascontactrestrictions, false);
+						$customer_records = get_distinctcustindexpaged($config->showonpage, $input->pageNum);
 					}
 				?>
 				<?php foreach ($customer_records as $cust) : ?>

@@ -1,5 +1,5 @@
 <?php
-    $custresults = search_custindexpaged($user->loginid, $config->showonpage, $input->pageNum, $user->hascontactrestrictions, $input->get->text('q'), false);
+    $custresults = search_custindexpaged($input->get->text('q'), $config->showonpage, $input->pageNum);
     $resultscount = count_searchcustindex($user->loginid, $user->hascontactrestrictions, $input->get->text('q'), false);
 
     $pageurl = ($input->get->q) ? $page->fullURL->getUrl() : $config->pages->ajaxload."customers/cust-index/?function=ci";
