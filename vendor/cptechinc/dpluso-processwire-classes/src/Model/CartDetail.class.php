@@ -102,6 +102,7 @@
 			return !empty($this->errormsg);
 		}
 		
+<<<<<<< HEAD
 		public function is_kititem() {
 			return $this->kitemflag == 'Y' ? true : false;
 		}
@@ -109,6 +110,8 @@
 		 * Checks if detail has documents by looking at the document flag
 		 * @return bool $this->hasdocuments == 'Y'
 		 */
+=======
+>>>>>>> d34c4cee... Quote and Sales Order Line Detail Modal
 		public function has_documents() {
 			return $this->hasdocuments == 'Y' ? true : false;
 		}
@@ -127,6 +130,14 @@
 		 */
 		public function can_edit() {
 			return true;
+		}
+
+		public function can_backorder() {
+			return false;
+		}
+		
+		public function display_canbackorder() {
+			return '';
 		}
 		
 		/* =============================================================
