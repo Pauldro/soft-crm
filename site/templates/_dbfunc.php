@@ -2403,11 +2403,11 @@
 		return edit_useraction($updatedaction, $debug);
 	}
 
-	function update_useractionlinks($oldlinks, $newlinks, $wherelinks, $debug) {
+	function update_useractionlinks(UserAction $oldlinks, UserAction $newlinks, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$q->mode('update');
-		$q->generate_setdifferencesquery($oldlinks, $newlinks);
-		$q->generate_query($wherelinks);
+		$q->generate_setdifferencesquery($oldlinks->_toArray(), $newlinks->_toArray());
+		$q->generate_query($oldlinks->get_linkswithvaluesarray());
 		$q->set('dateupdated', date("Y-m-d H:i:s"));
 		$sql = DplusWire::wire('database')->prepare($q->render());
 

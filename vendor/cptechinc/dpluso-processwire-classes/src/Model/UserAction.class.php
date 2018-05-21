@@ -131,6 +131,19 @@
 			}
 		}
 
+		/**
+		 * Returns the links that have values in an array
+		 * @return array UserAction links
+		 */
+		public function get_linkswithvaluesarray() {
+			$array = $this->_toArray();
+			foreach ($array as $key => $value){
+				if (empty($array[$key])) {
+					unset($array[$key]);
+				}
+			}
+		}
+
 		/* =============================================================
 			CLASS FUNCTIONS
 		============================================================ */
