@@ -384,7 +384,7 @@
 
 			$session->sql = $contact->update();
 			if ($newcontactID != $contact->contact) {
-				$session->sql = $contact->change_contactid($newcontactID);
+				$session->sql .= "<br>" . $contact->change_contactid($newcontactID);
 				$contact->set('contact', $newcontactID);
 			}
 
@@ -408,7 +408,7 @@
 				'CERCONTACT' => $contact->certcontact
 			);
 			$returnpage = new \Purl\Url($input->post->text('page'));
-			$returnpage->query->set('id', $contact->contact);
+			$returnpage->query->set('contactID', $contact->contact);
 
 			$oldlinks = new UserAction();
 			$oldlinks->set('customerlink', $custID);

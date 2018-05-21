@@ -667,14 +667,15 @@
 		$q->where('custid', $contact->custid);
 		$q->where('shiptoid', $contact->shiptoid);
 		$q->where('contact', $contact->contact);
-		$sql = Processwire\wire('database')->prepare($q->render());
-
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		$contact->set('contact', $contactID);
+		
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
 			if ($contact->has_changes()) {
 				$sql->execute($q->params);
-			}
+			} 
 			return $q->generate_sqlquery($q->params);
 		}
 	}
