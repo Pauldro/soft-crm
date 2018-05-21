@@ -19,6 +19,8 @@
 	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/ActionsPanelCustomer.class.php");
 	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/ActionsPanelContact.class.php");
 	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/ActionsPanelSalesOrder.class.php");
+	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/ActionsPanelQuote.class.php");
+	
 	$session->sessionName = session_name();
 
 	$page->fullURL = new \Purl\Url($page->httpUrl);

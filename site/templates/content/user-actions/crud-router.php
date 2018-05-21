@@ -59,8 +59,10 @@
 					$actionpanel = new SalesOrderActionsPanel(session_id(), $page->fullURL, $input, $config->ajax);
 					$actionpanel->set_ordn($input->get->text('ordn'));
 					$page->body = $config->paths->content.'user-actions/user-actions-panel.php';
-				} elseif ($qnbr) {
-
+				} elseif ($input->get->qnbr) {
+					$qnbr = $input->get->text('qnbr');
+					$actionpanel = new QuoteActionsPanel(session_id(), $page->fullURL, $input);
+					$actionpanel->set_qnbr($qnbr);
 				} elseif ($input->get->contactID) {
 					$actionpanel = new ContactActionsPanel(session_id(), $page->fullURL, $input, $config->ajax);
 					$actionpanel->set_contact($input->get->text('custID'), $input->get->text('shiptoID'), $input->get->text('contactID'));

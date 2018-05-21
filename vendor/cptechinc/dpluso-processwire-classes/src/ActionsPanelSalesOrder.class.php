@@ -1,14 +1,19 @@
 <?php
-    class SalesOrderActionsPanel extends ActionsPanel {
-        /**
+	class SalesOrderActionsPanel extends ActionsPanel {
+		/**
 		 * Panel Type
 		 * Who or what the actions are being filtered to
 		 * @var string
 		 */
 		protected $paneltype = 'sales-order';
-        protected $ordn;
-        
-        /**
+
+		/**
+		 * Sales Order Number
+		 * @var string
+		 */
+		protected $ordn;
+
+		/**
 		 * Array of filterable columns and their attributes
 		 * @var array
 		 */
@@ -52,14 +57,21 @@
 				'label' => 'Due Date',
 				'date-format' => "m/d/Y H:i:s"
 			),
-            'salesorderlink' => array(
+			'salesorderlink' => array(
 				'querytype' => 'in',
 				'datatype' => 'text',
 				'label' => 'Sales Order Number'
 			)
 		);
-        
-        /* =============================================================
+
+		/**
+		 * What kind of view to start with
+		 * day | calendar | list
+		 * @var string
+		 */
+		protected $view = 'list';
+
+		/* =============================================================
 			CONSTRUCTOR FUNCTIONS
 		============================================================ */
 		/**
@@ -74,19 +86,19 @@
 			parent::__construct($sessionID, $pageurl, $input, $throughajax, $panelID);
 			$this->input = $input;
 		}
-        
-        /* =============================================================
-            GETTER FUNCTIONS
-        ============================================================ */
-        /**
+
+		/* =============================================================
+			GETTER FUNCTIONS
+		============================================================ */
+		/**
 		* Generates title for Panel
 		* @return string
 		*/
 		public function generate_title() {
-			return 'Sales Order Actions';
+			return "Sales Order #$this->ordn Actions";
 		}
-        
-        /**
+
+		/**
 		* Returns if the panel should have the add link
 		* @return bool
 		*/
@@ -104,16 +116,16 @@
 			return $url->getUrl();
 		}
 
-        public function generate_clearfilterurl() {
+		public function generate_clearfilterurl() {
 			$url = new Purl\Url(parent::generate_clearfilterurl());
 			$url->query->set('ordn', $this->ordn);
 			return $url->getUrl();
 		}
-        
-        /* =============================================================
-            SETTER FUNCTIONS
-        ============================================================ */
-        /**
+
+		/* =============================================================
+			SETTER FUNCTIONS
+		============================================================ */
+		/**
 		 * Manipulates $this->pageurl path and query data as needed
 		 * then sets $this->paginateafter value
 		 * @return void
@@ -132,16 +144,16 @@
 			$this->generate_filter($this->input);
 			$this->setup_pageurl();
 		}
-        
-        /* =============================================================
-            CLASS FUNCTIONS
-        ============================================================ */
-        public function generate_filter(ProcessWire\WireInput $input) {
+
+		/* =============================================================
+			CLASS FUNCTIONS
+		============================================================ */
+		public function generate_filter(ProcessWire\WireInput $input) {
 			parent::generate_filter($input);
-            $this->filters['salesorderlink'] = array($this->ordn);
+			$this->filters['salesorderlink'] = array($this->ordn);
 		}
-	
-        /* =============================================================
-            CONTENT FUNCTIONS
-        ============================================================ */
-    }
+
+		/* =============================================================
+			CONTENT FUNCTIONS
+		============================================================ */
+	}
