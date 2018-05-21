@@ -235,11 +235,11 @@
 		public function generate_actionsubtypedescription() {
 			switch ($this->actiontype) {
 				case 'task':
-					$subpage = DplusWire::wire('pages')->get("/activity/{$this->actiontype}s/$this->actionsubtype/");
+					$subpage = DplusWire::wire('pages')->get("/config/actions/types/{$this->actiontype}s/$this->actionsubtype/");
 					return $subpage->subtypeicon.' '.$subpage->actionsubtypelabel;
 					break;
 				case 'note':
-					$subpage = DplusWire::wire('pages')->get("/activity/{$this->actiontype}s/$this->actionsubtype/");
+					$subpage = DplusWire::wire('pages')->get("/config/actions/types/{$this->actiontype}s/$this->actionsubtype/");
 					return $subpage->subtypeicon.' '.$subpage->actionsubtypelabel;
 					break;
 				/* case 'actions': // DEPRECATED 02/21/2018

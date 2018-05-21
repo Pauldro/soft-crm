@@ -5,7 +5,7 @@
         $action = $input->post->text('action');
 
         $task = new UserAction();
-        $task->set('actiontype', 'tasks');
+        $task->set('actiontype', 'task');
         $task->set('actionsubtype', $input->post->text('subtype'));
         $task->set('customerlink', $input->post->text('customerlink'));
         $task->set('shiptolink', $input->post->text('shiptolink'));

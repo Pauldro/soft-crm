@@ -1,9 +1,10 @@
+<?= $task->actiontype; ?>
 <table class="table table-bordered table-striped">
 	<tr>
 		<td>Task ID:</td> <td><?= $task->id; ?></td>
 	</tr>
 	<tr>
-		<td>Task Type:</td> <td><?= $task->generate_actionsubtypedescription();; ?></td>
+		<td>Task Type:</td> <td><?= $task->generate_actionsubtypedescription(); ?></td>
 	</tr>
 	<tr>
 		<td>Status:</td>

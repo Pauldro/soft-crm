@@ -5,7 +5,7 @@
 		$action = $input->post->text('action');
 
 		$note = new UserAction();
-		$note->set('actiontype', 'notes');
+		$note->set('actiontype', 'note');
 		$note->set('actionsubtype', $input->post->text('subtype'));
 		$note->set('customerlink', $input->post->text('customerlink'));
 		$note->set('shiptolink', $input->post->text('shiptolink'));
