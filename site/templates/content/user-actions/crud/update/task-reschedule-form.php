@@ -5,6 +5,7 @@
 	<br>
 	<div class="tab-content">
 		<div role="tabpanel" class="tab-pane active" id="task">
+			<?= $task->actionsubtype; ?>
 			<form action="<?= $config->pages->useractions."add/"; ?>" method="POST" id="new-action-form" data-refresh="#actions-panel" data-modal="#ajax-modal" onKeyPress="return disable_enterkey(event)">
 				<input type="hidden" name="action" value="reschedule-task">
 				<input type="hidden" name="customerlink" value="<?= $task->customerlink; ?>">
@@ -41,13 +42,13 @@
 					<tr>
 						<td class="control-label">Title</td>
 						<td>
-							<input type="text" name="title" class="form-control">
+							<input type="text" name="title" class="form-control" value="<?= $task->title; ?>">
 						</td>
 					</tr>
 					<tr>
 						<td colspan="2" class="control-label">
 							<label for="" class="control-label">Notes</label>
-							<textarea name="textbody" id="note" cols="30" rows="10" class="form-control note required"> </textarea> <br>
+							<textarea name="textbody" id="note" cols="30" rows="10" class="form-control note required"><?= $task->textbody; ?> </textarea> <br>
 							<button type="submit" class="btn btn-success">Create Task</button>
 						</td>
 					</tr>

@@ -2320,11 +2320,11 @@
 
 	function count_dayallactions($day, $filters, $filterable, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
-		$taskquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', 'tasks');
+		$taskquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', 'task');
 		if (!isset($filters['datecompleted'])) {
 			$taskquery->where($q->expr('DATE(duedate)'), $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('duedate', $filterable)]));
 		}
-		$actionsquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', '!=', 'tasks')->where($q->expr('DATE(datecreated)'), $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('datecreated', $filterable)]));
+		$actionsquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', '!=', 'task')->where($q->expr('DATE(datecreated)'), $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('datecreated', $filterable)]));
 
 		$q->field($q->expr('COUNT(*)'));
 		$q->where(
@@ -2343,11 +2343,11 @@
 
 	function get_dayallactions($day, $filters, $filterable, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
-		$taskquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', 'tasks');
+		$taskquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', 'task');
 		if (!isset($filters['datecompleted'])) {
 			$taskquery->where($q->expr('DATE(duedate)'), $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('duedate', $filterable)]));
 		}
-		$actionsquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', '!=', 'tasks')->where($q->expr('DATE(datecreated)'), $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('datecreated', $filterable)]));
+		$actionsquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', '!=', 'task')->where($q->expr('DATE(datecreated)'), $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('datecreated', $filterable)]));
 
 		$q->where(
 			$q->orExpr()->where('id', 'in', $taskquery)->where('id', 'in', $actionsquery)
@@ -2364,24 +2364,10 @@
 		}
 	}
 
-	function count_useractions($user, $querylinks, $debug) {
-		$q = (new QueryBuilder())->table('useractions');
-		$q->field($q->expr('COUNT(*)'));
-		$q->generate_query($querylinks, false, false, false);
-		$sql = Processwire\wire('database')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			return $sql->fetchColumn();
-		}
-	}
-
 	function get_useraction($id, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$q->where('id', $id);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2393,12 +2379,12 @@
 	}
 
 	function edit_useraction(UserAction $updatedaction, $debug = false) {
-		$originalaction = get_useraction($updatedaction->id); // (id, bool fetchclass, bool debug)
+		$originalaction = UserAction::load($updatedaction->id); // (id, bool fetchclass, bool debug)
 		$q = (new QueryBuilder())->table('useractions');
 		$q->mode('update');
 		$q->generate_setdifferencesquery($originalaction->_toArray(), $updatedaction->_toArray());
 		$q->where('id', $updatedaction->id);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();

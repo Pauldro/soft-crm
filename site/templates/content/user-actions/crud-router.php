@@ -50,7 +50,7 @@
 			if ($input->get->id) {
 				$id = $input->get->text('id');
 				$action = UserAction::load($id);
-				$type = UserAction::$types[$action->actiontype];
+				$type = $action->actiontype;
 				$$type = $action;
 				$page->title = $action->generate_message("Viewing Action for {replace}");
 				$page->body = $config->paths->content."user-actions/crud/read/$type.php";
@@ -63,6 +63,7 @@
 					$qnbr = $input->get->text('qnbr');
 					$actionpanel = new QuoteActionsPanel(session_id(), $page->fullURL, $input);
 					$actionpanel->set_qnbr($qnbr);
+					$page->body = $config->paths->content.'user-actions/user-actions-panel.php';
 				} elseif ($input->get->contactID) {
 					$actionpanel = new ContactActionsPanel(session_id(), $page->fullURL, $input, $config->ajax);
 					$actionpanel->set_contact($input->get->text('custID'), $input->get->text('shiptoID'), $input->get->text('contactID'));

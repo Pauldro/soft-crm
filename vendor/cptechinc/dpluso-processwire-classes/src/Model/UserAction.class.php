@@ -37,7 +37,7 @@
 		public static $dateformat = "Y-m-d H:i:s";
 		public static $datedisplayformat = 'm/d/Y g:i A';
 		public static $types = array(
-			'tasks' => 'task',
+			'task' => 'task',
 			'actions' => 'action',
 			'notes' => 'note'
 		);
@@ -124,7 +124,7 @@
 		 * @return bool
 		 */
 		public function is_overdue() {
-			if ($this->actiontype == 'tasks') {
+			if ($this->actiontype == 'task') {
 				return (strtotime($this->duedate) < strtotime("now") && (!$this->is_completed())) ? true : false;
 			} else {
 				return false;
@@ -190,7 +190,7 @@
 		 */
 		public function generate_duedatedisplay($format) {
 			switch ($this->actiontype) {
-				case 'tasks':
+				case 'task':
 					return DplusDateTime::format_date($this->duedate, $format);
 					break;
 				default:
@@ -220,12 +220,12 @@
 		 */
 		public function generate_actionsubtypedescription() {
 			switch ($this->actiontype) {
-				case 'tasks':
-					$subpage = DplusWire::wire('pages')->get("/activity/$this->actiontype/$this->actionsubtype/");
+				case 'task':
+					$subpage = DplusWire::wire('pages')->get("/activity/{$this->actiontype}s/$this->actionsubtype/");
 					return $subpage->subtypeicon.' '.$subpage->actionsubtypelabel;
 					break;
-				case 'notes':
-					$subpage = DplusWire::wire('pages')->get("/activity/$this->actiontype/$this->actionsubtype/");
+				case 'note':
+					$subpage = DplusWire::wire('pages')->get("/activity/{$this->actiontype}s/$this->actionsubtype/");
 					return $subpage->subtypeicon.' '.$subpage->actionsubtypelabel;
 					break;
 				/* case 'actions': // DEPRECATED 02/21/2018

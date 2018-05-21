@@ -172,6 +172,18 @@
 		 */
 		protected $view = 'day';
 
+		/**
+		 * Was panel loaded through AJAX?
+		 * @var bool
+		 */
+		protected $throughajax = false;
+
+		/**
+		 * Is panel in a modal
+		 * @var bool
+		 */
+		protected $inmodal = false;
+
 		/* =============================================================
 			CONSTRUCTOR FUNCTIONS
 		============================================================ */
@@ -187,7 +199,10 @@
 			$this->sessionID = $sessionID;
 			$this->pageurl = new \Purl\Url($pageurl->getUrl());
 			$this->pagenbr = Paginator::generate_pagenbr($pageurl);
+			$this->throughajax = $throughajax;
 			$this->panelID = !empty($panelID) ? $panelID : $this->panelID;
+			$this->inmodal = $this->pageurl->query->get('modal') ? true : false;
+			$this->panelID = $this->inmodal ? 'ajax-actions-panel' : $this->panelID;
 			$this->loadinto = $this->focus = "#$this->panelID";
 			$this->ajaxdata = "data-loadinto='$this->loadinto' data-focus='$this->focus'";
 			$this->collapse = $throughajax ? '' : 'collapse';
@@ -232,6 +247,7 @@
 		 */
 		public function generate_refreshurl() {
 			$url = new \Purl\Url($this->pageurl->getUrl());
+			$url->query->remove('modal');
 			$url->path = DplusWire::wire('config')->pages->useractions;
 			return $url->getUrl();
 		}
@@ -243,6 +259,7 @@
 		public function generate_loadurl() {
 			$url = new \Purl\Url($this->pageurl);
 			$url->query->remove('filter');
+			$url->query->remove('modal');
 			foreach (array_keys($this->filterable) as $filtercolumns) {
 				$url->query->remove($filtercolumns);
 			}
@@ -255,7 +272,7 @@
 		 */
 		public function generate_addactionurl() {
 			if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
-				$actiontype = ($this->actiontype == 'all') ? 'task' : rtrim($this->actiontype, 's');
+				$actiontype = ($this->actiontype == 'all') ? 'task' : $this->actiontype;
 			} else {
 				$actiontype = '';
 			}
@@ -330,7 +347,7 @@
 			$date = $date ? date('m/d/Y', strtotime($date)) : date('m/d/Y');
 			$url = new Purl\Url($this->generate_dayviewurl($date));
 			$url->query->set('filter', 'filter');
-			$url->query->set('actiontype', 'tasks');
+			$url->query->set('actiontype', 'task');
 			$url->query->set('duedate', $date);
 			$url->query->set('completed', 'Y||R');
 			return $url->getUrl();
@@ -344,7 +361,7 @@
 		public function generate_daynotescreatedurl($date) {
 			$date = $date ? date('m/d/Y', strtotime($date)) : date('m/d/Y');
 			$url = new Purl\Url($this->generate_dayviewurl($date));
-			$url->query->set('actiontype', 'notes');
+			$url->query->set('actiontype', 'note');
 			$url->query->set('datecreated', $date);
 			return $url->getUrl();
 		}
@@ -427,28 +444,28 @@
 		 * Returns the number of all the UserAction[type=tasks] for that day
 		 * @param  string $day   Datetime string (usually in m/d/Y)
 		 * @param  bool   $debug Return UserActions | return SQL Query?
-		 * @return int           Number of UserAction[type=tasks] for that day  | SQL Query?
+		 * @return int           Number of UserAction[type=task] for that day  | SQL Query?
 		 */
 		public function count_daytasks($day, $debug = false) {
 			$filters = $this->filters;
-			$filters['actiontype'] = array('tasks');
+			$filters['actiontype'] = array('task');
 			return count_dayallactions($day, $filters, $this->filterable, $debug);
 		}
 
 		/**
-		 * Returns UserActions [type=tasks] that meet the $this->filter criteria
+		 * Returns UserActions [type=task] that meet the $this->filter criteria
 		 * @param  string $day   Date time string usually formatted (m/d/Y)
 		 * @param  bool   $debug Whether to return array of UserActions | SQL Query
 		 * @return array         array of UserActions | SQL Query
 		 */
 		public function get_daytasks($day, $debug = false) {
 			$filters = $this->filters;
-			$filters['actiontype'] = array('tasks');
+			$filters['actiontype'] = array('task');
 			return get_dayallactions($day, $filters, $this->filterable, $debug);
 		}
 
 		/**
-		 * Returns of the number of UserActions[type=tasks] scheduled for that day
+		 * Returns of the number of UserActions[type=task] scheduled for that day
 		 * @param  string  $day  Date time string usually formatted (m/d/Y)
 		 * @param  bool   $debug Whether to return Number | SQL Query
 		 * @return int           Number of Tasks scheduled for that day | SQL Query
@@ -457,33 +474,33 @@
 			$filters = $this->filters;
 			unset($filters['completed']);
 			$filters['duedate'] = array($day);
-			$filters['actiontype'] = array('tasks');
+			$filters['actiontype'] = array('task');
 			return count_dayallactions($day, $filters, $this->filterable, $debug);
 		}
 
 		/**
-		 * Returns of the number of UserActions[type=tasks] rescheduled that day
+		 * Returns of the number of UserActions[type=task] rescheduled that day
 		 * @param  string  $day  Date time string usually formatted (m/d/Y)
 		 * @param  bool   $debug Whether to return Number | SQL Query
 		 * @return int           Number of Tasks rescheduled that day | SQL Query
 		 */
 		public function count_dayrescheduledtasks($day, $debug = false) {
 			$filters = $this->filters;
-			$filters['actiontype'] = array('tasks');
+			$filters['actiontype'] = array('task');
 			$filters['completed'] = array('R');
 			$filters['dateupdated'] = array($day);
 			return count_dayallactions($day, $filters, $this->filterable, $debug);
 		}
 
 		/**
-		 * Returns of the number of UserActions[type=tasks] completed that day
+		 * Returns of the number of UserActions[type=task] completed that day
 		 * @param  string  $day  Date time string usually formatted (m/d/Y)
 		 * @param  bool   $debug Whether to return Number or SQL Query
 		 * @return int           Number of Tasks Completed that day | SQL Query
 		 */
 		public function count_daycompletedtasks($day, $debug = false) {
 			$filters = $this->filters;
-			$filters['actiontype'] = array('tasks');
+			$filters['actiontype'] = array('task');
 			$filters['completed'] = array('Y');
 			$filters['datecompleted'] = array($day);
 			return count_dayallactions($day, $filters, $this->filterable, $debug);
@@ -572,7 +589,8 @@
 			$href = $this->generate_refreshurl();
 			$icon = $bootstrap->createicon('material-icons md-18', '&#xE86A;');
 			$ajaxdata = $this->generate_ajaxdataforcontento();
-			return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs load-link actions-refresh pull-right hidden-print|title=button|title=Refresh Actions|aria-label=Refresh Actions|$ajaxdata", $icon);
+			$ajaxclass = $this->inmodal ? 'modal-load' : 'load-link';
+			return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs $ajaxclass actions-refresh pull-right hidden-print|title=button|title=Refresh Actions|aria-label=Refresh Actions|$ajaxdata|data-modal=$this->modal", $icon);
 		}
 
 		/**
@@ -584,7 +602,8 @@
 			$href = $this->generate_addactionurl();
 			$icon = $bootstrap->createicon('material-icons md-18', '&#xE146;');
 			if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
-				return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs load-into-modal pull-right hidden-print|data-modal=$this->modal|role=button|title=Add Action", $icon);
+				$ajaxclass = $this->inmodal ? 'modal-load' : 'load-into-modal';
+				return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs $ajaxclass pull-right hidden-print|data-modal=$this->modal|role=button|title=Add Action", $icon);
 			}
 			return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs add-action pull-right hidden-print|data-modal=$this->modal|role=button|title=Add Action", $icon);
 		}
@@ -645,7 +664,7 @@
 		 * @uses UserAction is_rescheduled() -> bg-info | is_overdue() -> bg-warning | is_completed() -> bg-success
 		 */
 		public function generate_rowclass(UserAction $action) {
-			if ($action->actiontype == 'tasks') {
+			if ($action->actiontype == 'task') {
 				if ($action->is_rescheduled()) {
 					return 'bg-info';
 				}
