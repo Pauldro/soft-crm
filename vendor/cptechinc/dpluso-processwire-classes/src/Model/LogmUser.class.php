@@ -88,6 +88,14 @@
 		}
 
 		/**
+		 * Get the Loginid needed for the custperm table based on permissions
+		 * @return string admin | $this->loginid
+		 */
+		public function get_custpermloginid() {
+			return $this->get_dplusrole() == DplusWire::wire('config')->roles['sales-manager'] ? 'admin' : $this->loginid;
+		}
+
+		/**
 		 * Loads an object of this class
 		 * @param  string  $loginID User's Dplus Login ID
 		 * @param  bool $debug   Whether to return the SQL to create the object or the object

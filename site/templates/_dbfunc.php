@@ -71,6 +71,26 @@ use atk4\dsql\Expression;
 		}
 	}
 
+	function get_custperm(Customer $customer, $loginID = false, $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
+
+		$q = (new QueryBuilder())->table('custperm');
+		$q->where('loginid', $user->get_custpermloginid());
+		$q->where('custid', $customer->custid);
+		if ($customer->has_shipto()) {
+			$q->where('shiptoid', $customer->shiptoid);
+		}
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetch(PDO::FETCH_ASSOC);
+		}
+	}
+
 	function count_custperm($userID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('custperm');
 		$q->field('COUNT(*)');
@@ -555,7 +575,7 @@ use atk4\dsql\Expression;
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			$sql->setFetchMode(PDO::FETCH_CLASS, 'Contact');
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'Customer');
 			return $sql->fetchAll();
 		}
 	}
@@ -573,6 +593,7 @@ use atk4\dsql\Expression;
 			$custpermquery->where('loginid', 'in', [$loginID, $SHARED_ACCOUNTS]);
 			$q->where('custid','in', $custpermquery);
 		}
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -596,71 +617,88 @@ use atk4\dsql\Expression;
 			$permquery->where('loginid', [$loginID, $SHARED_ACCOUNTS]);
 			$q->where('(custid, shiptoid)','in', $permquery);
 		}
-		
+
 		$fieldstring = implode(", ' ', ", array_keys(Contact::generate_classarray()));
 
 		$q->where($q->expr("UCASE(REPLACE(CONCAT($fieldstring), '-', '')) LIKE UCASE([])", [$search]));
 		$q->limit($limit, $q->generate_offset($page, $limit));
 
 		if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
+			$q->order($q->expr('custid <> []', [$search]));
 			$q->group('custid, shiptoid');
-			$q->order($q->expr('custid <> []', [$query]));
 		} elseif (DplusWire::wire('config')->cptechcustomer == 'stat') {
 			$q->group('custid');
 		} else {
-			$q->order($q->expr('custid <> []', [$query]));
+			$q->order($q->expr('custid <> []', [$search]));
 		}
 		$sql = DplusWire::wire('database')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			$sql->setFetchMode(PDO::FETCH_CLASS, 'Contact');
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'Customer');
 			return $sql->fetchAll();
 		}
 	}
 
-	function count_searchcustindex($loginID, $restrictions, $keyword, $debug) {
-		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
-		$search = '%'.str_replace(' ', '%', str_replace('-', '', $keyword)).'%';
+	function count_searchcustindex($keyword, $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
+		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
+		$search = QueryBuilder::generate_searchkeyword($keyword);
+		$groupedcustindexquery = (new QueryBuilder())->table('custindex')->group('custid, shiptoid');
 
-		if ($restrictions) {
-			if (Processwire\wire('config')->cptechcustomer == 'stempf') {
-				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custindex GROUP BY custid, shiptoid) t WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', city, ' ', state, ' ', zip, ' ', phone, ' ', contact, ' ', source, ' ', extension), '-', '')) LIKE UCASE(:search)");
-			} elseif (Processwire\wire('config')->cptechcustomer == 'stat') {
-				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custindex) t WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', city, ' ', state, ' ', zip, ' ', phone, ' ', contact, ' ', source, ' ', extension), '-', '')) LIKE UCASE(:search)");
+		$q = new QueryBuilder();
+		$q->field($q->expr('COUNT(*)'));
+
+		// CHECK if Users has restrictions by Application Config, then User permissions
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep'] && DplusWire::wire('pages')->get('/config/')->restrict_allowedcustomers) {
+			$custpermquery = (new QueryBuilder())->table('custperm')->field('custid, shiptoid')->where('loginid', [$loginID, $SHARED_ACCOUNTS]);
+
+			if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
+				$q->table($groupedcustindexquery, 'custgrouped');
 			} else {
-				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE (custid, shiptoid) IN (SELECT custid, shiptoid FROM custperm WHERE loginid = :loginID OR loginid = :shared) AND UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', city, ' ', state, ' ', zip, ' ', phone, ' ', contact, ' ', source, ' ', extension), '-', '')) LIKE UCASE(:search)");
+				$q->table('custindex');
 			}
-			$switching = array(':loginID' => $loginID, ':shared' => $SHARED_ACCOUNTS, ':search' => $search);
-			$withquotes = array(true, true, true, true);
+
+			$q->where('(custid, shiptoid)','in', $custpermquery);
 		} else {
-			if (Processwire\wire('config')->cptechcustomer == 'stempf') {
-				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custindex GROUP BY custid, shiptoid) t WHERE UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', city, ' ', state, ' ', zip, ' ', phone, ' ', contact, ' ', source, ' ', extension), '-', '')) LIKE UCASE(:search)");
-			} elseif (wire('config')->cptechcustomer == 'stat') {
-				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM (SELECT * FROM custindex) t WHERE UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', city, ' ', state, ' ', zip, ' ', phone, ' ', contact, ' ', source, ' ', extension), '-', '')) LIKE UCASE(:search)");
+			if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
+				$q->table($groupedcustindexquery, 'custgrouped');
 			} else {
-				$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM custindex WHERE UCASE(REPLACE(CONCAT(custid, ' ', name, ' ', shiptoid, ' ', addr1, ' ', city, ' ', state, ' ', zip, ' ', phone, ' ', contact, ' ', source, ' ', extension), '-', '')) LIKE UCASE(:search)");
+				$q->table('custindex');
 			}
-			$switching = array(':search' => $search); $withquotes = array(true);
 		}
+		$fieldstring = implode(", ' ', ", array_keys(Contact::generate_classarray()));
+
+		$q->where($q->expr("UCASE(REPLACE(CONCAT($fieldstring), '-', '')) LIKE UCASE([])", [$search]));
+
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			return $sql->fetchColumn();
 		}
 	}
 
-	function get_topxsellingcustomers($sessionID, $numberofcustomers, $debug = false) {
-		$loginID = (Processwire\wire('user')->hascontactrestrictions) ? Processwire\wire('user')->loginid : 'admin';
+	/**
+	 * Get the X number of Top Selling Customers
+	 * @param  int    $limit    [description]
+	 * @param  string $loginID  User Login ID either provided, or current User
+	 * @param  bool   $debug    Run in debug? If true, return SQL Query
+	 * @return array            Top Selling Customers
+	 */
+	function get_topxsellingcustomers(int $limit, $loginID = '',  $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$login = (LogmUser::load($loginID))->get_custpermloginid();
 		$q = (new QueryBuilder())->table('custperm');
-		$q->where('loginid', $loginID);
+		$q->where('loginid', $login);
 		$q->where('shiptoid', '');
-		$q->limit($numberofcustomers);
+		$q->limit($limit);
 		$q->order('amountsold DESC');
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3408,6 +3446,32 @@ use atk4\dsql\Expression;
 		}
 	}
 
+	function get_todaysbookingsamount($sessionID, $custID = false, $shiptoID = false, $debug = false) {
+		$q = (new QueryBuilder())->table('bookingd');
+		$q->field('SUM(netamount)');
+		$q->where('bookdate', date('Ymd'));
+
+		if (DplusWire::wire('user')->hascontactrestrictions) {
+			$q->where('salesperson1', DplusWire::wire('user')->salespersonid);
+		}
+
+		if (!empty($custID)) {
+			$q->where('custid', $custID);
+			if (!empty($shiptoID)) {
+				$q->where('shiptoid', $shiptoID);
+			}
+		}
+
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+
 	function get_userbookings($sessionID, $filter, $filtertypes, $interval = '', $debug = false) {
 		$q = (new QueryBuilder())->table('bookingr');
 
@@ -3640,6 +3704,31 @@ use atk4\dsql\Expression;
 	function count_customertodaysbookings($sessionID, $custID, $shipID, $debug = false) {
 		$q = (new QueryBuilder())->table('bookingc');
 		$q->field('COUNT(*)');
+
+		$q->where('bookdate', date('Ymd'));
+
+		if (DplusWire::wire('user')->hascontactrestrictions) {
+			$q->where('salesrep', DplusWire::wire('user')->salespersonid);
+		}
+
+		$q->where('custid', $custID);
+		if (!empty($shipID)) {
+			$q->where('shiptoid', $shipID);
+		}
+
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+
+	function get_customertodaybookingamount($sessionID, $custID, $shipID, $debug = false) {
+		$q = (new QueryBuilder())->table('bookingc');
+		$q->field('SUM(amount)');
 
 		$q->where('bookdate', date('Ymd'));
 

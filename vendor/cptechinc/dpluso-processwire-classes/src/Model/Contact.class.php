@@ -33,6 +33,7 @@
 		public $faxnbr;
 		public $title;
 
+
 		/**
 		 * Contact for Accounts Receivable [Billto only]
 		 * @var string Y | N
@@ -202,7 +203,7 @@
 		 * @return string Contact Page URL
 		 */
         public function generate_contacturl() {
-            $url = new \Purl\Url(Dpluswire::wire('config')->pages->contact);
+            $url = new \Purl\Url(DplusWire::wire('config')->pages->contact);
             $url->query->set('custID', $this->custid);
 
             if ($this->has_shipto()) {

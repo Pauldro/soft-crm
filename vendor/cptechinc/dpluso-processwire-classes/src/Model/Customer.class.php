@@ -79,7 +79,35 @@
             return get_customercontacts($this->custid, $loginID, $debug);
         }
 
+        /**
+         * Returns amount sold for this customer, will default to current user if no ID supplied
+         * @param  string $loginID User Login
+         * @param  bool   $debug   Run in debug? If true, will return SQL Query
+         * @return float           Amount Sold
+         */
+        public function get_amountsold($loginID = '', $debug = false) {
+            return $debug ? get_custperm($this, $loginID, $debug) : (get_custperm($this, $loginID, $debug))['amountsold'];
+        }
 
+        /**
+         * Returns Number of Times sold (Last 12 Months) for this customer, will default to current user if no ID supplied
+         * @param  string $loginID User Login
+         * @param  bool   $debug   Run in debug? If true, will return SQL Query
+         * @return int           Number of Times sold
+         */
+        public function get_timesold($loginID = '', $debug = false) {
+            return $debug ? get_custperm($this, $loginID, $debug) : (get_custperm($this, $loginID, $debug))['timesold'];
+        }
+
+        /**
+         * Returns Last Sale Date for this customer, will default to current user if no ID supplied
+         * @param  string $loginID User Login
+         * @param  bool   $debug   Run in debug? If true, will return SQL Query
+         * @return string          Last Sale Date
+         */
+        public function get_lastsaledate($loginID = '', $debug = false) {
+            return $debug ? get_custperm($this, $loginID, $debug) : (get_custperm($this, $loginID, $debug))['lastsaledate'];
+        }
         /* =============================================================
 			CLASS FUNCTIONS
 		============================================================ */
