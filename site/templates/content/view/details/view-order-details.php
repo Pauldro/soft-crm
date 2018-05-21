@@ -8,9 +8,9 @@
 			<tr> <td>Requested Ship Date</td> <td><?= $linedetail->rshipdate; ?></td> </tr>
 			<tr> <td>Kit Item</td> <td><?= $linedetail->kititemflag; ?></td> </tr>
 			<tr> <td>Special Order</td> <td><?= $linedetail->spcord; ?></td> </tr>
-			<tr> <td>Quantity</td> <td><?= number_format($linedetail->qty, 0); ?></td> </tr>
-			<tr> <td>Shipped</td> <td><?= number_format($linedetail->qtyshipped, 0); ?></td> </tr>
-			<tr> <td>Price</td> <td>$ <?= number_format($linedetail->price, 2); ?></td> </tr>
+			<tr> <td>Quantity</td> <td><?= $page->stringerbell->format_money($linedetail->qty, 0); ?></td> </tr>
+			<tr> <td>Shipped</td> <td><?= $page->stringerbell->format_money($linedetail->qtyshipped, 0); ?></td> </tr>
+			<tr> <td>Price</td> <td>$ <?= $page->stringerbell->format_money($linedetail->price, 2); ?></td> </tr>
 			<tr> <td>Total</td> <td>$ <?= $linedetail->totalprice; ?></td> </tr>
 			<tr> <td>Can Backorder?</td> <td><?= $linedetail->display_canbackorder(); ?></td> </tr>
 			<tr> <td>Tax</td> <td><?= $linedetail->taxcode." - ".$linedetail->taxcodeperc; ?></td> </tr>

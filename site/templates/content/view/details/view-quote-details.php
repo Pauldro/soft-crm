@@ -8,8 +8,8 @@
 			<tr> <td>Requested Ship Date</td> <td><?= $linedetail->rshipdate; ?></td> </tr>
 			<tr> <td>Kit Item</td> <td><?= $linedetail->kititemflag; ?></td> </tr>
 			<tr> <td>Special Order</td> <td><?= $linedetail->spcord; ?></td> </tr>
-			<tr> <td>Quantity</td> <td><?= number_format($linedetail->ordrqty, 0); ?></td> </tr>
-			<tr> <td>Price</td> <td>$ <?= number_format($linedetail->ordrprice, 2); ?></td> </tr>
+			<tr> <td>Quantity</td> <td><?= $page->stringerbell->format_money($linedetail->ordrqty, 0); ?></td> </tr>
+			<tr> <td>Price</td> <td>$ <?= $page->stringerbell->format_money($linedetail->ordrprice, 2); ?></td> </tr>
 			<tr> <td>Total</td> <td>$ <?= $linedetail->ordrtotalprice; ?></td> </tr>
 			<tr> <td>Tax</td> <td><?= $linedetail->taxcode; ?></td> </tr>
 		</table>
