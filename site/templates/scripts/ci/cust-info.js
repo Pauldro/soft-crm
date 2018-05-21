@@ -15,8 +15,6 @@ $(function() {
 		hidetoolbar();
     });
 
-	listener.simple_combo("n", function() {toggleshipto();});
-
 	$("body").on("submit", custlookupform, function(e) {
 		e.preventDefault();
 		var custID = $(this).find('.custID').val();
