@@ -2301,7 +2301,7 @@
 		$q->generate_filters($filters, $filterable);
 
 		if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
-			$this->order($this->generate_orderby("duedate-ASC"));
+			$q->order($q->generate_orderby("duedate-ASC"));
 		}
 		if ($limit) {
 			$q->limit($limit, $q->generate_offset($page, $limit));
