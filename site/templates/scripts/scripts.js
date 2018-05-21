@@ -972,22 +972,6 @@ $(document).ready(function() {
 							wait(200, function() {
 								$(elementreload + " .actions-refresh").click();
 								$(modal).modal('hide');
-								if (config.appconfig.cptechcustomer != 'stempf') {
-									console.log(config.appconfig.useractions);
-									swal({
-										title: "Your "+config.appconfig.useractions.types[json.response.actiontype]+" was created!",
-										text: "Would you like to create an action for this "+config.appconfig.useractions.types[json.response.actiontype]+"?",
-										type: "success",
-										showCancelButton: true,
-										confirmButtonText: "Yes, Create Action",
-									}).then(function () {
-										swal.close();
-										var href = new URI($('#actions-panel .add-action').attr('href')).addQuery('actionID', json.response.actionid).toString();
-										$('#actions-panel .add-action').attr('href', href).click();
-										href = URI(href).removeQuery('actionID').toString();
-										$('#actions-panel .add-action').attr('href', href);
-									}).catch(swal.noop);
-								}
 							});
 						}
 					});
