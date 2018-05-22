@@ -1,6 +1,7 @@
 <?php
 	use atk4\dsql\Query;
-use atk4\dsql\Expression;
+	use atk4\dsql\Expression;
+
 /* =============================================================
 	LOGIN FUNCTIONS
 ============================================================ */
@@ -228,10 +229,20 @@ use atk4\dsql\Expression;
 		}
 	}
 
-	function count_shiptos($custID, $loginID, $debug = false) { // TODO use QueryBuilder
+	/**
+	 * Returns the number of shiptos for that customer
+	 * filtering by loginID by providing it or defaulting to current user
+	 * @param  string $custID  Customer ID
+	 * @param  string $loginID LoginID to filter access to customer's shiptos
+	 * @param  bool   $debug   Run in debug? If true, the SQL Query will be returned
+	 * @return int             Shipto count | SQL Query
+	 */
+	function count_shiptos($custID, $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
 
-		if (DplusWire::wire('user')->hascontactrestrictions) {
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep'] && DplusWire::wire('pages')->get('/config/')->restrict_allowedcustomers) {
 			$custquery = (new QueryBuilder())->table('custperm')->where('custid', $custID)->where('shiptoid', '!=', '');
 			$q = (new QueryBuilder())->table($custquery, 'custpermcust');
 			$q->where('loginid', [$loginID, $SHARED_ACCOUNTS]);
@@ -261,11 +272,21 @@ use atk4\dsql\Expression;
 		}
 	}
 
-	function get_customershiptos($custID, $loginID, $debug = false) { // TODO use QueryBuilder
+	/**
+	 * Returns an array of Shiptos (Customer objects) that the User has access to
+	 * LoginID can be provided or it will default to the current user
+	 * @param  string $custID  Customer ID
+	 * @param  string $loginID Provided LoginID, if blank, it will default to current user
+	 * @param  bool   $debug   Run in debug?
+	 * @return array           Shiptos that the User has access to
+	 */
+	function get_customershiptos($custID, $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
 		$q = (new QueryBuilder())->table('custindex');
 
-		if (DplusWire::wire('user')->hascontactrestrictions) {
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep'] && DplusWire::wire('pages')->get('/config/')->restrict_allowedcustomers) {
 			$custquery = (new QueryBuilder())->table('custperm')->where('custid', $custID)->where('shiptoid', '!=', '');
 			$permquery = (new QueryBuilder())->table($custquery, 'custpermcust');
 			$permquery->field('custid, shiptoid');
@@ -286,15 +307,25 @@ use atk4\dsql\Expression;
 		}
 	}
 
-	function get_topxsellingshiptos($sessionID, $custID, $count, $debug = false) {
-		$loginID = (Dpluswire::wire('user')->hascontactrestrictions) ? Processwire\wire('user')->loginid : 'admin';
+	/**
+	 * Returns an array of shiptos (custperm array) that the user has access to
+	 * @param  string $custID  Customer ID
+	 * @param  int    $limit   How many records to return?
+	 * @param  string $loginID User Login ID, if blank will use current user
+	 * @param  bool   $debug   Run in debug? If so, will return SQL Query
+	 * @return array           Custperm Shipto records
+	 */
+	function get_topxsellingshiptos($custID, $limit, $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
+
 		$q = (new QueryBuilder())->table('custperm');
-		$q->where('loginid', $loginID);
+		$q->where('loginid', $user->get_custpermloginid());
 		$q->where('custid', $custID);
 		$q->where('shiptoid', '!=', '');
-		$q->limit($count);
+		$q->limit($limit);
 		$q->order('amountsold DESC');
-		$sql = Dpluswire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -435,7 +466,7 @@ use atk4\dsql\Expression;
 			$q->where('shiptoid', $shiptoID);
 		}
 		$q->where('buyingcontact', 'P');
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -446,11 +477,21 @@ use atk4\dsql\Expression;
 		}
 	}
 
-	function get_customerbuyersendusers($loginID, $custID, $shiptoID = false, $debug = false) {
+	/**
+	 * Get End Users and Buyers [array of objects (Contact)] for a Customer that a User has access to
+	 * @param  string $loginID  User LoginID, if blank, will use current user ID
+	 * @param  string $custID   Customer ID
+	 * @param  string $shiptoID Customer Shipto ID
+	 * @param  bool   $debug    Run in debug? If so, will return SQL Query
+	 * @return array            array of objects (Contact)
+	 */
+	function get_customerbuyersendusers($custID, $shiptoID = '', $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
 		$q = (new QueryBuilder())->table('custindex');
 
-		if (DplusWire::wire('user')->hascontactrestrictions) {
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep'] && DplusWire::wire('pages')->get('/config/')->restrict_allowedcustomers)  {
 			$custquery = (new QueryBuilder())->table('custperm')->where('custid', $custID);
 			if (!empty($shiptoID)) {
 				$custquery->where('shiptoid', $shiptoID);
@@ -467,7 +508,6 @@ use atk4\dsql\Expression;
 		}
 		$q->where('buyingcontact', '!=', 'N');
 		$q->where('certcontact', 'Y');
-
 		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
@@ -478,13 +518,24 @@ use atk4\dsql\Expression;
 			return $sql->fetchAll();
 		}
 	}
-
-	function search_customerbuyersendusers($loginID, $query, $custID, $shiptoID = false, $debug = false) {
+	/**
+	 * Returns the results of a search of a Customer's End Users and Buyers and the results
+	 * are filtered to the contacts the User can see
+	 * @param  string $custID   Customer ID
+	 * @param  string $shiptoID Customer Shipto ID
+	 * @param  string $query    Search Query
+	 * @param  string $loginID  User Login ID, if blank, it will use current user
+	 * @param  bool   $debug    Run in Debug?
+	 * @return array            Contact objects
+	 */
+	function search_customerbuyersendusers($custID, $shiptoID = '', $query, $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
-		$search = '%'.$query.'%';
+		$search = QueryBuilder::generate_searchkeyword($query);
 		$q = (new QueryBuilder())->table('custindex');
 
-		if (DplusWire::wire('user')->hascontactrestrictions) {
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep'] && DplusWire::wire('pages')->get('/config/')->restrict_allowedcustomers) {
 			$custquery = (new QueryBuilder())->table('custperm')->where('custid', $custID);
 			if (!empty($shiptoID)) {
 				$custquery->where('shiptoid', $shiptoID);
@@ -641,11 +692,19 @@ use atk4\dsql\Expression;
 		}
 	}
 
-	function count_searchcustindex($keyword, $loginID = '', $debug = false) {
+	/**
+	 * Returns the Number of custindex records that match the search
+	 * and filters it by user permissions
+	 * @param  string $query   Search Query
+	 * @param  string $loginID User Login ID, if blank, will use current User
+	 * @param  bool   $debug   Run in debug? If so, Return SQL Query
+	 * @return int             Number of custindex records that match the search | SQL Query
+	 */
+	function count_searchcustindex($query, $loginID = '', $debug = false) {
 		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
 		$user = LogmUser::load($loginID);
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
-		$search = QueryBuilder::generate_searchkeyword($keyword);
+		$search = QueryBuilder::generate_searchkeyword($query);
 		$groupedcustindexquery = (new QueryBuilder())->table('custindex')->group('custid, shiptoid');
 
 		$q = new QueryBuilder();

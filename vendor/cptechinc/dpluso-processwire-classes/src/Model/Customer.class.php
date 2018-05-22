@@ -19,11 +19,12 @@
 		/**
 		 * Return the number of shiptos this Customer has
 		 * it also takes in account if user has customer restrictions
-		 * @param  bool   $debug Whether to return Number or SQL Query
-		 * @return int    # of Shiptos or SQL Query
+		 * @param  string  $loginID  Login ID to count shiptos for
+		 * @param  bool    $debug    Whether to return Number or SQL Query
+		 * @return int               # of Shiptos or SQL Query
 		 */
-        public function get_shiptocount($debug = false) {
-            return count_shiptos($this->custid, DplusWire::wire('user')->loginid, $debug);
+        public function count_shiptos($loginID = '', $debug = false) {
+            return count_shiptos($this->custid, $loginID, $debug);
         }
 
 		/**
@@ -31,10 +32,11 @@
 		 * if shiptoid is defined then we get the next one
 		 * if no next one, go to the first one
 		 * Used for CI page
+		 * @param  string $loginID Login ID 
 		 * @return string shiptoid
 		 */
-        public function get_nextshiptoid() {
-            $shiptos = get_customershiptos($this->custid, DplusWire::wire('user')->loginid);
+        public function get_nextshiptoid($loginID = '') {
+            $shiptos = get_customershiptos($this->custid, $loginID);
             if (sizeof($shiptos) < 1) {
                 return false;
             } else {
