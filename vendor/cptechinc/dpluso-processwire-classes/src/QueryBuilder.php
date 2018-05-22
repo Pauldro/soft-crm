@@ -25,7 +25,12 @@
             'into',
             'set',
             'is',
-			'in'
+			'in',
+            'join',
+            'left',
+            'inner',
+            'outer',
+            'right'
         );
 
         /**
