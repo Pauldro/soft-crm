@@ -1413,20 +1413,40 @@
 	 * @param  int    $page        Page Number to start from
 	 * @param  string $sortrule    Sort Rule ASC | DESC
 	 * @param  string $orderby     Column to sort on
-	 * @param  bool   $filter      [description]
-	 * @param  bool   $filtertypes [description]
-	 * @param  string $logindID    [description]
-	 * @param  bool   $useclass    [description]
-	 * @param  bool   $debug       [description]
-	 * @return [type]              [description]
+	 * @param  array  $filter      Array that contains the column and the values to filter for
+	 * ex. array(
+	 * 	'ordertotal' => array (123.64, 465.78)
+	 * )
+	 * @param  array   $filterable  Array that contains the filterable columns as keys, and the rules needed
+	 * ex. array(
+	 * 	'ordertotal' => array(
+	 * 		'querytype' => 'between',
+	 * 		'datatype' => 'numeric',
+	 * 		'label' => 'Order Total'
+	 * 	),
+	 * 	'orderdate' => array(
+	 * 		'querytype' => 'between',
+	 * 		'datatype' => 'date',
+	 * 		'date-format' => 'Ymd',
+	 * 		'label' => 'order-date'
+	 * 	)
+	 * )
+	 * @param  string $loginID       User Login ID, if blank, will use the current User
+	 * @param  bool   $useclass      Return records as a SalesOrderHistory object? (or array)
+	 * @param  bool   $debug         Run in debug?
+	 * @return array                 array of SalesOrderHistory objects | array of sales history orders as arrays
 	 */
-	function get_usersaleshistoryorderby($limit = 10, $page = 1, $sortrule = 'ASC', $orderby, $filter = false, $filtertypes = false, $logindID = '', $useclass = false, $debug = false) {
+	function get_usersaleshistoryorderby($limit = 10, $page = 1, $sortrule = 'ASC', $orderby, $filter = false, $filterable = false, $loginID = '', $useclass = false, $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
+
 		$q = (new QueryBuilder())->table('saleshist');
-		if (DplusWire::wire('user')->hascontactrestrictions) {
+
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
 			$q->where('sp1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
+			$q->generate_filters($filter, $filterable);
 		}
 		$q->order($orderby .' '. $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
@@ -1445,16 +1465,47 @@
 		}
 	}
 
-	function get_usersaleshistoryinvoicedate($sessionID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
+	/**
+	 * Returns an array of Sales History Records (sorted by invoice date) that meet the filter criteria
+	 * for the User
+	 * @param  int    $limit       Number of Records to return
+	 * @param  int    $page        Page Number to start from
+	 * @param  string $sortrule    Sort Rule ASC | DESC
+	 * @param  array  $filter      Array that contains the column and the values to filter for
+	 * ex. array(
+	 * 	'ordertotal' => array (123.64, 465.78)
+	 * )
+	 * @param  array   $filterable  Array that contains the filterable columns as keys, and the rules needed
+	 * ex. array(
+	 * 	'ordertotal' => array(
+	 * 		'querytype' => 'between',
+	 * 		'datatype' => 'numeric',
+	 * 		'label' => 'Order Total'
+	 * 	),
+	 * 	'orderdate' => array(
+	 * 		'querytype' => 'between',
+	 * 		'datatype' => 'date',
+	 * 		'date-format' => 'Ymd',
+	 * 		'label' => 'order-date'
+	 * 	)
+	 * )
+	 * @param  string $loginID     User Login ID, if blank, will use the current User
+	 * @param  bool   $useclass    Return records as a SalesOrderHistory object? (or array)
+	 * @param  bool   $debug       Run in debug?
+	 * @return array                 array of SalesOrderHistory objects | array of sales history orders as arrays
+	 */
+	function get_usersaleshistoryinvoicedate($limit = 10, $page = 1, $sortrule, $filter = false, $filterable = false, $loginID = '', $useclass = false, $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('saleshist.*');
 		$q->field($q->expr("STR_TO_DATE(invdate, '%Y%m%d') as dateofinvoice"));
 
-		if (DplusWire::wire('user')->hascontactrestrictions) {
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
 			$q->where('sp1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
+			$q->generate_filters($filter, $filterable);
 		}
 		$q->order('dateofinvoice ' . $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
@@ -1471,16 +1522,47 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-
-	function get_usersaleshistoryorderdate($sessionID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
+	/**
+	 * Returns an array of Sales History Records (sorted by invoice date) that meet the filter criteria
+	 * for the User
+	 * @param  int    $limit       Number of Records to return
+	 * @param  int    $page        Page Number to start from
+	 * @param  string $sortrule    Sort Rule ASC | DESC
+	 * @param  array  $filter      Array that contains the column and the values to filter for
+	 * ex. array(
+	 * 	'ordertotal' => array (123.64, 465.78)
+	 * )
+	 * @param  array   $filterable  Array that contains the filterable columns as keys, and the rules needed
+	 * ex. array(
+	 * 	'ordertotal' => array(
+	 * 		'querytype' => 'between',
+	 * 		'datatype' => 'numeric',
+	 * 		'label' => 'Order Total'
+	 * 	),
+	 * 	'orderdate' => array(
+	 * 		'querytype' => 'between',
+	 * 		'datatype' => 'date',
+	 * 		'date-format' => 'Ymd',
+	 * 		'label' => 'order-date'
+	 * 	)
+	 * )
+	 * @param  string $loginID     User Login ID, if blank, will use the current User
+	 * @param  bool   $useclass    Return records as a SalesOrderHistory object? (or array)
+	 * @param  bool   $debug       Run in debug?
+	 * @return array               array of SalesOrderHistory objects | array of sales history orders as arrays
+	 */
+	function get_usersaleshistoryorderdate($limit = 10, $page = 1, $sortrule, $filter = false, $filterable = false, $loginID = '', $useclass = false, $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('saleshist.*');
 		$q->field($q->expr("STR_TO_DATE(orderdate, '%Y%m%d') as dateoforder"));
-		if (DplusWire::wire('user')->hascontactrestrictions) {
+
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
 			$q->where('sp1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
+			$q->generate_filters($filter, $filterable);
 		}
 		$q->order('dateoforder ' . $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
@@ -1498,7 +1580,36 @@
 		}
 	}
 
-	function count_customersaleshistory($sessionID, $custID, $shiptoID = '', $filter = false, $filtertypes = false, $debug = false) {
+	/**
+	 * Returns the Number of Sales History orders that meet the filter criteria
+	 * for the User
+	 * @param  string $custID      Customer ID
+	 * @param  string $shiptoID    Customer Shipto ID
+	 * @param  array  $filter      Array that contains the column and the values to filter for
+	 * ex. array(
+	 * 	'ordertotal' => array (123.64, 465.78)
+	 * )
+	 * @param  array   $filterable  Array that contains the filterable columns as keys, and the rules needed
+	 * ex. array(
+	 * 	'ordertotal' => array(
+	 * 		'querytype' => 'between',
+	 * 		'datatype' => 'numeric',
+	 * 		'label' => 'Order Total'
+	 * 	),
+	 * 	'orderdate' => array(
+	 * 		'querytype' => 'between',
+	 * 		'datatype' => 'date',
+	 * 		'date-format' => 'Ymd',
+	 * 		'label' => 'order-date'
+	 * 	)
+	 * )
+	 * @param  string $loginID     User Login ID, if blank, will use the current User
+	 * @param  bool   $debug       Run in debug?
+	 * @return int                 Number of Sales History Records
+	 */
+	function count_customersaleshistory($custID, $shiptoID = '', $filter = false, $filterable = false, $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('COUNT(*)');
 		$q->where('custid', $custID);
@@ -1507,11 +1618,11 @@
 			$q->where('shiptoid', $shiptoID);
 		}
 
-		if (DplusWire::wire('user')->hascontactrestrictions) {
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
 			$q->where('sp1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
+			$q->generate_filters($filter, $filterable);
 		}
 
 		$sql = DplusWire::wire('database')->prepare($q->render());
@@ -1524,18 +1635,50 @@
 		}
 	}
 
-	function get_customersaleshistory($sessionID, $custID, $shiptoID = '', $limit = 10, $page = 1, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
+	/**
+	 * Returns an array of Sales History orders for a Customer that meet the filter criteria
+	 * for that User
+	 * @param  string $custID    Customer ID
+	 * @param  string $shiptoID  Customer Shipto ID
+	 * @param  int    $limit     Number of Records to return
+	 * @param  int    $page      Page to start offset from
+	 * @param  array  $filter    Array that contains the column and the values to filter for
+	 * ex. array(
+	 * 	'ordertotal' => array (123.64, 465.78)
+	 * )
+	 * @param  array   $filterable  Array that contains the filterable columns as keys, and the rules needed
+	 * ex. array(
+	 * 	'ordertotal' => array(
+	 * 		'querytype' => 'between',
+	 * 		'datatype' => 'numeric',
+	 * 		'label' => 'Order Total'
+	 * 	),
+	 * 	'orderdate' => array(
+	 * 		'querytype' => 'between',
+	 * 		'datatype' => 'date',
+	 * 		'date-format' => 'Ymd',
+	 * 		'label' => 'order-date'
+	 * 	)
+	 * )
+	 * @param  string $loginID    User Login ID, if blank, will use the current User
+	 * @param  bool   $useclass   Return records as a SalesOrderHistory object? (or array)
+	 * @param  bool   $debug      Run in debug?
+	 * @return array              array of SalesOrderHistory objects | array of sales history orders as arrays
+	 */
+	function get_customersaleshistory($custID, $shiptoID = '', $limit = 10, $page = 1, $filter = false, $filterable = false, $loginID = '', $useclass = false, $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->where('custid', $custID);
 
 		if (!empty($shiptoID)) {
 			$q->where('shiptoid', $shiptoID);
 		}
-		if (DplusWire::wire('user')->hascontactrestrictions) {
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
 			$q->where('sp1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
+			$q->generate_filters($filter, $filterable);
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = DplusWire::wire('database')->prepare($q->render());
@@ -1552,18 +1695,52 @@
 		}
 	}
 
-	function get_customersaleshistoryorderby($sessionID, $custID, $shiptoID = '', $limit = 10, $page = 1, $sortrule, $orderby, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
+	/**
+	 * Returns an array of Sales History orders (sorted by a column) for a Customer that meet the filter criteria
+	 * for that User
+	 * @param  string $custID      Customer ID
+	 * @param  string $shiptoID    Customer Shipto ID
+	 * @param  int    $limit       Number of Records to return
+	 * @param  int    $page        Page Number to start offset from
+	 * @param  string $sortrule    Sort Rule ASC | DESC
+	 * @param  string $orderby     Column to sort on
+	 * @param  array  $filter      Array that contains the column and the values to filter for
+	 * ex. array(
+	 * 	'ordertotal' => array (123.64, 465.78)
+	 * )
+	 * @param  array   $filterable  Array that contains the filterable columns as keys, and the rules needed
+	 * ex. array(
+	 * 	'ordertotal' => array(
+	 * 		'querytype' => 'between',
+	 * 		'datatype' => 'numeric',
+	 * 		'label' => 'Order Total'
+	 * 	),
+	 * 	'orderdate' => array(
+	 * 		'querytype' => 'between',
+	 * 		'datatype' => 'date',
+	 * 		'date-format' => 'Ymd',
+	 * 		'label' => 'order-date'
+	 * 	)
+	 * )
+	 * @param  string $loginID    User Login ID, if blank, will use the current User
+	 * @param  bool   $useclass   Return records as a SalesOrderHistory object? (or array)
+	 * @param  bool   $debug      Run in debug?
+	 * @return array             array of SalesOrderHistory objects | array of sales history orders as arrays
+	 */
+	function get_customersaleshistoryorderby($custID, $shiptoID = '', $limit = 10, $page = 1, $sortrule, $orderby, $filter = false, $filterable = false, $loginID = '', $useclass = false, $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->where('custid', $custID);
 
 		if (!empty($shiptoID)) {
 			$q->where('shiptoid', $shiptoID);
 		}
-		if (DplusWire::wire('user')->hascontactrestrictions) {
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
 			$q->where('sp1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
+			$q->generate_filters($filter, $filterable);
 		}
 		$q->order($orderby .' '. $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
@@ -1581,7 +1758,40 @@
 		}
 	}
 
-	function get_customersaleshistoryinvoicedate($sessionID, $custID, $shiptoID = '', $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
+	/**
+	 * Returns an array of Sales History orders (sorted by invoice date) for a Customer that meet the filter criteria
+	 * for that User
+	 * @param  string $custID      Customer ID
+	 * @param  string $shiptoID    Customer Shipto ID
+	 * @param  int    $limit       Number of Records to return
+	 * @param  int    $page        Page Number to start offset from
+	 * @param  string $sortrule    Sort Rule ASC | DESC
+	 * @param  array  $filter      Array that contains the column and the values to filter for
+	 * ex. array(
+	 * 	'ordertotal' => array (123.64, 465.78)
+	 * )
+	 * @param  array   $filterable  Array that contains the filterable columns as keys, and the rules needed
+	 * ex. array(
+	 * 	'ordertotal' => array(
+	 * 		'querytype' => 'between',
+	 * 		'datatype' => 'numeric',
+	 * 		'label' => 'Order Total'
+	 * 	),
+	 * 	'orderdate' => array(
+	 * 		'querytype' => 'between',
+	 * 		'datatype' => 'date',
+	 * 		'date-format' => 'Ymd',
+	 * 		'label' => 'order-date'
+	 * 	)
+	 * )
+	 * @param  string $loginID    User Login ID, if blank, will use the current User
+	 * @param  bool   $useclass   Return records as a SalesOrderHistory object? (or array)
+	 * @param  bool   $debug      Run in debug?
+	 * @return array             array of SalesOrderHistory objects | array of sales history orders as arrays
+	 */
+	function get_customersaleshistoryinvoicedate($custID, $shiptoID = '', $limit = 10, $page = 1, $sortrule, $filter = false, $filterable = false, $loginID= '', $useclass = false, $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('saleshist.*');
 		$q->field($q->expr("STR_TO_DATE(invdate, '%Y%m%d') as dateofinvoice"));
@@ -1590,11 +1800,11 @@
 		if (!empty($shiptoID)) {
 			$q->where('shiptoid', $shiptoID);
 		}
-		if (DplusWire::wire('user')->hascontactrestrictions) {
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
 			$q->where('sp1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
+			$q->generate_filters($filter, $filterable);
 		}
 		$q->order('dateofinvoice ' . $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
@@ -1612,7 +1822,38 @@
 		}
 	}
 
-	function get_customersaleshistoryorderdate($sessionID, $custID, $shiptoID = '', $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
+	/**
+	 * Returns an array of Sales History orders (sorted by order date) for a Customer that meet the filter criteria
+	 * for that User
+	 * @param  string $custID      Customer ID
+	 * @param  string $shiptoID    Customer Shipto ID
+	 * @param  int    $limit       Number of Records to return
+	 * @param  int    $page        Page Number to start offset from
+	 * @param  string $sortrule    Sort Rule ASC | DESC
+	 * @param  array  $filter      Array that contains the column and the values to filter for
+	 * ex. array(
+	 * 	'ordertotal' => array (123.64, 465.78)
+	 * )
+	 * @param  array   $filterable  Array that contains the filterable columns as keys, and the rules needed
+	 * ex. array(
+	 * 	'ordertotal' => array(
+	 * 		'querytype' => 'between',
+	 * 		'datatype' => 'numeric',
+	 * 		'label' => 'Order Total'
+	 * 	),
+	 * 	'orderdate' => array(
+	 * 		'querytype' => 'between',
+	 * 		'datatype' => 'date',
+	 * 		'date-format' => 'Ymd',
+	 * 		'label' => 'order-date'
+	 * 	)
+	 * )
+	 * @param  string $loginID    User Login ID, if blank, will use the current User
+	 * @param  bool   $useclass   Return records as a SalesOrderHistory object? (or array)
+	 * @param  bool   $debug      Run in debug?
+	 * @return array             array of SalesOrderHistory objects | array of sales history orders as arrays
+	 */
+	function get_customersaleshistoryorderdate($custID, $shiptoID = '', $limit = 10, $page = 1, $sortrule, $filter = false, $filterable = false, $loginID = '', $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('saleshist.*');
 		$q->field($q->expr("STR_TO_DATE(orderdate, '%Y%m%d') as dateoforder"));
@@ -1621,11 +1862,11 @@
 		if (!empty($shiptoID)) {
 			$q->where('shiptoid', $shiptoID);
 		}
-		if (DplusWire::wire('user')->hascontactrestrictions) {
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
 			$q->where('sp1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
+			$q->generate_filters($filter, $filterable);
 		}
 		$q->order('dateoforder ' . $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
@@ -3550,12 +3791,23 @@
 	/* =============================================================
 		LOGM FUNCTIONS
 	============================================================ */
-	function count_todaysbookings($sessionID, $custID = false, $shiptoID = false, $debug = false) {
+	/**
+	 * Return the Number of bookings made that day, for a salesrep, if need be
+	 * @param  string $custID    Customer ID
+	 * @param  string $shiptoID  Customer Shipto ID
+	 * @param  string $loginID   User Login ID, if blank, will use the current User
+	 * @param  bool   $debug     Run in debug?
+	 * @return int               Number of bookings made for that day
+	 * @uses User Roles
+	 */
+	function count_todaysbookings($custID = false, $shiptoID = false, $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
 		$q = (new QueryBuilder())->table('bookingd');
 		$q->field('COUNT(*)');
 		$q->where('bookdate', date('Ymd'));
 
-		if (DplusWire::wire('user')->hascontactrestrictions) {
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
 			$q->where('salesperson1', DplusWire::wire('user')->salespersonid);
 		}
 
@@ -3565,7 +3817,6 @@
 				$q->where('shiptoid', $shiptoID);
 			}
 		}
-
 		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
@@ -3818,7 +4069,8 @@
 		}
 	}
 
-	function get_customerbookings($sessionID, $custID, $shipID, $filter, $filtertypes, $interval = '', $debug = false) {
+
+	function get_customerbookings($sessionID, $custID, $shipID, $filter, $filtertypes, $interval = '', $loginID = '', $debug = false) {
 		$q = (new QueryBuilder())->table('bookingc');
 		$q->where('custid', $custID);
 		if (!empty($shipID)) {
@@ -3853,7 +4105,7 @@
 		}
 	}
 
-	function get_customerdaybookingordernumbers($sessionID, $date, $custID, $shipID, $debug = false) {
+	function get_customerdaybookingordernumbers($date, $custID, $shipID, $loginID = '', $debug = false) {
 		$q = (new QueryBuilder())->table('bookingd');
 		$q->field($q->expr('DISTINCT(salesordernbr)'));
 		$q->field('bookdate');

@@ -60,20 +60,20 @@
 			return $debug ? $count : $this->count = $count;
 		}
 
-		public function get_orders($debug = false) {
+		public function get_orders($loginID = '', $debug = false) {
 			$useclass = true;
 			if ($this->tablesorter->orderby) {
 				if ($this->tablesorter->orderby == 'orderdate') {
-					$orders = get_usersaleshistoryorderdate($this->sessionID, DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $useclass, $debug);
+					$orders = get_usersaleshistoryorderdate(DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $loginID, $useclass, $debug);
 				} elseif ($this->tablesorter->orderby == 'invdate') {
-					$orders = get_usersaleshistoryinvoicedate($this->sessionID, DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $useclass, $debug);
+					$orders = get_usersaleshistoryinvoicedate(DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $loginID, $useclass, $debug);
 				} else {
-					$orders = get_usersaleshistoryorderby($this->sessionID, DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $this->filters, $this->filterable, $useclass, $debug);
+					$orders = get_usersaleshistoryorderby(DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $this->filters, $this->filterable, $loginID, $useclass, $debug);
 				}
 			} else {
 				// DEFAULT BY Invoice DATE SINCE SALES ORDER # CAN BE ROLLED OVER
 				$this->tablesorter->sortrule = 'DESC';
-				$orders = get_usersaleshistoryinvoicedate($this->sessionID, DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $useclass, $debug);
+				$orders = get_usersaleshistoryinvoicedate(DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $loginID, $useclass, $debug);
 			}
 			return $debug ? $orders : $this->orders = $orders;
 		}

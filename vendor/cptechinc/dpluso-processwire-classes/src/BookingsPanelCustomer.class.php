@@ -64,24 +64,25 @@
 
 		/**
 		 * Return total bookings amounts foreach Shipto for defined Customer
-		 * @param  bool   $debug Whether or not to execute Query and return results
-		 * @return array         Results | SQL Query
+		 * @param  string $loginID  User LoginID, if blank will use current User
+		 * @param  bool   $debug    Run in debug? If true, return SQL Query
+		 * @return array            Totals by shipto
 		 */
-		public function get_bookingtotalsbyshipto($debug = false) {
-			$bookings = get_bookingtotalsbyshipto($this->sessionID, $this->custID, $this->shipID, $this->filters, $this->filterable, $this->interval, $debug);
+		public function get_bookingtotalsbyshipto($loginID = '', $debug = false) {
+			$bookings = get_bookingtotalsbyshipto($this->custID, $this->shipID, $this->filters, $this->filterable, $this->interval, $loginID, $debug);
 			return $debug ? $bookings : $this->bookings = $bookings;
 		}
 
 		/**
 		 * Get the detail lines for a booking
-		 * @param  string $ordn  Sales Order #
-		 * @param  string $date  Date
-		 * @param  bool   $debug To execute query | return SQL query
-		 * @return array         bookingd records | SQL query
-		 * @uses
+		 * @param  string $ordn     Sales Order Number
+		 * @param  string $date     Datetime string usually in m/d/Y format
+		 * @param  string $loginID  User LoginID, if blank will use current User
+		 * @param  bool   $debug    Run in debug? If true, return SQL Query
+		 * @return array            Booking Order Details
 		 */
-		public function get_bookingdayorderdetails($ordn, $date, $debug = false) {
-			return get_bookingdayorderdetails($this->sessionID, $ordn, $date, false, false, $debug);
+		public function get_bookingdayorderdetails($ordn, $date, $loginID = '', $debug = false) {
+			return get_bookingdayorderdetails($ordn, $date, false, false, $loginID, $debug);
 		}
 
 		/**

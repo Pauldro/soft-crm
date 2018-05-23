@@ -179,7 +179,7 @@
 		 * @uses
 		 */
 		public function get_bookingdayorderdetails($ordn, $date, $loginID = '', $debug = false) {
-			return get_bookingdayorderdetails($this->sessionID, $ordn, $date, false, false, $loginID, $debug);
+			return get_bookingdayorderdetails($ordn, $date, false, false, $loginID, $debug);
 		}
 
 		/**
