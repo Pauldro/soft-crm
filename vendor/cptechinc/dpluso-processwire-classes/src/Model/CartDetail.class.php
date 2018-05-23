@@ -125,16 +125,6 @@
 		 * Returns if Cart Detail is editable AND should always be by default
 		 * @return bool Can the cart detail be editable
 		 */
-
-
-		public function has_documents() {
-			return $this->hasdocuments == 'Y' ? true : false;
-		}
-
-		public function has_notes() {
-			return has_dplusnote($this->sessionid, $this->sessionid, $this->linenbr, DplusWire::wire('config')->dplusnotes['cart']['type']) == 'Y' ? true : false;
-		}
-
 		public function can_edit() {
 			return true;
 		}
