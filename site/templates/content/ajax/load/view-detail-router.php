@@ -21,7 +21,5 @@
 			$page->body = $config->paths->content."view/details/view-quote-details.php";
             break;
     }
-
+    
 	include $config->paths->content."common/modals/include-ajax-modal.php";
-
-?>
