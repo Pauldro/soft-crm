@@ -18,7 +18,7 @@
 		 */
 		public function get_bookings($loginID = '', $debug = false) {
 			$this->determine_interval();
-			$bookings = get_customerbookings($this->sessionID, $this->custID, $this->shipID, $this->filters, $this->filterable, $this->interval, $loginID,  $debug);
+			$bookings = get_customerbookings($this->custID, $this->shipID, $this->filters, $this->filterable, $this->interval, $loginID, $debug);
 			return $debug ? $bookings : $this->bookings = $bookings;
 		}
 
@@ -27,29 +27,31 @@
 		 * @param  string $date     Date in m/d/Y format
 		 * @param  string $loginID  User LoginID, if blank will use current User
 		 * @param  bool   $debug    Run debug? If so, will return SQL Query
-		 * @return array            bookingd records
+		 * @return array            Sales Order Booking Records for each Sales Order
 		 */
 		public function get_daybookingordernumbers($date, $loginID = '', $debug = false) {
-			return get_customerdaybookingordernumbers($this->sessionID, $date, $this->custID, $this->shipID, $debug);
+			return get_customerdaybookingordernumbers($date, $this->custID, $this->shipID, $loginID, $debug);
 		}
 
 		/**
 		 * Count the bookings made for that date
-		 * @param  string $date   Date m/d/Y format
-		 * @param  bool   $debug  Run debug? If so, will return SQL Query
-		 * @return int            count
+		 * @param  string $date     Date m/d/Y format
+		 * @param  string $loginID  User Login ID, if blank, will use the current User
+		 * @param  bool   $debug    Run debug? If so, will return SQL Query
+		 * @return int              Number of distinct Sales Order Numbers
 		 */
-		public function count_daybookingordernumbers($date, $debug = false) {
-			return count_customerdaybookingordernumbers($this->sessionID, $date, $this->custID, $this->shipID, $debug);
+		public function count_daybookingordernumbers($date, $loginID = '', $debug = false) {
+			return count_customerdaybookingordernumbers($date, $this->custID, $this->shipID, $loginID, $debug);
 		}
 
 		/**
 		 * Count the booking records for that day
-		 * @param  bool  $debug  Whether or not to execute Query
-		 * @return int           Count | SQL Query
+		 * @param  string $loginID  User Login ID, if blank, will use the current User
+		 * @param  bool  $debug     Run debug? If so, will return SQL Query
+		 * @return int              Count | SQL Query
 		 */
-		public function count_todaysbookings($debug = false) {
-			return count_customertodaysbookings($this->sessionID, $this->custID, $this->shipID, $debug);
+		public function count_todaysbookings($loginID = '', $debug = false) {
+			return count_customertodaysbookings($this->custID, $this->shipID, $loginID, $debug);
 		}
 
 		/**

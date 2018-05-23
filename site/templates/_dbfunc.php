@@ -4069,19 +4069,48 @@
 		}
 	}
 
-
-	function get_customerbookings($sessionID, $custID, $shipID, $filter, $filtertypes, $interval = '', $loginID = '', $debug = false) {
+	/**
+	 * Returns an array of customer booking records for a salesrep
+	 * if User is a sales rep
+	 * @param  string $custID     Customer ID
+	 * @param  string $shipID     Customer Shipto ID
+	 * @param  array  $filter      Array that contains the column and the values to filter for
+	 * ex. array(
+	 * 	'ordertotal' => array (123.64, 465.78)
+	 * )
+	 * @param  array   $filterable  Array that contains the filterable columns as keys, and the rules needed
+	 * ex. array(
+	 * 	'ordertotal' => array(
+	 * 		'querytype' => 'between',
+	 * 		'datatype' => 'numeric',
+	 * 		'label' => 'Order Total'
+	 * 	),
+	 * 	'orderdate' => array(
+	 * 		'querytype' => 'between',
+	 * 		'datatype' => 'date',
+	 * 		'date-format' => 'Ymd',
+	 * 		'label' => 'order-date'
+	 * 	)
+	 * )
+	 * @param  string $interval   Interval of time ex. day | month
+	 * @param  string $loginID    User Login ID, if blank, will use the current User
+	 * @param  bool   $debug      Run in debug? If so, return SQL Query
+	 * @return array              Booking records (array)
+	 */
+	function get_customerbookings($custID, $shipID, $filter = false, $filterable = false, $interval = '', $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
 		$q = (new QueryBuilder())->table('bookingc');
 		$q->where('custid', $custID);
+
 		if (!empty($shipID)) {
 			$q->where('shiptoid', $shipID);
 		}
 
-		if (DplusWire::wire('user')->hascontactrestrictions) {
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
 			$q->where('salesrep', DplusWire::wire('user')->salespersonid);
 		}
-
-		$q->generate_filters($filter, $filtertypes);
+		$q->generate_filters($filter, $filterable);
 
 		switch ($interval) {
 			case 'month':
@@ -4095,8 +4124,8 @@
 				$q->group('bookdate');
 				break;
 		}
-
 		$sql = DplusWire::wire('database')->prepare($q->render());
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -4105,13 +4134,24 @@
 		}
 	}
 
-	function get_customerdaybookingordernumbers($date, $custID, $shipID, $loginID = '', $debug = false) {
+	/**
+	 * Returns an array of Booking Sales Orders for that day that the User has access to
+	 * @param  string $date     Datetime usually in m/d/Y
+	 * @param  string $custID   Customer ID
+	 * @param  string $shipID   Customer Shipto ID
+	 * @param  string $loginID  User Login ID, if blank, will use the current User
+	 * @param  bool   $debug    Run in debug? If so, return SQL Query
+	 * @return array            Booking Sales Orders for that day
+	 */
+	function get_customerdaybookingordernumbers($date, $custID, $shipID = '', $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
 		$q = (new QueryBuilder())->table('bookingd');
 		$q->field($q->expr('DISTINCT(salesordernbr)'));
 		$q->field('bookdate');
 		$q->where('bookdate', date('Ymd', strtotime($date)));
 
-		if (DplusWire::wire('user')->hascontactrestrictions) {
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
 			$q->where('salesperson1', DplusWire::wire('user')->salespersonid);
 		}
 
@@ -4130,13 +4170,24 @@
 		}
 	}
 
-	function count_customerdaybookingordernumbers($sessionID, $date, $custID, $shipID, $debug = false) {
+	/**
+	 * Return Number of Customer Booking Sales Order Numbers that the User has access to
+	 * @param  string $date    Datetime usually in m/d/Y
+	 * @param  string $custID  Customer ID
+	 * @param  string $shipID  Customer Shipto ID
+	 * @param  string $loginID User Login ID, if blank, will use the current User
+	 * @param  bool   $debug   Run in debug? If so, return SQL Query
+	 * @return int             Number of Customer Booking Sales ORder Numbers
+	 */
+	function count_customerdaybookingordernumbers($date, $custID, $shipID = '', $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
 		$q = (new QueryBuilder())->table('bookingd');
 		$q->field($q->expr('COUNT(DISTINCT(salesordernbr))'));
 
 		$q->where('bookdate', date('Ymd', strtotime($date)));
 
-		if (DplusWire::wire('user')->hascontactrestrictions) {
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
 			$q->where('salesperson1', DplusWire::wire('user')->salespersonid);
 		}
 
@@ -4155,13 +4206,24 @@
 		}
 	}
 
-	function count_customertodaysbookings($sessionID, $custID, $shipID, $debug = false) {
+	/**
+	 * Return the Number of Customer bookings
+	 * that the User has access to
+	 * @param  string $custID  Customer ID
+	 * @param  string $shipID  Customer Shipto ID
+	 * @param  string $loginID User Login ID, if blank, will use the current User
+	 * @param  bool   $debug   Run in debug? If so, return SQL Query
+	 * @return int          Number of Customer bookings
+	 * @uses User dplusrole
+	 */
+	function count_customertodaysbookings($custID, $shipID, $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
 		$q = (new QueryBuilder())->table('bookingc');
 		$q->field('COUNT(*)');
-
 		$q->where('bookdate', date('Ymd'));
 
-		if (DplusWire::wire('user')->hascontactrestrictions) {
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
 			$q->where('salesrep', DplusWire::wire('user')->salespersonid);
 		}
 
@@ -4180,13 +4242,24 @@
 		}
 	}
 
-	function get_customertodaybookingamount($sessionID, $custID, $shipID, $debug = false) {
+	/**
+	 * Return the Customers booking total for today that the User has access to
+	 * @param  string $custID  Customer ID
+	 * @param  string $shipID  Customer Shipto ID
+	 * @param  string $loginID User Login ID, if blank, will use the current User
+	 * @param  bool   $debug   Run in debug?
+	 * @return float           booking total
+	 * @uses User dplusrole
+	 */
+	function get_customertodaybookingamount($custID, $shipID = '', $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
 		$q = (new QueryBuilder())->table('bookingc');
 		$q->field('SUM(amount)');
 
 		$q->where('bookdate', date('Ymd'));
 
-		if (DplusWire::wire('user')->hascontactrestrictions) {
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
 			$q->where('salesrep', DplusWire::wire('user')->salespersonid);
 		}
 

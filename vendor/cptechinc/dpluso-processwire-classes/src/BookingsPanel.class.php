@@ -141,11 +141,12 @@
 
 		/**
 		 * Count the booking records for that day
-		 * @param  bool   $debug Whether or not to execute Query
-		 * @return int           Count | SQL Query
+		 * @param  string $loginID  User LoginID, if blank will use current User
+		 * @param  bool   $debug    Run in debug? If so, return SQL Query
+		 * @return int              Count | SQL Query
 		 */
-		public function count_todaysbookings($debug = false) {
-			return count_todaysbookings($this->sessionID, false, false, $debug);
+		public function count_todaysbookings($loginID = '', $debug = false) {
+			return count_todaysbookings(false, false, $loginID, $debug);
 		}
 
 		/**
