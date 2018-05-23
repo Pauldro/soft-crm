@@ -107,35 +107,36 @@
 		/**
 		 * Queries the database and returns with booking records
 		 * that meets the criteria defined in the $this->filters array
-		 * @param  bool $debug Whether or not to execute and return list | return SQL Query
-		 * @return array       Booking records | SQL Query
-		 * @uses
+		 * @param  string $loginID  User LoginID, if blank will use current User
+		 * @param  bool   $debug    Run in debug? If so, will return SQL Query
+		 * @return array            Booking records | SQL Query
 		 */
-		public function get_bookings($debug = false) {
+		public function get_bookings($loginID = '', $debug = false) {
 			$this->determine_interval();
-			$bookings = get_userbookings($this->sessionID, $this->filters, $this->filterable, $this->interval, $debug);
+			$bookings = get_userbookings($this->filters, $this->filterable, $this->interval, $loginID, $debug);
 			return $debug ? $bookings : $this->bookings = $bookings;
 		}
 
 		/**
 		 * Get the bookings made for that date
-		 * @param  string $date  Date
-		 * @param  bool   $debug To Run and return records | SQL Query
-		 * @return array         bookingd records | SQL Query
-		 * @uses
+		 * @param  string $date     Datetime string usually in m/d/Y format
+		 * @param  string $loginID  User LoginID, if blank will use current User
+		 * @param  bool   $debug    Run in debug? If so, will return SQL Query
+		 * @return array            bookingd records | SQL Query
 		 */
-		public function get_daybookingordernumbers($date, $debug = false) {
-			return get_daybookingordernumbers($this->sessionID, $date, false, false, $debug);
+		public function get_daybookingordernumbers($date, $loginID = '', $debug = false) {
+			return get_daybookingordernumbers($this->sessionID, $date, false, false, $loginID, $debug);
 		}
 
 		/**
 		 * Count the bookings made for that date
-		 * @param  string $date  Date
-		 * @param  bool   $debug To Run and return count | SQL Query
-		 * @return int         count| SQL Query
+		 * @param  string $date     Datetime string usually in m/d/Y format
+		 * @param  string $loginID  User LoginID, if blank will use current User
+		 * @param  bool   $debug    Run in debug? if so, will return SQL Query
+		 * @return int              count| SQL Query
 		 */
-		public function count_daybookingordernumbers($date, $debug = false) {
-			return count_daybookingordernumbers($this->sessionID, $date, false, false, $debug);
+		public function count_daybookingordernumbers($date, $loginID = '',  $debug = false) {
+			return count_daybookingordernumbers($date, false, false, $loginID, $debug);
 		}
 
 		/**
@@ -149,33 +150,36 @@
 
 		/**
 		 * Get the Amount booked today
-		 * @param  bool   $debug Run in debug? If true, return SQL Query
-		 * @return int           Amount booked today
+		 * @param  string $loginID User Login ID to get bookings amount, leave blank for current user
+		 * @param  bool   $debug   Run in debug? If true, return SQL Query
+		 * @return int             Amount booked today
 		 */
-		public function get_todaysbookingamount($debug = false) {
-			return get_todaysbookingsamount($this->sessionID, false, false, $debug);
+		public function get_todaysbookingamount($loginID = '', $debug = false) {
+			return get_todaysbookingsamount('', '', $loginID, $debug);
 		}
 
 		/**
 		 * Returns total bookings amounts for each customer during the timeframe specifeld
-		 * @param  bool   $debug Whether or not to execute Query and return results
-		 * @return array         Results | SQL Query
+		 * @param  string $loginID  User Login ID to get bookings amount, leave blank for current user
+		 * @param  bool   $debug    Run in debug? If true, return SQL Query
+		 * @return array            Results | SQL Query
 		 */
-		public function get_bookingtotalsbycustomer($debug = false) {
-			$bookings = get_bookingtotalsbycustomer($this->sessionID, $this->filters, $this->filterable, $this->interval, $debug);
+		public function get_bookingtotalsbycustomer($loginID = '', $debug = false) {
+			$bookings = get_bookingtotalsbycustomer($this->filters, $this->filterable, $this->interval, $loginID, $debug);
 			return $debug ? $bookings : $this->bookings = $bookings;
 		}
 
 		/**
 		 * Get the detail lines for a booking
 		 * @param  string $ordn  Sales Order #
-		 * @param  string $date  Date
-		 * @param  bool   $debug To execute query | return SQL query
+		 * @param  string $date  Datetime string usually in m/d/Y format
+		 * @param  string $loginID User Login ID to get bookings amount, leave blank for current user
+		 * @param  bool   $debug Run in debug? If true, return SQL Query
 		 * @return array         bookingd records | SQL query
 		 * @uses
 		 */
-		public function get_bookingdayorderdetails($ordn, $date, $debug = false) {
-			return get_bookingdayorderdetails($this->sessionID, $ordn, $date, false, false, $debug);
+		public function get_bookingdayorderdetails($ordn, $date, $loginID = '', $debug = false) {
+			return get_bookingdayorderdetails($this->sessionID, $ordn, $date, false, false, $loginID, $debug);
 		}
 
 		/**
