@@ -1,6 +1,6 @@
 <?php
 	$editactiondisplay = new EditUserActionsDisplay($page->fullURL);
-	$task->set('actiontype', 'tasks');
+	$task->set('actiontype', 'task');
 ?>
 <div>
 	<ul class="nav nav-tabs" role="tablist">

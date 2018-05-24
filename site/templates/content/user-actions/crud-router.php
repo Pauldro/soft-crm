@@ -9,6 +9,7 @@
 			} else { // SHOW FORM
 				$type = $input->get->text('type');
 				$action = new UserAction();
+				$action->set('actiontype', $type);
 				$action->set('assignedto', $user->loginid);
 				$action->set('customerlink', $input->get->text('custID'));
 				$action->set('shiptolink', $input->get->text('shiptoID'));

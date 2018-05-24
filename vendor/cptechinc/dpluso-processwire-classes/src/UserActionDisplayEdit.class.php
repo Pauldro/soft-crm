@@ -3,6 +3,11 @@
         /* =============================================================
  		   CLASS FUNCTIONS
  	   ============================================================ */
+       /**
+        * Returns a button row and input that allows the user to select the action type they'd like to create
+        * @param  UserAction $action UserAction
+        * @return string             HTML buttons with an input  to manipulate
+        */
         public function generate_selectsubtype(UserAction $action) {
             $bootstrap = new Contento();
             $subtypes = DplusWire::wire('pages')->get("/config/actions/types/{$action->actiontype}s/")->children();
@@ -18,6 +23,11 @@
             return $content;
         }
 
+        /**
+         * Creates a Salesperson Dropdown Select
+         * @param  string $salespersonID Sales Person to default to
+         * @return string                 HTML SELECT
+         */
         public function generate_selectsalesperson($salespersonID) {
             $bootstrap = new Contento();
             $salespersonarray = json_decode(file_get_contents(DplusWire::wire('config')->companyfiles."json/salespersontbl.json"), true);
@@ -29,7 +39,7 @@
 			}
             return $bootstrap->select("name=assignedto|class=form-control input-sm|style=width: 200px;", $salespeople, $salespersonID);
         }
-
+        
         public function generate_posteditactionurl() {
             return DplusWire::wire('config')->pages->useractions."update/";
         }
