@@ -29,10 +29,6 @@ $(document).ready(function() {
 				}
 			});
 		});
-		
-		if ($(window).width() < 768) {
-			$('#show-toolbar').removeClass('hidden');
-		}
 
 		$(config.modals.lightbox).on('show.bs.modal', function (event) {
 			var image = $(event.relatedTarget).find('img');
@@ -57,11 +53,11 @@ $(document).ready(function() {
 		$(config.modals.lightbox).on('shown.bs.modal', function(event) {
 			makeshadow();
 		});
-		
+
 		$(config.modals.lightbox).on('hide.bs.modal', function(event) {
 			removeshadow();
 		});
-		
+
 		$(config.modals.itemlookup).on('shown.bs.modal', function(event) {
 			$(this).find('.searchfield').focus();
 		});
@@ -163,7 +159,7 @@ $(document).ready(function() {
 			form.hide(1000).animatecss('zoomOutRight');
 			$('#show-email-sending').removeClass('hidden').find('h4').text('Sending Email');
 			$('#show-email-sending').find('.fa-spinner').addClass('fa-pulse');
-			
+
 			form.postform({formdata: false, jsoncallback: true, action: false}, function(json) {
 				$.notify({
 					icon: json.response.icon,
@@ -176,9 +172,9 @@ $(document).ready(function() {
 						$('#show-email-sending').find('fa-spinner').removeClass('fa-pulse');
 					}
 				});
-			}); 
+			});
 		});
-		
+
 		$("body").on("change", ".required", function() {
 			if ($(this).val() != '') {
 				$(this).closest('tr').removeClass('has-error');
@@ -187,8 +183,43 @@ $(document).ready(function() {
 			}
         });
 
-        $("body").on('keypress', 'form input', function(e) {
-			return e.which !== 13;
+		$("body").on("submit", ".form-ajax", function(e) {
+			e.preventDefault();
+			var form = $(this);
+			var formurl = URI(form.attr('action'));
+			var focus = form.data('focus');
+			var loadinto = form.data('loadinto');
+			var querystring = formurl.query() + "&"+ form.serialize();
+			formurl.query(querystring).query(cleanparams).normalizeQuery();
+			href = formurl.toString();
+			var queries = URI.parseQuery(formurl.search())
+			console.log(queries);
+			console.log(href);
+
+			$(loadinto).loadin(href, function() {
+				if (focus.length > 0) {
+					$('html, body').animate({scrollTop: $(focus).offset().top - 60}, 1000);
+				}
+			});
+		});
+
+		$("body").on("submit", ".actions-filter", function(e) {
+			e.preventDefault();
+			var form = $(this);
+			var formurl = URI(form.attr('action'));
+			formurl.removeQuery(/^completed/);
+			formurl.removeQuery(/^assignedto/);
+			var focus = form.data('focus');
+			var loadinto = form.data('loadinto');
+			var querystring = formurl.query() + "&"+ form.serialize();
+			formurl.query(querystring).query(cleanparams).normalizeQuery();
+			href = formurl.toString();
+
+			$(loadinto).loadin(href, function() {
+				if (focus.length > 0) {
+					$('html, body').animate({scrollTop: $(focus).offset().top - 60}, 1000);
+				}
+			});
 		});
 	/*==============================================================
 	  AJAX LOAD FUNCTIONS
@@ -212,12 +243,7 @@ $(document).ready(function() {
 				init_bootstraptoggle();
 			});
 		});
-		$("body").on("click", ".stuff", function(e) {
-		e.preventDefault();
-			console.log('clicked');
-			alert('sfd');
-			
-		}); 
+
 		$("body").on("click", ".load-and-show", function(e) {
 			e.preventDefault();
 			showajaxloading();
@@ -225,7 +251,7 @@ $(document).ready(function() {
 			var loadinto = $(this).data('loadinto');
 			var focuson = $(this).data('focus');
 			var href = $(this).attr('href');
-			
+
 			$(loadinto).loadin(href, function() {
 				hideajaxloading();
 				if (focuson.length > 0) {
@@ -240,19 +266,19 @@ $(document).ready(function() {
 			var button = $(this);
 			var ajaxloader = new ajaxloadedmodal(button);
 			var closestmodal = $(this).closest('.modal');
-			
+
 			if (closestmodal) {
 				if (closestmodal.attr('id') != ajaxloader.loadinto) {
 					closestmodal.find("[data-dismiss='modal']").click();
 				}
-				
+
 			}
-			
+
 			ajaxloader.url = URI(ajaxloader.url).addQuery('modal', 'modal').normalizeQuery().toString();
 			if (button.hasClass('info-screen')) {
 				showajaxloading();
 			}
-			
+
 			$(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
 				if (button.hasClass('info-screen')) {
 					hideajaxloading();
@@ -261,7 +287,7 @@ $(document).ready(function() {
 				$(ajaxloader.modal).resizemodal(ajaxloader.modalsize).modal();
 			});
 		});
-		
+
 		$("body").on("click", ".modal-load", function(e) {
 			e.preventDefault();
 			var button = $(this);
@@ -272,7 +298,7 @@ $(document).ready(function() {
 			var loadingwheel = $(darkloadingwheel);
 			loadingwheel.addClass('display-inline-block').addClass('text-center');
 			$(ajaxloader.loadinto).append("<div class='modal-body'><div class='text-center'>"+loadingwheel.prop('outerHTML')+"</div></div>");
-			
+
 			$(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
 				hideajaxloading();
 				$(ajaxloader.modal).find('.modal-body').addClass('modal-results');
@@ -320,7 +346,7 @@ $(document).ready(function() {
 			});
 		});
 
-		$(".page").on("click", ".load-cust-orders", function(event) { //Changed from #load-cust-orders  //DEPRECATED 
+		$(".page").on("click", ".load-cust-orders", function(event) { //Changed from #load-cust-orders  //DEPRECATED
 			event.preventDefault();
 			var loadinto = $(this).data('loadinto');
 			var geturl = $(this).attr('href');
@@ -361,7 +387,7 @@ $(document).ready(function() {
 				});
 			});
 		});
-		
+
 		$("body").on("submit", ".orders-search-form", function(e)  { //FIXME Barbara - changed from order-search-form
 			e.preventDefault();
 			var form = $(this);
@@ -375,7 +401,7 @@ $(document).ready(function() {
 			if (Object.keys(href.query(true)).length == 1) {
 				href.query('');
 			}
-			
+
 			if (ordertype == 'sales-orders') {
 				href.addQuery('ordn', queries.ordn);
 			} else if (ordertype == 'quotes') {
@@ -385,9 +411,9 @@ $(document).ready(function() {
 			if (orderby) {
 				href = href.addQuery('orderby', orderby);
 			}
-			
+
 			href = href.toString(); // Add orderby param
-			
+
 			$(loadinto).loadin(href, function() {
 				if (focuson.length > 0) {
 					$('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000);
@@ -411,7 +437,7 @@ $(document).ready(function() {
 				});
 			});
 		});
-		
+
 		// USED FOR ORDER SEARCH FILTER
 		$("body").on("click", ".get-custid-search", function(e) {
 			var field = $(this).data('field');
@@ -425,7 +451,7 @@ $(document).ready(function() {
 				setTimeout(function (){ $(modal).find('.query').focus();}, 500);
 			});
 		});
-		
+
 	/*==============================================================
 		EDIT CART / QUOTES / SALES ORDER FUNCTIONS
 	=============================================================*/
@@ -449,7 +475,7 @@ $(document).ready(function() {
 				});
 			}
 		});
-		
+
 	/*==============================================================
 		SALES ORDER / QUOTES LIST FUNCTIONS
 	=============================================================*/
@@ -467,7 +493,7 @@ $(document).ready(function() {
 				setTimeout(function (){ $(modal).find('.query').focus();}, 500);
 			});
 		});
-		
+
 		$("body").on("click", ".order-choose-contact", function(e) {
 			e.preventDefault();
 			var modal = config.modals.ajax;
@@ -593,7 +619,7 @@ $(document).ready(function() {
 		$('#add-item-modal').on('shown.bs.modal', function() {
 			$('#add-item-modal .searchfield').focus();
 		});
-		
+
 		$('#ajax-modal').on('shown.bs.modal', function() {
 			if (!$('body').hasClass('modal-open')){
 				$('body').addClass('modal-open');
@@ -607,7 +633,7 @@ $(document).ready(function() {
 			var addonurl = $(formid+ " .addonurl").val();
 			var loadinto = '#' + $(this).closest('.modal').attr('id') + ' .results';
 			var loadingdiv = "<div class='loading-item-results'>"+darkloadingwheel+"</div>";
-			
+
 			$.ajax({
 				async: false,
 				beforeSend: function () {
@@ -615,11 +641,11 @@ $(document).ready(function() {
 					$(loadingdiv).appendTo(loadinto);
 				},
 				url: $(formid).attr('action'),
-				method: "POST", 
+				method: "POST",
 				data: $(formid).serialize()
 			}).done(function() {
 				$(loadinto).loadin(resultsurl, function() {
-					
+
 				});
 			});
 		});
@@ -679,12 +705,12 @@ $(document).ready(function() {
 				var field = form.find('[name=field]').val();
 				href.addQuery('field', field);
 			}
-			href = href.toString();	
+			href = href.toString();
 			$(loadinto).loadin(href+' '+loadinto, function() {
-				
+
 			});
 		});
-		
+
 		$("body").on("submit", "#cust-contact-search-form", function(e) {
 			e.preventDefault();
 			var form = $(this);
@@ -694,18 +720,18 @@ $(document).ready(function() {
 			var shipID = form.find('[name=shipID]').val();
 			var loadinto = '#contact-results';
 			var uri = URI(form.attr('action')).addQuery('q', q).addQuery('function', pagefunction);
-			href = uri.addQuery('custID', custID).addQuery('shipID', shipID).toString();	
-			
+			href = uri.addQuery('custID', custID).addQuery('shipID', shipID).toString();
+
 			$(loadinto).empty();
 			var loadingwheel = $(darkloadingwheel);
 			loadingwheel.addClass('display-inline-block').addClass('text-center');
 			$(loadinto).append("<div class='text-center'>"+loadingwheel.prop('outerHTML')+"</div>");
-			
+
 			$(loadinto).loadin(href+' '+loadinto, function() {
-				
+
 			});
 		});
-		
+
 		$("body").on("submit", "#vi-search-item", function(e) {
 			e.preventDefault();
 		});
@@ -722,7 +748,7 @@ $(document).ready(function() {
 			var loadinto = '#item-results';
 			$(loadinto).loadin(href, function() { });
 		});
-		
+
 		$("body").on("submit", "#vend-index-search-form", function(e) {
 			e.preventDefault();
 		});
@@ -734,7 +760,7 @@ $(document).ready(function() {
 			var href = URI(thisform.attr('action')).addQuery('q', $(this).val())
 												   .addQuery('function', pagefunction)
 												   .toString();
-			$(loadinto).loadin(href+' '+loadinto, function() { 
+			$(loadinto).loadin(href+' '+loadinto, function() {
 			});
 		});
 
@@ -758,9 +784,9 @@ $(document).ready(function() {
 				}
 			});
 		});
-		
+
 		/*==============================================================
-			ACTIONS FUNCTIONS 
+			ACTIONS FUNCTIONS
 			FOR TASKS, LISTING
 		=============================================================*/
 		$("body").on("change", "#actions-panel .change-action-type, #actions-modal-panel .change-action-type", function() {
@@ -809,8 +835,8 @@ $(document).ready(function() {
 				cancelButtonClass: 'btn btn-sm btn-danger',
 				inputClass: 'form-control',
 				inputOptions: {
-					'tasks': 'Task',
-					'notes': 'Note'
+					'task': 'Task',
+					'note': 'Note'
 				},
 				inputPlaceholder: 'Select Action Type',
 				showCancelButton: true,
@@ -825,27 +851,13 @@ $(document).ready(function() {
 				}
 			}).then(function (result) {
 				var regexhref = button.attr('href');
-				var href = URI(regexhref.replace(/{replace}/g, result)).addQuery('modal', 'modal').toString();
+				var href = URI(regexhref).addQuery('type', result).addQuery('modal', 'modal').toString();
 				var modal = button.data('modal');
 				var loadinto =  modal+" .modal-content";
 				$(loadinto).loadin(href, function() {
 					$(modal).resizemodal('lg').modal();
 				});
 			}).catch(swal.noop);
-		});
-
-		$("body").on("click", ".load-action", function(e) {
-			e.preventDefault();
-			var button = $(this);
-			var ajaxloader = new ajaxloadedmodal(button);
-			showajaxloading();
-			ajaxloader.modal = config.modals.ajax;
-			wait(500, function() {
-				$(ajaxloader.loadinto).loadin(ajaxloader.url, function() {
-					hideajaxloading();
-					$(ajaxloader.modal).resizemodal('lg').modal();
-				});
-			});
 		});
 
 		$("body").on("click", ".complete-action", function(e) {
@@ -879,7 +891,7 @@ $(document).ready(function() {
 							if (text) {
 								$.post(json.response.action.urls.completion, {reflectnote: text})
 									.done(function(json) {
-										$('.actions-refresh').click(); 
+										$('.actions-refresh').click();
 										$(config.modals.ajax).modal('hide');
 										$.notify({
 											title: ucfirst(json.response.notifytype)+"!",
@@ -892,8 +904,8 @@ $(document).ready(function() {
 										});
 									});
 							} else {
-								$.get(json.response.action.urls.completion, function(json) { 
-									$('.actions-refresh').click(); 
+								$.get(json.response.action.urls.completion, function(json) {
+									$('.actions-refresh').click();
 									$(config.modals.ajax).modal('hide');
 									$.notify({
 										title: ucfirst(json.response.notifytype)+"!",
@@ -960,22 +972,6 @@ $(document).ready(function() {
 							wait(200, function() {
 								$(elementreload + " .actions-refresh").click();
 								$(modal).modal('hide');
-								if (config.appconfig.cptechcustomer != 'stempf') {
-									swal({
-										title: "Your "+json.response.actiontype+" was created!",
-										text: "Would you like to create an action for this "+json.response.actiontype+"?",
-										type: "success",
-										showCancelButton: true,
-										confirmButtonText: "Yes, Create Action",
-									}).then(function () {
-										swal.close();
-										var href = new URI($('#actions-panel .add-action').attr('href')).addQuery('actionID', json.response.actionid).toString();
-										console.log(href);
-										$('#actions-panel .add-action').attr('href', href).click();
-										href = URI(href).removeQuery('actionID').toString();
-										$('#actions-panel .add-action').attr('href', href);
-									}).catch(swal.noop);
-								}
 							});
 						}
 					});
@@ -987,35 +983,35 @@ $(document).ready(function() {
 			var select = $(this);
 			$('#new-action-form').find('input[name="assignedto"]').val(select.val());
 		});
-		
+
 	/*==============================================================
 		EDIT LINE ITEM FUNCTIONS
 	=============================================================*/
-		$(".page").on("click", ".update-line", function(e) {
-			e.preventDefault();
-			showajaxloading();
-			var url = URI($(this).attr('href')).addQuery('modal', 'modal').toString();
-			var itemID = $(this).data('itemid');
-			var custID = $(this).data('custid');
-			var modal = config.modals.ajax;
-			var loadinto = modal + " .modal-content";
-			if ($.inArray(itemID, config.products.nonstockitems) > -1) {
-				console.log('skipping item get');
+	$(".page").on("click", ".update-line", function(e) {
+		e.preventDefault();
+		showajaxloading();
+		var url = URI($(this).attr('href')).addQuery('modal', 'modal').toString();
+		var itemID = $(this).data('itemid');
+		var custID = $(this).data('custid');
+		var modal = config.modals.ajax;
+		var loadinto = modal + " .modal-content";
+		if ($.inArray(itemID, config.products.nonstockitems) > -1) {
+			console.log('skipping item get');
+			$(loadinto).loadin(url, function() {
+				hideajaxloading();
+				$(modal).resizemodal('xl').modal();
+			});
+		} else {
+			edit_itempricing(itemID, custID,  function() {
 				$(loadinto).loadin(url, function() {
 					hideajaxloading();
 					$(modal).resizemodal('xl').modal();
+					set_childheightequaltoparent('.row.row-bordered', '.grid-item');
+					$('.item-form').height($('.item-information').actual('height'));
 				});
-			} else {
-				edit_itempricing(itemID, custID,  function() {
-					$(loadinto).loadin(url, function() {
-						hideajaxloading();
-						$(modal).resizemodal('xl').modal();
-						set_childheightequaltoparent('.row.row-bordered', '.grid-item');
-						$('.item-form').height($('.item-information').actual('height'));
-					});
-				});
-			}
-		});
+			});
+		}
+	});
 });
 
 /*==============================================================
@@ -1026,11 +1022,11 @@ $(document).ready(function() {
 		modal.find('.modal-body').html("<h4>Function not available</h4>");
 		modal.resizemodal('lg').modal();
 	}
-	
+
 	function wait(time, callback) {
 		var timeoutID = window.setTimeout(callback, time);
 	}
-	
+
 	function dplusrequest(url, callback) {
 		console.log(url);
 		$.get(url, function() {
@@ -1085,7 +1081,7 @@ $(document).ready(function() {
 		$.fn.serializeform = function(overrides) {
 			// Get the parameters as an array
 			var newParams = this.serializeArray();
-			
+
 			for(var key in overrides) {
 				var newVal = overrides[key]
 				// Find and replace `content` if there
@@ -1181,7 +1177,7 @@ $(document).ready(function() {
 	                form.find('.response').createalertpanel('Double Check your itemIDs', '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>', 'warning');
 	            } else {
 					form.find('.response').createalertpanel('All your items are valid, verify and submit', '', 'success');
-	            } 
+	            }
 			});
 			callback();
         }
@@ -1225,7 +1221,7 @@ $(document).ready(function() {
 		});
 		return result;
 	};
-	
+
 	var remove_emptyparams = function(data) {
 		var result = {};
 		Object.keys(data).filter(function(key) {
@@ -1260,7 +1256,7 @@ $(document).ready(function() {
 		var url = config.urls.products.redir.ii_kit+"&itemID="+urlencode(itemID)+"&qty="+urlencode(qty);
 		$.get(url, function() { callback(); });
 	}
-	
+
 /*==============================================================
 	REORDER FUNCTIONS
 =============================================================*/
@@ -1270,7 +1266,7 @@ $(document).ready(function() {
 		var geturl = URI(config.urls.index+"ajax/json/cart/get-added-items/").addQuery('from', 'salesorder').addQuery('ordn', ordn).toString();
 		sendreorder(url, geturl);
 	}
-	
+
 	function sendreorder(requesturl, jsonurl) {
 		dplusrequest(requesturl, function() {
 			$.getJSON(jsonurl, function(json) {
@@ -1294,7 +1290,7 @@ $(document).ready(function() {
 		var emailregex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+)*\.(aero|arpa|biz|com|coop|edu|gov|info|int|mil|museum|name|net|org|pro|travel|mobi|[a-z][a-z])|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/;
 		return emailregex.test(email);
 	}
-	
+
 	function format_phone(input) {
 		// Strip all characters from the input except digits
 		input = input.replace(/\D/g,'');
@@ -1315,7 +1311,7 @@ $(document).ready(function() {
 		}
 		return input;
 	}
-	
+
 	function ucfirst(str) {
 		var pieces = str.split(" ");
 		for ( var i = 0; i < pieces.length; i++ ) {
@@ -1324,7 +1320,7 @@ $(document).ready(function() {
 		}
 		return pieces.join(" ");
 	}
-	
+
 	function getordinalsuffix(i) {
 		var j = i % 10, k = i % 100;
 		if (j == 1 && k != 11) { return i + "st"; }
@@ -1350,15 +1346,19 @@ $(document).ready(function() {
 	function comparefieldvalues(field1, field2) {
 		if ($(field1).val() == $(field2).val()) { return true; } else { return false; }
 	}
-	
+
 	function disable_enterkey(e) {
 		var key;
-		if(window.event) {
+		if (window.event) {
 			key = window.event.keyCode; //IE
 		} else {
-			key = e.which; //firefox      
+			key = e.which; //firefox
 		}
-		return (key != 13);
+		if (e.target.localName != 'textarea') {
+			return (key != 13);
+		} else {
+			return true;
+		}
 	}
 
 	function init_datepicker() {
@@ -1369,7 +1369,7 @@ $(document).ready(function() {
 			});
 		});
 	}
-	
+
 	function init_timepicker() {
 		$('.timepicker').timepicker({
 			'scrollDefault': 'now',
@@ -1394,7 +1394,7 @@ $(document).ready(function() {
 					missingfields.push(row.find('.control-label').text());
 				}
 			});
-			
+
 			if (missingfields.length > 0) {
 				var message = 'Please Check the following fields: <br>';
 				for (var i = 0; i < missingfields.length; i++) {
@@ -1460,9 +1460,9 @@ $(document).ready(function() {
                           .find("input:text").val("").end()
                           .appendTo(list);
 		$('.duplicable-item:last input:first').focus();
-		
+
 	}
-	
+
 	function fill_frommodal(field, value) {
 		var modal = config.modals.ajax;
 		$(field).val(value);

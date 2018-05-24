@@ -12,4 +12,6 @@
     echo $page->bootstrap->openandclose('h4', 'class=text-right', $actionpanel->generate_pagenumberdescription());
     echo $page->bootstrap->openandclose('div', 'class=table-responsive', $actionpanel->generate_actionstable());
     echo $paginator; 
+    
+    echo get_useractions($user->loginid, $actionpanel->querylinks, 10, 1, true);
 ?>

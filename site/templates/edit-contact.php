@@ -1,7 +1,7 @@
 <?php 
 	$custID = $input->get->text('custID');
 	$shipID = $input->get->text('shipID');
-	$contactID = $input->get->text('id');
+	$contactID = $input->get->text('contactID');
 	$contact = Contact::load($custID, $shipID, $contactID);
 	$primarycontact = Contact::load_primarycontact($custID, $shipID);
 	

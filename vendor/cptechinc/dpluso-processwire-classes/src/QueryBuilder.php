@@ -17,14 +17,14 @@
             'as',
 			       'group',
             'by',
-            'or', 
+            'or',
             'asc',
             'desc',
             'limit',
             'values',
             'into',
             'set',
-            'is', 
+            'is',
 			      'in',
             'join',
             'left',
@@ -32,7 +32,7 @@
             'outer',
             'right'
         );
-        
+
         /**
          * Updates the Query builder Query with the column conditionals
          * Optionally adds the ORDER BY clause
@@ -52,7 +52,7 @@
                                 $this->where($column, $whereinfo['values'][0]);
                             } else {
                                 $this->where($column, $whereinfo['values']);
-                            }                            
+                            }
                             break;
                         case '!=':
                             $this->where($column, '!=', $whereinfo['values']);
@@ -63,16 +63,16 @@
                     }
                 }
     		}
-            
+
     		if ($limit) {
                 $this->limit($limit, $this->generate_offset($page, $limit));
             }
-            
+
             if (!empty($orderby)) {
                 $this->order($this->generate_orderby($orderby));
             }
     	}
-		/** 
+		/**
 		 * Convert PHP Date Format code to MYSQL format code
 		 * @param  string $filter      key of filter array
 		 * @param  array $filtertypes  has data on filter
@@ -80,33 +80,44 @@
 		 * @uses
 		 */
 		public function generate_dateformat($filter, $filtertypes) {
-			$find = array('m', 'd', 'Y');
+			$find = array('m', 'd', 'Y', 'H', 'i', 's');
 			$format = isset($filtertypes[$filter]['date-format']) ? $filtertypes[$filter]['date-format'] : 'm/d/Y';
 			$sqlformat = $format;
-			
+
 			foreach ($find as $code) {
-				$sqlformat = str_replace($code, '%'.$code, $sqlformat);
+				$sqlformat = str_replace($code, "%$code", $sqlformat);
 			}
 			return $sqlformat;
 		}
-        
+
         public function generate_filters($filters, $filtertypes) {
             foreach ($filters as $filter => $filtervalue) {
                 switch ($filtertypes[$filter]['querytype']) {
                     case 'between':
 						$filtervalue = array_values(array_filter($filtervalue, 'strlen'));
-						
+
 						if (sizeof($filtervalue) == 1) {
-                            $this->where($filter, $filtervalue[0]);
-                        } else {
-                            if ($filtertypes[$filter]['datatype'] == 'date') {
+                            if ($filtertypes[$filter]['datatype'] == 'mysql-date') {
+								$this->where($this->expr("DATE($filter) = STR_TO_DATE([], '%m/%d/%Y')", $filtervalue));
+                            } elseif ($filtertypes[$filter]['datatype'] == 'date') {
 								$dateformat = $this->generate_dateformat($filter, $filtertypes);
-								$this->where($this->expr("STR_TO_DATE($filter, '$dateformat') between STR_TO_DATE([], '%m/%d/%Y') and STR_TO_DATE([], '%m/%d/%Y')", $filtervalue));
+								$this->where($this->expr("STR_TO_DATE($filter, '$dateformat') BETWEEN STR_TO_DATE([], '%m/%d/%Y') AND STR_TO_DATE([], '%m/%d/%Y')", $filtervalue));
                             } else if ($filtertypes[$filter]['datatype'] == 'numeric') {
-                                //$this->where($this->expr("$filter between CAST([] as UNSIGNED) and CAST([] as UNSIGNED)", $filtervalue));
-                            	$this->where($this->expr("$filter between CAST([] as DECIMAL) and CAST([] as DECIMAL)", $filtervalue));
-							} else {    
-                                $this->where($this->expr("$filter between [] and []", $filtervalue));
+                            	$this->where($this->expr("$filter = CAST([] AS DECIMAL) ", $filtervalue));
+							} else {
+                                $this->where($filter, $filtervalue[0]);
+                            }
+                        } else {
+							if ($filtertypes[$filter]['datatype'] == 'mysql-date') {
+                                $dateformat = $this->generate_dateformat($filter, $filtertypes);
+								$this->where($this->expr("STR_TO_DATE($filter, '$dateformat') BETWEEN STR_TO_DATE([], '%m/%d/%Y') AND STR_TO_DATE([], '%m/%d/%Y')", $filtervalue));
+                            } elseif ($filtertypes[$filter]['datatype'] == 'date') {
+								$dateformat = $this->generate_dateformat($filter, $filtertypes);
+								$this->where($this->expr("STR_TO_DATE($filter, '$dateformat') BETWEEN STR_TO_DATE([], '%m/%d/%Y') AND STR_TO_DATE([], '%m/%d/%Y')", $filtervalue));
+                            } else if ($filtertypes[$filter]['datatype'] == 'numeric') {
+                            	$this->where($this->expr("$filter BETWEEN CAST([] as DECIMAL) AND CAST([] AS DECIMAL)", $filtervalue));
+							} else {
+                                $this->where($this->expr("$filter BETWEEN [] AND []", $filtervalue));
                             }
                         }
                         break;
@@ -116,10 +127,10 @@
                 }
             }
         }
-        
+
         /**
-         * Parses $value to determine the type of column conditional to use 
-         * such as if this is a between or a != 
+         * Parses $value to determine the type of column conditional to use
+         * such as if this is a between or a !=
          * @param  string $value with the conditional type followed by | and then value
          * @return array        returns type and values in  array. Values is an ArrayAccess
          *
@@ -132,7 +143,7 @@
            if (strpos($value, '|') !== false) {
                $filter = explode('|', $value);
            }
-           
+
            if ($filter) {
                $value = explode(',', $filter[1]);
                return array (
@@ -147,11 +158,11 @@
                );
            }
        }
-       
+
        /**
-        * Loops through the array of key values and 
+        * Loops through the array of key values and
         * uses the $this->set('') to set the column to the new value
-        * @param  array $querylinks associative array with the new corresponding values 
+        * @param  array $querylinks associative array with the new corresponding values
         */
        public function generate_setvaluesquery($querylinks) {
            foreach ($querylinks as $column => $val) {
@@ -160,7 +171,7 @@
                }
            }
        }
-       
+
        /**
         * Loops through the $new associative array to determine
         * if values are different at each key
@@ -174,8 +185,8 @@
                }
            }
        }
-        
-        /** 
+
+        /**
          * Returns the page offset by multiplying $page and $limit subtracted by $limit
          * @param int $page page number
          * @param int $limit number of records per page
@@ -183,9 +194,9 @@
         public function generate_offset($page, $limit) {
             return $page > 1 ? ($page * $limit) - $limit : 0;
         }
-        
+
         /**
-         * Returns the Order By string by parsing the string 
+         * Returns the Order By string by parsing the string
          * into the format needed : column (ASC|DESC) or blank
          * @param  string $orderby e.g. columnname-ASC
          * @return string          Blank or columnname ASC
@@ -197,7 +208,7 @@
                 return '';
             }
         }
-        
+
         /**
          * Parses the Paramterized query provided by $this->render()
          * Returns it in a Easy to read format with SQL keywords in CAPS and spaces after commas
@@ -211,13 +222,13 @@
        		foreach ($this->params as $param => $value) {
        			$sql = str_replace($param, "'".$value."'", $sql);
        		}
-            
+
             foreach ($this->sqlkeywords as $keyword) {
                 $sql = preg_replace('/\b'.$keyword.'\b/', strtoupper($keyword), $sql);
             }
        		return $sql;
        	}
-		
+
 		/**
 		 * Returns filter description for the filter
 		 * @param  string $key         Name of filter

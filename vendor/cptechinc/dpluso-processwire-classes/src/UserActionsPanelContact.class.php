@@ -1,5 +1,5 @@
 <?php
-    class ContactUserActionsPanel extends CustomerUserActionsPanel{
+    class ContactUserActionsPanel extends CustomerUserActionsPanel {
         public static $type = 'contact';
         public $custID;
 		public $shipID;
