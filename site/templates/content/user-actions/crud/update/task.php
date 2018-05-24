@@ -1,6 +1,6 @@
 <?php
 	header('Content-Type: application/json');
-	$taskID = $input->get->id;
+	$taskID = $input->get->text('id');
 	$task = UserAction::load($taskID);
 
 	if ($input->get->text('complete') == 'true') {

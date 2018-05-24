@@ -25,14 +25,14 @@
 		case 'update':
 			if ($input->requestMethod() == 'POST') { // CREATE IN CRUD
 				$config->json = true;
-				$id = $input->post->text('id');
+				$id = $input->post->id ? $input->post->text('id') : $input->get->text('id');
 				$action = UserAction::load($id);
-				$type = UserAction::$types[$action->actiontype];
+				$type = $action->actiontype;
 				$page->body = $config->paths->content."user-actions/crud/update/$type.php";
 			} else {
 				$id = $input->get->text('id');
 				$action = UserAction::load($id);
-				$type = UserAction::$types[$action->actiontype];
+				$type = $action->actiontype;
 				$$type = $action;
 
 				if ($input->get->complete) {
