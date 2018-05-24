@@ -17,7 +17,6 @@
 				$page->body = $config->paths->content.'customer/cust-page/customer-access-denied.php';
 			}
 			$config->scripts->append(hashtemplatefile('scripts/pages/customer-page.js'));
-			$page->useractionpanelfactory = new UserActionPanelFactory($user->loginid, $page->fullURL);
 
 			if ($input->urlSegment(2)) {
 				if (strpos($input->urlSegment(2), 'contacts') !== FALSE) {

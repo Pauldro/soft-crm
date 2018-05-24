@@ -15,12 +15,7 @@
 	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/utfport.php"); // UTF8 conversion library functions
 	include_once($config->paths->content."common/initialize.php");  // includes class files
 	include_once($config->paths->templates."_init.js.php");  // includes class files
-	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/ActionsPanel.class.php");
-	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/ActionsPanelCustomer.class.php");
-	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/ActionsPanelContact.class.php");
-	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/ActionsPanelSalesOrder.class.php");
-	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/ActionsPanelQuote.class.php");
-	
+
 	$session->sessionName = session_name();
 
 	$page->fullURL = new \Purl\Url($page->httpUrl);

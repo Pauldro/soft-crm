@@ -1,5 +1,4 @@
 <?php
-	$page->useractionpanelfactory = new UserActionPanelFactory($user->loginid, $page->fullURL);
 	
 	switch ($page->name) { //$page->name is what we are editing
 		case 'order':
@@ -8,7 +7,7 @@
 				$custID = get_custidfromorder(session_id(), $ordn);
 				$editorderdisplay = new EditSalesOrderDisplay(session_id(), $page->fullURL, '#ajax-modal', $ordn);
 				$order = $editorderdisplay->get_order();
-				
+
 				if (!$order) {
 					$page->title = "Order #" . $ordn . ' failed to load';
 					$page->body = '';

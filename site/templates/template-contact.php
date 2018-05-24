@@ -8,7 +8,6 @@
 
     if ($contact) {
         if (can_accesscustomercontact($user->loginid, $user->hasrestrictions, $custID, $shipID, $contactID, false)) {
-			$page->useractionpanelfactory = new UserActionPanelFactory($user->loginid, $page->fullURL);
             $page->title = $contact->contact . ", ".$contact->get_customername();
             $page->body = $config->paths->content.'customer/contact/contact-page.php';
 
