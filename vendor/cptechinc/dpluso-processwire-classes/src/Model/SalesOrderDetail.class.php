@@ -51,12 +51,20 @@
 			return $order->can_edit();
 		}
 		
+		/**
+		 * Checks if canbackorder is 'Y' from ordrdet and returns true
+		 * @return bool
+		 */
 		public function can_backorder() {
 			return $this->canbackorder == 'Y' ? true : false;
 		}
 		
+		/**
+		 * Returns canbackorder from ordrdet
+		 * @return string
+		 */
 		public function display_canbackorder() {
-			return $this->canbackorder == 'Y' ? true : false;
+			return $this->canbackorder;
 		}
 		
 		/* =============================================================

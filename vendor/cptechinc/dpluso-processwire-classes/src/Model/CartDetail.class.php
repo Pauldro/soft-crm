@@ -101,10 +101,6 @@
 		public function has_error() {
 			return !empty($this->errormsg);
 		}
-
-		public function is_kititem() {
-			return $this->kitemflag == 'Y' ? true : false;
-		}
 		/**
 		 * Checks if detail has documents by looking at the document flag
 		 * @return bool $this->hasdocuments == 'Y'
