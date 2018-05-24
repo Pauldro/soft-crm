@@ -19,3 +19,4 @@
         <?php endforeach; ?>
     <?php endif; ?>
 </table>
+<?= $actionpanel->actiontype; ?>

@@ -10,7 +10,7 @@
         */
         public function generate_selectsubtype(UserAction $action) {
             $bootstrap = new Contento();
-            $subtypes = DplusWire::wire('pages')->get("/config/actions/types/{$action->actiontype}s/")->children();
+            $subtypes = DplusWire::wire('pages')->get("/config/actions/types/$action->actiontype/")->children();
             $content = '';
             foreach ($subtypes as $subtype) {
                 if ($subtype->name == $action->actionsubtype) {
@@ -39,7 +39,7 @@
 			}
             return $bootstrap->select("name=assignedto|class=form-control input-sm|style=width: 200px;", $salespeople, $salespersonID);
         }
-        
+
         public function generate_posteditactionurl() {
             return DplusWire::wire('config')->pages->useractions."update/";
         }

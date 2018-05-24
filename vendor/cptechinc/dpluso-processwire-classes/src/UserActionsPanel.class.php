@@ -361,6 +361,9 @@
 		public function generate_daynotescreatedurl($date) {
 			$date = $date ? date('m/d/Y', strtotime($date)) : date('m/d/Y');
 			$url = new Purl\Url($this->generate_dayviewurl($date));
+			$url->query->remove('duedate');
+			$url->query->remove('completed');
+			$url->query->set('filter', 'filter');
 			$url->query->set('actiontype', 'note');
 			$url->query->set('datecreated', $date);
 			return $url->getUrl();
@@ -515,13 +518,13 @@
 		public function count_daynotes($day, $debug = false) {
 			$filters = $this->filters;
 			unset($filters['completed']);
-			$filters['actiontype'] = array('notes');
+			$filters['actiontype'] = array('note');
 			$filters['datecreated'] = array($day);
 			return count_dayallactions($day, $filters, $this->filterable, $debug);
 		}
 
 		/**
-		 * Returns UserActions[type=notes] made that day
+		 * Returns UserActions[type=note] made that day
 		 * @param  string $day   Date time string usually formatted (m/d/Y)
 		 * @param  bool   $debug Whether to return array of Notes or SQL Query
 		 * @return array         array of Notes | SQL Query
@@ -529,7 +532,7 @@
 		public function get_daynotes($day, $debug = false) {
 			$filters = $this->filters;
 			unset($filters['completed']);
-			$filters['actiontype'] = array('notes');
+			$filters['actiontype'] = array('note');
 			$filters['datecreated'] = array($day);
 			return get_dayallactions($day, $filters, $this->filterable, $debug);
 		}

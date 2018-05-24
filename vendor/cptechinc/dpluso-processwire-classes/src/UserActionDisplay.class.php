@@ -129,7 +129,7 @@
             $bootstrap = new Contento();
             $href = $this->generate_editactionurl($action);
             $icon = $bootstrap->createicon('glyphicon glyphicon-pencil');
-            $type = ucfirst(UserAction::$types[$action->actiontype]);
+            $type = ucfirst($action->actiontype);
             return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-primary modal-load|data-modal=$this->modal|title=Edit Action", $icon. " Edit $type");
         }
 

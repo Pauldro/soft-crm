@@ -25,7 +25,7 @@
             <h4>Action Type(s)</h4>
             <?php foreach ($appconfig->child('name=actions')->child('name=types')->children() as $actiontype) : ?>
                 <label><?= $actiontype->title; ?></label>
-    			<input class="pull-right" type="checkbox" name="actiontype[]" value="<?= $actiontype->name; ?>" <?= ($actionpanel->has_filtervalue('completed', $actiontype->name)) ? 'checked' : ''; ?>></br>
+    			<input class="pull-right" type="checkbox" name="actiontype[]" value="<?= $actiontype->name; ?>" <?= ($actionpanel->has_filtervalue('actiontype', $actiontype->name)) ? 'checked' : ''; ?>></br>
             <?php endforeach; ?>
         </div>
     </div>

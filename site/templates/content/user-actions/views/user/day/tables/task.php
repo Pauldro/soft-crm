@@ -2,7 +2,7 @@
     <tr>
         <th>Due</th> <th>Subtype</th> <th>Customer</th> <th>Regarding / Title</th> <th colspan="2">View / Complete</th>
     </tr>
-    <?php if (!$actionpanel->count_dayallactions($day)) : ?>
+    <?php if (!$actionpanel->count_daynotes($day)) : ?>
         <tr>
             <td colspan="6" class="text-center h4">No tasks found for this day</td>
         </tr>
