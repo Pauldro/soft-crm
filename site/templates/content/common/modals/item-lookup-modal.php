@@ -23,7 +23,7 @@
                         <div class="col-xs-8">
                             <div>
                                 <form action=""></form>
-                                <form action="<?= $config->pages->products."redir/"; ?>" id="add-item-search-form">
+                                <form action="<?= $config->pages->products."redir/"; ?>" id="add-item-search-form" class="allow-enterkey-submit">
                                     <input type="hidden" name="action" value="item-search">
                                     <input type="hidden" name="custID" value="<?= $itemlookup->custID; ?>" class="custID">
                                     <input type="hidden" name="shipID" value="<?= $itemlookup->shipID; ?>" class="shipID">
