@@ -4279,20 +4279,27 @@
 	}
 
 	function get_bookingtotalsbyshipto($sessionID, $custID, $shipID, $filter, $filtertypes, $interval = '', $debug = false) {
+	* )
+	 * @param  string $interval    Interval of time ex. month|day
+	 * @param  string $loginID     User Login ID, if blank, will use the current User
+	 * @param  bool   $debug       Run in debug?
+	 * @return array               Customer Shipto Booking Records
+	 */
+	function get_bookingtotalsbyshipto($custID, $shipID, $filter, $filterable, $interval = '', $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
 		$q = (new QueryBuilder())->table('bookingc');
+
+		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
+			$q->where('salesrep', DplusWire::wire('user')->salespersonid);
+		}
 
 		$q->where('custid', $custID);
 		if (!empty($shipID)) {
 			$q->where('shiptoid', $shipID);
 		}
 
-		if (DplusWire::wire('user')->hascontactrestrictions) {
-			$q->where('salesrep', DplusWire::wire('user')->salespersonid);
-		} else {
-
-		}
-
-		$q->generate_filters($filter, $filtertypes);
+		$q->generate_filters($filter, $filterable);
 
 		switch ($interval) {
 			case 'month':
