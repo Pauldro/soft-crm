@@ -4213,7 +4213,7 @@
 	 * @param  string $shipID  Customer Shipto ID
 	 * @param  string $loginID User Login ID, if blank, will use the current User
 	 * @param  bool   $debug   Run in debug? If so, return SQL Query
-	 * @return int          Number of Customer bookings
+	 * @return int             Number of Customer bookings
 	 * @uses User dplusrole
 	 */
 	function count_customertodaysbookings($custID, $shipID, $loginID = '', $debug = false) {
@@ -4278,7 +4278,28 @@
 		}
 	}
 
-	function get_bookingtotalsbyshipto($sessionID, $custID, $shipID, $filter, $filtertypes, $interval = '', $debug = false) {
+	/**
+	 * Returns Booking Records for each Customer Shipto
+	 * that the User has access to
+	 * @param  string $custID      Customer ID
+	 * @param  string $shipID      Customer Shipto ID
+	 * @param  array  $filter      Array that contains the column and the values to filter for
+	*  ex. array(
+	* 	 'ordertotal' => array (123.64, 465.78)
+	*  )
+	* @param  array   $filterable  Array that contains the filterable columns as keys, and the rules needed
+	* ex. array(
+	* 	'ordertotal' => array(
+	* 		'querytype' => 'between',
+	* 		'datatype' => 'numeric',
+	* 		'label' => 'Order Total'
+	* 	),
+	* 	'orderdate' => array(
+	* 		'querytype' => 'between',
+	* 		'datatype' => 'date',
+	* 		'date-format' => 'Ymd',
+	* 		'label' => 'order-date'
+	* 	)
 	* )
 	 * @param  string $interval    Interval of time ex. month|day
 	 * @param  string $loginID     User Login ID, if blank, will use the current User
