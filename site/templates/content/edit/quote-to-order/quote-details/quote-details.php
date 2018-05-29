@@ -3,9 +3,9 @@
         <thead class="cf">
             <tr>
                 <th><input type="checkbox" id="select-all">&nbsp;&nbsp;Add Item</th>
-                <th>Item / Description</th> <th class="numeric" width="90">Price</th> <th class="numeric">Quantity</th> <th class="numeric" width="90">Total</th>
-                <th>Whse</th>
-                <th>
+                <th>Item / Description</th> <th class="numeric text-right" width="90">Price</th> <th class="numeric text-right">Qty</th> <th class="numeric text-right" width="90">Total</th>
+                <th class="text-center">WH</th>
+                <th class="numeric">
                 	<div class="row">
                     	<div class="col-xs-3">Details</div><div class="col-xs-3">Documents</div> <div class="col-xs-2">Notes</div> <div class="col-xs-4">Edit</div>
                     </div>
@@ -31,10 +31,10 @@
                 <td data-title="Price" class="text-right">$ <?= formatMoney($detail->quotprice); ?></td>
                 <td data-title="Ordered" class="text-right"><?= $detail->quotqty + 0; ?></td>
                 <td data-title="Total" class="text-right">$ <?= formatMoney($detail->quotprice * $detail->quotqty); ?></td>
-                <td data-title="Warehouse"><?= $detail->whse; ?></td>
+                <td data-title="Warehouse" class="text-center"><?= $detail->whse; ?></td>
                 <td class="action">
                     <div class="row">
-                        <div class="col-xs-3">
+                        <div class="col-xs-3 action-padding">
                             <span class="visible-xs-block action-label">Details</span>
                             <?= $editquotedisplay->generate_viewdetaillink($quote, $detail); ?>
                         </div>
@@ -42,7 +42,7 @@
                             <span class="visible-xs-block action-label">Documents</span> <?= $editquotedisplay->generate_loaddocumentslink($quote, $detail); ?></div>
                         <div class="col-xs-2">
                             <span class="visible-xs-block action-label">Notes</span> <?= $editquotedisplay->generate_loaddplusnoteslink($quote, $detail->linenbr); ?></div>
-                        <div class="col-xs-4"> 
+                        <div class="col-xs-4">
                             <span class="visible-xs-block action-label">Update</span>
                             <?= $editquotedisplay->generate_detailvieweditlink($quote, $detail); ?>
                             &nbsp;

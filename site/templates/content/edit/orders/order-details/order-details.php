@@ -2,9 +2,9 @@
     <table class="table-condensed cf order-details">
         <thead class="cf">
             <tr>
-                <th>Item</th> 
-                <th class="numeric text-right" width="90">Price</th> <th class="numeric text-right">Qty</th> <th class="numeric text-right" >Total</th>
-                <th class="numeric text-right">Shipped</th> <th class="text-center">Rqstd Ship</th> <th>Whse</th>
+                <th>Item / Description</th>
+                <th class="numeric text-right">Qty</th> <th class="numeric text-right" width="90">Price</th> <th class="numeric text-right" >Total</th>
+                <th class="numeric text-right">Shipped</th> <th class="text-center">Rqstd Ship</th> <th class="text-center">WH</th>
                 <th>
                 	<div class="row">
                     	<div class="col-xs-2 action-padding">Details</div><div class="col-xs-2 action-padding">Docs</div> <div class="col-xs-2 action-padding">Notes</div> <div class="col-xs-6 action-padding">Edit</div>
@@ -27,12 +27,16 @@
                         <br> <?= $detail->desc1; ?>
 					<?php endif; ?>
                 </td>
-                <td data-title="Price" class="text-right">$ <?= formatMoney($detail->price); ?></td>
-                <td data-title="Ordered" class="text-right"><?= $detail->qty + 0; ?></td>
+                <td data-title="Ordered" class="text-right">
+                    <input class="input-xs text-right" size="8" type="text" name="" value="<?= $detail->qty + 0; ?>">
+                </td>
+                <td data-title="Price" class="text-right">
+                    <input class="input-xs text-right" size="10" type="text" name="" value="<?= formatMoney($detail->price); ?>">
+                </td>
                 <td data-title="Total" class="text-right">$ <?= formatMoney($detail->totalprice); ?></td>
                 <td data-title="Shipped" class="text-right"><?= $detail->qtyshipped + 0; ?></td>
-                <td data-title="Requested Ship Date" class="text-right"><?= $detail->rshipdate; ?></td>
-                <td data-title="Warehouse"><?= $detail->whse; ?></td>
+                <td data-title="Rqstd Date" class="text-center"><?= $detail->rshipdate; ?></td>
+                <td data-title="WH" class="text-center"><?= $detail->whse; ?></td>
                 <td class="action">
                     <div class="row">
                         <div class="col-xs-2 action-padding">
@@ -54,6 +58,34 @@
                 </td>
             </tr>
 			<?php endforeach; ?>
+            <!-- NEW ITEM SECTION -->
+            <tr class="numeric">
+                <td data-title="ItemID/Desc">
+                    <input class="input-xs" size="30" type="text" name="" value="Add new Item">
+                </td>
+                <td data-title="Ordered" class="text-right">
+                    <input class="input-xs text-right" size="8" type="text" name="" value="<?= $detail->qty + 0; ?>">
+                </td>
+                <td data-title="Price" class="text-right">
+                    <input class="input-xs text-right" size="10" type="text" name="" value="<?= formatMoney($detail->price); ?>">
+                </td>
+                <td data-title="Total" class="text-right">$ </td>
+                <td data-title="Shipped" class="text-right"></td>
+                <td data-title="Rqstd Date" class="text-center"></td>
+                <td data-title="WH" class="text-center"></td>
+                <td class="action">
+                    <div class="row">
+                        <div class="col-xs-2 action-padding"><span class="visible-xs-block action-label">Details</span></div>
+                        <div class="col-xs-2 action-padding"><span class="visible-xs-block action-label">Documents</span></div>
+                        <div class="col-xs-2 action-padding"><span class="visible-xs-block action-label">Notes</span></div>
+                        <div class="col-xs-6 action-padding"><span class="visible-xs-block action-label">Update</span>
+                            <button type="button" class="btn btn-sm btn-primary" name="button">
+                                <span><i class="fa fa-plus"></i></span>
+                            </button>
+                        </div>
+                    </div>
+                </td>
+            </tr>
         </tbody>
     </table>
 </div>
