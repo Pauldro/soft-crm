@@ -90,6 +90,13 @@
 	.fuelux .datepicker-calendar-days td.current-day button {
 		color: #fff;
 	}
+
+	input.underlined {
+		background: transparent;
+	   border: none;
+	   border-bottom: 1px solid #000000;
+	}
+
 /*==============================================================
 	PRINT STYLES
 =============================================================*/
