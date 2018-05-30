@@ -188,7 +188,11 @@ $(document).ready(function() {
         });
 
         $("body").on('keypress', 'form input', function(e) {
-			return e.which !== 13;
+			if ($(this).closest('form').hasClass('allow-enterkey-submit')) {
+				return true;
+			} else {
+				return e.which !== 13;
+			}
 		});
 	/*==============================================================
 	  AJAX LOAD FUNCTIONS
@@ -1352,12 +1356,12 @@ $(document).ready(function() {
 	FORM FUNCTIONS
 =============================================================*/
 	function comparefieldvalues(field1, field2) {
-		if ($(field1).val() == $(field2).val()) { return true; } else { return false; }
+		return ($(field1).val() == $(field2).val());
 	}
 
 	function disable_enterkey(e) {
 		var key;
-		if(window.event) {
+		if (window.event) {
 			key = window.event.keyCode; //IE
 		} else {
 			key = e.which; //firefox
