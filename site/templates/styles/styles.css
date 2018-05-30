@@ -333,13 +333,27 @@
 
 		/* Label the data */
 		#no-more-tables td:before { content: attr(data-title); }
+		.detail-line {display: block;}
+		.detail-line-break {display: none;}
 	}
 
 	table.order-details {font-size: 90%; width: 100%; }
 	.cf tr { border-top: 1px solid #ddd;}
 
-	@media screen and (min-width: 800px) {
+	@media screen and (min-width: 991px) {
 		.action-padding {padding-left: 10px; padding-right: 10px;}
+		.detail-line-field-name {display: none;}
+	 }
+
+	 @media screen and (max-width: 991px) {
+ 		.detail-line-header {display: none;}
+		.detail-line-break {display: block;}
+		.detail-line-field-name {font-weight: bold;}
+		.detail-line-field {float: right;}
+ 	 }
+
+	 @media screen and (max-width: 1200px) {
+		 .detail-line-icon {margin-bottom: 5px;}
 	 }
 
 /*==============================================================
