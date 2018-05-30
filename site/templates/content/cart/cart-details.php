@@ -1,4 +1,4 @@
-<div id="no-more-tables" class="form-group">
+<!-- <div id="no-more-tables" class="form-group">
 	<table class="table-condensed cf order-details numeric">
 		<thead class="cf">
 			<tr>
@@ -55,7 +55,7 @@
 						</div>
 					</td>
 				</tr>
-			<?php endforeach; ?>
+			<?php endforeach; ?> -->
 
 <br>
 <!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#item-lookup-modal">
@@ -92,7 +92,7 @@
 <?php foreach ($details as $detail) : ?>
 <form action="index.html" method="post">
 	<div class="row">
-		<div class="col-xs-9">
+		<div class="col-sm-9">
 			<div class="row">
 				<div class="col-md-4 form-group">
 					<span class="detail-line-field-name">Item/Description:</span>
@@ -134,7 +134,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-xs-3 col-sm-3">
+		<div class="col-sm-3">
 			<div class="row">
 				<div class="col-xs-6">
 					<a href="<?= $config->pages->ajax."load/view-detail/cart/?line=".$detail->linenbr; ?>" class="btn btn-xs btn-primary view-item-details detail-line-icon" data-itemid="<?= $detail->itemid; ?>" data-kit="<?= $detail->kititemflag; ?>" data-modal="#ajax-modal"><i class="material-icons">&#xE8DE;</i></a>
