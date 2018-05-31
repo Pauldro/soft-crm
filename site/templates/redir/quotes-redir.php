@@ -279,11 +279,11 @@ use Purl\Url;
 			}
 			$qty = empty(trim($qty, '.')) ? 1 : $qty;
 			$quotedetail = QuoteDetail::load(session_id(), $qnbr, $linenbr);
-			$quotedetail->set('whse', $input->post->text('whse'));
+			// $quotedetail->set('whse', $input->post->text('whse'));
 			$quotedetail->set('quotqty', $qty);
 			$quotedetail->set('ordrqty', $qty);
 			$quotedetail->set('quotprice', $input->post->text('price'));
-			$quotedetail->set('rshipdate', $input->post->text('rqstdate'));
+			// $quotedetail->set('rshipdate', $input->post->text('rqstdate'));
 			$session->sql = $quotedetail->update();
 
 			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'CUSTID' => $custID);
