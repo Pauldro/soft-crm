@@ -130,24 +130,25 @@
 
 		/**
 		 * Returns HTML Form to delete the detail line
-		 * @param  Order       $quote  Quote
+		 * @param  Order       $cart  Cart
 		 * @param  OrderDetail $detail QuoteDetail
 		 * @return string              HTML Form to delete the detail line
 		 * @uses
 		 */
 		public function generate_deletedetailform(Order $cart, OrderDetail $detail) {
+			$bootstrap = new Contento();
 			$url = $this->generate_cartredirurl();
 			$action = $url->getUrl();
 			$form = new FormMaker("class=inline-block|action=$action|method=post");
 			$form->input("class=hidden|name=action|value=remove-line");
 			$form->input("class=hidden|name=linenbr|value=$detail->linenbr");
-			$icon = $form->bootstrap->span('glyphicon glyphicon-trash') . $form->bootstrap->openandclose('span', 'class=sr-only', 'Delete Line');
+			$icon = $bootstrap->createicon('glyphicon glyphicon-trash') . $bootstrap->openandclose('span', 'class=sr-only', 'Delete Line');
 			$form->button('type=submit|class=btn btn-md btn-danger', $icon);
 			return $form->finish();
 		}
 
 		/**
-		 * Makes the URL to the orders redirect page,
+		 * Makes the URL to the cart redirect page,
 		 * @return Purl\Url URL to REDIRECT page
 		 */
 		public function generate_cartredirurl() {
