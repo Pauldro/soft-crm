@@ -1,4 +1,4 @@
-<?php 
+<?php
 	/**
 	 * Class for Items that reside in the itemsearch table
 	 */
@@ -6,63 +6,69 @@
         use CreateFromObjectArrayTraits;
 		use CreateClassArrayTraits;
 		use ThrowErrorTrait;
-        
+
 		/**
 		 * Part or Item (ID or #)
 		 * @var string
 		 */
         protected $itemid;
-		
+
 		/**
 		 * Where itemid originates
 		 * (V)endor | (Item) | (C)ustomer
 		 * @var string
 		 */
         protected $origintype;
-		
+
 		/**
 		 * he ItemID / Part # used by Vendor or Customer
 		 * @var string
 		 */
         protected $refitemid;
-		
-		/** 
+
+		/**
 		 * Item Description
 		 * @var string
 		 */
         protected $desc1;
-		
+
 		/**
 		 * Secondary Item Description
 		 * @var string
 		 */
         protected $desc2;
-		
+
 		/**
 		 * Image filename
 		 * @var string
 		 */
         protected $image;
-		
+
+        /**
+         * How many in a case
+         * @var int
+         */
+        protected $qty_percase;
+
 		/**
 		 * Date updted In Database
 		 * @var int
 		 */
         protected $create_date;
-		
+
 		/**
 		 * Time updated in Database
 		 * @var int
 		 */
         protected $create_time;
-		
+
 		/**
 		 * If Item is Active
-		 * @var string 
+		 * @var string
 		 * (A)ctive | (D)elete when empty | (I)nactive
 		 */
         protected $activestatus;
-		
+
 		/**
 		 * Aliases that properties might use or have
 		 * so the __get function can lookup and find
@@ -71,7 +77,7 @@
         public $fieldaliases = array(
             'itemID' => 'itemid',
         );
-        
+
 		/* ============================================================
 			GETTER FUNCTIONS
 		============================================================ */
@@ -92,7 +98,16 @@
                 return false;
             }
         }
-        
+
+        /**
+         * Returns true if this item is dealt in case qty
+         * If the case qty is 1, then we only deal with the item as Eaches
+         * @return bool if this item is dealt in case qty
+         */
+        public function has_caseqty() {
+            return ($this->qty_percase != 1) ? true : false;
+        }
+
 		/**
 		 * Checks if Item image exists if not use the image not found
 		 * @return string path/to/image
@@ -104,7 +119,7 @@
                 return Dpluswire::wire('config')->imagedirectory.Dpluswire::wire('config')->imagenotfound;
             }
         }
-        
+
 		/**
 		 * Returns URL to Load the Item Information page for this item
 		 * @param  mixed $custID Provide Customer ID if pricing and other things need to be for particular customer
@@ -116,7 +131,7 @@
             $url->query->set('itemID', $this->itemid);
             return $url->getUrl();
         }
-        
+
 		/**
 		 * Returns the string for javascript function for this particular item for CI
 		 * @param  string $action Action to to run
@@ -136,7 +151,7 @@
             }
             return $onclick;
         }
-		
+
 		/**
 		 * Returns the string for javascript function for this particular item for VI
 		 * @param  string $action Action to to run
@@ -153,10 +168,10 @@
             }
             return $onclick;
 		}
-        
-        
+
+
         /* ============================================================
-			GENERATE ARRAY FUNCTIONS 
+			GENERATE ARRAY FUNCTIONS
 			The following are defined CreateClassArrayTraits
 			public static function generate_classarray()
 			public function _toArray()
@@ -171,7 +186,7 @@
 			unset($array['fieldaliases']);
  			return $array;
  		}
-		
+
 		/* ============================================================
 			CRUD FUNCTIONS
 		============================================================ */
