@@ -30,7 +30,7 @@
 			<div class="col-sm-9">
 				<div class="row">
 					<div class="col-md-4 form-group">
-						<span class="detail-line-field-name">Item/Description:</span>
+						<span class="detail-line-field-name cart-item">Item/Description:</span>
 						<span class="detail-line-field numeric">
 							<?php if ($detail->has_error()) : ?>
 								<div class="btn-sm btn-danger">
@@ -78,7 +78,8 @@
 				<div class="row">
 					<div class="col-xs-6">
 						<a href="<?= $config->pages->ajax."load/view-detail/cart/?line=".$detail->linenbr; ?>" class="btn btn-xs btn-primary view-item-details detail-line-icon" data-itemid="<?= $detail->itemid; ?>" data-kit="<?= $detail->kititemflag; ?>" data-modal="#ajax-modal"><i class="material-icons">&#xE8DE;</i></a>
-						<span class="text-muted detail-line-icon"><i class="material-icons md-36">&#xE873;</i></span><?= $cartdisplay->generate_loaddplusnoteslink($cart, $detail->linenbr); ?>
+						<span class="text-muted detail-line-icon"><i class="material-icons md-36">&#xE873;</i></span>
+						<?= $cartdisplay->generate_loaddplusnoteslink($cart, $detail->linenbr); ?>
 					</div>
 
 					<div class="col-xs-6">
@@ -90,7 +91,9 @@
 				</div>
 			</div>
 		</div>
-		<button type="submit" name="button" class="btn btn-sm btn-info detail-line-icon">Update Line</button>
+		<button type="submit" name="button" class="btn btn-md btn-info detail-line-icon">
+			<span class="glyphicon glyphicon-edit"></span>&nbsp;&nbsp;Update Line
+		</button>
 	</form>
 <?php endforeach; ?>
 <form action="<?= $config->pages->cart.'redir/'; ?>" method="post" class="quick-entry-add">
@@ -109,10 +112,14 @@
 				<div class="col-md-1 form-group">
 					<span class="detail-line-field-name">Qty:</span>
 					<span class="detail-line-field numeric">
-						<input class="input-xs text-right underlined" type="text" size="6" name="qty" value="2">
+						<input class="input-xs text-right underlined" type="text" size="6" name="qty" value="">
 					</span>
 				</div>
 				<div class="col-md-2 form-group">
+					<span class="detail-line-field-name">Price:</span>
+					<span class="detail-line-field numeric">
+						<input class="input-xs text-right underlined" type="text" size="10" name="price" value="">
+					</span>
 				</div>
 				<div class="col-md-2 form-group">
 				</div>
