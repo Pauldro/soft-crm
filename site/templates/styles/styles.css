@@ -91,12 +91,12 @@
 		color: #fff;
 	}
 
-	input.underlined {
-		background: transparent;
-	   border: none;
-	   border-bottom: 1px solid #000000;
+	.label.context {
+		display: block;
+		background: #2c3e50;
+		color: #fff;
+		font-size: 95%;
 	}
-
 /*==============================================================
 	PRINT STYLES
 =============================================================*/

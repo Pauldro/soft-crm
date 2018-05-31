@@ -3119,7 +3119,38 @@
 			$sql->execute($switching);
 			return $sql->fetchColumn();
 		}
+	}
 
+	/**
+	 * Return the item from the cross-reference table
+	 * @param  string $itemID   Item Number / ID
+	 * @param  string $custID   Customer ID
+	 * @param  string $vendorID Vendor ID
+	 * @param  bool   $debug    Run in debug? If so, return SQL Query
+	 * @return XRefItem         Item
+	 */
+	function get_xrefitem($itemID, $custID = '', $vendorID = '', $debug = false) {
+		$q = (new QueryBuilder())->table('itemsearch');
+		$q->where('itemid', $itemID);
+
+		if (!empty($custID)) {
+			$q->where('origintype', 'C');
+			$q->where('originid', $custID);
+		}
+		if (!empty($vendorID)) {
+			$q->where('origintype', 'V');
+			$q->where('originid', $vendorID);
+		}
+		$q->limit(1);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'XRefItem');
+			return $sql->fetch();
+		}
 	}
 
 	/**

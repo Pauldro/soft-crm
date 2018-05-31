@@ -1,7 +1,3 @@
-
-
-
-<!-- FORM WITHOUT TABLE -->
 <hr class="detail-line-header">
 <div class="row detail-line-header">
 	<strong>
@@ -81,9 +77,7 @@
 					<div class="col-xs-6">
 						<?= $cartdisplay->generate_detailvieweditlink($cart, $detail); ?>
 						<!-- TODO: delete button needs new link rather than form? -->
-						<button type="submit" class="btn btn-md btn-danger detail-line-icon" name="button">
-							<span class="glyphicon glyphicon-trash"></span><span class="sr-only">Delete</span>
-						</button>
+						<?= $cartdisplay->generate_deletedetailform($cart, $detail); ?>
 					</div>
 				</div>
 			</div>
