@@ -129,31 +129,16 @@
 		}
 
 		/**
-		 * Returns HTML Form to delete the detail line
-		 * @param  Order       $cart  Cart
-		 * @param  OrderDetail $detail QuoteDetail
-		 * @return string              HTML Form to delete the detail line
+		 * Returns URL to remove detail
+		 * @param  Order       $cart   CartQuote
+		 * @param  OrderDetail $detail CartDetail
+		 * @return string              URL to load edit detail
 		 * @uses
 		 */
-		public function generate_deletedetailform(Order $cart, OrderDetail $detail) {
-			$bootstrap = new Contento();
-			$url = $this->generate_cartredirurl();
-			$action = $url->getUrl();
-			$form = new FormMaker("class=inline-block|action=$action|method=post");
-			$form->input("class=hidden|name=action|value=remove-line");
-			$form->input("class=hidden|name=linenbr|value=$detail->linenbr");
-			$icon = $bootstrap->createicon('glyphicon glyphicon-trash') . $bootstrap->openandclose('span', 'class=sr-only', 'Delete Line');
-			$form->button('type=submit|class=btn btn-md btn-danger', $icon);
-			return $form->finish();
-		}
-
-		/**
-		 * Makes the URL to the cart redirect page,
-		 * @return Purl\Url URL to REDIRECT page
-		 */
-		public function generate_cartredirurl() {
-			$url = new \Purl\Url(DplusWire::wire('config')->pages->cart);
-			$url->path = DplusWire::wire('config')->pages->cart."redir/";
-			return $url;
+		public function generate_detaildeleteurl(Order $cart, OrderDetail $detail) {
+			$url = new \Purl\Url($this->pageurl->getUrl());
+			$url->path = Dpluswire::wire('config')->pages->cart."redir/";
+			$url->query->setData(array('action' => 'remove-line', 'line' => $detail->linenbr));
+			return $url->getUrl();
 		}
 	}

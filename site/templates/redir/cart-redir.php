@@ -169,10 +169,10 @@
 		case 'quick-update-line':
 			$linenbr = $input->post->text('linenbr');
 			$cartdetail = CartDetail::load($sessionID, $linenbr);
-			$cartdetail->set('whse', $input->post->text('whse'));
+			// $cartdetail->set('whse', $input->post->text('whse'));
 			$cartdetail->set('qty', $qty);
 			$cartdetail->set('price', $input->post->text('price'));
-			$orderdetail->set('rshipdate', $input->post->text('rqstdate'));
+			// $orderdetail->set('rshipdate', $input->post->text('rqstdate'));
 			$session->sql = $cartdetail->update();
 			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'LINENO' => $linenbr);
 			$data['CUSTID'] = empty($custID) ? $config->defaultweb : $custID;
@@ -185,7 +185,7 @@
 			$cartdetail = CartDetail::load($sessionID, $linenbr);
 			$cartdetail->set('price', $input->post->text('price'));
 			$cartdetail->set('discpct', $input->post->text('discount'));
-			$cartdetail->set('qty', $input->post->text('qty'));
+			$cartdetail->set('qty', $qty);
 			$cartdetail->set('rshipdate', $input->post->text('rqstdate'));
 			$cartdetail->set('whse', $input->post->text('whse'));
 			$cartdetail->set('spcord', $input->post->text('specialorder'));
@@ -210,13 +210,13 @@
 			$session->loc = $config->pages->cart;
 			break;
 		case 'remove-line':
-			$linenbr = $input->post->text('linenbr');
+			$linenbr = $input->get->text('line');
 			$cartdetail = CartDetail::load($sessionID, $linenbr);
 			$cartdetail->set('qty', '0');
 			$session->sql = $cartdetail->update();
 			$session->loc = $config->pages->cart;
 			$custID = get_custidfromcart(session_id());
-			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'LINENO' => $input->post->text('linenbr'), 'QTY' => '0');
+			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'LINENO' => $linenbr, 'QTY' => '0');
 			$data['CUSTID'] = empty($custID) ? $config->defaultweb : $custID;
 			if (!empty($shipID)) {$data['SHIPTOID'] = $shipID; }
 			break;

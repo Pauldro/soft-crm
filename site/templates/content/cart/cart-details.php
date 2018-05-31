@@ -23,7 +23,9 @@
 
 <?php $details = get_cartdetails(session_id(), true); ?>
 <?php foreach ($details as $detail) : ?>
-	<form action="" method="post">
+	<form action="<?= $config->pages->cart.'redir/'; ?>" method="post" class="form-group">
+		<input type="hidden" name="action" value="quick-update-line">
+		<input type="hidden" name="linenbr" value="<?= $detail->linenbr; ?>">
 		<div class="row">
 			<div class="col-sm-9">
 				<div class="row">
@@ -48,13 +50,13 @@
 					<div class="col-md-1 form-group">
 						<span class="detail-line-field-name">Qty:</span>
 						<span class="detail-line-field numeric">
-							<input class="input-xs text-right underlined" type="text" size="6" name="" value="<?= $detail->qty + 0; ?>">
+							<input class="input-xs text-right underlined" type="text" size="6" name="qty" value="<?= $detail->qty + 0; ?>">
 						</span>
 					</div>
 					<div class="col-md-2 form-group">
 						<span class="detail-line-field-name">Price:</span>
 						<span class="detail-line-field numeric">
-							<input class="input-xs text-right underlined" type="text" size="10" name="" value="<?= $page->stringerbell->format_money($detail->price); ?>">
+							<input class="input-xs text-right underlined" type="text" size="10" name="price" value="<?= $page->stringerbell->format_money($detail->price); ?>">
 						</span>
 					</div>
 					<div class="col-md-2 form-group">
@@ -63,7 +65,12 @@
 					</div>
 					<div class="col-md-2 form-group">
 						<span class="detail-line-field-name">Rqst Date:</span>
-						<span class="detail-line-field numeric"><?= $detail->rshipdate; ?></span>
+						<span class="detail-line-field numeric">
+							<div class="input-group date">
+								<?php $name = 'rshipdate'; $value = $detail->rshipdate; ?>
+								<?php include $config->paths->content."common/date-picker.php"; ?>
+							</div>
+						</span>
 					</div>
 				</div>
 			</div>
@@ -76,12 +83,14 @@
 
 					<div class="col-xs-6">
 						<?= $cartdisplay->generate_detailvieweditlink($cart, $detail); ?>
-						<!-- TODO: delete button needs new link rather than form? -->
-						<?= $cartdisplay->generate_deletedetailform($cart, $detail); ?>
+						<a href="<?= $cartdisplay->generate_detaildeleteurl($cart, $detail); ?>" class="btn btn-md btn-danger detail-line-icon">
+							<span class="glyphicon glyphicon-trash"></span>
+						</a>
 					</div>
 				</div>
 			</div>
 		</div>
+		<button type="submit" name="button" class="btn btn-sm btn-info detail-line-icon">Update Line</button>
 	</form>
 <?php endforeach; ?>
 <form action="<?= $config->pages->cart.'redir/'; ?>" method="post" class="quick-entry-add">
