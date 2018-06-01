@@ -23,8 +23,9 @@
 
 <?php $quote_details = $editquotedisplay->get_quotedetails($quote); ?>
 <?php foreach ($quote_details as $detail) : ?>
-	<form action="<?= $config->pages->quotes.'redir/'; ?>" method="post" class="form-group">
-		<input type="hidden" name="action" value="quick-update-line">
+    <form action="<?= $config->pages->quotes.'redir/'; ?>" method="post" class="form-group">
+        <input type="hidden" name="action" value="quick-update-line">
+        <input type="hidden" name="qnbr" value="<?= $qnbr; ?>">
 		<input type="hidden" name="linenbr" value="<?= $detail->linenbr; ?>">
 		<div class="row">
 			<div class="col-sm-9">
