@@ -231,8 +231,8 @@
 		public function generate_viewdetaillink(Order $quote, OrderDetail $detail) {
 			$bootstrap = new Contento();
 			$href = $this->generate_viewdetailurl($quote, $detail);
-			$icon = $bootstrap->createicon('glyphicon glyphicon-th-list');
-			return $bootstrap->openandclose('a', "href=$href|class=btn btn-xs btn-primary view-item-details detail-line-icon|data-itemid=$detail->itemid|data-kit=$detail->kititemflag|data-modal=#ajax-modal", $icon);
+			$icon = $bootstrap->createicon('fa fa-info-circle');
+			return $bootstrap->openandclose('a', "href=$href|class=h3 view-item-details detail-line-icon|data-itemid=$detail->itemid|data-kit=$detail->kititemflag|data-modal=#ajax-modal", $icon);
 		}
 
 		/**

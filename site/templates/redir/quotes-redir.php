@@ -290,6 +290,7 @@ use Purl\Url;
 			$session->sql = $quotedetail->update();
 
 			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'CUSTID' => $custID);
+
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
 			} else {
@@ -389,6 +390,7 @@ use Purl\Url;
 			$qnbr = $input->post->text('qnbr');
 			$linenbrs = $input->post->linenbr;
 			$linecount = count_quotedetails(session_id(), $qnbr) + 1;
+			$session->linenbrs = $input->post->linenbr;
 			for ($i = 1; $i < $linecount; $i++) {
 				$quotedetail = QuoteDetail::load(session_id(), $qnbr, $i);
 				if (in_array($i, $linenbrs)) {

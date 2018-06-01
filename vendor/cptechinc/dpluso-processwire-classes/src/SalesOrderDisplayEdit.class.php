@@ -52,8 +52,8 @@
 		public function generate_detailvieweditlink(Order $order, OrderDetail $detail) {
 			$bootstrap = new Contento();
 			$href = $this->generate_detailviewediturl($order, $detail);
-			$icon = $bootstrap->openandclose('button', 'class=btn btn-md btn-warning', $bootstrap->createicon('glyphicon glyphicon-pencil'));
-			return $bootstrap->openandclose('a', "href=$href|class=update-line|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$order->custid|aria-label=View Detail Line", $icon);
+			$icon = $bootstrap->openandclose('button', 'class=btn btn-sm btn-warning', $bootstrap->createicon('glyphicon glyphicon-pencil'));
+			return $bootstrap->openandclose('a', "href=$href|class=update-line|title=Edit Line|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$order->custid|aria-label=View Detail Line", $icon);
 		}
 
 		/**
@@ -68,7 +68,7 @@
 			$url = $this->generate_ordersredirurl();
 			$url->query->setData(array('action' => 'remove-line-get', 'ordn' => $order->orderno, 'linenbr' => $detail->linenbr, 'page' => $this->pageurl->getUrl()));
 			$href = $url->getUrl();
-			return $bootstrap->a("href=$href|class=btn btn-md btn-danger", $icon);
+			return $bootstrap->a("href=$href|class=btn btn-sm btn-danger|title=Delete Item", $icon);
 		}
 
 		public function generate_readonlyalert() {

@@ -103,8 +103,8 @@
 		public function generate_detailvieweditlink(Order $quote, OrderDetail $detail) {
 			$bootstrap = new Contento();
 			$href = $this->generate_detailviewediturl($quote, $detail);
-			$icon = $bootstrap->openandclose('button', 'class=btn btn-md btn-warning', $bootstrap->createicon('glyphicon glyphicon-pencil'));
-			return $bootstrap->openandclose('a', "href=$href|class=update-line|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$quote->custid|aria-label=View Detail Line", $icon);
+			$icon = $bootstrap->openandclose('button', 'class=btn btn-sm btn-warning', $bootstrap->createicon('glyphicon glyphicon-pencil'));
+			return $bootstrap->openandclose('a', "href=$href|class=update-line|title=Edit Item|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$quote->custid|aria-label=View Detail Line", $icon);
 		}
 
 		/**
@@ -119,7 +119,7 @@
 			$url = $this->generate_quotesredirurl();
 			$url->query->setData(array('action' => 'remove-line-get', 'qnbr' => $quote->quotnbr, 'linenbr' => $detail->linenbr, 'page' => $this->pageurl->getUrl()));
 			$href = $url->getUrl();
-			return $bootstrap->a("href=$href|class=btn btn-md btn-danger", $icon);
+			return $bootstrap->a("href=$href|class=btn btn-sm btn-danger|title=Delete Line", $icon);
 		}
 
 		/**

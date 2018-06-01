@@ -29,43 +29,43 @@
 		<input type="hidden" name="linenbr" value="<?= $detail->linenbr; ?>">
         <div>
             <div class="row">
-    			<div class="col-sm-9">
+    			<div class="col-sm-9 sm-padding">
     				<div class="row">
-    					<div class="col-md-4 form-group">
+    					<div class="col-md-4 sm-padding form-group">
     						<span class="detail-line-field-name">Item/Description:</span>
-    						<span class="detail-line-field numeric">
+    						<div>
     							<?php if ($detail->has_error()) : ?>
     								<div class="btn-sm btn-danger">
     								  <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <strong>Error!</strong> <?= $detail->errormsg; ?>
     								</div>
     							<?php else : ?>
     								<?= $detail->itemid; ?>
-    								<?= (strlen($detail->vendoritemid)) ? $detail->vendoritemid : ''; ?>
+    								<?= (strlen($detail->vendoritemid)) ? "($detail->vendoritemid)" : ''; ?>
     								<br> <small><?= $detail->desc1; ?></small>
     							<?php endif; ?>
-    						</span>
+    						</div>
     					</div>
-    					<div class="col-md-1 form-group">
+    					<div class="col-md-1 sm-padding form-group">
     						<span class="detail-line-field-name">WH:</span>
     						<span class="detail-line-field numeric"><?= $detail->whse; ?></span>
     					</div>
-    					<div class="col-md-1 form-group">
+    					<div class="col-md-1 sm-padding form-group">
     						<span class="detail-line-field-name">Qty:</span>
     						<span class="detail-line-field numeric">
     							<input class="form-control input-xs text-right underlined" type="text" size="6" name="qty" value="<?= $detail->qty + 0; ?>">
     						</span>
     					</div>
-    					<div class="col-md-2 form-group">
+    					<div class="col-md-2 sm-padding form-group">
     						<span class="detail-line-field-name">Price:</span>
     						<span class="detail-line-field numeric">
     							<input class="form-control input-xs text-right underlined" type="text" size="10" name="price" value="<?= $page->stringerbell->format_money($detail->price); ?>">
     						</span>
     					</div>
-    					<div class="col-md-2 form-group">
+    					<div class="col-md-2 sm-paddingform-group">
     						<span class="detail-line-field-name">Total:</span>
     						<span class="detail-line-field numeric">$ <?= $page->stringerbell->format_money($detail->totalprice); ?></span>
     					</div>
-    					<div class="col-md-2 form-group">
+    					<div class="col-md-2 sm-padding form-group">
     						<span class="detail-line-field-name">Rqst Date:</span>
     						<span class="detail-line-field numeric">
     							<div class="input-group date">
@@ -76,69 +76,68 @@
     					</div>
     				</div>
     			</div>
-    			<div class="col-sm-3">
+    			<div class="col-sm-3 sm-padding">
     				<div class="row">
-    					<div class="col-xs-6">
+    					<div class="col-xs-6 sm-padding">
+                            <h4 class="visible-xs-block">Details</h4>
     						<?= $editorderdisplay->generate_viewdetaillink($order, $detail); ?>
     						<?= $editorderdisplay->generate_loaddocumentslink($order, $detail); ?>
                             <?= $editorderdisplay->generate_loaddplusnoteslink($order, $detail->linenbr); ?>
     					</div>
 
-    					<div class="col-xs-6">
+    					<div class="col-xs-6 sm-padding">
+                            <h4 class="visible-xs-block">Edit</h4>
+							<button type="submit" name="button" class="btn btn-sm btn-info detail-line-icon" title="Save Changes">
+								<span class="fa fa-floppy-o"></span> <span class="sr-only">Save Line</span>
+							</button>
                             <?= $editorderdisplay->generate_detailvieweditlink($order, $detail); ?>
                             <?= $editorderdisplay->generate_deletedetaillink($order, $detail); ?>
     					</div>
     				</div>
     			</div>
     		</div>
-    		<button type="submit" name="button" class="btn btn-md btn-info detail-line-icon">
-    			<span class="glyphicon glyphicon-edit"></span>&nbsp;&nbsp;Update Line
-    		</button>
+
         </div>
 	</form>
 <?php endforeach; ?>
+
 <form action="<?= $config->pages->orders.'redir/'; ?>" method="post" class="quick-entry-add form-group">
 	<input type="hidden" name="action" value="add-to-cart">
 	<div class="row">
-		<div class="col-xs-9">
+		<div class="col-xs-9 sm-padding">
 			<div class="row">
-				<div class="col-md-4 form-group">
+				<div class="col-md-4 form-group  sm-padding">
 					<span class="detail-line-field-name">Item/Description:</span>
 					<span class="detail-line-field numeric">
-						<input class="input-xs underlined" type="text" name="itemID" placeholder="Item ID">
+						<input class="form-control input-xs underlined" type="text" name="itemID" placeholder="Item ID">
 					</span>
 				</div>
-				<div class="col-md-1 form-group">
+				<div class="col-md-1 form-group  sm-padding">
 				</div>
-				<div class="col-md-1 form-group">
+				<div class="col-md-1 form-group  sm-padding">
 					<span class="detail-line-field-name">Qty:</span>
 					<span class="detail-line-field numeric">
-						<input class="input-xs text-right underlined" type="text" size="6" name="ordrqty" value="">
+						<input class="form-control input-xs text-right underlined" type="text" size="6" name="ordrqty" value="">
 					</span>
 				</div>
-				<div class="col-md-2 form-group">
+				<div class="col-md-2 form-group sm-padding">
 					<span class="detail-line-field-name">Price:</span>
 					<span class="detail-line-field numeric">
-						<input class="input-xs text-right underlined" type="text" size="10" name="ordrprice" value="">
+						<input class="form-control input-xs text-right underlined" type="text" size="10" name="ordrprice" value="">
 					</span>
 				</div>
-				<div class="col-md-2 form-group">
+				<div class="col-md-2 form-group sm-padding">
+					<button type="submit" class="btn btn-sm btn-primary">
+						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> &nbsp; Add
+					</button>
 				</div>
-				<div class="col-md-2 form-group">
-				</div>
-			</div>
-		</div>
-		<div class="col-xs-3 col-sm-3">
-			<div class="row">
-				<div class="col-xs-6">
-					<button type="submit" class="btn btn-primary">Add</button>
-				</div>
-				<div class="col-xs-6">
-					<button type="button" class="btn btn-md btn-primary"  data-toggle="modal" data-target="#item-lookup-modal">
-						<span class="glyphicon glyphicon-plus"></span><span class="sr-only">Add Item</span>
+				<div class="col-md-2 form-group sm-padding">
+					<button type="button" class="btn btn-sm btn-primary"  data-toggle="modal" data-target="#item-lookup-modal">
+						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> &nbsp; Search Items
 					</button>
 				</div>
 			</div>
 		</div>
+		<div class="col-xs-3 col-sm-3 sm-padding"> </div>
 	</div>
 </form>
