@@ -108,26 +108,6 @@
 		}
 
 		/**
-		 * Returns HTML Form to delete the detail line
-		 * @param  Order       $quote  Quote
-		 * @param  OrderDetail $detail QuoteDetail
-		 * @return string              HTML Form to delete the detail line
-		 * @uses
-		 */
-		public function generate_deletedetailform(Order $quote, OrderDetail $detail) {
-			$bootstrap = new Contento();
-			$url = $this->generate_quotesredirurl();
-			$action = $url->getUrl();
-			$form = new FormMaker("class=inline-block|action=$action|method=post");
-			$form->input("class=hidden|name=action|value=remove-line");
-			$form->input("class=hidden|name=qnbr|value=$quote->quotnbr");
-			$form->input("class=hidden|name=linenbr|value=$detail->linenbr");
-			$icon = $bootstrap->createicon('glyphicon glyphicon-trash');
-			$form->button('type=submit|class=btn btn-md btn-danger', $icon);
-			return $form->finish();
-		}
-
-		/**
 		 * Returns HTML Link to delete detail line
 		 * @param  Order       $quote  Quote
 		 * @param  OrderDetail $detail QuoteDetail
@@ -135,11 +115,11 @@
 		 */
 		public function generate_deletedetaillink(Order $quote, OrderDetail $detail) {
 			$bootstrap = new Contento();
-			$icon = $bootstrap->createicon('fa fa-trash fa-1-5x') . $bootstrap->openandclose('span', 'class=sr-only', 'Delete Line');
+			$icon = $bootstrap->createicon('glyphicon glyphicon-trash') . $bootstrap->openandclose('span', 'class=sr-only', 'Delete Line');
 			$url = $this->generate_quotesredirurl();
 			$url->query->setData(array('action' => 'remove-line-get', 'qnbr' => $quote->quotnbr, 'linenbr' => $detail->linenbr, 'page' => $this->pageurl->getUrl()));
 			$href = $url->getUrl();
-			return $bootstrap->a("href=$href|class=btn btn-sm btn-danger", $icon);
+			return $bootstrap->a("href=$href|class=btn btn-md btn-danger", $icon);
 		}
 
 		/**

@@ -50,13 +50,13 @@
 					<div class="col-md-1 form-group">
 						<span class="detail-line-field-name">Qty:</span>
 						<span class="detail-line-field numeric">
-							<input class="input-xs text-right underlined" type="text" size="6" name="qty" value="<?= $detail->qty + 0; ?>">
+							<input class="form-control input-xs text-right underlined" type="text" size="6" name="qty" value="<?= $detail->qty + 0; ?>">
 						</span>
 					</div>
 					<div class="col-md-2 form-group">
 						<span class="detail-line-field-name">Price:</span>
 						<span class="detail-line-field numeric">
-							<input class="input-xs text-right underlined" type="text" size="10" name="price" value="<?= $page->stringerbell->format_money($detail->price); ?>">
+							<input class="form-control input-xs text-right underlined" type="text" size="10" name="price" value="<?= $page->stringerbell->format_money($detail->price); ?>">
 						</span>
 					</div>
 					<div class="col-md-2 form-group">
@@ -68,7 +68,7 @@
 						<span class="detail-line-field numeric">
 							<div class="input-group date">
 								<?php $name = 'rshipdate'; $value = $detail->rshipdate; ?>
-								<?php include $config->paths->content."common/date-picker.php"; ?>
+								<?php include $config->paths->content."common/date-picker-underlined.php"; ?>
 							</div>
 						</span>
 					</div>

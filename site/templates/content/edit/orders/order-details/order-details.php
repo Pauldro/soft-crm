@@ -25,76 +25,76 @@
 <?php foreach ($order_details as $detail) : ?>
 	<form action="<?= $config->pages->orders.'redir/'; ?>" method="post" class="form-group">
 		<input type="hidden" name="action" value="quick-update-line">
+        <input type="hidden" name="ordn" value="<?= $ordn; ?>">
 		<input type="hidden" name="linenbr" value="<?= $detail->linenbr; ?>">
-		<div class="row">
-			<div class="col-sm-9">
-				<div class="row">
-					<div class="col-md-4 form-group">
-						<span class="detail-line-field-name">Item/Description:</span>
-						<span class="detail-line-field numeric">
-							<?php if ($detail->has_error()) : ?>
-								<div class="btn-sm btn-danger">
-								  <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <strong>Error!</strong> <?= $detail->errormsg; ?>
-								</div>
-							<?php else : ?>
-								<?= $detail->itemid; ?>
-								<?= (strlen($detail->vendoritemid)) ? $detail->vendoritemid : ''; ?>
-								<br> <small><?= $detail->desc1; ?></small>
-							<?php endif; ?>
-						</span>
-					</div>
-					<div class="col-md-1 form-group">
-						<span class="detail-line-field-name">WH:</span>
-						<span class="detail-line-field numeric"><?= $detail->whse; ?></span>
-					</div>
-					<div class="col-md-1 form-group">
-						<span class="detail-line-field-name">Qty:</span>
-						<span class="detail-line-field numeric">
-							<input class="input-xs text-right underlined" type="text" size="6" name="ordrqty" value="<?= $detail->ordrqty + 0; ?>">
-						</span>
-					</div>
-					<div class="col-md-2 form-group">
-						<span class="detail-line-field-name">Price:</span>
-						<span class="detail-line-field numeric">
-							<input class="input-xs text-right underlined" type="text" size="10" name="ordrprice" value="<?= $page->stringerbell->format_money($detail->ordrprice); ?>">
-						</span>
-					</div>
-					<div class="col-md-2 form-group">
-						<span class="detail-line-field-name">Total:</span>
-						<span class="detail-line-field numeric">$ <?= $page->stringerbell->format_money($detail->ordrprice * $detail->ordrqty); ?></span>
-					</div>
-					<div class="col-md-2 form-group">
-						<span class="detail-line-field-name">Rqst Date:</span>
-						<span class="detail-line-field numeric">
-							<div class="input-group date">
-								<?php $name = 'rshipdate'; $value = $detail->rshipdate; ?>
-								<?php include $config->paths->content."common/date-picker.php"; ?>
-							</div>
-						</span>
-					</div>
-				</div>
-			</div>
-			<div class="col-sm-3">
-				<div class="row">
-					<div class="col-xs-6">
-						<?= $editorderdisplay->generate_viewdetaillink($order, $detail); ?>
-						<?= $editorderdisplay->generate_loaddocumentslink($order, $detail); ?>
-                        <?= $editorderdisplay->generate_detailvieweditlink($order, $detail); ?>
-                        <?php if ($editorderdisplay->canedit) : ?>
-                            <?= $editorderdisplay->generate_deletedetailform($order, $detail); ?>
-                        <?php endif; ?>
-					</div>
+        <div>
+            <div class="row">
+    			<div class="col-sm-9">
+    				<div class="row">
+    					<div class="col-md-4 form-group">
+    						<span class="detail-line-field-name">Item/Description:</span>
+    						<span class="detail-line-field numeric">
+    							<?php if ($detail->has_error()) : ?>
+    								<div class="btn-sm btn-danger">
+    								  <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> <strong>Error!</strong> <?= $detail->errormsg; ?>
+    								</div>
+    							<?php else : ?>
+    								<?= $detail->itemid; ?>
+    								<?= (strlen($detail->vendoritemid)) ? $detail->vendoritemid : ''; ?>
+    								<br> <small><?= $detail->desc1; ?></small>
+    							<?php endif; ?>
+    						</span>
+    					</div>
+    					<div class="col-md-1 form-group">
+    						<span class="detail-line-field-name">WH:</span>
+    						<span class="detail-line-field numeric"><?= $detail->whse; ?></span>
+    					</div>
+    					<div class="col-md-1 form-group">
+    						<span class="detail-line-field-name">Qty:</span>
+    						<span class="detail-line-field numeric">
+    							<input class="form-control input-xs text-right underlined" type="text" size="6" name="qty" value="<?= $detail->qty + 0; ?>">
+    						</span>
+    					</div>
+    					<div class="col-md-2 form-group">
+    						<span class="detail-line-field-name">Price:</span>
+    						<span class="detail-line-field numeric">
+    							<input class="form-control input-xs text-right underlined" type="text" size="10" name="price" value="<?= $page->stringerbell->format_money($detail->price); ?>">
+    						</span>
+    					</div>
+    					<div class="col-md-2 form-group">
+    						<span class="detail-line-field-name">Total:</span>
+    						<span class="detail-line-field numeric">$ <?= $page->stringerbell->format_money($detail->totalprice); ?></span>
+    					</div>
+    					<div class="col-md-2 form-group">
+    						<span class="detail-line-field-name">Rqst Date:</span>
+    						<span class="detail-line-field numeric">
+    							<div class="input-group date">
+    								<?php $name = 'rshipdate'; $value = $detail->rshipdate; ?>
+    								<?php include $config->paths->content."common/date-picker-underlined.php"; ?>
+    							</div>
+    						</span>
+    					</div>
+    				</div>
+    			</div>
+    			<div class="col-sm-3">
+    				<div class="row">
+    					<div class="col-xs-6">
+    						<?= $editorderdisplay->generate_viewdetaillink($order, $detail); ?>
+    						<?= $editorderdisplay->generate_loaddocumentslink($order, $detail); ?>
+                            <?= $editorderdisplay->generate_loaddplusnoteslink($order, $detail->linenbr); ?>
+    					</div>
 
-					<div class="col-xs-6">
-                        <?= $editquotedisplay->generate_detailvieweditlink($order, $detail); ?>
-                        <?= $editquotedisplay->generate_deletedetailform($order, $detail); ?>
-					</div>
-				</div>
-			</div>
-		</div>
-		<button type="submit" name="button" class="btn btn-md btn-info detail-line-icon">
-			<span class="glyphicon glyphicon-edit"></span>&nbsp;&nbsp;Update Line
-		</button>
+    					<div class="col-xs-6">
+                            <?= $editorderdisplay->generate_detailvieweditlink($order, $detail); ?>
+                            <?= $editorderdisplay->generate_deletedetaillink($order, $detail); ?>
+    					</div>
+    				</div>
+    			</div>
+    		</div>
+    		<button type="submit" name="button" class="btn btn-md btn-info detail-line-icon">
+    			<span class="glyphicon glyphicon-edit"></span>&nbsp;&nbsp;Update Line
+    		</button>
+        </div>
 	</form>
 <?php endforeach; ?>
 <form action="<?= $config->pages->orders.'redir/'; ?>" method="post" class="quick-entry-add form-group">

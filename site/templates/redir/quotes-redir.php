@@ -9,7 +9,7 @@ use Purl\Url;
 
 
 	$action = ($input->post->action ? $input->post->text('action') : $input->get->text('action'));
-
+	$session->action = $action;
 	// USED FOR MAINLY ORDER LISTING FUNCTIONS
 	$pagenumber = (!empty($input->get->page) ? $input->get->int('page') : 1);
 	$sortaddon = (!empty($input->get->orderby) ? '&orderby=' . $input->get->text('orderby') : '');
@@ -227,6 +227,7 @@ use Purl\Url;
 			}
 			$qty = empty(trim($qty, '.')) ? 1 : $qty;
 			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'ITEMID' => $itemID, 'QTY' => "$qty");
+			$session->loc = $config->pages->edit."quote/?qnbr=".$qnbr;
 			$session->editdetail = true;
 			break;
 		case 'add-multiple-items':
@@ -271,12 +272,14 @@ use Purl\Url;
 			$qnbr = $input->post->text('qnbr');
 			$linenbr = $input->post->text('linenbr');
 			$custID = get_custidfromquote(session_id(), $qnbr);
+
 			if ($modules->isInstalled('QtyPerCase')) {
 				$qtypercase = $modules->get('QtyPerCase');
 				$qty = $qtypercase->generate_qtyfromcasebottle($itemID, $input->post->text('bottle-qty'), $input->post->text('case-qty'));
 			} else {
 				$qty = $input->post->text('qty');
 			}
+			$session->qty = $input->post->text('qty');
 			$qty = empty(trim($qty, '.')) ? 1 : $qty;
 			$quotedetail = QuoteDetail::load(session_id(), $qnbr, $linenbr);
 			// $quotedetail->set('whse', $input->post->text('whse'));
@@ -344,12 +347,13 @@ use Purl\Url;
 			break;
 		case 'remove-line':
 			$qnbr = $input->post->text('qnbr');
+			$custID = $input->post->text('custID');
 			$linenbr = $input->post->text('linenbr');
 			$quotedetail = QuoteDetail::load(session_id(), $qnbr, $linenbr);
 			$quotedetail->set('quotqty', '0');
 			$quotedetail->set('linenbr', $input->post->text('linenbr'));
 			$session->sql = $quotedetail->update();
-			$custID = get_custidfromquote(session_id(), $qnbr, false);
+			// $custID = get_custidfromquote(session_id(), $qnbr, false);
 			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'QTY' => '0', 'CUSTID' => $custID);
 
 			if ($input->post->page) {
@@ -363,7 +367,7 @@ use Purl\Url;
 			$qnbr = $input->get->text('qnbr');
 			$linenbr = $input->get->text('linenbr');
 			$quotedetail = QuoteDetail::load(session_id(), $qnbr, $linenbr);
-			$quotedetail->set('quotunit', '0');
+			$quotedetail->set('quotqty', '0');
 			$session->sql = $quotedetail->update();
 			$custID = get_custidfromquote(session_id(), $qnbr, false);
 			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'QTY' => '0', 'CUSTID' => $custID);

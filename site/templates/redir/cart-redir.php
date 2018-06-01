@@ -169,10 +169,11 @@
 		case 'quick-update-line':
 			$linenbr = $input->post->text('linenbr');
 			$cartdetail = CartDetail::load($sessionID, $linenbr);
+			$custID = CartQuote::get_cartcustid($sessionID);
 			// $cartdetail->set('whse', $input->post->text('whse'));
 			$cartdetail->set('qty', $qty);
 			$cartdetail->set('price', $input->post->text('price'));
-			// $orderdetail->set('rshipdate', $input->post->text('rqstdate'));
+			// $cartdetail->set('rshipdate', $input->post->text('rqstdate'));
 			$session->sql = $cartdetail->update();
 			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'LINENO' => $linenbr);
 			$data['CUSTID'] = empty($custID) ? $config->defaultweb : $custID;
