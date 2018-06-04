@@ -629,6 +629,10 @@ $(document).ready(function() {
 			});
 		});
 
+		$("body").on("submit", ".quick-entry-add", function(e) {
+			e.preventDefault();
+		});
+
 		/*==============================================================
 			CI / II / VI FUNCTIONS
 		=============================================================*/

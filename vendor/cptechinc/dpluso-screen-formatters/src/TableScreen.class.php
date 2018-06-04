@@ -1,88 +1,88 @@
-<?php 
+<?php
 	abstract class TableScreenMaker {
 		use ThrowErrorTrait;
-		
+
 		/**
-		 * Session ID 
+		 * Session ID
 		 * Used for getting the Dplus Generated File
 		 * @var string
 		 */
 		protected $sessionID;
-		
+
 		/**
 		 * Used to grab user Permissions
 		 * @var string
 		 */
 		protected $userID;
-		
+
 		/**
 		 * Run in Debug
 		 * @var bool
 		 */
 		protected $debug = false;
-		
+
 		/**
 		 * format for print page?
 		 * @var bool
 		 */
 		protected $forprint = false;
-		
+
 		/**
 		 * Table Type
 		 * @var string normal | grid
 		 */
 		protected $tabletype = 'normal';
-		
+
 		/**
 		 * Type of Screen, corresponds with the function Ran to create screen
 		 * @var string
 		 */
-		protected $type = ''; 
-		
+		protected $type = '';
+
 		/**
 		 * Title of Screen
 		 * @var string
 		 */
 		protected $title = '';
-		
+
 		/**
 		 * File Name
 		 * @var string
 		 */
-		protected $datafilename = ''; 
-		
+		protected $datafilename = '';
+
 		/**
 		 * Directory where files are
 		 * @var string path/to/file
 		 */
 		protected $fullfilepath = false;
-		
+
 		/**
 		 * Used for Test Files
-		 * @var string 
+		 * @var string
 		 */
 		protected $testprefix = '';
-		
+
 		/**
-		 * JSON 
+		 * JSON
 		 * @var array
 		 */
 		protected $json = false; // WILL BE JSON DECODED ARRAY
-		
+
 		/**
 		 * Array of the fields that will be used by the JSON array
 		 * @var array
 		 */
 		protected $fields = false; // WILL BE JSON DECODED ARRAY
-		
+
 		/**
 		 * Key Value array of Sections that exist I.E. header => Header, detail => Detail
 		 * @var string
 		 */
 		protected $datasections = array();
-		
+
 		/**
-		 * File Directory 
+		 * File Directory
 		 * @var string /path/to/dir
 		 */
 		public static $filedir = false;
@@ -91,27 +91,27 @@
 		 * @var string /path/to/dir
 		 */
 		public static $testfiledir = false;
-		
+
 		/**
 		 * File Directory for field Definitions
 		 * @var string /path/to/dir
 		 */
 		public static $fieldfiledir = false;
-		
+
 		/**
 		 * Columns Aliases that signifiy Tracking Number
 		 * Used for generating Cell Data
 		 * @var array
 		 */
 		protected static $trackingcolumns = array('Tracking Number');
-		
+
 		/**
 		 * Columns Aliases that signifiy Tracking Number
 		 * Used for generating Cell Data
 		 * @var array
 		 */
 		protected static $phonecolumns = array('phone', 'fax');
-		
+
 		/* =============================================================
 			CONSTRUCTOR AND SETTER FUNCTIONS
 		============================================================ */
@@ -124,8 +124,8 @@
 			$this->userID = Dpluswire::wire('user')->loginid;
 			$this->load_filepath();
 		}
-		
-		/** 
+
+		/**
 		 * Turn debug on or Off
 		 * @param bool $debug
 		 */
@@ -133,15 +133,15 @@
 			$this->debug = $debug;
 			$this->load_filepath();
 		}
-		
-		/** 
+
+		/**
 		 * Turn debug on or Off
 		 * @param bool $debug
 		 */
 		public function set_printpage($forprint = false) {
 			$this->forprint = $forprint;
 		}
-		
+
 		/* =============================================================
 			GETTER FUNCTIONS
 		============================================================ */
@@ -172,7 +172,7 @@
 			}
 			return $this->fields;
 		}
-		
+
 		/* =============================================================
 			CLASS FUNCTIONS
 		============================================================ */
@@ -183,17 +183,17 @@
 		public function load_filepath() {
 			$this->fullfilepath = ($this->debug) ? self::$testfiledir.$this->datafilename.".json" : self::$filedir.$this->sessionID."-".$this->datafilename.".json";
 		}
-		
+
 		/**
 		 * Converts json into array, then if errors, then we make an array for Errors
-		 * @return array 
+		 * @return array
 		 */
 		public function process_json() {
 			$this->load_filepath();
-			$json = json_decode(file_get_contents($this->fullfilepath), true); 
+			$json = json_decode(file_get_contents($this->fullfilepath), true);
 			$this->json = (!empty($json)) ? $json : array('error' => true, 'errormsg' => "The $this->title JSON contains errors. JSON ERROR: ".json_last_error());
 		}
-		
+
 		/**
 		 * Returns blueprint and loads it if need be
 		 * @return array blueprint array
@@ -204,7 +204,7 @@
 			}
 			return $this->tableblueprint;
 		}
-		
+
 		/**
 		 * Returns the screen made
 		 * @return string html of screen
@@ -212,7 +212,7 @@
 		public function generate_screen() {
 			return '';
 		}
-		
+
 		/**
 		 * Processes JSON then generates the screen
 		 * USED BY Preview Screen formatter
@@ -224,7 +224,7 @@
 			if (file_exists($this->fullfilepath)) {
 				// JSON file will be false if an error occurred during file_get_contents or json_decode
 				$this->process_json();
-				
+
 				if ($this->json['error']) {
 					return $bootstrap->createalert('warning', $this->json['errormsg']);
 				} else {
@@ -234,7 +234,7 @@
 				return $bootstrap->createalert('warning', 'Information Not Available');
 			}
 		}
-		
+
 		/**
 		 * Returns the javascript for this screen
 		 * @return string Javascript
@@ -242,7 +242,7 @@
 		public function generate_javascript() {
 			return '';
 		}
-		
+
 		/**
 		 * Returns the show notes input
 		 * @return string  HTML select
@@ -255,7 +255,7 @@
 			}
 			return $bootstrap->select('class=form-control input-sm|id=shownotes', $array);
 		}
-		
+
 		/* =============================================================
 			STATIC FUNCTIONS
 		============================================================ */
@@ -263,12 +263,13 @@
 		 * Generates the celldata based of the column, column type and the json array it's in, looks at if the data is numeric
 		 * @param string $type the type of data D = Date, N = Numeric, string
 		 * @param string $parent the array in which the data is contained
-		 * @param string $column the key in which we use to look up the value 
+		 * @param string $column the key in which we use to look up the value
 		 */
 		public static function generate_formattedcelldata($type, $parent, $column) {
 			$bootstrap = new Contento();
 			$celldata = '';
-			
+			$qtyregex = "/(quantity)/i";
+
 			if ($type == 'D') {
 				$celldata = (strlen($parent[$column['id']]) > 0) ? date($column['date-format'], strtotime($parent[$column['id']])) : $parent[$column['id']];
 			} elseif ($type == 'N') {
@@ -280,18 +281,26 @@
 			} else {
 				$celldata = $parent[$column['id']];
 			}
-			
+
 			if (in_array($column['id'], self::$trackingcolumns)) {
 				$href = self::generate_trackingurl($parent['Service Type'], $parent[$column['id']]);
 				return $href ? $bootstrap->a("href=$href|target=_blank", $celldata) : $celldata;
-			} elseif(in_array($column['id'], self::$phonecolumns)) {
+			} elseif (in_array($column['id'], self::$phonecolumns)) {
 				$href = self::generate_phoneurl($parent[$column['id']]);
 				return $bootstrap->a("href=tel:$href", $celldata);
+			} elseif (preg_match($qtyregex , $column['id'])) {
+				if (DplusWire::wire('modules')->isInstalled('QtyPerCase')) {
+					$qtypercase = DplusWire::wire('modules')->get('QtyPerCase');
+					$description = $qtypercase->generate_casebottleqtydesc($parent["Item ID"], $celldata);
+					return $bootstrap->span("data-toggle=tooltip|title=$description", $celldata);
+				} else {
+					return $celldata;
+				}
 			} else {
 				return $celldata;
 			}
 		}
-		
+
 		/**
 		 * Returns the data formatted into appropriate formats
 		 * Ex. Tracking Columns will have a tracking link
@@ -311,7 +320,7 @@
 				return $parent[$column];
 			}
 		}
-		
+
 		/**
 		 * Returns HTML Tracking Link
 		 * @param  string $servicetype Ex. Fedex, UPS, USPS
@@ -333,7 +342,7 @@
 			}
 			return $href;
 		}
-		
+
 		/**
 		 * Returns phone string for URL
 		 * @param  string $phone Phone Number
@@ -342,7 +351,7 @@
 		public static function generate_phoneurl($phone) {
 			return str_replace('-', '', $phone);
 		}
-		
+
 		/* =============================================================
 			CLASS FUNCTIONS
 		============================================================ */
@@ -353,7 +362,7 @@
 		public static function set_filedirectory($dir) {
 			self::$filedir = $dir;
 		}
-		
+
 		/**
 		 * Defines test File Directory
 		 * @param string $dir [path/to/dir
@@ -361,7 +370,7 @@
 		public static function set_testfiledirectory($dir) {
 			self::$testfiledir = $dir;
 		}
-		
+
 		/**
 		 * Defines fields files Directory
 		 * @param string $dir [path/to/dir
