@@ -292,7 +292,7 @@
 				if (DplusWire::wire('modules')->isInstalled('QtyPerCase')) {
 					$qtypercase = DplusWire::wire('modules')->get('QtyPerCase');
 					$description = $qtypercase->generate_casebottleqtydesc($parent["Item ID"], $celldata);
-					return $bootstrap->span("data-toggle=tooltip|title=$description", $celldata);
+					return $bootstrap->span("class=has-hover|data-toggle=tooltip|title=$description", $celldata);
 				} else {
 					return $celldata;
 				}
