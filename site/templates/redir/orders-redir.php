@@ -364,7 +364,7 @@
 			$qty = empty(trim($qty, '.')) ? 1 : $qty;
 			$orderdetail->set('qty', $qty);
 			$orderdetail->set('price', $input->post->text('price'));
-			// $orderdetail->set('rshipdate', $input->post->text('rqstdate'));
+			$orderdetail->set('rshipdate', $input->post->text('rqstdate'));
 			$session->sql = $orderdetail->update();
 			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'CUSTID' => $custID);
 

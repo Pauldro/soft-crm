@@ -1,7 +1,7 @@
 <hr class="detail-line-header">
 <div class="row detail-line-header">
 	<strong>
-		<div class="col-sm-9 sm-padding">
+		<div class="col-sm-9">
 			<div class="row">
                 <div class="col-sm-1 sm-padding"><input type="checkbox" id="select-all">&nbsp;&nbsp;</div>
 				<div class="col-sm-3 sm-padding">Item / Description</div>
@@ -12,7 +12,7 @@
 				<div class="col-sm-2 sm-padding">Rqst Date</div>
 			</div>
 		</div>
-		<div class="col-sm-3 sm-padding">
+		<div class="col-sm-3">
 			<div class="row">
 				<div class="col-sm-6 sm-padding">Details</div>
 				<div class="col-sm-6 sm-padding">Edit</div>
@@ -30,7 +30,7 @@
 			<input type="hidden" name="linenbr" value="<?= $detail->linenbr; ?>">
 			<input type="hidden" name="page" value="<?= $page->fullURL->getUrl(); ?>">
 			<div class="row  detail-line">
-				<div class="col-sm-9 sm-padding">
+				<div class="col-sm-9">
 					<div class="row">
 	                    <div class="col-sm-1 sm-padding">
 	                        <input type="checkbox" value="<?= $detail->linenbr; ?>" class="select-item" checked>
@@ -73,7 +73,7 @@
 							<span class="detail-line-field-name">Rqst Date:</span>
 							<span class="detail-line-field numeric">
 								<div class="input-group date">
-									<?php $name = 'rshipdate'; $value = $detail->rshipdate; ?>
+									<?php $name = 'rqstdate'; $value = $detail->rshipdate; ?>
 									<?php include $config->paths->content."common/date-picker-underlined.php"; ?>
 								</div>
 							</span>
@@ -102,43 +102,8 @@
 		</form>
 	<?php endforeach; ?>
 </div>
-
-<form action="<?= $config->pages->cart.'redir/'; ?>" method="post" class="quick-entry-add">
-	<input type="hidden" name="action" value="add-to-cart">
-	<div class="row">
-		<div class="col-xs-9 sm-padding">
-			<div class="row">
-				<div class="col-md-4 form-group sm-padding">
-					<span class="detail-line-field-name">Item/Description:</span>
-					<span class="detail-line-field numeric">
-						<input class="form-control input-xs underlined" type="text" name="itemID" placeholder="Item ID">
-					</span>
-				</div>
-				<div class="col-md-1 form-group sm-padding"> </div>
-				<div class="col-md-1 form-group sm-padding">
-					<span class="detail-line-field-name">Qty:</span>
-					<span class="detail-line-field numeric">
-						<input class="form-control input-xs text-right underlined" type="text" size="6" name="qty" value="">
-					</span>
-				</div>
-				<div class="col-md-2 form-group sm-padding">
-					<span class="detail-line-field-name">Price:</span>
-					<span class="detail-line-field numeric">
-						<input class="form-control input-xs text-right underlined" type="text" size="10" name="price" value="">
-					</span>
-				</div>
-				<div class="col-md-2 form-group sm-padding">
-					<button type="submit" class="btn btn-sm btn-primary">
-						<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> &nbsp; Add
-					</button>
-				</div>
-				<div class="col-md-2 form-group sm-padding">
-					<button type="button" class="btn btn-sm btn-primary"  data-toggle="modal" data-target="#item-lookup-modal">
-						<span class="glyphicon glyphicon-search" aria-hidden="true"></span> &nbsp; Search Items
-					</button>
-				</div>
-			</div>
-		</div>
-		<div class="col-xs-3 col-sm-3"> </div>
-	</div>
-</form>
+<div class="form-group">
+	<button type="button" class="btn btn-sm btn-primary"  data-toggle="modal" data-target="#item-lookup-modal">
+		<span class="glyphicon glyphicon-search" aria-hidden="true"></span> &nbsp; Search Items
+	</button>
+</div>

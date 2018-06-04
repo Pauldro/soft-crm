@@ -173,7 +173,7 @@
 			// $cartdetail->set('whse', $input->post->text('whse'));
 			$cartdetail->set('qty', $qty);
 			$cartdetail->set('price', $input->post->text('price'));
-			// $cartdetail->set('rshipdate', $input->post->text('rqstdate'));
+			$cartdetail->set('rshipdate', $input->post->text('rqstdate'));
 			$session->sql = $cartdetail->update();
 			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'LINENO' => $linenbr);
 			$data['CUSTID'] = empty($custID) ? $config->defaultweb : $custID;
@@ -223,6 +223,7 @@
 			break;
 		case 'empty-cart':
 			$data = array('DBNAME' => $config->dbName, 'EMPTYCART' => false);
+			$session->loc = $config->pages->cart;
 			break;
         case 'create-sales-order':
 			$data = array('DBNAME' => $config->dbName, 'CREATESO' => false);

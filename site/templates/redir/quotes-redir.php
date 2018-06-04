@@ -286,7 +286,7 @@ use Purl\Url;
 			$quotedetail->set('quotqty', $qty);
 			$quotedetail->set('ordrqty', $qty);
 			$quotedetail->set('quotprice', $input->post->text('price'));
-			// $quotedetail->set('rshipdate', $input->post->text('rqstdate'));
+			$quotedetail->set('rshipdate', $input->post->text('rqstdate'));
 			$session->sql = $quotedetail->update();
 
 			$data = array('DBNAME' => $config->dbName, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'CUSTID' => $custID);
