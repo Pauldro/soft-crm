@@ -12,7 +12,6 @@ $(function() {
         $(text_totalprice).text(total.formatMoney(2, '.', ','));
         // check if config.edit.pricing.allow_belowminprice is true
 
-        console.log(input_minprice.val());
         if (config.edit.pricing.allow_belowminprice == true) {
             // if it is then check if price is below minimum allowed
             if (input_price.val() < input_minprice.val()) {
