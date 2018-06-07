@@ -4,31 +4,22 @@
 	*  @param string $action
 	*
 	*/
-	
+
 	$custID = $shipID = '';
-	if ($input->post->action) {
-		$action = $input->post->text('action');
-		$itemID = $input->post->text('itemID');
-		$qty = $input->post->text('qty');
+
+	if ($input->requestMethod('POST')) {
+		$requestmethod = 'post';
 	} else {
-		$action = $input->get->text('action');
-		$itemID = $input->get->text('itemID');
-		$qty = $input->get->text('qty');
+		$requestmethod = 'get';
 	}
+	$action = $input->$requestmethod->text('action');
 
-	if (empty($qty)) {$qty = "1"; }
+	$custID = $input->$requestmethod->text('custID');
+	$shipID = $input->$requestmethod->text('shipID');
 
-	$custID = (!empty($input->post->custID) ? $input->post->text('custID') : $input->get->text('custID'));
-	$shipID = (!empty($input->post->shipID) ? $input->post->text('shipID') : $input->get->text('shipID'));
-	if (!empty($custID)) {$session->custID = $custID;}
-	if (!empty($shipID)) {$session->shipID = $shipID;}
-	
-	if ($input->post->sessionID) {
-		$filename = $input->post->text('sessionID');
-		$sessionID = $input->post->text('sessionID');
-	} elseif ($input->get->sessionID) {
-		$filename = $input->get->text('sessionID');
-		$sessionID = $input->get->text('sessionID');
+	if ($input->$requestmethod->sessionID) {
+		$filename = $input->$requestmethod->text('sessionID');
+		$sessionID = $input->$requestmethod->text('sessionID');
 	} else {
 		$filename = session_id();
 		$sessionID = session_id();
@@ -96,7 +87,9 @@
 
     switch ($action) {
         case 'add-to-cart':
-			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'ITEMID' => $itemID, 'QTY' => $qty);
+			$itemID = $input->$requestmethod->text('itemID');
+			$qty = determine_qty($input, $requestmethod, $itemID); // TODO MAKE IN CART DETAIL
+			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'ITEMID' => $itemID, 'QTY' => "$qty");
 			$data['CUSTID'] = empty($custID) ? $config->defaultweb : $custID;
 			if (!empty($shipID)) {$data['SHIPTOID'] = $shipID; }
 			if ($input->post->whse) { if (!empty($input->post->whse)) { $data['WHSE'] = $input->post->whse; } }
@@ -154,12 +147,28 @@
 			$data = writedataformultitems($data, $itemids, $qtys);
 			$session->loc = $config->pages->cart;
 			break;
+		case 'quick-update-line':
+			$linenbr = $input->post->text('linenbr');
+			$cartdetail = CartDetail::load($sessionID, $linenbr);
+			$qty = determine_qty($input, $requestmethod, $cartdetail->itemid); // TODO MAKE IN CART DETAIL
+			$custID = CartQuote::get_cartcustid($sessionID);
+			// $cartdetail->set('whse', $input->post->text('whse'));
+			$cartdetail->set('qty', $qty);
+			$cartdetail->set('price', $input->post->text('price'));
+			$cartdetail->set('rshipdate', $input->post->text('rqstdate'));
+			$session->sql = $cartdetail->update();
+			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'LINENO' => $linenbr);
+			$data['CUSTID'] = empty($custID) ? $config->defaultweb : $custID;
+			if (!empty($shipID)) {$data['SHIPTOID'] = $shipID; }
+			writedplusfile($data, $sessionID);
+			$session->loc = $config->pages->cart;
+			break;
 		case 'update-line':
 			$linenbr = $input->post->text('linenbr');
 			$cartdetail = CartDetail::load($sessionID, $linenbr);
 			$cartdetail->set('price', $input->post->text('price'));
 			$cartdetail->set('discpct', $input->post->text('discount'));
-			$cartdetail->set('qty', $input->post->text('qty'));
+			$cartdetail->set('qty', $qty);
 			$cartdetail->set('rshipdate', $input->post->text('rqstdate'));
 			$cartdetail->set('whse', $input->post->text('whse'));
 			$cartdetail->set('spcord', $input->post->text('specialorder'));
@@ -170,33 +179,33 @@
 			$cartdetail->set('ponbr', $input->post->text('ponbr'));
 			$cartdetail->set('poref', $input->post->text('poref'));
 			$cartdetail->set('uom', $input->post->text('uofm'));
-			
+
 			if ($cartdetail->spcord != 'N') {
 				$cartdetail->set('desc1', $input->post->text('desc1'));
 				$cartdetail->set('desc2', $input->post->text('desc2'));
 			}
 			$session->sql = $cartdetail->update();
 			$session->loc = $input->post->text('page');
-			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'LINENO' => $input->post->linenbr);
+			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'LINENO' => $linenbr);
 			$data['CUSTID'] = empty($custID) ? $config->defaultweb : $custID;
 			if (!empty($shipID)) {$data['SHIPTOID'] = $shipID; }
-			$data2 = $cartdetail->_toArray();
-			writedplusfile($data2, $cartdetail->itemid);
+			writedplusfile($data, $sessionID);
 			$session->loc = $config->pages->cart;
 			break;
 		case 'remove-line':
-			$linenbr = $input->post->text('linenbr');
+			$linenbr = $input->get->text('line');
 			$cartdetail = CartDetail::load($sessionID, $linenbr);
 			$cartdetail->set('qty', '0');
 			$session->sql = $cartdetail->update();
 			$session->loc = $config->pages->cart;
 			$custID = get_custidfromcart(session_id());
-			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'LINENO' => $input->post->text('linenbr'), 'QTY' => '0');
+			$data = array('DBNAME' => $config->dbName, 'CARTDET' => false, 'LINENO' => $linenbr, 'QTY' => '0');
 			$data['CUSTID'] = empty($custID) ? $config->defaultweb : $custID;
 			if (!empty($shipID)) {$data['SHIPTOID'] = $shipID; }
 			break;
 		case 'empty-cart':
 			$data = array('DBNAME' => $config->dbName, 'EMPTYCART' => false);
+			$session->loc = $config->pages->cart;
 			break;
         case 'create-sales-order':
 			$data = array('DBNAME' => $config->dbName, 'CREATESO' => false);

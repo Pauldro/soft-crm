@@ -135,8 +135,13 @@
 		}
 
 		/**
+<<<<<<< HEAD
 		 * Turn on or off if this Page is printable
 		 * @param bool $forprint Is this for a Printable Page
+=======
+		 * Turn debug on or Off
+		 * @param bool $debug
+>>>>>>> master
 		 */
 		public function set_printpage($forprint = false) {
 			$this->forprint = $forprint;
@@ -268,6 +273,10 @@
 		public static function generate_formattedcelldata($type, $parent, $column) {
 			$bootstrap = new Contento();
 			$celldata = '';
+<<<<<<< HEAD
+=======
+			$qtyregex = "/(quantity)/i";
+>>>>>>> master
 
 			if ($type == 'D') {
 				$celldata = (strlen($parent[$column['id']]) > 0) ? date($column['date-format'], strtotime($parent[$column['id']])) : $parent[$column['id']];
@@ -284,9 +293,17 @@
 			if (in_array($column['id'], self::$trackingcolumns)) {
 				$href = self::generate_trackingurl($parent['Service Type'], $parent[$column['id']]);
 				return $href ? $bootstrap->a("href=$href|target=_blank", $celldata) : $celldata;
-			} elseif(in_array($column['id'], self::$phonecolumns)) {
+			} elseif (in_array($column['id'], self::$phonecolumns)) {
 				$href = self::generate_phoneurl($parent[$column['id']]);
 				return $bootstrap->a("href=tel:$href", $celldata);
+			} elseif (preg_match($qtyregex , $column['id'])) {
+				if (DplusWire::wire('modules')->isInstalled('QtyPerCase')) {
+					$qtypercase = DplusWire::wire('modules')->get('QtyPerCase');
+					$description = $qtypercase->generate_casebottleqtydesc($parent["Item ID"], $celldata);
+					return $bootstrap->span("class=has-hover|data-toggle=tooltip|title=$description", $celldata);
+				} else {
+					return $celldata;
+				}
 			} else {
 				return $celldata;
 			}

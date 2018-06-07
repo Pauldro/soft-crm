@@ -109,7 +109,7 @@
 		public function generate_detailvieweditlink(Order $cart, OrderDetail $detail) {
 			$bootstrap = new Contento();
 			$href = $this->generate_detailviewediturl($cart, $detail);
-			$icon = $bootstrap->openandclose('button', 'class=btn btn-md btn-warning', $bootstrap->createicon('glyphicon glyphicon-pencil'));
+			$icon = $bootstrap->openandclose('button', 'class=btn btn-sm btn-warning detail-line-icon', $bootstrap->createicon('glyphicon glyphicon-pencil'));
 			return $bootstrap->openandclose('a', "href=$href|class=update-line|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$cart->custid|aria-label=View Detail Line", $icon);
 		}
 
@@ -123,6 +123,20 @@
 			$url = new \Purl\Url($this->pageurl->getUrl());
 			$url->path = DplusWire::wire('config')->pages->ajax."load/edit-detail/cart/";
 			$url->query->setData(array('line' => $detail->linenbr));
+			return $url->getUrl();
+		}
+
+		/**
+		 * Returns URL to remove detail
+		 * @param  Order       $cart   CartQuote
+		 * @param  OrderDetail $detail CartDetail
+		 * @return string              URL to load edit detail
+		 * @uses
+		 */
+		public function generate_detaildeleteurl(Order $cart, OrderDetail $detail) {
+			$url = new \Purl\Url($this->pageurl->getUrl());
+			$url->path = Dpluswire::wire('config')->pages->cart."redir/";
+			$url->query->setData(array('action' => 'remove-line', 'line' => $detail->linenbr));
 			return $url->getUrl();
 		}
 	}

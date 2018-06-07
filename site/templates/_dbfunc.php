@@ -1981,8 +1981,8 @@
 		}
 		$q->where('quotenbr', $detail->quotenbr);
 		$q->where('sessionid', $detail->sessionid);
-		$q->where('recno', $detail->recno);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$q->where('linenbr', $detail->recno);
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -2365,7 +2365,10 @@
 
 		$q->field($q->expr('COUNT(*)'));
 		$q->where(
-			$q->orExpr()->where('id', 'in', $taskquery)->where('id', 'in', $actionsquery)
+			$q
+			->orExpr()
+			->where('id', 'in', $taskquery)
+			->where('id', 'in', $actionsquery)
 		);
 		$q->generate_filters($filters, $filterable);
 		$sql = DplusWire::wire('database')->prepare($q->render());
@@ -2489,10 +2492,11 @@
 			return $sql->fetchColumn();
 		}
 	}
+
 /* =============================================================
 	VENDOR FUNCTIONS
 ============================================================ */
-	function get_vendors($debug) {
+	function get_vendors($debug = false) {
 		$q = (new QueryBuilder())->table('vendors');
 		$q->where('shipfrom', '');
 		$sql = DplusWire::wire('database')->prepare($q->render());
@@ -2571,7 +2575,7 @@
 		}
 	}
 
-	function get_itemgroups($debug) {
+	function get_itemgroups($debug = false) {
 		$q = (new QueryBuilder())->table('itemgroup');
 		$sql = DplusWire::wire('database')->prepare($q->render());
 
@@ -2609,9 +2613,9 @@
 
 	function get_custidfromcart($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('carthed');
-		$q->field($q->expr('custid'));
+		$q->field('custid');
 		$q->where('sessionid', $sessionID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2940,14 +2944,14 @@
 		$q = (new QueryBuilder())->table('ordrdet');
 		$q->mode('update');
 		foreach ($properties as $property) {
-			if ($detail != $originaldetail->$property) {
+			if ($detail->$property != $originaldetail->$property) {
 				$q->set($property, $detail->$property);
 			}
 		}
 		$q->where('orderno', $detail->orderno);
 		$q->where('sessionid', $detail->sessionid);
 		$q->where('linenbr', $detail->linenbr);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -3176,7 +3180,38 @@
 			$sql->execute($switching);
 			return $sql->fetchColumn();
 		}
+	}
 
+	/**
+	 * Return the item from the cross-reference table
+	 * @param  string $itemID   Item Number / ID
+	 * @param  string $custID   Customer ID
+	 * @param  string $vendorID Vendor ID
+	 * @param  bool   $debug    Run in debug? If so, return SQL Query
+	 * @return XRefItem         Item
+	 */
+	function get_xrefitem($itemID, $custID = '', $vendorID = '', $debug = false) {
+		$q = (new QueryBuilder())->table('itemsearch');
+		$q->where('itemid', $itemID);
+
+		if (!empty($custID)) {
+			$q->where('origintype', 'C');
+			$q->where('originid', $custID);
+		}
+		if (!empty($vendorID)) {
+			$q->where('origintype', 'V');
+			$q->where('originid', $vendorID);
+		}
+		$q->limit(1);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'XRefItem');
+			return $sql->fetch();
+		}
 	}
 
 	/* =============================================================
@@ -3693,8 +3728,8 @@
 
 	function get_bookingtotalsbyshipto($sessionID, $custID, $shipID, $filter, $filtertypes, $interval = '', $debug = false) {
 		$q = (new QueryBuilder())->table('bookingc');
-
 		$q->where('custid', $custID);
+
 		if (!empty($shipID)) {
 			$q->where('shiptoid', $shipID);
 		}

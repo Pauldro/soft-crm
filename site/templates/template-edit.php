@@ -56,6 +56,8 @@
 				$config->scripts->append(hashtemplatefile('scripts/edit/edit-quotes.js'));
 				$config->scripts->append(hashtemplatefile('scripts/edit/edit-quote-to-order.js'));
 				$config->scripts->append(hashtemplatefile('scripts/edit/edit-pricing.js'));
+				$itemlookup->set_customer($quote->custid, $quote->shiptoid);
+				$itemlookup = $itemlookup->set_qnbr($qnbr);
 				$formconfig = new FormFieldsConfig('quote');
 			} else {
 				throw new Wire404Exception();

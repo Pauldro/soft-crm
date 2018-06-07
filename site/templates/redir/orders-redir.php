@@ -5,17 +5,22 @@
 	*
 	* */
 
-	$action = ($input->post->action ? $input->post->text('action') : $input->get->text('action'));
+	if ($input->requestMethod('POST')) {
+		$requestmethod = 'post';
+	} else {
+		$requestmethod = 'get';
+	}
+	$action = $input->$requestmethod->text('action');
 
 	// USED FOR MAINLY ORDER LISTING FUNCTIONS
 	$pagenumber = (!empty($input->get->page) ? $input->get->int('page') : 1);
 	$sortaddon = (!empty($input->get->orderby) ? '&orderby=' . $input->get->text('orderby') : '');
 	$filteraddon = '';
-	
+
 	if ($input->get->filter) {
 		$orderpanel = new SalesOrderPanel(session_id(), $page->fullURL, '', '', '');
 		$orderpanel->generate_filter($input);
-		
+
 		if (!empty($orderpanel->filters)) {
 			$filteraddon = "&filter=filter";
 			foreach ($orderpanel->filters as $filter => $value) {
@@ -123,9 +128,9 @@
 			$session->{'orders-loaded-for'} = $custID;
 			$session->{'orders-updated'} = date('m/d/Y h:i A');
 			if ($input->get->shipID) {
-				$session->loc = $config->pages->ajax."load/sales-orders/cust/{$input->get->custID}/shipto-{$input->get->shipID}?ordn=".$linkaddon;
+				$session->loc = $config->pages->ajax."load/sales-orders/customer/{$input->get->custID}/shipto-{$input->get->shipID}?ordn=".$linkaddon;
 			} else {
-				$session->loc = $config->pages->ajax."load/sales-orders/cust/{$input->get->custID}/?ordn=".$linkaddon;
+				$session->loc = $config->pages->ajax."load/sales-orders/customer/{$input->get->custID}/?ordn=".$linkaddon;
 			}
 			break;
 		case 'load-orders':
@@ -138,24 +143,24 @@
 			$ordn = $input->get->text('ordn');
 			$custID = SalesOrderHistory::is_saleshistory($ordn) ? SalesOrderHistory::read_custid($ordn) : get_custidfromorder(session_id(), $ordn);
 			$data = array('DBNAME' => $config->dbName, 'ORDRDET' => $ordn, 'CUSTID' => $custID);
-			
+
 			if ($input->get->lock) {
 				$data['LOCK'] = false;
 				$session->loc = $config->pages->editorder."?ordn=".$ordn;
 			} elseif ($input->get->print) {
 				$session->loc = $config->pages->print."order/?ordn=".$ordn;
 			} elseif ($input->get->readonly) {
-				$session->loc = $config->pages->editorder."?ordn=".$ordn; 
+				$session->loc = $config->pages->editorder."?ordn=".$ordn;
 			} else {
 				$url = new Purl\Url($config->pages->ajaxload);
 				$insertafter = ($input->get->text('type') == 'history') ? 'sales-history' : 'sales-orders';
 				$url->path->add($insertafter);
-				
+
 				if ($input->get->custID) {
 					$url->path->add('customer');
 					$insertafter = $input->get->text('custID');
 					$url->path->add($insertafter);
-					
+
 					if ($input->get->shipID) {
 						$insertafter = "shipto-{$input->get->text('shipID')}";
 						$url->path->add($insertafter);
@@ -178,12 +183,12 @@
 				$url = new Purl\Url($config->pages->ajaxload);
 				$insertafter = ($input->get->text('type') == 'history') ? 'sales-history' : 'sales-orders';
 				$url->path->add($insertafter);
-				
+
 				if ($input->get->custID) {
 					$url->path->add('customer');
 					$insertafter = $input->get->text('custID');
 					$url->path->add($insertafter);
-					
+
 					if ($input->get->shipID) {
 						$insertafter = "shipto-{$input->get->text('shipID')}";
 						$url->path->add($insertafter);
@@ -198,19 +203,19 @@
 		case 'get-order-documents':
 			$ordn = $input->get->text('ordn');
 			$custID = get_custidfromorder(session_id(), $ordn);
-			
+
 			if ($input->get->page == 'edit') {
 				$session->loc = $config->pages->ajax.'load/order/documents/?ordn='.$ordn;
 			} else {
 				$url = new Purl\Url($config->pages->ajaxload);
 				$insertafter = ($input->get->text('type') == 'history') ? 'sales-history' : 'sales-orders';
 				$url->path->add($insertafter);
-				
+
 				if ($input->get->custID) { // If looking at customer orders
 					$url->path->add('customer');
 					$insertafter = $input->get->text('custID');
 					$url->path->add($insertafter);
-					
+
 					if ($input->get->shipID) { // If looking at customer shipto orders
 						$insertafter = "shipto-{$input->get->text('shipID')}";
 						$url->path->add($insertafter);
@@ -218,25 +223,26 @@
 				}
 				$url->query = "ordn=$ordn$linkaddon";
 				$url->query->set('show', 'documents');
-				
+
 				if ($input->get->itemdoc) {
 					$url->query->set('itemdoc', $input->get->text('itemdoc'));
 				}
 				Paginator::paginate_purl($url, $pagenumber, $insertafter);
 				$session->loc = $url->getUrl();
-			} 
+			}
 			$data = array('DBNAME' => $config->dbName, 'ORDDOCS' => $ordn, 'CUSTID' => $custID);
 			break;
 		case 'edit-new-order':
-			if ($session->custID) { $custID = $session->custID; } else { $custID = $config->defaultweb; }
 			$ordn = get_createdordn(session_id());
+			$custID = get_custidfromorder(session_id(), $ordn);
 			$data = array('DBNAME' => $config->dbName, 'ORDRDET' => $ordn, 'CUSTID' => $custID, 'LOCK' => false);
+			$session->createdorder = $ordn;
 			$session->loc = $config->pages->edit.'order/?ordn=' . $ordn;
 			break;
 		case 'update-orderhead':
 			$ordn = $input->post->text("ordn");
 			$intl = $input->post->text("intl");
-			
+
 			$order = SalesOrder::load(session_id(), $ordn);
 			$order->set('shiptoid', $input->post->text('shiptoid'));
 			$order->set('custpo', $input->post->text("custpo"));
@@ -274,32 +280,34 @@
 			}
 			$custID = get_custidfromorder(session_id(), $ordn);
 			$session->sql = $order->update();
-			
+
 			$order->set('paymenttype', $input->post->text("paytype"));
-			
+
 			if ($order->paymenttype == 'cc') {
 				$order->set('cardnumber', $input->post->text("ccno"));
 				$order->set('cardexpire', $input->post->text("xpd"));
 				$order->set('cardcode', $input->post->text("ccv"));
 			}
-			
+
 			$session->sql .= '<br>'. $order->update_payment();
 			$data = array('DBNAME' => $config->dbName, 'SALESHEAD' => false, 'ORDERNO' => $ordn, 'CUSTID' => $custID);
-			
+
 			if ($input->post->exitorder) {
 				$session->loc = $config->pages->orders."redir/?action=unlock-order&ordn=$ordn";
 				$data['UNLOCK'] = false;
+				$session->remove('createdorder');
 			} else {
 				$session->loc = $config->pages->editorder."?ordn=$ordn";
 			}
 			break;
 		case 'add-to-order':
 			$itemID = $input->post->text('itemID');
-			$qty = $input->post->text('qty'); if ($qty == '') {$qty = 1; }
+			$qty = determine_qty($input, $requestmethod, $itemID); // TODO MAKE IN CART DETAIL
 			$ordn = $input->post->text('ordn');
 			$custID = get_custidfromorder(session_id(), $ordn);
-			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'ITEMID' => $itemID, 'QTY' => $qty, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'ITEMID' => $itemID, 'QTY' => "$qty", 'CUSTID' => $custID);
 			$session->loc = $input->post->page;
+			$session->editdetail = true;
 			break;
 		case 'add-multiple-items':
 			$ordn = $input->post->text('ordn');
@@ -331,13 +339,33 @@
 			$orderdetail->set('poref', $input->post->text('poref'));
 			$orderdetail->set('spcord', 'S');
 			$orderdetail->update();
-			
+
 			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => '0', 'ITEMID' => 'N', 'QTY' => $qty, 'CUSTID' => $custID);
-		
+
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
 			} else {
 				$session->loc = $config->pages->edit."order/?ordn=".$ordn;
+			}
+			$session->editdetail = true;
+			break;
+		case 'quick-update-line':
+			$ordn = $input->post->text('ordn');
+			$linenbr = $input->post->text('linenbr');
+			$custID = get_custidfromorder(session_id(), $ordn);
+			$orderdetail = SalesOrderDetail::load(session_id(), $ordn, $linenbr);
+			// $orderdetail->set('whse', $input->post->text('whse'));
+			$qty = determine_qty($input, $requestmethod, $orderdetail->itemid); // TODO MAKE IN CART DETAIL
+			$orderdetail->set('qty', $qty);
+			$orderdetail->set('price', $input->post->text('price'));
+			$orderdetail->set('rshipdate', $input->post->text('rqstdate'));
+			$session->sql = $orderdetail->update();
+			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'CUSTID' => $custID);
+
+			if ($input->post->page) {
+				$session->loc = $input->post->text('page');
+			} else {
+				$session->loc = $config->pages->edit."order/?ordn=$ordn";
 			}
 			$session->editdetail = true;
 			break;
@@ -347,7 +375,8 @@
 			$orderdetail = SalesOrderDetail::load(session_id(), $ordn, $linenbr);
 			$orderdetail->set('price', $input->post->text('price'));
 			$orderdetail->set('discpct', $input->post->text('discount'));
-			$orderdetail->set('qty', $input->post->text('qty'));
+			$qty = determine_qty($input, $requestmethod, $orderdetail->itemid); // TODO MAKE IN CART DETAIL
+			$orderdetail->set('qty', $qty);
 			$orderdetail->set('rshipdate', $input->post->text('rqstdate'));
 			$orderdetail->set('whse', $input->post->text('whse'));
 			$orderdetail->set('linenbr', $input->post->text('linenbr'));
@@ -367,11 +396,11 @@
 			$custID = get_custidfromorder(session_id(), $ordn);
 			$session->sql = $orderdetail->update();
 			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'CUSTID' => $custID);
-			
+
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
 			} else {
-				$session->loc = $config->pages->edit."order/?ordn=".$ordn;
+				$session->loc = $config->pages->edit."order/?ordn=$ordn";
 			}
 			$session->editdetail = true;
 			break;
@@ -390,9 +419,26 @@
 				$session->loc = $config->pages->edit."order/?ordn=".$ordn;
 			}
 			break;
+		case 'remove-line-get':
+			$ordn = $input->get->text('ordn');
+			$linenbr = $input->get->text('linenbr');
+			$orderdetail = SalesOrderDetail::load(session_id(), $ordn, $linenbr);
+			$orderdetail->set('qty', '0');
+			$session->sql = $orderdetail->update();
+			$custID = get_custidfromorder(session_id(), $ordn, false);
+			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'QTY' => '0', 'CUSTID' => $custID);
+
+			if ($input->post->page) {
+				$session->loc = $input->post->text('page');
+			} else {
+				$session->loc = $config->pages->edit."order/?ordn=".$ordn;
+			}
+			$session->editdetail = true;
+			break;
 		case 'unlock-order':
 			$ordn = $input->get->text('ordn');
 			$data = array('DBNAME' => $config->dbName, 'UNLOCK' => false, 'ORDERNO' => $ordn);
+			$session->remove('createdorder');
 			$session->loc = $config->pages->confirmorder."?ordn=$ordn";
 			break;
 		default:

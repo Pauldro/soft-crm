@@ -158,6 +158,18 @@
 		return urlencode(str_replace(' ', '-', str_replace('#', '', $str)));
 	}
 
+	function determine_qty(Processwire\WireInput $input, $requestmethod, $itemID) {
+        if (DplusWire::wire('modules')->isInstalled('QtyPerCase')) {
+            $qtypercase = DplusWire::wire('modules')->get('QtyPerCase');
+            if (!empty($itemID)) {
+                $qty = $qtypercase->generate_qtyfromcasebottle($itemID, $input->$requestmethod->text('bottle-qty'), $input->$requestmethod->text('case-qty'));
+            }
+        } else {
+            $qty = $input->$requestmethod->text('qty');
+        }
+        return $qty = empty(trim($qty, '.')) ? 1 : $qty;
+    }
+	
 /* =============================================================
    URL FUNCTIONS
  ============================================================ */

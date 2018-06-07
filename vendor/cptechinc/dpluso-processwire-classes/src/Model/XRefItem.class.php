@@ -44,6 +44,15 @@
 		 */
         protected $image;
 
+<<<<<<< HEAD
+=======
+        /**
+         * How many in a case
+         * @var int
+         */
+        protected $qty_percase;
+
+>>>>>>> master
 		/**
 		 * Date updted In Database
 		 * @var int
@@ -93,6 +102,18 @@
             }
         }
 
+<<<<<<< HEAD
+=======
+        /**
+         * Returns true if this item is dealt in case qty
+         * If the case qty is 1, then we only deal with the item as Eaches
+         * @return bool if this item is dealt in case qty
+         */
+        public function has_caseqty() {
+            return ($this->qty_percase != 1) ? true : false;
+        }
+
+>>>>>>> master
 		/**
 		 * Checks if Item image exists if not use the image not found
 		 * @return string path/to/image

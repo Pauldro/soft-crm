@@ -83,6 +83,14 @@ $(function() {
 		});
 	});
 
+	$(window).resize(function() {
+		if ($(window).width() < 768) {
+			$('#show-toolbar').addClass('hidden');
+		} else {
+			$('#show-toolbar').removeClass('hidden');
+		}
+	});
+
 	$('#contacts-div').on('shown.bs.collapse', function () {
 		if ($(this).data('tableloaded') === "no") {
 			$(this).data('tableloaded', "yes");

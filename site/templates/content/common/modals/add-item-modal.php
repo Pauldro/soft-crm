@@ -21,7 +21,7 @@
                         <div class="col-xs-8">
                             <div>
                                 <form action=""></form>
-                                <form action="<?= $config->pages->products."redir/"; ?>" id="add-item-search-form">
+                                <form action="<?= $config->pages->products."redir/"; ?>" id="add-item-search-form" class="allow-enterkey-submit">
                                     <input type="hidden" name="action" value="item-search">
                                     <input type="hidden" class="custID" name="custID">
                                     <input type="hidden" class="resultsurl" name="resultsurl">

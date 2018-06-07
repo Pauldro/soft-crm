@@ -11,7 +11,8 @@ $(document).ready(function() {
 	   INITIALIZE BOOTSTRAP FUNCTIONS
 	=============================================================*/
 		$('body').popover({selector: '[data-toggle="popover"]', placement: 'top'});
-
+		$('body').tooltip({selector: '[data-toggle="tooltip"]', placement: 'top'});
+		
 		init_datepicker();
 		init_timepicker();
 		init_bootstraptoggle();
@@ -29,6 +30,10 @@ $(document).ready(function() {
 				}
 			});
 		});
+
+		if ($(window).width() < 768) {
+			$('#show-toolbar').removeClass('hidden');
+		}
 
 		$(config.modals.lightbox).on('show.bs.modal', function (event) {
 			var image = $(event.relatedTarget).find('img');
@@ -221,6 +226,15 @@ $(document).ready(function() {
 				}
 			});
 		});
+		
+		$("body").on('keypress', 'form input', function(e) {
+			if ($(this).closest('form').hasClass('allow-enterkey-submit')) {
+				return true;
+			} else {
+				return e.which !== 13;
+			}
+		});
+		
 	/*==============================================================
 	  AJAX LOAD FUNCTIONS
 	=============================================================*/
@@ -648,6 +662,10 @@ $(document).ready(function() {
 
 				});
 			});
+		});
+
+		$("body").on("submit", ".quick-entry-add", function(e) {
+			e.preventDefault();
 		});
 
 		/*==============================================================
@@ -1344,7 +1362,7 @@ $(document).ready(function() {
 	FORM FUNCTIONS
 =============================================================*/
 	function comparefieldvalues(field1, field2) {
-		if ($(field1).val() == $(field2).val()) { return true; } else { return false; }
+		return ($(field1).val() == $(field2).val());
 	}
 
 	function disable_enterkey(e) {
@@ -1353,11 +1371,6 @@ $(document).ready(function() {
 			key = window.event.keyCode; //IE
 		} else {
 			key = e.which; //firefox
-		}
-		if (e.target.localName != 'textarea') {
-			return (key != 13);
-		} else {
-			return true;
 		}
 	}
 
