@@ -104,7 +104,23 @@
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
+			return $sql->fetchColumn();
+		}
+	}
+	
+	function get_lastsaledate($custID, $shiptoID = '', $userID = '',  $debug = false) {
+		$q = (new QueryBuilder())->table('custperm');
+		$q->field('lastsaledate');
+		if ($userID) {
+			$q->where('loginid', $userID);
+		}
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
 		}
 	}
 
@@ -2421,8 +2437,8 @@
 		}
 		$q->where('quotenbr', $detail->quotenbr);
 		$q->where('sessionid', $detail->sessionid);
-		$q->where('recno', $detail->recno);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$q->where('linenbr', $detail->recno);
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -2873,10 +2889,11 @@
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
+
 /* =============================================================
 	VENDOR FUNCTIONS
 ============================================================ */
-	function get_vendors($debug) {
+	function get_vendors($debug = false) {
 		$q = (new QueryBuilder())->table('vendors');
 		$q->where('shipfrom', '');
 		$sql = DplusWire::wire('database')->prepare($q->render());
@@ -2955,7 +2972,7 @@
 		}
 	}
 
-	function get_itemgroups($debug) {
+	function get_itemgroups($debug = false) {
 		$q = (new QueryBuilder())->table('itemgroup');
 		$sql = DplusWire::wire('database')->prepare($q->render());
 
@@ -2993,9 +3010,9 @@
 
 	function get_custidfromcart($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('carthed');
-		$q->field($q->expr('custid'));
+		$q->field('custid');
 		$q->where('sessionid', $sessionID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3324,19 +3341,20 @@
 		$q = (new QueryBuilder())->table('ordrdet');
 		$q->mode('update');
 		foreach ($properties as $property) {
-			if ($detail != $originaldetail->$property) {
+			if ($detail->$property != $originaldetail->$property) {
 				$q->set($property, $detail->$property);
 			}
 		}
 		$q->where('orderno', $detail->orderno);
 		$q->where('sessionid', $detail->sessionid);
 		$q->where('linenbr', $detail->linenbr);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
 			if ($detail->has_changes()) {
+				echo $q->generate_sqlquery($q->params);
 				$sql->execute($q->params);
 			}
 			return $q->generate_sqlquery($q->params);
@@ -3560,7 +3578,38 @@
 			$sql->execute($switching);
 			return $sql->fetchColumn();
 		}
+	}
 
+	/**
+	 * Return the item from the cross-reference table
+	 * @param  string $itemID   Item Number / ID
+	 * @param  string $custID   Customer ID
+	 * @param  string $vendorID Vendor ID
+	 * @param  bool   $debug    Run in debug? If so, return SQL Query
+	 * @return XRefItem         Item
+	 */
+	function get_xrefitem($itemID, $custID = '', $vendorID = '', $debug = false) {
+		$q = (new QueryBuilder())->table('itemsearch');
+		$q->where('itemid', $itemID);
+
+		if (!empty($custID)) {
+			$q->where('origintype', 'C');
+			$q->where('originid', $custID);
+		}
+		if (!empty($vendorID)) {
+			$q->where('origintype', 'V');
+			$q->where('originid', $vendorID);
+		}
+		$q->limit(1);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'XRefItem');
+			return $sql->fetch();
+		}
 	}
 
 	/* =============================================================
@@ -4264,6 +4313,7 @@
 		}
 
 		$q->where('custid', $custID);
+
 		if (!empty($shipID)) {
 			$q->where('shiptoid', $shipID);
 		}

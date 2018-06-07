@@ -72,7 +72,7 @@
 
 		public function generate_pageform(Customer $customer) {
 			$action = Dpluswire::wire('config')->pages->ajax."load/customers/cust-index/";
-			$form = new FormMaker("action=$action|method=POST|id=ci-cust-lookup");
+			$form = new FormMaker("action=$action|method=POST|id=ci-cust-lookup|class=allow-enterkey-submit");
 			$form->input("type=hidden|name=action|value=ci-item-lookup");
 			$form->input("type=hidden|name=shipID|class=shipID|value=$customer->shipID");
 			$form->input("type=hidden|name=nextshipID|class=nextshipID|value=".$customer->get_nextshiptoid());

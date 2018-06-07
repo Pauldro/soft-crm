@@ -17,6 +17,7 @@
 	<input type="hidden" class="action" name="action" value="update-line">
 	<input type="hidden" name="ordn" value="<?= $ordn; ?>">
 	<input type="hidden" name="custID" value="<?= $custID; ?>">
+	<input type="hidden" name="itemID" value="<?= $linedetail->itemid; ?>">
 	<input type="hidden" class="listprice" value="<?= $page->stringerbell->format_money($linedetail->listprice); ?>">
 	<input type="hidden" class="linenumber" name="linenbr" value="<?= $linedetail->linenbr; ?>">
 	<input type="hidden" class="originalprice" value="<?= $page->stringerbell->format_money($linedetail->price); ?>">
@@ -58,10 +59,18 @@
 		<div class="col-sm-4 item-form">
 			<h4>Current Price</h4>
 			<?php
-				if ($appconfig->allow_changeprice) {
-					include $config->paths->content.'edit/pricing/tables/price-edit-table.php';
+				if ($modules->isInstalled('QtyPerCase')) {
+					if ($appconfig->allow_changeprice) {
+						include $config->paths->siteModules.'QtyPerCase/content/edit/pricing/sales-orders/tables/price-edit-table.php';
+					} else {
+						include $config->paths->siteModules.'QtyPerCase/content/edit/pricing/sales-orders/tables/price-static-table.php';
+					}
 				} else {
-					include $config->paths->content.'edit/pricing/tables/price-static-table.php';
+					if ($appconfig->allow_changeprice) {
+						include $config->paths->content.'edit/pricing/sales-orders/tables/price-edit-table.php';
+					} else {
+						include $config->paths->content.'edit/pricing/sales-orders/tables/price-static-table.php';
+					}
 				}
 			?>
 
@@ -93,7 +102,7 @@
 					</td>
 				</tr>
 			</table>
-			<div class="<?php if (!in_array($linedetail->spcord, $config->specialordercodes)) {echo 'hidden';} ?>">
+			<div class="<?php if (!in_array($linedetail->spcord, array_values($config->specialordercodes))) {echo 'hidden';} ?>">
 				<h4>Special Order Details</h4>
 				<table class="table table-bordered table-striped table-condensed">
 					<tr>
@@ -124,7 +133,7 @@
 					<tr>
 						<td>Group</td>
 						<td>
-							<?php $groups = get_itemgroups(false); ?>
+							<?php $groups = get_itemgroups(); ?>
 							<select name="nsitemgroup" class="form-control input-sm">
 								<option value="">None</option>
 								<?php foreach ($groups as $group) : ?>
