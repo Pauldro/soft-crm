@@ -82,7 +82,23 @@
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
+			return $sql->fetchColumn();
+		}
+	}
+	
+	function get_lastsaledate($custID, $shiptoID = '', $userID = '',  $debug = false) {
+		$q = (new QueryBuilder())->table('custperm');
+		$q->field('lastsaledate');
+		if ($userID) {
+			$q->where('loginid', $userID);
+		}
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
 		}
 	}
 
@@ -562,9 +578,7 @@
 			$permquery->field('custid, shiptoid');
 			$permquery->where('loginid', [$loginID, $SHARED_ACCOUNTS]);
 			$q->where('(custid, shiptoid)','in', $permquery);
-		} else {
-
-		}
+		} 
 		$fieldstring = implode(", ' ', ", array_keys(Contact::generate_classarray()));
 
 		$q->where($q->expr("UCASE(REPLACE(CONCAT($fieldstring), '-', '')) LIKE UCASE([])", [$search]));
@@ -2897,6 +2911,7 @@
 			return $q->generate_sqlquery();
 		} else {
 			if ($detail->has_changes()) {
+				echo $q->generate_sqlquery($q->params);
 				$sql->execute($q->params);
 			}
 			return $q->generate_sqlquery($q->params);
@@ -3669,7 +3684,7 @@
 	function get_bookingtotalsbyshipto($sessionID, $custID, $shipID, $filter, $filtertypes, $interval = '', $debug = false) {
 		$q = (new QueryBuilder())->table('bookingc');
 		$q->where('custid', $custID);
-		
+
 		if (!empty($shipID)) {
 			$q->where('shiptoid', $shipID);
 		}
