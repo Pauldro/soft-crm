@@ -33,6 +33,7 @@
 		public $faxnbr;
 		public $title;
 
+
 		/**
 		 * Contact for Accounts Receivable [Billto only]
 		 * @var string Y | N
@@ -165,7 +166,11 @@
 		public function is_ackcontact() {
 			return ($this->ackcontact == 'Y') ? true : false;
 		}
-
+        
+        public function get_lastsaledate($userID = '', $debug = false) {
+            return get_lastsaledate($this->custid, $this->shiptoid, $userID, $debug);
+        }
+		
 		/* =============================================================
 			SETTER FUNCTIONS
 		============================================================ */
@@ -354,6 +359,19 @@
 		 */
         public static function load($custID, $shiptoID = '', $contactID = '', $debug = false) {
             return get_customercontact($custID, $shiptoID, $contactID, $debug);
+        }
+
+        /**
+         * Returns if User has access to contact
+         * @param  string $custID    Customer ID
+         * @param  string $shiptoID  Customer shipto ID
+         * @param  string $contactID Customer (shipto) Contact ID
+         * @param  string $loginID   User Login ID
+         * @param  bool   $debug     Run in debug?
+         * @return bool              TRUE | FALSE | SQL QUERY
+         */
+        public static function can_useraccess($custID, $shiptoID = '', $contactID = '', $loginID = '', $debug = false) {
+            return can_accesscustomercontact($custID, $shiptoID, $contactID, $loginID, $debug);
         }
 
 		/**

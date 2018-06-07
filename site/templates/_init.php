@@ -53,7 +53,7 @@
 	$user->loggedin = is_validlogin(session_id());
 
 	if ($user->loggedin) {
-		setupuser(session_id());
+		setup_user(session_id());
 	} elseif (strtolower($page->title) != 'login' && strtolower($page->title) != 'redir' && $page->template != 'template-print') {
 		header('location: ' . $config->pages->login);
 		exit;

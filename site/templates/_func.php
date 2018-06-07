@@ -158,18 +158,6 @@
 		return urlencode(str_replace(' ', '-', str_replace('#', '', $str)));
 	}
 
-	function determine_qty(Processwire\WireInput $input, $requestmethod, $itemID) {
-        if (DplusWire::wire('modules')->isInstalled('QtyPerCase')) {
-            $qtypercase = DplusWire::wire('modules')->get('QtyPerCase');
-            if (!empty($itemID)) {
-                $qty = $qtypercase->generate_qtyfromcasebottle($itemID, $input->$requestmethod->text('bottle-qty'), $input->$requestmethod->text('case-qty'));
-            }
-        } else {
-            $qty = $input->$requestmethod->text('qty');
-        }
-        return $qty = empty(trim($qty, '.')) ? 1 : $qty;
-    }
-	
 /* =============================================================
    URL FUNCTIONS
  ============================================================ */
@@ -424,16 +412,16 @@
  /* =============================================================
    PROCESSWIRE USER FUNCTIONS
  ============================================================ */
-	function setupuser($sessionID) {
+	function setup_user($sessionID) {
 		$loginrecord = get_loginrecord($sessionID);
         $loginID = $loginrecord['loginid'];
-        $user = get_logmuser($loginID);
+        $user = LogmUser::load($loginID);
 		DplusWire::wire('user')->fullname = $loginrecord['loginname'];
 		DplusWire::wire('user')->loginid = $loginrecord['loginid'];
 		DplusWire::wire('user')->hascontactrestrictions = $loginrecord['restrictcustomer'];
 		DplusWire::wire('user')->hasrestrictions = $loginrecord['restrictuseraccess'];
 		DplusWire::wire('user')->salespersonid = $loginrecord['salespersonid'];
-
+        DplusWire::wire('user')->addRole($user->get_dplusrole());
 	}
 
     /**
@@ -441,8 +429,7 @@
     	 * that fatal errors (E_USER_ERROR) will prevent further processing.
     	 *
     	 * @param    string    $error          Error message (max 1024 characters)
-    	 * @param    integer   $level          PHP error level, from PHP's E_USER constants
-    	 *
+    	 * @param    int   $level          PHP error level, from PHP's E_USER constants
     	 * @return   null
     	 */
     	function error($error, $level = E_USER_ERROR) {

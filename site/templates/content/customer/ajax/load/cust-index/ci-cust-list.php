@@ -1,6 +1,6 @@
 <?php
-    $custresults = search_custindexpaged($user->loginid, $config->showonpage, $input->pageNum, $user->hascontactrestrictions, $input->get->text('q'), false);
-    $resultscount = count_searchcustindex($user->loginid, $user->hascontactrestrictions, $input->get->text('q'), false);
+    $custresults = search_custindexpaged($input->get->text('q'), $config->showonpage, $input->pageNum);
+    $resultscount = count_searchcustindex($input->get->text('q'));
 
     $pageurl = ($input->get->q) ? $page->fullURL->getUrl() : $config->pages->ajaxload."customers/cust-index/?function=ci";
     $insertafter = 'cust-index';
@@ -17,7 +17,7 @@
         <table id="cust-index" class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th width="100">CustID</th> <th>Customer Name</th> <th>Ship-To</th> <th>Location</th><th width="100">Phone</th>
+                    <th width="100">CustID</th> <th>Customer Name</th> <th>Ship-To</th> <th>Location</th><th width="100">Phone</th><th>Last Sale Date</th>
                 </tr>
             </thead>
             <tbody>
@@ -33,6 +33,7 @@
                             <td><?= $page->stringerbell->highlight($cust->shiptoid, $input->get->q); ?></td>
                             <td><?= $page->stringerbell->highlight($cust->generate_address(), $input->get->q); ?></td>
                             <td><a href="tel:<?= $cust->phone; ?>" title="Click To Call"><?= $page->stringerbell->highlight($cust->phone, $input->get->q); ?></a></td>
+                            <td class="text-right"><?= DplusDateTime::format_date($cust->get_lastsaledate($user->loginid)); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else : ?>

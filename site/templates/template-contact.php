@@ -2,12 +2,11 @@
 	$custID = $input->get->text('custID');
 	$shipID = $input->get->text('shipID');
 	$contactID = $input->get->text('contactID');
-
 	$page->body = $config->paths->content.'customer/contact/contact-page.php';
 	$contact = Contact::load($custID, $shipID, $contactID);
 
     if ($contact) {
-        if (can_accesscustomercontact($user->loginid, $user->hasrestrictions, $custID, $shipID, $contactID, false)) {
+        if (Contact::can_useraccess($custID, $shipID, $contactID)) {
             $page->title = $contact->contact . ", ".$contact->get_customername();
             $page->body = $config->paths->content.'customer/contact/contact-page.php';
 

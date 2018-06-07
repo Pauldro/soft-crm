@@ -15,7 +15,7 @@
             'order',
             'cast',
             'as',
-			       'group',
+			'group',
             'by',
             'or',
             'asc',
@@ -25,12 +25,13 @@
             'into',
             'set',
             'is',
-			      'in',
+			'in',
             'join',
             'left',
             'inner',
             'outer',
-            'right'
+            'right',
+            'like'
         );
 
         /**
@@ -115,9 +116,16 @@
 								$dateformat = $this->generate_dateformat($filter, $filtertypes);
 								$this->where($this->expr("STR_TO_DATE($filter, '$dateformat') BETWEEN STR_TO_DATE([], '%m/%d/%Y') AND STR_TO_DATE([], '%m/%d/%Y')", $filtervalue));
                             } else if ($filtertypes[$filter]['datatype'] == 'numeric') {
+<<<<<<< HEAD
                             	$this->where($this->expr("$filter BETWEEN CAST([] as DECIMAL) AND CAST([] AS DECIMAL)", $filtervalue));
 							} else {
                                 $this->where($this->expr("$filter BETWEEN [] AND []", $filtervalue));
+=======
+                                //$this->where($this->expr("$filter between CAST([] as UNSIGNED) and CAST([] as UNSIGNED)", $filtervalue));
+                            	$this->where($this->expr("$filter between CAST([] as DECIMAL) and CAST([] as DECIMAL)", $filtervalue));
+							} else {
+                                $this->where($this->expr("$filter between [] and []", $filtervalue));
+>>>>>>> master
                             }
                         }
                         break;
@@ -252,4 +260,15 @@
 					break;
 			}
 		}
+
+        /**
+         * Returns a keyword so it can be searched
+         * @param  string $keyword Keyword
+         * @return string          Keyword cleaned up for Database search
+         */
+        public static function generate_searchkeyword($keyword) {
+            $replace = array(' ', '-');
+            $replacewith = array('%', '');
+            return '%'.str_replace($replace, $replacewith, $keyword).'%';;
+        }
     }
