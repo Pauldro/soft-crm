@@ -116,16 +116,10 @@
 								$dateformat = $this->generate_dateformat($filter, $filtertypes);
 								$this->where($this->expr("STR_TO_DATE($filter, '$dateformat') BETWEEN STR_TO_DATE([], '%m/%d/%Y') AND STR_TO_DATE([], '%m/%d/%Y')", $filtervalue));
                             } else if ($filtertypes[$filter]['datatype'] == 'numeric') {
-<<<<<<< HEAD
-                            	$this->where($this->expr("$filter BETWEEN CAST([] as DECIMAL) AND CAST([] AS DECIMAL)", $filtervalue));
-							} else {
-                                $this->where($this->expr("$filter BETWEEN [] AND []", $filtervalue));
-=======
                                 //$this->where($this->expr("$filter between CAST([] as UNSIGNED) and CAST([] as UNSIGNED)", $filtervalue));
                             	$this->where($this->expr("$filter between CAST([] as DECIMAL) and CAST([] as DECIMAL)", $filtervalue));
 							} else {
                                 $this->where($this->expr("$filter between [] and []", $filtervalue));
->>>>>>> master
                             }
                         }
                         break;
