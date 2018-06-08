@@ -44,12 +44,15 @@
 		 */
         protected $image;
 
+<<<<<<< HEAD
+=======
         /**
          * How many in a case
          * @var int
          */
         protected $qty_percase;
 
+>>>>>>> master
 		/**
 		 * Date updted In Database
 		 * @var int
@@ -99,6 +102,8 @@
             }
         }
 
+<<<<<<< HEAD
+=======
         /**
          * Returns true if this item is dealt in case qty
          * If the case qty is 1, then we only deal with the item as Eaches
@@ -108,15 +113,16 @@
             return ($this->qty_percase != 1) ? true : false;
         }
 
+>>>>>>> master
 		/**
 		 * Checks if Item image exists if not use the image not found
 		 * @return string path/to/image
 		 */
         public function generate_imagesrc() {
-            if (file_exists(Dpluswire::wire('config')->imagefiledirectory.$this->image)) {
-                return Dpluswire::wire('config')->imagedirectory.$this->image;
+            if (file_exists(DplusWire::wire('config')->imagefiledirectory.$this->image)) {
+                return DplusWire::wire('config')->imagedirectory.$this->image;
             } else {
-                return Dpluswire::wire('config')->imagedirectory.Dpluswire::wire('config')->imagenotfound;
+                return DplusWire::wire('config')->imagedirectory.DplusWire::wire('config')->imagenotfound;
             }
         }
 
@@ -126,7 +132,7 @@
 		 * @return string         II Load URL
 		 */
         public function generate_iiselecturl($custID = false) {
-            $url = new \Purl\Url(Dpluswire::wire('config')->pages->products."redir/?action=ii-select");
+            $url = new \Purl\Url(DplusWire::wire('config')->pages->products."redir/?action=ii-select");
             if (!empty($custID)) $url->query->set('custID', $custID);
             $url->query->set('itemID', $this->itemid);
             return $url->getUrl();
