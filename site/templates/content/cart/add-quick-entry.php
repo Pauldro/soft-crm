@@ -1,4 +1,4 @@
-<form action="<?= $config->pages->cart.'redir/'; ?>" method="post" class="quick-entry-add">
+<form action="<?= $config->pages->cart.'redir/'; ?>" method="post" class="quick-entry-add allow-enterkey-submit" data-validated="">
 	<input type="hidden" name="action" value="add-to-cart">
 	<div class="row">
 		<div class="col-xs-9 sm-padding">
@@ -37,3 +37,18 @@
 		<div class="col-xs-3 col-sm-3 sm-padding"> </div>
 	</div>
 </form>
+<script>
+	$(function () {
+		$("body").on("submit", ".quick-entry-add", function(e) {
+			e.preventDefault();
+			var form = $(this);
+			var itemsearch = form.find('input[name=itemID]').val();
+			var searchurl = URI(config.urls.json.validateitemid).addQuery('itemID', itemsearch).toString();
+			console.log(searchurl);
+			
+			$.getJSON(searchurl, function(json) {
+				
+			});
+		});
+	});
+</script>

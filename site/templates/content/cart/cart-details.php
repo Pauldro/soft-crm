@@ -105,4 +105,4 @@
 		<span class="glyphicon glyphicon-search" aria-hidden="true"></span> &nbsp; Search Items
 	</button>
 </div>
-<?php //include $config->paths->content.'cart/add-quick-entry.php'; ?>
+<?php include $config->paths->content.'cart/add-quick-entry.php'; ?>
