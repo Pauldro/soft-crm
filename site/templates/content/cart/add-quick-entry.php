@@ -44,14 +44,17 @@
 			var form = $(this);
 			var itemsearch = form.find('input[name=itemID]').val();
 			var custID = form.find('input[name=custID]').val();
+			var qtyfield = form.find('input[name=qty]');
 
 			if (form.attr('data-validated') != itemsearch) {
 				e.preventDefault();
 				var searchurl = URI(config.urls.json.validateitemid).addQuery('itemID', itemsearch).toString();
-
 				$.getJSON(searchurl, function(json) {
 					if (json.exists) {
-						form.attr('data-validated', itemsearch);
+						var validitemid = json.itemID;
+						form.attr('data-validated', validitemid);
+						form.find('input[name=itemID]').val(validitemid);
+						form.submit();
 					} else {
 						swal ({
 							title: 'Item not found.',
@@ -76,6 +79,10 @@
 						}).catch(swal.noop);
 					}
 				});
+			} else if (qtyfield.val() == '') {
+				e.preventDefault();
+				qtyfield.parent().addClass('has-error');
+				qtyfield.focus();
 			} else {
 				showajaxloading();
 				form.postform({formdata: false, jsoncallback: true, action: false}, function() {
