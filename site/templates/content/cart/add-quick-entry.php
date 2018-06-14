@@ -1,4 +1,4 @@
-<form action="<?= $config->pages->cart.'redir/'; ?>" method="post" class="quick-entry-add allow-enterkey-submit" data-validated="">
+<form action="<?= $config->pages->cart.'redir/'; ?>" method="post" class="quick-entry-add allow-enterkey-submit" id="quick-entry-add" data-validated="">
 	<input type="hidden" name="action" value="add-to-cart">
 	<input type="hidden" name="custID" value="<?= $custID; ?>">
 	<div class="row">
@@ -16,18 +16,12 @@
 					<input class="form-control input-xs text-right underlined" type="text" size="6" name="qty" value="">
 				</span>
 			</div>
-			<div class="col-md-2 form-group sm-padding">
-				<span class="detail-line-field-name">Price:</span>
-				<span class="detail-line-field numeric">
-					<input class="form-control input-xs text-right underlined" type="text" size="10" name="price" value="">
-				</span>
-			</div>
-			<div class="col-md-2 form-group sm-padding">
+			<div class="col-md-2 form-group text-right sm-padding">
 				<button type="submit" class="btn btn-sm btn-primary">
 					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> &nbsp; Add
 				</button>
 			</div>
-			<div class="col-md-2 form-group sm-padding">
+			<div class="col-md-2 form-group text-right sm-padding">
 				<button type="button" class="btn btn-sm btn-primary"  data-toggle="modal" data-target="#item-lookup-modal">
 					<span class="glyphicon glyphicon-search" aria-hidden="true"></span> &nbsp; Search Items
 				</button>
@@ -51,10 +45,9 @@
 			var itemsearch = form.find('input[name=itemID]').val();
 			var custID = form.find('input[name=custID]').val();
 
-			if (form.data('validated') != itemsearch) {
+			if (form.attr('data-validated') != itemsearch) {
 				e.preventDefault();
 				var searchurl = URI(config.urls.json.validateitemid).addQuery('itemID', itemsearch).toString();
-				console.log(searchurl);
 
 				$.getJSON(searchurl, function(json) {
 					if (json.exists) {
@@ -69,10 +62,12 @@
 							showCancelButton: true,
 							confirmButtonText: 'Make Dplus search?'
 						}).then(function (result) {
-							console.log(config.urls.products);
 							var productsearchurl = URI(config.urls.products.redir.itemsearch).addQuery('q', itemsearch).addQuery('custID', custID).toString();
+							var productresultsurl = URI(config.urls.load.quickentry_searchresults).addQuery('q', itemsearch).toString();
+							showajaxloading();
 							dplusrequest(productsearchurl, function() {
-								form.find('.results').loadin(config.urls.load.quickentry_searchresults, function() {
+								form.find('.results').loadin(productresultsurl, function() {
+									hideajaxloading();
 									if (focus.length > 0) {
 										$('html, body').animate({scrollTop: $(focus).offset().top - 60}, 1000);
 									}
@@ -81,7 +76,23 @@
 						}).catch(swal.noop);
 					}
 				});
+			} else {
+				showajaxloading();
+				form.postform({formdata: false, jsoncallback: true, action: false}, function() {
+					window.location.reload(true);
+				});
 			}
+		});
+
+		$("body").on("click", ".qe-item-results", function(e) {
+			e.preventDefault();
+			var item = $(this);
+			var itemID = item.data('itemid');
+			var form = $(".quick-entry-add");
+			form.find('input[name=itemID]').val(itemID);
+			form.find('.results').empty();
+			form.attr('data-validated', itemID);
+			form.submit();
 		});
 	});
 </script>
