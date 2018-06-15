@@ -830,7 +830,7 @@
 				}
 				
 				if ($this->count_daycompletedtasks($date)) {
-					$listitems .= $bootstrap->li('role=presentation|class=bg-warning', 'Incomplete'.$bootstrap->span('class=pull-right', $this->count_daycompletedtasks($date)).'<br>');
+					$listitems .= $bootstrap->li('role=presentation|class=bg-success', 'Completed'.$bootstrap->span('class=pull-right', $this->count_daycompletedtasks($date)).'<br>');
 				}
 				
 				if ($this->count_dayrescheduledtasks($date)) {
