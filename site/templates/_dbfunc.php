@@ -224,17 +224,6 @@
 		}
 	}
 
-	function get_customerinfo($sessionID, $custID, $debug) { // DEPRECATE
-		$sql = DplusWire::wire('database')->prepare("SELECT custindex.*, customer.dateentered FROM custindex JOIN customer ON custindex.custid = customer.custid WHERE custindex.custid = :custID AND customer.sessionid = :sessionID LIMIT 1");
-		$switching = array(':sessionID' => $sessionID, ':custID' => $custID); $withquotes = array(true, true);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return $sql->fetch(PDO::FETCH_ASSOC);
-		}
-	}
-
 	function get_firstcustindexrecord($debug) {
 		$sql = DplusWire::wire('database')->prepare("SELECT * FROM custindex LIMIT 1");
 		if ($debug) {
@@ -780,18 +769,6 @@
 		} else {
 			$sql->execute($q->params);
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	function insert_newcustindexrecord($customer, $debug) { // DEPRECATED 3/5/2018
-		$query = returninsertlinks($customer);
-		$sql = Processwire\wire('database')->prepare("INSERT INTO custindex (".$query['columnlist'].") VALUES (".$query['valuelist'].")");
-		$switching = $query['switching']; $withquotes = $query['withquotes'];
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
 		}
 	}
 
@@ -3227,17 +3204,6 @@
 		}
 	}
 
-	function insertcartline($sessionID, $linenbr, $debug) { // DEPRECATED 3/6/2018
-		$sql = Processwire\wire('database')->prepare("INSERT INTO cartdet (sessionid, linenbr) VALUES (:sessionID, :linenbr)");
-		$switching = array(':sessionID' => $sessionID, ':linenbr' => $linenbr); $withquotes = array(true, true);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'insertedid' => Processwire\wire('database')->lastInsertId());
-		}
-	}
-
 	function getcartlinedetail($sessionID, $linenbr, $debug) {
 		return getcartline($sessionID, $linenbr, $debug);
 	}
@@ -3309,22 +3275,11 @@
 		return intval($sql->fetchColumn()) + 1;
 	}
 
-	function getcreatedordn($sessionID, $debug) { // DEPRECATED 3/6/2018
-		$sql = Processwire\wire('database')->prepare("SELECT ordernbr FROM logperm WHERE sessionid = :sessionID");
-		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
-		$sql->execute($switching);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			return $sql->fetchColumn();
-		}
-	}
-
 	function get_createdordn($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('logperm');
 		$q->field('ordernbr');
 		$q->where('sessionid', $sessionID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
