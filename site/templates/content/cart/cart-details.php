@@ -37,7 +37,7 @@
 						<?php else : ?>
 							<?= $detail->itemid; ?>
 							<?= (strlen($detail->vendoritemid)) ? "($detail->vendoritemid)" : ''; ?>
-							<br> <small><div class="form-group"><?= $detail->desc1; ?></div></small>
+							<br> <small class="description-small"><div class="form-group"><?= $detail->desc1; ?></div></small>
 						<?php endif; ?>
 					</div>
 					<div class="response"></div>
@@ -60,7 +60,7 @@
 				</div>
 				<div class="col-md-2 sm-padding form-group">
 					<span class="detail-line-field-name">Total:</span>
-					<p class="form-control-static"><span class="detail-line-field numeric ">$ <span class="total-price"><?= $page->stringerbell->format_money($detail->totalprice); ?></span></span></p>
+					<p class="form-control-static text-right"><span class="detail-line-field numeric ">$ <span class="total-price"><?= $page->stringerbell->format_money($detail->totalprice); ?></span></span></p>
 				</div>
 				<div class="col-md-2 sm-padding form-group">
 					<span class="detail-line-field-name">Rqst Date:</span>
