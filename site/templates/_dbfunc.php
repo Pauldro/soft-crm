@@ -107,7 +107,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	function get_lastsaledate($custID, $shiptoID = '', $userID = '',  $debug = false) {
 		$q = (new QueryBuilder())->table('custperm');
 		$q->field('lastsaledate');
@@ -795,17 +795,18 @@
 		}
 	}
 
-	function insert_customerindexrecord(Contact $customer, $debug = false) {
-		$properties = array_keys($customer->_toArray());
+	function insert_customerindexrecord(Contact $contact, $debug = false) {
+		$contact->set('recno', get_maxcustindexrecnbr() + 1);
+		$properties = array_keys($contact->_toArray());
 		$q = (new QueryBuilder())->table('custindex');
 		$q->mode('insert');
 
 		foreach ($properties as $property) {
-			if (!empty($customer->$property)) {
-				$q->set($property, $customer->$property);
+			if (!empty($contact->$property)) {
+				$q->set($property, $contact->$property);
 			}
 		}
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -864,7 +865,7 @@
 	function get_maxcustindexrecnbr($debug = false) {
 		$q = (new QueryBuilder())->table('custindex');
 		$q->field($q->expr('MAX(recno)'));
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -2863,6 +2864,42 @@
 		}
 	}
 
+	function get_daypriorincompletetasks($day, $filters, $filterable, $debug = false) {
+		$q = (new QueryBuilder())->table('useractions');
+		$q->where('actiontype', 'task');
+		$q->where($q->expr('DATE(duedate)'), '<=', $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('duedate', $filterable)]));
+		$q->order('duedate', 'ASC');
+
+		$q->generate_filters($filters, $filterable);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'UserAction');
+			return $sql->fetchAll();
+		}
+	}
+
+	function count_daypriorincompletetasks($day, $filters, $filterable, $debug = false) {
+		$q = (new QueryBuilder())->table('useractions');
+		$q->field($q->expr('COUNT(*)'));
+		$q->where('actiontype', 'task');
+		$q->where($q->expr('DATE(duedate)'), '<=', $q->expr("STR_TO_DATE([], [])", [$day, $q->generate_dateformat('duedate', $filterable)]));
+		$q->order('duedate', 'ASC');
+
+		$q->generate_filters($filters, $filterable);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+
 	function get_useraction($id, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$q->where('id', $id);
@@ -3530,11 +3567,11 @@
 		ITEM MASTER FUNCTIONS
 	============================================================ */
 	function search_items($query, $custID, $limit, $page, $debug = false) {
-		$search = '%'.str_replace(' ', '%', $query).'%';
+		$search = QueryBuilder::generate_searchkeyword($query);
 		$q = (new QueryBuilder())->table('itemsearch');
 
 		if (empty($custID)) {
-			$q->where('origintype', ['I', 'V']);
+			$q->where('origintype', ['I', 'V', 'L']);
 			$q->where(
 		        $q
 		        ->orExpr()
@@ -3542,14 +3579,14 @@
 		        ->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]))
 		    );
 		} else {
-			$q->where('origintype', ['I', 'V', 'C']);
+			$q->where('origintype', ['I', 'V', 'L', 'C']);
 			$q->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]));
 		}
 		$q->order($q->expr("itemid LIKE UCASE([]) DESC", [$search]));
 		$q->group('itemid');
 		$q->limit($limit, $q->generate_offset($page, $limit));
 
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3560,13 +3597,13 @@
 		}
 	}
 
-	function count_searchitems($q, $custID, $debug = false) {
-		$search = '%'.str_replace(' ', '%', $q).'%';
+	function count_searchitems($query, $custID, $debug = false) {
+		$search = QueryBuilder::generate_searchkeyword($query);
 		$q = (new QueryBuilder())->table('itemsearch');
 		$q->field('COUNT(DISTINCT(itemid))');
 
 		if (empty($custID)) {
-			$q->where('origintype', ['I', 'V']);
+			$q->where('origintype', ['I', 'V', 'L']);
 			$q->where(
 		        $q
 		        ->orExpr()
@@ -3574,32 +3611,15 @@
 		        ->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]))
 		    );
 		} else {
-			$q->where('origintype', ['I', 'V', 'C']);
+			$q->where('origintype', ['I', 'V', 'L', 'C']);
 			$q->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]));
 		}
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			return $sql->fetchColumn();
-		}
-	}
-
-	function validateitemid($itemID, $custID, $debug) {
-		if (empty($custID)) {
-			$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE UCASE(itemid) = UCASE(:itemID) AND originid = 'I'");
-			$switching = array(':itemID' => $itemID); $withquotes = array(true);
-		} else {
-			$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM itemsearch WHERE (originid = (:custID) AND UCASE(refitemid) = UCASE(:itemID)) OR (UCASE(itemid) = UCASE(:itemID) AND origintype = 'I')");
-			$switching = array(':itemID' => $itemID, ':custID' => $custID); $withquotes = array(true, true);
-		}
-
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
 			return $sql->fetchColumn();
 		}
 	}
