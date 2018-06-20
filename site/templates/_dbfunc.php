@@ -25,15 +25,24 @@
 		$sql->execute($switching);
 		return $sql->fetch(PDO::FETCH_ASSOC);
 	}
-
-	function has_restrictedcustomers($sessionID, $debug = false) {
+	
+/* =============================================================
+	LOGMPERM FUNCTIONS
+============================================================ */
+	/**
+	 * Returns the Order Number / Quote Number created 
+	 * @param  string $sessionID Session Identifier
+	 * @param  bool   $debug     Run in debug? IF so return SQL Query
+	 * @return string           Dplus (Order / Quote) Number
+	 */
+	function get_createdordn($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('logperm');
-		$q->field($q->expr("IF(restrictcustomers = 'Y',1,0)"));
+		$q->field('ordernbr');
 		$q->where('sessionid', $sessionID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
-			return $q->generate_sqlquery($q->params);
+			return $q->generate_sqlquery();
 		} else {
 			$sql->execute($q->params);
 			return $sql->fetchColumn();
@@ -771,19 +780,14 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-
-	function insert_newcustindexrecord($customer, $debug) { // DEPRECATED 3/5/2018
-		$query = returninsertlinks($customer);
-		$sql = Processwire\wire('database')->prepare("INSERT INTO custindex (".$query['columnlist'].") VALUES (".$query['valuelist'].")");
-		$switching = $query['switching']; $withquotes = $query['withquotes'];
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		}
-	}
-
+	
+	/**
+	 * Inserts record into custindex table
+	 * @param  Contact $contact The Contact object you will add
+	 * @param  bool    $debug   Run in debug?
+	 * @return string           Returns SQL Query
+	 * @uses get_maxcustindexrecnbr()
+	 */
 	function insert_customerindexrecord(Contact $contact, $debug = false) {
 		$contact->set('recno', get_maxcustindexrecnbr() + 1);
 		$properties = array_keys($contact->_toArray());
@@ -804,7 +808,13 @@
 			return $q->generate_sqlquery($q->params);
 		}
 	}
-
+	
+	/**
+	 * Updates the contact record in the custindex table
+	 * @param  Contact $contact Contact to update
+	 * @param  bool    $debug   Run in debug
+	 * @return string           SQL Query
+	 */
 	function update_contact(Contact $contact, $debug = false) {
 		$originalcontact = Contact::load($contact->custid, $contact->shiptoid, $contact->contact);
 		$properties = array_keys($contact->_toArray());
@@ -818,7 +828,7 @@
 		$q->where('custid', $contact->custid);
 		$q->where('shiptoid', $contact->shiptoid);
 		$q->where('contact', $contact->contact);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -829,7 +839,14 @@
 			return $q->generate_sqlquery($q->params);
 		}
 	}
-
+	
+	/**
+	 * Updates the contact Name / ID in the custindex table for that contact
+	 * @param  Contact $contact   Customer Contact
+	 * @param  string  $contactID New Contact Name / ID
+	 * @param  bool    $debug     Run in Debug?
+	 * @return string             SQL Query
+	 */
 	function change_contactid(Contact $contact, $contactID, $debug = false) {
 		$originalcontact = Contact::load($contact->custid, $contact->shiptoid, $contact->contact);
 		$q = (new QueryBuilder())->table('custindex');
@@ -850,7 +867,12 @@
 			return $q->generate_sqlquery($q->params);
 		}
 	}
-
+	
+	/**
+	 * Get the last record number (recno) from the custindex table
+	 * @param  bool   $debug Run in debug?
+	 * @return string        Record Number
+	 */
 	function get_maxcustindexrecnbr($debug = false) {
 		$q = (new QueryBuilder())->table('custindex');
 		$q->field($q->expr('MAX(recno)'));
@@ -862,13 +884,20 @@
 			return $sql->fetchColumn();
 		}
 	}
-
+	/**
+	 * Change custindex Customer ID 
+	 * // NOTE Usually used for new customers, once dplus custid is provided
+	 * @param  string $originalcustID Current Customer ID
+	 * @param  string $newcustID      new Customer ID (Provided by Dplus)
+	 * @param  bool   $debug          Run in debug?
+	 * @return string                 SQL Query
+	 */
 	function change_custindexcustid($originalcustID, $newcustID, $debug = false) {
 		$q = (new QueryBuilder())->table('custindex');
 		$q->mode('update');
 		$q->set('custid', $newcustID);
 		$q->where('custid', substr($originalcustID, 0, 6));
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -878,7 +907,7 @@
 	}
 
 /* =============================================================
-	ORDERS FUNCTIONS
+	ORDERS FUNCTIONS 
 ============================================================ */
 	function count_userorders($sessionID, $filter = false, $filtertypes = false, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
@@ -1182,33 +1211,26 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-
-	function hasanorderlocked($sessionID) {
-		$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM ordlock WHERE sessionid = :sessionID");
-		$switching = array(':sessionID' => $sessionID);
-		$sql->execute($switching);
-		return $sql->fetchColumn() > 0 ? true : false;
-	}
-
-	function getlockedordn($sessionID) {
-		$sql = Processwire\wire('database')->prepare("SELECT orderno FROM ordlock WHERE sessionid = :sessionID LIMIT 1");
-		$switching = array(':sessionID' => $sessionID);
-		$sql->execute($switching);
-		return $sql->fetchColumn();
-	}
-
-	function is_orderlocked($sessionID, $ordn) {
-		$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM ordlock WHERE sessionid = :sessionID AND orderno = :ordn LIMIT 1");
-		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn);
-		$sql->execute($switching);
-		return $sql->fetchColumn();
-	}
-
-	function get_nextorderlock($sessionID) {
-		$sql = Processwire\wire('database')->prepare("SELECT MAX(recno) FROM ordlock WHERE sessionid = :sessionID LIMIT 1");
-		$switching = array(':sessionID' => $sessionID);
-		$sql->execute($switching);
-		return (intval($sql->fetchColumn()) + 1);
+	
+	/**
+	 * Returns the order number locked by this session
+	 * @param  string $sessionID Session Identifier
+	 * @param  bool   $debug     Run in debug? If so return SQL Query
+	 * @return string            Order Number
+	 */
+	function get_lockedordn($sessionID, $debug) {
+		$q = (new QueryBuilder())->table('orddocs');
+		$q->field('orderno');
+		$q->where('sessionid', $sessionID);
+		$q->limit(1);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
 	}
 
 	function get_orderdocs($sessionID, $ordn, $debug = false) {
@@ -3082,11 +3104,17 @@
 /* =============================================================
 	CART FUNCTIONS
 ============================================================ */
-	function count_carthead($sessionID, $debug = false) {
+	/**
+	 * Returns if Session has a carthead record
+	 * @param  string $sessionID Session Identifier
+	 * @param  bool   $debug     Run in debug?
+	 * @return bool              If there's a carthead record will return 1 / true
+	 */
+	function has_carthead($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('carthed');
-		$q->field("COUNT(*)");
+		$q->field($q->expr("IF(COUNT(*) > 1, 1, 0)"));
 		$q->where('sessionid', $sessionID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3095,7 +3123,12 @@
 			return $sql->fetchColumn();
 		}
 	}
-
+	/**
+	 * Returns the Cart's current Customer ID
+	 * @param  string $sessionID Session Identifier
+	 * @param  bool   $debug     Run in debug? If so returns SQL Query
+	 * @return string            Cart Customer ID
+	 */
 	function get_custidfromcart($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('carthed');
 		$q->field('custid');
@@ -3109,44 +3142,38 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function get_carthead($sessionID, $useclass = false, $debug = false) {
+	
+	/**
+	 * Returns the carthead record for this session
+	 * @param  string $sessionID Session Identifier
+	 * @param  bool   $debug     Run in debug? If so returns SQL Query
+	 * @return CartQuote            CartQuote
+	 */
+	function get_carthead($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('carthed');
 		$q->where('sessionid', $sessionID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'CartQuote'); // CAN BE SalesOrder|SalesOrderEdit
-				return $sql->fetch();
-			}
-			return $sql->fetch(PDO::FETCH_ASSOC);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'CartQuote'); // CAN BE SalesOrder|SalesOrderEdit
+			return $sql->fetch();
 		}
 	}
-
-	function editcarthead($sessionID, $carthead, $debug) {
-		$orginalcarthead = getcarthead($sessionID, false);
-		$query = returnpreppedquery($originalcarthead, $carthead);
-		$sql = Processwire\wire('database')->prepare("UPDATE carthed SET ".$query['setstatement']." WHERE sessionid = :sessionID");
-		$query['switching'][':sessionID'] = $sessionID; $query['withquotes'][] = true;
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
-		} else {
-			if ($query['changecount'] > 0) {
-				$sql->execute($query['switching']);
-			}
-			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
-		}
-	}
-
+	
+	/**
+	 * Returns the number of Cart Items for this session
+	 * @param  string $sessionID Session Identifier
+	 * @param  bool   $debug     Run in debug? If so return SQL Query
+	 * @return int               Number of Cart Items for this session
+	 */
 	function count_cartdetails($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('cartdet');
 		$q->field('COUNT(*)');
 		$q->where('sessionid', $sessionID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3155,11 +3182,18 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function get_cartdetails($sessionID, $useclass = false, $debug = false) {
+	
+	/**
+	 * Returns an array of CartDetails
+	 * @param  string $sessionID Session Identifier
+	 * @param  bool   $useclass  Use CartDetail Class?
+	 * @param  bool   $debug     Run in debug? If so return SQL Query
+	 * @return array             CartDetails
+	 */
+	function get_cartdetails($sessionID, $useclass = true, $debug = false) {
 		$q = (new QueryBuilder())->table('cartdet');
 		$q->where('sessionid', $sessionID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3172,12 +3206,19 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-
+	
+	/**
+	 * Return the CartDetail for this session and Line Number
+	 * @param  string     $sessionID Session Identifier
+	 * @param  int        $linenbr   Detail Line Number
+	 * @param  bool       $debug     Run in debug?
+	 * @return CartDetail            Cart Detail Line
+	 */
 	function get_cartdetail($sessionID, $linenbr, $debug = false) {
 		$q = (new QueryBuilder())->table('cartdet');
 		$q->where('sessionid', $sessionID);
 		$q->where('linenbr', $linenbr);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3187,8 +3228,16 @@
 			return $sql->fetch();
 		}
 	}
-
-	function insert_carthead($sessionID, $custID, $shipID, $debug) {
+	
+	/**
+	 * Inserts new carthead record
+	 * @param  string $sessionID Session Identifier
+	 * @param  string $custID    Customer ID
+	 * @param  string $shipID    Customer Shipto ID
+	 * @param  bool   $debug     Run in debug?
+	 * @return string            SQL Query
+	 */
+	function insert_carthead($sessionID, $custID, $shipID = '', $debug) {
 		$q = (new QueryBuilder())->table('carthed');
 		$q->mode('insert');
 		$q->set('sessionid', $sessionID);
@@ -3196,7 +3245,7 @@
 		$q->set('shiptoid', $shipID);
 		$q->set('date', date('Ymd'));
 		$q->set('time', date('His'));
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3205,38 +3254,14 @@
 			return $q->generate_sqlquery($q->params);
 		}
 	}
-
-	function getcartline($sessionID, $linenbr, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM cartdet WHERE sessionid = :sessionID AND linenbr = :linenbr");
-		$switching = array(':sessionID' => $sessionID, ':linenbr' => $linenbr); $withquotes = array(true, true);
-		$sql->execute($switching);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			return $sql->fetch(PDO::FETCH_ASSOC);
-		}
-	}
-
-	function getcartlinedetail($sessionID, $linenbr, $debug) {
-		return getcartline($sessionID, $linenbr, $debug);
-	}
-
-	function edit_cartline($sessionID, $newdetails, $debug) {
-		$originaldetail = getcartlinedetail($sessionID, $newdetails['linenbr'], false);
-		$query = returnpreppedquery($originaldetail, $newdetails);
-		$sql = Processwire\wire('database')->prepare("UPDATE cartdet SET ".$query['setstatement']." WHERE sessionid = :sessionID AND linenbr = :linenbr");
-		$query['switching'][':sessionID'] = $sessionID; $query['switching'][':linenbr'] = $newdetails['linenbr'];
-		$query['withquotes'][] = true; $query['withquotes'][]= true; $query['withquotes'][] = true;
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
-		} else {
-			if ($query['changecount'] > 0) {
-				$sql->execute($query['switching']);
-			}
-			return returnsqlquery($sql->queryString, $query['switching'], $query['withquotes']);
-		}
-	}
-
+	
+	/**
+	 * Updates the CartDetail record (cartdet) in the database
+	 * @param  string     $sessionID Session Identifier
+	 * @param  CartDetail $detail    CartDetail Object with changes, will use CartDetail properties to load original
+	 * @param  bool       $debug     Run in debug?
+	 * @return string                SQL Query
+	 */
 	function update_cartdetail($sessionID, CartDetail $detail, $debug = false) {
 		$originaldetail = CartDetail::load($sessionID, $detail->linenbr);
 		$properties = array_keys($detail->_toArray());
@@ -3248,9 +3273,8 @@
 			}
 		}
 		$q->where('sessionid', $detail->sessionid);
-	//	$q->where('orderno', $detail->orderno);
 		$q->where('linenbr', $detail->linenbr);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -3261,44 +3285,30 @@
 			return $q->generate_sqlquery($q->params);
 		}
 	}
-
+	
+	/**
+	 * Inserts CartDetail (cartdet) record into database
+	 * @param  string     $sessionID Session Identifier
+	 * @param  CartDetail $detail    CartDetail object to insert
+	 * @param  bool       $debug     Run in debug?
+	 * @return string               SQL Query
+	 */
 	function insert_cartdetail($sessionID, CartDetail $detail, $debug = false) {
 		$properties = array_keys($detail->_toArray());
 		$q = (new QueryBuilder())->table('cartdet');
 		$q->mode('insert');
 		foreach ($properties as $property) {
-			if (strlen($detail->$property)) {
+			if (!empty($detail->$property)) {
 				$q->set($property, $detail->$property);
 			}
 		}
-		$sql = Processwire\wire('database')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery();
-		} else {
-			$sql->execute($q->params);
-			return $q->generate_sqlquery($q->params);
-		}
-	}
-
-	function nextcartlinenbr($sessionID) {
-		$sql = Processwire\wire('database')->prepare("SELECT MAX(linenbr) FROM cartdet WHERE sessionid = :sessionID");
-		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
-		$sql->execute($switching);
-		return intval($sql->fetchColumn()) + 1;
-	}
-
-	function get_createdordn($sessionID, $debug = false) {
-		$q = (new QueryBuilder())->table('logperm');
-		$q->field('ordernbr');
-		$q->where('sessionid', $sessionID);
 		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
 			$sql->execute($q->params);
-			return $sql->fetchColumn();
+			return $q->generate_sqlquery($q->params);
 		}
 	}
 
