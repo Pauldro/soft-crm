@@ -3673,34 +3673,41 @@
 	/* =============================================================
 		TABLE FORMATTER FUNCTIONS
 	============================================================ */
-	function getformatter($user, $formatter, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT data FROM tableformatter WHERE user = :user AND formattertype = :formatter LIMIT 1");
-		$switching = array(':user' => $user, ':formatter' => $formatter); $withquotes = array(true, true);
+	/**
+	 * Returns Formatter for User
+	 * @param  string $userID    String
+	 * @param  string $formatter Formatter type
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return string            JSON encoded string of the formatter
+	 */
+	function get_formatter($userID, $formatter, $debug = false) {
+		$q = (new QueryBuilder())->table('tableformatter');
+		$q->where('user', $userID);
+		$q->where('formattertype', $formatter);
+		$q->limit(1);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			return $sql->fetchColumn();
 		}
-	}
-
-	function addformatter($user, $formatter, $data, $debug) {
-		$sql = Processwire\wire('database')->prepare("INSERT INTO tableformatter (user, formattertype, data) VALUES (:user, :formatter, :data)");
-		$switching = array(':user' => $user, ':formatter' => $formatter, ':data' => $data); $withquotes = array(true, true, true);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'insertedid' => Processwire\wire('database')->lastInsertId());
-		}
-	}
-
+	} 
+	
+	/**
+	 * Returns if user has a formatter saved for that formatter type
+	 * @param  string $userID    User ID
+	 * @param  string $formatter Formatter Type
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return array             Response array
+	 */
 	function does_tableformatterexist($userID, $formatter, $debug = false) {
 		$q = (new QueryBuilder())->table('tableformatter');
 		$q->field($q->expr('COUNT(*)'));
 		$q->where('user', $userID);
 		$q->where('formattertype', $formatter);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3709,24 +3716,21 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function checkformatterifexists($user, $formatter, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM tableformatter WHERE user = :user AND formattertype = :formatter");
-		$switching = array(':user' => $user, ':formatter' => $formatter); $withquotes = array(true, true);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return $sql->fetchColumn();
-		}
-	}
-
+	
+	/**
+	 * Get the max id for that user and that formatter type
+	 * // NOTE used to check if newly created formatter is more than the last saved one
+	 * @param  string $userID    User ID
+	 * @param  string $formatter Formatter Type
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return int               Max table formatter ID
+	 */
 	function get_maxtableformatterid($userID, $formatter, $debug = false) {
 		$q = (new QueryBuilder())->table('tableformatter');
 		$q->field($q->expr('MAX(id)'));
 		$q->where('user', $userID);
 		$q->where('formattertype', $formatter);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3735,36 +3739,22 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function getmaxtableformatterid($user, $formatter, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT MAX(id) FROM tableformatter WHERE user = :user AND formattertype = :formatter");
-		$switching = array(':user' => $user, ':formatter' => $formatter); $withquotes = array(true, true);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return $sql->fetchColumn();
-		}
-	}
-
-	function editformatter($user, $formatter, $data, $debug) {
-		$sql = Processwire\wire('database')->prepare("UPDATE tableformatter SET data = :data WHERE user = :user AND formattertype =  :formatter");
-		$switching = array(':user' => $user, ':formatter' => $formatter, ':data' => $data); $withquotes = array(true, true, true);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return array('sql' => returnsqlquery($sql->queryString, $switching, $withquotes), 'affectedrows' => $sql->rowCount() ? true : false);
-		}
-	}
-
+	
+	/**
+	 * Updates the formatter for that user
+	 * @param  string $userID    User ID
+	 * @param  string $formatter Formatter Type
+	 * @param  string $data      JSON encoded string
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return array             Response array
+	 */
 	function update_formatter($userID, $formatter, $data, $debug = false) {
 		$q = (new QueryBuilder())->table('tableformatter');
 		$q->mode('update');
 		$q->set('data', $data);
 		$q->where('user', $userID);
 		$q->where('formattertype', $formatter);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3773,20 +3763,28 @@
 			return array('sql' => $q->generate_sqlquery($q->params), 'success' => $sql->rowCount() ? true : false, 'updated' => $sql->rowCount() ? true : false, 'querytype' => 'update');
 		}
 	}
-
+		
+	/**
+	 * Creates the formatter for that user
+	 * @param  string $userID    User ID
+	 * @param  string $formatter Formatter Type
+	 * @param  string $data      JSON encoded string
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return array             Response array
+	 */
 	function create_formatter($userID, $formatter, $data, $debug = false) {
 		$q = (new QueryBuilder())->table('tableformatter');
 		$q->mode('insert');
 		$q->set('data', $data);
 		$q->set('user', $userID);
 		$q->set('formattertype', $formatter);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			return array('sql' => $q->generate_sqlquery($q->params), 'success' => Processwire\wire('database')->lastInsertId() > 0 ? true : false, 'id' => Processwire\wire('database')->lastInsertId(), 'querytype' => 'create');
+			return array('sql' => $q->generate_sqlquery($q->params), 'success' => DplusWire::wire('database')->lastInsertId() > 0 ? true : false, 'id' => DplusWire::wire('database')->lastInsertId(), 'querytype' => 'create');
 		}
 	}
 
