@@ -1,4 +1,4 @@
-<?php if (!(empty($data))) : ?>
+<?php if (!(empty($page->has_salesdata))) : ?>
 	<script>
 		$(function() {
 			var pie = Morris.Donut({
