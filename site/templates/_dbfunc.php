@@ -5,25 +5,65 @@
 /* =============================================================
 	LOGIN FUNCTIONS
 ============================================================ */
-	function is_validlogin($sessionID) {
-		$sql = Processwire\wire('database')->prepare("SELECT IF(validlogin = 'Y',1,0) FROM logperm WHERE sessionid = :sessionID LIMIT 1");
-		$switching = array(':sessionID' => $sessionID);
-		$sql->execute($switching);
-		return $sql->fetchColumn();
+	/**
+	 * Returns if User is logged in
+	 * @param  string $sessionID Session Identifier
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return bool              Is user logged in?
+	 */
+	function is_validlogin($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('logperm');
+		$q->field($q->expr("IF(validlogin = 'Y', 1, 0)"));
+		$q->where('sessionid', $sessionID);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
 	}
-
-	function get_loginerrormsg($sessionID) {
-		$sql = Processwire\wire('database')->prepare("SELECT errormsg FROM logperm WHERE sessionid = :sessionID");
-		$switching = array(':sessionID' => $sessionID);
-		$sql->execute($switching);
-		return $sql->fetchColumn();
+	
+	/**
+	 * Returns Error Message for Session
+	 * @param  string $sessionID Session Identifier
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return string            Error Message for Login / Session
+	 */
+	function get_loginerrormsg($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('logperm');
+		$q->field('errormsg');
+		$q->where('sessionid', $sessionID);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
 	}
-
-	function get_loginrecord($sessionID) {
-		$sql = Processwire\wire('database')->prepare("SELECT IF(restrictcustomers = 'Y',1,0) as restrictcustomer, IF(restrictaccess = 'Y',1,0) as restrictuseraccess, logperm.* FROM logperm WHERE sessionid = :sessionID");
-		$switching = array(':sessionID' => $sessionID);
-		$sql->execute($switching);
-		return $sql->fetch(PDO::FETCH_ASSOC);
+	
+	/**
+	 * Returns record for the session's Login
+	 * @param  string $sessionID Session Identifier
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return array             Login Record
+	 */
+	function get_loginrecord($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('logperm');
+		$q->field($q->expr("IF(restrictcustomers = 'Y', 1, 0) as restrictcustomers"));
+		$q->field($q->expr("logperm.*"));
+		$q->where('sessionid', $sessionID);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetch(PDO::FETCH_ASSOC);
+		}
 	}
 	
 /* =============================================================
@@ -33,7 +73,7 @@
 	 * Returns the Order Number / Quote Number created 
 	 * @param  string $sessionID Session Identifier
 	 * @param  bool   $debug     Run in debug? IF so return SQL Query
-	 * @return string           Dplus (Order / Quote) Number
+	 * @return string            Dplus (Order / Quote) Number
 	 */
 	function get_createdordn($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('logperm');
@@ -51,12 +91,20 @@
 /* =============================================================
 	PERMISSION FUNCTIONS
 ============================================================ */
+	/**
+	 * Returns if User has permission to function / menu / page
+	 * // NOTE This is based by login ID
+	 * @param  string $loginID       User Login ID
+	 * @param  string $dplusfunction Dplus Function / Menu code
+	 * @param  bool   $debug         Run in debug? IF so return SQL Query
+	 * @return bool                  User has menu / function access ?
+	 */
 	function has_dpluspermission($loginID, $dplusfunction, $debug = false) {
 		$q = (new QueryBuilder())->table('funcperm');
-		$q->field($q->expr("IF(permission = 'Y',1,0)"));
+		$q->field($q->expr("IF(permission = 'Y', 1, 0)"));
 		$q->where('loginid', $loginID);
 		$q->where('function', $dplusfunction);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -68,20 +116,33 @@
 /* =============================================================
 	CUSTOMER FUNCTIONS
 ============================================================ */
+	/**
+	 * Returns if Customer Index has more than 0 Records
+	 * @param  bool $debug Run in debug? IF so return SQL Query
+	 * @return bool        Does custindex have more than 0 records?
+	 */
 	function is_custindexloaded($debug = false) {
 		$q = (new QueryBuilder())->table('custindex');
-		$q->field('COUNT(*)');
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$q->field($q->expr("COUNT(*) > 0, 1, 0)"));
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
+			return $sql->fetchColumn();
 		}
 	}
-
-	function get_custperm(Customer $customer, $loginID = false, $debug = false) {
+	
+	/**
+	 * Returns Customer Perm Record
+	 * Used for getting fields like amount sold, last sale date specific to a salesrep, or even overall 
+	 * @param  Customer $customer   Customer object, with customer properties like shiptoid
+	 * @param  string   $loginID    User Login ID if blank, will use current user's login
+	 * @param  bool     $debug      Run in debug? IF so return SQL Query
+	 * @return array                Custperm Record
+	 */
+	function get_custperm(Customer $customer, $loginID = '', $debug = false) {
 		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
 		$user = LogmUser::load($loginID);
 
@@ -100,27 +161,18 @@
 			return $sql->fetch(PDO::FETCH_ASSOC);
 		}
 	}
-
-	function count_custperm($userID = false, $debug = false) {
+	
+	/**
+	 * Returns the number of records in the custperm table
+	 * @param  string   $userID User Login ID
+	 * @param
+	 * @param  bool     $debug  Run in debug? IF so return SQL Query
+	 * @return int              Number of custperm records
+	 */
+	function count_custperm($userID = '', $debug = false) {
 		$q = (new QueryBuilder())->table('custperm');
 		$q->field('COUNT(*)');
-		if ($userID) {
-			$q->where('loginid', $userID);
-		}
-		$sql = Processwire\wire('database')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			return $sql->fetchColumn();
-		}
-	}
-
-	function get_lastsaledate($custID, $shiptoID = '', $userID = '',  $debug = false) {
-		$q = (new QueryBuilder())->table('custperm');
-		$q->field('lastsaledate');
-		if ($userID) {
+		if (!empty($userID)) {
 			$q->where('loginid', $userID);
 		}
 		$sql = DplusWire::wire('database')->prepare($q->render());
@@ -132,11 +184,19 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function insert_custperm(Contact $customer, $debug = false) {
+	
+	/**
+	 * Insert custperm record
+	 * @param  Customer $customer Customer Object with properties needed such as salesper1, custid, shiptoid
+	 * @param  string   $loginID  User Login ID, if blank, will use current User ID
+	 * @param  bool     $debug    Run in debug?
+	 * @return string             SQL Query
+	 */
+	function insert_custperm(Customer $customer, $loginID, $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
 		$q = (new QueryBuilder())->table('custperm');
 		$q->mode('insert');
-		$q->set('loginid', DplusWire::wire('user')->loginid);
+		$q->set('loginid', $loginID);
 		$q->set('custid', $customer->custid);
 		$q->set('salesper1', $customer->splogin1);
 
@@ -168,7 +228,8 @@
 		}
 	}
 
-	function can_accesscustomer($custID, $shiptoID = '', $loginID = '',  $debug = false) {
+	function can_accesscustomer($custID, $shiptoID = '', $loginID = '', $debug = false) {
+		
 		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
 		$user = LogmUser::load($loginID);
 
@@ -182,6 +243,7 @@
 			$q->field($q->expr('COUNT(*)'));
 			$q->where('loginid', 'in', [$loginID, DplusWire::wire('config')->sharedaccounts]);
 			$sql = DplusWire::wire('database')->prepare($q->render());
+			
 			if ($debug) {
 				return $q->generate_sqlquery($q->params);
 			} else {
@@ -189,7 +251,7 @@
 				return $sql->fetchColumn();
 			}
 		} else {
-			return 1;
+			return true;
 		}
 	}
 
@@ -3237,7 +3299,7 @@
 	 * @param  bool   $debug     Run in debug?
 	 * @return string            SQL Query
 	 */
-	function insert_carthead($sessionID, $custID, $shipID = '', $debug) {
+	function insert_carthead($sessionID, $custID, $shipID = '', $debug = false) {
 		$q = (new QueryBuilder())->table('carthed');
 		$q->mode('insert');
 		$q->set('sessionid', $sessionID);
@@ -3704,7 +3766,7 @@
 	 */
 	function does_tableformatterexist($userID, $formatter, $debug = false) {
 		$q = (new QueryBuilder())->table('tableformatter');
-		$q->field($q->expr('COUNT(*)'));
+		$q->field($q->expr('IF(COUNT(*) > 0, 1, 0)'));
 		$q->where('user', $userID);
 		$q->where('formattertype', $formatter);
 		$sql = DplusWire::wire('database')->prepare($q->render());
@@ -3882,7 +3944,7 @@
 		$q = (new QueryBuilder())->table('logm');
 		$q->where('loginid', $loginID);
 
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);

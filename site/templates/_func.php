@@ -376,8 +376,7 @@
 		$user = LogmUser::load($loginID);
 		DplusWire::wire('user')->fullname = $loginrecord['loginname'];
 		DplusWire::wire('user')->loginid = $loginrecord['loginid'];
-		DplusWire::wire('user')->hascontactrestrictions = $loginrecord['restrictcustomer'];
-		DplusWire::wire('user')->hasrestrictions = $loginrecord['restrictuseraccess'];
+		DplusWire::wire('user')->has_customerrestrictions = $loginrecord['restrictcustomers'];
 		DplusWire::wire('user')->salespersonid = $loginrecord['salespersonid'];
 		DplusWire::wire('user')->addRole($user->get_dplusrole());
 	}
