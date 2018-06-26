@@ -3662,40 +3662,66 @@
 			return $sql->fetchColumn();
 		}
 	}
+	
+	/**
+	 * Returns the Item Description from the cross reference table
+	 * @param  string $itemID Item ID / Part Number
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return string         Item Description
+	 */
+	function get_xrefitemdescription($itemID, $debug = false) {
+		$q = (new QueryBuilder())->table('itemsearch');
+		$q->field('desc1');
+		$q->where('itemid', $itemID);
+		$q->limit(1);
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
-	function getitemdescription($itemID, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT desc1 FROM itemsearch WHERE itemid = :itemid LIMIT 1");
-		$switching = array(':itemid' => $itemID); $withquotes = array(true);
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			return $sql->fetchColumn();
 		}
 	}
+	
+	/**
+	 * Returns the record number for the next item
+	 * @param  string $itemID     Item ID / Part Number
+	 * @param  string $nextorprev Next or (prev)iou Record
+	 * @param  bool   $debug      Run in debug? If so return SQL query
+	 * @return int                Record Number
+	 */
+	function get_nextitemrecno($itemID, $nextorprev, $debug = false) {
+		$q = (new QueryBuilder())->table('itemsearch');
+		$expression = $nextorprev == 'next' ? "MAX(recno) + 1" : "MIN(recno) - 1";
+		$q->field($q->expr($expression));
+		$q->where('itemid', $itemID);
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
-	function getnextrecno($itemID, $nextorprev, $debug) {
-		if ($nextorprev == 'next') {
-			$sql = Processwire\wire('database')->prepare("SELECT MAX(recno) + 1 FROM itemsearch WHERE itemid = :itemid");
-		} else {
-			$sql = Processwire\wire('database')->prepare("SELECT MIN(recno) - 1 FROM itemsearch WHERE itemid = :itemid");
-		}
-		$switching = array(':itemid' => $itemID); $withquotes = array(true);
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			return $sql->fetchColumn();
 		}
 	}
+	
+	/**
+	 * Returns the itemID for the record with the provided recno
+	 * @param  int    $recno      Record Number
+	 * @param  bool   $debug      Run in debug? If so return SQL query
+	 * @return string             Item Id
+	 */
+	function get_itemidbyrecno($recno, $debug = false) {
+		$q = (new QueryBuilder())->table('itemsearch');
+		$q->field('itemid');
+		$q->where('recno', $recno);
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
-	function getitembyrecno($recno, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT itemid FROM itemsearch WHERE recno = :recno");
-		$switching = array(':recno' => $recno); $withquotes = array(true);
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			return $sql->fetchColumn();
 		}
 	}
@@ -3744,6 +3770,7 @@
 	 */
 	function get_formatter($userID, $formatter, $debug = false) {
 		$q = (new QueryBuilder())->table('tableformatter');
+		$q->field('data');
 		$q->where('user', $userID);
 		$q->where('formattertype', $formatter);
 		$q->limit(1);
