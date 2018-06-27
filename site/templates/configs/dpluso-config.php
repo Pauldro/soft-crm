@@ -35,3 +35,5 @@
 		'sales-rep' => 'slsrep',
 		'sales-manager' => 'slsmgr'
 	);
+	
+	$config->salesorder_statuses = array('P' => 'Picked', 'N' => 'New', 'V' => 'Verified', 'I' => 'Invoiced');

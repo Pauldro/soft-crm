@@ -51,7 +51,7 @@
 			SalesOrderPanelInterface Functions
 		============================================================ */
 		public function get_ordercount($debug = false) {
-			$count = count_userorders($this->sessionID, $this->filters, $this->filterable, $debug);
+			$count = count_salesorders($this->filters, $this->filterable, $debug);
 			return $debug ? $count : $this->count = $count;
 		}
 		
@@ -59,16 +59,14 @@
 			$useclass = true;
 			if ($this->tablesorter->orderby) {
 				if ($this->tablesorter->orderby == 'orderdate') {
-					$orders = get_userordersorderdate($this->sessionID, DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $useclass, $debug);
+					$orders = get_salesorders_orderdate(DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $useclass, $debug);
 				} else {
 					$orders = get_userordersorderby($this->sessionID, DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $this->filters, $this->filterable, $useclass, $debug);
 				}
 			} else {
 				// DEFAULT BY ORDER DATE SINCE SALES ORDER # CAN BE ROLLED OVER
 				$this->tablesorter->sortrule = 'DESC'; 
-				//$this->tablesorter->orderby = 'orderno';
-				//$orders = get_salesrepordersorderby($this->sessionID, DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $useclass, $debug);
-				$orders = get_userordersorderdate($this->sessionID, DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $useclass, $debug);
+				$orders = get_salesorders_orderdate(DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $useclass, $debug);
 			}
 			return $debug ? $orders : $this->orders = $orders;
 		}
@@ -293,19 +291,6 @@
 			if ($order->can_edit()) {
 				$icon = $bootstrap->createicon('glyphicon glyphicon-pencil');
 				$title = "Edit this Order";
-			} elseif ($order->editord == 'L') {
-				if (DplusWire::wire('user')->hasorderlocked) {
-					if ($order->orderno == DplusWire::wire('user')->lockedordn) {
-						$icon = $bootstrap->createicon('glyphicon glyphicon-wrench');
-						$title = "Edit this Order";
-					} else {
-						$icon = $bootstrap->createicon('material-icons md-36', '&#xE897;');
-						$title = "You have this order locked, but you can still view it";
-					}
-				} else {
-					$icon = $bootstrap->createicon('material-icons md-36', '&#xE897;');
-					$title = "You have this order locked, but you can still view it";
-				}
 			} else {
 				$icon = $bootstrap->createicon('glyphicon glyphicon-eye-open');
 				$title = "Open in read-only mode";

@@ -968,18 +968,25 @@
 	}
 
 /* =============================================================
-	ORDERS FUNCTIONS 
+	SALES ORDERS FUNCTIONS 
 ============================================================ */
-	function count_userorders($sessionID, $filter = false, $filtertypes = false, $debug = false) {
-		$q = (new QueryBuilder())->table('ordrhed');
+	/**
+	 * Counts the Number of Sales Orders in oe_head that match the filter criteria
+	 * // NOTE filter for salesreps should be done by the filters
+	 * @param  bool   $filter      Array of filters and the values to filter for
+	 * @param  bool   $filtertypes Array of filter properties
+	 * @param  bool   $debug       Run in debug? If so, return SQL query
+	 * @return int                 Number of Sales Orders that match the filter criteria
+	 */
+	function count_salesorders($filter = false, $filtertypes = false, $debug = false) {
+		$q = (new QueryBuilder())->table('oe_head');
 		$expression = $q->expr('IF (COUNT(*) = 1, 1, IF(COUNT(DISTINCT(custid)) > 1, COUNT(*), 0)) as count');
 		if (!empty($filter)) {
 			$expression = $q->expr('COUNT(*)');
 			$q->generate_filters($filter, $filtertypes);
 		}
 		$q->field($expression);
-		$q->where('sessionid', $sessionID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -989,17 +996,13 @@
 		}
 	}
 
-	function get_userordersorderdate($sessionID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
-		$q = (new QueryBuilder())->table('ordrhed');
-		$q->field('ordrhed.*');
-		$q->field($q->expr("STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder"));
-		$q->where('sessionid', $sessionID);
-		$q->where('type', 'O');
+	function get_salesorders_orderdate($limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
+		$q = (new QueryBuilder())->table('oe_head');
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		$q->order('dateoforder ' . $sortrule);
+		$q->order('orderdate ' . $sortrule);
 		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
@@ -1007,7 +1010,7 @@
 		} else {
 			$sql->execute($q->params);
 			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrder');
+				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrderOEHead');
 				return $sql->fetchAll();
 			}
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -1031,29 +1034,7 @@
 		} else {
 			$sql->execute($q->params);
 			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrder');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	function get_userorders($sessionID, $limit = 10, $page = 1, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
-		$q = (new QueryBuilder())->table('ordrhed');
-		$q->where('sessionid', $sessionID);
-		$q->where('type', 'O');
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
-		}
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('database')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrder');
+				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrderOEHead');
 				return $sql->fetchAll();
 			}
 			return $sql->fetchAll(PDO::FETCH_ASSOC);

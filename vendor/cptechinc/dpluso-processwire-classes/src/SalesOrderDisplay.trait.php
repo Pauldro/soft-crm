@@ -123,13 +123,6 @@
 
 			if ($order->can_edit()) {
 				$url->query->set('lock', 'lock');
-			} elseif ($order->editord == 'L') {
-				if (DplusWire::wire('user')->hasorderlocked) {
-					$queryset = ($order->orderno == DplusWire::wire('user')->lockedordn) ?  'lock' : 'readonly';
-					$url->query->set($queryset, $queryset);
-				} else {
-					$url->query->set('readonly', 'readonly');
-				}
 			} else {
 				$url->query->set('readonly', 'readonly');
 			}

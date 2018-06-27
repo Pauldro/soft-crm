@@ -1,5 +1,5 @@
 <?php 
-	class SalesOrderOEHead {
+	class SalesOrderOEHead extends Order {
 		use ThrowErrorTrait;
 		use MagicMethodTraits;
 		use CreateFromObjectArrayTraits;
@@ -9,7 +9,7 @@
 		 * Sales Order Number
 		 * @var string
 		 */
-		protected $ordernumber;
+		protected $orderno;
 		
 		/**
 		 * Sales Order Status
