@@ -135,7 +135,7 @@
 			switch ($from) {
 				case 'salesorder':
 					$ordn = $input->get->text('ordn');
-					$custID = get_custidfromorder(session_id(), $ordn);
+					$custID = SalesOrderOEHead::get_custid($ordn);;
 					$details = get_orderdetails(session_id(), $ordn, true, false);
 					foreach ($details as $detail) {
 						$itemids[] = $detail->itemid;

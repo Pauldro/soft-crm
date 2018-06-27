@@ -32,7 +32,7 @@
 				            break;
 				        case 'order':
 				            $ordn = $input->get->text('ordn');
-				            $custID = get_custidfromorder(session_id(), $ordn);
+				            $custID = SalesOrderOEHead::get_custid($ordn);
 							$formaction = $config->pages->orders."redir/";
 				            break;
 						case 'quote':

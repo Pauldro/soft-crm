@@ -32,7 +32,7 @@
 </div>
 <div class="row">
 	<div class="col-sm-12">
-		<?php include $config->paths->content.'dashboard/sales-history/sales-history-panel.php'; ?>
+		<?php //include $config->paths->content.'dashboard/sales-history/sales-history-panel.php'; ?>
 	</div>
 </div>
 <?php 

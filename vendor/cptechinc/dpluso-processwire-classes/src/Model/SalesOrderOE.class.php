@@ -691,4 +691,35 @@
 				return false;
 			}
 		}
+		
+		/* =============================================================
+			CRUD FUNCTIONS
+		============================================================ */
+		/**
+		 * Returns a Customer ID from a Sales Order or this order if applicable
+		 * @param  string $ordn  Sales Order Number
+		 * @param  bool   $debug Run in debug? If so will return SQL Query
+		 * @return string        Customer ID
+		 */
+		public static function get_custid($ordn = '', $debug = false) {
+			if (isset($this)) {
+				return $this->custid;
+			} else {
+				return get_custidfromsalesorder($ordn, $debug);
+			}
+		}
+		
+		/**
+		 * Returns a Customer Shipto ID from a Sales Order or this order if applicable
+		 * @param  string $ordn  Sales Order Number
+		 * @param  bool   $debug Run in debug? If so will return SQL Query
+		 * @return string        Customer Shipto ID
+		 */
+		public static function get_shiptoid($ordn = '', $debug = false) {
+			if (isset($this)) {
+				return $this->shiptoid;
+			} else {
+				return get_shiptoidfromsalesorder($ordn, $debug);
+			}
+		}
 	}

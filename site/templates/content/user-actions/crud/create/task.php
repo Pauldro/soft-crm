@@ -24,8 +24,8 @@
 		//FOR QUOTES AND orders
 		if (empty($task->customerlink)) {
 			if (!empty($task->salesorderlink)) {
-				$task->set('customerlink', get_custidfromorder(session_id(), $task->salesorderlink));
-				$task->set('shiptolink', get_shiptoidfromorder(session_id(), $task->salesorderlink));
+				$task->set('customerlink', SalesOrderOEHead::get_custid($task->salesorderlink));
+				$task->set('shiptolink', SalesOrderOEHead::get_shiptoid($task->salesorderlink));
 			} elseif (!empty($task->quotelink)) {
 				$task->set('customerlink', get_custidfromquote(session_id(), $task->quotelink));
 				$task->set('shiptolink', get_shiptoidfromquote(session_id(), $task->quotelink));

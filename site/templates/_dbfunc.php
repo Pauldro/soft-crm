@@ -995,33 +995,21 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function get_salesorders_orderdate($limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
+	
+	/**
+	 * Returns an array of SalesOrderOEHead that match the filter criteria
+	 * @param  int    $limit       Number of Records to Return
+	 * @param  int    $page        Page Number
+	 * @param  string $sortrule    Sort (ASC)ENDING | (DESC)ENDING
+	 * @param  string $orderby     Column / Property to sort on
+	 * @param  bool   $filter      Array of filters and their values
+	 * @param  bool   $filtertypes Array of filter properties
+	 * @param  bool   $useclass    Return records as SalesOrderOEHead class?
+	 * @param  bool   $debug       Run in Debug? If so, return SQL Query
+	 * @return array               Sales Orders that match the filter criteria
+	 */
+	function get_salesorders_orderby($limit = 10, $page = 1, $sortrule, $orderby, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('oe_head');
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
-		}
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$q->order('orderdate ' . $sortrule);
-		$sql = DplusWire::wire('database')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrderOEHead');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	function get_userordersorderby($sessionID, $limit = 10, $page = 1, $sortrule, $orderby, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
-		$q = (new QueryBuilder())->table('ordrhed');
-		$q->field('ordrhed.*');
-		$q->where('sessionid', $sessionID);
-		$q->where('type', 'O');
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
 		}
@@ -1145,11 +1133,16 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-
-	function get_custidfromorder($sessionID, $ordn, $debug = false) {
-		$q = (new QueryBuilder())->table('ordrhed');
+	
+	/**
+	 * Returns the Customer ID from a specific Sales Order
+	 * @param  string $ordn  Sales Order Number
+	 * @param  bool   $debug Run in debug? If so, return SQL Query
+	 * @return string        Customer ID
+	 */
+	function get_custidfromsalesorder($ordn, $debug = false) {
+		$q = (new QueryBuilder())->table('oe_head');
 		$q->field('custid');
-		$q->where('sessionid', $sessionID);
 		$q->where('orderno', $ordn);
 		$sql = DplusWire::wire('database')->prepare($q->render());
 
@@ -1161,10 +1154,9 @@
 		}
 	}
 
-	function get_shiptoidfromorder($sessionID, $ordn, $debug = false) {
-		$q = (new QueryBuilder())->table('ordrhed');
+	function get_shiptoidfromsalesorder($ordn, $debug = false) {
+		$q = (new QueryBuilder())->table('oe_head');
 		$q->field('shiptoid');
-		$q->where('sessionid', $sessionID);
 		$q->where('orderno', $ordn);
 		$sql = DplusWire::wire('database')->prepare($q->render());
 

@@ -130,9 +130,9 @@
 		 */
 		public function generate_shiptopopover(Order $order) {
 			$bootstrap = new Contento();
-			$address = $order->shipaddress.'<br>';
-			$address .= (!empty($order->shipaddress2)) ? $order->shipaddress2."<br>" : '';
-			$address .= $order->shipcity.", ". $order->shipstate.' ' . $order->shipzip;
+			$address = $order->shipto_address1.'<br>';
+			$address .= (!empty($order->shipto_address2)) ? $order->shipto_address2."<br>" : '';
+			$address .= $order->shipto_city.", ". $order->shipto_state.' ' . $order->shipto_zip;
 			$attr = "tabindex=0|role=button|class=btn btn-default bordered btn-sm|data-toggle=popover";
 			$attr .= "|data-placement=top|data-trigger=focus|data-html=true|title=Ship-To Address|data-content=$address";
 			return $bootstrap->openandclose('a', $attr, '<b>?</b>');

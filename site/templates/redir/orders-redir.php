@@ -141,7 +141,7 @@
 			break;
 		case 'get-order-details':
 			$ordn = $input->get->text('ordn');
-			$custID = SalesOrderHistory::is_saleshistory($ordn) ? SalesOrderHistory::get_custid($ordn) : get_custidfromorder(session_id(), $ordn);
+			$custID = SalesOrderHistory::is_saleshistory($ordn) ? SalesOrderHistory::get_custid($ordn) : SalesOrderOEHead::get_custid($ordn);
 			$data = array('DBNAME' => $config->dbName, 'ORDRDET' => $ordn, 'CUSTID' => $custID);
 
 			if ($input->get->lock) {
@@ -173,7 +173,7 @@
 			break;
 		case 'get-order-tracking':
 			$ordn = $input->get->text('ordn');
-			$custID = get_custidfromorder(session_id(), $ordn);
+			$custID = SalesOrderOEHead::get_custid($ordn);
 			$data = array('DBNAME' => $config->dbName, 'ORDRTRK' => $ordn, 'CUSTID' => $custID);
 			if ($input->get->ajax) {
 				$session->loc = $config->pages->ajax."load/order/tracking/?ordn=".$ordn;
@@ -202,7 +202,7 @@
 			break;
 		case 'get-order-documents':
 			$ordn = $input->get->text('ordn');
-			$custID = get_custidfromorder(session_id(), $ordn);
+			$custID = SalesOrderOEHead::get_custid($ordn);
 
 			if ($input->get->page == 'edit') {
 				$session->loc = $config->pages->ajax.'load/order/documents/?ordn='.$ordn;
@@ -234,7 +234,7 @@
 			break;
 		case 'edit-new-order':
 			$ordn = get_createdordn(session_id());
-			$custID = get_custidfromorder(session_id(), $ordn);
+			$custID = SalesOrderOEHead::get_custid($ordn);
 			$data = array('DBNAME' => $config->dbName, 'ORDRDET' => $ordn, 'CUSTID' => $custID, 'LOCK' => false);
 			$session->createdorder = $ordn;
 			$session->loc = $config->pages->edit.'order/?ordn=' . $ordn;
@@ -278,7 +278,7 @@
 				$order->set('extension', $input->post->text("contact-extension"));
 				$order->set('faxnbr', $input->post->text("contact-fax"));
 			}
-			$custID = get_custidfromorder(session_id(), $ordn);
+			$custID = SalesOrderOEHead::get_custid($ordn);
 			$session->sql = $order->update();
 
 			$order->set('paymenttype', $input->post->text("paytype"));
@@ -304,7 +304,7 @@
 			$itemID = $input->post->text('itemID');
 			$qty = determine_qty($input, $requestmethod, $itemID); // TODO MAKE IN CART DETAIL
 			$ordn = $input->post->text('ordn');
-			$custID = get_custidfromorder(session_id(), $ordn);
+			$custID = SalesOrderOEHead::get_custid($ordn);
 			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'ITEMID' => $itemID, 'QTY' => "$qty", 'CUSTID' => $custID);
 			$session->loc = $input->post->page;
 			$session->editdetail = true;
@@ -352,7 +352,7 @@
 		case 'quick-update-line':
 			$ordn = $input->post->text('ordn');
 			$linenbr = $input->post->text('linenbr');
-			$custID = get_custidfromorder(session_id(), $ordn);
+			$custID = SalesOrderOEHead::get_custid($ordn);
 			$orderdetail = SalesOrderDetail::load(session_id(), $ordn, $linenbr);
 			// $orderdetail->set('whse', $input->post->text('whse'));
 			$qty = determine_qty($input, $requestmethod, $orderdetail->itemid); // TODO MAKE IN CART DETAIL
@@ -393,7 +393,7 @@
 				$orderdetail->set('desc1', $input->post->text('desc1'));
 				$orderdetail->set('desc2', $input->post->text('desc2'));
 			}
-			$custID = get_custidfromorder(session_id(), $ordn);
+			$custID = SalesOrderOEHead::get_custid($ordn);
 			$session->sql = $orderdetail->update();
 			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'CUSTID' => $custID);
 
@@ -411,7 +411,7 @@
 			$orderdetail->set('qty', '0');
 			$session->sql = $orderdetail->update();
 			$session->editdetail = true;
-			$custID = get_custidfromorder(session_id(), $ordn);
+			$custID = SalesOrderOEHead::get_custid($ordn);
 			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'QTY' => '0', 'CUSTID' => $custID);
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
@@ -425,7 +425,7 @@
 			$orderdetail = SalesOrderDetail::load(session_id(), $ordn, $linenbr);
 			$orderdetail->set('qty', '0');
 			$session->sql = $orderdetail->update();
-			$custID = get_custidfromorder(session_id(), $ordn, false);
+			$custID = SalesOrderOEHead::get_custid($ordn);
 			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'QTY' => '0', 'CUSTID' => $custID);
 
 			if ($input->post->page) {

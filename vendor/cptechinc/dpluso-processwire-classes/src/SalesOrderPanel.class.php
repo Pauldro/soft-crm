@@ -57,16 +57,14 @@
 		
 		public function get_orders($debug = false) {
 			$useclass = true;
+			
 			if ($this->tablesorter->orderby) {
-				if ($this->tablesorter->orderby == 'orderdate') {
-					$orders = get_salesorders_orderdate(DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $useclass, $debug);
-				} else {
-					$orders = get_userordersorderby($this->sessionID, DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $this->filters, $this->filterable, $useclass, $debug);
-				}
+				$orders = get_salesorders_orderby(DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $this->filters, $this->filterable, $useclass, $debug);
 			} else {
 				// DEFAULT BY ORDER DATE SINCE SALES ORDER # CAN BE ROLLED OVER
+				$this->tablesorter->orderby = 'orderdate';
 				$this->tablesorter->sortrule = 'DESC'; 
-				$orders = get_salesorders_orderdate(DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $useclass, $debug);
+				$orders = get_salesorders_orderby(DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $this->filters, $this->filterable, $useclass, $debug);
 			}
 			return $debug ? $orders : $this->orders = $orders;
 		}

@@ -17,7 +17,7 @@
             break;
         case 'order':
             $ordn = $input->get->text('ordn');
-            $custID = get_custidfromorder(session_id(), $ordn);
+            $custID = SalesOrderOEHead::get_custid($ordn);
             $linedetail = SalesOrderDetail::load(session_id(), $ordn, $linenbr);
             if (can_editorder(session_id(), $ordn, false) && $ordn == get_lockedordn(session_id())) {
                 $formaction = $config->pages->orders."redir/";

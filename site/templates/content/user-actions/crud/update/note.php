@@ -22,8 +22,8 @@
 
 		if (empty($note->customerlink)) {
 			if (!empty($note->salesorderlink)) {
-				$note->set('customerlink', get_custidfromorder(session_id(), $note->salesorderlink));
-				$note->set('shiptolink', get_shiptoidfromorder(session_id(), $note->salesorderlink));
+				$note->set('customerlink', SalesOrderOEHead::get_custid($note->salesorderlink));
+				$note->set('shiptolink', SalesOrderOEHead::get_shiptoid($note->salesorderlink));
 			} elseif (!empty($note->quotelink)) {
 				$note->set('customerlink', get_custidfromquote(session_id(), $note->quotelink));
 				$note->set('shiptolink', get_shiptoidfromquote(session_id(), $note->quotelink));
