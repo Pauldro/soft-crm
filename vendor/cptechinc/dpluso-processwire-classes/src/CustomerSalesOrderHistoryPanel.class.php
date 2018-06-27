@@ -103,7 +103,7 @@
 			
 			if (isset($this->filters['orderdate'])) {
 				if (empty($this->filters['orderdate'][0])) {
-					$this->filters['orderdate'][0] = date('m/d/Y', strtotime(get_minorderdate($this->sessionID, 'orderdate')));
+					$this->filters['orderdate'][0] = date('m/d/Y', strtotime(get_minsalesorderdate('orderdate')));
 				}
 				
 				if (empty($this->filters['orderdate'][1])) {
@@ -117,7 +117,7 @@
 				}
 				
 				if (!strlen($this->filters['ordertotal'][1])) {
-					$this->filters['ordertotal'][1] = get_maxordertotal($this->sessionID, $this->custID);
+					$this->filters['ordertotal'][1] = get_maxsalesordertotal($this->custID);
 				}
 			}
 		}

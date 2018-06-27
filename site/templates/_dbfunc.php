@@ -1153,7 +1153,13 @@
 			return $sql->fetchColumn();
 		}
 	}
-
+	
+	/**
+	 * Returns the Customer Shipto ID from a specific Sales Order
+	 * @param  string $ordn  Sales Order Number
+	 * @param  bool   $debug Run in debug? If so, return SQL Query
+	 * @return string        Customer ID
+	 */
 	function get_shiptoidfromsalesorder($ordn, $debug = false) {
 		$q = (new QueryBuilder())->table('oe_head');
 		$q->field('shiptoid');
@@ -1167,11 +1173,17 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function get_maxordertotal($sessionID, $custID = false, $shipID = false, $debug = false) {
-		$q = (new QueryBuilder())->table('ordrhed');
-		$q->field($q->expr('MAX(ordertotal)'));
-		$q->where('sessionid', $sessionID);
+	
+	/**
+	 * Returns the Max Order Total for Sales Orders that 
+	 * @param  string $custID Customer ID, if blank will not filter to one customer
+	 * @param  string $shipID Customer Shipto Id
+	 * @param  bool   $debug  Run in debug? If so return SQL Query
+	 * @return float          Max Sales Order Total
+	 */
+	function get_maxsalesordertotal($custID = '', $shipID = '', $debug = false) {
+		$q = (new QueryBuilder())->table('oe_head');
+		$q->field($q->expr('MAX(total_order)'));
 
 		if (!empty($custID)) {
 			$q->where('custid', $custID);
@@ -1189,11 +1201,17 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function get_minordertotal($sessionID, $custID = false, $shipID = false, $debug = false) {
-		$q = (new QueryBuilder())->table('ordrhed');
-		$q->field($q->expr('MIN(ordertotal)'));
-		$q->where('sessionid', $sessionID);
+	
+	/**
+	 * Returns the min Order Total for Sales Orders that 
+	 * @param  string $custID Customer ID, if blank will not filter to one customer
+	 * @param  string $shipID Customer Shipto Id
+	 * @param  bool   $debug  Run in debug? If so return SQL Query
+	 * @return float          min Sales Order Total
+	 */
+	function get_minsalesordertotal($custID = '', $shipID = '', $debug = false) {
+		$q = (new QueryBuilder())->table('oe_head');
+		$q->field($q->expr('MIN(total_order)'));
 
 		if (!empty($custID)) {
 			$q->where('custid', $custID);
@@ -1210,17 +1228,28 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function get_minorderdate($sessionID, $field, $custID = false, $shipID = false, $debug = false) {
-		$q = (new QueryBuilder())->table('ordrhed');
-		$q->field($q->expr("MIN(STR_TO_DATE($field, '%m/%d/%Y'))"));
+	
+	/**
+	 * Returns the min Order TDate for Sales Orders that 
+	 * @param  string $field  Which Sales Order Date Property
+	 * @param  string $custID Customer ID, if blank will not filter to one customer
+	 * @param  string $shipID Customer Shipto Id
+	 * @param  bool   $debug  Run in debug? If so return SQL Query
+	 * @return string         min Sales Order Date
+	 */
+	function get_minsalesorderdate($field, $custID = false, $shipID = false, $debug = false) {
+		$q = (new QueryBuilder())->table('oe_head');
+		$q->field($q->expr("MIN($field)"));
 		$q->where('sessionid', $sessionID);
-		if ($custID) {
+		
+		if (!empty($custID)) {
 			$q->where('custid', $custID);
+
+			if (!(empty($shipID))) {
+				$q->where('shiptoid', $shipID);
+			}
 		}
-		if ($shipID) {
-			$q->where('shiptoid', $shipID);
-		}
+		
 		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {

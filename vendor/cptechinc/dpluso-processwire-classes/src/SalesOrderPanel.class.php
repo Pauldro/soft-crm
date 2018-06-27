@@ -69,6 +69,15 @@
 			return $debug ? $orders : $this->orders = $orders;
 		}
 		
+		/**
+		 * Returns the Max Sales Order Total
+		 * @param  bool   $debug Return SQL Query?
+		 * @return float        Max Sales Order Total
+		 */
+		public function get_maxordertotal($debug = false) {
+			return get_maxsalesordertotal($custID = '', $shipID = '', $debug);
+		}
+		
 		/* =============================================================
 			OrderPanelInterface Functions
 			LINKS ARE HTML LINKS, AND URLS ARE THE URLS THAT THE HREF VALUE
@@ -187,7 +196,7 @@
 			
 			if (isset($this->filters['orderdate'])) {
 				if (empty($this->filters['orderdate'][0])) {
-					$this->filters['orderdate'][0] = date('m/d/Y', strtotime(get_minorderdate($this->sessionID, 'orderdate')));
+					$this->filters['orderdate'][0] = date('m/d/Y', strtotime(get_minsalesorderdate('orderdate')));
 				}
 				
 				if (empty($this->filters['orderdate'][1])) {
