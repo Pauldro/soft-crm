@@ -62,13 +62,17 @@
 			<label class="small text-muted">Through Date </label>
 		</div>
 	</div>
-	</br>
-	<div class="form-group">
-		<button class="btn btn-success btn-block" type="submit">Search <i class="fa fa-search" aria-hidden="true"></i></button>
+	<br>
+	<div class="row">
+		<div class="col-sm-6 form-group">
+			<button class="btn btn-success btn-block" type="submit">Search <i class="fa fa-search" aria-hidden="true"></i></button>
+		</div>
+		<div class="col-sm-6 form-group">
+			<?php if ($input->get->filter) : ?>
+		        <div>
+		            <?= $orderpanel->generate_clearsearchlink(); ?>
+		        </div>
+		    <?php endif; ?>
+		</div>
 	</div>
-	<?php if ($input->get->filter) : ?>
-		 <div>
-			<?= $orderpanel->generate_clearsearchlink(); ?>
-		 </div>
-	 <?php endif; ?>
 </form>
