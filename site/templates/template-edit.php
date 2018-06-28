@@ -4,7 +4,7 @@
 		case 'order':
 			if ($input->get->ordn) {
 				$ordn = $input->get->text('ordn');
-				$custID = SalesOrderOEHead::get_custid($ordn);;
+				$custID = SalesOrderOEHead::find_custid($ordn);;
 				$editorderdisplay = new EditSalesOrderDisplay(session_id(), $page->fullURL, '#ajax-modal', $ordn);
 				$order = $editorderdisplay->get_order();
 

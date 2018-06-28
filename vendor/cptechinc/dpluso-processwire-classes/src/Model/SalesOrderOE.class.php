@@ -701,12 +701,8 @@
 		 * @param  bool   $debug Run in debug? If so will return SQL Query
 		 * @return string        Customer ID
 		 */
-		public static function get_custid($ordn = '', $debug = false) {
-			if (isset($this)) {
-				return $this->custid;
-			} else {
-				return get_custidfromsalesorder($ordn, $debug);
-			}
+		public static function find_custid($ordn = '', $debug = false) {
+			return get_custidfromsalesorder($ordn, $debug);
 		}
 		
 		/**
@@ -715,11 +711,7 @@
 		 * @param  bool   $debug Run in debug? If so will return SQL Query
 		 * @return string        Customer Shipto ID
 		 */
-		public static function get_shiptoid($ordn = '', $debug = false) {
-			if (isset($this)) {
-				return $this->shiptoid;
-			} else {
-				return get_shiptoidfromsalesorder($ordn, $debug);
-			}
+		public static function find_shiptoid($ordn = '', $debug = false) {
+			return get_shiptoidfromsalesorder($ordn, $debug);
 		}
 	}

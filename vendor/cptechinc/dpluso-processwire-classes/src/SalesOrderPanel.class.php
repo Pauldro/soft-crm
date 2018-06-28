@@ -72,10 +72,19 @@
 		/**
 		 * Returns the Max Sales Order Total
 		 * @param  bool   $debug Return SQL Query?
-		 * @return float        Max Sales Order Total
+		 * @return float         Max Sales Order Total
 		 */
-		public function get_maxordertotal($debug = false) {
+		public function get_maxsalesordertotal($debug = false) {
 			return get_maxsalesordertotal($custID = '', $shipID = '', $debug);
+		}
+		
+		/**
+		 * Returns the Min Sales Order Total
+		 * @param  bool   $debug Return SQL Query?
+		 * @return float         Min Sales Order Total
+		 */
+		public function get_minsalesordertotal($debug = false) {
+			return get_minsalesordertotal($custID = '', $shipID = '', $debug);
 		}
 		
 		/* =============================================================
