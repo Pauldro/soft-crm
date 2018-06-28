@@ -59,10 +59,10 @@
 </div>
 <div class="row">
 	<div class="col-sm-12">
-		<?php include $config->paths->content.'customer/cust-page/sales-history/sales-history-panel.php'; ?>
+		<?php // include $config->paths->content.'customer/cust-page/sales-history/sales-history-panel.php'; ?>
 	</div>
 </div>
-<?php 
+<?php
 	if ($page->has_bookings) {
 		include $config->paths->content."customer/cust-page/bookings/bookings-line-chart.js.php";
 	}

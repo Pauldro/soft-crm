@@ -8,7 +8,7 @@
                 <tr> <td colspan="12" class="text-center">No Orders found! Try using a date range to find the order(s) you are looking for.</td> </tr>
             <?php endif; ?>
         <?php endif; ?>
-        <?php $orderpanel->get_orders(); ?>
+		<?php $orderpanel->get_orders(); ?>
         <?php foreach ($orderpanel->orders as $order) : ?>
             <tr class="<?= $orderpanel->generate_rowclass($order); ?>" id="<?= $order->orderno; ?>">
             	<td class="text-center"><?= $orderpanel->generate_expandorcollapselink($order);?></td>
@@ -18,8 +18,8 @@
                     <a href="<?= $orderpanel->generate_customershiptourl($order); ?>"><?= $order->shiptoid; ?></a>
                     <span class="pull-right"><?= $orderpanel->generate_shiptopopover($order); ?></span>
                 </td>
-                <td align="right">$ <?= $page->stringerbell->format_money($order->ordertotal); ?></td> <td align="right" ><?= $order->orderdate; ?></td>
-                <td align="right"><?=  $order->status; ?></td>
+                <td align="right">$ <?= $page->stringerbell->format_money($order->total_order); ?></td> <td align="right" ><?= DplusDateTime::format_date($order->orderdate); ?></td>
+                <td align="right"><?= $config->salesorder_statuses[$order->status]; ?></td>
                 <td colspan="4">
                     <span class="col-xs-3"><?= $orderpanel->generate_loaddocumentslink($order); ?></span>
                     <span class="col-xs-3"><?= $orderpanel->generate_loadtrackinglink($order); ?></span>

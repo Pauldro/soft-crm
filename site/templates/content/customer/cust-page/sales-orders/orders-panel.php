@@ -38,7 +38,7 @@
 					<button class="btn btn-primary toggle-order-search pull-right" type="button" data-toggle="collapse" data-target="#cust-orders-search-div" aria-expanded="false" aria-controls="cust-orders-search-div">Toggle Search <i class="fa fa-search" aria-hidden="true"></i></button>
                 </div>
             </div>
-			<div id="cust-orders-search-div" class="<?= (empty($orderpanel->filters)) ? 'collapse' : ''; ?>">
+			<div id="cust-orders-search-div" class="<?= (empty($orderpanel->filters) || empty($input->get->filter)) ? 'collapse' : ''; ?>">
 				<?php include $config->paths->content.'customer/cust-page/sales-orders/search-form.php'; ?>
 			</div>
         </div>
