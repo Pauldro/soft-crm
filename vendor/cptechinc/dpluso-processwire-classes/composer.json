@@ -31,6 +31,7 @@
 			"src/Model/CartQuote.class.php",
 			"src/Model/Quote.class.php",
 			"src/Model/SalesOrder.class.php",
+			"src/Model/SalesOrderOE.class.php",
 			"src/Model/SalesOrderHistory.class.php",
 			"src/Model/OrderDetail.class.php",
 			"src/Model/QuoteDetail.class.php",

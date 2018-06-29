@@ -12,7 +12,7 @@
             $class = get_called_class();
  			return $class::remove_nondbkeys(get_class_vars($class));
  		}
- 		
+
 		/**
 		 * Returns a Key-Value array of this object, but it removes the non-databased indexes
 		 * @return array key value array, with properties as keys

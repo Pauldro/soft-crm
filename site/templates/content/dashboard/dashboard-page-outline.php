@@ -32,14 +32,14 @@
 </div>
 <div class="row">
 	<div class="col-sm-12">
-		<?php //include $config->paths->content.'dashboard/sales-history/sales-history-panel.php'; ?>
+		<?php include $config->paths->content.'dashboard/sales-history/sales-history-panel.php'; ?>
 	</div>
 </div>
-<?php 
+<?php
 	if ($pages->get('/config/dashboard/')->show_salespanel) {
 		include "{$config->paths->content}/dashboard/sales-panel/sales-panel.js.php";
 	}
-	
+
 	if ($page->has_bookings && $pages->get('/config/dashboard/')->show_bookingspanel) {
 		include $config->paths->content."dashboard/bookings/bookings-line-chart.js.php";
 	}

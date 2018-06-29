@@ -30,6 +30,7 @@ return array(
     '5fdca6bae5e3b7e62e4834e661d585fd' => $baseDir . '/src/Model/CartQuote.class.php',
     '57d47d833120351f22c3f1fb75379d10' => $baseDir . '/src/Model/Quote.class.php',
     'be8920fab7b34b8e8d2c0fd07039e8bd' => $baseDir . '/src/Model/SalesOrder.class.php',
+    '6a5656c7f6fedc5419497c15bb404b35' => $baseDir . '/src/Model/SalesOrderOE.class.php',
     'e045b69919ad9751c3f496accffa768a' => $baseDir . '/src/Model/SalesOrderHistory.class.php',
     'e6502301d2f4cd3ad794bf855c0e554b' => $baseDir . '/src/Model/OrderDetail.class.php',
     '84be2651e4f1a9ec9c666de1db5688ad' => $baseDir . '/src/Model/QuoteDetail.class.php',

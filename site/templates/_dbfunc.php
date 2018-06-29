@@ -1029,33 +1029,6 @@
 		}
 	}
 
-	function get_customerorders($sessionID, $custID, $shipID, $limit = 10, $page = 1, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
-		$q = (new QueryBuilder())->table('ordrhed');
-		$q->field('ordrhed.*');
-		$q->where('sessionid', $sessionID);
-		$q->where('custid', $custID);
-		if (!empty($shipID)) {
-			$q->where('shiptoid', $shipID);
-		}
-		$q->where('type', 'O');
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
-		}
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('database')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrder');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
 	/**
 	 * Returns the Customer ID from a specific Sales Order
 	 * @param  string $ordn  Sales Order Number
@@ -1285,7 +1258,7 @@
 
 	function get_maxsaleshistoryordertotal($sessionID, $custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
-		$q->field($q->expr("MAX(ordertotal)"));
+		$q->field($q->expr("MAX(total_order)"));
 		if ($custID) {
 			$q->where('custid', $custID);
 		}
@@ -1303,7 +1276,7 @@
 
 	function get_minsaleshistoryordertotal($sessionID, $custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
-		$q->field($q->expr("MIN(ordertotal)"));
+		$q->field($q->expr("MIN(total_order)"));
 		if ($custID) {
 			$q->where('custid', $custID);
 		}
@@ -1513,7 +1486,7 @@
 		$user = LogmUser::load($loginID);
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('saleshist.*');
-		$q->field($q->expr("STR_TO_DATE(invdate, '%Y%m%d') as dateofinvoice"));
+		$q->field($q->expr("STR_TO_DATE(invoice_date, '%Y%m%d') as dateofinvoice"));
 
 		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
 			$q->where('sp1', DplusWire::wire('user')->salespersonid);
@@ -1573,7 +1546,7 @@
 		$q->field($q->expr("STR_TO_DATE(orderdate, '%Y%m%d') as dateoforder"));
 
 		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('sp1', DplusWire::wire('user')->salespersonid);
+			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filterable);
@@ -1808,7 +1781,7 @@
 		$user = LogmUser::load($loginID);
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('saleshist.*');
-		$q->field($q->expr("STR_TO_DATE(invdate, '%Y%m%d') as dateofinvoice"));
+		$q->field($q->expr("STR_TO_DATE(invoice_date, '%Y%m%d') as dateofinvoice"));
 		$q->where('custid', $custID);
 
 		if (!empty($shiptoID)) {

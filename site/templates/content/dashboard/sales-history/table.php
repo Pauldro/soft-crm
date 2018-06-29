@@ -18,9 +18,9 @@
 					<a href="<?= $orderpanel->generate_customershiptourl($order); ?>"><?= $order->shiptoid; ?></a>
 					<span class="pull-right"><?= $orderpanel->generate_shiptopopover($order); ?></span>
 				</td>
-				<td class="text-right">$ <?= $page->stringerbell->format_money($order->ordertotal); ?></td>
+				<td class="text-right">$ <?= $page->stringerbell->format_money($order->total_order); ?></td>
 				<td class="text-right"><?= DplusDateTime::format_date($order->orderdate); ?></td>
-				<td class="text-right"><?= DplusDateTime::format_date($order->invdate); ?></td>
+				<td class="text-right"><?= DplusDateTime::format_date($order->invoice_date); ?></td>
 				<td colspan="3">
 					<span class="col-xs-3"><?= $orderpanel->generate_loaddocumentslink($order); ?></span>
 					<span class="col-xs-3"><?= $orderpanel->generate_loadtrackinglink($order); ?></span>

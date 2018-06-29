@@ -6,7 +6,7 @@
 		<?php if ($orderpanel->count == 0 && $input->get->text('ordn') == '') : ?>
 			<tr> <td colspan="12" class="text-center">No Orders found! Try using a date range to find the order(s) you are looking for.</td> </tr>
 		<?php endif; ?>
-		
+
 		<?php $orderpanel->get_orders(); ?>
 		<?php foreach($orderpanel->orders as $order) : ?>
 			<tr class="<?= $orderpanel->generate_rowclass($order); ?>" id="<?= $order->orderno; ?>">
@@ -15,11 +15,11 @@
 				<td colspan="2"><?= $order->custpo; ?></td>
 				<td>
 					<a href="<?= $orderpanel->generate_customershiptourl($order); ?>"><?= $order->shiptoid; ?></a>
-					<?= $orderpanel->generate_shiptopopover($order); ?>
+					<span class="pull-right"><?= $orderpanel->generate_shiptopopover($order); ?></span>
 				</td>
-				<td class="text-right">$ <?= $page->stringerbell->format_money($order->ordertotal); ?></td>
+				<td class="text-right">$ <?= $page->stringerbell->format_money($order->total_order); ?></td>
 				<td class="text-right"><?= DplusDateTime::format_date($order->orderdate); ?></td>
-				<td class="text-right"><?= DplusDateTime::format_date($order->invdate); ?></td>
+				<td class="text-right"><?= DplusDateTime::format_date($order->invoice_date); ?></td>
 				<td colspan="3">
 					<span class="col-xs-3"><?= $orderpanel->generate_loaddocumentslink($order); ?></span>
 					<span class="col-xs-3"><?= $orderpanel->generate_loadtrackinglink($order); ?></span>
