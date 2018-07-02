@@ -68,10 +68,10 @@
 	</div>
 	<br>
 	<div class="row">
-		<div class="col-sm-6 form-group">
+		<div class="col-sm-12 form-group">
 			<button class="btn btn-success btn-block" type="submit">Search <i class="fa fa-search" aria-hidden="true"></i></button>
 		</div>
-		<div class="col-sm-6 form-group">
+		<div class="col-sm-12 form-group">
 			<?php if ($input->get->filter) : ?>
 		        <div>
 		            <?= $orderpanel->generate_clearsearchlink(); ?>

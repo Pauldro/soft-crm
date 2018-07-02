@@ -1,6 +1,5 @@
 <form action="<?= $orderpanel->pageurl->getUrl(); ?>" method="get" data-ordertype="sales-hists" data-loadinto="#sales-history-panel" data-focus="#sales-history-panel" data-modal="#ajax-modal" class="orders-search-form allow-enterkey-submit">
 	<input type="hidden" name="filter" value="filter">
-	<?= var_dump(get_minsaleshistoryordertotal(session_id()), true); ?>
 	<div class="row">
 		<div class="col-sm-2">
 			<h4>Order #</h4>
@@ -64,10 +63,10 @@
 	</div>
 	<br>
 	<div class="row">
-		<div class="col-sm-6 form-group">
+		<div class="col-sm-12 form-group">
 			<button class="btn btn-success btn-block" type="submit">Search <i class="fa fa-search" aria-hidden="true"></i></button>
 		</div>
-		<div class="col-sm-6 form-group">
+		<div class="col-sm-12 form-group">
 			<?php if ($input->get->filter) : ?>
 		        <div>
 		            <?= $orderpanel->generate_clearsearchlink(); ?>

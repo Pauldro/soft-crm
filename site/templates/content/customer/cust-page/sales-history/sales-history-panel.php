@@ -37,9 +37,8 @@
 					if ($modules->isInstalled('QtyPerCase')) {
 						include $config->paths->siteModules.'QtyPerCase/content/customer/sales-history/table.php';
 					} else {
-						include $config->paths->content.'customer/cust-page/sales-history/table.php';
+						include $config->paths->content.'customer/cust-page/sales-history/search-form.php';
 					}
-					echo $paginator;
 				?>
 			</div>
 		  </div>
