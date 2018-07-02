@@ -696,6 +696,17 @@
 			CRUD FUNCTIONS
 		============================================================ */
 		/**
+		 * Returns SalesOrder from oe_head
+		 * @param  string            $ordn      Sales Order #
+		 * @param  bool              $debug     Run in debug? If so, will return SQL Query
+		 * @return SalesOrderOEHead             Sales Order
+		 * @uses Read (CRUD)
+		 */
+		public static function load($ordn, $debug = false) {
+			return get_oeheadsalesorder($ordn, $debug);
+		}
+		
+		/**
 		 * Returns a Customer ID from a Sales Order or this order if applicable
 		 * @param  string $ordn  Sales Order Number
 		 * @param  bool   $debug Run in debug? If so will return SQL Query

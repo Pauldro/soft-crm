@@ -11,27 +11,18 @@
 		}
 		
 		/* =============================================================
-			Class Functions
+			GETTER FUNCTIONS
 		============================================================ */
+		/**
+		 * Returns Sales Order from database
+		 * @param  bool             $debug Run in debug? If So, returns SQL Query 
+		 * @return SalesOrderOEHead        Sales Order
+		 */
 		public function get_order($debug = false) {
-			return get_orderhead($this->sessionID, $this->ordn, 'SalesOrder', $debug);
+			return SalesOrderOEHead::load($this->ordn, $debug);
 		}
 		
-		public function get_creditcard($debug = false) {
-			return get_ordercreditcard($this->sessionID, $this->ordn, false);
-		}
 		
-		public function showhide_creditcard(Order $order) {
-			return ($order->paymenttype == 'cc') ? '' : 'hidden';
-		}
-		
-		public function showhide_phoneintl(Order $order) {
-			return $order->is_phoneintl() ? '' : 'hidden';
-		}
-		
-		public function showhide_phonedomestic(Order $order) {
-			return $order->is_phoneintl() ? 'hidden' : '';
-		}
 		
 		/* =============================================================
 			OrderDisplayInterface Functions

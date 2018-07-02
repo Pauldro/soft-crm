@@ -1,19 +1,79 @@
 <?php
 	/**
-	 * Class for Dealing with Sales Orders from ordrhead
+	 * Class for editing Sales Orders from ordrhed
 	 */
-	class SalesOrder extends Order implements OrderInterface {
+	class SalesOrderEdit extends Order implements OrderInterface {
 		protected $type;
+		
+		/**
+		 * Customer Name
+		 * @var string
+		 */
 		protected $custname;
+		
+		/**
+		 * Sales Order Number
+		 * @var string
+		 */
 		protected $orderno;
+		
+		/**
+		 * Date Order was Made
+		 * @var string 
+		 * Format: MM/DD/YYYY
+		 */
 		protected $orderdate;
+		
+		/** 
+		 * Person to Ship to
+		 * @var string
+		 */
 		protected $careof;
+		
+		/**
+		 * Invoice Date
+		 * @var string
+		 * Format: MM/DD/YYYY
+		 */
 		protected $invdate;
+		
+		/**
+		 * Shipped Date
+		 * @var string
+		 * Format: MM/DD/YYYY
+		 */
 		protected $shipdate;
+		
+		/**
+		 * Review Date
+		 * @var string
+		 * Format: MM/DD/YYYY
+		 */
 		protected $revdate;
+		
+		/**
+		 * Expire Date
+		 * @var string
+		 * Format: MM/DD/YYYY
+		 */
 		protected $expdate;
+		
+		/**
+		 * Does Order have documents?
+		 * @var bool
+		 */
 		protected $hasdocuments;
+		
+		/**
+		 * Does Order have Tracking info?
+		 * @var bool
+		 */
 		protected $hastracking;
+		
+		/**
+		 * Is order editable?
+		 * @var bool
+		 */
 		protected $editord;
 		protected $sconame;
 		protected $phintl;
@@ -121,14 +181,14 @@
 		============================================================ */
 		/**
 		 * Returns SalesOrder from ordrhed
-		 * @param  string $sessionID Session ID
-		 * @param  string $ordn      Sales Order #
-		 * @param  bool   $debug     Whether Sales Order or SQL Query for the Order is returned
-		 * @return SalesOrder        Or SQL QUERY
+		 * @param  string          $sessionID Session ID
+		 * @param  string          $ordn      Sales Order #
+		 * @param  bool            $debug     Run in debug? If so, will return SQL Query
+		 * @return SalesOrderEdit             Editable Sales Order
 		 * @uses Read (CRUD)
 		 */
 		public static function load($sessionID, $ordn, $debug = false) {
-			return get_orderhead($sessionID, $ordn, true, $debug);
+			return get_orderhead($sessionID, $ordn, $debug);
 		}
 
 		/**
@@ -158,7 +218,7 @@
 		 */
 		public function has_changes() {
 			$properties = array_keys(get_object_vars($this));
-			$order = SalesOrder::load($this->sessionid, $this->orderno);
+			$order = SalesOrderEdit::load($this->sessionid, $this->orderno);
 
 			foreach ($properties as $property) {
 				if ($this->$property != $order->$property) {

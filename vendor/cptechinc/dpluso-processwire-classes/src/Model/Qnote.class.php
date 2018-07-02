@@ -175,7 +175,7 @@
 					return true;
 					break;
 				case 'SORD':
-					$order = SalesOrder::load($sessionID, $key1);
+					$order = SalesOrderOEHead::load($key1);
 					return $order->can_edit();
 					break;
 				case 'QUOT':
