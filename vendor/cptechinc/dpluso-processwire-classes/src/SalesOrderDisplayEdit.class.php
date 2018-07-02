@@ -1,18 +1,46 @@
 <?php
 	class EditSalesOrderDisplay extends SalesOrderDisplay {
 		use SalesOrderDisplayTraits;
-
-		protected $ordn;
-		protected $modal;
-		public $canedit;
-
-
+		
 		public function __construct($sessionID, \Purl\Url $pageurl, $modal, $ordn) {
 			parent::__construct($sessionID, $pageurl, $modal, $ordn);
 		}
+		
+		/* =============================================================
+			GETTER FUNCTIONS
+		============================================================ */
+		/**
+		 * Returns EditableSales Order from database
+		 * @param  bool             $debug Run in debug? If So, returns SQL Query 
+		 * @return SalesOrderEdit          Sales Order
+		 */
+		public function get_order($debug = false) {
+			return SalesOrderEdit::load($this->ordn, $debug);
+		}
+		
+		/**
+		 * Returns Credit Card details for this Sales Order
+		 * @param  bool   $debug    Run in Debug? If so, will return SQL Query
+		 * @return OrderCreditCard  Credit Card Details
+		 */
+		public function get_creditcard($debug = false) {
+			return get_orderhedcreditcard($this->sessionID, $this->ordn, $debug);
+		}
+		
+		public function showhide_creditcard(Order $order) {
+			return ($order->paymenttype == 'cc') ? '' : 'hidden';
+		}
+		
+		public function showhide_phoneintl(Order $order) {
+			return $order->is_phoneintl() ? '' : 'hidden';
+		}
+		
+		public function showhide_phonedomestic(Order $order) {
+			return $order->is_phoneintl() ? 'hidden' : '';
+		}
 
 		/* =============================================================
-			Class Functions
+			CLASS FUNCTIONS
 		============================================================ */
 		public function generate_unlockurl(Order $order) {
 			$url = $this->generate_ordersredirurl();
@@ -22,7 +50,7 @@
 		}
 
 		public function generate_confirmationurl(Order $order) {
-			$url = new \Purl\Url(Processwire\wire('config')->pages->confirmorder);
+			$url = new \Purl\Url(DplusWire::wire('config')->pages->confirmorder);
 			$url->query->set('ordn', $order->orderno);
 			return $url->getUrl();
 		}
@@ -112,7 +140,6 @@
 				$content = $bootstrap->createicon('material-icons', '&#xE0B9;') . ' ' . $title;
 				$link = $bootstrap->openandclose('a', "href=$href|class=btn btn-default load-notes|title=$title|data-modal=$this->modal", $content);
 			}
-
 			return $link;
 		}
 	}

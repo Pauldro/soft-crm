@@ -3,7 +3,6 @@
 	 * Class for Dealing with Sales Orders History from saleshist
 	 */
 	class SalesOrderHistory extends SalesOrderOEHead {
-
 		protected $orderno;
 		protected $custid;
 		protected $shiptoid;

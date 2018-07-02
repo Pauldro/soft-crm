@@ -3269,7 +3269,30 @@
 			return $q->generate_sqlquery($q->params);
 		}
 	}
+	
+/* =============================================================
+	OE HEAD FUNCTIONS
+============================================================ */
+	/**
+	 * Returns the Sales Order from the oe_head table
+	 * @param  string $ordn      Sales Order Number
+	 * @param  bool   $debug     Run in debug? If so, will return SQL Query
+	 * @return SalesOrderOEHead  Sales Order
+	 */
+	function get_oeheadsalesorder($ordn, $debug = false) {
+		$q = (new QueryBuilder())->table('oe_head');
+		$q->where('orderno', $ordn);
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrderOEHead');
+			return $sql->fetch();
+		}
+	}
+	
 /* =============================================================
 	EDIT ORDER FUNCTIONS
 ============================================================ */
@@ -3284,22 +3307,27 @@
 			if ($column != 'Y') { return false; } else { return true; }
 		}
 	}
-
-	function get_orderhead($sessionID, $ordn, $useclass = false, $debug = false) {
+	
+	/**
+	 * Returns Sales Order from ordrhed
+	 * // NOTE THis is the order record to add edits to
+	 * @param  string         $sessionID Session Identifier
+	 * @param  string         $ordn      Sales Order Number
+	 * @param  bool           $debug     Run in debug? If so, return SQL Query
+	 * @return SalesOrderEdit            Editable Sales Order
+	 */
+	function get_orderhead($sessionID, $ordn, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->where('sessionid', $sessionID);
 		$q->where('orderno', $ordn);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrder'); // CAN BE SalesOrder|SalesOrderEdit
-				return $sql->fetch();
-			}
-			return $sql->fetch(PDO::FETCH_ASSOC);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrder'); // CAN BE SalesOrder|SalesOrderEdit
+			return $sql->fetch();
 		}
 	}
 
@@ -3436,14 +3464,27 @@
 			return $q->generate_sqlquery($q->params);
 		}
 	}
+	
+	/**
+	 * Returns Decoded credit card information for Sales Order
+	 * @param  string $sessionID Session Identifier
+	 * @param  string $ordn      Sales Order Number
+	 * @param  bool   $debug     Run in debug? If so, returns SQL Query
+	 * @return OrderCreditCard   
+	 */
+	function get_orderhedcreditcard($sessionID, $ordn, $debug = false) {
+		$q = (new QueryBuilder())->table('orderhed');
+		$q->field($q->expr("AES_DECRYPT(cardnumber, HEX(sessionid)) AS cardnumber"));
+		$q->field($q->expr("AES_DECRYPT(cardnumber , HEX(sessionid)) AS cardcode"));
+		$q->field($q->expr("AES_DECRYPT(cardexpire, HEX(sessionid)) AS expiredate "));
+		$q->where('sessionid', $sessionID);
+		$q->where('orderno', $ordn);
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
-	function get_ordercreditcard($sessionID, $ordn, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT sessionid, AES_DECRYPT(cardnumber, HEX(sessionid)) AS cardnumber, AES_DECRYPT(cardnumber , HEX(sessionid)) AS cardcode, AES_DECRYPT(cardexpire, HEX(sessionid)) AS expiredate FROM ordrhed WHERE sessionid = :sessionID AND orderno = :ordn AND type = 'O'");
-		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn); $withquotes = array(true, true);
-		$sql->execute($switching);
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
+			$sql->execute($q->params);
 			$sql->setFetchMode(PDO::FETCH_CLASS, 'OrderCreditCard');
 			return $sql->fetch();
 		}

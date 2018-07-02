@@ -10,8 +10,8 @@
 			$queryarray = $queryurl->query->getData();
 			
 			if (isset($queryarray['ordn'])) {
-				$order = SalesOrder::load($sessionID, $queryarray['ordn']);
-				$email = $order->email;
+				$order = SalesOrderOEHead::load($queryarray['ordn']);
+				$email = $order->contact_email;
 				$contact = $order->contact;
 			} elseif(isset($queryarray['qnbr'])) {
 				$quote = Quote::load($sessionID, $queryarray['qnbr']);
