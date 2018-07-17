@@ -56,6 +56,7 @@
 
 	if ($user->loggedin) {
 		setup_user(session_id());
+		SigninLog::log_signin(session_id(), $user->loginid);
 	} elseif (strtolower($page->title) != 'login' && strtolower($page->title) != 'redir' && $page->template != 'template-print') {
 		header('location: ' . $config->pages->login);
 		exit;

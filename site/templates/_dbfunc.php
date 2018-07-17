@@ -4579,6 +4579,7 @@
 
 		$q = (new QueryBuilder())->table('log_signin');
 		$q->where($q->expr("DATE(date) = STR_TO_DATE([], '%Y-%m-%d')", [$day]));
+		$q->order('date DESC');
 
 		$sql = DplusWire::wire('database')->prepare($q->render());
 
@@ -4608,6 +4609,49 @@
 		if (!empty($userID)) {
 			$q->where('loginid', $userID);
 		}
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+
+	/**
+	 * Inserts log of user signins for today that the User has access to
+	 * @param  string $sessionID  sessionid
+	 * @param  string $userID     loginID
+	 * @uses User dplusrole
+	 */
+	function insert_logsignin($sessionID, $userID, $debug) {
+		$date = date('Y-m-d H:i:s');
+		$q = (new QueryBuilder())->table('log_signin');
+		$q->mode('insert');
+		$q->set('sessionid', $sessionID);
+		$q->set('user', $userID);
+		$q->set('date', $date);
+
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $q->generate_sqlquery($q->params);
+		}
+	}
+
+	/**
+	 * Checks to see if sessionid already exists in log-signin table
+	 * @param  string $sessionID  sessionid
+	 * @uses User dplusrole
+	 */
+	function has_loggedsignin($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('log_signin');
+		$q->field('COUNT(*)');
+		$q->where('sessionid', $sessionID);
 		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
