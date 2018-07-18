@@ -1,15 +1,15 @@
 <?php
     class SigninLog {
-
+        use ThrowErrorTrait;
+		use MagicMethodTraits;
+        use AttributeParser;
         /**
 		 * Array of logins
 		 * @var array
 		 */
-		public $logs = array();
-        public $user;
-        public $date;
-
-        protected $filter;
+		protected $logs = array();
+        protected $ajaxdata;
+        protected $filters;
         protected $filterable = array(
             'user' => array(
 				'querytype' => 'between',
@@ -18,15 +18,15 @@
 			),
 			'date' => array(
 				'querytype' => 'between',
-				'datatype' => 'date',
+				'datatype' => 'mysql-date',
 				'label' => 'Date'
-			),
-            'sessionid' => array(
-				'querytype' => 'between',
-				'datatype' => 'char',
-				'label' => 'Session ID'
 			)
         );
+
+        public function __construct($sessionID, \Purl\Url $pageurl, $loadinto, $focus) {
+			$this->pageurl = new Purl\Url($pageurl->getUrl());
+            $this->ajaxdata = "data-focus='$focus' data-loadinto='$loadinto'";
+		}
 
         /**
 		 * Returns the number of signins that will be found with the filters applied
@@ -46,6 +46,16 @@
 		 */
         public function get_daysignins($day, $debug = false) {
 			$logs = get_daysignins($day, $debug);
+			return $debug ? $logs : $this->logs = $logs;
+        }
+
+        /**
+         * Returns the log_signin Records that match the filter from the Database
+         * @param  bool   $debug Run in debug? If so, return SQL Query
+         * @return array         log_signin records
+         */
+        public function get_signinlog($debug = false) {
+            $logs = get_logsignins($this->filters, $this->filterable, $debug);
 			return $debug ? $logs : $this->logs = $logs;
         }
 
@@ -160,4 +170,20 @@
 			return $desc;
 		}
 
+        public function generate_loadurl() {
+			$url = new \Purl\Url($this->pageurl);
+			$url->query->remove('filter');
+			foreach (array_keys($this->filterable) as $filtercolumns) {
+				$url->query->remove($filtercolumns);
+			}
+			return $url->getUrl();
+		}
+
+		public function generate_clearsearchlink() {
+			$bootstrap = new Contento();
+			$href = $this->generate_loadurl();
+			$icon = $bootstrap->createicon('fa fa-search-minus');
+            $ajaxdata = $this->generate_ajaxdataforcontento();
+			return $bootstrap->openandclose('a', "href=$href|class=load-link btn btn-warning btn-block|$ajaxdata", "Clear Search $icon");
+		}
     }

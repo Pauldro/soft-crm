@@ -3991,7 +3991,6 @@
 	function get_logmuser($loginID, $debug = false) {
 		$q = (new QueryBuilder())->table('logm');
 		$q->where('loginid', $loginID);
-
 		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
@@ -4003,8 +4002,21 @@
 		}
 	}
 
+	function get_logmuserlist($debug = false) {
+		$q = (new QueryBuilder())->table('logm');
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'LogmUser');
+			return $sql->fetchAll();
+		}
+	}
+
 	/* =============================================================
-		LOGM FUNCTIONS
+		OOKING FUNCTIONS
 	============================================================ */
 	/**
 	 * Return the Number of bookings made that day, for a salesrep, if need be
@@ -4529,8 +4541,6 @@
 
 		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
 			$q->where('salesrep', DplusWire::wire('user')->salespersonid);
-		} else {
-
 		}
 
 		$q->where('custid', $custID);
@@ -4574,9 +4584,6 @@
 	 */
 	function get_daysignins($day, $debug = false) {
 		$day = empty(date('Y-m-d', strtotime($day))) ? date('Y-m-d') : date('Y-m-d', strtotime($day));
-		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
-		$user = LogmUser::load($loginID);
-
 		$q = (new QueryBuilder())->table('log_signin');
 		$q->where($q->expr("DATE(date) = STR_TO_DATE([], '%Y-%m-%d')", [$day]));
 		$q->order('date DESC');
@@ -4599,16 +4606,9 @@
 	 */
 	function count_daysignins($day, $debug = false) {
 		$day = empty(date('Y-m-d', strtotime($day))) ? date('Y-m-d') : date('Y-m-d', strtotime($day));
-		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
-		$user = LogmUser::load($loginID);
-
 		$q = (new QueryBuilder())->table('log_signin');
 		$q->field('COUNT(*)');
 		$q->where($q->expr("DATE(date) = STR_TO_DATE([], '%Y-%m-%d')", [$day]));
-
-		if (!empty($userID)) {
-			$q->where('loginid', $userID);
-		}
 		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
@@ -4616,6 +4616,30 @@
 		} else {
 			$sql->execute($q->params);
 			return $sql->fetchColumn();
+		}
+	}
+
+	/**
+	 * Returns the log_signin records that match the filter
+	 * @param  array $filter      Array of filters and values for each filter (column)
+	 * @param  array $filtertypes Array of the possible filters and their properties
+	 * @param  bool  $debug       Run in debug? If so, return SQL Query
+	 * @return array              log_signin records
+	 */
+	function get_logsignins($filter, $filtertypes, $debug = false) {
+		$q = (new QueryBuilder())->table('log_signin');
+		$q->order('date DESC');
+
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchAll();
 		}
 	}
 
