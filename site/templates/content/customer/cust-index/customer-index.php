@@ -1,19 +1,23 @@
 <?php
-	$custindex = new CustomerIndex();
-	$contactscount = $custindex->count_distinctcustindex();
-	$resultscount = ($input->get->q) ? $custindex->count_searchcustindex($input->get->text('q')) : $contactscount;
+	$contactscount = count_distinctcustindex();
+	if ($input->get->q) {
+		$searchcount = count_searchcustindex($input->get->text('q'));
+		$resultscount = $searchcount;
+	} else {
+		$resultscount = $contactscount;
+	}
 ?>
 
 <div class="row form-group">
 	<div class="col-xs-12">
-		<a href="<?= $config->pages->customer.'add/'; ?>" class="btn btn-primary"><i class="fa fa-user-plus" aria-hidden="true"></i> Add new Customer</a>
+		<a href="<?php echo $config->pages->customer.'add/'; ?>" class="btn btn-primary"><i class="fa fa-user-plus" aria-hidden="true"></i> Add new Customer</a>
 	</div>
 </div>
 
 <div class="panel panel-primary not-round">
     <div class="panel-heading not-round">
     	<?php if (isset($input->get->q)) : ?>
-            <h3 class="panel-title">Customer Contacts (<?= number_format($resultscount); ?> matches out of <?= $contactscount; ?> Customers)</h3>
+            <h3 class="panel-title">Customer Contacts (<?= number_format($searchcount); ?> matches out of <?= $contactscount; ?> Customers)</h3>
         <?php else : ?>
             <h3 class="panel-title">Customers (<?= number_format($contactscount); ?>)</h3>
         <?php endif; ?>
