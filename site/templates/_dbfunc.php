@@ -678,6 +678,14 @@
 /* =============================================================
 	CUST INDEX FUNCTIONS
 ============================================================ */
+	/**
+	 * Returns Distinct Customer Index Records that the user has access to
+	 * @param  int    $limit   Number of Records to return
+	 * @param  int    $page    Page Number to start from
+	 * @param  string $loginID User Login ID, if blank, will use current user
+	 * @param  bool   $debug   Run in debug? If so, will return SQL Query
+	 * @return array           Distinct Customer Index Records
+	 */
 	function get_distinctcustindexpaged($limit = 10, $page = 1, $loginID = '', $debug = false) {
 		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
 		$user = LogmUser::load($loginID);
@@ -728,7 +736,16 @@
 			return $sql->fetchColumn();
 		}
 	}
-
+	
+	/**
+	 * Returns Customer Index records that match the Query
+	 * @param  string $keyword Query String to match
+	 * @param  int    $limit   Number of records to return
+	 * @param  int    $page    Page to start from
+	 * @param  string $loginID User Login ID, if blank, will use current user
+	 * @param  bool   $debug   Run in debug? If so, will return SQL Query
+	 * @return array           Customer Index records that match the Query
+	 */
 	function search_custindexpaged($keyword, $limit = 10, $page = 1, $loginID = '', $debug = false) {
 		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
 		$user = LogmUser::load($loginID);
@@ -743,7 +760,6 @@
 			$permquery->where('loginid', [$loginID, $SHARED_ACCOUNTS]);
 			$q->where('(custid, shiptoid)','in', $permquery);
 		}
-
 		$fieldstring = implode(", ' ', ", array_keys(Contact::generate_classarray()));
 
 		$q->where($q->expr("UCASE(REPLACE(CONCAT($fieldstring), '-', '')) LIKE UCASE([])", [$search]));
@@ -758,6 +774,7 @@
 			$q->order($q->expr('custid <> []', [$search]));
 		}
 		$sql = DplusWire::wire('database')->prepare($q->render());
+		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {

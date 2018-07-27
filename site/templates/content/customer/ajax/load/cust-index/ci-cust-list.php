@@ -1,7 +1,7 @@
 <?php
-    $custresults = search_custindexpaged($input->get->text('q'), $config->showonpage, $input->pageNum);
-    $resultscount = count_searchcustindex($input->get->text('q'));
-
+    $custindex = new CustomerIndex();
+    
+    $resultscount = $custindex->count_searchcustindex($input->get->text('q'));
     $pageurl = ($input->get->q) ? $page->fullURL->getUrl() : $config->pages->ajaxload."customers/cust-index/?function=ci";
     $insertafter = 'cust-index';
     $paginator = new Paginator($input->pageNum, $resultscount, $pageurl, $insertafter, "data-loadinto='#cust-index-search-form' data-focus='#cust-index-search-form'");
@@ -22,7 +22,8 @@
             </thead>
             <tbody>
                 <?php if ($resultscount > 0) : ?>
-                    <?php foreach ($custresults as $cust) : ?>
+                    <?php $customers = $custindex->search_custindexpaged($input->get->text('q'), $input->pageNum); ?>
+                    <?php foreach ($customers as $cust) : ?>
                         <tr>
                             <td>
                                 <a href="<?= $cust->generate_ciloadurl(); ?>">
