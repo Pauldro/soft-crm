@@ -33,6 +33,68 @@
         protected $function;
         
         /**
+         * Page URL
+         * @var string
+         */
+        protected $pageurl;
+        
+        /**
+         * Table Sorter - for sorting results
+         * @var TablePageSorter
+         */
+        protected $tablesorter;
+        
+        /**
+         * HTML element to load into for AJAX
+         * @var string
+         */
+        protected $loadinto;
+        
+        /**
+         * HTML element to focus on for AJAX
+         * @var string
+         */
+        protected $focus;
+        
+        /**
+         * AJAX Data Attributes
+         * @var string
+         */
+        protected $ajaxdata;
+        
+        /**
+         * Constructs CustIndex and instantiates tablesorter
+         * @param Purl\Url $url       Page URL 
+         * @param string   $loadinto  HTML element to load into for AJAX
+         * @param string   $focus     HTML element to focus on for AJAX
+         */
+        public function __construct(Purl\Url $url, $loadinto, $focus) {
+            $this->pageurl = new Purl\Url($url->getUrl());
+            $this->loadinto = $this->focus = $loadinto;
+			$this->ajaxdata = "data-loadinto='$this->loadinto' data-focus='$this->focus'";
+            $this->tablesorter = new TablePageSorter($this->pageurl->query->get('orderby'));
+        }
+        
+        /**
+         * Sets the Page Number
+         * @param int $pagenbr Page Number
+         */
+        public function set_pagenbr($pagenbr) {
+            $this->pagenbr = $pagenbr;
+        }
+        
+        /**
+		 * Returns the sortby column URL
+		 * @param  string $column column to sortby
+		 * @return string         URL with the column sortby with the correct rule
+		 */
+		public function generate_tablesortbyurl($column) {
+			$url = new \Purl\Url($this->pageurl->getUrl());
+			$url->query->set("orderby", "$column-".$this->tablesorter->generate_columnsortingrule($column));
+			return $url->getUrl();
+		}
+        
+        /**
          * Returns the number of customer index records that fit the current 
          * criteria for the search based on user permissions
          * @param  string $query   Search Query
@@ -63,7 +125,7 @@
          * @return array           Customer Index records that match the Query
          */
         public function search_custindexpaged($q, $page = 1, $loginID = '', $debug = false) {
-            return search_custindexpaged($q, DplusWire::wire('session')->display, $this->pagenbr, $loginID, $debug);
+            return search_custindexpaged($q, DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->get_orderbystring(), $loginID, $debug);
         }
         
         /**
@@ -74,7 +136,7 @@
          * @return array           Distinct Customer Index Records
          */
         public function get_distinctcustindexpaged($page = 1, $loginID = '', $debug = false) {
-            return get_distinctcustindexpaged(DplusWire::wire('session')->display, $this->pagenbr, $loginID, $debug);
+            return get_distinctcustindexpaged(DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->get_orderbystring(), $loginID, $debug);
         }
         
         /**

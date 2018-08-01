@@ -1,23 +1,43 @@
 <?php
-    $custindex = new CustomerIndex();
-    
+    $pageurl = $page->fullURL;
+    $pageurl->path = ($input->get->q) ? $pageurl->path : $config->pages->ajaxload."customers/cust-index/";
+    $pageurl->query->set('function', 'ci');
+    $custindex = new CustomerIndex($pageurl, '#cust-index-search-form', '#cust-index-search-form');
+    $custindex->set_pagenbr($input->pageNum);
     $resultscount = $custindex->count_searchcustindex($input->get->text('q'));
-    $pageurl = ($input->get->q) ? $page->fullURL->getUrl() : $config->pages->ajaxload."customers/cust-index/?function=ci";
-    $insertafter = 'cust-index';
-    $paginator = new Paginator($input->pageNum, $resultscount, $pageurl, $insertafter, "data-loadinto='#cust-index-search-form' data-focus='#cust-index-search-form'");
+    $paginator = new Paginator($custindex->pagenbr, $resultscount, $custindex->pageurl, 'cust-index', $custindex->ajaxdata);
 ?>
 
 <div id="cust-results">
     <?php if ($appconfig->allow_customeradd) : ?>
         <div class="form-group">
-            <a href="<?= $config->pages->customer.'add/'; ?>" class="btn btn-primary"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Customer</a>
+            <a href="<?= $config->pages->customer.'add/'; ?>" class="btn btn-primary">
+                <i class="fa fa-user-plus" aria-hidden="true"></i> Add Customer
+            </a>
         </div>
     <?php endif; ?>
     <div class="table-responsive">
         <table id="cust-index" class="table table-striped table-bordered">
             <thead>
                 <tr>
-                    <th width="100">CustID</th> <th>Customer Name</th> <th>Ship-To</th> <th>Location</th><th width="100">Phone</th><th>Last Sale Date</th>
+                    <th width="100">
+                        <a href="<?= $custindex->generate_tablesortbyurl("custid") ; ?>" class="load-link" <?= $custindex->ajaxdata; ?>>
+                            CustID <?= $custindex->tablesorter->generate_sortsymbol('custid'); ?>
+                        </a>
+                    </th> 
+                    <th>
+                        <a href="<?= $custindex->generate_tablesortbyurl("name") ; ?>" class="load-link" <?= $custindex->ajaxdata; ?>>
+                            Customer Name <?= $custindex->tablesorter->generate_sortsymbol('name'); ?>
+                        </a>
+                    </th> 
+                    <th>Ship-To</th> 
+                    <th>Location</th>
+                    <th width="100">
+                        <a href="<?= $custindex->generate_tablesortbyurl("phone") ; ?>" class="load-link" <?= $custindex->ajaxdata; ?>>
+                            Phone <?= $custindex->tablesorter->generate_sortsymbol('phone'); ?>
+                        </a>
+                    </th>
+                    <th>Last Sale Date</th>
                 </tr>
             </thead>
             <tbody>

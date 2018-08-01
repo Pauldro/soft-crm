@@ -88,6 +88,7 @@
 			return $sql->fetchColumn();
 		}
 	}
+	
 /* =============================================================
 	PERMISSION FUNCTIONS
 ============================================================ */
@@ -746,7 +747,7 @@
 	 * @param  bool   $debug   Run in debug? If so, will return SQL Query
 	 * @return array           Customer Index records that match the Query
 	 */
-	function search_custindexpaged($keyword, $limit = 10, $page = 1, $loginID = '', $debug = false) {
+	function search_custindexpaged($keyword, $limit = 10, $page = 1, $orderbystring, $loginID = '', $debug = false) {
 		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
 		$user = LogmUser::load($loginID);
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
@@ -761,18 +762,32 @@
 			$q->where('(custid, shiptoid)','in', $permquery);
 		}
 		$fieldstring = implode(", ' ', ", array_keys(Contact::generate_classarray()));
-
+		
 		$q->where($q->expr("UCASE(REPLACE(CONCAT($fieldstring), '-', '')) LIKE UCASE([])", [$search]));
 		$q->limit($limit, $q->generate_offset($page, $limit));
-
+		
 		if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
-			$q->order($q->expr('custid <> []', [$search]));
+			if (!empty($orderbystring)) {
+				$q->order($q->generate_orderby($orderbystring));
+			} else {
+				$q->order($q->expr('custid <> []', [$search]));
+			}
 			$q->group('custid, shiptoid');
 		} elseif (DplusWire::wire('config')->cptechcustomer == 'stat') {
+			if (!empty($orderbystring)) {
+				$q->order($q->generate_orderby($orderbystring));
+			}
 			$q->group('custid');
 		} else {
-			$q->order($q->expr('custid <> []', [$search]));
+			if (!empty($orderbystring)) {
+				$q->order($q->generate_orderby($orderbystring));
+			} else {
+				$q->order($q->expr('custid <> []', [$search]));
+			}
 		}
+		
+		
+		
 		$sql = DplusWire::wire('database')->prepare($q->render());
 		
 		if ($debug) {
