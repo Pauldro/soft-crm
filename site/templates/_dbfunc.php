@@ -4685,3 +4685,20 @@
 			return $sql->fetchColumn();
 		}
 	}
+	
+	/* =============================================================
+		SALES ORDER PICKING FUNCTIONS
+	============================================================ */
+	function get_picksalesorderheader($sessionID, $ordn, $debug = false) {
+		$q = (new QueryBuilder())->table('wmpickhed');
+		$q->where('sessionid', $sessionID);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'PickSalesOrder');
+			return $sql->fetch();
+		}
+	}

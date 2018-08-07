@@ -41,3 +41,6 @@
     $config->pages->vendorinfo = $config->urls->root . "vendors/vend-info/";
     $config->pages->sys = $config->urls->root . "sys/";
     $config->pages->reports = $config->urls->root . "reports/";
+    $config->pages->warehouse = $config->urls->root . "warehouse/";
+    $config->pages->warehousepicking = $config->urls->root . "warehouse/picking/";
+    $config->pages->salesorderpicking = $config->urls->root . "warehouse/picking/sales-order/";
