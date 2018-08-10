@@ -123,7 +123,7 @@
 	 */
 	function is_custindexloaded($debug = false) {
 		$q = (new QueryBuilder())->table('custindex');
-		$q->field($q->expr("COUNT(*) > 0, 1, 0)"));
+		$q->field($q->expr("IF(COUNT(*) > 0, 1, 0)"));
 		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
@@ -4700,5 +4700,33 @@
 			$sql->execute($q->params);
 			$sql->setFetchMode(PDO::FETCH_CLASS, 'PickSalesOrder');
 			return $sql->fetch();
+		}
+	}
+	
+	function get_whsesession($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('whsesession');
+		$q->where('sessionid', $sessionID);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'WhseSession');
+			return $sql->fetch();
+		}
+	}
+	
+	function does_whsesessionexist($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('whsesession');
+		$q->field($q->expr('IF(COUNT(*) > 0, 1, 0)'));
+		$q->where('sessionid', $sessionID);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
 		}
 	}

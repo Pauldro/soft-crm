@@ -16,7 +16,7 @@
 	include_once($config->paths->content."common/initialize.php");  // includes class files
 	include_once($config->paths->templates."_init.js.php");  // includes class files
 	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/SigninLog.class.php");
-	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/Model/PickSalesOrder.class.php");
+	include_once($config->paths->vendor."cptechinc/dpluso-warehouse-classes/vendor/autoload.php");
 	
 	$session->sessionName = session_name();
 

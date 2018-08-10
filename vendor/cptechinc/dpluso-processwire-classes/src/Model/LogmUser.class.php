@@ -75,6 +75,7 @@
             'loginID' => 'loginid',
             'whseID' => 'whseid',
         );
+
 		/* =============================================================
 			CRUD FUNCTIONS
 		============================================================ */
@@ -105,9 +106,9 @@
 
 		/**
 		 * Loads an object of this class
-		 * @param  string  $loginID User's Dplus Login ID
-		 * @param  bool $debug   Whether to return the SQL to create the object or the object
-		 * @return LogmUser
+		 * @param  string   $loginID  User's Dplus Login ID
+		 * @param  bool     $debug    Whether to return the SQL to create the object or the object
+		 * @return LogmUser 
 		 */
 		public static function load($loginID, $debug = false) {
 			return get_logmuser($loginID, $debug);
