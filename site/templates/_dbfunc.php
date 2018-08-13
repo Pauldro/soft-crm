@@ -4579,7 +4579,8 @@
 
 	/**
 	 * Return the user signins for today that the User has access to
-	 * @param  string $day  Date      current day's date
+	 * @param  string $day    Date    
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
 	 * @uses User dplusrole
 	 */
 	function get_daysignins($day, $debug = false) {
@@ -4601,7 +4602,8 @@
 
 	/**
 	 * Return the number of user signins for today that the User has access to
-	 * @param  string $day  Date
+	 * @param  string $day   Date
+	 * @param  bool  $debug  Run in debug? If so, return SQL Query
 	 * @uses User dplusrole
 	 */
 	function count_daysignins($day, $debug = false) {
@@ -4645,18 +4647,18 @@
 
 	/**
 	 * Inserts log of user signins for today that the User has access to
-	 * @param  string $sessionID  sessionid
-	 * @param  string $userID     loginID
+	 * @param  string $sessionID  Session Identifier
+	 * @param  string $userID     User Login ID
+	 * @param  bool   $debug       Run in debug? If so, return SQL Query
 	 * @uses User dplusrole
 	 */
-	function insert_logsignin($sessionID, $userID, $debug) {
+	function insert_logsignin($sessionID, $userID, $debug = false) {
 		$date = date('Y-m-d H:i:s');
 		$q = (new QueryBuilder())->table('log_signin');
 		$q->mode('insert');
 		$q->set('sessionid', $sessionID);
 		$q->set('user', $userID);
 		$q->set('date', $date);
-
 		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
@@ -4669,8 +4671,9 @@
 
 	/**
 	 * Checks to see if sessionid already exists in log-signin table
-	 * @param  string $sessionID  sessionid
-	 * @uses User dplusrole
+	 * @param  string $sessionID   Session Identifier
+	 * @param  bool   $debug       Run in debug? If so, return SQL Query
+	 * @uses  User dplusrole
 	 */
 	function has_loggedsignin($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('log_signin');
@@ -4689,8 +4692,15 @@
 	/* =============================================================
 		SALES ORDER PICKING FUNCTIONS
 	============================================================ */
-	function get_picksalesorderheader($sessionID, $ordn, $debug = false) {
-		$q = (new QueryBuilder())->table('wmpickhed');
+	/**
+	 * Returns if there is a a whsesession record for that Session
+	 * @param  string $sessionID Session Identifier
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return bool              Does whsesession record exist for that Session ID
+	 */
+	function does_whsesessionexist($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('whsesession');
+		$q->field($q->expr('IF(COUNT(*) > 0, 1, 0)'));
 		$q->where('sessionid', $sessionID);
 		$sql = DplusWire::wire('database')->prepare($q->render());
 		
@@ -4698,11 +4708,16 @@
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			$sql->setFetchMode(PDO::FETCH_CLASS, 'PickSalesOrder');
-			return $sql->fetch();
+			return $sql->fetchColumn();
 		}
 	}
 	
+	/**
+	 * Returns an instance WhseSession from loading a WhseSession record for that Session
+	 * @param  string      $sessionID Session Identifier
+	 * @param  bool        $debug     Run in debug? If so, return SQL Query
+	 * @return WhseSession            WhseSession for that Session ID
+	 */
 	function get_whsesession($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('whsesession');
 		$q->where('sessionid', $sessionID);
@@ -4717,9 +4732,15 @@
 		}
 	}
 	
-	function does_whsesessionexist($sessionID, $debug = false) {
-		$q = (new QueryBuilder())->table('whsesession');
-		$q->field($q->expr('IF(COUNT(*) > 0, 1, 0)'));
+	/**
+	 * Returns the Pick Sales Order Header
+	 * @param  string           $sessionID Session Identifier
+	 * @param  string           $ordn      Sales Order Number
+	 * @param  bool             $debug     Run in debug? If so, return SQL Query
+	 * @return Pick_SalesOrder             Pick Sales Order Header
+	 */
+	function get_picksalesorderheader($sessionID, $ordn, $debug = false) {
+		$q = (new QueryBuilder())->table('wmpickhed');
 		$q->where('sessionid', $sessionID);
 		$sql = DplusWire::wire('database')->prepare($q->render());
 		
@@ -4727,6 +4748,67 @@
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			return $sql->fetchColumn();
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'PickSalesOrder');
+			return $sql->fetch();
+		}
+	}
+	
+	/**
+	 * Returns an Instance of Pick_SalesOrderDetail
+	 * @param  string                $sessionID Session Identifier
+	 * @param  bool                  $debug     Run in debug? If so, return SQL Query
+	 * @return Pick_SalesOrderDetail
+	 */
+	function get_whsesessiondetail($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('wmpickdet');
+		$q->where('sessionid', $sessionID);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'Pick_SalesOrderDetail');
+			return $sql->fetch();
+		}
+	}
+	
+	/**
+	 * Returns BarcodedItem 
+	 * @param  string       $barcode Barcode 
+	 * @param  bool         $debug   Run in debug? If so, return SQL Query
+	 * @return BarcodedItem
+	 */
+	function get_barcodeditem($barcode, $debug = false) {
+		$q = (new QueryBuilder())->table('barcodes');
+		$q->where('barcodenbr', $barcode);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'BarcodedItem');
+			return $sql->fetch();
+		}
+	}
+	
+	/**
+	 * Returns all the barcoded Items for that Item ID
+	 * @param  string $itemid Item ID
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return array          BarcodedItems
+	 */
+	function get_barcodeditemsforitemid($itemid, $debug = false) {
+		$q = (new QueryBuilder())->table('barcodes');
+		$q->where('itemid', $itemid);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'BarcodedItem');
+			return $sql->fetchAll();
 		}
 	}
