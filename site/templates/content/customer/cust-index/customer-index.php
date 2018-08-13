@@ -1,10 +1,9 @@
 <?php
-	$contactscount = count_distinctcustindex();
+	$custindex = new CustomerIndex();
+	$contactscount = $custindex->count_distinctcustindex();
+	
 	if ($input->get->q) {
-		$searchcount = count_searchcustindex($input->get->text('q'));
-		$resultscount = $searchcount;
-	} else {
-		$resultscount = $contactscount;
+		$searchcount = $custindex->count_searchcustindex($input->get->text('q'));
 	}
 ?>
 

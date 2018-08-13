@@ -33,7 +33,6 @@
 		public $faxnbr;
 		public $title;
 
-
 		/**
 		 * Contact for Accounts Receivable [Billto only]
 		 * @var string Y | N
