@@ -132,7 +132,7 @@
          * @param  bool                  $debug     Run in debug? If so, return SQL Query
          * @return Pick_SalesOrderDetail
          */
-        public function load($sessionID, $debug = false) {
+        public static function load($sessionID, $debug = false) {
             return get_whsesessiondetail($sessionID, $debug);
         }
     }

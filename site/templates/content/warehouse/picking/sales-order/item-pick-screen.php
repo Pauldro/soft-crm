@@ -2,7 +2,7 @@
 	<h2>Picking Screen</h2>
 	<table class="table table-condensed table-striped">
 		<tr>
-			<td class="control-label">Order #</td> <td class="text-right">0036200</td>
+			<td class="control-label">Order #</td> <td class="text-right"><?= $pickitem->ordn; ?></td>
 		</tr>
 		<tr>
 			<td class="control-label">Bin #</td> <td class="text-right">364</td>

@@ -8,5 +8,6 @@ $baseDir = dirname($vendorDir);
 return array(
     '4a61d3f03410f75bfa34276f0e78c0f3' => $baseDir . '/src/Model/WhseSession.class.php',
     '7a2fbc07beef48aa227991d59ac55c0c' => $baseDir . '/src/Model/Pick_SalesOrder.class.php',
+    'fe10422fcf6729d28ec1f5e3b475ad79' => $baseDir . '/src/Model/Pick_SalesOrderDetail.class.php',
     'e0d7c548f114944e1f0788b270102593' => $baseDir . '/src/PickSalesOrderDisplay.class.php',
 );

@@ -8,6 +8,7 @@
 		"files": [
 			"src/Model/WhseSession.class.php",
 			"src/Model/Pick_SalesOrder.class.php",
+			"src/Model/Pick_SalesOrderDetail.class.php",
             "src/PickSalesOrderDisplay.class.php"
 		]
 	}
