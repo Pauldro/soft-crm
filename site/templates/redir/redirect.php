@@ -1,7 +1,8 @@
 <?php
 	$vl = is_validlogin(session_id());
 	$L = $session->loc;
-
+	$session->remove('loc');
+	
 	if ($L == "") {
 		$L = $config->pages->index;
 	} elseif ($L == 'login') {
