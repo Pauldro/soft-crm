@@ -1,4 +1,4 @@
-<form action="<?= $page->child('name=redir')->url; ?>" method="post">
+<form action="<?= $page->child('name=redir')->url; ?>" method="post" class="allow-enterkey-submit">
     <input type="hidden" name="action" value="select-bin">
     <input type="hidden" name="page" value="<?= $page->fullURL->getUrl(); ?>">
     <label>Choose Bin to Start from</label>

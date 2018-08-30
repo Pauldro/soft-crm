@@ -63,6 +63,12 @@
         protected $cartonnbr;
         
         /**
+         * Status Message
+         * @var string
+         */
+        protected $status;
+        
+        /**
          * Aliases for Class Properties
          * @var array
          */
@@ -85,6 +91,114 @@
          */
         public function has_bin() {
             return !empty($this->binnbr);
+        }
+        
+        /**
+         * Returns if the Sales Order is finished
+         * @param  bool $debug Run in debug? If so return SQL Query
+         * @return bool        Is Order finished?
+         */
+        public function is_orderfinished($debug = false) {
+            return strtolower($this->status) == 'end of order' ? true : false;
+        }
+        
+        /**
+         * Return the barcodes that have been
+         * @param  string $itemID Item ID
+         * @param  bool   $debug  Run in debug? If so return SQL Query
+         * @return array          Array of Arrays that are the items picked
+         */
+        public function get_orderpickeditems($itemID, $debug = false) {
+            return get_orderpickeditems($this->sessionid, $this->ordernbr, $itemID, $debug);
+        }
+        
+        /**
+         * Get a total quantity picked for that Item for this Order
+         * @param  string $itemID Item ID
+         * @param  bool   $debug  Run in debug? If so return SQL Query
+         * @return int            Total Quantity
+         */
+        public function get_orderpickeditemqtytotal($itemID, $debug = false) {
+            return get_orderpickeditemqtytotal($this->sessionid, $this->ordernbr, $itemID, $debug);
+        }
+        
+        public function delete_orderpickeditems() {
+            return delete_orderpickeditems($this->sessionid, $debug);
+        }
+        
+        /**
+         * Returns the add barcode URL
+         * @param  Pick_SalesOrderDetail $item    Item that is being picked
+         * @param  string                $barcode Item Barcode
+         * @return string                         Add barcode URL
+         */
+        public function generate_addbarcodeurl(Pick_SalesOrderDetail $item, $barcode) {
+            $url = new Purl\Url(DplusWire::wire('config')->pages->salesorderpicking);
+            $url->path->add('redir');
+            $url->query->set('action', 'add-barcode');
+            $url->query->set('barcode', $barcode);
+            return $url->getUrl();
+        }
+        
+        /**
+         * Returns the remove barcode URL
+         * @param  Pick_SalesOrderDetail $item    Item that is being picked
+         * @param  string                $barcode Item Barcode
+         * @return string                         Remove barcode URL
+         */
+        public function generate_removebarcodeurl(Pick_SalesOrderDetail $item, $barcode) {
+            $url = new Purl\Url(DplusWire::wire('config')->pages->salesorderpicking);
+            $url->path->add('redir');
+            $url->query->set('action', 'remove-barcode');
+            $url->query->set('barcode', $barcode);
+            return $url->getUrl();
+        }
+        
+        /**
+         * Returns URL to send the Finished with Item Request
+         * @param  Pick_SalesOrderDetail $item Item that is being picked
+         * @return string                      Finish Item URL
+         */
+        public function generate_finishitemurl(Pick_SalesOrderDetail $item) {
+            $url = new Purl\Url(DplusWire::wire('config')->pages->salesorderpicking);
+            $url->path->add('redir');
+            $url->query->set('action', 'finish-item');
+            return $url->getUrl();
+        }
+        
+        /**
+         * Returns URL to send the skip Item Request
+         * @param  Pick_SalesOrderDetail $item Item that is being picked
+         * @return string                      Skip Item URL
+         */
+        public function generate_skipitemurl(Pick_SalesOrderDetail $item) {
+            $url = new Purl\Url(DplusWire::wire('config')->pages->salesorderpicking);
+            $url->path->add('redir');
+            $url->query->set('action', 'skip-item');
+            return $url->getUrl();
+        }
+        
+        /**
+         * Returns URL to send the Finish Sales Order Request
+         * @return string                      Finish Order URL
+         */
+        public function generate_finishorderurl() {
+            $url = new Purl\Url(DplusWire::wire('config')->pages->salesorderpicking);
+            $url->path->add('redir');
+            $url->query->set('action', 'finish-order');
+            return $url->getUrl();
+        }
+        
+        /**
+         * Returns URL to send the logout Request
+         * @return string                      logout URL
+         */
+        public function end_session() {
+            $url = new Purl\Url("127.0.0.1".DplusWire::wire('config')->pages->salesorderpicking);
+            $url->path->add('redir');
+            $url->query->set('action', 'logout')->set('sessionID', $this->sessionid);
+            echo $url->getUrl();
+            curl_redir($url->getUrl());
         }
         
         /* =============================================================
@@ -110,6 +224,13 @@
             return does_whsesessionexist($sessionID, $debug);
         }
         
+        /**
+         * Sends the Start Session Request using cURL
+         * @param  string   $sessionID Session Identifier
+         * @param  Purl\Url $pageurl   URL for Current Page
+         * @param  bool     $debug     Run in debug? If so, return SQL Query
+         * @return void
+         */
         public static function start_session($sessionID, Purl\Url $pageurl, $debug = false) {
             $url = new Purl\Url($pageurl->getUrl());
             $url->path = DplusWire::wire('config')->pages->salesorderpicking."redir/";

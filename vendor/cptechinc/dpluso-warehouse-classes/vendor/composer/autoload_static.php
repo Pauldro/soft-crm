@@ -8,6 +8,7 @@ class ComposerStaticInitccd8d6f6eec3cd1f49126ba9f289ce0d
 {
     public static $files = array (
         '4a61d3f03410f75bfa34276f0e78c0f3' => __DIR__ . '/../..' . '/src/Model/WhseSession.class.php',
+        '3465c47521ce33185c29f4c65e1b2a9a' => __DIR__ . '/../..' . '/src/Model/BarcodedItem.class.php',
         '7a2fbc07beef48aa227991d59ac55c0c' => __DIR__ . '/../..' . '/src/Model/Pick_SalesOrder.class.php',
         'fe10422fcf6729d28ec1f5e3b475ad79' => __DIR__ . '/../..' . '/src/Model/Pick_SalesOrderDetail.class.php',
         'e0d7c548f114944e1f0788b270102593' => __DIR__ . '/../..' . '/src/PickSalesOrderDisplay.class.php',

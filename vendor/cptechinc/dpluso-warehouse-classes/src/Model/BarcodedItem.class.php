@@ -1,4 +1,7 @@
-<?php 
+<?php
+    /**
+     * Class for dealing and getting information from Barcode Items
+     */
     class BarcodedItem {
         use ThrowErrorTrait;
 		use MagicMethodTraits;
@@ -53,7 +56,11 @@
             return $this->primary == 'Y' ? true : false;
         }
         
-        public function load($barcode, $debug = false) {
+        public static function load($barcode, $debug = false) {
             return get_barcodeditem($barcode, $debug);
+        }
+        
+        public static function find_barcodeitemid($barcode, $debug = false) {
+            return get_barcodeditemid($barcode, $debug);
         }
     }

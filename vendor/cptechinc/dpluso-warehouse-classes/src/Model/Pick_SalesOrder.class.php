@@ -45,6 +45,28 @@
          */
         protected $customername;
         
+        /**
+         * Status Message from Dplus
+         * @var string
+         */
+        protected $statusmsg;
+        
+        /**
+         * How many Items have been picked so far
+         * @var int
+         */
+        protected $itemspicked;
+        
+        /**
+         * Aliases for Class Properties
+         * @var array
+         */
+        protected $fieldaliases = array(
+            'sessionID' => 'sessionid',
+            'ordn' => 'ordernbr',
+            'custID' => 'customerid'
+        );
+            
         /* =============================================================
 			CRUD FUNCTIONS
 		============================================================ */
@@ -56,6 +78,6 @@
          * @return Pick_SalesOrder            Sales Order Header to Pick
          */
         public static function load($sessionID, $ordn, $debug = false) {
-            return get_picksalesorderheader($sessionID, $ordn);
+            return get_picksalesorderheader($sessionID, $ordn, $debug);
         }
     }
