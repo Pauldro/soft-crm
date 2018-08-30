@@ -7,7 +7,7 @@
 
 	$action = ($input->post->action ? $input->post->text('action') : $input->get->text('action'));
 	$vendorID = ($input->post->vendorID ? $input->post->text('vendorID') : $input->get->text('vendorID'));
-	
+
 
 	$session->{'from-redirect'} = $page->url;
 
@@ -31,7 +31,7 @@
 	* 		break;
 	* 	case 'vi-shipfrom-list'
 	* 		DBNAME=$config->DBNAME
-	*		VISHIPFROMLIST 
+	*		VISHIPFROMLIST
 	*		VENDID=$vendorID
 	* 		break;
 	*	case 'vi-payments'
@@ -93,7 +93,7 @@
 	* 		break;
 	* 	case 'vi-notes'
 	* 		DBNAME=$config->DBNAME
-	*		VINOTES 
+	*		VINOTES
 	*		VENDID=$vendorID
 	*		SHIPID=
 	* 		break;
@@ -111,32 +111,28 @@
 	switch ($action) {
 		case 'vi-buttons': //NOT USED WILL BE AUTOCALLED BY vend-vendor
 			$data = array('DBNAME' => $config->dbName, 'VIBUTTONS' => false);
-			$session->loc = $config->pages->index;
 			break;
 		case 'vi-vendor':
 			$data = array('DBNAME' => $config->dbName, 'VIVENDOR' => false, 'VENDID' => $vendorID);
-			$session->loc = $config->pages->vendorinfo. "$vendorID/";
+			$session->loc = $config->pages->vendorinfo.urlencode($vendorID)."/";
 			break;
 		case 'vi-shipfrom-list':
 			$data = array('DBNAME' => $config->dbName, 'VISHIPFROMLIST' => $vendorID);
-			$session->loc = $config->pages->index;
 			break;
 		case 'vi-shipfrom':
 			$shipfromID = $input->get->text('shipfromID');
 			$data = array('DBNAME' => $config->dbName, 'VISHIPFROMINFO' => false, 'VENDID' => $vendorID, 'SHIPID' => $shipfromID);
-			// USE THIS for cases where buttons will be grabbed twice 
+			// USE THIS for cases where buttons will be grabbed twice
 			// if (!empty($input->get->text('shipfromID'))) {
 			// 	$data['SHIPID'] = $input->get->text('shipfromID');
 			// }
-			$session->loc = $config->pages->vendorinfo. "$vendorID/shipfrom-$shipfromID";
+			$session->loc = $config->pages->vendorinfo.urlencode($vendorID)."/shipfrom-".urlencode($shipfromID);
 			break;
 		case 'vi-open-invoices':
 			$data = array('DBNAME' => $config->dbName, 'VIOPENINV' => false, 'VENDID' => $vendorID);
-			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
 		case 'vi-payments':
 			$data = array('DBNAME' => $config->dbName, 'VIPAYMENT' => false, 'VENDID' => $vendorID);
-			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
 		case 'vi-purchase-history':
 			$date = $input->post->text('date');
@@ -146,58 +142,52 @@
 			if (!empty($input->post->shipfromID)) {
 				$data['SHIPID'] = $input->post->text('shipfromID');
 			}
-			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
 		case 'vi-purchase-orders':
 			$data = array('DBNAME' => $config->dbName, 'VIPURCHORDR' => false, 'VENDID' => $vendorID);
 			if (!empty($input->post->shipfromID)) {
 				$data['SHIPID'] = $input->post->text('shipfromID');
 			}
-			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
 		case 'vi-contact':
 			$data = array('DBNAME' => $config->dbName, 'VICONTACT' => false, 'VENDID' => $vendorID);
 			if (!empty($input->post->shipfromID)) {
 				$data['SHIPID'] = $input->post->text('shipfromID');
 			}
-			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
 		case 'vi-notes':
 			$data = array('DBNAME' => $config->dbName, 'VINOTES' => false, 'VENDID' => $vendorID);
 			if (!empty($input->post->shipfromID)) {
 				$data['SHIPID'] = $input->post->text('shipfromID');
 			}
-			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
 		case 'vi-costing':
 			$itemID = $input->get->text('itemID');
 			$data = array('DBNAME' => $config->dbName, 'VICOST' => false, 'VENDID' => $vendorID, 'ITEMID' => $itemID);
-			$session->loc = $config->pages->index;
 			break;
 		case 'vi-unreleased-purchase-orders':
 			$data = array('DBNAME' => $config->dbName, 'VIUNRELEASED' => false, 'VENDID' => $vendorID);
 			if (!empty($input->post->shipfromID)) {
 				$data['SHIPID'] = $input->post->text('shipfromID');
 			}
-			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
 		case 'vi-uninvoiced':
 			$data = array('DBNAME' => $config->dbName, 'VIUNINVOICED' => false, 'VENDID' => $vendorID);
-			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
 		case 'vi-24monthsummary':
 			$data = array('DBNAME' => $config->dbName, 'VIMONTHSUM' => false, 'VENDID' => $vendorID);
 			if (!empty($input->post->shipfromID)) {
 				$data['SHIPID'] = $input->post->text('shipfromID');
 			}
-			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
 		case 'vi-docview':
 			$data = array('DBNAME' => $config->dbName, 'VIDOCVIEW' => false, 'FLD1CD' => 'VI', 'FLD1DATA' => $vendorID);
-			$session->loc = $config->pages->vendorinfo. "$vendorID/";
 			break;
 	}
 
 	writedplusfile($data, $filename);
-	header("location: /cgi-bin/" . $config->cgi . "?fname=" . $filename);
- 	exit;
+	curl_redir("127.0.0.1/cgi-bin/".$config->cgis['default']."?fname=$filename");
+	if (!empty($session->get('loc')) && !$config->ajax) {
+		header("Location: $session->loc");
+	}
+	exit;
