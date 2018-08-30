@@ -31,7 +31,7 @@
 	<div class="col-sm-10">
 		<form action="<?= $formaction; ?>" method="post">
 			<input type="hidden" name="action" value="add-nonstock-item">
-			<input type="hidden" name="custID" value="<?= $input->get->text('custID'); ?>">
+			<input type="hidden" name="custID" value="<?= $custID; ?>">
 			<?php if ($addtype == 'order') : ?>
 				<input type="hidden" name="ordn" value="<?= $ordn; ?>">
 			<?php elseif ($addtype == 'quote') : ?>
@@ -144,7 +144,7 @@
 			});
 		})
 	});
-	
+
 	function choosevendor(vendorID) {
 		$('#vendors-table_filter input').val(vendorID).keyup();
 		$('#vendorID').val(vendorID).change();
