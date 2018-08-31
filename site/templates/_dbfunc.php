@@ -3392,9 +3392,9 @@
 		$properties = array_keys($detail->_toArray());
 		$q = (new QueryBuilder())->table('cartdet');
 		$q->mode('insert');
-		
+
 		foreach ($properties as $property) {
-			if (!empty($detail->$property) && strlen($detail->$property)) {
+			if (strlen($detail->$property)) {
 				$q->set($property, $detail->$property);
 			}
 		}
