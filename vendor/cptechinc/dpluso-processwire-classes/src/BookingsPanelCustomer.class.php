@@ -71,7 +71,7 @@
 		 * @return array            Totals by shipto
 		 */
 		public function get_bookingtotalsbyshipto($loginID = '', $debug = false) {
-			$bookings = get_bookingtotalsbyshipto($this->shipID, $this->filters, $this->filterable, $this->interval, $loginID, $debug);
+			$bookings = get_bookingtotalsbyshipto($this->custID, $this->shipID, $this->filters, $this->filterable, $this->interval, $loginID, $debug);
 			return $debug ? $bookings : $this->bookings = $bookings;
 		}
 
@@ -187,7 +187,7 @@
 				}
 
 				if (!isset($this->filters['bookdate'])) {
-					$this->generate_defaultfilter();
+					$this->generate_defaultfilter($input);
 				}
 			}
 		}
@@ -195,10 +195,11 @@
 		/**
 		 * Defines the filter for default
 		 * Goes back one year
-		 * @param  string $interval Allows to defined interval
+		 * @param  ProcessWire\WireInput $input Use the get property to get at the $_GET[] variables
+		 * @param  string                $interval Allows to defined interval
 		 * @return void
 		 */
-		protected function generate_defaultfilter($interval = '') {
+		protected function generate_defaultfilter(ProcessWire\WireInput $input, $interval = '') {
 			if (!empty($inteval)) {
 				$this->set_interval($interval);
 			}

@@ -88,6 +88,7 @@
 			return $sql->fetchColumn();
 		}
 	}
+	
 /* =============================================================
 	PERMISSION FUNCTIONS
 ============================================================ */
@@ -678,6 +679,14 @@
 /* =============================================================
 	CUST INDEX FUNCTIONS
 ============================================================ */
+	/**
+	 * Returns Distinct Customer Index Records that the user has access to
+	 * @param  int    $limit   Number of Records to return
+	 * @param  int    $page    Page Number to start from
+	 * @param  string $loginID User Login ID, if blank, will use current user
+	 * @param  bool   $debug   Run in debug? If so, will return SQL Query
+	 * @return array           Distinct Customer Index Records
+	 */
 	function get_distinctcustindexpaged($limit = 10, $page = 1, $loginID = '', $debug = false) {
 		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
 		$user = LogmUser::load($loginID);
@@ -728,8 +737,17 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function search_custindexpaged($keyword, $limit = 10, $page = 1, $loginID = '', $debug = false) {
+	
+	/**
+	 * Returns Customer Index records that match the Query
+	 * @param  string $keyword Query String to match
+	 * @param  int    $limit   Number of records to return
+	 * @param  int    $page    Page to start from
+	 * @param  string $loginID User Login ID, if blank, will use current user
+	 * @param  bool   $debug   Run in debug? If so, will return SQL Query
+	 * @return array           Customer Index records that match the Query
+	 */
+	function search_custindexpaged($keyword, $limit = 10, $page = 1, $orderbystring, $loginID = '', $debug = false) {
 		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
 		$user = LogmUser::load($loginID);
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
@@ -743,21 +761,35 @@
 			$permquery->where('loginid', [$loginID, $SHARED_ACCOUNTS]);
 			$q->where('(custid, shiptoid)','in', $permquery);
 		}
-
 		$fieldstring = implode(", ' ', ", array_keys(Contact::generate_classarray()));
-
+		
 		$q->where($q->expr("UCASE(REPLACE(CONCAT($fieldstring), '-', '')) LIKE UCASE([])", [$search]));
 		$q->limit($limit, $q->generate_offset($page, $limit));
-
+		
 		if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
-			$q->order($q->expr('custid <> []', [$search]));
+			if (!empty($orderbystring)) {
+				$q->order($q->generate_orderby($orderbystring));
+			} else {
+				$q->order($q->expr('custid <> []', [$search]));
+			}
 			$q->group('custid, shiptoid');
 		} elseif (DplusWire::wire('config')->cptechcustomer == 'stat') {
+			if (!empty($orderbystring)) {
+				$q->order($q->generate_orderby($orderbystring));
+			}
 			$q->group('custid');
 		} else {
-			$q->order($q->expr('custid <> []', [$search]));
+			if (!empty($orderbystring)) {
+				$q->order($q->generate_orderby($orderbystring));
+			} else {
+				$q->order($q->expr('custid <> []', [$search]));
+			}
 		}
+		
+		
+		
 		$sql = DplusWire::wire('database')->prepare($q->render());
+		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1324,7 +1356,7 @@
 		$q->field('COUNT(*)');
 
 		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('sp1', DplusWire::wire('user')->salespersonid);
+			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filterable);
@@ -1373,7 +1405,7 @@
 		$q = (new QueryBuilder())->table('saleshist');
 
 		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('sp1', DplusWire::wire('user')->salespersonid);
+			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filterable);
@@ -1430,7 +1462,7 @@
 		$q = (new QueryBuilder())->table('saleshist');
 
 		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('sp1', DplusWire::wire('user')->salespersonid);
+			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filterable);
@@ -1489,7 +1521,7 @@
 		$q->field($q->expr("STR_TO_DATE(invoice_date, '%Y%m%d') as dateofinvoice"));
 
 		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('sp1', DplusWire::wire('user')->salespersonid);
+			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filterable);
@@ -1606,7 +1638,7 @@
 		}
 
 		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('sp1', DplusWire::wire('user')->salespersonid);
+			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filterable);
@@ -1662,7 +1694,7 @@
 			$q->where('shiptoid', $shiptoID);
 		}
 		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('sp1', DplusWire::wire('user')->salespersonid);
+			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filterable);
@@ -1724,7 +1756,7 @@
 			$q->where('shiptoid', $shiptoID);
 		}
 		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('sp1', DplusWire::wire('user')->salespersonid);
+			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filterable);
@@ -1788,7 +1820,7 @@
 			$q->where('shiptoid', $shiptoID);
 		}
 		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('sp1', DplusWire::wire('user')->salespersonid);
+			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filterable);
@@ -1852,7 +1884,7 @@
 			$q->where('shiptoid', $shiptoID);
 		}
 		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('sp1', DplusWire::wire('user')->salespersonid);
+			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
 		}
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filterable);
@@ -2645,8 +2677,10 @@
 	function get_itemsearchresults($sessionID, $limit = 10, $page = 1, $debug = false) {
 		$q = (new QueryBuilder())->table('pricing');
 		$q->where('sessionid', $sessionID);
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = Processwire\wire('database')->prepare($q->render());
+		if (!empty($limit)) {
+			$q->limit($limit, $q->generate_offset($page, $limit));
+		}
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2661,7 +2695,7 @@
 		$q = (new QueryBuilder())->table('pricing');
 		$q->field($q->expr('COUNT(*)'));
 		$q->where('sessionid', $sessionID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3673,15 +3707,37 @@
 	 */
 	function get_xrefitem($itemID, $custID = '', $vendorID = '', $debug = false) {
 		$q = (new QueryBuilder())->table('itemsearch');
-		$q->where('itemid', $itemID);
+		$itemquery = (new QueryBuilder())->table('itemsearch');
+		$itemquery->field('itemid');
+		$itemquery->where('itemid', $itemID);
+		$itemquery->where('origintype', ['I', 'L']); // ITEMID found by the ITEMID, or by short item lookup // NOTE USED at Stempf
 
 		if (!empty($custID)) {
-			$q->where('origintype', 'C');
-			$q->where('originid', $custID);
-		}
-		if (!empty($vendorID)) {
-			$q->where('origintype', 'V');
-			$q->where('originid', $vendorID);
+			$custquery = (new QueryBuilder())->table('itemsearch');
+			$custquery->field('itemid');
+			$custquery->where('itemid', $itemID);
+			$custquery->where('origintype', 'C');
+			$custquery->where('originID', $custID);
+			$q->where(
+				$q
+				->orExpr()
+				->where('itemid', 'in', $itemquery)
+				->where('itemid', 'in', $custquery)
+			);
+		} elseif (!empty($vendorID)) {
+			$vendquery = (new QueryBuilder())->table('itemsearch');
+			$vendquery->field('itemid');
+			$vendquery->where('itemid', $itemID);
+			$vendquery-->where('origintype', 'V');
+			$vendquery-->where('originID', $vendorID);
+			$q->where(
+				$q
+				->orExpr()
+				->where('itemid', 'in', $itemquery)
+				->where('itemid', 'in', $vendquery)
+			);
+		} else {
+			$q->where('itemid', $itemID);
 		}
 		$q->limit(1);
 		$sql = DplusWire::wire('database')->prepare($q->render());
@@ -3907,7 +3963,6 @@
 	function get_logmuser($loginID, $debug = false) {
 		$q = (new QueryBuilder())->table('logm');
 		$q->where('loginid', $loginID);
-
 		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
@@ -3919,8 +3974,21 @@
 		}
 	}
 
+	function get_logmuserlist($debug = false) {
+		$q = (new QueryBuilder())->table('logm');
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'LogmUser');
+			return $sql->fetchAll();
+		}
+	}
+
 	/* =============================================================
-		LOGM FUNCTIONS
+		OOKING FUNCTIONS
 	============================================================ */
 	/**
 	 * Return the Number of bookings made that day, for a salesrep, if need be
@@ -4445,8 +4513,6 @@
 
 		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
 			$q->where('salesrep', DplusWire::wire('user')->salespersonid);
-		} else {
-
 		}
 
 		$q->where('custid', $custID);
@@ -4476,5 +4542,118 @@
 		} else {
 			$sql->execute($q->params);
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}
+
+	/* =============================================================
+		SIGNIN LOG FUNCTIONS
+	============================================================ */
+
+	/**
+	 * Return the user signins for today that the User has access to
+	 * @param  string $day  Date      current day's date
+	 * @uses User dplusrole
+	 */
+	function get_daysignins($day, $debug = false) {
+		$day = empty(date('Y-m-d', strtotime($day))) ? date('Y-m-d') : date('Y-m-d', strtotime($day));
+		$q = (new QueryBuilder())->table('log_signin');
+		$q->where($q->expr("DATE(date) = STR_TO_DATE([], '%Y-%m-%d')", [$day]));
+		$q->order('date DESC');
+
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'SigninLog');
+			return $sql->fetchAll();
+		}
+	}
+
+	/**
+	 * Return the number of user signins for today that the User has access to
+	 * @param  string $day  Date
+	 * @uses User dplusrole
+	 */
+	function count_daysignins($day, $debug = false) {
+		$day = empty(date('Y-m-d', strtotime($day))) ? date('Y-m-d') : date('Y-m-d', strtotime($day));
+		$q = (new QueryBuilder())->table('log_signin');
+		$q->field('COUNT(*)');
+		$q->where($q->expr("DATE(date) = STR_TO_DATE([], '%Y-%m-%d')", [$day]));
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+
+	/**
+	 * Returns the log_signin records that match the filter
+	 * @param  array $filter      Array of filters and values for each filter (column)
+	 * @param  array $filtertypes Array of the possible filters and their properties
+	 * @param  bool  $debug       Run in debug? If so, return SQL Query
+	 * @return array              log_signin records
+	 */
+	function get_logsignins($filter, $filtertypes, $debug = false) {
+		$q = (new QueryBuilder())->table('log_signin');
+		$q->order('date DESC');
+
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchAll();
+		}
+	}
+
+	/**
+	 * Inserts log of user signins for today that the User has access to
+	 * @param  string $sessionID  sessionid
+	 * @param  string $userID     loginID
+	 * @uses User dplusrole
+	 */
+	function insert_logsignin($sessionID, $userID, $debug) {
+		$date = date('Y-m-d H:i:s');
+		$q = (new QueryBuilder())->table('log_signin');
+		$q->mode('insert');
+		$q->set('sessionid', $sessionID);
+		$q->set('user', $userID);
+		$q->set('date', $date);
+
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $q->generate_sqlquery($q->params);
+		}
+	}
+
+	/**
+	 * Checks to see if sessionid already exists in log-signin table
+	 * @param  string $sessionID  sessionid
+	 * @uses User dplusrole
+	 */
+	function has_loggedsignin($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('log_signin');
+		$q->field('COUNT(*)');
+		$q->where('sessionid', $sessionID);
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
 		}
 	}

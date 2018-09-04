@@ -15,7 +15,9 @@
 	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/utfport.php"); // UTF8 conversion library functions
 	include_once($config->paths->content."common/initialize.php");  // includes class files
 	include_once($config->paths->templates."_init.js.php");  // includes class files
-
+	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/SigninLog.class.php");
+	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/CustomerIndex.class.php");
+	
 	$session->sessionName = session_name();
 
 	$page->fullURL = new \Purl\Url($page->httpUrl);
@@ -55,6 +57,7 @@
 
 	if ($user->loggedin) {
 		setup_user(session_id());
+		SigninLog::log_signin(session_id(), $user->loginid);
 	} elseif (strtolower($page->title) != 'login' && strtolower($page->title) != 'redir' && $page->template != 'template-print') {
 		header('location: ' . $config->pages->login);
 		exit;

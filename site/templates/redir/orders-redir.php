@@ -141,7 +141,11 @@
 			break;
 		case 'get-order-details':
 			$ordn = $input->get->text('ordn');
+<<<<<<< HEAD
 			$custID = SalesOrderHistory::is_saleshistory($ordn) ? SalesOrderHistory::get_custid($ordn) : SalesOrderOEHead::find_custid($ordn);
+=======
+			$custID = SalesOrderHistory::is_saleshistory($ordn) ? SalesOrderHistory::find_custid($ordn) : get_custidfromorder(session_id(), $ordn);
+>>>>>>> master
 			$data = array('DBNAME' => $config->dbName, 'ORDRDET' => $ordn, 'CUSTID' => $custID);
 
 			if ($input->get->lock) {
@@ -373,9 +377,9 @@
 			$ordn = $input->post->text('ordn');
 			$linenbr = $input->post->text('linenbr');
 			$orderdetail = SalesOrderDetail::load(session_id(), $ordn, $linenbr);
+			$qty = determine_qty($input, $requestmethod, $orderdetail->itemid); // TODO MAKE IN CART DETAIL
 			$orderdetail->set('price', $input->post->text('price'));
 			$orderdetail->set('discpct', $input->post->text('discount'));
-			$qty = determine_qty($input, $requestmethod, $orderdetail->itemid); // TODO MAKE IN CART DETAIL
 			$orderdetail->set('qty', $qty);
 			$orderdetail->set('rshipdate', $input->post->text('rqstdate'));
 			$orderdetail->set('whse', $input->post->text('whse'));

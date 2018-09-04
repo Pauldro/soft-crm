@@ -320,8 +320,9 @@
 
 	function writedataformultitems($data, $items, $qtys) {
 		for ($i = 0; $i < sizeof($items); $i++) {
-			$itemID = str_pad(Processwire\wire('sanitizer')->text($items[$i]), 30, ' ');
-			$qty = Processwire\wire('sanitizer')->text($qtys[$i]);
+			$itemID = str_pad(DplusWire::wire('sanitizer')->text($items[$i]), 30, ' ');
+			$qty = DplusWire::wire('sanitizer')->text($qtys[$i]);
+			
 			if (empty($qty)) {$qty = "1"; }
 			$data[] = "ITEMID=".$itemID."QTY=".$qty;
 		}
@@ -343,6 +344,11 @@
 	function hashtemplatefile($filename) {
 		$hash = hash_file(Processwire\wire('config')->userAuthHashType, Processwire\wire('config')->paths->templates.$filename);
 		return Processwire\wire('config')->urls->templates.$filename.'?v='.$hash;
+	}
+	
+	function hash_modulefile($filename) {
+		$hash = hash_file(DplusWire::wire('config')->userAuthHashType, DplusWire::wire('config')->paths->siteModules.$filename);
+		return DplusWire::wire('config')->urls->siteModules.$filename.'?v='.$hash;
 	}
 
 	function curl_redir($url) {

@@ -12,7 +12,7 @@ $(document).ready(function() {
 	=============================================================*/
 		$('body').popover({selector: '[data-toggle="popover"]', placement: 'top'});
 		$('body').tooltip({selector: '[data-toggle="tooltip"]', placement: 'top'});
-		
+
 		init_datepicker();
 		init_timepicker();
 		init_bootstraptoggle();
@@ -226,7 +226,7 @@ $(document).ready(function() {
 				}
 			});
 		});
-		
+
 		$("body").on('keypress', 'form input', function(e) {
 			if ($(this).closest('form').hasClass('allow-enterkey-submit')) {
 				return true;
@@ -234,7 +234,7 @@ $(document).ready(function() {
 				return e.which !== 13;
 			}
 		});
-		
+
 	/*==============================================================
 	  AJAX LOAD FUNCTIONS
 	=============================================================*/
@@ -618,9 +618,7 @@ $(document).ready(function() {
 
 		$('body').on('submit', '#add-multiple-item-form', function(e) {
 			var form = $(this);
-            if ($(this).attr('data-checked') == 'true') {
-                $(this).submit();
-            } else {
+            if ($(this).attr('data-checked') != 'true') {
                 e.preventDefault();
                 $(this).validateitemids(function() {
 					if (parseInt($(this).data('invaliditems')) < 1) {
@@ -974,7 +972,7 @@ $(document).ready(function() {
 			var action = form.attr('action');
 			var elementreload = form.data('refresh');
 			var isformcomplete = form.formiscomplete('tr');
-			
+
 			if (isformcomplete) {
 				$(formid).postform({formdata: false, jsoncallback: true, action: false}, function(json) {
 					$.notify({
@@ -1182,16 +1180,20 @@ $(document).ready(function() {
             var custID = $(this).find('input[name="custID"]').val();
             var valid = true;
 			var form = $(this);
-			form.postform({formdata: false, jsoncallback: true, action: config.urls.json.validateitems}, function(json) {
+			var formdata = form.serialize();
+			var url = URI(config.urls.json.validateitems).query(formdata).toString();
+
+			$.getJSON(url, function(json) {
 				form.attr('data-invaliditems', json.invalid);
 				form.find('.itemid').each(function() {
 	                var field = $(this);
 	                var itemID = $(this).val();
-				    if (!json.items[itemID]) {
+				    if (!json.items.valid[itemID]) {
 						field.parent().addClass('has-error');
 					}
 	            });
 				form.attr('data-checked', 'true');
+
 				if (json.invalid) {
 	                form.find('.response').createalertpanel('Double Check your itemIDs', '<i class="fa fa-exclamation-triangle" aria-hidden="true"></i>', 'warning');
 	            } else {
