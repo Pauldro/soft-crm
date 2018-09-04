@@ -72,8 +72,9 @@
 			$session->loc = "{$config->pages->salesorderpicking}?ordn=$pickitem->ordernbr";
 			break;
 		case 'finish-order':
-			$data = array('DBNAME' => $config->dbName, 'COMPLETEORDER' => false);
-			$session->loc = "{$config->pages->salesorderpicking}";
+			$whsesession = WhseSession::load(session_id());
+			$data = array('DBNAME' => $config->dbName, 'COMPLETEORDER' => false, 'ORDERNBR' => $whsesession->ordn);
+			$session->loc = $config->pages->salesorderpicking;
 			break;
 		case 'add-barcode':
 			$barcode = $input->$requestmethod->text('barcode');

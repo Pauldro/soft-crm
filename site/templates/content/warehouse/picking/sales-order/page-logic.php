@@ -6,7 +6,7 @@
         $whsesession = WhseSession::load(session_id());
         
         if ($input->get->ordn) {
-            if (!$whsesession->has_bin()) {
+            if (!$whsesession->has_bin() && !$whsesession->is_orderfinished()) {
                 $page->title = 'Choose Starting Bin';
                 $page->body = $config->paths->content."warehouse/picking/sales-order/choose-bin-form.php";
             } else {
@@ -20,11 +20,16 @@
                     Pick_SalesOrder::load(session_id(), $input->get->text('ordn'));
                     $page->body = $config->paths->content."warehouse/picking/sales-order/finished-order-screen.php";
                 } else {
+                    if ($whsesession->is_orderfinished()) {
+                        $whsesession->delete_orderpickeditems();
+                    }
                     $page->body = $config->paths->content."warehouse/picking/sales-order/choose-sales-order-form.php";
                 }
             }
-            
         } else {
+            if ($whsesession->is_orderfinished()) {
+                $whsesession->delete_orderpickeditems();
+            }
             $page->body = $config->paths->content."warehouse/picking/sales-order/choose-sales-order-form.php";
         }
     }

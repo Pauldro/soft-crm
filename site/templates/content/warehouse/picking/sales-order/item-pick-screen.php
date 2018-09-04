@@ -1,6 +1,6 @@
 <?php include "{$config->paths->content}warehouse/picking/sales-order/item.js.php"; ?>
 <div>
-	<h2>Picking Screen</h2>
+	<h2>Head to <?= $pickitem->bin; ?></h2>
 	<table class="table table-condensed table-striped">
 		<tr>
 			<td class="control-label">Order #</td> <td class="text-right"><?= $pickitem->ordn; ?></td>
@@ -17,11 +17,9 @@
 		<tr>
 			<td class="control-label">Qty In Cart</td> <td class="text-right"><?= $pickitem->get_pickedtotal(); ?></td>
 		</tr>
-		<?php if ($pickitem->has_qtyremaining()) : ?>
-			<tr>
-				<td class="control-label">Qty Remaining</td> <td class="text-right"><?= $pickitem->get_qtyremaining(); ?></td>
-			</tr>
-		<?php endif; ?>
+		<tr class="<?= $pickitem->has_pickedtoomuch() ? 'bg-warning' : (($pickitem->has_qtyremaining()) ? '' : 'bg-success'); ?>">
+			<td class="control-label">Qty Remaining</td> <td class="text-right"><?= $pickitem->get_qtyremaining(); ?></td>
+		</tr>
 	</table>
     <h3 class="text-center">Barcodes Scanned</h3>
 	<?php $pickedbarcodes = $whsesession->get_orderpickeditems($pickitem->itemid); ?>

@@ -122,7 +122,12 @@
             return get_orderpickeditemqtytotal($this->sessionid, $this->ordernbr, $itemID, $debug);
         }
         
-        public function delete_orderpickeditems() {
+        /**
+         * Deletes all the Items Picked so far 
+         * @param  bool   $debug Run in debug? If so return SQL Query
+         * @return int           Number of items deleted
+         */
+        public function delete_orderpickeditems($debug = false) {
             return delete_orderpickeditems($this->sessionid, $debug);
         }
         

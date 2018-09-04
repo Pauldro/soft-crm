@@ -48,8 +48,6 @@
                     </a>
                     <ul class="dropdown-menu">
                     	<li> <a href="<?php echo $config->pages->account; ?>">View My Account</a> </li>
-                    	<li> <a href="<?php echo $config->pages->orders; ?>">View My Orders</a> </li>
-                    	<li> <a href="<?php echo $config->pages->password; ?>change/">Change Password</a> </li>
                         <li><a href="<?php echo $config->pages->cart; ?>">Quick Entry</a></li>
                         <li role="separator" class="divider"></li>
 						<?php if ($user->loggedin) : ?>

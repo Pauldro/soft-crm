@@ -1,3 +1,4 @@
+<h3>Enter Order Number</h3>
 <form action="<?= $page->child('name=redir')->url; ?>" method="post" class="allow-enterkey-submit">
     <input type="hidden" name="action" value="start-order">
     <div class="input-group form-group">

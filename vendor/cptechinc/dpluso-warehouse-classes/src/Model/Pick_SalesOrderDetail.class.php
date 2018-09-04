@@ -155,6 +155,14 @@
         }
         
         /**
+         * Returns if Qty picked is more than needed
+         * @return bool Have user picked too much?
+         */
+        public function has_pickedtoomuch() {
+            return $this->get_pickedtotal() > $this->qtyordered ? true : false;
+        }
+        
+        /**
          * Returns the Picked Order Item record number
          * @param  bool   $debug Run in debug? If so, return SQL Query
          * @return int           Max record number for this Order Item

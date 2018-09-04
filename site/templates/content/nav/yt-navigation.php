@@ -32,8 +32,11 @@
 				<?php if (has_dpluspermission($user->loginid, 'vi')) : ?>
 					<li><a href="<?= $config->pages->vendorinfo; ?>"><i class="fa fa-cubes" aria-hidden="true"></i> Vendors</a></li>
 				<?php endif; ?>
-
-
+				<li class="divider"></li>
+				
+				<?php if (has_dpluspermission($user->loginid, 'mwm')) : ?>
+					<li> <a href="<?= $config->pages->warehouse; ?>"><i class="fa fa-building-o" aria-hidden="true"></i> Warehouse</a> </li>
+				<?php endif; ?>
 				<li class="divider"></li>
 				<li> <a href="<?= $config->pages->documentation; ?>"> <i class="fa fa-book" aria-hidden="true"></i> Documentation</a> </li>
 				<li> <a href="<?= $config->pages->user; ?>"><i class="fa fa-user-circle" aria-hidden="true"></i> User</a> </li>
