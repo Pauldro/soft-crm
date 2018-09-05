@@ -122,7 +122,7 @@
 				}
 
 				if (!strlen($this->filters['total_order'][1])) {
-					$this->filters['total_order'][1] = get_maxsalesordertotal($this->custID, $this->shipID);
+					$this->filters['total_order'][1] = get_maxsaleshistoryordertotal($this->custID, $this->shipID);
 				}
 			}
 		}

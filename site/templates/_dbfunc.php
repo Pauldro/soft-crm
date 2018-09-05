@@ -1288,7 +1288,7 @@
 		}
 	}
 
-	function get_maxsaleshistoryordertotal($sessionID, $custID = false, $shipID = false, $debug = false) {
+	function get_maxsaleshistoryordertotal($custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field($q->expr("MAX(total_order)"));
 		if ($custID) {
