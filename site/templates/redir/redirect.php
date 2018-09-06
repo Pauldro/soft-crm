@@ -1,15 +1,23 @@
 <?php
-	$vl = is_validlogin(session_id());
+	$user->loggedin = is_validlogin(session_id());
 	$L = $session->loc;
 
 	if ($L == "") {
-		$L = $config->pages->index;
+		if (in_array($user->mainrole, array_keys($config->rolehomepages))) {
+			$L = $config->rolehomepages[$user->mainrole]; 
+		} else {
+			$L = $config->rolehomepages['default']; 
+		}
 	} elseif ($L == 'login') {
-		if (!$vl) {
+		if (!$user->loggedin) {
 			$L = $config->pages->login;
 		} else {
-			$L = $config->pages->index;
+			if (in_array($user->mainrole, array_keys($config->rolehomepages))) {
+				$L = $config->rolehomepages[$user->mainrole]; 
+			} else {
+				$L = $config->rolehomepages['default']; 
+			}
 		}
 	}
-	header("location: ". $L);
+	header("Location: ". $L);
 	exit;

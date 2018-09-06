@@ -31,7 +31,7 @@ $(function() {
         
         swal({
             title: 'Are you sure?',
-            text: "You have not met the Quantity Requirments",
+            text: "You are trying to leave this order",
             type: 'warning',
             showCancelButton: true,
             confirmButtonClass: 'btn btn-success',
@@ -74,5 +74,4 @@ $(function() {
 			}
 		}).catch(swal.noop);
     });
-    
 });

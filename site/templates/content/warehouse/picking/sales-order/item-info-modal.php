@@ -8,22 +8,28 @@
             <div class="modal-body">
                 <table class="table">
                     <tr> 
-                        <td>Item ID</td> <td><?= $pickitem->itemid; ?></td>
+                        <td class="control-label">Item ID</td> <td><?= $pickitem->itemid; ?></td>
                     </tr>
                     <tr> 
-                        <td>Desc1 </td> <td><?= $pickitem->itemdesc1; ?></td>
+                        <td class="control-label">Desc1 </td> <td><?= $pickitem->itemdesc1; ?></td>
                     </tr>
                     <tr> 
-                        <td>Inner Pack Qty</td> <td><?= $pickitem->innerpack; ?></td>
+                        <td class="control-label">Inner Pack Qty</td> <td><?= $pickitem->innerpack; ?></td>
                     </tr>
                     <tr> 
-                        <td>Case Qty</td> <td><?= $pickitem->caseqty; ?></td>
+                        <td class="control-label">Case Qty</td> <td><?= $pickitem->caseqty; ?></td>
+                    </tr>
+                    <tr>
+            			<td class="control-label">Bin #</td> <td class="text-right"><?= $pickitem->bin; ?></td>
+            		</tr>
+            		<tr>
+            			<td class="control-label">Expected Qty</td> <td class="text-right"><?= $pickitem->binqty; ?></td>
+            		</tr>
+                    <tr> 
+                        <td class="control-label">Over Bin 1: <?= $pickitem->overbin1; ?></td> <td><?= $pickitem->overbinqty1; ?></td>
                     </tr>
                     <tr> 
-                        <td>Over Bin 1: <?= $pickitem->overbin1; ?></td> <td><?= $pickitem->overbinqty1; ?></td>
-                    </tr>
-                    <tr> 
-                        <td>Over Bin 2: <?= $pickitem->overbin2; ?></td> <td><?= $pickitem->overbinqty2; ?></td>
+                        <td class="control-label">Over Bin 2: <?= $pickitem->overbin2; ?></td> <td><?= $pickitem->overbinqty2; ?></td>
                     </tr>
                 </table>
             </div>

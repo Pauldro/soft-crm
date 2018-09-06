@@ -52,7 +52,7 @@
 			$session->loc = "{$config->pages->salesorderpicking}?ordn=$ordn";
 			break;
 		case 'select-bin':
-			$bin = $input->$requestmethod->text('bin');
+			$bin = strtoupper($input->$requestmethod->text('bin'));
 			$data = array('DBNAME' => $config->dbName, 'SETBIN' => $bin);
 			$session->loc = $input->$requestmethod->text('page');
 			break;
