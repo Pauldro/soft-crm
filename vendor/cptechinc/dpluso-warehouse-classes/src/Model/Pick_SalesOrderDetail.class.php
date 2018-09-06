@@ -87,6 +87,13 @@
         protected $binnbr;
         
         /**
+         * Bin Qty
+         * @var int
+         */
+        protected $binqty;
+        
+        
+        /**
          * Qty in Case
          * @var int
          */
@@ -97,6 +104,30 @@
          * @var int
          */
         protected $innerpack;
+        
+        /**
+         * Over Bin 1 ID / Location
+         * @var string
+         */
+        protected $overbin1;
+        
+        /**
+         * Over Bin 1 Qty
+         * @var int
+         */
+        protected $overbinqty1;
+        
+        /**
+         * Over Bin 2 ID / Location
+         * @var string
+         */
+        protected $overbin2;
+        
+        /**
+         * Over Bin 2 Qty
+         * @var int
+         */
+        protected $overbinqty2;
         
         /**
          * Status Message from Dplus
@@ -130,12 +161,20 @@
         }
         
         /**
-         * Get the Picked Quantity Total
+         * Returns the Picked Quantity Total from the database
          * @param  bool   $debug Run in debug? If so, return SQL Query
          * @return int           Picked Quantity Total
          */
         public function get_pickedtotal($debug = false) {
             return get_orderpickeditemqtytotal($this->sessionid, $this->ordernbr, $this->itemnbr, $debug);
+        }
+        
+        /**
+         * Returns the Picked Qty + already pulled qty
+         * @return int total Picked for this item on the order
+         */
+        public function get_totalpicked() {
+            return $this->qtypulled + $this->get_pickedtotal();
         }
         
         /**
@@ -151,7 +190,7 @@
          * @return int
          */
         public function get_qtyremaining() {
-            return $this->qtyordered - $this->get_pickedtotal();
+            return $this->qtyordered - ($this->get_totalpicked());
         }
         
         /**
@@ -159,7 +198,7 @@
          * @return bool Have user picked too much?
          */
         public function has_pickedtoomuch() {
-            return $this->get_pickedtotal() > $this->qtyordered ? true : false;
+            return ($this->get_totalpicked()) > $this->qtyordered ? true : false;
         }
         
         /**
@@ -173,8 +212,9 @@
         
         /**
          * Returns the Picked Order Item record number for a barcode
-         * @param  bool   $debug Run in debug? If so, return SQL Query
-         * @return int           Max record number for this Order Item barcode
+         * @param  string $barcode Item Barcode
+         * @param  bool   $debug   Run in debug? If so, return SQL Query
+         * @return int             Max record number for this Order Item barcode
          */
         public function get_pickedmaxrecordnumberforbarcode($barcode, $debug = false) {
             return get_orderpickedbarcodemaxrecordnumber($this->sessionid, $this->ordernbr, $this->itemnbr, $barcode, $debug);

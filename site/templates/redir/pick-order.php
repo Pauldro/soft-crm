@@ -76,6 +76,11 @@
 			$data = array('DBNAME' => $config->dbName, 'COMPLETEORDER' => false, 'ORDERNBR' => $whsesession->ordn);
 			$session->loc = $config->pages->salesorderpicking;
 			break;
+		case 'exit-order':
+			$whsesession = WhseSession::load(session_id());
+			$data = array('DBNAME' => $config->dbName, 'STOPORDER' => false, 'ORDERNBR' => $whsesession->ordn);
+			$session->loc = $config->pages->salesorderpicking;
+			break;
 		case 'add-barcode':
 			$barcode = $input->$requestmethod->text('barcode');
 			$pickitem = Pick_SalesOrderDetail::load(session_id());
@@ -96,5 +101,4 @@
 	if (!empty($session->get('loc'))) {
 		header("Location: $session->loc");
 	}
-	
 	exit;

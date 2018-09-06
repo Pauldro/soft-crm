@@ -9,13 +9,22 @@
 			<td class="control-label">Bin #</td> <td class="text-right"><?= $pickitem->bin; ?></td>
 		</tr>
 		<tr>
-			<td class="control-label">Item ID</td> <td class="text-right"><?= $pickitem->itemid; ?></td>
+			<td class="control-label">Expected Qty</td> <td class="text-right"><?= $pickitem->binqty; ?></td>
+		</tr>
+		<tr>
+			<td class="control-label">Item ID</td> 
+			<td class="text-right">
+				<?= $pickitem->itemid; ?>
+				<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#item-info-modal">
+					Item Info
+				</button>
+			</td>
 		</tr>
 		<tr>
 			<td class="control-label">Qty Needed</td> <td class="text-right"><?= $pickitem->qtyordered; ?></td>
 		</tr>
 		<tr>
-			<td class="control-label">Qty In Cart</td> <td class="text-right"><?= $pickitem->get_pickedtotal(); ?></td>
+			<td class="control-label">Qty In Cart</td> <td class="text-right"><?= $pickitem->get_totalpicked(); ?></td>
 		</tr>
 		<tr class="<?= $pickitem->has_pickedtoomuch() ? 'bg-warning' : (($pickitem->has_qtyremaining()) ? '' : 'bg-success'); ?>">
 			<td class="control-label">Qty Remaining</td> <td class="text-right"><?= $pickitem->get_qtyremaining(); ?></td>
@@ -27,18 +36,22 @@
 		<tr>
 			<th>Barcode</th>
 			<th>Qty</th>
-			<th class="text-center">Duplicate</th>
+			<?php if (100 == 1) : ?>
+				<th class="text-center">Duplicate</th>
+			<?php endif; ?>
 			<th class="text-center">Remove</th>
 		</tr>
 		<?php foreach ($pickedbarcodes as $pickedbarcode) : ?>
 			<tr>
 				<td><?= $pickedbarcode['barcode']; ?></td>
 				<td class="text-right"><?= $pickedbarcode['qty']; ?></td>
-				<td class="text-center">
-					<a href="<?= $whsesession->generate_addbarcodeurl($pickitem, $pickedbarcode['barcode']); ?>" class="btn btn-sm btn-emerald">
-						<i class="fa fa-repeat" aria-hidden="true"></i> Duplicate
-					</a>
-				</td>
+				<?php if (100 == 1) : ?>
+					<td class="text-center">
+						<a href="<?= $whsesession->generate_addbarcodeurl($pickitem, $pickedbarcode['barcode']); ?>" class="btn btn-sm btn-emerald">
+							<i class="fa fa-repeat" aria-hidden="true"></i> Duplicate
+						</a>
+					</td>
+				<?php endif; ?>
 				<td class="text-center">
 					<a href="<?= $whsesession->generate_removebarcodeurl($pickitem, $pickedbarcode['barcode']); ?>" class="btn btn-sm btn-danger">
 						<i class="fa fa-trash" aria-hidden="true"></i> Remove
@@ -68,10 +81,27 @@
             </span>
         </div>
     </form>
-	<a href="<?= $whsesession->generate_finishitemurl($pickitem); ?>" class="btn btn-emerald finish-item">
-		<i class="fa fa-check-square" aria-hidden="true"></i> Submit Item
-	</a>
-	<a href="<?= $whsesession->generate_skipitemurl($pickitem); ?>" class="btn btn-emerald finish-item">
-		<i class="fa fa-check-square" aria-hidden="true"></i> Skip Item
-	</a>
+	<div class="row">
+		<div class="col-sm-3 col-xs-6 form-group">
+			<a href="<?= $whsesession->generate_finishitemurl($pickitem); ?>" class="btn btn-emerald finish-item">
+				<i class="fa fa-check-square" aria-hidden="true"></i> Submit Item
+			</a>
+		</div>
+		<div class="col-sm-3 col-xs-6 form-group">
+			<a href="<?= $whsesession->generate_skipitemurl($pickitem); ?>" class="btn btn-emerald finish-item">
+				<i class="fa fa-check-square" aria-hidden="true"></i> Skip Item
+			</a>
+		</div>
+		<div class="col-sm-3 col-xs-6 form-group">
+			<button type="button" class="btn btn-warning change-bin">
+				Change Bin
+			</button>
+		</div>
+		<div class="col-sm-3 col-xs-6 form-group">
+			<a href="<?= $whsesession->generate_exitorderurl(); ?>" class="btn btn-danger exit-order">Exit Order</a>
+		</div>
+	</div>
 </div>
+
+<?php include $config->paths->content."warehouse/picking/sales-order/item-info-modal.php"; ?>
+	

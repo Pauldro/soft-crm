@@ -95,11 +95,47 @@
         
         /**
          * Returns if the Sales Order is finished
-         * @param  bool $debug Run in debug? If so return SQL Query
          * @return bool        Is Order finished?
          */
-        public function is_orderfinished($debug = false) {
+        public function is_orderfinished() {
             return strtolower($this->status) == 'end of order' ? true : false;
+        }
+        
+        /**
+         * Returns if the Sales Order is on hold
+         * @return bool        Is Order on Hold?
+         */
+        public function is_orderonhold() {
+            return strtolower($this->status) == 'order on hold' ? true : false;
+        }
+        
+        /**
+         * Returns if the Sales Order has been verified, has been picked
+         * @return bool        Has Order been verified?
+         */
+        public function is_orderverified() {
+            return strtolower($this->status) == 'order is verified' ? true : false;
+        }
+        
+        /**
+         * Returns if the Sales Order has been invoiced
+         * @return bool        Has Order been invoiced?
+         */
+        public function is_orderinvoiced() {
+            return strtolower($this->status) == 'order is invoiced' ? true : false;
+        }
+        
+        public function generate_statusmessage() {
+            $msg = '';
+            
+            if ($this->is_orderonhold()) {
+                $msg = "Order $this->ordernbr is on hold";
+            } elseif($this->is_orderverified()) {
+                $msg = "Order $this->ordernbr has been verified";
+            } elseif($this->is_orderinvoiced()) {
+                $msg = "Order $this->ordernbr has been invoiced";
+            }
+            return $msg;
         }
         
         /**
@@ -191,6 +227,17 @@
             $url = new Purl\Url(DplusWire::wire('config')->pages->salesorderpicking);
             $url->path->add('redir');
             $url->query->set('action', 'finish-order');
+            return $url->getUrl();
+        }
+        
+        /**
+         * Returns URL to send the exit Sales Order Request
+         * @return string                      Exit Order URL
+         */
+        public function generate_exitorderurl() {
+            $url = new Purl\Url(DplusWire::wire('config')->pages->salesorderpicking);
+            $url->path->add('redir');
+            $url->query->set('action', 'exit-order');
             return $url->getUrl();
         }
         

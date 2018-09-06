@@ -11,4 +11,5 @@
 	<a href="<?= $whsesession->generate_finishorderurl(); ?>" class="btn btn-emerald">
 		<i class="fa fa-check-square" aria-hidden="true"></i> Finish Order
 	</a>
+	<a href="<?= $whsesession->generate_exitorderurl(); ?>" class="btn btn-danger exit-order">Exit Order</a>
 </div>
