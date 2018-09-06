@@ -87,6 +87,15 @@
 		public function get_dplusrole() {
 			return strtolower($this->role);
 		}
+		
+		/**
+		 * Returns the Dpluso Role for the user, so it can be looked at for 
+		 * Navigation and user type customization
+		 * @return string DPLUSO user type
+		 */
+		public function get_dplusorole() {
+			return array_search(strtolower($this->role), DplusWire::wire('config')->roles);
+		}
 
 		/**
 		 * Get the Loginid needed for the custperm table based on permissions

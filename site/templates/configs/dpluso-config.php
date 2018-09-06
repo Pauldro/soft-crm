@@ -33,5 +33,6 @@
 
 	$config->roles = array(
 		'sales-rep' => 'slsrep',
-		'sales-manager' => 'slsmgr'
+		'sales-manager' => 'slsmgr',
+		'warehouse' => 'whse'
 	);
