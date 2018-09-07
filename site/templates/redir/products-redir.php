@@ -9,7 +9,7 @@
     $action = ($input->post->action ? $input->post->text('action') : $input->get->text('action'));
 	$itemID = ($input->post->itemID ? $input->post->text('itemID') : $input->get->text('itemID'));
 	$filename = session_id();
-	
+
 	/**
 	* PRODUCT REDIRECT
 	*
@@ -161,15 +161,14 @@
 	* }
 	*
 	**/
-	
-	
+
+
     switch ($action) {
         case 'item-search':
             $q = ($input->post->q ? $input->post->text('q') : $input->get->text('q'));
 			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
 			if (empty($custID)) { $custID == $config->defaultweb; }
 			$data = array('DBNAME' => $config->dbName, 'ITNOSRCH' => strtoupper($q), 'CUSTID' => $custID);
-            $session->loc = $config->page->index;
             break;
 		case 'ii-select':
 			if ($session->iidate) { $session->remove('iidate'); }
@@ -185,47 +184,38 @@
 			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
 			if (empty($custID)) { $custID == $config->defaultweb; }
 			$data = array('DBNAME' => $config->dbName, 'ITNOSRCH' => $q, 'ITEMID' => $itemID, 'CUSTID' => $custID);
-            $session->loc = $config->page->index;
             break;
         case 'get-item-price':
 			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
 			if (empty($custID)) { $custID == $config->defaultweb; }
 			$data = array('DBNAME' => $config->dbName, 'IIPRICING' => false, 'ITEMID' => $itemID, 'CUSTID' => $custID);
-            $session->loc = $config->page->index;
             break;
 		case 'ii-pricing': //II INFORMATION
 			$data = array('DBNAME' => $config->dbName, 'IIPRICE' => false, 'ITEMID' => $itemID);
 			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
 			$shipID = ($input->post->shipID ? $input->post->text('shipID') : $input->get->text('shipID'));
 			if (!empty($custID))  {$data['CUSTID'] = $custID; } if (!empty($shipID)) {$data['SHIPID'] = $shipID; }
-			$session->loc = $config->page->index;
             break;
 		case 'ii-costing':
 			$data = array('DBNAME' => $config->dbName, 'IICOST' => false, 'ITEMID' => $itemID);
-            $session->loc = $config->page->index;
             break;
 		case 'ii-purchase-order':
 			$data = array('DBNAME' => $config->dbName, 'IIPURCHORDR' => false, 'ITEMID' => $itemID);
-			$session->loc = $config->page->index;
             break;
 		case 'ii-quotes':
 			$data = array('DBNAME' => $config->dbName, 'IIQUOTE' => false, 'ITEMID' => $itemID);
 			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
 			if (!empty($custID))  {$data['CUSTID'] = $custID; }
-            $session->loc = $config->page->index;
             break;
 		case 'ii-purchase-history':
 			$data = array('DBNAME' => $config->dbName, 'IIPURCHHIST' => false, 'ITEMID' => $itemID);
-			$session->loc = $config->page->index;
             break;
 		case 'ii-where-used':
 			$data = array('DBNAME' => $config->dbName, 'IIWHEREUSED' => false, 'ITEMID' => $itemID);
-            $session->loc = $config->page->index;
             break;
 		case 'ii-kit':
 			$qty = ($input->post->qty ? $input->post->text('qty') : $input->get->text('qty'));
 			$data = array('DBNAME' => $config->dbName, 'IIKIT' => false, 'ITEMID' => $itemID, 'QTYNEEDED' => $qty);
-            $session->loc = $config->page->index;
             break;
 		case 'ii-item-bom':
             $qty = ($input->post->qty ? $input->post->text('qty') : $input->get->text('qty'));
@@ -235,19 +225,15 @@
             } elseif ($bom == 'consolidated') {
 				$data = array('DBNAME' => $config->dbName, 'IIBOMCONS' => false, 'ITEMID' => $itemID, 'QTYNEEDED' => $qty);
             }
-            $session->loc = $config->page->index;
             break;
 		case 'ii-usage':
 			$data = array('DBNAME' => $config->dbName, 'IIUSAGE' => false, 'ITEMID' => $itemID);
-            $session->loc = $config->page->index;
             break;
         case 'ii-notes':
 			$data = array('DBNAME' => $config->dbName, 'IINOTES' => false, 'ITEMID' => $itemID);
-            $session->loc = $config->page->index;
             break;
 		case 'ii-misc':
 			$data = array('DBNAME' => $config->dbName, 'IIMISC' => false, 'ITEMID' => $itemID);
-            $session->loc = $config->page->index;
             break;
 		case 'ii-general':
 			//TODO replace ii-usage, ii-notes, ii-misc
@@ -257,22 +243,18 @@
 			$data = array('DBNAME' => $config->dbName, 'IIACTIVITY' => false, 'ITEMID' => $itemID);
             $date = ($input->post->date ? $input->post->text('date') : $input->get->text('date'));
             if (!empty($date)) {$data['DATE'] = date('Ymd', strtotime($date)); }
-			$session->loc = $config->page->index;
             break;
 		case 'ii-requirements':
             $whse = ($input->post->whse ? $input->post->text('whse') : $input->get->text('whse'));
             $screentype = ($input->post->screentype ? $input->post->text('screentype') : $input->get->text('screentype'));
             //screen type would be REQ or AVL
 			$data = array('DBNAME' => $config->dbName, 'IIREQUIRE' => false, 'ITEMID' => $itemID, 'WHSE' => $whse, 'REQAVL' => $screentype);
-            $session->loc = $config->page->index;
             break;
 		case 'ii-lot-serial':
 			$data = array('DBNAME' => $config->dbName, 'IILOTSER' => false, 'ITEMID' => $itemID);
-            $session->loc = $config->page->index;
             break;
 		case 'ii-sales-orders':
 			$data = array('DBNAME' => $config->dbName, 'IISALESORDR' => false, 'ITEMID' => $itemID);
-			$session->loc = $config->page->index;
             break;
 		case 'ii-sales-history':
             $date = '';
@@ -282,38 +264,29 @@
 			$date = ($input->post->date ? $input->post->text('date') : $input->get->text('date'));
             if (!empty($custID)) {$data['CUSTID'] = $custID; } if (!empty($shipID)) {$data['SHIPID'] = $shipID; }
             if (!empty($date)) { $data['DATE'] = date('Ymd', strtotime($date)); }
-            $session->loc = $config->page->index;
             break;
        case 'ii-stock':
 			$data = array('DBNAME' => $config->dbName, 'IISTKBYWHSE' => false, 'ITEMID' => $itemID);
-			$session->loc = $config->page->index;
             break;
         case 'ii-substitutes':
 			$data = array('DBNAME' => $config->dbName, 'IISUB' => false, 'ITEMID' => $itemID);
-            $session->loc = $config->page->index;
             break;
-		case 'ii-documents':
+		case 'ii-documents': 
 			$desc = XRefItem::get_itemdescription($itemID);
 			$session->sql = XRefItem::get_itemdescription($itemID);
 			$data = array('DBNAME' => $config->dbName, 'DOCVIEW' => false, 'FLD1CD' => 'IT', 'FLD1DATA' => $itemID, 'FLD1DESC' => $desc);
-            $session->loc = $config->page->index;
             break;
 		case 'ii-order-documents':
 			$ordn = $input->get->text('ordn');
 			$type = $input->get->text('type');
 			$desc = XRefItem::get_itemdescription($itemID);
 			$data = array('DBNAME' => $config->dbName, 'DOCVIEW' => false, 'FLD1CD' => $config->documentstoragetypes[$type], 'FLD1DATA' => $ordn, 'FLD2CD' => 'IT', 'FLD2DATA' => $itemID);
-            $session->loc = $config->page->index;
-            break;
-		case 'ii-order-documents':
-			$qnbr = $input->get->text('qnbr');
-			$type = $input->get->text('type');
-			$desc = XrefItem::get_itemdescription($itemID);
-			$data = array('DBNAME' => $config->dbName, 'DOCVIEW' => false, 'FLD1CD' => $config->documentstoragetypes[$type], 'FLD1DATA' => $qnbr, 'FLD2CD' => 'IT', 'FLD2DATA' => $itemID);
-            $session->loc = $config->page->index;
             break;
     }
 
     writedplusfile($data, $filename);
-	header("location: /cgi-bin/" . $config->cgi . "?fname=" . $filename);
+	curl_redir("127.0.0.1/cgi-bin/".$config->cgis['default']."?fname=$filename");
+	if (!empty($session->get('loc')) && !$config->ajax) {
+		header("Location: $session->loc");
+	}
 	exit;

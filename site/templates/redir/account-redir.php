@@ -44,12 +44,12 @@
 				$username = $input->post->text('username');
 				$password = $input->post->text('password');
 				$data = array('DBNAME' => $config->dbName, 'LOGPERM' => false, 'LOGINID' => $username, "PSWD" => $password);
-				$session->loc = "login";
+				$session->loggingin = true;
+				$session->loc = $config->pages->index.'redir/';
 			}
 			break;
 		case 'permissions':
 			$data = array('DBNAME' => $config->dbName, 'FUNCPERM' => false);
-			$session->loc = $config->pages->index;
 			break;
 		case 'logout':
 			$data = array('DBNAME' => $config->dbName, 'LOGOUT' => false);
@@ -65,7 +65,7 @@
 			$field2 = $input->get->text('field2');
 			$field3 = $input->get->text('field3');
 			$data = array(
-				'DBNAME' => $config->dbName, 
+				'DBNAME' => $config->dbName,
 				'DOCFILEFLDS' => $folder,
 				'DOCFILENAME' => $config->documentstoragedirectory.$file,
 				'DOCFLD1' => $field1,
@@ -76,5 +76,8 @@
 	}
 
 	writedplusfile($data, $filename);
-	header("location: /cgi-bin/" . $config->cgi . "?fname=" . $filename);
- 	exit;
+	curl_redir("127.0.0.1/cgi-bin/".$config->cgis['default']."?fname=$filename");
+	if (!empty($session->get('loc')) && !$config->ajax) {
+		header("Location: $session->loc");
+	}
+	exit;

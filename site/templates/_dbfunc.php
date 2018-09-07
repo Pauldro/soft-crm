@@ -3386,14 +3386,15 @@
 	 * @param  string     $sessionID Session Identifier
 	 * @param  CartDetail $detail    CartDetail object to insert
 	 * @param  bool       $debug     Run in debug?
-	 * @return string               SQL Query
+	 * @return string                SQL Query
 	 */
 	function insert_cartdetail($sessionID, CartDetail $detail, $debug = false) {
 		$properties = array_keys($detail->_toArray());
 		$q = (new QueryBuilder())->table('cartdet');
 		$q->mode('insert');
+
 		foreach ($properties as $property) {
-			if (!empty($detail->$property)) {
+			if (strlen($detail->$property)) {
 				$q->set($property, $detail->$property);
 			}
 		}
