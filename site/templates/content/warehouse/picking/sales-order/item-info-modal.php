@@ -20,10 +20,10 @@
                         <td class="control-label">Case Qty</td> <td><?= $pickitem->caseqty; ?></td>
                     </tr>
                     <tr>
-            			<td class="control-label">Bin #</td> <td class="text-right"><?= $pickitem->bin; ?></td>
+            			<td class="control-label">Bin #</td> <td><?= $pickitem->bin; ?></td>
             		</tr>
             		<tr>
-            			<td class="control-label">Expected Qty</td> <td class="text-right"><?= $pickitem->binqty; ?></td>
+            			<td class="control-label">Expected Qty</td> <td><?= $pickitem->binqty; ?></td>
             		</tr>
                     <tr> 
                         <td class="control-label">Over Bin 1: <?= $pickitem->overbin1; ?></td> <td><?= $pickitem->overbinqty1; ?></td>
