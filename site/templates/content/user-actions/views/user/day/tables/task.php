@@ -5,14 +5,16 @@
 
     <?php if (strtotime($day) == strtotime(date('m/d/y')) && !empty($actionpanel->count_daypriorincompletetasks($day))) : ?>
         <?php foreach ($actionpanel->get_daypriorincompletetasks($day) as $task) : ?>
-            <tr class="<?= $actionpanel->generate_rowclass($task); ?>">
-                <td><?= $task->generate_duedatedisplay('m/d/Y'); ?></td>
-                <td><?= ucfirst($task->generate_actionsubtypedescription()); ?></td>
-                <td><?= $task->customerlink.' - '.Customer::get_customernamefromid($task->customerlink, '', false); ?></td>
-                <td><?= $task->generate_regardingdescription(); ?></td>
-                <td><?= $actionpanel->generate_viewactionlink($task); ?></td>
-                <td><?= ($task->is_completed()) ? '' : $actionpanel->generate_completetasklink($task); ?></td>
-            </tr>
+            <?php if ($task->generate_duedatedisplay('m/d/Y') != $day) : ?>
+                <tr class="<?= $actionpanel->generate_rowclass($task); ?>">
+                    <td><?= $task->generate_duedatedisplay('m/d/Y'); ?></td>
+                    <td><?= ucfirst($task->generate_actionsubtypedescription()); ?></td>
+                    <td><?= $task->customerlink.' - '.Customer::get_customernamefromid($task->customerlink, '', false); ?></td>
+                    <td><?= $task->generate_regardingdescription(); ?></td>
+                    <td><?= $actionpanel->generate_viewactionlink($task); ?></td>
+                    <td><?= ($task->is_completed()) ? '' : $actionpanel->generate_completetasklink($task); ?></td>
+                </tr>
+            <?php endif; ?>
         <?php endforeach; ?>
     <?php endif; ?>
 

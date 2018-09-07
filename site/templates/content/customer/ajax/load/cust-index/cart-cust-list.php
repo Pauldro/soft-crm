@@ -7,6 +7,7 @@
     $resultscount = $custindex->count_searchcustindex($input->get->text('q'));
     $paginator = new Paginator($custindex->pagenbr, $resultscount, $custindex->pageurl, 'cust-index', $custindex->ajaxdata);
 ?>
+
 <div id="cust-results">
     <table id="cust-index" class="table table-striped table-bordered">
         <thead>
