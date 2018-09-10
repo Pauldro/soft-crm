@@ -7,11 +7,14 @@
         
         if ($input->get->ordn) {
             // CHECK IF BIN IS DEFINED AND THAT tHE ORDER IS NOT IN FINISHED STATUS
-            if (!$whsesession->has_bin() && !$whsesession->is_orderfinished()) {
+            if ($whsesession->is_orderinvalid()) {
+                $page->body = $config->paths->content."warehouse/picking/sales-order/invalid-order.php";
+            } else if (!$whsesession->has_bin() && !$whsesession->is_orderfinished()) {
                 if ($whsesession->is_orderonhold() || $whsesession->is_orderverified() || $whsesession->is_orderinvoiced()) {
                     $page->body = $config->paths->content."warehouse/picking/sales-order/order-on-hold.php";
                 } else {
                     $page->title = 'Choose Starting Bin';
+                    $page->title = var_dump($whsesession->is_orderinvalid());
                     $page->body = $config->paths->content."warehouse/picking/sales-order/choose-bin-form.php";
                 }
             } else {
@@ -29,6 +32,7 @@
                     if ($whsesession->is_orderfinished()) {
                         $whsesession->delete_orderpickeditems();
                     }
+                    $config->scripts->append(hashtemplatefile('scripts/warehouse/pick-order.js'));
                     $page->body = $config->paths->content."warehouse/picking/sales-order/choose-sales-order-form.php";
                 }
             }
@@ -36,6 +40,7 @@
             if ($whsesession->is_orderfinished()) {
                 $whsesession->delete_orderpickeditems();
             }
+            $config->scripts->append(hashtemplatefile('scripts/warehouse/pick-order.js'));
             $page->body = $config->paths->content."warehouse/picking/sales-order/choose-sales-order-form.php";
         }
     }

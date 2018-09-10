@@ -125,6 +125,18 @@
             return strtolower($this->status) == 'order is invoiced' ? true : false;
         }
         
+        /**
+         * Returns if the Sales Order Number is invalid
+         * @return bool        Has Order been Sales Order Number is invalid
+         */
+        public function is_orderinvalid() {
+            return strtolower($this->status) == 'bad order nbr' ? true : false;
+        }
+        
+        /**
+         * Returns a message about the Status of the Order
+         * @return string Order Status
+         */
         public function generate_statusmessage() {
             $msg = '';
             

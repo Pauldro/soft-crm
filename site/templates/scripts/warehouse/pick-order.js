@@ -74,4 +74,32 @@ $(function() {
 			}
 		}).catch(swal.noop);
     });
+    
+    $("body").on("click", ".remove-sales-order-locks", function(e) {
+        e.preventDefault();
+        
+        swal({
+			title: "Enter the Order Number you'd like to erase locks for",
+			text: "Order Number",
+			input: 'text',
+			showCancelButton: true,
+			inputValidator: function (value) {
+				return new Promise(function (resolve, reject) {
+					if (value) {
+						resolve();
+					} else {
+						reject('You need to write something!');
+					}
+				})
+			}
+		}).then(function (input) {
+			if (input) {
+				var ordn = input;
+                var pageurl = URI();
+                var uri = URI(config.urls.warehouse.picking.sales_order.redir.redir);
+                uri.addQuery('action', 'remove-order-locks').addQuery('ordn', ordn);
+                window.location.href = uri.toString();
+			}
+		}).catch(swal.noop);
+    });
 });

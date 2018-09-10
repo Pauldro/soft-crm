@@ -81,6 +81,10 @@
 			$data = array('DBNAME' => $config->dbName, 'STOPORDER' => false, 'ORDERNBR' => $whsesession->ordn);
 			$session->loc = $config->pages->salesorderpicking;
 			break;
+		case 'remove-order-locks':
+			$ordn = $input->$requestmethod->text('ordn');
+			$data = array('DBNAME' => $config->dbName, 'REFRESHPD' => false, 'ORDERNBR' => $ordn);
+			break;
 		case 'add-barcode':
 			$barcode = $input->$requestmethod->text('barcode');
 			$pickitem = Pick_SalesOrderDetail::load(session_id());

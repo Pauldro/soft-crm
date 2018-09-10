@@ -11,9 +11,9 @@
 			$L = $config->pages->login;
 		} else {
 			if (in_array($user->mainrole, array_keys($config->rolehomepages))) {
-				$L = $config->rolehomepages[$user->mainrole]; 
+				$L = $config->user_roles[$user->mainrole]['homepage']; 
 			} else {
-				$L = $config->rolehomepages['default']; 
+				$L = $config->user_roles['default']['homepage']; 
 			}
 		}
 	}

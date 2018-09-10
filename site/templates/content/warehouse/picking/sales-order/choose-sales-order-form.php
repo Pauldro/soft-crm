@@ -8,3 +8,5 @@
         </span>
     </div>
 </form>
+
+<button type="button" class="btn btn-default remove-sales-order-locks">Remove Lock on Sales Order</button>
