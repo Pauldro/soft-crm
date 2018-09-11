@@ -153,7 +153,9 @@
                     'itemid' => $this->itemnbr,
                     'qty' => [
                         'ordered' => $this->qtyordered,
-                        'pulled' => $this->get_pickedtotal(),
+                        'picked' => $this->get_userpickedtotal(),
+                        'pulled' => $this->qtypulled,
+                        'total_picked' => $this->get_orderpickedtotal(),
                         'remaining' => $this->get_qtyremaining()
                     ]
                 ]
@@ -162,19 +164,28 @@
         
         /**
          * Returns the Picked Quantity Total from the database
-         * @param  bool   $debug Run in debug? If so, return SQL Query
-         * @return int           Picked Quantity Total
+         * @param  bool  $debug Run in debug? If so, return SQL Query
+         * @return int          Picked Quantity Total
          */
-        public function get_pickedtotal($debug = false) {
+        public function get_userpickedtotal($debug = false) {
             return get_orderpickeditemqtytotal($this->sessionid, $this->ordernbr, $this->itemnbr, $debug);
         }
         
         /**
-         * Returns the Picked Qty + already pulled qty
+         * Returns the Picked Qty + already pulled qty for the Order, not just user
+         * // NOTE this Total is total picked for the order, not just what the user has picked
          * @return int total Picked for this item on the order
          */
-        public function get_totalpicked() {
-            return $this->qtypulled + $this->get_pickedtotal();
+        public function get_orderpickedtotal() {
+            return $this->qtypulled + $this->get_userpickedtotal();
+        }
+        
+        /**
+         * Returns if there has been Qty pulled for this Item / Order
+         * @return bool Does Order Item have previous pick quantity?
+         */
+        public function has_qtypulled() {
+            return $this->qtypulled > 0 ? true : false;
         }
         
         /**
@@ -190,7 +201,7 @@
          * @return int
          */
         public function get_qtyremaining() {
-            return $this->qtyordered - ($this->get_totalpicked());
+            return $this->qtyordered - ($this->get_orderpickedtotal());
         }
         
         /**
@@ -198,7 +209,7 @@
          * @return bool Have user picked too much?
          */
         public function has_pickedtoomuch() {
-            return ($this->get_totalpicked()) > $this->qtyordered ? true : false;
+            return ($this->get_orderpickedtotal()) > $this->qtyordered ? true : false;
         }
         
         /**
@@ -229,7 +240,7 @@
             if (BarcodedItem::find_barcodeitemid($barcode) == $this->itemnbr) {
                 return insert_orderpickedbarcode($this->sessionid, $this->ordernbr, $barcode, $debug);
             } else {
-                DplusWire::wire('session')->error("$barcode is not a barcode for Item $this->itemnbr", Processwire\Notice::log);
+                DplusWire::wire('session')->error("$barcode is not a barcode for Item $this->itemnbr", ProcessWire\Notice::log);
                 return false;
             }
         }

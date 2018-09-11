@@ -19,6 +19,15 @@ $(function() {
                     window.location.href = button.attr('href');
                 }
             }).catch(swal.noop);
+        } else if (pickitem.item.qty.remaining < 0) {
+            swal({
+                title: 'Are you sure?',
+                text: "You have picked too much",
+                type: 'warning',
+                confirmButtonClass: 'btn btn-success',
+                buttonsStyling: false,
+                confirmButtonText: 'Continue'
+            });
         } else {
             window.location.href = button.attr('href');
         }

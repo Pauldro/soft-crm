@@ -29,7 +29,7 @@
                     $config->scripts->append(hashtemplatefile('scripts/warehouse/pick-order.js'));
                     $page->body = $config->paths->content."warehouse/picking/sales-order/finished-order-screen.php";
                 } else {
-                    if ($whsesession->is_orderfinished()) {
+                    if ($whsesession->is_orderfinished() || $whsesession->is_orderexited()) {
                         $whsesession->delete_orderpickeditems();
                     }
                     $config->scripts->append(hashtemplatefile('scripts/warehouse/pick-order.js'));
@@ -37,7 +37,7 @@
                 }
             }
         } else {
-            if ($whsesession->is_orderfinished()) {
+            if ($whsesession->is_orderfinished() || $whsesession->is_orderexited()) {
                 $whsesession->delete_orderpickeditems();
             }
             $config->scripts->append(hashtemplatefile('scripts/warehouse/pick-order.js'));

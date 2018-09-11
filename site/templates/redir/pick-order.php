@@ -62,7 +62,7 @@
 			break;
 		case 'finish-item':
 			$item = Pick_SalesOrderDetail::load(session_id());
-			$data = array('DBNAME' => $config->dbName, 'ACCEPTITEM' => false, 'ORDERNBR' => $item->ordernbr, 'LINENBR' => $item->linenbr, 'ITEMID' => $item->itemnbr, 'ITEMQTY' => $item->get_pickedtotal());
+			$data = array('DBNAME' => $config->dbName, 'ACCEPTITEM' => false, 'ORDERNBR' => $item->ordernbr, 'LINENBR' => $item->linenbr, 'ITEMID' => $item->itemnbr, 'ITEMQTY' => $item->get_userpickedtotal());
 			$session->loc = "{$config->pages->salesorderpicking}?ordn=$item->ordernbr";
 			break;
 		case 'skip-item':
@@ -84,6 +84,7 @@
 		case 'remove-order-locks':
 			$ordn = $input->$requestmethod->text('ordn');
 			$data = array('DBNAME' => $config->dbName, 'REFRESHPD' => false, 'ORDERNBR' => $ordn);
+			$session->loc = $config->pages->salesorderpicking;
 			break;
 		case 'add-barcode':
 			$barcode = $input->$requestmethod->text('barcode');

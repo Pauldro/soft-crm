@@ -102,6 +102,14 @@
         }
         
         /**
+         * Returns if the Sales Order has been Exited
+         * @return bool Is Order exited?
+         */
+        public function is_orderexited() {
+            return strtolower($this->status) == 'order exited' ? true : false;
+        }
+        
+        /**
          * Returns if the Sales Order is on hold
          * @return bool        Is Order on Hold?
          */

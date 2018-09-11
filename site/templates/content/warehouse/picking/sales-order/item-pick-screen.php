@@ -23,8 +23,13 @@
 		<tr>
 			<td class="control-label">Qty Needed</td> <td class="text-right"><?= $pickitem->qtyordered; ?></td>
 		</tr>
+		<?php if ($pickitem->has_qtypulled()) : ?>
+			<tr>
+				<td class="control-label">Previously Picked</td> <td class="text-right"><?= $pickitem->qtypulled; ?></td>
+			</tr>
+		<?php endif; ?>
 		<tr>
-			<td class="control-label">Qty In Cart</td> <td class="text-right"><?= $pickitem->get_totalpicked(); ?></td>
+			<td class="control-label">Qty Picked</td> <td class="text-right"><?= $pickitem->get_userpickedtotal(); ?></td>
 		</tr>
 		<tr class="<?= $pickitem->has_pickedtoomuch() ? 'bg-warning' : (($pickitem->has_qtyremaining()) ? '' : 'bg-success'); ?>">
 			<td class="control-label">Qty Remaining</td> <td class="text-right"><?= $pickitem->get_qtyremaining(); ?></td>
