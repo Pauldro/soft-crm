@@ -1,8 +1,8 @@
 <?php
 	$salespersonjson = json_decode(file_get_contents($config->companyfiles."json/salespersontbl.json"), true);
 	$salespersoncodes = array_keys($salespersonjson['data']);
-	$paginator = new Paginator($actionpanel->pagenbr, $actionpanel->count, $actionpanel->generate_refreshurl(), $actionpanel->paginateafter, $actionpanel->ajaxdata);
-	
+	$paginator = new Paginator($actionpanel->pagenbr, $actionpanel->count_actions(), $actionpanel->generate_refreshurl(), $actionpanel->paginateafter, $actionpanel->ajaxdata);
+
 	$actionpanel->set_view($input->get->text('view'));
 ?>
 <div class="panel panel-primary not-round" id="<?= $actionpanel->panelID; ?>">
@@ -50,7 +50,7 @@
 
 			if (checkbox.is(':checked')) {
 				if (checkbox.val() == 'all') {
-					form.find("[name='actiontype[]']").not("[value='all']").prop('checked', false);
+					form.find("[name='actiontype[]']").not("[value='all']").prop('checked', true);
 				} else {
 					form.find("[name='actiontype[]'][value='all']").prop('checked', false);
 				}

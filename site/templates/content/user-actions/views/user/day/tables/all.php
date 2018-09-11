@@ -4,10 +4,11 @@
     </tr>
 
     <?php if (strtotime($day) == strtotime(date('m/d/y')) && !empty($actionpanel->count_daypriorincompletetasks($day))) : ?>
-        <tr>
-            <td colspan="6" class="text-center  h4">Today's Incomplete Tasks</td>
-        </tr>
+
         <?php if ($actionpanel->count_dayallactions($day)) : ?>
+            <tr>
+                <td colspan="6" class="text-center  h4">Today's Incomplete Tasks</td>
+            </tr>
             <?php foreach ($actionpanel->get_dayallactions($day) as $action) : ?>
                 <tr class="<?= $actionpanel->generate_rowclass($action); ?>">
                     <td><?= $action->generate_duedatedisplay('m/d/Y'); ?></td>
