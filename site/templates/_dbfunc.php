@@ -3095,6 +3095,44 @@
 		}
 	}
 
+	function get_mindateuseractioncreated($custID = false, $shipID = false, $debug = false) {
+		$q = (new QueryBuilder())->table('useractions');
+		$q->field($q->expr("DATE_FORMAT(MIN(datecreated), '%m/%d/%Y')"));
+		if ($custID) {
+			$q->where('customerlink', $custID);
+		}
+		if ($shipID) {
+			$q->where('shiptolink', $shipID);
+		}
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+
+	function get_mindateuseractioncompleted($custID = false, $shipID = false, $debug = false) {
+		$q = (new QueryBuilder())->table('useractions');
+		$q->field($q->expr("DATE_FORMAT(MIN(datecreated), '%m/%d/%Y')"));
+		if ($custID) {
+			$q->where('customerlink', $custID);
+		}
+		if ($shipID) {
+			$q->where('shiptolink', $shipID);
+		}
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+
 /* =============================================================
 	VENDOR FUNCTIONS
 ============================================================ */
