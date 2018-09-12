@@ -82,7 +82,7 @@ $(function() {
 			});
 		});
 	});
-	
+
 	$("body").on("click", '.load-order-documents', function(e) {
 		e.preventDefault();
 		var custID = $(this).data('custid');
@@ -102,7 +102,7 @@ $(function() {
 			});
 		});
 	});
-	
+
 	$("body").on("click", '.load-quote-documents', function(e) {
 		e.preventDefault();
 		var custID = $(this).data('custid');
@@ -176,15 +176,23 @@ function shipto() { //CAN BE USED IF SHIPTO IS DEFINED
 														.query(cleanparams)
 														.toString();
 	showajaxloading();
+
 	$.getJSON(config.urls.customer.ci.json.ci_shiptolist, function( json ) {
-		if (json.data) {
-			loadshipto(custID, json.data[0].shipid);
-		} else {
+		if (Object.keys(json.data).length > 1) {
 			$(loadinto).loadin(href, function() {
 				hideajaxloading();
 				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('lg').modal();
 			});
+		} else {
+			var key = 0;
+			if (json.data[0]) {key = 0;} else {key = 1;}
+			url = URI(config.urls.customer.ci.redir.ci_shiptoinfo).addQuery("custID", custID)
+																.addQuery("shipID", json.data[key].shipid)
+																.addQuery('modal', 'modal')
+																.query(cleanparams)
+																.toString();
+			window.location.href = url;
 		}
 	});
 }

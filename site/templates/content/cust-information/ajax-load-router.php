@@ -15,7 +15,7 @@
 			$custID = $input->get->text('custID');
 			$shipID = $input->get->text('shipID');
 			$page->title = 'Viewing ' . get_customername($custID) . ' shipto ' . $shipID;
-			$page->content = $config->paths->content."cust-information/cust-shipto-info.php";
+			$page->body = $config->paths->content."cust-information/cust-shipto-info.php";
 			break;
         case 'ci-pricing-search':
             $page->title = 'Search for an Item';

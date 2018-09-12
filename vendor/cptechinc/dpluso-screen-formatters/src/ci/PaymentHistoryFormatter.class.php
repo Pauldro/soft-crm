@@ -5,7 +5,7 @@
 	 */
 	class CI_PaymentHistoryFormatter extends TableScreenFormatter {
         protected $tabletype = 'normal'; // grid or normal
-		protected $type = 'ci-payment-history'; 
+		protected $type = 'ci-payment-history';
 		protected $title = 'Customer Payment History';
 		protected $datafilename = 'cipayment';
 		protected $testprefix = 'cioi';
@@ -13,14 +13,14 @@
 		protected $datasections = array(
 			"detail" => "Detail",
 		);
-		
+
 		/* =============================================================
             PUBLIC FUNCTIONS
         ============================================================ */
         public function generate_screen() {
             $bootstrap = new Contento();
 			$this->generate_tableblueprint();
-			
+
 			$tb = new Table('class=table table-striped table-bordered table-condensed table-excel|id=payments');
 			$tb->tablesection('thead');
 				for ($x = 1; $x < $this->tableblueprint['detail']['maxrows'] + 1; $x++) {
@@ -67,18 +67,22 @@
 			$tb->closetablesection('tbody');
 			return $tb->close();
         }
-		
+
         public function generate_javascript() {
-			$bootstrap = new Contento();
-			$content = $bootstrap->open('script', '');
-				$content .= "\n";
-				if ($this->tableblueprint['detail']['maxrows'] == 1) {
-					$content .= $bootstrap->indent().'$(function() {';
-						$content .= "$('#payments').DataTable();";
-					$content .= $bootstrap->indent().'});';
-				}
-				$content .= "\n";
-			$content .= $bootstrap->close('script');
-			return $content;
+			if (!$this->forprint) {
+				$bootstrap = new Contento();
+				$content = $bootstrap->open('script', '');
+					$content .= "\n";
+					if ($this->tableblueprint['detail']['maxrows'] == 1) {
+						$content .= $bootstrap->indent().'$(function() {';
+							$content .= "$('#payments').DataTable();";
+						$content .= $bootstrap->indent().'});';
+					}
+					$content .= "\n";
+				$content .= $bootstrap->close('script');
+				return $content;
+			} else {
+				return '';
+			}
 		}
     }

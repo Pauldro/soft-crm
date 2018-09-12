@@ -53,7 +53,7 @@ $(function() {
                         var productresultsurl = URI(config.urls.load.quickentry_searchresults).addQuery('q', itemsearch).toString();
                         showajaxloading();
                         dplusrequest(productsearchurl, function() {
-                            form.find('.item-results').loadin(productresultsurl, function() {
+                            form.find('.qe-results').loadin(productresultsurl, function() {
                                 hideajaxloading();
                                 if (focus.length > 0) {
                                     $('html, body').animate({scrollTop: $(focus).offset().top - 60}, 1000);
@@ -81,7 +81,7 @@ $(function() {
         var itemID = item.data('itemid');
         var form = $(".quick-entry-add");
         form.find('input[name=itemID]').val(itemID);
-        form.find('.results').empty();
+        form.find('.qe-results').empty();
         form.attr('data-validated', itemID);
         form.submit();
     });

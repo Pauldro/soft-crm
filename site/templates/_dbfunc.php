@@ -88,7 +88,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 /* =============================================================
 	PERMISSION FUNCTIONS
 ============================================================ */
@@ -737,7 +737,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	/**
 	 * Returns Customer Index records that match the Query
 	 * @param  string $keyword Query String to match
@@ -762,10 +762,10 @@
 			$q->where('(custid, shiptoid)','in', $permquery);
 		}
 		$fieldstring = implode(", ' ', ", array_keys(Contact::generate_classarray()));
-		
+
 		$q->where($q->expr("UCASE(REPLACE(CONCAT($fieldstring), '-', '')) LIKE UCASE([])", [$search]));
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		
+
 		if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
 			if (!empty($orderbystring)) {
 				$q->order($q->generate_orderby($orderbystring));
@@ -785,11 +785,11 @@
 				$q->order($q->expr('custid <> []', [$search]));
 			}
 		}
-		
-		
-		
+
+
+
 		$sql = DplusWire::wire('database')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1916,7 +1916,7 @@
 		$user = LogmUser::load($loginID);
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('saleshist.*');
-		$q->field($q->expr("STR_TO_DATE(invdate, '%Y%m%d') as dateofinvoice"));
+		$q->field($q->expr("STR_TO_DATE(invoice_date, '%Y%m%d') as dateofinvoice"));
 		$q->where('custid', $custID);
 
 		if (!empty($shiptoID)) {
@@ -3086,6 +3086,44 @@
 		$q->where('createdby', $loginID);
 		$sql = DplusWire::wire('database')->prepare($q->render());
 		$sql->execute($q->params);
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+
+	function get_mindateuseractioncreated($custID = false, $shipID = false, $debug = false) {
+		$q = (new QueryBuilder())->table('useractions');
+		$q->field($q->expr("DATE_FORMAT(MIN(datecreated), '%m/%d/%Y')"));
+		if ($custID) {
+			$q->where('customerlink', $custID);
+		}
+		if ($shipID) {
+			$q->where('shiptolink', $shipID);
+		}
+		$sql = DplusWire::wire('database')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+
+	function get_mindateuseractioncompleted($custID = false, $shipID = false, $debug = false) {
+		$q = (new QueryBuilder())->table('useractions');
+		$q->field($q->expr("DATE_FORMAT(MIN(datecreated), '%m/%d/%Y')"));
+		if ($custID) {
+			$q->where('customerlink', $custID);
+		}
+		if ($shipID) {
+			$q->where('shiptolink', $shipID);
+		}
+		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
