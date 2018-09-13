@@ -43,57 +43,57 @@
 	*
 	* switch ($action) {
 	*	case 'load-cust-orders':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		ORDRHED
 	*		CUSTID=$custID
 	*		TYPE=O  ** OPEN ORDERS
 	*		break;
 	*	case 'load-orders'
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		REPORDRHED
 	*		TYPE=O
 	*		break;
 	*	case 'get-order-details':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		ORDRDET=$ordn
 	*		CUSTID=$custID
 	* 		break;
 	* 	case 'get-order-tracking':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		ORDTRK=$ordn
 	*		CUSTID=$custID
 	*		break;
 	*	case 'get-order-documents':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		ORDDOCS=$ordn
 	*		CUSTID=$custID
 	*		break;
 	* 	case 'edit-new-order':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		ORDRDET=$ordn
 	*		CUSTID=$custID
 	*		LOCK
 	* 		break;
 	* 	case 'update-orderhead'
-	* 		DBNAME=$config->DBNAME
+	* 		DBNAME=$config->dplusdbname
 	*		SALESHEAD
 	*		ORDERNO=$ordn
 	* 		break;
 	* 	case 'add-to-order':
-	* 		DBNAME=$config->DBNAME
+	* 		DBNAME=$config->dplusdbname
 	* 		SALEDET
 	*		ORDERNO=$ordn
 	*		ITEMID=$itemID
 	*		QTY=$qty
 	* 		break;
 	* 	case 'add-multiple-items':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		ORDERADDMULTIPLE
 	*		ORDERNO=$ordn
 	*		ITEMID=$custID   QTY=$qty  ** REPEAT
 	*		break;
 	*	case 'add-nonstock-item':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		SALEDET
 	*		ORDERNO=$ordn
 	*		ITEMID=N
@@ -101,19 +101,19 @@
 	*		CUSTID=$custID
 	* 		break;
 	* 	case 'update-line':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		SALEDET
 	*		ORDERNO=$ordn
 	*		LINENO=$linenbr
 	* 		break;
 	* 	case 'remove-line':
-	* 		DBNAME=$config->DBNAME
+	* 		DBNAME=$config->dplusdbname
 	*		SALEDET
 	*		ORDERNO=$ordn
 	*		LINENO=$linenbr
 	* 		break;
 	*	case 'unlock-order':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		UNLOCK
 	*		ORDERNO=$ordn
 	* 		break;
@@ -124,7 +124,7 @@
 	switch ($action) {
 		case 'load-cust-orders':
 			$custID = $input->get->text('custID');
-			$data = array('DBNAME' => $config->dbName, 'ORDRHED' => false, 'CUSTID' => $custID, 'TYPE' => 'O');
+			$data = array('DBNAME' => $config->dplusdbname, 'ORDRHED' => false, 'CUSTID' => $custID, 'TYPE' => 'O');
 			$session->{'orders-loaded-for'} = $custID;
 			$session->{'orders-updated'} = date('m/d/Y h:i A');
 			if ($input->get->shipID) {
@@ -134,7 +134,7 @@
 			}
 			break;
 		case 'load-orders':
-			$data = array('DBNAME' => $config->dbName, 'REPORDRHED' => false, 'TYPE' => 'O');
+			$data = array('DBNAME' => $config->dplusdbname, 'REPORDRHED' => false, 'TYPE' => 'O');
 			$session->loc = $config->pages->ajax."load/sales-orders/?ordn=".$linkaddon."";
 			$session->{'orders-loaded-for'} = $user->loginid;
 			$session->{'orders-updated'} = date('m/d/Y h:i A');
@@ -142,7 +142,7 @@
 		case 'get-order-details':
 			$ordn = $input->get->text('ordn');
 			$custID = SalesOrderHistory::is_saleshistory($ordn) ? SalesOrderHistory::find_custid($ordn) : get_custidfromorder(session_id(), $ordn);
-			$data = array('DBNAME' => $config->dbName, 'ORDRDET' => $ordn, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'ORDRDET' => $ordn, 'CUSTID' => $custID);
 
 			if ($input->get->lock) {
 				$data['LOCK'] = false;
@@ -174,7 +174,7 @@
 		case 'get-order-tracking':
 			$ordn = $input->get->text('ordn');
 			$custID = get_custidfromorder(session_id(), $ordn);
-			$data = array('DBNAME' => $config->dbName, 'ORDRTRK' => $ordn, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'ORDRTRK' => $ordn, 'CUSTID' => $custID);
 			if ($input->get->ajax) {
 				$session->loc = $config->pages->ajax."load/order/tracking/?ordn=".$ordn;
 			} elseif ($input->get->page == 'edit') {
@@ -230,12 +230,12 @@
 				Paginator::paginate_purl($url, $pagenumber, $insertafter);
 				$session->loc = $url->getUrl();
 			}
-			$data = array('DBNAME' => $config->dbName, 'ORDDOCS' => $ordn, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'ORDDOCS' => $ordn, 'CUSTID' => $custID);
 			break;
 		case 'edit-new-order':
 			$ordn = get_createdordn(session_id());
 			$custID = get_custidfromorder(session_id(), $ordn);
-			$data = array('DBNAME' => $config->dbName, 'ORDRDET' => $ordn, 'CUSTID' => $custID, 'LOCK' => false);
+			$data = array('DBNAME' => $config->dplusdbname, 'ORDRDET' => $ordn, 'CUSTID' => $custID, 'LOCK' => false);
 			$session->createdorder = $ordn;
 			$session->loc = $config->pages->edit.'order/?ordn=' . $ordn;
 			break;
@@ -290,7 +290,7 @@
 			}
 
 			$session->sql .= '<br>'. $order->update_payment();
-			$data = array('DBNAME' => $config->dbName, 'SALESHEAD' => false, 'ORDERNO' => $ordn, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'SALESHEAD' => false, 'ORDERNO' => $ordn, 'CUSTID' => $custID);
 
 			if ($input->post->exitorder) {
 				$session->loc = $config->pages->orders."redir/?action=unlock-order&ordn=$ordn";
@@ -305,7 +305,7 @@
 			$qty = determine_qty($input, $requestmethod, $itemID); // TODO MAKE IN CART DETAIL
 			$ordn = $input->post->text('ordn');
 			$custID = get_custidfromorder(session_id(), $ordn);
-			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'ITEMID' => $itemID, 'QTY' => "$qty", 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'SALEDET' => false, 'ORDERNO' => $ordn, 'ITEMID' => $itemID, 'QTY' => "$qty", 'CUSTID' => $custID);
 			$session->loc = $input->post->page;
 			$session->editdetail = true;
 			break;
@@ -313,7 +313,7 @@
 			$ordn = $input->post->text('ordn');
 			$itemids = $input->post->itemID;
 			$qtys = $input->post->qty;
-			$data = array("DBNAME=$config->dbName", 'ORDERADDMULTIPLE', "ORDERNO=$ordn");
+			$data = array("DBNAME=$config->dplusdbname", 'ORDERADDMULTIPLE', "ORDERNO=$ordn");
 			$data = writedataformultitems($data, $itemids, $qtys);
             $session->loc = $config->pages->edit."order/?ordn=".$ordn;
 			break;
@@ -340,7 +340,7 @@
 			$orderdetail->set('spcord', 'S');
 			$orderdetail->update();
 
-			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => '0', 'ITEMID' => 'N', 'QTY' => $qty, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => '0', 'ITEMID' => 'N', 'QTY' => $qty, 'CUSTID' => $custID);
 
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
@@ -360,7 +360,7 @@
 			$orderdetail->set('price', $input->post->text('price'));
 			$orderdetail->set('rshipdate', $input->post->text('rqstdate'));
 			$session->sql = $orderdetail->update();
-			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'CUSTID' => $custID);
 
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
@@ -395,7 +395,7 @@
 			}
 			$custID = get_custidfromorder(session_id(), $ordn);
 			$session->sql = $orderdetail->update();
-			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'CUSTID' => $custID);
 
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
@@ -412,7 +412,7 @@
 			$session->sql = $orderdetail->update();
 			$session->editdetail = true;
 			$custID = get_custidfromorder(session_id(), $ordn);
-			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'QTY' => '0', 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'QTY' => '0', 'CUSTID' => $custID);
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
 			} else {
@@ -426,7 +426,7 @@
 			$orderdetail->set('qty', '0');
 			$session->sql = $orderdetail->update();
 			$custID = get_custidfromorder(session_id(), $ordn, false);
-			$data = array('DBNAME' => $config->dbName, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'QTY' => '0', 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'QTY' => '0', 'CUSTID' => $custID);
 
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
@@ -437,12 +437,12 @@
 			break;
 		case 'unlock-order':
 			$ordn = $input->get->text('ordn');
-			$data = array('DBNAME' => $config->dbName, 'UNLOCK' => false, 'ORDERNO' => $ordn);
+			$data = array('DBNAME' => $config->dplusdbname, 'UNLOCK' => false, 'ORDERNO' => $ordn);
 			$session->remove('createdorder');
 			$session->loc = $config->pages->confirmorder."?ordn=$ordn";
 			break;
 		default:
-			$data = array('DBNAME' => $config->dbName, 'REPORDRHED' => false, 'TYPE' => 'O');
+			$data = array('DBNAME' => $config->dplusdbname, 'REPORDRHED' => false, 'TYPE' => 'O');
 			$session->loc = $config->pages->ajax."load/orders/salesrep/".urlencode($custID)."/?ordn=".$linkaddon."";
 			$session->{'orders-loaded-for'} = $user->loginid;
 			$session->{'orders-updated'} = date('m/d/Y h:i A');

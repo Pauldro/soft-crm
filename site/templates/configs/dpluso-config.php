@@ -1,4 +1,5 @@
 <?php
+	$config->dplusdatabase = new PDO("mysql:host=localhost;dbname=$config->dplusdbname", $config->dbUser, $config->dbPass);
 	$config->yesnoarray = array('No' => 'N', 'Yes' => 'Y');
 	$config->buyertypes = array('P' => 'Primary', 'Y' => 'Yes', 'N' => 'No');
 	$config->nonstockitems = array('N');

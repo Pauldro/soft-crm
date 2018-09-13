@@ -43,7 +43,7 @@
 			if ($input->post->username) {
 				$username = $input->post->text('username');
 				$password = $input->post->text('password');
-				$data = array('DBNAME' => $config->dbName, 'LOGPERM' => false, 'LOGINID' => $username, "PSWD" => $password);
+				$data = array('DBNAME' => $config->dplusdbname, 'LOGPERM' => false, 'LOGINID' => $username, "PSWD" => $password);
 				$session->loggingin = true;
 				$session->loc = $config->pages->index.'redir/';
 			}
