@@ -184,15 +184,21 @@ function shipto() { //CAN BE USED IF SHIPTO IS DEFINED
 				$(modal).find('.modal-body').addClass('modal-results');
 				$(modal).resizemodal('lg').modal();
 			});
-		} else {
+		} else if (Object.keys(json.data).length == 1) {
 			var key = 0;
 			if (json.data[0]) {key = 0;} else {key = 1;}
-			url = URI(config.urls.customer.ci.redir.ci_shiptoinfo).addQuery("custID", custID)
+			url = URI(config.urls.customer.redir.ci_shiptoinfo).addQuery("custID", custID)
 																.addQuery("shipID", json.data[key].shipid)
 																.addQuery('modal', 'modal')
 																.query(cleanparams)
 																.toString();
 			window.location.href = url;
+		} else {
+			$(loadinto).loadin(href, function() {
+				hideajaxloading();
+				$(modal).find('.modal-body').addClass('modal-results');
+				$(modal).resizemodal('lg').modal();
+			});
 		}
 	});
 }
