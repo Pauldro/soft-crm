@@ -15,8 +15,8 @@
 		$q = (new QueryBuilder())->table('logperm');
 		$q->field($q->expr("IF(validlogin = 'Y', 1, 0)"));
 		$q->where('sessionid', $sessionID);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
-
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -35,7 +35,7 @@
 		$q = (new QueryBuilder())->table('logperm');
 		$q->field('errormsg');
 		$q->where('sessionid', $sessionID);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -56,7 +56,7 @@
 		$q->field($q->expr("IF(restrictcustomers = 'Y', 1, 0) as restrictcustomers"));
 		$q->field($q->expr("logperm.*"));
 		$q->where('sessionid', $sessionID);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -79,7 +79,7 @@
 		$q = (new QueryBuilder())->table('logperm');
 		$q->field('ordernbr');
 		$q->where('sessionid', $sessionID);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -105,7 +105,7 @@
 		$q->field($q->expr("IF(permission = 'Y', 1, 0)"));
 		$q->where('loginid', $loginID);
 		$q->where('function', $dplusfunction);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -125,7 +125,7 @@
 	function is_custindexloaded($debug = false) {
 		$q = (new QueryBuilder())->table('custindex');
 		$q->field($q->expr("COUNT(*) > 0, 1, 0)"));
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -153,7 +153,7 @@
 		if ($customer->has_shipto()) {
 			$q->where('shiptoid', $customer->shiptoid);
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -176,7 +176,7 @@
 		if (!empty($userID)) {
 			$q->where('loginid', $userID);
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -205,7 +205,7 @@
 			$q->set('shiptoid', $customer->shiptoid);
 		}
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -220,7 +220,7 @@
 		$q->mode('update');
 		$q->set('custid', $newcustID);
 		$q->where('custid', $originalcustID);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -242,7 +242,7 @@
 			$q = (new QueryBuilder())->table($custquery, 'customerperm');
 			$q->field($q->expr('COUNT(*)'));
 			$q->where('loginid', 'in', [$loginID, DplusWire::wire('config')->sharedaccounts]);
-			$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+			$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 			if ($debug) {
 				return $q->generate_sqlquery($q->params);
@@ -266,7 +266,7 @@
 			$q->where('source', Contact::$types['customer']);
 		}
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -278,14 +278,14 @@
 	}
 
 	function get_customername($custID) {
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare("SELECT name FROM custindex WHERE custid = :custID LIMIT 1");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT name FROM custindex WHERE custid = :custID LIMIT 1");
 		$switching = array(':custID' => $custID);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
 
 	function get_shiptoname($custID, $shipID, $debug = false) {
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare("SELECT name FROM custindex WHERE custid = :custID AND shiptoid = :shipID LIMIT 1");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT name FROM custindex WHERE custid = :custID AND shiptoid = :shipID LIMIT 1");
 		$switching = array(':custID' => $custID, ':shipID' => $shipID); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -296,7 +296,7 @@
 	}
 
 	function get_firstcustindexrecord($debug) {
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare("SELECT * FROM custindex LIMIT 1");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM custindex LIMIT 1");
 		if ($debug) {
 			return $sql->queryString;
 		} else {
@@ -327,7 +327,7 @@
 			$q->where('custid', $custID);
 		}
 		$q->field('COUNT(*)');
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -338,7 +338,7 @@
 	}
 
 	function get_shiptoinfo($custID, $shipID, $debug) {
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid = :shipID LIMIT 1");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid = :shipID LIMIT 1");
 		$switching = array(':custID' => $custID, ':shipID' => $shipID); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -372,7 +372,7 @@
 			$q->where('custid', $custID);
 		}
 		$q->group('custid, shiptoid');
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -401,7 +401,7 @@
 		$q->where('shiptoid', '!=', '');
 		$q->limit($limit);
 		$q->order('amountsold DESC');
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -435,7 +435,7 @@
 			$q->where('custid', $custID);
 		}
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -469,7 +469,7 @@
 			$q->where('custid', $custID);
 		}
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -494,7 +494,7 @@
 			$q->where('(custid, shiptoid)','in', $permquery);
 			$q->where('shiptoid', $shiptoID);
 			$q->where('contact', $contactID);
-			$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+			$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 			if ($debug) {
 				return $q->generate_sqlquery($q->params);
@@ -515,7 +515,7 @@
 		if (!empty($contactID)) {
 			$q->where('contact', $contactID);
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -542,7 +542,7 @@
 			$q->where('shiptoid', $shiptoID);
 		}
 		$q->where('buyingcontact', 'P');
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -584,7 +584,7 @@
 		}
 		$q->where('buyingcontact', '!=', 'N');
 		$q->where('certcontact', 'Y');
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -630,7 +630,7 @@
 		$q->where('buyingcontact', '!=', 'N');
 		$q->where('certcontact', 'Y');
 		$q->where($q->expr("UCASE(REPLACE(CONCAT($fieldstring), '-', '')) LIKE []", [$search]));
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -704,7 +704,7 @@
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->group('custid');
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -728,7 +728,7 @@
 			$custpermquery->where('loginid', 'in', [$loginID, $SHARED_ACCOUNTS]);
 			$q->where('custid','in', $custpermquery);
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -788,7 +788,7 @@
 
 
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -839,7 +839,7 @@
 
 		$q->where($q->expr("UCASE(REPLACE(CONCAT($fieldstring), '-', '')) LIKE UCASE([])", [$search]));
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -864,7 +864,7 @@
 		$q->where('shiptoid', '');
 		$q->limit($limit);
 		$q->order('amountsold DESC');
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -892,7 +892,7 @@
 				$q->set($property, $contact->$property);
 			}
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -921,7 +921,7 @@
 		$q->where('custid', $contact->custid);
 		$q->where('shiptoid', $contact->shiptoid);
 		$q->where('contact', $contact->contact);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -948,7 +948,7 @@
 		$q->where('custid', $contact->custid);
 		$q->where('shiptoid', $contact->shiptoid);
 		$q->where('contact', $contact->contact);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		$contact->set('contact', $contactID);
 
 		if ($debug) {
@@ -969,7 +969,7 @@
 	function get_maxcustindexrecnbr($debug = false) {
 		$q = (new QueryBuilder())->table('custindex');
 		$q->field($q->expr('MAX(recno)'));
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -990,7 +990,7 @@
 		$q->mode('update');
 		$q->set('custid', $newcustID);
 		$q->where('custid', substr($originalcustID, 0, 6));
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -1032,7 +1032,7 @@
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('dateoforder ' . $sortrule);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1056,7 +1056,7 @@
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order($orderby .' '. $sortrule);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1078,7 +1078,7 @@
 			$q->generate_filters($filter, $filtertypes);
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1104,7 +1104,7 @@
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1127,7 +1127,7 @@
 			$q->generate_filters($filter, $filtertypes);
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1155,7 +1155,7 @@
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order($orderby .' '. $sortrule);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1184,7 +1184,7 @@
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('dateoforder ' . $sortrule);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1202,7 +1202,7 @@
 		$q->field('custid');
 		$q->where('sessionid', $sessionID);
 		$q->where('orderno', $ordn);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1217,7 +1217,7 @@
 		$q->field('shiptoid');
 		$q->where('sessionid', $sessionID);
 		$q->where('orderno', $ordn);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1240,7 +1240,7 @@
 			}
 		}
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1261,7 +1261,7 @@
 				$q->where('shiptoid', $shipID);
 			}
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1280,7 +1280,7 @@
 		if ($shipID) {
 			$q->where('shiptoid', $shipID);
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1291,7 +1291,7 @@
 	}
 
 	function get_orderdetails($sessionID, $ordn, $useclass = false, $debug) {
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare("SELECT * FROM ordrdet WHERE sessionid = :sessionID AND orderno = :ordn");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM ordrdet WHERE sessionid = :sessionID AND orderno = :ordn");
 		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -1316,7 +1316,7 @@
 		$q->field('orderno');
 		$q->where('sessionid', $sessionID);
 		$q->limit(1);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1331,7 +1331,7 @@
 		$q->where('sessionid', $sessionID);
 		$q->where('orderno', $ordn);
 		$q->where('itemnbr', '');
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1348,7 +1348,7 @@
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('COUNT(*)');
 		$q->where('orderno', $ordn);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1362,7 +1362,7 @@
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('custid');
 		$q->where('orderno', $ordn);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1381,7 +1381,7 @@
 		if ($shipID) {
 			$q->where('shiptoid', $shipID);
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1400,7 +1400,7 @@
 		if ($shipID) {
 			$q->where('shiptoid', $shipID);
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1418,7 +1418,7 @@
 		if ($shipID) {
 			$q->where('shiptoid', $shipID);
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -1464,7 +1464,7 @@
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filterable);
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1514,7 +1514,7 @@
 			$q->generate_filters($filter, $filterable);
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1573,7 +1573,7 @@
 		$q->order($orderby .' '. $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1631,7 +1631,7 @@
 		}
 		$q->order('dateofinvoice ' . $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1688,7 +1688,7 @@
 		}
 		$q->order('dateoforder ' . $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1747,7 +1747,7 @@
 			$q->generate_filters($filter, $filterable);
 		}
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1803,7 +1803,7 @@
 			$q->generate_filters($filter, $filterable);
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1866,7 +1866,7 @@
 		}
 		$q->order($orderby .' '. $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1930,7 +1930,7 @@
 		}
 		$q->order('dateofinvoice ' . $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -1994,7 +1994,7 @@
 		}
 		$q->order('dateoforder ' . $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2065,7 +2065,7 @@
 				$q->where('shiptoid', $shipID);
 			}
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2086,7 +2086,7 @@
 				$q->where('shiptoid', $shipID);
 			}
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -2120,7 +2120,7 @@
 			$q->generate_filters($filter, $filtertypes);
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2145,7 +2145,7 @@
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('quotedate', $sortrule);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2192,7 +2192,7 @@
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('expiredate', $sortrule);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2215,7 +2215,7 @@
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order($orderby, $sortrule);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2240,7 +2240,7 @@
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2261,7 +2261,7 @@
 			$q->generate_filters($filter, $filtertypes);
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2289,7 +2289,7 @@
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('quotedate', $sortrule);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2317,7 +2317,7 @@
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('reviewdate', $sortrule);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2345,7 +2345,7 @@
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('expiredate', $sortrule);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2371,7 +2371,7 @@
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order($orderby, $sortrule);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2390,7 +2390,7 @@
 		$q->field('custid');
 		$q->where('sessionid', $sessionID);
 		$q->where('quotnbr', $qnbr);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2405,7 +2405,7 @@
 		$q->field('shiptoid');
 		$q->where('sessionid', $sessionID);
 		$q->where('quotnbr', $qnbr);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2546,7 +2546,7 @@
 		$q->where('quotenbr', $detail->quotenbr);
 		$q->where('sessionid', $detail->sessionid);
 		$q->where('linenbr', $detail->recno);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -2783,7 +2783,7 @@
 		if (!empty($limit)) {
 			$q->limit($limit, $q->generate_offset($page, $limit));
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2798,7 +2798,7 @@
 		$q = (new QueryBuilder())->table('pricing');
 		$q->field($q->expr('COUNT(*)'));
 		$q->where('sessionid', $sessionID);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2889,7 +2889,7 @@
 		$q->field($q->expr('COUNT(*)'));
 		$q->generate_filters($filters, $filterable);
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2910,7 +2910,7 @@
 			$q->limit($limit, $q->generate_offset($page, $limit));
 		}
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2937,7 +2937,7 @@
 			->where('id', 'in', $actionsquery)
 		);
 		$q->generate_filters($filters, $filterable);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2959,7 +2959,7 @@
 			$q->orExpr()->where('id', 'in', $taskquery)->where('id', 'in', $actionsquery)
 		);
 		$q->generate_filters($filters, $filterable);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2977,7 +2977,7 @@
 		$q->order('duedate', 'ASC');
 
 		$q->generate_filters($filters, $filterable);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2996,7 +2996,7 @@
 		$q->order('duedate', 'ASC');
 
 		$q->generate_filters($filters, $filterable);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3009,7 +3009,7 @@
 	function get_useraction($id, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$q->where('id', $id);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3026,7 +3026,7 @@
 		$q->mode('update');
 		$q->generate_setdifferencesquery($originalaction->_toArray(), $updatedaction->_toArray());
 		$q->where('id', $updatedaction->id);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -3051,7 +3051,7 @@
 		$q->generate_setdifferencesquery($oldlinks->_toArray(), $newlinks->_toArray());
 		$q->generate_query($oldlinks->get_linkswithvaluesarray());
 		$q->set('dateupdated', date("Y-m-d H:i:s"));
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -3070,13 +3070,13 @@
 		$q = (new QueryBuilder())->table('useractions');
 		$q->mode('insert');
 		$q->generate_setvaluesquery($action->_toArray());
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			return array('sql' => $q->generate_sqlquery($q->params), 'insertedid' => DplusWire::wire('config')->dplusdatabase->lastInsertId());
+			return array('sql' => $q->generate_sqlquery($q->params), 'insertedid' => DplusWire::wire('dplusdatabase')->lastInsertId());
 		}
 	}
 
@@ -3084,7 +3084,7 @@
 		$q = (new QueryBuilder())->table('useractions');
 		$q->field($q->expr('MAX(id)'));
 		$q->where('createdby', $loginID);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		$sql->execute($q->params);
 
 		if ($debug) {
@@ -3104,7 +3104,7 @@
 		if ($shipID) {
 			$q->where('shiptolink', $shipID);
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3123,7 +3123,7 @@
 		if ($shipID) {
 			$q->where('shiptolink', $shipID);
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3139,7 +3139,7 @@
 	function get_vendors($debug = false) {
 		$q = (new QueryBuilder())->table('vendors');
 		$q->where('shipfrom', '');
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3154,7 +3154,7 @@
 		$q = (new QueryBuilder())->table('vendors');
 		$q->where('vendid', $vendorID);
 		$q->where('shipfrom', $shipfromID);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3205,7 +3205,7 @@
 
 	function get_unitofmeasurements($debug) {
 		$q = (new QueryBuilder())->table('unitofmeasure');
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3217,7 +3217,7 @@
 
 	function get_itemgroups($debug = false) {
 		$q = (new QueryBuilder())->table('itemgroup');
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3247,7 +3247,7 @@
 		$q = (new QueryBuilder())->table('carthed');
 		$q->field($q->expr("IF(COUNT(*) > 1, 1, 0)"));
 		$q->where('sessionid', $sessionID);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3266,7 +3266,7 @@
 		$q = (new QueryBuilder())->table('carthed');
 		$q->field('custid');
 		$q->where('sessionid', $sessionID);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3285,7 +3285,7 @@
 	function get_carthead($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('carthed');
 		$q->where('sessionid', $sessionID);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3306,7 +3306,7 @@
 		$q = (new QueryBuilder())->table('cartdet');
 		$q->field('COUNT(*)');
 		$q->where('sessionid', $sessionID);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3326,7 +3326,7 @@
 	function get_cartdetails($sessionID, $useclass = true, $debug = false) {
 		$q = (new QueryBuilder())->table('cartdet');
 		$q->where('sessionid', $sessionID);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3351,7 +3351,7 @@
 		$q = (new QueryBuilder())->table('cartdet');
 		$q->where('sessionid', $sessionID);
 		$q->where('linenbr', $linenbr);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3378,7 +3378,7 @@
 		$q->set('shiptoid', $shipID);
 		$q->set('date', date('Ymd'));
 		$q->set('time', date('His'));
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3407,7 +3407,7 @@
 		}
 		$q->where('sessionid', $detail->sessionid);
 		$q->where('linenbr', $detail->linenbr);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -3436,7 +3436,7 @@
 				$q->set($property, $detail->$property);
 			}
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -3558,7 +3558,7 @@
 		$q->where('orderno', $detail->orderno);
 		$q->where('sessionid', $detail->sessionid);
 		$q->where('linenbr', $detail->linenbr);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -3697,7 +3697,7 @@
 		$q->group('itemid');
 		$q->limit($limit, $q->generate_offset($page, $limit));
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3725,7 +3725,7 @@
 			$q->where('origintype', ['I', 'V', 'L', 'C']);
 			$q->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]));
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3746,7 +3746,7 @@
 		$q->field('desc1');
 		$q->where('itemid', $itemID);
 		$q->limit(1);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3768,7 +3768,7 @@
 		$expression = $nextorprev == 'next' ? "MAX(recno) + 1" : "MIN(recno) - 1";
 		$q->field($q->expr($expression));
 		$q->where('itemid', $itemID);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3788,7 +3788,7 @@
 		$q = (new QueryBuilder())->table('itemsearch');
 		$q->field('itemid');
 		$q->where('recno', $recno);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3841,7 +3841,7 @@
 			$q->where('itemid', $itemID);
 		}
 		$q->limit(1);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3868,7 +3868,7 @@
 		$q->where('user', $userID);
 		$q->where('formattertype', $formatter);
 		$q->limit(1);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3890,7 +3890,7 @@
 		$q->field($q->expr('IF(COUNT(*) > 0, 1, 0)'));
 		$q->where('user', $userID);
 		$q->where('formattertype', $formatter);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3913,7 +3913,7 @@
 		$q->field($q->expr('MAX(id)'));
 		$q->where('user', $userID);
 		$q->where('formattertype', $formatter);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3937,7 +3937,7 @@
 		$q->set('data', $data);
 		$q->where('user', $userID);
 		$q->where('formattertype', $formatter);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3961,13 +3961,13 @@
 		$q->set('data', $data);
 		$q->set('user', $userID);
 		$q->set('formattertype', $formatter);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			return array('sql' => $q->generate_sqlquery($q->params), 'success' => DplusWire::wire('config')->dplusdatabase->lastInsertId() > 0 ? true : false, 'id' => DplusWire::wire('config')->dplusdatabase->lastInsertId(), 'querytype' => 'create');
+			return array('sql' => $q->generate_sqlquery($q->params), 'success' => DplusWire::wire('dplusdatabase')->lastInsertId() > 0 ? true : false, 'id' => DplusWire::wire('dplusdatabase')->lastInsertId(), 'querytype' => 'create');
 		}
 	}
 
@@ -4064,7 +4064,7 @@
 	function get_logmuser($loginID, $debug = false) {
 		$q = (new QueryBuilder())->table('logm');
 		$q->where('loginid', $loginID);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4077,7 +4077,7 @@
 
 	function get_logmuserlist($debug = false) {
 		$q = (new QueryBuilder())->table('logm');
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4117,7 +4117,7 @@
 				$q->where('shiptoid', $shiptoID);
 			}
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4154,7 +4154,7 @@
 			}
 		}
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4197,7 +4197,7 @@
 				break;
 		}
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -4241,7 +4241,7 @@
 		$q->field('name');
 		$q->join('custindex.custid', 'bookingc.custid', 'left outer');
 		$q->where('custindex.shiptoid', '');
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4279,7 +4279,7 @@
 			}
 		}
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4319,7 +4319,7 @@
 			}
 		}
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4359,7 +4359,7 @@
 			}
 		}
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4424,7 +4424,7 @@
 				$q->group('bookdate');
 				break;
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4460,7 +4460,7 @@
 			$q->where('shiptoid', $shipID);
 		}
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4496,7 +4496,7 @@
 			$q->where('shiptoid', $shipID);
 		}
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4532,7 +4532,7 @@
 			$q->where('shiptoid', $shipID);
 		}
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4569,7 +4569,7 @@
 			$q->where('shiptoid', $shipID);
 		}
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4637,7 +4637,7 @@
 				break;
 		}
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -4661,7 +4661,7 @@
 		$q->where($q->expr("DATE(date) = STR_TO_DATE([], '%Y-%m-%d')", [$day]));
 		$q->order('date DESC');
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4682,7 +4682,7 @@
 		$q = (new QueryBuilder())->table('log_signin');
 		$q->field('COUNT(*)');
 		$q->where($q->expr("DATE(date) = STR_TO_DATE([], '%Y-%m-%d')", [$day]));
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4706,7 +4706,7 @@
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
 		}
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4730,7 +4730,7 @@
 		$q->set('user', $userID);
 		$q->set('date', $date);
 
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4749,7 +4749,7 @@
 		$q = (new QueryBuilder())->table('log_signin');
 		$q->field('COUNT(*)');
 		$q->where('sessionid', $sessionID);
-		$sql = DplusWire::wire('config')->dplusdatabase->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
