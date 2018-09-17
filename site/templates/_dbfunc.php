@@ -649,7 +649,7 @@
 		$q->where('custid', $custID);
 		$q->where('shiptoid', $shipID);
 		$q->where('contact', $contactID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -665,7 +665,7 @@
 	}
 
 	function get_customersalesperson($custID, $shipID, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT splogin1 FROM custindex WHERE custid = :custID AND shiptoid = :shipID LIMIT 1");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT splogin1 FROM custindex WHERE custid = :custID AND shiptoid = :shipID LIMIT 1");
 		$switching = array(':custID' => $custID, ':shipID' => $shipID);
 		$withquotes = array(true, true);
 
@@ -1011,7 +1011,7 @@
 		}
 		$q->field($expression);
 		$q->where('sessionid', $sessionID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2011,21 +2011,21 @@
 	QUOTES FUNCTIONS
 ============================================================ */
 	function hasaquotelocked($sessionID) {
-		$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM quotelock WHERE sessionid = :sessionID");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT COUNT(*) FROM quotelock WHERE sessionid = :sessionID");
 		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
 
 	function getlockedquotenbr($sessionID) {
-		$sql = Processwire\wire('database')->prepare("SELECT quotenbr FROM quotelock WHERE sessionid = :sessionID");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT quotenbr FROM quotelock WHERE sessionid = :sessionID");
 		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
 	}
 
 	function caneditquote($sessionID, $qnbr) {
-		$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM quotelock WHERE sessionid = :sessionID AND quotenbr = :qnbr");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT COUNT(*) FROM quotelock WHERE sessionid = :sessionID AND quotenbr = :qnbr");
 		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
@@ -2043,7 +2043,7 @@
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
 		}
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2102,7 +2102,7 @@
 		if ($custID) {
 			$q->where('custid', $custID);
 		}
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2169,7 +2169,7 @@
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$q->order('reviewdate', $sortrule);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2419,7 +2419,7 @@
 		$q = (new QueryBuilder())->table('quothed');
 		$q->where('sessionid', $sessionID);
 		$q->where('quotnbr', $qnbr);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2434,7 +2434,7 @@
 	}
 
 	function get_quotedetails($sessionID, $qnbr, $useclass, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM quotdet WHERE sessionid = :sessionID AND quotenbr = :qnbr");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM quotdet WHERE sessionid = :sessionID AND quotenbr = :qnbr");
 		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr); $withquotes = array(true, true);
 		if ($debug) {
 			returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -2449,7 +2449,7 @@
 	}
 
 	function get_quoteline($sessionID, $qnbr, $line, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM quotdet WHERE sessionid = :sessionID AND quotenbr = :qnbr AND linenbr = :line");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM quotdet WHERE sessionid = :sessionID AND quotenbr = :qnbr AND linenbr = :line");
 		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr, ':line' => $line); $withquotes = array(true, true, true);
 		if ($debug) {
 			return	returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -2464,7 +2464,7 @@
 		$q->where('sessionid', $sessionID);
 		$q->where('quotenbr', $qnbr);
 		$q->where('linenbr', $linenbr);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2476,7 +2476,7 @@
 	}
 
 	function getquotelinedetail($sessionID, $qnbr, $line, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM quotdet WHERE sessionid = :sessionID AND quotenbr = :qnbr AND linenbr = :linenbr");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM quotdet WHERE sessionid = :sessionID AND quotenbr = :qnbr AND linenbr = :linenbr");
 		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr, ':linenbr' => $line); $withquotes = array(true, true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -2487,7 +2487,7 @@
 	}
 
 	function nextquotelinenbr($sessionID, $qnbr) {
-		$sql = Processwire\wire('database')->prepare("SELECT MAX(linenbr) FROM quotdet WHERE sessionid = :sessionID AND quotenbr = :qnbr ");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT MAX(linenbr) FROM quotdet WHERE sessionid = :sessionID AND quotenbr = :qnbr ");
 		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr); $withquotes = array(true, true);
 		$sql->execute($switching);
 		return intval($sql->fetchColumn()) + 1;
@@ -2498,7 +2498,7 @@
 		$q->field($q->expr('COUNT(*)'));
 		$q->where('quotenbr', $qnbr);
 		$q->where('sessionid', $sessionID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -2521,7 +2521,7 @@
 		}
 		$q->where('quotnbr', $quote->quotnbr);
 		$q->where('sessionid', $quote->sessionid);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
@@ -2570,7 +2570,7 @@
 		$q->where('quotenbr', $detail->quotenbr);
 		$q->where('sessionid', $detail->sessionid);
 		$q->where('recno', $detail->recno);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -2583,7 +2583,7 @@
 	}
 
 	function insert_orderlock($sessionID, $recnbr, $ordn, $userID, $date, $time, $debug) {
-		$sql = Processwire\wire('database')->prepare("INSERT INTO ordlock (sessionid, recno, date, time, orderno, userid) VALUES (:sessionID, :recnbr, :date, :time, :orderno, :userID)");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("INSERT INTO ordlock (sessionid, recno, date, time, orderno, userid) VALUES (:sessionID, :recnbr, :date, :time, :orderno, :userID)");
 		$switching = array(':sessionID' => $sessionID, ':recnbr' => $recnbr, ':date' => $time, ':time' => $time, ':orderno' => $ordn, ':userID' => $userID);
 		$withquotes = array(true, true, true, true, true, true);
 
@@ -2596,7 +2596,7 @@
 	}
 
 	function remove_orderlock($sessionID, $ordn, $userID, $debug) {
-		$sql = Processwire\wire('database')->prepare("DELETE FROM ordlock WHERE sessionid = :sessionID AND orderno = :ordn AND userid = :userID");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("DELETE FROM ordlock WHERE sessionid = :sessionID AND orderno = :ordn AND userid = :userID");
 		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn, ':userID' => $userID);
 		$withquotes = array(true, true, true);
 
@@ -2617,7 +2617,7 @@
 		$q->where('key1', $key1);
 		$q->where('key2', $key2);
 		$q->where('rectype', $type);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2638,7 +2638,7 @@
 		$q->where('key2', $key2);
 		$q->where('rectype', $type);
 		$q->where('recno', $recnbr);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2659,7 +2659,7 @@
 		$q->where('key1', $key1);
 		$q->where('key2', $key2);
 		$q->where('rectype', $type);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2691,7 +2691,7 @@
 		$q->where('form4', $qnote->form4);
 		$q->where('form5', $qnote->form5);
 		$q->where('recno', $qnote->recno);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2714,7 +2714,7 @@
 		foreach ($qnote->_toArray() as $property => $value) {
 			$q->set($property, $value);
 		}
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2736,7 +2736,7 @@
 		$q->where('key1', $key1);
 		$q->where('key2', $key2);
 		//$q->where('rectype', $rectype);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2759,7 +2759,7 @@
 		$q->where('form5', $qnote->form5);
 		$q->where('recno', $qnote->recno);
 		$q->where('rectype', $qnote->rectype);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2813,7 +2813,7 @@
 		$q->field($q->expr('COUNT(*)'));
 		$q->where('sessionid', $sessionID);
 		$q->where('itemid', $itemID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2828,7 +2828,7 @@
 		$q->field($field);
 		$q->where('sessionid', $sessionID);
 		$q->where('itemid', $itemID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2842,7 +2842,7 @@
 		$q = (new QueryBuilder())->table('whseavail');
 		$q->where('sessionid', $sessionID);
 		$q->where('itemid', $itemID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2856,7 +2856,7 @@
 		$q = (new QueryBuilder())->table('commprice');
 		$q->where('itemid', $itemID);
 		$q->order('percent DESC');
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2870,7 +2870,7 @@
 		$q = (new QueryBuilder())->table('pricing');
 		$q->where('sessionid', $sessionID);
 		$q->where('itemid', $itemID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3166,7 +3166,7 @@
 	}
 
 	function getvendorshipfroms($vendorID, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM vendors WHERE vendid = :vendor AND shipfrom != ''");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM vendors WHERE vendid = :vendor AND shipfrom != ''");
 		$switching = array(':vendor' => $vendorID); $withquotes = array(true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -3180,7 +3180,7 @@
 		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
 		$limiting = returnlimitstatement($limit, $page);
 		$search = '%'.str_replace(' ', '%',$keyword).'%';
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM vendors WHERE UCASE(CONCAT(vendid, ' ', shipfrom, ' ', name, ' ', address1, ' ', address2, ' ', address3, ' ', city, ' ', state, ' ', zip, ' ', country, ' ', phone, ' ', fax, ' ', email)) LIKE UCASE(:search) $limiting");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM vendors WHERE UCASE(CONCAT(vendid, ' ', shipfrom, ' ', name, ' ', address1, ' ', address2, ' ', address3, ' ', city, ' ', state, ' ', zip, ' ', country, ' ', phone, ' ', fax, ' ', email)) LIKE UCASE(:search) $limiting");
 		$switching = array(':search' => $search); $withquotes = array(true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -3193,7 +3193,7 @@
 	function count_searchvendors($keyword, $debug) {
 		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
 		$search = '%'.str_replace(' ', '%',$keyword).'%';
-		$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM vendors WHERE UCASE(CONCAT(vendid, ' ', shipfrom, ' ', name, ' ', address1, ' ', address2, ' ', address3, ' ', city, ' ', state, ' ', zip, ' ', country, ' ', phone, ' ', fax, ' ', email)) LIKE UCASE(:search)");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT COUNT(*) FROM vendors WHERE UCASE(CONCAT(vendid, ' ', shipfrom, ' ', name, ' ', address1, ' ', address2, ' ', address3, ' ', city, ' ', state, ' ', zip, ' ', country, ' ', phone, ' ', fax, ' ', email)) LIKE UCASE(:search)");
 		$switching = array(':search' => $search); $withquotes = array(true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -3228,7 +3228,7 @@
 	}
 
 	function get_vendorname($vendorID) {
-		$sql = Processwire\wire('database')->prepare("SELECT name FROM vendors WHERE vendid = :vendorID LIMIT 1");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT name FROM vendors WHERE vendid = :vendorID LIMIT 1");
 		$switching = array(':vendorID' => $vendorID);
 		$sql->execute($switching);
 		return $sql->fetchColumn();
@@ -3450,7 +3450,7 @@
 	EDIT ORDER FUNCTIONS
 ============================================================ */
 	function can_editorder($sessionID, $ordn, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT editord FROM ordrhed WHERE sessionid = :sessionID AND orderno = :ordn LIMIT 1");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT editord FROM ordrhed WHERE sessionid = :sessionID AND orderno = :ordn LIMIT 1");
 		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -3465,7 +3465,7 @@
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->where('sessionid', $sessionID);
 		$q->where('orderno', $ordn);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3480,7 +3480,7 @@
 	}
 
 	function getorderdetails($sessionID, $ordn, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM ordrdet WHERE sessionid = :sessionID AND orderno = :ordn");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM ordrdet WHERE sessionid = :sessionID AND orderno = :ordn");
 		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn); $withquotes = array(true, true);
 		$sql->execute($switching);
 		if ($debug) {
@@ -3491,7 +3491,7 @@
 	}
 
 	function getorderlinedetail($sessionID, $ordn, $linenumber, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM ordrdet WHERE sessionid = :sessionID AND orderno = :ordn AND linenbr = :linenbr");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM ordrdet WHERE sessionid = :sessionID AND orderno = :ordn AND linenbr = :linenbr");
 		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn, ':linenbr' => $linenumber); $withquotes = array(true, true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -3506,7 +3506,7 @@
 		$q->where('sessionid', $sessionID);
 		$q->where('orderno', $ordn);
 		$q->where('linenbr', $linenbr);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3521,7 +3521,7 @@
 		$q = (new QueryBuilder())->table('orddocs');
 		$q->where('sessionid', $sessionID);
 		$q->where('orderno', $ordn);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3535,7 +3535,7 @@
 		$q = (new QueryBuilder())->table('ordrtrk');
 		$q->where('sessionid', $sessionID);
 		$q->where('orderno', $ordn);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -3582,7 +3582,7 @@
 		}
 		$q->where('orderno', $order->orderno);
 		$q->where('sessionid', $order->sessionid);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -3603,7 +3603,7 @@
 		$q->set('cardcode', $q->expr('AES_ENCRYPT([], HEX([]))', [$ccv, $sessionID]));
 		$q->where('orderno', $ordn);
 		$q->where('sessionid', $sessionID);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery();
@@ -3614,7 +3614,7 @@
 	}
 
 	function get_ordercreditcard($sessionID, $ordn, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT sessionid, AES_DECRYPT(cardnumber, HEX(sessionid)) AS cardnumber, AES_DECRYPT(cardnumber , HEX(sessionid)) AS cardcode, AES_DECRYPT(cardexpire, HEX(sessionid)) AS expiredate FROM ordrhed WHERE sessionid = :sessionID AND orderno = :ordn AND type = 'O'");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT sessionid, AES_DECRYPT(cardnumber, HEX(sessionid)) AS cardnumber, AES_DECRYPT(cardnumber , HEX(sessionid)) AS cardcode, AES_DECRYPT(cardexpire, HEX(sessionid)) AS expiredate FROM ordrhed WHERE sessionid = :sessionID AND orderno = :ordn AND type = 'O'");
 		$switching = array(':sessionID' => $sessionID, ':ordn' => $ordn); $withquotes = array(true, true);
 		$sql->execute($switching);
 		if ($debug) {
@@ -3626,7 +3626,7 @@
 	}
 
 	function getshipvias($sessionID) {
-		$sql = Processwire\wire('database')->prepare("SELECT code, via FROM shipvia WHERE sessionid = :sessionID");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT code, via FROM shipvia WHERE sessionid = :sessionID");
 		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
 		$sql->execute($switching);
 		return $sql->fetchAll(PDO::FETCH_ASSOC);
@@ -3636,13 +3636,13 @@
 	MISC ORDER FUNCTIONS
 ============================================================ */
 	function getstates() {
-		$sql = Processwire\wire('database')->prepare("SELECT abbreviation as state, name FROM states");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT abbreviation as state, name FROM states");
 		$sql->execute();
 		return $sql->fetchAll(PDO::FETCH_ASSOC);
 	}
 
 	function getcountries() {
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM countries");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM countries");
 		$sql->execute();
 		return $sql->fetchAll(PDO::FETCH_ASSOC);
 	}
@@ -3653,7 +3653,7 @@
 	ITEM FUNCTIONS
 ============================================================ */
 	function getiteminfo($sessionID, $itemID, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM pricing WHERE sessionid = :sessionID AND itemid = :itemid LIMIT 1");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM pricing WHERE sessionid = :sessionID AND itemid = :itemid LIMIT 1");
 		$switching = array(':sessionID' => $sessionID, ':itemid' => $itemID); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -3664,7 +3664,7 @@
 	}
 
 	function getitemfromim($itemID, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT * FROM pricing WHERE itemid = :itemid LIMIT 1");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM pricing WHERE itemid = :itemid LIMIT 1");
 		$switching = array(':itemid' => $itemID); $withquotes = array(true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -3975,7 +3975,7 @@
 		USER CONFIGS FUNCTIONS
 	============================================================ */
 	function checkconfigifexists($user, $configuration, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT COUNT(*) FROM userconfigs WHERE user = :user AND configtype = :config");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT COUNT(*) FROM userconfigs WHERE user = :user AND configtype = :config");
 		$switching = array(':user' => $user, ':config' => $configuration); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -3986,7 +3986,7 @@
 	}
 
 	function getconfiguration($user, $configuration, $debug) {
-		$sql = Processwire\wire('database')->prepare("SELECT data FROM userconfigs WHERE user = :user AND configtype = :config LIMIT 1");
+		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT data FROM userconfigs WHERE user = :user AND configtype = :config LIMIT 1");
 		$switching = array(':user' => $user, ':config' => $configuration); $withquotes = array(true, true);
 		if ($debug) {
 			return returnsqlquery($sql->queryString, $switching, $withquotes);
@@ -4003,7 +4003,7 @@
 		$q = (new QueryBuilder())->table('customerconfigs');
 		$q->field($q->expr('COUNT(*)'));
 		$q->where('configtype', $config);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4018,7 +4018,7 @@
 		$q->field('data');
 		$q->where('configtype', $config);
 		$q->limit(1);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4033,7 +4033,7 @@
 		$q->mode('update');
 		$q->set('data', $data);
 		$q->where('configtype', $config);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4048,13 +4048,13 @@
 		$q->mode('insert');
 		$q->set('data', $data);
 		$q->set('configtype', $config);
-		$sql = Processwire\wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			return array('sql' => $q->generate_sqlquery($q->params), 'success' => Processwire\wire('database')->lastInsertId() > 0 ? true : false, 'id' => Processwire\wire('database')->lastInsertId(), 'querytype' => 'create');
+			return array('sql' => $q->generate_sqlquery($q->params), 'success' => DplusWire::wire('dplusdatabase')->lastInsertId() > 0 ? true : false, 'id' => DplusWire::wire('dplusdatabase')->lastInsertId(), 'querytype' => 'create');
 		}
 	}
 
