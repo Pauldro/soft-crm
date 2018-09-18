@@ -1,3 +1,5 @@
+use Purl\Url;
+
 <?php
 	$requestmethod = $input->requestMethod('POST') ? 'post' : 'get';
 	$action = $input->$requestmethod->text('action');
@@ -48,8 +50,10 @@
 			break;
 		case 'start-order':
 			$ordn = $input->$requestmethod->text('ordn');
+			$url = new Purl\Url($input->$requestmethod->text('page'));
 			$data = array('DBNAME' => $config->dbName, 'STARTORDER' => false, 'ORDERNBR' => $ordn);
-			$session->loc = "{$config->pages->salesorderpicking}?ordn=$ordn";
+			$url->query->set('ordn', $ordn);
+			$session->loc = $url->getUrl();
 			break;
 		case 'select-bin':
 			$bin = strtoupper($input->$requestmethod->text('bin'));

@@ -94,6 +94,14 @@
         }
         
         /**
+         * Returns if the Whse Session has a pallet defined
+         * @return bool Is the pallet defined?
+         */
+        public function has_pallet() {
+            return !empty($this->palletnbr);
+        }
+        
+        /**
          * Returns if the Sales Order is finished
          * @return bool        Is Order finished?
          */
