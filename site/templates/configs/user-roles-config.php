@@ -1,11 +1,19 @@
 <?php 
 	$config->user_roles = array(
+		'default' => array(
+			'label' => 'Default',
+			'homepage' => $config->pages->dashboard
+		),
 		'sales-manager' => array(
 			'label' => 'Sales Manager',
-			'dashboard-redirect' => false
+			'homepage' => $config->pages->dashboard
 		),
 		'sales-rep' => array(
 			'label' => 'Sales Rep',
-			'dashboard-redirect' => false
-		)
+			'homepage' => $config->pages->dashboard
+		),
+		'warehouse' => array(
+			'label' => 'Warehouse',
+			'homepage' => $config->pages->warehouse
+		),
 	);

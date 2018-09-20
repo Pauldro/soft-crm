@@ -57,6 +57,11 @@
 			$session->remove('shipID');
 			$session->remove('custID');
 			$session->remove('locked-ordernumber');
+			
+			if (WhseSession::does_sessionexist(session_id())) {
+				$whsesession = WhseSession::load(session_id());
+				$whsesession->end_session();
+			}
 			break;
 		case 'store-document':
 			$folder = $input->get->text('filetype');

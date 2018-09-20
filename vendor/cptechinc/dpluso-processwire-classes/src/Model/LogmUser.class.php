@@ -75,6 +75,7 @@
             'loginID' => 'loginid',
             'whseID' => 'whseid',
         );
+
 		/* =============================================================
 			CRUD FUNCTIONS
 		============================================================ */
@@ -85,6 +86,15 @@
 		 */
 		public function get_dplusrole() {
 			return strtolower($this->role);
+		}
+		
+		/**
+		 * Returns the Dpluso Role for the user, so it can be looked at for 
+		 * Navigation and user type customization
+		 * @return string DPLUSO user type
+		 */
+		public function get_dplusorole() {
+			return array_search(strtolower($this->role), DplusWire::wire('config')->roles);
 		}
 
 		/**
@@ -105,9 +115,9 @@
 
 		/**
 		 * Loads an object of this class
-		 * @param  string  $loginID User's Dplus Login ID
-		 * @param  bool $debug   Whether to return the SQL to create the object or the object
-		 * @return LogmUser
+		 * @param  string   $loginID  User's Dplus Login ID
+		 * @param  bool     $debug    Whether to return the SQL to create the object or the object
+		 * @return LogmUser 
 		 */
 		public static function load($loginID, $debug = false) {
 			return get_logmuser($loginID, $debug);

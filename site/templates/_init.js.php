@@ -222,6 +222,15 @@
                     'docs'=> $config->pages->ajaxload."order/documents/",
                     'tracking'=> $config->pages->ajaxload."order/tracking/"
                 ]
+            ],
+            'warehouse' => [
+                'picking' => [
+                    'sales_order' => [
+                        'redir' => [
+                            'redir' => $config->pages->salesorderpicking."redir/"
+                        ]
+                    ]
+                ]
             ]
     	],
         'paths' => [

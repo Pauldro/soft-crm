@@ -8,7 +8,7 @@
 		use MagicMethodTraits;
 		use CreateFromObjectArrayTraits;
 		use CreateClassArrayTraits;
-		
+
 		protected $sessionid;
 		protected $recno;
 		protected $date;
@@ -19,26 +19,26 @@
 		 * @var string
 		 */
 		protected $rectype; // SORD|QUOT|CART
-		
+
 		/**
 		 * Key 1
 		 * Sales Order # | Quote # | Session ID
 		 * @var string
 		 */
 		protected $key1;
-		
+
 		/**
 		 * Key 2 is Line #
 		 * @var int
 		 */
 		protected $key2;
-		
+
 		/**
 		 * Not Yet Used
 		 * @var string
 		 */
 		protected $key3;
-		
+
 		/**
 		 * Not Yet Used
 		 * @var string
@@ -49,52 +49,52 @@
 		 * @var string
 		 */
 		protected $key5;
-		
+
 		/**
-		 * FORM 1 
+		 * FORM 1
 		 * QUOTE = Quote
 		 * CART = Quote
 		 * SALES ORDER = Pick Ticket
 		 * @var string Y | N
 		 */
 		protected $form1;
-		
+
 		/**
-		 * FORM 2 
+		 * FORM 2
 		 * QUOTE = Pick Ticket
 		 * CART = Pick Ticket
 		 * SALES ORDER = Pack Ticket
 		 * @var string Y | N
 		 */
 		protected $form2;
-		
+
 		/**
-		 * FORM 3 
+		 * FORM 3
 		 * QUOTE = Pack Ticket
 		 * CART = Pack Ticket
 		 * SALES ORDER = Invoice
 		 * @var string Y | N
 		 */
 		protected $form3;
-		
+
 		/**
-		 * FORM 3 
+		 * FORM 3
 		 * QUOTE = Invoice
 		 * CART = Invoice
 		 * SALES ORDER = Acknowledgement
 		 * @var string Y | N
 		 */
 		protected $form4;
-		
+
 		/**
-		 * FORM 3 
+		 * FORM 3
 		 * QUOTE = Acknowledgement
 		 * CART = Acknowledgement
 		 * SALES ORDER = NOT USED
 		 * @var string Y | N
 		 */
 		protected $form5;
-		
+
 		/**
 		 * Not Used
 		 * @var string Y | N
@@ -110,37 +110,37 @@
 		 * @var string Y | N
 		 */
 		protected $form8;
-		
+
 		/**
 		 * Character Width for Textarea
 		 * @var string
 		 */
 		protected $colwidth = '35';
-		
+
 		/**
 		 * Note
 		 * @var string
 		 */
 		protected $notefld;
-		
+
 		/**
 		 * Dummy
 		 * @var string X
 		 */
 		protected $dummy;
-		
+
 		/* =============================================================
 			SETTER FUNCTIONS
 			Inherits from MagicMethodTraits
 		============================================================ */
-		
+
 		/* =============================================================
-			GETTER FUNCTIONS 
+			GETTER FUNCTIONS
 			Inherits from MagicMethodTraits
 		============================================================ */
-		
+
 		/* =============================================================
-			CLASS FUNCTIONS 
+			CLASS FUNCTIONS
 		============================================================ */
 		/**
 		 * Returns URL to the JSON data
@@ -156,13 +156,13 @@
 			));
 			return $url->getUrl();
 		}
-		 
+
 		/* =============================================================
-			CRUD FUNCTIONS 
+			CRUD FUNCTIONS
 		============================================================ */
 		/**
 		 * Returns if Qnote note can be written or not depending if Order/Quote
-		 * is available to edit, 
+		 * is available to edit,
 		 * @param  string $sessionID Session Identifier
 		 * @param  string $type      Type of Qnote CART|SORD|QUOT
 		 * @param  string $key1      For CART = SESSIONID, SORD = Order #, QUOT = Quote #
@@ -176,18 +176,23 @@
 					break;
 				case 'SORD':
 					$order = SalesOrder::load($sessionID, $key1);
+					$salesorder = SalesOrderHistory::is_saleshistory($key1);
+					if ($salesorder) {
+						return false;
+						break;
+					}
 					return $order->can_edit();
 					break;
 				case 'QUOT':
 					$quote = Quote::load($sessionID, $key1);
 					return $quote->can_edit();
 					break;
-				default: 
+				default:
 					return false;
 					break;
 			}
 		}
-		
+
 		/**
 		 * Returns the Qnote Type for the Ordertype
 		 * @param  string $type cart|sales-orders|quotes
@@ -196,7 +201,7 @@
 		public static function get_qnotetype($type) {
 			return DplusWire::wire('pages')->get("/config/$type/qnotes/")->qnote_type;
 		}
-		
+
 		/**
 		 * Gets the Default Value from the config for each order type
 		 * @param  string $type      cart|sales-orders|quotes
@@ -208,7 +213,7 @@
 			$field = 'qnote_'.$formfield;
 			return $qnotetypeconfig->$field;
 		}
-		
+
 		/**
 		 * Returns if the string to show if checkbox should be checked
 		 * @param  string $type      cart|sales-orders|quotes
@@ -218,7 +223,7 @@
 		public static function generate_showchecked($type, $formfield) {
 			return self::get_qnotedefaultvalue($type, $formfield) ? 'checked' : '';
 		}
-		
+
 		/* =============================================================
 			CRUD FUNCTIONS
 		============================================================ */
@@ -229,7 +234,7 @@
 		public function create($debug = false) {
 			return add_qnote($this->sessionid, $this, $debug);
 		}
-		
+
 		/**
 		 * Returns a Qnote object from the Database
 		 * @param  string  $sessionID Session Identifier
@@ -241,9 +246,9 @@
 		 * @return Qnote
 		 */
 		public static function load($sessionID, $key1, $key2, $rectype, $recnbr, $debug = false) {
-			return get_qnote($sessionID, $key1, $key2, $rectype, $recnbr, true, $debug); 
+			return get_qnote($sessionID, $key1, $key2, $rectype, $recnbr, true, $debug);
 		}
-		
+
 		/**
 		 * Saves Changes to the database for this object
 		 * @param  bool $debug whether or not to actually run it or display debug info
@@ -252,9 +257,9 @@
 		public function update($debug = false) {
 			return update_note($this->sessionid, $this, $debug);
 		}
-		
+
 		/* =============================================================
-			GENERATE ARRAY FUNCTIONS 
+			GENERATE ARRAY FUNCTIONS
 			The following are defined CreateClassArrayTraits
 			public static function generate_classarray()
 			public function _toArray()
