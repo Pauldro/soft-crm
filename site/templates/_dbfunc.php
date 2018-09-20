@@ -4776,7 +4776,7 @@
 		$q = (new QueryBuilder())->table('whsesession');
 		$q->field($q->expr('IF(COUNT(*) > 0, 1, 0)'));
 		$q->where('sessionid', $sessionID);
-		$sql = DplusWire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4795,7 +4795,7 @@
 	function get_whsesession($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('whsesession');
 		$q->where('sessionid', $sessionID);
-		$sql = DplusWire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4815,7 +4815,7 @@
 	function get_picksalesorderheader($ordn, $debug = false) {
 		$q = (new QueryBuilder())->table('wmpickhed');
 		$q->where('ordernbr', $ordn);
-		$sql = DplusWire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4835,7 +4835,7 @@
 	function get_whsesessiondetail($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('wmpickdet');
 		$q->where('sessionid', $sessionID);
-		$sql = DplusWire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4856,7 +4856,7 @@
 		$q = (new QueryBuilder())->table('wmpickdet');
 		$q->field($q->expr('IF(COUNT(*) > 0, 1, 0)'));
 		$q->where('sessionid', $sessionID);
-		$sql = DplusWire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4875,7 +4875,7 @@
 	function get_barcodeditem($barcode, $debug = false) {
 		$q = (new QueryBuilder())->table('barcodes');
 		$q->where('barcodenbr', $barcode);
-		$sql = DplusWire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4896,7 +4896,7 @@
 		$q = (new QueryBuilder())->table('barcodes');
 		$q->field('itemid');
 		$q->where('barcodenbr', $barcode);
-		$sql = DplusWire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4915,7 +4915,7 @@
 	function get_barcodeditemsforitemid($itemID, $debug = false) {
 		$q = (new QueryBuilder())->table('barcodes');
 		$q->where('itemid', $itemID);
-		$sql = DplusWire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4941,7 +4941,7 @@
 		$q->where('sessionid', $sessionID);
 		$q->where('ordn', $ordn);
 		$q->where('itemid', $itemID);
-		$sql = DplusWire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4961,7 +4961,7 @@
 		$q = (new QueryBuilder())->table('whseitempick');
 		$q->mode('delete');
 		$q->where('sessionid', $sessionID);
-		$sql = DplusWire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -4985,7 +4985,7 @@
 		$q->where('sessionid', $sessionID);
 		$q->where('ordn', $ordn);
 		$q->where('itemid', $itemID);
-		$sql = DplusWire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -5019,13 +5019,13 @@
 		$q->set('palletnbr', "$palletnbr");
 		$q->set('barcode', $barcode);
 		$q->set('qty', $barcodeditem->unitqty);
-		$sql = DplusWire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			return DplusWire::wire('database')->lastInsertId();
+			return DplusWire::wire('dplusdatabase')->lastInsertId();
 		}
 	}
 	
@@ -5049,7 +5049,7 @@
 		$q->where('barcode', $barcode);
 		$q->where('palletnbr', $palletnbr);
 		$q->where('recordnumber', $pickitem->get_pickedmaxrecordnumberforbarcode($barcode));
-		$sql = DplusWire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -5073,7 +5073,7 @@
 		$q->where('sessionid', $sessionID);
 		$q->where('ordn', $ordn);
 		$q->where('itemid', $itemID);
-		$sql = DplusWire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -5100,7 +5100,7 @@
 		$q->where('ordn', $ordn);
 		$q->where('itemid', $itemID);
 		$q->where('barcode', $barcode);
-		$sql = DplusWire::wire('database')->prepare($q->render());
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
