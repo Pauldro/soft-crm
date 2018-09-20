@@ -35,36 +35,7 @@
 			<td class="control-label">Qty Remaining</td> <td class="text-right"><?= $pickitem->get_qtyremaining(); ?></td>
 		</tr>
 	</table>
-    <h3 class="text-center">Barcodes Scanned</h3>
-	<?php $pickedbarcodes = $whsesession->get_orderpickeditems($pickitem->itemid); ?>
-	<table class="table table-condensed table-striped">
-		<tr>
-			<th>Barcode</th>
-			<th>Qty</th>
-			<?php if (100 == 1) : ?>
-				<th class="text-center">Duplicate</th>
-			<?php endif; ?>
-			<th class="text-center">Remove</th>
-		</tr>
-		<?php foreach ($pickedbarcodes as $pickedbarcode) : ?>
-			<tr>
-				<td><?= $pickedbarcode['barcode']; ?></td>
-				<td class="text-right"><?= $pickedbarcode['qty']; ?></td>
-				<?php if (100 == 1) : ?>
-					<td class="text-center">
-						<a href="<?= $whsesession->generate_addbarcodeurl($pickitem, $pickedbarcode['barcode']); ?>" class="btn btn-sm btn-emerald">
-							<i class="fa fa-repeat" aria-hidden="true"></i> Duplicate
-						</a>
-					</td>
-				<?php endif; ?>
-				<td class="text-center">
-					<a href="<?= $whsesession->generate_removebarcodeurl($pickitem, $pickedbarcode['barcode']); ?>" class="btn btn-sm btn-danger">
-						<i class="fa fa-trash" aria-hidden="true"></i> Remove
-					</a>
-				</td>
-			</tr>
-		<?php endforeach; ?>
-	</table>
+    
 	<?php if (DplusWire::wire('notices')->hasErrors()) : ?>
 		<div class="alert alert-danger alert-dismissible" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -108,6 +79,7 @@
 		</div>
 	</div>
 </div>
-
+<h3 class="text-center">Barcodes Scanned</h3>
+<?php include $config->paths->content."warehouse/picking/pick-order/pick-items-table.php"; ?>
 <?php include $config->paths->content."warehouse/picking/pick-order/item-info-modal.php"; ?>
 	
