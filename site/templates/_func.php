@@ -384,6 +384,7 @@
 		DplusWire::wire('user')->loginid = $loginrecord['loginid'];
 		DplusWire::wire('user')->has_customerrestrictions = $loginrecord['restrictcustomers'];
 		DplusWire::wire('user')->salespersonid = $loginrecord['salespersonid'];
+		DplusWire::wire('user')->mainrole = $user->get_dplusorole();
 		DplusWire::wire('user')->addRole($user->get_dplusrole());
 	}
 

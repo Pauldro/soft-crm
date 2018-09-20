@@ -1,5 +1,5 @@
 <?php
-	$custindex = new CustomerIndex();
+	$custindex = new CustomerIndex($page->fullURL, $loadinto, $focus);
 	$contactscount = $custindex->count_distinctcustindex();
 	
 	if ($input->get->q) {
