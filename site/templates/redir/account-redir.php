@@ -49,10 +49,10 @@
 			}
 			break;
 		case 'permissions':
-			$data = array('DBNAME' => $config->dbName, 'FUNCPERM' => false);
+			$data = array('DBNAME' => $config->dplusdbname, 'FUNCPERM' => false);
 			break;
 		case 'logout':
-			$data = array('DBNAME' => $config->dbName, 'LOGOUT' => false);
+			$data = array('DBNAME' => $config->dplusdbname, 'LOGOUT' => false);
 			$session->loc = $config->pages->login;
 			$session->remove('shipID');
 			$session->remove('custID');
@@ -70,7 +70,7 @@
 			$field2 = $input->get->text('field2');
 			$field3 = $input->get->text('field3');
 			$data = array(
-				'DBNAME' => $config->dbName,
+				'DBNAME' => $config->dplusdbname,
 				'DOCFILEFLDS' => $folder,
 				'DOCFILENAME' => $config->documentstoragedirectory.$file,
 				'DOCFLD1' => $field1,
