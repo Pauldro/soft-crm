@@ -223,20 +223,22 @@
         
         /**
          * Returns the Picked Order Item record number for a barcode
-         * @param  string $barcode Item Barcode
-         * @param  bool   $debug   Run in debug? If so, return SQL Query
-         * @return int             Max record number for this Order Item barcode
+         * @param  string $barcode   Item Barcode
+         * @param  bool   $debug     Run in debug? If so, return SQL Query
+         * @param  int    $palletnbr Pallet Number
+         * @return int               Max record number for this Order Item barcode
          */
-        public function get_pickedmaxrecordnumberforbarcode($barcode, $debug = false) {
-            return get_orderpickedbarcodemaxrecordnumber($this->sessionid, $this->ordernbr, $this->itemnbr, $barcode, $debug);
+        public function get_pickedmaxrecordnumberforbarcode($barcode, $palletnbr = 0, $debug = false) {
+            return get_orderpickedbarcodemaxrecordnumber($this->sessionid, $this->ordernbr, $this->itemnbr, $barcode, $palletnbr, $debug);
         }
         
         /**
          * Adds a barcode to the itemwhsepick table
-         * @param string $barcode Item Barcode
-         * @param bool   $debug   Run in debug? If so, return SQL Query
+         * @param string $barcode   Item Barcode
+         * @param int    $palletnbr Pallet Number
+         * @param bool   $debug     Run in debug? If so, return SQL Query
          */
-        public function add_barcode($barcode, $debug = false) {
+        public function add_barcode($barcode, $palletnbr = 0, $debug = false) {
             if (BarcodedItem::find_barcodeitemid($barcode) == $this->itemnbr) {
                 return insert_orderpickedbarcode($this->sessionid, $this->ordernbr, $barcode, $debug);
             } else {
@@ -247,10 +249,11 @@
         
         /**
          * Removes an instance of barcode in the itemwhsepick table
-         * @param string $barcode Item Barcode
-         * @param bool   $debug   Run in debug? If so, return SQL Query
+         * @param string $barcode   Item Barcode
+         * @param int    $palletnbr Pallet Number
+         * @param bool   $debug     Run in debug? If so, return SQL Query
          */
-        public function remove_barcode($barcode, $debug = false) {
+        public function remove_barcode($barcode, $palletnbr = 0, $debug = false) {
             return remove_orderpickedbarcode($this->sessionid, $this->ordernbr, $barcode, $debug);
         }
         

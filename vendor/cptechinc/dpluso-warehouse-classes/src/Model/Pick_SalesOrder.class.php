@@ -9,11 +9,6 @@
 		use CreateFromObjectArrayTraits;
 		use CreateClassArrayTraits;
         
-        /**
-         * Session Identifier
-         * @var string
-         */
-        protected $sessionid;
         
         /**
          * Date
@@ -72,12 +67,11 @@
 		============================================================ */
         /**
          * Returns an instance of this class with data from the database
-         * @param  string          $sessionID Session Identifier
          * @param  string          $ordn      Order Number
          * @param  bool            $debug     Run in debug? If so, return SQL Query
          * @return Pick_SalesOrder            Sales Order Header to Pick
          */
-        public static function load($sessionID, $ordn, $debug = false) {
-            return get_picksalesorderheader($sessionID, $ordn, $debug);
+        public static function load($ordn, $debug = false) {
+            return get_picksalesorderheader($ordn, $debug);
         }
     }

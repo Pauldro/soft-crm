@@ -281,6 +281,28 @@
             curl_redir($url->getUrl());
         }
         
+        /**
+         * Sends a Request to the COBOL to initiate PICKING
+         * @return void
+         */
+        public function start_pickingsession() {
+            $url = new Purl\Url("127.0.0.1".DplusWire::wire('config')->pages->salesorderpicking);
+            $url->path = DplusWire::wire('config')->pages->salesorderpicking."redir/";
+            $url->query->set('action', 'start-pick')->set('sessionID', $this->sessionid);
+            curl_redir($url->getUrl());
+        }
+        
+        /**
+         * Sends a Request to the COBOL to initiate PICK PACK
+         * @return void
+         */
+        public function start_pickpackingsession() {
+            $url = new Purl\Url("127.0.0.1".DplusWire::wire('config')->pages->salesorderpicking);
+            $url->path = DplusWire::wire('config')->pages->salesorderpicking."redir/";
+            $url->query->set('action', 'start-pick-pack')->set('sessionID', $this->sessionid);
+            curl_redir($url->getUrl());
+        }
+        
         /* =============================================================
 			CRUD FUNCTIONS
 		============================================================ */
@@ -314,7 +336,7 @@
         public static function start_session($sessionID, Purl\Url $pageurl, $debug = false) {
             $url = new Purl\Url($pageurl->getUrl());
             $url->path = DplusWire::wire('config')->pages->salesorderpicking."redir/";
-            $url->query->set('action', 'initiate-pick')->set('sessionID', $sessionID);
+            $url->query->set('action', 'initiate-whse')->set('sessionID', $sessionID);
             curl_redir($url->getUrl());
         }
     }

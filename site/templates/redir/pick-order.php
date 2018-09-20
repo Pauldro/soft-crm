@@ -1,5 +1,3 @@
-use Purl\Url;
-
 <?php
 	$requestmethod = $input->requestMethod('POST') ? 'post' : 'get';
 	$action = $input->$requestmethod->text('action');
@@ -39,10 +37,15 @@ use Purl\Url;
 	**/
 
 	switch ($action) {
-		case 'initiate-pick':
+		case 'initiate-whse':
 			$login = get_loginrecord($sessionID);
 			$data = array('DBNAME' => $config->dbName, 'LOGIN' => $login['loginid']);
-			$session->loc = $config->pages->salesorderpicking;
+			break;
+		case 'start-pick':
+			$data = array('DBNAME' => $config->dbName, 'PICKING' => false);
+			break;
+		case 'start-pick-pack':
+			$data = array('DBNAME' => $config->dbName, 'PACKING' => false);
 			break;
 		case 'logout':
 			$data = array('DBNAME' => $config->dbName, 'LOGOUT' => false);
@@ -92,15 +95,16 @@ use Purl\Url;
 			break;
 		case 'add-barcode':
 			$barcode = $input->$requestmethod->text('barcode');
+			$palletnbr = $input->$requestmethod->int('pallentnbr');
 			$pickitem = Pick_SalesOrderDetail::load(session_id());
-			$pickitem->add_barcode($barcode);
+			$pickitem->add_barcode($barcode, $palletnbr);
 			$session->loc = "{$config->pages->salesorderpicking}?ordn=$pickitem->ordernbr";
 			break;
 		case 'remove-barcode':
 			$barcode = $input->$requestmethod->text('barcode');
 			$pickitem = Pick_SalesOrderDetail::load(session_id());
 			$pickitem->remove_barcode($barcode);
-			$session->sql = $pickitem->remove_barcode($barcode, true);
+			$session->sql = $pickitem->remove_barcode($barcode, 0, true);
 			$session->loc = "{$config->pages->salesorderpicking}?ordn=$pickitem->ordernbr";
 			break;
 	}

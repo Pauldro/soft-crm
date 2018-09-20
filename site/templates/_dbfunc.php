@@ -4807,14 +4807,13 @@
 	
 	/**
 	 * Returns the Pick Sales Order Header
-	 * @param  string           $sessionID Session Identifier
 	 * @param  string           $ordn      Sales Order Number
 	 * @param  bool             $debug     Run in debug? If so, return SQL Query
 	 * @return Pick_SalesOrder             Pick Sales Order Header
 	 */
-	function get_picksalesorderheader($sessionID, $ordn, $debug = false) {
+	function get_picksalesorderheader($ordn, $debug = false) {
 		$q = (new QueryBuilder())->table('wmpickhed');
-		$q->where('sessionid', $sessionID);
+		$q->where('ordernbr', $ordn);
 		$sql = DplusWire::wire('database')->prepare($q->render());
 		
 		if ($debug) {
@@ -5001,10 +5000,11 @@
 	 * @param  string $sessionID Session Identifier
 	 * @param  string $ordn      Sales Order Number
 	 * @param  string $barcode   Barcode string
+	 * @param  int    $palletnbr Pallet Number
 	 * @param  bool   $debug     Run in debug? If so, return SQL Query
 	 * @return int               Number of Records Inserted 1 | 0
 	 */
-	function insert_orderpickedbarcode($sessionID, $ordn, $barcode, $debug = false) {
+	function insert_orderpickedbarcode($sessionID, $ordn, $barcode, $palletnbr = 0, $debug = false) {
 		$barcodeditem = BarcodedItem::load($barcode);
 		$pickitem = Pick_SalesOrderDetail::load($sessionID);
 		$recordnumber = $pickitem->get_pickedmaxrecordnumber() + 1;
@@ -5015,6 +5015,7 @@
 		$q->set('ordn', $ordn);
 		$q->set('itemid', $barcodeditem->itemid);
 		$q->set('recordnumber', $recordnumber);
+		$q->set('palletnbr', "$palletnbr");
 		$q->set('barcode', $barcode);
 		$q->set('qty', $barcodeditem->unitqty);
 		$sql = DplusWire::wire('database')->prepare($q->render());
@@ -5032,19 +5033,20 @@
 	 * @param  string $sessionID Session Identifier
 	 * @param  string $ordn      Sales Order Number
 	 * @param  string $barcode   Barcode string
+	 * @param  int    $palletnbr Pallet Number
 	 * @param  bool   $debug     Run in debug? If so, return SQL Query
 	 * @return int               Number of Records affected 1 | 0
 	 */
-	function remove_orderpickedbarcode($sessionID, $ordn, $barcode, $debug = false) {
+	function remove_orderpickedbarcode($sessionID, $ordn, $barcode, $palletnbr = 0, $debug = false) {
 		$barcodeditem = BarcodedItem::load($barcode);
 		$pickitem = Pick_SalesOrderDetail::load($sessionID);
-		$recordnumber = $pickitem->get_pickedmaxrecordnumber() + 1;
 		
 		$q = (new QueryBuilder())->table('whseitempick');
 		$q->mode('delete');
 		$q->where('sessionid', $sessionID);
 		$q->where('ordn', $ordn);
 		$q->where('barcode', $barcode);
+		$q->where('palletnbr', $palletnbr);
 		$q->where('recordnumber', $pickitem->get_pickedmaxrecordnumberforbarcode($barcode));
 		$sql = DplusWire::wire('database')->prepare($q->render());
 		

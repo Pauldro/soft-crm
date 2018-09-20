@@ -1,6 +1,8 @@
 <?php
     if (!WhseSession::does_sessionexist(session_id())) {
         WhseSession::start_session(session_id(), $page->fullURL);
+        $whsesession = WhseSession::load(session_id());
+        $whsesession->start_pickpackingsession();
         $page->body = $config->paths->content."warehouse/picking/choose-sales-order-form.php";
     } else {
         $whsesession = WhseSession::load(session_id());
@@ -24,16 +26,16 @@
                     $pickitem = Pick_SalesOrderDetail::load(session_id());
                     $pickitem->init();
                     $config->scripts->append(hashtemplatefile('scripts/warehouse/pick-order.js'));
-                    $page->body = $config->paths->content."warehouse/picking/sales-order/item-pick-screen.php";
+                    $page->body = $config->paths->content."warehouse/picking/pick-pack/item-pick-screen.php";
                 } elseif ($whsesession->is_orderfinished()) { // IS THE USER DONE WITH THE ASSIGNED ORDER?
-                    $order = Pick_SalesOrder::load(session_id(), $input->get->text('ordn'));
-                    Pick_SalesOrder::load(session_id(), $input->get->text('ordn'));
+                    $order = Pick_SalesOrder::load($input->get->text('ordn'));
                     $config->scripts->append(hashtemplatefile('scripts/warehouse/pick-order.js'));
                     $page->body = $config->paths->content."warehouse/picking/finished-order-screen.php";
                 } else {
                     if ($whsesession->is_orderfinished() || $whsesession->is_orderexited()) {
                         $whsesession->delete_orderpickeditems();
-                    }
+                    } 
+                    $whsesession->start_pickpackingsession();
                     $config->scripts->append(hashtemplatefile('scripts/warehouse/pick-order.js'));
                     $page->body = $config->paths->content."warehouse/picking/choose-sales-order-form.php";
                 }
@@ -42,6 +44,7 @@
             if ($whsesession->is_orderfinished() || $whsesession->is_orderexited()) {
                 $whsesession->delete_orderpickeditems();
             }
+            $whsesession->start_pickpackingsession();
             $config->scripts->append(hashtemplatefile('scripts/warehouse/pick-order.js'));
             $page->body = $config->paths->content."warehouse/picking/choose-sales-order-form.php";
         }

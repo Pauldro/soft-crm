@@ -26,7 +26,7 @@
 	<?php endif; ?>
 	<li class="divider"></li>
 	
-	<?php if (has_dpluspermission($user->loginid, 'mwm')) : ?>
+	<?php if (has_dpluspermission($user->loginid, 'wm')) : ?>
 		<li> <a href="<?= $config->pages->warehouse; ?>"><i class="fa fa-building-o" aria-hidden="true"></i> Warehouse</a> </li>
 	<?php endif; ?>
 	<li class="divider"></li>

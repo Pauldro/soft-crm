@@ -41,6 +41,7 @@
 		<tr>
 			<th>Barcode</th>
 			<th>Qty</th>
+            <th>Pallet</th>
 			<?php if (100 == 1) : ?>
 				<th class="text-center">Duplicate</th>
 			<?php endif; ?>
@@ -50,6 +51,7 @@
 			<tr>
 				<td><?= $pickedbarcode['barcode']; ?></td>
 				<td class="text-right"><?= $pickedbarcode['qty']; ?></td>
+                <td class="text-right"><?= $pickedbarcode['palletnbr']; ?></td>
 				<?php if (100 == 1) : ?>
 					<td class="text-center">
 						<a href="<?= $whsesession->generate_addbarcodeurl($pickitem, $pickedbarcode['barcode']); ?>" class="btn btn-sm btn-emerald">
@@ -77,7 +79,7 @@
 	<?php endif; ?>
 	<form action="<?= "{$config->pages->salesorderpicking}redir/"; ?>" method="POST" class="allow-enterkey-submit">
 		<input type="hidden" name="action" value="add-barcode">
-		<input type="hidden" name="palletnbr" value="<?= $whsesession->palletnbr; ?>">
+        <input type="hidden" name="palletnbr" value="<?= $whsesession->palletnbr; ?>">
         <div class="input-group form-group">
             <input class="form-control" name="barcode" placeholder="Barcode" type="text" autofocus>
             <span class="input-group-btn">
