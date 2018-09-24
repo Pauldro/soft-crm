@@ -29,11 +29,18 @@
 		'ci-quotes' => 'QT',
 		'ii-quotes' => 'QT'
 	);
-	$config->specialordercodes = array('"special_order" => "S", "dropship" => "D"');
-
+	
 	$config->roles = array(
 		'sales-rep' => 'slsrep',
-		'sales-manager' => 'slsmgr'
+		'sales-manager' => 'slsmgr',
+		'warehouse' => 'whse'
+	);
+	
+	$config->rolehomepages = array(
+		'default' => $config->pages->dashboard,
+		'sales-rep' => $config->pages->dashboard,
+		'sales-manager' => $config->pages->dashboard,
+		'warehouse' => $config->pages->warehouse
 	);
 	
 	$config->salesorder_statuses = array('P' => 'Picked', 'N' => 'New', 'V' => 'Verified', 'I' => 'Invoiced');

@@ -5,7 +5,7 @@
 	$config->scripts->append(hashtemplatefile('scripts/libs/morris.js'));
 	
 	switch ($user->role) {
-		default: 
+		default:
 			$page->body = $config->paths->content.'dashboard/dashboard-page-outline.php'; 
 			break;
 	}

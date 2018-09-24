@@ -98,10 +98,11 @@
             $session->loc = $input->post->page;
             break;
 		case 'add-nonstock-item':
+			$qty = $input->$requestmethod->text('qty');
 			$cartdetail = new CartDetail();
 			$cartdetail->set('sessionid', $sessionID);
 			$cartdetail->set('linenbr', '0');
-			$cartdetail->set('recno', '0');
+			$cartdetail->set('recno', 0);
 			$cartdetail->set('orderno', $sessionID);
 			$cartdetail->set('vendorid', $input->post->text('vendorID'));
 			$cartdetail->set('shipfromid', $input->post->text('shipfromID'));
@@ -228,5 +229,8 @@
 	}
 
 	writedplusfile($data, $filename);
-	header("location: /cgi-bin/" . $config->cgi . "?fname=" . $filename);
- 	exit;
+	curl_redir("127.0.0.1/cgi-bin/".$config->cgis['default']."?fname=$filename");
+	if (!empty($session->get('loc')) && !$config->ajax) {
+		header("Location: $session->loc");
+	}
+	exit;

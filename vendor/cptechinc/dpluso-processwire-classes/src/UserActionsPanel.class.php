@@ -615,13 +615,13 @@
 			if (isset($this->filters['datecreated'])) {
 				// PUT DATE CREATED IN THE THROUGH PART OF THE FILTER
 
-				if (empty($this->filters['datecreated'][0])) {
+				if (empty($this->filters['datecreated'][0] && empty($this->filters['datecreated'][1]))) {
 					unset($this->filters['datecreated']);
 				}
 			}
 
 			if (isset($this->filters['datecompleted'])) {
-				if (!empty($this->filters['datecompleted'][0])) {
+				if (!empty($this->filters['datecompleted'][0]) || !empty($this->filters['datecompleted'][1])) {
 					$this->filters['completed'] = array('Y');
 				}
 
@@ -629,7 +629,7 @@
 					//$this->filters['datecompleted'][1] = $this->filters['datecompleted'][0];
 				}
 
-				if (empty($this->filters['datecompleted'][0])) {
+				if (empty($this->filters['datecompleted'][0]) && empty($this->filters['datecompleted'][1])) {
 					unset($this->filters['datecompleted']);
 				}
 			}
@@ -850,7 +850,7 @@
 				$content .= $bootstrap->div('class=day-list', $list);
 
 				if ($this->count_dayallactions($date) || $this->count_daynotes($date) || $this->count_dayrescheduledtasks($date) || $this->count_dayscheduledtasks($date)) {
-					$href = $this->generate_dayviewurl($date);
+					$href = $this->generate_dayviewscheduledtasksurl($date);
 					$ajaxdata = $this->generate_ajaxdataforcontento();
 					$content .= $bootstrap->div('class=action-bar', $bootstrap->a("href=$href|class=btn btn-xs btn-block btn-primary load-link|$ajaxdata", 'View Actions'));
 				}

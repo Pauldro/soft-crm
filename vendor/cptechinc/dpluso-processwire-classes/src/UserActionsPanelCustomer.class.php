@@ -80,7 +80,7 @@
 		 * @var ProcessWire/WireInput
 		 */
 		protected $input;
-		
+
 		/**
 		 * What kind of view to start with
 		 * day | calendar | list
@@ -179,8 +179,29 @@
 		public function generate_filter(ProcessWire\WireInput $input) {
 			parent::generate_filter($input);
 			$this->filters['customerlink'] = array($this->custID);
+
 			if (!empty($this->shiptoID)) {
 				$this->filters['shiptolink'] = array($this->shiptoID);
+			}
+
+			if (isset($this->filters['datecreated'])) {
+				if (empty($this->filters['datecreated'][0])) {
+					$this->filters['datecreated'][0] = date('m/d/Y', strtotime(get_mindateuseractioncreated($this->custID, $this->shiptoID)));
+				}
+
+				if (empty($this->filters['datecreated'][1])) {
+					$this->filters['datecreated'][1] = date('m/d/Y');
+				}
+			}
+
+			if (isset($this->filters['datecompleted'])) {
+				if (empty($this->filters['datecompleted'][0])) {
+					$this->filters['datecompleted'][0] = date('m/d/Y', strtotime(get_mindateuseractioncompleted($this->custID, $this->shiptoID)));
+				}
+
+				if (empty($this->filters['datecompleted'][1])) {
+					$this->filters['datecompleted'][1] = date('m/d/Y');
+				}
 			}
 		}
 	}

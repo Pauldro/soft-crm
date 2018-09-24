@@ -246,10 +246,10 @@
 			$shipto->set('dunningcontact', "N");
 			$shipto->set('buyingcontact', $input->post->text('buycontact'));
 			$shipto->set('certcontact', $input->post->text('certcontact') == 'Y' ? "Y" : "N");
-			$shipto->set('ackcontact', "N");  
+			$shipto->set('ackcontact', "N");
 			$shipto->create();
 			$shipto->create_custpermpermission($user->loginid);
-			
+
 			$data = array(
 				'DBNAME' => $config->dbName,
 				'NEWCUSTOMER' => false,
@@ -299,7 +299,7 @@
 			$shipto = Customer::load($custID, '1');
 			$customer->create_custpermpermission($user->loginid);
 			$shipto->create_custpermpermission($user->loginid);
-			
+
 			$session->loc = $config->pages->custinfo."$custID/";
 
 			if (!empty($shipID)) {
@@ -322,7 +322,7 @@
 			$session->custID = $custID;
 			$data = array('DBNAME' => $config->dbName, 'CARTCUST' => false, 'CUSTID' => $custID);
             if (!empty($shipID)) {$data['SHIPID'] = $shipID; $session->shipID = $shipID; }
-			if (!has_carthead(session_id())) { 
+			if (!has_carthead(session_id())) {
 				$session->sql = insert_carthead(session_id(), $custID, $shipID);
 			}
 			if ($input->post->page) {
@@ -435,16 +435,13 @@
 			break;
 		case 'ci-buttons':
 			$data = array('DBNAME' => $config->dbName, 'CIBUTTONS' => false);
-			$session->loc = $config->pages->index;
 			break;
 		case 'ci-customer':
 			$data = array('DBNAME' => $config->dbName, 'CICUSTOMER' => false, 'CUSTID' => $custID);
-			$session->loc = $config->pages->index;
 			$session->loc = $config->pages->custinfo."$custID/";
 			break;
 		case 'ci-shiptos':
 			$data = array('DBNAME' => $config->dbName, 'CISHIPTOLIST' => false, 'CUSTID' => $custID);
-			$session->loc = $config->pages->index;
 			break;
 		case 'ci-shipto-info':
 			$shipID = $input->get->text('shipID');
@@ -453,60 +450,48 @@
 			break;
 		case 'ci-shipto-buttons':
 			$data = array('DBNAME' => $config->dbName, 'CISTBUTTONS' => false);
-			$session->loc = $config->pages->index;
 			break;
 		case 'ci-pricing':
 			$itemID = $input->get->text('itemID');
 			$data = array('DBNAME' => $config->dbName, 'CIPRICE' => false, 'ITEMID' => $itemID, 'CUSTID' => $custID);
-			$session->loc = $config->pages->index;
 			break;
-		case 'ci-contacts':
+		case 'ci-contacts': 
 			$shipID = $input->get->text('shipID');
 			$data = array('DBNAME' => $config->dbName, 'CICONTACT' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID);
-			$session->loc = $config->pages->index;
 			break;
 		case 'ci-documents':
 			$custname = get_customername($custID);
 			$data = array('DBNAME' => $config->dbName, 'DOCVIEW' => false, 'FLD1CD' => 'CU', 'FLD1DATA' => $custID, 'FLD1DESC' => $custname);
-			$session->loc = $config->pages->index;
 			break;
 		case 'ci-order-documents':
 			$ordn = $input->get->text('ordn');
 			$type = $input->get->text('type');
 			$data = array('DBNAME' => $config->dbName, 'DOCVIEW' => false, 'FLD1CD' => $config->documentstoragetypes[$type], 'FLD1DATA' => $ordn);
-			$session->loc = $config->pages->index;
 			break;
 		case 'ci-quote-documents':
 			$qnbr = $input->get->text('qnbr');
 			$type = $input->get->text('type');
 			$data = array('DBNAME' => $config->dbName, 'DOCVIEW' => false, 'FLD1CD' => $config->documentstoragetypes[$type], 'FLD1DATA' => $qnbr);
-			$session->loc = $config->pages->index;
 			break;
 		case 'ci-standing-orders':
 			$shipID = $input->get->text('shipID');
 			$data = array('DBNAME' => $config->dbName, 'CISTANDORDR' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID);
-			$session->loc = $config->pages->index;
 			break;
 		case 'ci-credit':
 			$data = array('DBNAME' => $config->dbName, 'CICREDIT' => false, 'CUSTID' => $custID);
-			$session->loc = $config->pages->index;
 			break;
 		case 'ci-open-invoices':
 			$data = array('DBNAME' => $config->dbName, 'CIOPENINV' => false, 'CUSTID' => $custID);
-			$session->loc = $config->pages->index;
 			break;
 		case 'ci-quotes':
 			$data = array('DBNAME' => $config->dbName, 'CIQUOTE' => false, 'CUSTID' => $custID);
-			$session->loc = $config->pages->index;
 			break;
 		case 'ci-payments':
 			$data = array('DBNAME' => $config->dbName, 'CIPAYMENT' => false, 'CUSTID' => $custID);
-			$session->loc = $config->pages->index;
 			break;
 		case 'ci-sales-orders':
 			$shipID = $input->get->text('shipID');
 			$data = array('DBNAME' => $config->dbName, 'CISALESORDR' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID, 'SALESORDRNBR' => '', 'ITEMID' => '');
-			$session->loc = $config->pages->index;
 			break;
 		case 'ci-sales-history':
 			$shipID = $input->get->text('shipID');
@@ -515,16 +500,17 @@
 			$session->date = $date;
 			$startdate = date('Ymd', strtotime($date));
 			$data = array('DBNAME' => $config->dbName, 'CISALESHIST' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID, 'DATE' => $startdate, 'SALESORDRNBR' => '', 'ITEMID' => $itemID);
-			$session->loc = $config->pages->index;
 			break;
 		case 'ci-custpo':
 			$custpo = $input->get->text('custpo');
 			$shipID = $input->get->text('shipID');
 			$data = array('DBNAME' => $config->dbName, 'CICUSTPO' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID, 'CUSTPO' => $custpo);
-			$session->loc = $config->pages->index;
 			break;
 	}
 
 	writedplusfile($data, $filename);
-	header("location: /cgi-bin/" . $config->cgi . "?fname=" . $filename);
- 	exit;
+	curl_redir("127.0.0.1/cgi-bin/".$config->cgis['default']."?fname=$filename");
+	if (!empty($session->get('loc')) && !$config->ajax) {
+		header("Location: $session->loc");
+	}
+	exit;

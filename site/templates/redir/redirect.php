@@ -1,15 +1,22 @@
 <?php
-	$vl = is_validlogin(session_id());
-	$L = $session->loc;
+	$user->loggedin = is_validlogin(session_id());
+	$url = !empty($session->loc) ? $session->loc : $config->pages->index;
+	$session->remove('loc');
 
-	if ($L == "") {
-		$L = $config->pages->index;
-	} elseif ($L == 'login') {
-		if (!$vl) {
-			$L = $config->pages->login;
+	// Check if user was trying to log in, then handle redirect of login
+	if ($session->loggingin) {
+		$session->remove('loggingin');
+
+		if (!$user->loggedin) {
+			$url = $config->pages->login;
 		} else {
-			$L = $config->pages->index;
+			if (in_array($user->mainrole, array_keys($config->user_roles))) {
+				$url = $config->user_roles[$user->mainrole]['homepage']; 
+			} else {
+				$url = $config->user_roles['default']['homepage']; 
+			}
 		}
 	}
-	header("location: ". $L);
+
+	header("Location: $url");
 	exit;

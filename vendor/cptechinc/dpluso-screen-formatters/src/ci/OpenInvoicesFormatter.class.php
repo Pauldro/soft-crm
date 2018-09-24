@@ -13,7 +13,7 @@
 		protected $datasections = array(
 			"detail" => "Detail",
 		);
-        
+
 		/* =============================================================
             PUBLIC FUNCTIONS
         ============================================================ */
@@ -21,7 +21,7 @@
 			$url = new \Purl\Url(DplusWire::wire('config')->pages->ajaxload."ci/ci-documents/order/");
             $bootstrap = new Contento();
 			$this->generate_tableblueprint();
-			
+
             $tb = new Table('class=table table-striped table-bordered table-condensed table-excel|id=invoices');
         	$tb->tablesection('thead');
         		for ($x = 1; $x < $this->tableblueprint['detail']['maxrows'] + 1; $x++) {
@@ -55,7 +55,7 @@
         							$class = DplusWire::wire('config')->textjustify[$this->fields['data']['detail'][$column['id']]['datajustify']];
         							$colspan = $column['col-length'];
         							$celldata = TableScreenMaker::generate_formattedcelldata($this->fields['data']['detail'][$column['id']]['type'], $invoice, $column);
-                                    
+
         							if ($i == 1 && !empty($invoice['Invoice Number'])) {
                                         $ordn = $invoice['Ordn'];
                                         $custID = $this->json['custid'];
@@ -99,16 +99,20 @@
         	$tb->closetablesection('tfoot');
         	return $tb->close();
         }
-		
+
         public function generate_javascript() {
-			$bootstrap = new Contento();
-			$content = $bootstrap->open('script', '');
-				$content .= "\n";
-				$content .= $bootstrap->indent().'$(function() {';
-					$content .= "$('#invoices').DataTable();";
-				$content .= $bootstrap->indent().'});';
-				$content .= "\n";
-			$content .= $bootstrap->close('script');
-			return $content;
+			if (!$this->forprint) {
+				$bootstrap = new Contento();
+				$content = $bootstrap->open('script', '');
+					$content .= "\n";
+					$content .= $bootstrap->indent().'$(function() {';
+						$content .= "$('#invoices').DataTable();";
+					$content .= $bootstrap->indent().'});';
+					$content .= "\n";
+				$content .= $bootstrap->close('script');
+				return $content;
+			} else {
+				return '';
+			}
 		}
     }

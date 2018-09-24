@@ -4,7 +4,7 @@
     $itemcount = count_itemsearchresults(session_id());
     $paginator = new Paginator($input->pageNum, $itemcount, $page->fullURL, 'quick-entry-search', 'data-loadinto=".results" data-focus=".results"');
 ?>
-<div class="item-results">
+<div class="qe-results">
     <h3>Item Results for "<?= $q; ?>"</h3>
 
     <?php if (!$itemcount) : ?>

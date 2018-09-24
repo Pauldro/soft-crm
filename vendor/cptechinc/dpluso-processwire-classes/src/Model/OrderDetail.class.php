@@ -67,27 +67,37 @@
 
 		/**
 		 * Return the number of cases
+		 * // NOTE this function checks if non-stock item, if so will return 0 since nonstock is always in eaches for bottles
 		 * @return int The number of cases
 		 */
 		public function get_caseqty() {
-			$item = XRefItem::load($this->itemid);
-			return ($item->has_caseqty()) ? floor($this->qty) : 0;
+			if (in_array($this->itemid, DplusWire::wire('config')->nonstockitems)) {
+				return 0;
+			} else {
+				$item = XRefItem::load($this->itemid);
+				return ($item->has_caseqty()) ? floor($this->qty) : 0;
+			}
 		}
 
 		/**
 		 * Return the Number of Bottles
+		 * // NOTE this function checks if non-stock item, if so will return $this->qty since nonstock is always in eaches
 		 * @param  bool   $subtractcases Exclude cases?
 		 * @return int                   Bottle Count
 		 */
 		public function get_bottleqty($subtractcases = true) {
-			$item = XRefItem::load($this->itemid);
-
-			if ($item->has_caseqty()) {
-				$cases = $this->get_caseqty();
-				$fraction = $subtractcases ? $this->qty - $cases : $this->qty;
-				return round($fraction * $item->qty_percase);
-			} else {
+			if (in_array($this->itemid, DplusWire::wire('config')->nonstockitems)) {
 				return $this->qty;
+			} else {
+				$item = XRefItem::load($this->itemid);
+
+				if ($item->has_caseqty()) {
+					$cases = $this->get_caseqty();
+					$fraction = $subtractcases ? $this->qty - $cases : $this->qty;
+					return round($fraction * $item->qty_percase);
+				} else {
+					return $this->qty;
+				}
 			}
 		}
 

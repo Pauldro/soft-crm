@@ -15,7 +15,7 @@
 			"detail" => "Detail",
 			"totals" => "Totals"
 		);
-		
+
 		/* =============================================================
             PUBLIC FUNCTIONS
         ============================================================ */
@@ -24,7 +24,7 @@
             $bootstrap = new Contento();
 			$this->generate_tableblueprint();
 			$content = '';
-            
+
             foreach ($this->json['data'] as $whseid => $whse) {
                 $tb = new Table("class=table table-striped table-bordered table-condensed table-excel|id=$whseid");
             	$tb->tablesection('thead');
@@ -53,7 +53,7 @@
 							$attr = $x == 1 ? 'class=first-txn-row' : '';
             				$tb->tr($attr);
 							$columncount = 0;
-							
+
             				for ($i = 1; $i < $this->tableblueprint['cols'] + 1; $i++) {
             					if (isset($this->tableblueprint['header']['rows'][$x]['columns'][$i])) {
             						$column = $this->tableblueprint['header']['rows'][$x]['columns'][$i];
@@ -61,7 +61,7 @@
             						$colspan = $column['col-length'];
 									$label = strlen(trim($column['label'])) ? '<b>'.$column['label'].'</b>: ' : '';
             						$celldata = $label.TableScreenMaker::generate_formattedcelldata($this->fields['data']['header'][$column['id']]['type'], $quote, $column);
-									
+
 									if ($i == 1 && !empty($quote['Quote ID'])) {
 										$qnbr = $quote['Quote ID'];
 										$custID = $this->json['custid'];
@@ -84,7 +84,7 @@
             				for ($x = 1; $x < $this->tableblueprint['detail']['maxrows'] + 1; $x++) {
             					$tb->tr();
 								$columncount = 0;
-								
+
             					for ($i = 1; $i < $this->tableblueprint['cols'] + 1; $i++) {
             						if (isset($this->tableblueprint['detail']['rows'][$x]['columns'][$i])) {
             							$column = $this->tableblueprint['detail']['rows'][$x]['columns'][$i];
@@ -102,12 +102,12 @@
             					}
             				}
             			}
-						
-						if (isset($this->tableblueprint['totals'])) {
+
+						if (isset($this->tableblueprint['totals']) && isset($quote['totals'])) {
 							for ($x = 1; $x < $this->tableblueprint['totals']['maxrows'] + 1; $x++) {
 								$tb->tr();
 								$columncount = 0;
-								
+
 								for ($i = 1; $i < $this->tableblueprint['cols'] + 1; $i++) {
 									if (isset($this->tableblueprint['totals']['rows'][$x]['columns'][$i])) {
 										$column = $this->tableblueprint['totals']['rows'][$x]['columns'][$i];

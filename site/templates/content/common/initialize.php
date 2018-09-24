@@ -1,4 +1,6 @@
 <?php
+	$config->pages = new ProcessWire\Paths($config->rootURL);
+	include_once($config->paths->templates."configs/nav-config.php");
 	include_once($config->paths->templates."configs/dpluso-config.php");
 	include_once($config->paths->templates."configs/user-roles-config.php");
 	$appconfig = $pages->get('/config/');
@@ -10,8 +12,5 @@
 	TableScreenMaker::set_filedirectory($config->jsonfilepath);
 	TableScreenMaker::set_testfiledirectory($config->paths->vendor."cptechinc/dpluso-screen-formatters/src/examples/");
 	TableScreenMaker::set_fieldfiledirectory($config->companyfiles."json/");
-
-	$config->pages = new ProcessWire\Paths($config->rootURL);
-	include $config->paths->templates."configs/nav-config.php";
 
 	FormFieldsConfig::set_defaultconfigdirectory($config->paths->templates."configs/customer/");

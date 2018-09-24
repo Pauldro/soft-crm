@@ -1,12 +1,13 @@
 <?php
-    $custresults = search_custindexpaged($input->get->text('q'), $config->showonpage, $input->pageNum);
-    $resultscount = count_searchcustindex($input->get->text('q'));
-
-    $pageurl = ($input->get->q) ? $page->fullURL->getUrl() : $config->pages->ajaxload."customers/cust-index/?function=os-order-search&field=".$input->get->field;
-    $insertafter = 'cust-index';
-    $paginator = new Paginator($input->pageNum, $resultscount, $pageurl, $insertafter, "data-loadinto='#cust-index-search-form' data-focus='#cust-index-search-form'");
-
-	$field = $input->get->text('field');
+    $pageurl = $page->fullURL;
+    $pageurl->path = ($input->get->q) ? $pageurl->path : $config->pages->ajaxload."customers/cust-index/";
+    $pageurl->query->set('function', 'os-order-search');
+    $pageurl->query->set('field', $input->get->text('field'));
+    $custindex = new CustomerIndex($pageurl, '#cust-index-search-form', '#cust-index-search-form');
+    $custindex->set_pagenbr($input->pageNum);
+    $resultscount = $custindex->count_searchcustindex($input->get->text('q'));
+    $paginator = new Paginator($custindex->pagenbr, $resultscount, $custindex->pageurl, 'cust-index', $custindex->ajaxdata);
+    $field = $input->get->text('field');
 ?>
 
 <div id="cust-results">

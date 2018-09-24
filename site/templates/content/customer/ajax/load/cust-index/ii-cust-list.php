@@ -1,12 +1,12 @@
 <?php
-    $custresults = search_custindexpaged($input->get->text('q'), $config->showonpage, $input->pageNum);
-    $resultscount = count_searchcustindex($input->get->text('q'));
-
-    $pageurl = ($input->get->q) ? $page->fullURL->getUrl() : $config->pages->ajaxload."customers/cust-index/?function=ii";
-    $insertafter = 'cust-index';
-    $paginator = new Paginator($input->pageNum, $resultscount, $pageurl, $insertafter, "data-loadinto='#cust-index-search-form' data-focus='#cust-index-search-form'");
+    $pageurl = $page->fullURL;
+    $pageurl->path = ($input->get->q) ? $pageurl->path : $config->pages->ajaxload."customers/cust-index/";
+    $pageurl->query->set('function', 'ii');
+    $custindex = new CustomerIndex($pageurl, '#cust-index-search-form', '#cust-index-search-form');
+    $custindex->set_pagenbr($input->pageNum);
+    $resultscount = $custindex->count_searchcustindex($input->get->text('q'));
+    $paginator = new Paginator($custindex->pagenbr, $resultscount, $custindex->pageurl, 'cust-index', $custindex->ajaxdata);
 ?>
-
 <div id="cust-results">
     <table id="cust-index" class="table table-striped table-bordered">
         <thead>
@@ -16,7 +16,8 @@
         </thead>
         <tbody>
             <?php if ($resultscount > 0) : ?>
-                <?php foreach ($custresults as $cust) : ?>
+                <?php $customers = $custindex->search_custindexpaged($input->get->text('q'), $input->pageNum); ?>
+                <?php foreach ($customers as $cust) : ?>
                     <tr>
                         <td>
                             <button class="btn btn-sm btn-primary" type="button" onclick="<?= $cust->generate_iifunction($function); ?>"> <?= $cust->custid; ?> </button>
