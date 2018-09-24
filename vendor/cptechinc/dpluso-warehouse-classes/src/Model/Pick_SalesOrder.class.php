@@ -53,6 +53,15 @@
         protected $itemspicked;
         
         /**
+         * Last Pallet Number for this Order
+         * @var int
+         */
+        protected $lastpalletnbr;
+        
+        protected $sessionID;
+        
+        
+        /**
          * Aliases for Class Properties
          * @var array
          */
@@ -61,6 +70,21 @@
             'ordn' => 'ordernbr',
             'custID' => 'customerid'
         );
+        
+        public function init($sessionID) {
+            $this->sessionID = $sessionID;
+            $whsesession = WhseSession::load($this->sessionID);
+            
+            DplusWire::wire('config')->js('pickorder', [
+                'order' => [
+                    'ordn' => $this->ordernbr,
+                    'pallet' => [
+                        'current' => $whsesession->palletnbr,
+                        'last' => $this->lastpalletnbr
+                    ]
+                ]
+            ]);
+        }
             
         /* =============================================================
 			CRUD FUNCTIONS

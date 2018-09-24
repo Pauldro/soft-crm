@@ -69,6 +69,12 @@
         protected $status;
         
         /**
+         * Current Warehouse Function
+         * @var string
+         */
+        protected $function;
+        
+        /**
          * Aliases for Class Properties
          * @var array
          */
@@ -195,79 +201,6 @@
             return delete_orderpickeditems($this->sessionid, $debug);
         }
         
-        /**
-         * Returns the add barcode URL
-         * @param  Pick_SalesOrderDetail $item    Item that is being picked
-         * @param  string                $barcode Item Barcode
-         * @return string                         Add barcode URL
-         */
-        public function generate_addbarcodeurl(Pick_SalesOrderDetail $item, $barcode) {
-            $url = new Purl\Url(DplusWire::wire('config')->pages->salesorderpicking);
-            $url->path->add('redir');
-            $url->query->set('action', 'add-barcode');
-            $url->query->set('barcode', $barcode);
-            return $url->getUrl();
-        }
-        
-        /**
-         * Returns the remove barcode URL
-         * @param  Pick_SalesOrderDetail $item    Item that is being picked
-         * @param  string                $barcode Item Barcode
-         * @return string                         Remove barcode URL
-         */
-        public function generate_removebarcodeurl(Pick_SalesOrderDetail $item, $barcode) {
-            $url = new Purl\Url(DplusWire::wire('config')->pages->salesorderpicking);
-            $url->path->add('redir');
-            $url->query->set('action', 'remove-barcode');
-            $url->query->set('barcode', $barcode);
-            return $url->getUrl();
-        }
-        
-        /**
-         * Returns URL to send the Finished with Item Request
-         * @param  Pick_SalesOrderDetail $item Item that is being picked
-         * @return string                      Finish Item URL
-         */
-        public function generate_finishitemurl(Pick_SalesOrderDetail $item) {
-            $url = new Purl\Url(DplusWire::wire('config')->pages->salesorderpicking);
-            $url->path->add('redir');
-            $url->query->set('action', 'finish-item');
-            return $url->getUrl();
-        }
-        
-        /**
-         * Returns URL to send the skip Item Request
-         * @param  Pick_SalesOrderDetail $item Item that is being picked
-         * @return string                      Skip Item URL
-         */
-        public function generate_skipitemurl(Pick_SalesOrderDetail $item) {
-            $url = new Purl\Url(DplusWire::wire('config')->pages->salesorderpicking);
-            $url->path->add('redir');
-            $url->query->set('action', 'skip-item');
-            return $url->getUrl();
-        }
-        
-        /**
-         * Returns URL to send the Finish Sales Order Request
-         * @return string                      Finish Order URL
-         */
-        public function generate_finishorderurl() {
-            $url = new Purl\Url(DplusWire::wire('config')->pages->salesorderpicking);
-            $url->path->add('redir');
-            $url->query->set('action', 'finish-order');
-            return $url->getUrl();
-        }
-        
-        /**
-         * Returns URL to send the exit Sales Order Request
-         * @return string                      Exit Order URL
-         */
-        public function generate_exitorderurl() {
-            $url = new Purl\Url(DplusWire::wire('config')->pages->salesorderpicking);
-            $url->path->add('redir');
-            $url->query->set('action', 'exit-order');
-            return $url->getUrl();
-        }
         
         /**
          * Returns URL to send the logout Request

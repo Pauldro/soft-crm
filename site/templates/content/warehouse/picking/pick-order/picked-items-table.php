@@ -15,13 +15,13 @@
             <td class="text-right"><?= $pickedbarcode['qty']; ?></td>
             <?php if (100 == 1) : ?>
                 <td class="text-center">
-                    <a href="<?= $whsesession->generate_addbarcodeurl($pickitem, $pickedbarcode['barcode']); ?>" class="btn btn-sm btn-emerald">
+                    <a href="<?= $pickorder->generate_addbarcodeurl($pickitem, $pickedbarcode['barcode'], $pickedbarcode['palletnbr']); ?>" class="btn btn-sm btn-emerald">
                         <i class="fa fa-repeat" aria-hidden="true"></i> Duplicate
                     </a>
                 </td>
             <?php endif; ?>
             <td class="text-center">
-                <a href="<?= $whsesession->generate_removebarcodeurl($pickitem, $pickedbarcode['barcode']); ?>" class="btn btn-sm btn-danger">
+                <a href="<?= $pickorder->generate_removebarcodeurl($pickitem, $pickedbarcode['barcode'], $pickedbarcode['palletnbr']); ?>" class="btn btn-sm btn-danger">
                     <i class="fa fa-trash" aria-hidden="true"></i> Remove
                 </a>
             </td>

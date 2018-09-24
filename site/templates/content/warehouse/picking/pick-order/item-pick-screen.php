@@ -49,6 +49,7 @@
 	<form action="<?= "{$config->pages->salesorderpicking}redir/"; ?>" method="POST" class="allow-enterkey-submit">
 		<input type="hidden" name="action" value="add-barcode">
 		<input type="hidden" name="palletnbr" value="<?= $whsesession->palletnbr; ?>">
+		<input type="hidden" name="page" value="<?= $page->fullURL; ?>">
         <div class="input-group form-group">
             <input class="form-control" name="barcode" placeholder="Barcode" type="text" autofocus>
             <span class="input-group-btn">
@@ -60,12 +61,12 @@
     </form>
 	<div class="row">
 		<div class="col-sm-3 col-xs-6 form-group">
-			<a href="<?= $whsesession->generate_finishitemurl($pickitem); ?>" class="btn btn-emerald finish-item">
+			<a href="<?= $pickorder->generate_finishitemurl($pickitem); ?>" class="btn btn-emerald finish-item">
 				<i class="fa fa-check-square" aria-hidden="true"></i> Submit Item
 			</a>
 		</div>
 		<div class="col-sm-3 col-xs-6 form-group">
-			<a href="<?= $whsesession->generate_skipitemurl($pickitem); ?>" class="btn btn-emerald finish-item">
+			<a href="<?= $pickorder->generate_skipitemurl($pickitem); ?>" class="btn btn-emerald finish-item">
 				<i class="fa fa-check-square" aria-hidden="true"></i> Skip Item
 			</a>
 		</div>
@@ -75,11 +76,11 @@
 			</button>
 		</div>
 		<div class="col-sm-3 col-xs-6 form-group">
-			<a href="<?= $whsesession->generate_exitorderurl(); ?>" class="btn btn-danger exit-order">Exit Order</a>
+			<a href="<?= $pickorder->generate_exitorderurl(); ?>" class="btn btn-danger exit-order">Exit Order</a>
 		</div>
 	</div>
 </div>
 <h3 class="text-center">Barcodes Scanned</h3>
-<?php include $config->paths->content."warehouse/picking/pick-order/pick-items-table.php"; ?>
+<?php include $config->paths->content."warehouse/picking/pick-order/picked-items-table.php"; ?>
 <?php include $config->paths->content."warehouse/picking/pick-order/item-info-modal.php"; ?>
 	

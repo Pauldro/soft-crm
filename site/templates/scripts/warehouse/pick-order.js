@@ -111,4 +111,11 @@ $(function() {
 			}
 		}).catch(swal.noop);
     });
+    
+    $("body").on("change", ".change-pallet", function(e) {
+        e.preventDefault();
+        var select = $(this);
+        var form = select.parent('form');
+        form.submit();
+    });
 });
