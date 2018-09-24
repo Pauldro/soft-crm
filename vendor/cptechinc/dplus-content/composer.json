@@ -11,7 +11,8 @@
             "src/Table.class.php",
 			"src/FormMaker.class.php",
 			"src/Paginator.class.php",
-			"src/TablePageSorter.class.php"
+			"src/TablePageSorter.class.php",
+			"src/JavaScripter.class.php"
 		]
 	}
 }

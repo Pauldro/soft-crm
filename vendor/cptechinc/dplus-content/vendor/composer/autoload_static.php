@@ -13,6 +13,7 @@ class ComposerStaticInita104fe145213714fc6b8863298dad526
         '844e4b9a6c755a6268a9eee4231dfbc0' => __DIR__ . '/../..' . '/src/FormMaker.class.php',
         '3197c9ce28500f61544ef7d371ad70aa' => __DIR__ . '/../..' . '/src/Paginator.class.php',
         '0a6ffebbefbb4d19014ef0f9b55315c2' => __DIR__ . '/../..' . '/src/TablePageSorter.class.php',
+        '26c22bc56aaa7248a15627f87cfa2b84' => __DIR__ . '/../..' . '/src/JavaScripter.class.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

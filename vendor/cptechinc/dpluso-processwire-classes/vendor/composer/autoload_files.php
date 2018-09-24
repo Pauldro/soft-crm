@@ -33,7 +33,6 @@ return array(
     'ddb460775d744f6e4a2771bee4decbb1' => $baseDir . '/src/UserActionsPanelContact.class.php',
     '007ea2e0502804b422adfc565cfae4ff' => $baseDir . '/src/UserActionsPanelSalesOrder.class.php',
     '72669303e07f3a90b0de10980347a33f' => $baseDir . '/src/UserActionsPanelQuote.class.php',
-    '26c22bc56aaa7248a15627f87cfa2b84' => $baseDir . '/src/JavaScripter.class.php',
     '61847bef05597f87573b14835250af2f' => $baseDir . '/src/OrderDisplay.class.php',
     'ba02c795ffe37585bc5af7815cde5054' => $baseDir . '/src/OrderDisplay.interface.php',
     'fa7f4f076b4c9d4caba49aff314dad04' => $baseDir . '/src/CartDisplay.class.php',

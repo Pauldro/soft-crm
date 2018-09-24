@@ -12,4 +12,5 @@ return array(
     '844e4b9a6c755a6268a9eee4231dfbc0' => $baseDir . '/src/FormMaker.class.php',
     '3197c9ce28500f61544ef7d371ad70aa' => $baseDir . '/src/Paginator.class.php',
     '0a6ffebbefbb4d19014ef0f9b55315c2' => $baseDir . '/src/TablePageSorter.class.php',
+    '26c22bc56aaa7248a15627f87cfa2b84' => $baseDir . '/src/JavaScripter.class.php',
 );

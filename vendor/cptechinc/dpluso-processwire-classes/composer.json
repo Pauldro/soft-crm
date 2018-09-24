@@ -33,7 +33,6 @@
 			"src/UserActionsPanelContact.class.php",
 			"src/UserActionsPanelSalesOrder.class.php",
 			"src/UserActionsPanelQuote.class.php",
-			"src/JavaScripter.class.php",
 			"src/OrderDisplay.class.php",
 			"src/OrderDisplay.interface.php",
 			"src/CartDisplay.class.php",
