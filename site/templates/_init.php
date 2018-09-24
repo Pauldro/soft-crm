@@ -20,6 +20,9 @@
 	// INCLUDE AUTOLOAD AND NECESSARY FUNCTIONS
 	include_once("./_func.php"); // include our shared functions
 	include_once("./_dbfunc.php");
+	include_once($config->paths->vendor."cptechinc/dplus-base/vendor/autoload.php");
+	include_once($config->paths->vendor."cptechinc/dplus-processwire/vendor/autoload.php");
+	include_once($config->paths->vendor."cptechinc/dplus-content/vendor/autoload.php");
 	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/src/utfport.php"); // UTF8 conversion library functions
 	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/vendor/autoload.php");
 	include_once($config->paths->vendor."cptechinc/dpluso-screen-formatters/vendor/autoload.php");
@@ -46,9 +49,9 @@
 		$page->fullURL->join($config->filename);
 	}
 	
-	$page->bootstrap = new Contento();
 	$page->stringerbell = new StringerBell();
 	$page->htmlwriter = new HTMLWriter();
+	$page->bootstrap = $page->htmlwriter;
 	$page->screenformatterfactory = new \ScreenFormatterFactory(session_id());
 	$itemlookup = new ItemLookupModal();
 	
