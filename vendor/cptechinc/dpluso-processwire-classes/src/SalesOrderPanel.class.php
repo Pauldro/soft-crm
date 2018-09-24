@@ -90,7 +90,7 @@
 		}
 		
 		public function generate_expandorcollapselink(Order $order) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			
 			if ($order->orderno == $this->activeID) {
 				$href = $this->generate_closedetailsurl($order);
@@ -103,7 +103,7 @@
 				$addclass = 'generate-load-link';
 				$icon = '+';
 			}
-			return $bootstrap->openandclose('a', "href=$href|class=btn btn-sm btn-primary $addclass|$ajaxdata", $icon);
+			return $bootstrap->create_element('a', "href=$href|class=btn btn-sm btn-primary $addclass|$ajaxdata", $icon);
 		}
 		
 		public function generate_rowclass(Order $order) {
@@ -118,11 +118,11 @@
 		}
 		
 		public function generate_refreshlink() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_loadurl();
-			$icon = $bootstrap->createicon('fa fa-refresh');
+			$icon = $bootstrap->icon('fa fa-refresh');
 			$ajaxdata = $this->generate_ajaxdataforcontento();
-			return $bootstrap->openandclose('a', "href=$href|class=generate-load-link|$ajaxdata", "$icon Refresh Orders");
+			return $bootstrap->create_element('a', "href=$href|class=generate-load-link|$ajaxdata", "$icon Refresh Orders");
 		}
 		
 		public function generate_closedetailsurl() { 
@@ -132,16 +132,16 @@
 		}
 		
 		public function generate_iconlegend() {
-			$bootstrap = new Contento();
-			$content = $bootstrap->openandclose('i', 'class=glyphicon glyphicon-shopping-cart|title=Re-order Icon', '') . ' = Re-order <br>';
-			$content .= $bootstrap->openandclose('i', "class=material-icons|title=Documents Icon", '&#xE873;') . '&nbsp; = Documents <br>'; 
-			$content .= $bootstrap->openandclose('i', 'class=glyphicon glyphicon-plane hover|title=Tracking Icon', '') . ' = Tracking <br>';
-			$content .= $bootstrap->openandclose('i', 'class=material-icons|title=Notes Icon', '&#xE0B9;') . ' = Notes <br>';
-			$content .= $bootstrap->openandclose('i', 'class=glyphicon glyphicon-pencil|title=Edit Order Icon', '') . ' = Edit Order <br>'; 
+			$bootstrap = new HTMLWriter();
+			$content = $bootstrap->create_element('i', 'class=glyphicon glyphicon-shopping-cart|title=Re-order Icon', '') . ' = Re-order <br>';
+			$content .= $bootstrap->create_element('i', "class=material-icons|title=Documents Icon", '&#xE873;') . '&nbsp; = Documents <br>'; 
+			$content .= $bootstrap->create_element('i', 'class=glyphicon glyphicon-plane hover|title=Tracking Icon', '') . ' = Tracking <br>';
+			$content .= $bootstrap->create_element('i', 'class=material-icons|title=Notes Icon', '&#xE0B9;') . ' = Notes <br>';
+			$content .= $bootstrap->create_element('i', 'class=glyphicon glyphicon-pencil|title=Edit Order Icon', '') . ' = Edit Order <br>'; 
 			$content = str_replace('"', "'", $content);
 			$attr = "tabindex=0|role=button|class=btn btn-sm btn-info|data-toggle=popover|data-placement=bottom|data-trigger=focus";
 			$attr .= "|data-html=true|title=Icons Definition|data-content=$content";
-			return $bootstrap->openandclose('a', $attr, 'Icon Definitions');
+			return $bootstrap->create_element('a', $attr, 'Icon Definitions');
 		}
 		
 		public function generate_loaddetailsurl(Order $order) {
@@ -186,7 +186,7 @@
 			$form->input("type=hidden|name=itemID|value=$detail->itemid");
 			$form->input("type=hidden|name=qty|value=".intval($detail->qty));
 			$form->input("type=hidden|name=desc|value=$detail->desc1");
-			$form->button("type=submit|class=btn btn-primary btn-xs", $form->bootstrap->createicon('glyphicon glyphicon-shopping-cart'). $form->bootstrap->openandclose('span', 'class=sr-only', 'Submit Reorder'));
+			$form->button("type=submit|class=btn btn-primary btn-xs", $form->bootstrap->icon('glyphicon glyphicon-shopping-cart'). $form->bootstrap->create_element('span', 'class=sr-only', 'Submit Reorder'));
 			return $form->finish();
 		}
 		
@@ -224,17 +224,17 @@
 			LINKS ARE HTML LINKS, AND URLS ARE THE URLS THAT THE HREF VALUE
 		============================================================ */
 		public function generate_loadtrackinglink(Order $order) { 
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			if ($order->has_tracking()) {
 				$href = $this->generate_trackingrequesturl($order);
-				$content = $bootstrap->openandclose('span', "class=sr-only", 'View Tracking');
-				$content .= $bootstrap->createicon('glyphicon glyphicon-plane hover');
+				$content = $bootstrap->create_element('span', "class=sr-only", 'View Tracking');
+				$content .= $bootstrap->icon('glyphicon glyphicon-plane hover');
 				$ajaxdata = $this->generate_ajaxdataforcontento();
-				return $bootstrap->openandclose('a', "href=$href|class=h3 generate-load-link|title=Click to view Tracking|$ajaxdata", $content);
+				return $bootstrap->create_element('a', "href=$href|class=h3 generate-load-link|title=Click to view Tracking|$ajaxdata", $content);
 			} else {
-				$content = $bootstrap->openandclose('span', "class=sr-only", 'No Tracking Information Available');
-				$content .= $bootstrap->createicon('glyphicon glyphicon-plane hover');
-				return $bootstrap->openandclose('a', "href=#|class=h3 text-muted|title=No Tracking Info Available", $content);
+				$content = $bootstrap->create_element('span', "class=sr-only", 'No Tracking Information Available');
+				$content .= $bootstrap->icon('glyphicon glyphicon-plane hover');
+				return $bootstrap->create_element('a', "href=#|class=h3 text-muted|title=No Tracking Info Available", $content);
 			}
 		}
 		
@@ -250,7 +250,7 @@
 			LINKS ARE HTML LINKS, AND URLS ARE THE URLS THAT THE HREF VALUE
 		============================================================ */
 		public function generate_loaddplusnoteslink(Order $order, $linenbr = '0') {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_dplusnotesrequesturl($order, $linenbr);
 			
 			if ($order->can_edit()) {
@@ -260,21 +260,21 @@
 				$title = ($order->has_notes()) ? "View Order Notes" : "View Order Notes";
 				$addclass = ($order->has_notes()) ? '' : 'text-muted';
 			}
-			$content = $bootstrap->createicon('material-icons md-36', '&#xE0B9;');
-			$link = $bootstrap->openandclose('a', "href=$href|class=load-notes $addclass|title=$title|data-modal=$this->modal", $content);
+			$content = $bootstrap->icon('material-icons md-36', '&#xE0B9;');
+			$link = $bootstrap->create_element('a', "href=$href|class=load-notes $addclass|title=$title|data-modal=$this->modal", $content);
 			return $link;
 		}
 		
 		public function generate_loaddocumentslink(Order $order, OrderDetail $orderdetail = null) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_documentsrequesturl($order, $orderdetail);
-			$icon = $bootstrap->createicon('fa fa-file-text');
+			$icon = $bootstrap->icon('fa fa-file-text');
 			$ajaxdata = $this->generate_ajaxdataforcontento();
 			$documentsTF = ($orderdetail) ? $orderdetail->has_documents() : $order->has_documents();
 			if ($documentsTF) {
-				return $bootstrap->openandclose('a', "href=$href|class=h3 generate-load-link|title=Click to view Documents|$ajaxdata", $icon);
+				return $bootstrap->create_element('a', "href=$href|class=h3 generate-load-link|title=Click to view Documents|$ajaxdata", $icon);
 			} else {
-				return $bootstrap->openandclose('a', "href=#|class=h3 text-muted|title=No Documents Available", $icon);
+				return $bootstrap->create_element('a', "href=#|class=h3 text-muted|title=No Documents Available", $icon);
 			}
 		}
 		
@@ -286,7 +286,7 @@
 		}
 		
 		public function generate_editlink(Order $order) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			/*
 				ORDER LOCK LOGIC
 				-------------------------------------
@@ -296,39 +296,39 @@
 			*/
 
 			if ($order->can_edit()) {
-				$icon = $bootstrap->createicon('glyphicon glyphicon-pencil');
+				$icon = $bootstrap->icon('glyphicon glyphicon-pencil');
 				$title = "Edit this Order";
 			} elseif ($order->editord == 'L') {
 				if (DplusWire::wire('user')->hasorderlocked) {
 					if ($order->orderno == DplusWire::wire('user')->lockedordn) {
-						$icon = $bootstrap->createicon('glyphicon glyphicon-wrench');
+						$icon = $bootstrap->icon('glyphicon glyphicon-wrench');
 						$title = "Edit this Order";
 					} else {
-						$icon = $bootstrap->createicon('material-icons md-36', '&#xE897;');
+						$icon = $bootstrap->icon('material-icons md-36', '&#xE897;');
 						$title = "You have this order locked, but you can still view it";
 					}
 				} else {
-					$icon = $bootstrap->createicon('material-icons md-36', '&#xE897;');
+					$icon = $bootstrap->icon('material-icons md-36', '&#xE897;');
 					$title = "You have this order locked, but you can still view it";
 				}
 			} else {
-				$icon = $bootstrap->createicon('glyphicon glyphicon-eye-open');
+				$icon = $bootstrap->icon('glyphicon glyphicon-eye-open');
 				$title = "Open in read-only mode";
 			}
 			$href = $this->generate_editurl($order);
-			return $bootstrap->openandclose('a', "href=$href|class=edit-order h3|title=$title", $icon);
+			return $bootstrap->create_element('a', "href=$href|class=edit-order h3|title=$title", $icon);
 		}
 		
 		public function generate_viewlinkeduseractionslink(Order $order) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_viewlinkeduseractionsurl($order);
-			$icon = $bootstrap->openandclose('span','class=h3', $bootstrap->createicon('glyphicon glyphicon-check'));
-			return $bootstrap->openandclose('a', "href=$href|class=load-into-modal|data-modal=$this->modal", $icon." View Associated Actions");
+			$icon = $bootstrap->create_element('span','class=h3', $bootstrap->icon('glyphicon glyphicon-check'));
+			return $bootstrap->create_element('a', "href=$href|class=load-into-modal|data-modal=$this->modal", $icon." View Associated Actions");
 		}
 		
 		public function generate_detailvieweditlink(Order $order, OrderDetail $detail) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_detailviewediturl($order, $detail);
-			return $bootstrap->openandclose('a', "href=$href|class=update-line|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$order->custid|aria-label=View Detail Line", $detail->itemid);	
+			return $bootstrap->create_element('a', "href=$href|class=update-line|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$order->custid|aria-label=View Detail Line", $detail->itemid);	
 		}
 	}

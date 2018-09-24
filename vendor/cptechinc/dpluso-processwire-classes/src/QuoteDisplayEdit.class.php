@@ -24,10 +24,10 @@
 		 * @return string        HTML link to send Quote to Order
 		 */
 		public function generate_sendtoorderlink(Order $quote) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_sendtoorderurl($quote);
-			$icon = $bootstrap->createicon('fa fa-paper-plane-o');
-			return $bootstrap->openandclose('a', "href=$href|class=btn btn-block btn-default", $icon. " Send To Order");
+			$icon = $bootstrap->icon('fa fa-paper-plane-o');
+			return $bootstrap->create_element('a', "href=$href|class=btn btn-block btn-default", $icon. " Send To Order");
 		}
 
 		/**
@@ -70,10 +70,10 @@
 		 * @return string        HTML to discard Quote changes
 		 */
 		public function generate_discardchangeslink(Order $quote) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_unlockurl($quote);
-			$icon = $bootstrap->createicon('glyphicon glyphicon-floppy-remove');
-			return $bootstrap->openandclose('a', "href=$href|class=btn btn-block btn-warning", $icon. " Discard Changes, Unlock Quote");
+			$icon = $bootstrap->icon('glyphicon glyphicon-floppy-remove');
+			return $bootstrap->create_element('a', "href=$href|class=btn btn-block btn-warning", $icon. " Discard Changes, Unlock Quote");
 		}
 
 		/**
@@ -82,9 +82,9 @@
 		 * @return string        HTML button to save and unlock Quote
 		 */
 		public function generate_saveunlockbutton(Order $quote) {
-			$bootstrap = new Contento();
-			$icon = $bootstrap->createicon('fa fa-unlock');
-			return $bootstrap->openandclose('button', "class=btn btn-block btn-emerald save-unlock-quotehead|data-form=#quotehead-form", $icon. " Save and Exit");
+			$bootstrap = new HTMLWriter();
+			$icon = $bootstrap->icon('fa fa-unlock');
+			return $bootstrap->create_element('button', "class=btn btn-block btn-emerald save-unlock-quotehead|data-form=#quotehead-form", $icon. " Save and Exit");
 		}
 
 		/**
@@ -94,17 +94,17 @@
 		 */
 		public function generate_confirmationlink(Order $quote) {
 			$href = $this->generate_confirmationurl($quote);
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_unlockurl($quote);
-			$icon = $bootstrap->createicon('fa fa-unlock');
-			return $bootstrap->openandclose('a', "href=$href|class=btn btn-block btn-success", $icon. " Finished with quote");
+			$icon = $bootstrap->icon('fa fa-unlock');
+			return $bootstrap->create_element('a', "href=$href|class=btn btn-block btn-success", $icon. " Finished with quote");
 		}
 
 		public function generate_detailvieweditlink(Order $quote, OrderDetail $detail) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_detailviewediturl($quote, $detail);
-			$icon = $bootstrap->openandclose('button', 'class=btn btn-sm btn-warning', $bootstrap->createicon('glyphicon glyphicon-pencil'));
-			return $bootstrap->openandclose('a', "href=$href|class=update-line|title=Edit Item|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$quote->custid|aria-label=View Detail Line", $icon);
+			$icon = $bootstrap->create_element('button', 'class=btn btn-sm btn-warning', $bootstrap->icon('glyphicon glyphicon-pencil'));
+			return $bootstrap->create_element('a', "href=$href|class=update-line|title=Edit Item|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$quote->custid|aria-label=View Detail Line", $icon);
 		}
 
 		/**
@@ -114,8 +114,8 @@
 		 * @return string              HTML Link to delete detail line
 		 */
 		public function generate_deletedetaillink(Order $quote, OrderDetail $detail) {
-			$bootstrap = new Contento();
-			$icon = $bootstrap->createicon('glyphicon glyphicon-trash') . $bootstrap->openandclose('span', 'class=sr-only', 'Delete Line');
+			$bootstrap = new HTMLWriter();
+			$icon = $bootstrap->icon('glyphicon glyphicon-trash') . $bootstrap->create_element('span', 'class=sr-only', 'Delete Line');
 			$url = $this->generate_quotesredirurl();
 			$url->query->setData(array('action' => 'remove-line-get', 'qnbr' => $quote->quotnbr, 'linenbr' => $detail->linenbr, 'page' => $this->pageurl->getUrl()));
 			$href = $url->getUrl();
@@ -127,8 +127,8 @@
 		 * @return string HTML bootstrap alert div that this Quote is will be in read only mode
 		 */
 		public function generate_readonlyalert() {
-			$bootstrap = new Contento();
-			$msg = $bootstrap->openandclose('b', '', 'Attention!') . ' This order will open in read-only mode, you will not be able to save changes.';
+			$bootstrap = new HTMLWriter();
+			$msg = $bootstrap->create_element('b', '', 'Attention!') . ' This order will open in read-only mode, you will not be able to save changes.';
 			return $bootstrap->createalert('warning', $msg);
 		}
 
@@ -138,8 +138,8 @@
 		 * @return string        HTML bootstrap alert for an error
 		 */
 		public function generate_erroralert($quote) {
-			$bootstrap = new Contento();
-			$msg = $bootstrap->openandclose('b', '', 'Error!') . $quote->errormsg;
+			$bootstrap = new HTMLWriter();
+			$msg = $bootstrap->create_element('b', '', 'Error!') . $quote->errormsg;
 			return $bootstrap->createalert('danger', $msg, false);
 		}
 
@@ -147,7 +147,7 @@
 			OrderDisplay Interface Functions
 		============================================================ */
 		public function generate_loaddplusnoteslink(Order $quote, $linenbr = '0') {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_dplusnotesrequesturl($quote, $linenbr);
 
 			if ($quote->can_edit()) {
@@ -157,11 +157,11 @@
 			}
 
 			if (intval($linenbr) > 0) {
-				$content = $bootstrap->createicon('material-icons md-36', '&#xE0B9;');
-				$link = $bootstrap->openandclose('a', "href=$href|class=load-notes|title=$title|data-modal=$this->modal", $content);
+				$content = $bootstrap->icon('material-icons md-36', '&#xE0B9;');
+				$link = $bootstrap->create_element('a', "href=$href|class=load-notes|title=$title|data-modal=$this->modal", $content);
 			} else {
-				$content = $bootstrap->createicon('material-icons', '&#xE0B9;') . ' ' . $title;
-				$link = $bootstrap->openandclose('a', "href=$href|class=btn btn-default load-notes|title=$title|data-modal=$this->modal", $content);
+				$content = $bootstrap->icon('material-icons', '&#xE0B9;') . ' ' . $title;
+				$link = $bootstrap->create_element('a', "href=$href|class=btn btn-default load-notes|title=$title|data-modal=$this->modal", $content);
 			}
 			return $link;
 		}

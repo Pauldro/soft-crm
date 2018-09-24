@@ -19,7 +19,7 @@
         ============================================================ */
         public function generate_screen() {
 			$url = new \Purl\Url(DplusWire::wire('config')->pages->ajaxload."ci/ci-documents/order/");
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
 			$this->generate_tableblueprint();
 
             $tb = new Table('class=table table-striped table-bordered table-condensed table-excel|id=invoices');
@@ -61,7 +61,7 @@
                                         $custID = $this->json['custid'];
  										$url->query->setData(array('custID' => $custID, 'ordn' => $ordn, 'returnpage' => urlencode(DplusWire::wire('page')->fullURL->getUrl())));
  										$href = $url->getUrl();
- 										$celldata .= "&nbsp; " . $bootstrap->openandclose('a', "href=$href|class=load-order-documents|title=Load Order Documents|aria-label=Load Order Documents|data-ordn=$ordn|data-custid=$custID|data-type=ci-sales-history", $bootstrap->createicon('fa fa-file-text'));
+ 										$celldata .= "&nbsp; " . $bootstrap->create_element('a', "href=$href|class=load-order-documents|title=Load Order Documents|aria-label=Load Order Documents|data-ordn=$ordn|data-custid=$custID|data-type=ci-sales-history", $bootstrap->icon('fa fa-file-text'));
         							}
                                     $tb->td("colspan=$colspan|class=$class", $celldata);
         						} else {
@@ -102,7 +102,7 @@
 
         public function generate_javascript() {
 			if (!$this->forprint) {
-				$bootstrap = new Contento();
+				$bootstrap = new HTMLWriter();
 				$content = $bootstrap->open('script', '');
 					$content .= "\n";
 					$content .= $bootstrap->indent().'$(function() {';

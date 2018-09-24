@@ -82,7 +82,7 @@
 				<small><?= $detail->desc1. ' ' . $detail->desc2 ; ?></small>
 			</td>
 			<td>
-				<?= $quotedisplay->generate_detailvieweditlink($quote, $detail, $page->bootstrap->createicon('glyphicon glyphicon-eye-open')); ?>
+				<?= $quotedisplay->generate_detailvieweditlink($quote, $detail, $page->bootstrap->icon('glyphicon glyphicon-eye-open')); ?>
             </td>
 			<td class="text-right"> <?= intval($detail->quotqty); ?> </td>
 			<td class="text-right">$ <?= $page->stringerbell->format_money($detail->quotprice); ?></td>

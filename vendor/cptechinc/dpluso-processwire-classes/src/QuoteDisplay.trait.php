@@ -14,7 +14,7 @@
 		 * @return string          HTML to load the dplus notes
 		 */
 		public function generate_loaddplusnoteslink(Order $quote, $linenbr = '0') {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_dplusnotesrequesturl($quote, $linenbr);
 
 			if ($quote->can_edit()) {
@@ -22,8 +22,8 @@
 			} else {
 				$title = ($quote->has_notes()) ? "View Quote Notes" : "View Quote Notes";
 			}
-			$content = $bootstrap->createicon('material-icons', '&#xE0B9;') . ' ' . $title;
-			return $bootstrap->openandclose('a', "href=$href|class=btn btn-default load-notes|title=$title|data-modal=$this->modal", $content);
+			$content = $bootstrap->icon('material-icons', '&#xE0B9;') . ' ' . $title;
+			return $bootstrap->create_element('a', "href=$href|class=btn btn-default load-notes|title=$title|data-modal=$this->modal", $content);
 		}
 
 		/**
@@ -60,15 +60,15 @@
 		 * @return string                   HTML link
 		 */
 		public function generate_loadheaderdocumentslink(Order $quote, OrderDetail $quotedetail = null) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_documentsrequesturl($quote, $quotedetail);
-			$icon = $bootstrap->createicon('fa fa-file-text');
+			$icon = $bootstrap->icon('fa fa-file-text');
 			$ajaxdata = "data-loadinto=.docs|data-focus=.docs|data-click=#documents-link";
 
 			if ($quote->has_documents()) {
-				return $bootstrap->openandclose('a', "href=$href|class=btn btn-primary load-sales-docs|role=button|title=Click to view Documents|$ajaxdata", $icon. ' Show Documents');
+				return $bootstrap->create_element('a', "href=$href|class=btn btn-primary load-sales-docs|role=button|title=Click to view Documents|$ajaxdata", $icon. ' Show Documents');
 			} else {
-				return $bootstrap->openandclose('a', "href=#|class=btn btn-default|title=No Documents Available", $icon. ' 0 Documents Found');
+				return $bootstrap->create_element('a', "href=#|class=btn btn-default|title=No Documents Available", $icon. ' 0 Documents Found');
 			}
 		}
 
@@ -79,15 +79,15 @@
 		 * @return string                   HTML link
 		 */
 		public function generate_loaddetaildocumentslink(Order $quote, OrderDetail $quotedetail = null) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_documentsrequesturl($quote, $quotedetail);
-			$icon = $bootstrap->createicon('fa fa-file-text');
+			$icon = $bootstrap->icon('fa fa-file-text');
 			$ajaxdata = "data-loadinto=.docs|data-focus=.docs|data-click=#documents-link";
 
 			if ($quotedetail->has_documents()) {
-				return $bootstrap->openandclose('a', "href=$href|class=h3 load-sales-docs|role=button|title=Click to view Documents|$ajaxdata", $icon);
+				return $bootstrap->create_element('a', "href=$href|class=h3 load-sales-docs|role=button|title=Click to view Documents|$ajaxdata", $icon);
 			} else {
-				return $bootstrap->openandclose('a', "href=#|class=h3 text-muted|title=No Documents Available", $icon);
+				return $bootstrap->create_element('a', "href=#|class=h3 text-muted|title=No Documents Available", $icon);
 			}
 		}
 
@@ -128,10 +128,10 @@
 			if (!has_dpluspermission(DplusWire::wire('user')->loginid, 'eso')) {
 				return false;
 			}
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_orderquoteurl($quote);
-			$icon = $bootstrap->createicon('glyphicon glyphicon-print');
-			return $bootstrap->openandclose('a', "href=$href|class=btn btn-sm btn-default", $icon." Send To Order");
+			$icon = $bootstrap->icon('glyphicon glyphicon-print');
+			return $bootstrap->create_element('a', "href=$href|class=btn btn-sm btn-default", $icon." Send To Order");
 		}
 
 		/**
@@ -153,10 +153,10 @@
 		 * @uses          $this->generate_viewprinturl($quote);
 		 */
 		public function generate_viewprintlink(Order $quote) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_viewprinturl($quote);
-			$icon = $bootstrap->openandclose('span','class=h3', $bootstrap->createicon('glyphicon glyphicon-print'));
-			return $bootstrap->openandclose('a', "href=$href|target=_blank", $icon." View Printable Quote");
+			$icon = $bootstrap->create_element('span','class=h3', $bootstrap->icon('glyphicon glyphicon-print'));
+			return $bootstrap->create_element('a', "href=$href|target=_blank", $icon." View Printable Quote");
 		}
 
 		/**
@@ -206,8 +206,8 @@
 		 */
 		public function generate_viewlinkeduseractionslink(Order $quote) {
 			$href = $this->generate_viewlinkeduseractionsurl($quote);
-			$icon = $bootstrap->openandclose('span','class=h3', $bootstrap->createicon('glyphicon glyphicon-check'));
-			return $bootstrap->openandclose('a', "href=$href|target=_blank", $icon." View Associated Actions");
+			$icon = $bootstrap->create_element('span','class=h3', $bootstrap->icon('glyphicon glyphicon-check'));
+			return $bootstrap->create_element('a', "href=$href|target=_blank", $icon." View Associated Actions");
 		}
 
 		/**
@@ -229,10 +229,10 @@
 		 * @return string              HTML link to load details
 		 */
 		public function generate_viewdetaillink(Order $quote, OrderDetail $detail) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_viewdetailurl($quote, $detail);
-			$icon = $bootstrap->createicon('fa fa-info-circle');
-			return $bootstrap->openandclose('a', "href=$href|class=h3 view-item-details detail-line-icon|data-itemid=$detail->itemid|data-kit=$detail->kititemflag|data-modal=#ajax-modal", $icon);
+			$icon = $bootstrap->icon('fa fa-info-circle');
+			return $bootstrap->create_element('a', "href=$href|class=h3 view-item-details detail-line-icon|data-itemid=$detail->itemid|data-kit=$detail->kititemflag|data-modal=#ajax-modal", $icon);
 		}
 
 		/**

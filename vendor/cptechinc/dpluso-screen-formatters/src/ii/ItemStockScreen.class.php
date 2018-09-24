@@ -20,7 +20,7 @@
             PUBLIC FUNCTIONS
        	============================================================= */
         public function generate_screen() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = '';
             $itemlink = new \Purl\Url(DplusWire::wire('config')->pages->products."redir/");
             
@@ -40,7 +40,7 @@
 						$class = DplusWire::wire('config')->textjustify[$this->json['columns'][$column]['datajustify']];
 						if ($column == "Item ID") {
 							$itemlink->query->setData(array("action" => "ii-select", "custID" => $this->custID, 'itemID' => $warehouse[$column]));;
-							$content = $bootstrap->openandclose('a', "href=".$itemlink->getUrl(), $warehouse[$column]);
+							$content = $bootstrap->create_element('a', "href=".$itemlink->getUrl(), $warehouse[$column]);
 						} else {
 							$content = $warehouse[$column];
 						}

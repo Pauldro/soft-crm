@@ -29,13 +29,13 @@
 		 * @return string           HTML link
 		 */
 		public function generate_loaddplusnoteslinkdetail($linenbr) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_dplusnotesrequesturl($this->cart, $linenbr);
 			$detail = CartDetail::load($this->sessionID, $linenbr);
 			$title = ($detail->has_notes()) ? "View and Create Quote Notes" : "Create Quote Notes";
 			$addclass = ($detail->has_notes()) ? '' : 'text-muted';
-			$content = $bootstrap->createicon('material-icons md-36', '&#xE0B9;');
-			$link = $bootstrap->openandclose('a', "href=$href|class=load-notes $addclass|title=$title|data-modal=$this->modal", $content);
+			$content = $bootstrap->icon('material-icons md-36', '&#xE0B9;');
+			$link = $bootstrap->create_element('a', "href=$href|class=load-notes $addclass|title=$title|data-modal=$this->modal", $content);
 			return $link;
 		}
 
@@ -45,13 +45,13 @@
 		 * @return string          HTML link
 		 */
 		public function generate_loaddplusnoteslinkheader($linenbr = '0') {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_dplusnotesrequesturl($this->cart, $linenbr);
 			$has_notes = has_dplusnote($this->sessionID, $this->sessionID, '0', Qnote::get_qnotetype('cart')) == 'Y' ? true : false;
 			$title = ($has_notes) ? "View and Create Quote Notes" : "Create Quote Notes";
 			$addclass = ($has_notes) ? '' : 'text-muted';
-			$content = $bootstrap->createicon('material-icons md-36', '&#xE0B9;');
-			$link = $bootstrap->openandclose('a', "href=$href|class=load-notes $addclass|title=$title|data-modal=$this->modal", $content);
+			$content = $bootstrap->icon('material-icons md-36', '&#xE0B9;');
+			$link = $bootstrap->create_element('a', "href=$href|class=load-notes $addclass|title=$title|data-modal=$this->modal", $content);
 			return $link;
 		}
 
@@ -93,7 +93,7 @@
 		/**
 		 * Is not implemented yet
 		 * @param  Order       $cart   CartQuote
-		 * @param  OrderDetail $detail CartDetail
+		 * @param  mixed $detail CartDetail
 		 * @return void        Isn't implemented yet
 		 */
 		public function generate_documentsrequesturl(Order $cart, OrderDetail $detail = null) {
@@ -107,10 +107,10 @@
 		 * @return string              HTML Link
 		 */
 		public function generate_detailvieweditlink(Order $cart, OrderDetail $detail) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_detailviewediturl($cart, $detail);
-			$icon = $bootstrap->openandclose('button', 'class=btn btn-sm btn-warning detail-line-icon', $bootstrap->createicon('glyphicon glyphicon-pencil'));
-			return $bootstrap->openandclose('a', "href=$href|class=update-line|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$cart->custid|aria-label=View Detail Line", $icon);
+			$icon = $bootstrap->create_element('button', 'class=btn btn-sm btn-warning detail-line-icon', $bootstrap->icon('glyphicon glyphicon-pencil'));
+			return $bootstrap->create_element('a', "href=$href|class=update-line|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$cart->custid|aria-label=View Detail Line", $icon);
 		}
 
 		/**

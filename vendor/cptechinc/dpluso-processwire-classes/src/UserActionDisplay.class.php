@@ -114,10 +114,10 @@
 		 * @return string             HTML link
 		 */
         public function generate_viewactionlink(UserAction $action) {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $href = $this->generate_viewactionurl($action);
-            $icon = $bootstrap->createicon('material-icons md-18', '&#xE02F;');
-            return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-xs btn-primary modal-load|data-modal=$this->modal|title=View Action", $icon);
+            $icon = $bootstrap->icon('material-icons md-18', '&#xE02F;');
+            return $bootstrap->create_element('a', "href=$href|role=button|class=btn btn-xs btn-primary modal-load|data-modal=$this->modal|title=View Action", $icon);
         }
 
 		/**
@@ -126,11 +126,11 @@
 		 * @return string             HTML link
 		 */
         public function generate_editactionlink(UserAction $action) {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $href = $this->generate_editactionurl($action);
-            $icon = $bootstrap->createicon('glyphicon glyphicon-pencil');
+            $icon = $bootstrap->icon('glyphicon glyphicon-pencil');
             $type = ucfirst($action->actiontype);
-            return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-primary modal-load|data-modal=$this->modal|title=Edit Action", $icon. " Edit $type");
+            return $bootstrap->create_element('a', "href=$href|role=button|class=btn btn-primary modal-load|data-modal=$this->modal|title=Edit Action", $icon. " Edit $type");
         }
 
 		/**
@@ -139,38 +139,38 @@
 		 * @return string           HTML link
 		 */
         public function generate_completetasklink(UserAction $task) {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $href = $this->generate_viewactionjsonurl($task);
-            $icon = $bootstrap->createicon('fa fa-check-circle');
+            $icon = $bootstrap->icon('fa fa-check-circle');
             $icon .= ' <span class="sr-only">Mark as Complete</span>';
-            return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-primary complete-action|title=Mark Task as Complete", $icon. " Complete Task");
+            return $bootstrap->create_element('a', "href=$href|role=button|class=btn btn-primary complete-action|title=Mark Task as Complete", $icon. " Complete Task");
         }
 
         public function generate_rescheduletasklink(UserAction $task) {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $href = $this->generate_rescheduleurl($task);
-            $icon = $bootstrap->createicon('fa fa-calendar');
-            return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-default modal-load|data-modal=$this->modal|", $icon. " Reschedule Task");
+            $icon = $bootstrap->icon('fa fa-calendar');
+            return $bootstrap->create_element('a', "href=$href|role=button|class=btn btn-default modal-load|data-modal=$this->modal|", $icon. " Reschedule Task");
         }
 
         public function generate_customerpagelink(UserAction $action) {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $href = $this->generate_customerurl($action);
-            $icon = $bootstrap->createicon('glyphicon glyphicon-share');
-            return $bootstrap->openandclose('a', "href=$href", $icon." Go to Customer Page");
+            $icon = $bootstrap->icon('glyphicon glyphicon-share');
+            return $bootstrap->create_element('a', "href=$href", $icon." Go to Customer Page");
         }
 
         public function generate_shiptopagelink(UserAction $action) {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $href = $this->generate_customerurl($action);
-            $icon = $bootstrap->createicon('glyphicon glyphicon-share');
-            return $bootstrap->openandclose('a', "href=$href", $icon." Go to Shipto Page");
+            $icon = $bootstrap->icon('glyphicon glyphicon-share');
+            return $bootstrap->create_element('a', "href=$href", $icon." Go to Shipto Page");
         }
 
         public function generate_contactpagelink(UserAction $action) {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $href = $this->generate_contacturl($action);
-            $icon = $bootstrap->createicon('glyphicon glyphicon-share');
-            return $bootstrap->openandclose('a', "href=$href", $icon." Go to Contact Page");
+            $icon = $bootstrap->icon('glyphicon glyphicon-share');
+            return $bootstrap->create_element('a', "href=$href", $icon." Go to Contact Page");
         }
     }

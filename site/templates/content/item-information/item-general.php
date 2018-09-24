@@ -16,7 +16,7 @@
 	if ($config->ajax) {
 		$url = new Purl\Url($page->fullURL->getUrl());
 		$url->query->set('view', 'print');
-		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($url->getUrl(), 'View Printable Version'));
+		echo $page->bootstrap->create_element('p', '', $page->bootstrap->makeprintlink($url->getUrl(), 'View Printable Version'));
 	}
 
 	$iiusageformatter->generate_iteminfotable();

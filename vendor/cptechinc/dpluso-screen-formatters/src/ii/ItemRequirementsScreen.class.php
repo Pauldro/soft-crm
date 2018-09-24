@@ -23,7 +23,7 @@
             PUBLIC FUNCTIONS
        	============================================================ */
         public function generate_screen() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = $bootstrap->div('class=row', $bootstrap->div('class=col-sm-5', $this->generate_warehouseform()));
             
             $tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
@@ -59,7 +59,7 @@
          * @return string HTML form for the warehouse
          */
         protected function generate_warehouseform() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
 	        $whsejson = json_decode(file_get_contents(DplusWire::wire('config')->companyfiles."json/whsetbl.json"), true);
             $warehouses = array_keys($whsejson['data']);
             $reloadpage = DplusWire::wire('config')->ajax ? 'true' : 'false';

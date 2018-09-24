@@ -138,11 +138,11 @@
 		 * @uses
 		 */
 		public function generate_refreshlink() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_refreshurl();
-			$icon = $bootstrap->createicon('fa fa-refresh');
+			$icon = $bootstrap->icon('fa fa-refresh');
 			$ajaxdata = $this->generate_ajaxdataforcontento();
-			return $bootstrap->openandclose('a', "href=$href|class=load-link|$ajaxdata", "$icon Refresh Bookings");
+			return $bootstrap->create_element('a', "href=$href|class=load-link|$ajaxdata", "$icon Refresh Bookings");
 		}
 
 		/**
@@ -151,11 +151,11 @@
 		 * @uses
 		 */
 		public function generate_cleardateparameterslink() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_refreshurl();
-			$icon = $bootstrap->createicon('fa fa-times');
+			$icon = $bootstrap->icon('fa fa-times');
 			$ajaxdata = $this->generate_ajaxdataforcontento();
-			return $bootstrap->openandclose('a', "href=$href|class=btn btn-xs btn-warning load-and-show|$ajaxdata", "$icon Remove Date Parameters");
+			return $bootstrap->create_element('a', "href=$href|class=btn btn-xs btn-warning load-and-show|$ajaxdata", "$icon Remove Date Parameters");
 		}
 
 		/**
@@ -263,11 +263,11 @@
 		 * @uses   $this->generate_viewsalesordersbydayurl($date)
 		 */
 		public function generate_viewsalesordersbydaylink($date) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_viewsalesordersbydayurl($date);
-			$icon = $bootstrap->createicon('glyphicon glyphicon-new-window');
+			$icon = $bootstrap->icon('glyphicon glyphicon-new-window');
 			$ajaxdata = "data-modal=$this->modal";
-			return $bootstrap->openandclose('a', "href=$href|class=load-into-modal btn btn-primary btn-sm|$ajaxdata", "$icon View Sales Orders");
+			return $bootstrap->create_element('a', "href=$href|class=load-into-modal btn btn-primary btn-sm|$ajaxdata", "$icon View Sales Orders");
 		}
 
 		/**
@@ -297,10 +297,10 @@
 		 * @uses $this->generate_viewsalesorderdayurl($ordn, $date);
 		 */
 		public function generate_viewsalesorderdaylink($ordn, $date) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_viewsalesorderdayurl($ordn, $date);
-			$icon = $bootstrap->createicon('glyphicon glyphicon-new-window');
+			$icon = $bootstrap->icon('glyphicon glyphicon-new-window');
 			$ajaxdata = "data-modal=$this->modal";
-			return $bootstrap->openandclose('a', "href=$href|class=modal-load btn btn-primary btn-sm|$ajaxdata", "$icon View Sales Order changes on $date");
+			return $bootstrap->create_element('a', "href=$href|class=modal-load btn btn-primary btn-sm|$ajaxdata", "$icon View Sales Order changes on $date");
 		}
 	}

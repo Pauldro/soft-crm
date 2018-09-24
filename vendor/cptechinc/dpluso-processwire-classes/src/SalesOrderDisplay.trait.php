@@ -14,7 +14,7 @@
 		 * @return string          HTML link to view Dplus Notes
 		 */
 		public function generate_loaddplusnoteslink(Order $order, $linenbr = '0') {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_dplusnotesrequesturl($order, $linenbr);
 
 			if ($order->can_edit()) {
@@ -22,8 +22,8 @@
 			} else {
 				$title = ($order->has_notes()) ? "View Order Notes" : "View Order Notes";
 			}
-			$content = $bootstrap->createicon('material-icons', '&#xE0B9;') . ' ' . $title;
-			$link = $bootstrap->openandclose('a', "href=$href|class=btn btn-default load-notes|title=$title|data-modal=$this->modal", $content);
+			$content = $bootstrap->icon('material-icons', '&#xE0B9;') . ' ' . $title;
+			$link = $bootstrap->create_element('a', "href=$href|class=btn btn-default load-notes|title=$title|data-modal=$this->modal", $content);
 			return $link;
 		}
 
@@ -63,15 +63,15 @@
 		 * @uses
 		 */
 		public function generate_loadheaderdocumentslink(Order $order, OrderDetail $orderdetail = null) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_documentsrequesturl($order, $orderdetail);
-			$icon = $bootstrap->createicon('fa fa-file-text');
+			$icon = $bootstrap->icon('fa fa-file-text');
 			$ajaxdata = "data-loadinto=.docs|data-focus=.docs|data-click=#documents-link";
 
 			if ($order->has_documents()) {
-				return $bootstrap->openandclose('a', "href=$href|class=btn btn-primary load-sales-docs|role=button|title=Click to view Documents|$ajaxdata", $icon. ' Show Documents');
+				return $bootstrap->create_element('a', "href=$href|class=btn btn-primary load-sales-docs|role=button|title=Click to view Documents|$ajaxdata", $icon. ' Show Documents');
 			} else {
-				return $bootstrap->openandclose('a', "href=#|class=btn btn-default|title=No Documents Available", $icon. ' 0 Documents Found');
+				return $bootstrap->create_element('a', "href=#|class=btn btn-default|title=No Documents Available", $icon. ' 0 Documents Found');
 			}
 		}
 
@@ -83,16 +83,16 @@
 		 * @uses
 		 */
 		public function generate_loaddetaildocumentslink(Order $order, OrderDetail $orderdetail = null) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_documentsrequesturl($order, $orderdetail);
-			$icon = $bootstrap->createicon('fa fa-file-text');
+			$icon = $bootstrap->icon('fa fa-file-text');
 			$ajaxdata = "data-loadinto=.docs|data-focus=.docs|data-click=#documents-link";
 			$documentsTF = ($orderdetail) ? $orderdetail->has_documents() : $order->has_documents();
 
 			if ($documentsTF) {
-				return $bootstrap->openandclose('a', "href=$href|class=h3 load-sales-docs|role=button|title=Click to view Documents|$ajaxdata", $icon);
+				return $bootstrap->create_element('a', "href=$href|class=h3 load-sales-docs|role=button|title=Click to view Documents|$ajaxdata", $icon);
 			} else {
-				return $bootstrap->openandclose('a', "href=#|class=h3 text-muted|title=No Documents Available", $icon);
+				return $bootstrap->create_element('a', "href=#|class=h3 text-muted|title=No Documents Available", $icon);
 			}
 		}
 
@@ -142,10 +142,10 @@
 		 * @return string        HTML link to view print page
 		 */
 		public function generate_viewprintlink(Order $order) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_viewprinturl($order);
-			$icon = $bootstrap->openandclose('span','class=h3', $bootstrap->createicon('glyphicon glyphicon-print'));
-			return $bootstrap->openandclose('a', "href=$href|target=_blank", $icon." View Printable Order");
+			$icon = $bootstrap->create_element('span','class=h3', $bootstrap->icon('glyphicon glyphicon-print'));
+			return $bootstrap->create_element('a', "href=$href|target=_blank", $icon." View Printable Order");
 		}
 
 		/**
@@ -192,10 +192,10 @@
 		 * @return string        HTML Link to view linked user actions
 		 */
 		public function generate_viewlinkeduseractionslink(Order $order) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_viewlinkeduseractionsurl($order);
-			$icon = $bootstrap->openandclose('span','class=h3', $bootstrap->createicon('glyphicon glyphicon-check'));
-			return $bootstrap->openandclose('a', "href=$href|target=_blank", $icon." View Associated Actions");
+			$icon = $bootstrap->create_element('span','class=h3', $bootstrap->icon('glyphicon glyphicon-check'));
+			return $bootstrap->create_element('a', "href=$href|target=_blank", $icon." View Associated Actions");
 		}
 
 		/**
@@ -217,10 +217,10 @@
 		 * @return string              HTML Link
 		 */
 		public function generate_viewdetaillink(Order $order, OrderDetail $detail) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_viewdetailurl($order, $detail);
-			$icon = $bootstrap->createicon('fa fa-info-circle');
-			return $bootstrap->openandclose('a', "href=$href|class=h3 view-item-details|data-itemid=$detail->itemid|data-kit=$detail->kititemflag|data-modal=#ajax-modal", $icon);
+			$icon = $bootstrap->icon('fa fa-info-circle');
+			return $bootstrap->create_element('a', "href=$href|class=h3 view-item-details|data-itemid=$detail->itemid|data-kit=$detail->kititemflag|data-modal=#ajax-modal", $icon);
 		}
 
 		/**
@@ -282,15 +282,15 @@
 		 * @return string        HTML Link
 		 */
 		public function generate_loadtrackinglink(Order $order) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_trackingrequesturl($order);
-			$icon = $bootstrap->openandclose('i','class=glyphicon glyphicon-plane hover|style=top: 3px; padding-right: 5px; font-size: 130%;|aria-hidden=true', '');
+			$icon = $bootstrap->create_element('i','class=glyphicon glyphicon-plane hover|style=top: 3px; padding-right: 5px; font-size: 130%;|aria-hidden=true', '');
 			$ajaxdata = "data-loadinto=.tracking|data-focus=.tracking|data-click=#tracking-tab-link";
 
 			if ($order->has_tracking()) {
-				return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-primary load-sales-tracking|title=Click to load tracking|$ajaxdata", $icon. ' Show Documents');
+				return $bootstrap->create_element('a', "href=$href|role=button|class=btn btn-primary load-sales-tracking|title=Click to load tracking|$ajaxdata", $icon. ' Show Documents');
 			} else {
-				return $bootstrap->openandclose('a', "href=#|class=btn btn-default|title=No Tracking Available", $icon. ' No Tracking Available');
+				return $bootstrap->create_element('a', "href=#|class=btn btn-default|title=No Tracking Available", $icon. ' No Tracking Available');
 			}
 		}
 

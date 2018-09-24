@@ -1,20 +1,47 @@
-<?php     
+<?php
+	/**
+	 * Class for dealing with Pagination for AJAX or non AJAX pages
+	 */
 	class Paginator {
 		use AttributeParser;
 		
+		/**
+		 * Page Number
+		 * @var int
+		 */
 		public $pagenbr;
-		public $ajaxdata;
+		
+		/**
+		 * Number of Items to paginate for
+		 * @var int
+		 */
 		public $count;
+		
+		/**
+		 * Page URL
+		 * @var Purl\Url
+		 */
 		public $pageurl;
+		
+		/**
+		 * AJAX DATA 
+		 * @var string
+		 */
+		public $ajaxdata;
+		
+		/**
+		 * Where to insert pagination path segment
+		 * @var string
+		 */
 		public $insertafter;
 		
 		/**
 		 * CONSTRUCTOR
-		 * @param int  $pagenbr     [description]
-		 * @param int  $count       Number of items used to determine the number of pages needed
+		 * @param int     $pagenbr     What Page Number the Page is on
+		 * @param int     $count       Number of items used to determine the number of pages needed
 		 * @param string  $pageurl     pageurl to manipulate
 		 * @param string  $insertafter if there isn't a urlsegmnet with page(1,3) in it then
-		 * @param string or false $ajaxdata    String with ajaxdata needed like data-focus='#ajax'
+		 * @param string  $ajaxdata    String with ajaxdata needed like data-focus='#ajax'
 		 */
 		public function __construct($pagenbr, $count, $pageurl, $insertafter, $ajaxdata = false) {
 			$this->pagenbr = $pagenbr;
@@ -35,7 +62,7 @@
 		 * @return string         url with page number
 		 */
 		public function paginate($pagenbr) {
-			return self::paginateurl($this->pageurl, $pagenbr, $this->insertafter);
+			return self::paginate_url($this->pageurl, $pagenbr, $this->insertafter);
 		}
 		
 		/**
@@ -47,7 +74,7 @@
 			$url->query->remove('display');
 			$href = $url->getUrl();
 			$ajaxdata = $this->generate_ajaxdataforcontento();
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			
 			$form = $bootstrap->open('div', 'class=form-group');
 			$form .= $bootstrap->label('', 'Results Per Page') . '&nbsp; &nbsp;';
@@ -55,9 +82,9 @@
 			
 			foreach (DplusWire::wire('config')->showonpageoptions as $val) {
 				if ($val == DplusWire::wire('session')->display) {
-					$form .= $bootstrap->openandclose('option',"value=$val|selected", $val);
+					$form .= $bootstrap->create_element('option',"value=$val|selected", $val);
 				} else {
-					$form .= $bootstrap->openandclose('option',"value=$val", $val);
+					$form .= $bootstrap->create_element('option',"value=$val", $val);
 				}
 			}
 			$form .= $bootstrap->close('select');
@@ -72,17 +99,17 @@
 		 * @return string html of the navigation through pages
 		 */
 		public function __toString() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$list = '';
 			$totalpages = ceil($this->count / DplusWire::wire('session')->display); 
 			if ($this->pagenbr == 1) {
-				$link = $bootstrap->openandclose('a', 'href=#|aria-label=Previous', '<span aria-hidden="true">&laquo;</span>');
-				$list .= $bootstrap->openandclose('li', 'class=disabled', $link);
+				$link = $bootstrap->create_element('a', 'href=#|aria-label=Previous', '<span aria-hidden="true">&laquo;</span>');
+				$list .= $bootstrap->create_element('li', 'class=disabled', $link);
 			} else {
 				$href = $this->paginate($this->pagenbr - 1);
 				$ajaxdetails = (!empty($this->ajaxdata)) ? "class=load-link|".$this->generate_ajaxdataforcontento() : '';
-				$link = $bootstrap->openandclose('a', "href=$href|aria-label=Previous|$ajaxdetails", '<span aria-hidden="true">&laquo;</span>');
-				$list .= $bootstrap->openandclose('li', '', $link);
+				$link = $bootstrap->create_element('a', "href=$href|aria-label=Previous|$ajaxdetails", '<span aria-hidden="true">&laquo;</span>');
+				$list .= $bootstrap->create_element('li', '', $link);
 			}
 			
 			for ($i = ($this->pagenbr - 3); $i < ($this->pagenbr + 4); $i++) {
@@ -115,9 +142,9 @@
 		}
 		
 		/* =============================================================
-		   STATIC FUNCTIONS 
-	   ============================================================ */
-	   /**
+			STATIC FUNCTIONS 
+		============================================================ */
+		/**
 		* Find what page number the $url is on
 		* @param  Purl\Url $url 
 		* @return int     Page Number
@@ -130,7 +157,14 @@
 			}
 		}
 		
-		public static function paginateurl($url, $pagenbr, $insertafter) {
+		/**
+		 * Return URL after modifying it to change / include the page number
+		 * @param  string $url         Destination URL
+		 * @param  int    $pagenbr     Page Number to change / include in URL
+		 * @param  string $insertafter URL segment to paginate after
+		 * @return string              Paginated URL
+		 */
+		public static function paginate_url($url, $pagenbr, $insertafter) {
 			if (strpos($url, 'page') !== false) {
 				$regex = "((page)\d{1,3})";
 				$replace = ($pagenbr > 1) ? $replace = "page".$pagenbr : "";

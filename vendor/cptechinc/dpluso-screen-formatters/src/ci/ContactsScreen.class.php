@@ -14,7 +14,7 @@
             PUBLIC FUNCTIONS
         ============================================================ */
         public function generate_screen() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = '';
 			
 			if (sizeof($this->json['data']) > 0) {
@@ -60,7 +60,7 @@
         }
         
         protected function generate_shiptosection() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = '';
             foreach ($this->json['data']['shipto'] as $shipto) {
                 $content .= $bootstrap->h3('',$shipto['shiptoleft']['shiptoid'].' - '.$shipto['shiptoleft']['shiptoname']);
@@ -92,7 +92,7 @@
         }
         
         protected function generate_contactsection() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = '';
             $content .= $bootstrap->h2('', 'Customer Contact Info');
             $tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
@@ -127,7 +127,7 @@
         }
         
         protected function generate_formsection() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = '';
             $content .= $bootstrap->h2('', 'Forms Information');
             $tb = new Table('class=table table-striped table-bordered table-condensed table-excel');

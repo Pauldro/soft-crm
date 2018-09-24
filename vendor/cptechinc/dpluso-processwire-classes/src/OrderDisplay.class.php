@@ -45,10 +45,10 @@
 		 * @return string        HTML Link
 		 */
 		public function generate_customershiptolink(Order $order) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_customershiptourl($order);
-			$icon = $bootstrap->createicon('fa fa-user');
-			return $bootstrap->openandclose('a', "href=$href|class=btn btn-block btn-primary", $icon. " Go to Customer Page");   
+			$icon = $bootstrap->icon('fa fa-user');
+			return $bootstrap->create_element('a', "href=$href|class=btn btn-block btn-primary", $icon. " Go to Customer Page");   
 		}
 		
 		/**

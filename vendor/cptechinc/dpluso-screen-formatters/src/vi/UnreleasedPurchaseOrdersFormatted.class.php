@@ -18,7 +18,7 @@
             PUBLIC FUNCTIONS
        	============================================================= */
         public function generate_screen() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = '';
 			$this->generate_tableblueprint();
 			$content = $bootstrap->div('class=row', $bootstrap->div('class=col-sm-4 form-group', $bootstrap->label('', 'Show Notes') . $this->generate_shownotesselect()));
@@ -179,7 +179,7 @@
         }
 		
 		public function generate_javascript() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$content = $bootstrap->open('script', '');
 				$content .= "\n";
                     if ($this->tableblueprint['detail']['maxrows'] < 2) {

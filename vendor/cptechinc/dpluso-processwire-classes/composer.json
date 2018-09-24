@@ -6,16 +6,6 @@
     "homepage": "http://github.com/cptechinc/dpluso-processwire-classes",
 	"autoload": {
 		"files": [
-			"src/helpers/DplusWire.class.php",
-			"src/helpers/DplusWire.class.php",
-			"src/traits/CreateFromObjectArray.trait.php",
-			"src/traits/CreateClassArray.trait.php",
-			"src/traits/AttributeParser.trait.php",
-			"src/traits/ThrowError.trait.php",
-			"src/traits/MagicMethods.trait.php",
-			"src/traits/Filterable.trait.php",
-			"src/helpers/HTMLWriter.class.php",
-			"src/helpers/HTMLMaker.class.php",
 			"src/Model/Vendor.class.php",
 			"src/Model/Contact.class.php",
 			"src/Model/Customer.class.php",
@@ -43,10 +33,7 @@
 			"src/UserActionsPanelContact.class.php",
 			"src/UserActionsPanelSalesOrder.class.php",
 			"src/UserActionsPanelQuote.class.php",
-			"src/Contento.class.php",
 			"src/JavaScripter.class.php",
-			"src/FormMaker.class.php",
-			"src/Table.class.php",
 			"src/OrderDisplay.class.php",
 			"src/OrderDisplay.interface.php",
 			"src/CartDisplay.class.php",
@@ -75,13 +62,11 @@
 			"src/QuotePanelCustomer.class.php",
 			"src/BookingsPanel.class.php",
 			"src/BookingsPanelCustomer.class.php",
-			"src/TablePageSorter.class.php",
-			"src/Paginator.class.php",
-			"src/Stringer.class.php",
 			"src/OrderCreditCard.class.php",
-			"src/QueryBuilder.php",
 			"src/ItemLookupModal.class.php",
-			"src/FormFieldsConfig.class.php"
+			"src/FormFieldsConfig.class.php",
+			"src/CustomerIndex.class.php",
+			"src/SigninLog.class.php"
 		]
 	}
 }

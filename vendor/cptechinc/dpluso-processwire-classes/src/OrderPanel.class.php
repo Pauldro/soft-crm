@@ -129,13 +129,13 @@
 		 * @return string        HTML for bootstrap popover
 		 */
 		public function generate_shiptopopover(Order $order) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$address = $order->shipaddress.'<br>';
 			$address .= (!empty($order->shipaddress2)) ? $order->shipaddress2."<br>" : '';
 			$address .= $order->shipcity.", ". $order->shipstate.' ' . $order->shipzip;
 			$attr = "tabindex=0|role=button|class=btn btn-default bordered btn-sm|data-toggle=popover";
 			$attr .= "|data-placement=top|data-trigger=focus|data-html=true|title=Ship-To Address|data-content=$address";
-			return $bootstrap->openandclose('a', $attr, '<b>?</b>');
+			return $bootstrap->create_element('a', $attr, '<b>?</b>');
 		}
 
 		/* =============================================================
@@ -146,11 +146,11 @@
 		 * @return string HTML Link
 		 */
 		public function generate_clearsearchlink() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_loadurl();
-			$icon = $bootstrap->createicon('fa fa-search-minus');
+			$icon = $bootstrap->icon('fa fa-search-minus');
 			$ajaxdata = $this->generate_ajaxdataforcontento();
-			return $bootstrap->openandclose('a', "href=$href|class=generate-load-link btn btn-warning btn-block|$ajaxdata", "Clear Search $icon");
+			return $bootstrap->create_element('a', "href=$href|class=generate-load-link btn btn-warning btn-block|$ajaxdata", "Clear Search $icon");
 		}
 
 		/**
@@ -158,10 +158,10 @@
 		 * @return [HTML Link
 		 */
 		public function generate_clearsortlink() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_clearsorturl();
 			$ajaxdata = $this->generate_ajaxdataforcontento();
-			return $bootstrap->openandclose('a', "href=$href|class=btn btn-warning btn-sm load-link|$ajaxdata", '(Clear Sort)');
+			return $bootstrap->create_element('a', "href=$href|class=btn btn-warning btn-sm load-link|$ajaxdata", '(Clear Sort)');
 		}
 
 		/**
@@ -179,10 +179,10 @@
 		 * @return string HTML link
 		 */
 		public function generate_loadlink() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_loadurl();
 			$ajaxdata = $this->generate_ajaxdataforcontento();
-			return $bootstrap->openandclose('a', "href=$href|class=generate-load-link|$ajaxdata", "Load Orders");
+			return $bootstrap->create_element('a', "href=$href|class=generate-load-link|$ajaxdata", "Load Orders");
 		}
 
 		/**

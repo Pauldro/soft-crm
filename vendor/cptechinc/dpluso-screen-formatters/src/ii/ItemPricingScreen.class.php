@@ -15,7 +15,7 @@
             PUBLIC FUNCTIONS
        	============================================================ */
         public function generate_screen() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = '';
             $content .= $this->generate_itemtable();
             
@@ -96,7 +96,7 @@
          * @return string HTML Table for Standard Pricing
          */
         protected function generate_standardpricingtable() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $tb = new Table('class=table table-striped table-condensed table-excel');
         	$tb->tablesection('thead');
         		$tb->tr();
@@ -125,7 +125,7 @@
          * @return string HTML Table for Item Summary
          */
         protected function generate_itemtable() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $tb = new Table('class=table table-striped table-condensed table-excel');
         	$tb->tr();
         		$tb->td('', '<b>Item ID</b>');

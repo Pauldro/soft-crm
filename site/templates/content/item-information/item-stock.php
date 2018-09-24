@@ -6,7 +6,7 @@
 	$itemlink->query = '';
 	
 	if ($config->ajax) {
-		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
+		echo $page->bootstrap->create_element('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
 	}
 
 	if (file_exists($stockfile))  {
@@ -33,7 +33,7 @@
 						$class = $config->textjustify[$jsonstock['columns'][$column]['datajustify']];
 						if ($column == "Item ID") {
 							$itemlink->query->setData(array("action" => "ii-select", "custID" => $custID, 'itemID' => $warehouse[$column]));;
-							$content = $page->bootstrap->openandclose('a', "href=".$itemlink->getUrl(), $warehouse[$column]);
+							$content = $page->bootstrap->create_element('a', "href=".$itemlink->getUrl(), $warehouse[$column]);
 						} else {
 							$content = $warehouse[$column];
 						}

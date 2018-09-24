@@ -20,7 +20,7 @@
        	============================================================ */
         public function generate_screen() {
 			$url = new \Purl\Url(DplusWire::wire('config')->pages->ajaxload."ii/ii-documents/quote/");
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = '';
 			$this->generate_tableblueprint();
 		    
@@ -66,7 +66,7 @@
 										$itemID = $this->json['itemid'];
 										$url->query->setData(array('itemID' => $this->json['itemid'], 'qnbr' => $qnbr, 'returnpage' => urlencode(DplusWire::wire('page')->fullURL->getUrl())));
 										$href = $url->getUrl();
-										$celldata .= "&nbsp; " . $bootstrap->openandclose('a', "href=$href|class=load-quote-documents|title=Load Quote Documents|aria-label=Load Quote Documents|data-qnbr=$qnbr|data-itemid=$itemID|data-type=ii-quotes", $bootstrap->createicon('fa fa-file-text'));
+										$celldata .= "&nbsp; " . $bootstrap->create_element('a', "href=$href|class=load-quote-documents|title=Load Quote Documents|aria-label=Load Quote Documents|data-qnbr=$qnbr|data-itemid=$itemID|data-type=ii-quotes", $bootstrap->icon('fa fa-file-text'));
 									}
 									$tb->td("colspan=$colspan|class=$class", $celldata);
             					} else {

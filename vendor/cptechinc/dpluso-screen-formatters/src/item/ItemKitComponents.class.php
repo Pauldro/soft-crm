@@ -16,7 +16,7 @@
           PUBLIC FUNCTIONS
        	============================================================ */
         public function generate_screen() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = '';
 			$tb = new Table('class=table item-pricing table-striped table-condensed table-bordered print-hidden');
 			$tb->tablesection('thead');

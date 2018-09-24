@@ -15,7 +15,7 @@
             PUBLIC FUNCTIONS
        	============================================================ */
         public function generate_screen() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = '';
             
             $content .= $bootstrap->open('div', 'class=row');

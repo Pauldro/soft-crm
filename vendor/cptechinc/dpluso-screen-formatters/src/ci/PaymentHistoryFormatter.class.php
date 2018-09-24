@@ -18,7 +18,7 @@
             PUBLIC FUNCTIONS
         ============================================================ */
         public function generate_screen() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
 			$this->generate_tableblueprint();
 
 			$tb = new Table('class=table table-striped table-bordered table-condensed table-excel|id=payments');
@@ -70,7 +70,7 @@
 
         public function generate_javascript() {
 			if (!$this->forprint) {
-				$bootstrap = new Contento();
+				$bootstrap = new HTMLWriter();
 				$content = $bootstrap->open('script', '');
 					$content .= "\n";
 					if ($this->tableblueprint['detail']['maxrows'] == 1) {

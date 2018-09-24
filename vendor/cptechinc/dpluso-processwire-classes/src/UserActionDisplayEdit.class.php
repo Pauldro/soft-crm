@@ -9,14 +9,14 @@
         * @return string             HTML buttons with an input  to manipulate
         */
         public function generate_selectsubtype(UserAction $action) {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $subtypes = DplusWire::wire('pages')->get("/config/actions/types/$action->actiontype/")->children();
             $content = '';
             foreach ($subtypes as $subtype) {
                 if ($subtype->name == $action->actionsubtype) {
-                    $content .= $bootstrap->openandclose('button', "class=btn btn-primary select-button-choice btn-sm|type=button|data-value=$subtype->name", $subtype->subtypeicon . ' '. $subtype->actionsubtypelabel);
+                    $content .= $bootstrap->create_element('button', "class=btn btn-primary select-button-choice btn-sm|type=button|data-value=$subtype->name", $subtype->subtypeicon . ' '. $subtype->actionsubtypelabel);
                 } else {
-                    $content .= $bootstrap->openandclose('button', "class=btn btn-default select-button-choice btn-sm|type=button|data-value=$subtype->name", $subtype->subtypeicon . ' '. $subtype->actionsubtypelabel);
+                    $content .= $bootstrap->create_element('button', "class=btn btn-default select-button-choice btn-sm|type=button|data-value=$subtype->name", $subtype->subtypeicon . ' '. $subtype->actionsubtypelabel);
                 }
             }
             $content .= $bootstrap->open('input', "type=hidden|class=select-button-value required|name=subtype|value=$action->actionsubtype");
@@ -29,7 +29,7 @@
          * @return string                 HTML SELECT
          */
         public function generate_selectsalesperson($salespersonID) {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $salespersonarray = json_decode(file_get_contents(DplusWire::wire('config')->companyfiles."json/salespersontbl.json"), true);
 			$salesids = array_keys($salespersonarray['data']);
 			$salespeople = array();

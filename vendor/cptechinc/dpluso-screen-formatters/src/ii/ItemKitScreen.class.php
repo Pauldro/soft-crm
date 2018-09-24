@@ -15,7 +15,7 @@
             PUBLIC FUNCTIONS
        	============================================================ */
         public function generate_screen() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = $bootstrap->p('', $bootstrap->b('', 'Kit Qty:') . " " . $this->json['qtyneeded']);
             
             foreach ($this->json['data']['component'] as $component) {

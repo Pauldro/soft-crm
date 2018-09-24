@@ -1,6 +1,6 @@
 <div class="col-md-12">
 	<?php if ($config->ajax) : ?>
-		<?php echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version')); ?>
+		<?php echo $page->bootstrap->create_element('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version')); ?>
 		<ul class="nav nav-tabs nav_tabs">
 			<li class="active"><a href="#vendor" data-toggle="tab" aria-expanded="true">Vendor Costs</a></li>
 			<li><a href="#subs" data-toggle="tab" aria-expanded="false">Substitutions</a></li>

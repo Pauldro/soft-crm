@@ -7,15 +7,6 @@ namespace Composer\Autoload;
 class ComposerStaticInitf9c34235226de117fa23ba132ae64d6f
 {
     public static $files = array (
-        'f76ccf83e6c40aac2fdaadc64a641690' => __DIR__ . '/../..' . '/src/helpers/DplusWire.class.php',
-        '56345177f5f7f787cb6c9ae1480ca922' => __DIR__ . '/../..' . '/src/traits/CreateFromObjectArray.trait.php',
-        'ca14a402528efd4be81afb313b854d0b' => __DIR__ . '/../..' . '/src/traits/CreateClassArray.trait.php',
-        '664f3baa9d36eeebdcf11afd6014920b' => __DIR__ . '/../..' . '/src/traits/AttributeParser.trait.php',
-        '37f14f34aaba400ed3b1f27dc8c22515' => __DIR__ . '/../..' . '/src/traits/ThrowError.trait.php',
-        'b863590895f481ceb8285e38fd229ee7' => __DIR__ . '/../..' . '/src/traits/MagicMethods.trait.php',
-        'f5009746d9e3c4810b7260550777b79e' => __DIR__ . '/../..' . '/src/traits/Filterable.trait.php',
-        '9fb69174218135c2d9ec29627989c03e' => __DIR__ . '/../..' . '/src/helpers/HTMLWriter.class.php',
-        '68d84f97221f5e4d98778ca00b28b054' => __DIR__ . '/../..' . '/src/helpers/HTMLMaker.class.php',
         '7b7bc955fba3a7e831daa452678417b2' => __DIR__ . '/../..' . '/src/Model/Vendor.class.php',
         '16549aec784a66a31e2f46525b4e1d36' => __DIR__ . '/../..' . '/src/Model/Contact.class.php',
         '34090432ba33ef4a6717b80199aa69f2' => __DIR__ . '/../..' . '/src/Model/Customer.class.php',
@@ -43,10 +34,7 @@ class ComposerStaticInitf9c34235226de117fa23ba132ae64d6f
         'ddb460775d744f6e4a2771bee4decbb1' => __DIR__ . '/../..' . '/src/UserActionsPanelContact.class.php',
         '007ea2e0502804b422adfc565cfae4ff' => __DIR__ . '/../..' . '/src/UserActionsPanelSalesOrder.class.php',
         '72669303e07f3a90b0de10980347a33f' => __DIR__ . '/../..' . '/src/UserActionsPanelQuote.class.php',
-        'eb8d03c53cdb72c147e09f1b0f0a4664' => __DIR__ . '/../..' . '/src/Contento.class.php',
         '26c22bc56aaa7248a15627f87cfa2b84' => __DIR__ . '/../..' . '/src/JavaScripter.class.php',
-        '844e4b9a6c755a6268a9eee4231dfbc0' => __DIR__ . '/../..' . '/src/FormMaker.class.php',
-        'aa379ad6ccdcfad1d4e2e16b532e1ce1' => __DIR__ . '/../..' . '/src/Table.class.php',
         '61847bef05597f87573b14835250af2f' => __DIR__ . '/../..' . '/src/OrderDisplay.class.php',
         'ba02c795ffe37585bc5af7815cde5054' => __DIR__ . '/../..' . '/src/OrderDisplay.interface.php',
         'fa7f4f076b4c9d4caba49aff314dad04' => __DIR__ . '/../..' . '/src/CartDisplay.class.php',
@@ -74,13 +62,11 @@ class ComposerStaticInitf9c34235226de117fa23ba132ae64d6f
         'e69e427b906be5f7ae60104f00b7179d' => __DIR__ . '/../..' . '/src/QuotePanelCustomer.class.php',
         '83bb03073826911fbcbd5db8dbd2a370' => __DIR__ . '/../..' . '/src/BookingsPanel.class.php',
         '017fc6d5d465c15ef778ad33764a5c59' => __DIR__ . '/../..' . '/src/BookingsPanelCustomer.class.php',
-        '0a6ffebbefbb4d19014ef0f9b55315c2' => __DIR__ . '/../..' . '/src/TablePageSorter.class.php',
-        '3197c9ce28500f61544ef7d371ad70aa' => __DIR__ . '/../..' . '/src/Paginator.class.php',
-        '158870b1f2d9e740dbb61458a8e9f8e4' => __DIR__ . '/../..' . '/src/Stringer.class.php',
         '440ec72fe751892a61acbb76b5815831' => __DIR__ . '/../..' . '/src/OrderCreditCard.class.php',
-        'b390a1d19d06d3b904a199423f7333d5' => __DIR__ . '/../..' . '/src/QueryBuilder.php',
         'fe9c33ba53cea7f108c2733e70ba57fd' => __DIR__ . '/../..' . '/src/ItemLookupModal.class.php',
         '5f966af3ffa411ee7d6988bcbf586492' => __DIR__ . '/../..' . '/src/FormFieldsConfig.class.php',
+        '2f8c495cc326db5bb383b0aa04f18e23' => __DIR__ . '/../..' . '/src/CustomerIndex.class.php',
+        'cef286c9f172d205376812c7fafb31b2' => __DIR__ . '/../..' . '/src/SigninLog.class.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

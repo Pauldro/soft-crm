@@ -654,12 +654,12 @@
 		 * @return string  HTML Link
 		 */
 		public function generate_refreshlink() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_refreshurl();
-			$icon = $bootstrap->createicon('material-icons md-18', '&#xE86A;');
+			$icon = $bootstrap->icon('material-icons md-18', '&#xE86A;');
 			$ajaxdata = $this->generate_ajaxdataforcontento();
 			$ajaxclass = $this->inmodal ? 'modal-load' : 'load-link';
-			return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs $ajaxclass actions-refresh pull-right hidden-print|title=button|title=Refresh Actions|aria-label=Refresh Actions|$ajaxdata|data-modal=$this->modal", $icon);
+			return $bootstrap->create_element('a', "href=$href|class=btn btn-info btn-xs $ajaxclass actions-refresh pull-right hidden-print|title=button|title=Refresh Actions|aria-label=Refresh Actions|$ajaxdata|data-modal=$this->modal", $icon);
 		}
 
 		/**
@@ -667,14 +667,14 @@
 		 * @return string HTML Link
 		 */
 		public function generate_addlink() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_addactionurl();
-			$icon = $bootstrap->createicon('material-icons md-18', '&#xE146;');
+			$icon = $bootstrap->icon('material-icons md-18', '&#xE146;');
 			if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
 				$ajaxclass = $this->inmodal ? 'modal-load' : 'load-into-modal';
-				return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs $ajaxclass pull-right hidden-print|data-modal=$this->modal|role=button|title=Add Action", $icon);
+				return $bootstrap->create_element('a', "href=$href|class=btn btn-info btn-xs $ajaxclass pull-right hidden-print|data-modal=$this->modal|role=button|title=Add Action", $icon);
 			}
-			return $bootstrap->openandclose('a', "href=$href|class=btn btn-info btn-xs add-action pull-right hidden-print|data-modal=$this->modal|role=button|title=Add Action", $icon);
+			return $bootstrap->create_element('a', "href=$href|class=btn btn-info btn-xs add-action pull-right hidden-print|data-modal=$this->modal|role=button|title=Add Action", $icon);
 		}
 
 		/**
@@ -682,11 +682,11 @@
 		 * @return string  HTML Link
 		 */
 		public function generate_clearfilterlink() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_loadurl();
-			$icon = $bootstrap->createicon('fa fa-times');
+			$icon = $bootstrap->icon('fa fa-times');
 			$ajaxdata = $this->generate_ajaxdataforcontento();
-			return $bootstrap->openandclose('a', "href=$href|class=load-link btn btn-sm btn-warning btn-block|$ajaxdata", "Clear Filter $icon");
+			return $bootstrap->create_element('a', "href=$href|class=load-link btn btn-sm btn-warning btn-block|$ajaxdata", "Clear Filter $icon");
 		}
 
 		/**
@@ -694,19 +694,19 @@
 		 * @return string  HTML Link to Print Page
 		 */
 		public function generate_printlink() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_refreshurl();
-			$icon = $bootstrap->createicon('glyphicon glyphicon-print');
-			return $bootstrap->openandclose('a', "href=$href|class=h3|target=_blank", $icon." View Printable");
+			$icon = $bootstrap->icon('glyphicon glyphicon-print');
+			return $bootstrap->create_element('a', "href=$href|class=h3|target=_blank", $icon." View Printable");
 		}
 
 
 		public function generate_completetasklink(UserAction $task) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_viewactionjsonurl($task);
-			$icon = $bootstrap->createicon('fa fa-check-circle');
+			$icon = $bootstrap->icon('fa fa-check-circle');
 			$icon .= ' <span class="sr-only">Mark as Complete</span>';
-			return $bootstrap->openandclose('a', "href=$href|role=button|class=btn btn-xs btn-primary complete-action|title=Mark Task as Complete", $icon);
+			return $bootstrap->create_element('a', "href=$href|role=button|class=btn btn-xs btn-primary complete-action|title=Mark Task as Complete", $icon);
 		}
 
 		/**
@@ -714,7 +714,7 @@
 		 * @return string HTML Link
 		 */
 		public function generate_legend() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$tb = new Table('class=table table-bordered table-condensed table-striped');
 			$tb->tr('class=bg-warning')->td('', 'Task Overdue');
 			$tb->tr('class=bg-info')->td('', 'Task Rescheduled');
@@ -722,7 +722,7 @@
 			$content = str_replace('"', "'", $tb->close());
 			$attr = "tabindex=0|role=button|class=btn btn-sm btn-info|data-toggle=popover|data-placement=bottom|data-trigger=focus";
 			$attr .= "|data-html=true|title=Icons Definition|data-content=$content";
-			return $bootstrap->openandclose('a', $attr, 'Icon Definitions');
+			return $bootstrap->create_element('a', $attr, 'Icon Definitions');
 		}
 
 		/**
@@ -756,7 +756,7 @@
 		 * @uses Contento
 		 */
 		public function generate_calendar($month, $year) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 
 			$dateComponents = getdate();
 			// Create array containing abbreviations of days of week.

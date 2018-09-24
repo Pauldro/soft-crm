@@ -180,10 +180,10 @@
 		}
 
 		public function generate_clearsearchlink() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_loadurl();
-			$icon = $bootstrap->createicon('fa fa-search-minus');
+			$icon = $bootstrap->icon('fa fa-search-minus');
             $ajaxdata = $this->generate_ajaxdataforcontento();
-			return $bootstrap->openandclose('a', "href=$href|class=load-link btn btn-warning btn-block|$ajaxdata", "Clear Search $icon");
+			return $bootstrap->create_element('a', "href=$href|class=load-link btn btn-warning btn-block|$ajaxdata", "Clear Search $icon");
 		}
     }

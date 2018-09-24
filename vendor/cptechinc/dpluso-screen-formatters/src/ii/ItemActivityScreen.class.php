@@ -15,7 +15,7 @@
             PUBLIC FUNCTIONS
        	============================================================= */
         public function generate_screen() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = '';
             
             foreach($this->json['data'] as $warehouse) {
@@ -44,7 +44,7 @@
         }
         
         public function generate_javascript() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$content = $bootstrap->open('script', '');
             
             if (!$this->forprint) {

@@ -13,7 +13,7 @@
 				$columns = array_keys($shiptojson['columns']);
 				$link = $config->pages->customer."redir/?action=ci-customer&custID=$custID";
 				$attr = "href=$link|class=btn btn-sm btn-primary";
-				echo $page->bootstrap->openandclose('a', $attr, '<i class="glyphicon glyphicon-remove"></i> Clear Ship-to');
+				echo $page->bootstrap->create_element('a', $attr, '<i class="glyphicon glyphicon-remove"></i> Clear Ship-to');
 				$tb = new Table("class=table table-striped table-bordered table-condensed table-excel|id=shiptolist");
 				$tb->tablesection('thead');
 					$tb->tr();
@@ -30,7 +30,7 @@
 							$content = '';
 							if ($column == 'shipid') {
 								$link = $config->pages->customer.'redir/?action=ci-shipto-info&custID='.$custID.'&shipID='.$shipto['shipid'];
-								$content = $page->bootstrap->openandclose('a', "href=$link|class=btn btn-sm btn-primary", $shipto[$column]);
+								$content = $page->bootstrap->create_element('a', "href=$link|class=btn btn-sm btn-primary", $shipto[$column]);
 							} else {
 								$content = $shipto[$column];
 							}

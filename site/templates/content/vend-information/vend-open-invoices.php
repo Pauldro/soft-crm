@@ -3,7 +3,7 @@
 	// $invoicefile = $config->jsonfilepath."viopen-viopeninv.json";
 
 	if ($config->ajax) {
-		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
+		echo $page->bootstrap->create_element('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
 	}
 	
 	if (file_exists($invoicefile)) {

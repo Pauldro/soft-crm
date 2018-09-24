@@ -95,7 +95,7 @@
 		}
 
 		public function generate_expandorcollapselink(Order $order) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 
 			if ($order->orderno == $this->activeID) {
 				$href = $this->generate_closedetailsurl($order);
@@ -108,7 +108,7 @@
 				$addclass = 'generate-load-link';
 				$icon = '+';
 			}
-			return $bootstrap->openandclose('a', "href=$href|class=btn btn-sm btn-primary $addclass|$ajaxdata", $icon);
+			return $bootstrap->create_element('a', "href=$href|class=btn btn-sm btn-primary $addclass|$ajaxdata", $icon);
 		}
 
 		public function generate_rowclass(Order $order) {
@@ -125,19 +125,19 @@
 		}
 
 		public function generate_clearsearchlink() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_loadurl();
-			$icon = $bootstrap->createicon('fa fa-search-minus');
+			$icon = $bootstrap->icon('fa fa-search-minus');
 			$ajaxdata = $this->generate_ajaxdataforcontento();
-			return $bootstrap->openandclose('a', "href=$href|class=load-link btn btn-warning btn-block|$ajaxdata", "Clear Search $icon");
+			return $bootstrap->create_element('a', "href=$href|class=load-link btn btn-warning btn-block|$ajaxdata", "Clear Search $icon");
 		}
 
 		public function generate_refreshlink() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$href = $this->generate_loadurl();
-			$icon = $bootstrap->createicon('fa fa-refresh');
+			$icon = $bootstrap->icon('fa fa-refresh');
 			$ajaxdata = $this->generate_ajaxdataforcontento();
-			return $bootstrap->openandclose('a', "href=$href|class=load-and-show|$ajaxdata", "$icon Refresh History");
+			return $bootstrap->create_element('a', "href=$href|class=load-and-show|$ajaxdata", "$icon Refresh History");
 		}
 
 		public function generate_closedetailsurl() {
@@ -180,7 +180,7 @@
 			$form->input("type=hidden|name=itemID|value=$detail->itemid");
 			$form->input("type=hidden|name=qty|value=".intval($detail->qty));
 			$form->input("type=hidden|name=desc|value=$detail->desc1");
-			$form->button("type=submit|class=btn btn-primary btn-xs", $form->bootstrap->createicon('glyphicon glyphicon-shopping-cart'). $form->bootstrap->openandclose('span', 'class=sr-only', 'Submit Reorder'));
+			$form->button("type=submit|class=btn btn-primary btn-xs", $form->bootstrap->icon('glyphicon glyphicon-shopping-cart'). $form->bootstrap->create_element('span', 'class=sr-only', 'Submit Reorder'));
 			return $form->finish();
 		}
 		
