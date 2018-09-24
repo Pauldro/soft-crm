@@ -35,10 +35,3 @@
 		'sales-manager' => 'slsmgr',
 		'warehouse' => 'whse'
 	);
-	
-	$config->rolehomepages = array(
-		'default' => $config->pages->dashboard,
-		'sales-rep' => $config->pages->dashboard,
-		'sales-manager' => $config->pages->dashboard,
-		'warehouse' => $config->pages->warehouse
-	);
