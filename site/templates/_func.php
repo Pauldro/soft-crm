@@ -317,6 +317,24 @@
 		fwrite($handle, $file);
 		fclose($handle);
 	}
+	
+/**
+ * Writes an array one datem per line into the dplus directory
+ * @param  array $data      Array of Lines for the request
+ * @param  string $filename What to name File
+ * @return void
+ */
+function write_dplusfile($data, $filename) {
+	$file = '';
+	echo var_dump($data);
+	foreach ($data as $line) {
+		$file .= $line . "\n";
+	}
+	$vard = "/usr/capsys/ecomm/" . $filename;
+	$handle = fopen($vard, "w") or die("cant open file");
+	fwrite($handle, $file);
+	fclose($handle);
+}
 
 	function writedataformultitems($data, $items, $qtys) {
 		for ($i = 0; $i < sizeof($items); $i++) {

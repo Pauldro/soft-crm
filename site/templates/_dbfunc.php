@@ -3829,8 +3829,8 @@
 			$vendquery = (new QueryBuilder())->table('itemsearch');
 			$vendquery->field('itemid');
 			$vendquery->where('itemid', $itemID);
-			$vendquery-->where('origintype', 'V');
-			$vendquery-->where('originID', $vendorID);
+			$vendquery->where('origintype', 'V');
+			$vendquery->where('originID', $vendorID);
 			$q->where(
 				$q
 				->orExpr()
@@ -4995,6 +4995,32 @@
 	}
 	
 	/**
+	 * Returns an array of total picked Qtys for each pallet of all the barcodes picked for this Order and Item ID
+	 * @param  string $sessionID Session Identifier
+	 * @param  string $ordn      Sales Order Number
+	 * @param  string $itemID    Item ID
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return array             Total Qty of all the barcodes picked for this Order and Item ID
+	 */
+	function get_orderpickeditemqtytotalsbypallet($sessionID, $ordn, $itemID, $debug = false) {
+		$q = (new QueryBuilder())->table('whseitempick');
+		$q->field('palletnbr');
+		$q->field($q->expr('SUM(qty) AS qty'));
+		$q->where('sessionid', $sessionID);
+		$q->where('ordn', $ordn);
+		$q->where('itemid', $itemID);
+		$q->group('palletnbr');
+		$sql = DplusWire::wire('database')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}
+	
+	/**
 	 * Inserts a new record into the database for the new barcode added for this item / Sales Order
 	 * // NOTE Logic should be added before using this function
 	 * @param  string $sessionID Session Identifier
@@ -5004,7 +5030,7 @@
 	 * @param  bool   $debug     Run in debug? If so, return SQL Query
 	 * @return int               Number of Records Inserted 1 | 0
 	 */
-	function insert_orderpickedbarcode($sessionID, $ordn, $barcode, $palletnbr = 0, $debug = false) {
+	function insert_orderpickedbarcode($sessionID, $ordn, $barcode, $palletnbr = 1, $debug = false) {
 		$barcodeditem = BarcodedItem::load($barcode);
 		$pickitem = Pick_SalesOrderDetail::load($sessionID);
 		$recordnumber = $pickitem->get_pickedmaxrecordnumber() + 1;
@@ -5037,7 +5063,7 @@
 	 * @param  bool   $debug     Run in debug? If so, return SQL Query
 	 * @return int               Number of Records affected 1 | 0
 	 */
-	function remove_orderpickedbarcode($sessionID, $ordn, $barcode, $palletnbr = 0, $debug = false) {
+	function remove_orderpickedbarcode($sessionID, $ordn, $barcode, $palletnbr = 1, $debug = false) {
 		$barcodeditem = BarcodedItem::load($barcode);
 		$pickitem = Pick_SalesOrderDetail::load($sessionID);
 		
@@ -5047,7 +5073,7 @@
 		$q->where('ordn', $ordn);
 		$q->where('barcode', $barcode);
 		$q->where('palletnbr', $palletnbr);
-		$q->where('recordnumber', $pickitem->get_pickedmaxrecordnumberforbarcode($barcode));
+		$q->where('recordnumber', $pickitem->get_pickedmaxrecordnumberforbarcode($barcode, $palletnbr));
 		$sql = DplusWire::wire('database')->prepare($q->render());
 		
 		if ($debug) {
@@ -5089,16 +5115,18 @@
 	 * @param  string $ordn      Sales Order Number
 	 * @param  string $itemID    Item ID
 	 * @param  string $barcode   Barcode
+	 * @param  int    $palletnbr Pallet Nbr
 	 * @param  bool   $debug     Run in debug? If so, return SQL Query
 	 * @return int               whseitempick MAX record number for that SessionID, Sales Order, Item ID, barcode
 	 */
-	function get_orderpickedbarcodemaxrecordnumber($sessionID, $ordn, $itemID, $barcode, $debug = false) {
+	function get_orderpickedbarcodemaxrecordnumber($sessionID, $ordn, $itemID, $barcode, $palletnbr, $debug = false) {
 		$q = (new QueryBuilder())->table('whseitempick');
 		$q->field($q->expr('MAX(recordnumber)'));
 		$q->where('sessionid', $sessionID);
 		$q->where('ordn', $ordn);
 		$q->where('itemid', $itemID);
 		$q->where('barcode', $barcode);
+		$q->where('palletnbr', $palletnbr);
 		$sql = DplusWire::wire('database')->prepare($q->render());
 		
 		if ($debug) {

@@ -1,6 +1,8 @@
 <?php
     if (!WhseSession::does_sessionexist(session_id())) {
         WhseSession::start_session(session_id(), $page->fullURL);
+        $whsesession = WhseSession::load(session_id());
+        $whsesession->start_pickingsession();
         $page->body = $config->paths->content."warehouse/picking/choose-sales-order-form.php";
     } else {
         $whsesession = WhseSession::load(session_id());
@@ -19,12 +21,14 @@
                 }
             } else {
                 if (Pick_SalesOrderDetail::has_detailstopick(session_id())) { // ARE THERE ITEMS ASSIGNED TO USER TO PICK?
+                    $pickorder = new PickSalesOrderDisplay(session_id(), $whsesession->ordernbr, $page->fullURL);
                     $pickitem = Pick_SalesOrderDetail::load(session_id());
                     $pickitem->init();
                     $config->scripts->append(hashtemplatefile('scripts/warehouse/pick-order.js'));
                     $page->body = $config->paths->content."warehouse/picking/pick-order/item-pick-screen.php";
                 } elseif ($whsesession->is_orderfinished()) { // IS THE USER DONE WITH THE ASSIGNED ORDER?
                     $order = Pick_SalesOrder::load($input->get->text('ordn'));
+                    $pickorder = new PickSalesOrderDisplay(session_id(), $whsesession->ordernbr, $page->fullURL);
                     $config->scripts->append(hashtemplatefile('scripts/warehouse/pick-order.js'));
                     $page->body = $config->paths->content."warehouse/picking/finished-order-screen.php";
                 } else {
