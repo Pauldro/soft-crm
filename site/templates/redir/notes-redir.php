@@ -30,23 +30,23 @@
 	*
 	* switch ($action) {
 	*	case 'get-order-notes':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		LQNOTE=SORD
 	*		KEY1=$ordn
 	*		KEY2=$linenbr
 	*		break;
 	*	case 'get-quote-notes':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		LQNOTE=QUOT
 	*		KEY1=$qnbr
 	*		KEY2=$linenbr
 	*		break;
 	*	case 'get-cart-notes':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		LOAD CART NOTES
 	*		break;
 	*	case 'edit-note':
-	*		DBNAME=>$config->dbName
+	*		DBNAME=>$config->dplusdbname
 	*		RQNOTE=$rectype
 	*		KEY1=$key1,
 	*		KEY2=$key2
@@ -57,7 +57,7 @@
 	*		FORM5=$form5
 	*		break;
 	*	case 'add-note':
-	*		DBNAME=>$config->dbName
+	*		DBNAME=>$config->dplusdbname
 	*		RQNOTE=$rectype
 	*		KEY1=$key1,
 	*		KEY2=$key2
@@ -74,20 +74,20 @@
 		case 'get-order-notes':
 			$ordn = $input->get->text('ordn');
 			$linenbr = $input->get->text('linenbr');
-			$data = array('DBNAME' => $config->dbName, 'LQNOTE' => 'SORD', 'KEY1' => $ordn, 'KEY2' => $linenbr);
+			$data = array('DBNAME' => $config->dplusdbname, 'LQNOTE' => 'SORD', 'KEY1' => $ordn, 'KEY2' => $linenbr);
 			$session->loc = $config->pages->ajax."load/notes/dplus/order/?ordn=".$ordn."&linenbr=".$linenbr;
 			if ($config->modal) {$session->loc .= "&modal=modal";}
 			break;
 		case 'get-quote-notes':
 			$qnbr = $input->get->text('qnbr');
 			$linenbr = $input->get->text('linenbr');
-			$data = array('DBNAME' => $config->dbName, 'LQNOTE' => 'QUOT', 'KEY1' => $qnbr, 'KEY2' => $linenbr);
+			$data = array('DBNAME' => $config->dplusdbname, 'LQNOTE' => 'QUOT', 'KEY1' => $qnbr, 'KEY2' => $linenbr);
 			$session->loc = $config->pages->ajax."load/notes/dplus/quote/?qnbr=".$qnbr."&linenbr=".$linenbr;
 			if ($config->modal) {$session->loc .= "&modal=modal";}
 			break;
 		case 'get-cart-notes':
 			$linenbr = $input->get->text('linenbr');
-			$data = array('DBNAME' => $config->dbName, 'LOAD CART NOTES' => false);
+			$data = array('DBNAME' => $config->dplusdbname, 'LOAD CART NOTES' => false);
 			$session->loc = $config->pages->ajax."load/notes/dplus/cart/?linenbr=".$linenbr;
 			if ($config->modal) {$session->loc .= "&modal=modal";}
 			break;
@@ -106,7 +106,7 @@
 			$session->sql = $note->update();
 
 			$data = array(
-				'DBNAME' => $config->dbName,
+				'DBNAME' => $config->dplusdbname,
 				'RQNOTE' => $note->rectype,
 				'KEY1' => $note->key1,
 				'KEY2' => $note->key2,
@@ -134,7 +134,7 @@
 			$session->sql = $note->create();
 
 			$data = array(
-				'DBNAME' => $config->dbName,
+				'DBNAME' => $config->dplusdbname,
 				'RQNOTE' => $note->rectype,
 				'KEY1' => $note->key1,
 				'KEY2' => $note->key2,

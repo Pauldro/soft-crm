@@ -21,7 +21,7 @@
 	*
 	* switch ($action) {
 	* 	case 'add-customer':
-	* 		DBNAME=$config->DBNAME
+	* 		DBNAME=$config->dplusdbname
 	* 		NEWCUSTOMER
 	*		BILLTONAME=$customer-name
 	*		BILLTOADDRESS1=$customer-addr1
@@ -61,21 +61,21 @@
 	*		NOTES=
 	*		break;
 	* 	case 'load-new-customer':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		CUSTID=$custID
 	*		break;
 	*	case 'load-customer': // START DEPRECATING 1/25/2018
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		CUSTID=$custID
 	*		break;
 	*	case 'shop-as-customer':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		CARTCUST
 	*		CUSTID=$custID
 	*		SHIPID=$shipID
 	*		break;
 	*	case 'add-contact':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		ADDCONTACT
 	*		CUSTID=$custID
 	*		SHIPID=$shipID
@@ -93,7 +93,7 @@
 	*		CERCONTACT= Y | N
 	*		break;
 	*	case 'edit-contact':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		EDITCONTACT
 	*		CUSTID=$custID
 	*		SHIPID=$shipID
@@ -105,37 +105,37 @@
 	*		EMAIL=$email
 	* 		break;
 	* 	case 'ci-buttons':
-	* 		DBNAME=$config->DBNAME
+	* 		DBNAME=$config->dplusdbname
 	*		CIBUTTONS
 	*		break;
 	*	case 'ci-customer':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		CICUSTOMER
 	*		CUSTID=$custID
 	* 		break;
 	* 	case 'ci-shiptos':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		CISHIPTOLIST n2zz729p
 	*		CUSTID=$custID
 	* 		break;
 	* 	case 'ci-shipto-info':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		CISHIPTOINFO n2zz730p
 	*		CUSTID=$custID
 	*		SHIPID=$shipID
 	* 		break;
 	* 	case 'ci-shipto-buttons':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		CISTBUTTONS
 	* 		break;
 	* 	case 'ci-pricing':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		CIPRICE n2zz725p
 	*		ITEMID=$itemID
 	*		CUSTID=$custID
 	* 		break;
 	* 	case 'ci-contacts':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		CICONTACT n2zz732p
 	*		CUSTID=$custID
 	*		SHIPID=$shipID
@@ -251,7 +251,7 @@
 			$shipto->create_custpermpermission($user->loginid);
 
 			$data = array(
-				'DBNAME' => $config->dbName,
+				'DBNAME' => $config->dplusdbname,
 				'NEWCUSTOMER' => false,
 				'BILLTONAME' => $customer->name,
 				'BILLTOADDRESS1' => $customer->addr1,
@@ -304,23 +304,23 @@
 
 			if (!empty($shipID)) {
 				$session->loc = $config->pages->custinfo."$custID/shipto-$shipID/";
-				$data = array('DBNAME' => $config->dbName, 'CISHIPTOINFO' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID);
+				$data = array('DBNAME' => $config->dplusdbname, 'CISHIPTOINFO' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID);
 			} else {
-				$data = array('DBNAME' => $config->dbName, 'CICUSTOMER' => false, 'CUSTID' => $custID);
+				$data = array('DBNAME' => $config->dplusdbname, 'CICUSTOMER' => false, 'CUSTID' => $custID);
 			}
 			break;
 		case 'load-customer':
 			$session->loc = $config->pages->custinfo."$custID/";
 			if (!empty($shipID)) {
 				$session->loc = $config->pages->custinfo."$custID/shipto-$shipID/";
-				$data = array('DBNAME' => $config->dbName, 'CISHIPTOINFO' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID);
+				$data = array('DBNAME' => $config->dplusdbname, 'CISHIPTOINFO' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID);
 			} else {
-				$data = array('DBNAME' => $config->dbName, 'CICUSTOMER' => false, 'CUSTID' => $custID);
+				$data = array('DBNAME' => $config->dplusdbname, 'CICUSTOMER' => false, 'CUSTID' => $custID);
 			}
 			break;
 		case 'shop-as-customer':
 			$session->custID = $custID;
-			$data = array('DBNAME' => $config->dbName, 'CARTCUST' => false, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'CARTCUST' => false, 'CUSTID' => $custID);
             if (!empty($shipID)) {$data['SHIPID'] = $shipID; $session->shipID = $shipID; }
 			if (!has_carthead(session_id())) {
 				$session->sql = insert_carthead(session_id(), $custID, $shipID);
@@ -353,7 +353,7 @@
 			$contact->create();
 
 			$data = array(
-				'DBNAME' => $config->dbName,
+				'DBNAME' => $config->dplusdbname,
 				'ADDCONTACT' => false,
 				'CUSTID' => $custID,
 				'SHIPID' => $shipID,
@@ -397,7 +397,7 @@
 			}
 
 			$data = array(
-				'DBNAME' => $config->dbName,
+				'DBNAME' => $config->dplusdbname,
 				'EDITCONTACT' => false,
 				'CUSTID' => $custID,
 				'SHIPID' => $shipID,
@@ -434,64 +434,64 @@
 			$session->loc = $returnpage->getUrl();
 			break;
 		case 'ci-buttons':
-			$data = array('DBNAME' => $config->dbName, 'CIBUTTONS' => false);
+			$data = array('DBNAME' => $config->dplusdbname, 'CIBUTTONS' => false);
 			break;
 		case 'ci-customer':
-			$data = array('DBNAME' => $config->dbName, 'CICUSTOMER' => false, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'CICUSTOMER' => false, 'CUSTID' => $custID);
 			$session->loc = $config->pages->custinfo."$custID/";
 			break;
 		case 'ci-shiptos':
-			$data = array('DBNAME' => $config->dbName, 'CISHIPTOLIST' => false, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'CISHIPTOLIST' => false, 'CUSTID' => $custID);
 			break;
 		case 'ci-shipto-info':
 			$shipID = $input->get->text('shipID');
-			$data = array('DBNAME' => $config->dbName, 'CISHIPTOINFO' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID);
+			$data = array('DBNAME' => $config->dplusdbname, 'CISHIPTOINFO' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID);
 			$session->loc = $config->pages->custinfo."$custID/shipto-$shipID/";
 			break;
 		case 'ci-shipto-buttons':
-			$data = array('DBNAME' => $config->dbName, 'CISTBUTTONS' => false);
+			$data = array('DBNAME' => $config->dplusdbname, 'CISTBUTTONS' => false);
 			break;
 		case 'ci-pricing':
 			$itemID = $input->get->text('itemID');
-			$data = array('DBNAME' => $config->dbName, 'CIPRICE' => false, 'ITEMID' => $itemID, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'CIPRICE' => false, 'ITEMID' => $itemID, 'CUSTID' => $custID);
 			break;
 		case 'ci-contacts': 
 			$shipID = $input->get->text('shipID');
-			$data = array('DBNAME' => $config->dbName, 'CICONTACT' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID);
+			$data = array('DBNAME' => $config->dplusdbname, 'CICONTACT' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID);
 			break;
 		case 'ci-documents':
 			$custname = get_customername($custID);
-			$data = array('DBNAME' => $config->dbName, 'DOCVIEW' => false, 'FLD1CD' => 'CU', 'FLD1DATA' => $custID, 'FLD1DESC' => $custname);
+			$data = array('DBNAME' => $config->dplusdbname, 'DOCVIEW' => false, 'FLD1CD' => 'CU', 'FLD1DATA' => $custID, 'FLD1DESC' => $custname);
 			break;
 		case 'ci-order-documents':
 			$ordn = $input->get->text('ordn');
 			$type = $input->get->text('type');
-			$data = array('DBNAME' => $config->dbName, 'DOCVIEW' => false, 'FLD1CD' => $config->documentstoragetypes[$type], 'FLD1DATA' => $ordn);
+			$data = array('DBNAME' => $config->dplusdbname, 'DOCVIEW' => false, 'FLD1CD' => $config->documentstoragetypes[$type], 'FLD1DATA' => $ordn);
 			break;
 		case 'ci-quote-documents':
 			$qnbr = $input->get->text('qnbr');
 			$type = $input->get->text('type');
-			$data = array('DBNAME' => $config->dbName, 'DOCVIEW' => false, 'FLD1CD' => $config->documentstoragetypes[$type], 'FLD1DATA' => $qnbr);
+			$data = array('DBNAME' => $config->dplusdbname, 'DOCVIEW' => false, 'FLD1CD' => $config->documentstoragetypes[$type], 'FLD1DATA' => $qnbr);
 			break;
 		case 'ci-standing-orders':
 			$shipID = $input->get->text('shipID');
-			$data = array('DBNAME' => $config->dbName, 'CISTANDORDR' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID);
+			$data = array('DBNAME' => $config->dplusdbname, 'CISTANDORDR' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID);
 			break;
 		case 'ci-credit':
-			$data = array('DBNAME' => $config->dbName, 'CICREDIT' => false, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'CICREDIT' => false, 'CUSTID' => $custID);
 			break;
 		case 'ci-open-invoices':
-			$data = array('DBNAME' => $config->dbName, 'CIOPENINV' => false, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'CIOPENINV' => false, 'CUSTID' => $custID);
 			break;
 		case 'ci-quotes':
-			$data = array('DBNAME' => $config->dbName, 'CIQUOTE' => false, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'CIQUOTE' => false, 'CUSTID' => $custID);
 			break;
 		case 'ci-payments':
-			$data = array('DBNAME' => $config->dbName, 'CIPAYMENT' => false, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'CIPAYMENT' => false, 'CUSTID' => $custID);
 			break;
 		case 'ci-sales-orders':
 			$shipID = $input->get->text('shipID');
-			$data = array('DBNAME' => $config->dbName, 'CISALESORDR' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID, 'SALESORDRNBR' => '', 'ITEMID' => '');
+			$data = array('DBNAME' => $config->dplusdbname, 'CISALESORDR' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID, 'SALESORDRNBR' => '', 'ITEMID' => '');
 			break;
 		case 'ci-sales-history':
 			$shipID = $input->get->text('shipID');
@@ -499,12 +499,12 @@
 			$date = $input->get->text('startdate');
 			$session->date = $date;
 			$startdate = date('Ymd', strtotime($date));
-			$data = array('DBNAME' => $config->dbName, 'CISALESHIST' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID, 'DATE' => $startdate, 'SALESORDRNBR' => '', 'ITEMID' => $itemID);
+			$data = array('DBNAME' => $config->dplusdbname, 'CISALESHIST' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID, 'DATE' => $startdate, 'SALESORDRNBR' => '', 'ITEMID' => $itemID);
 			break;
 		case 'ci-custpo':
 			$custpo = $input->get->text('custpo');
 			$shipID = $input->get->text('shipID');
-			$data = array('DBNAME' => $config->dbName, 'CICUSTPO' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID, 'CUSTPO' => $custpo);
+			$data = array('DBNAME' => $config->dplusdbname, 'CICUSTPO' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID, 'CUSTPO' => $custpo);
 			break;
 	}
 
