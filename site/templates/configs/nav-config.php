@@ -44,3 +44,4 @@
     $config->pages->warehouse = $config->urls->root . "warehouse/";
     $config->pages->warehousepicking = $config->urls->root . "warehouse/picking/";
     $config->pages->salesorderpicking = $config->urls->root . "warehouse/picking/pick-order/";
+    $config->pages->salesorderpickpacking = $config->urls->root . "warehouse/picking/pick-pack/";

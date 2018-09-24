@@ -172,6 +172,15 @@
         }
         
         /**
+         * Returns an array of pallet numbers and the Total Quantity Picked for that pallet
+         * @param  bool   $debug Run in debug? If so, return SQL Query
+         * @return array         Ex. array('1' => 16)
+         */
+        public function get_userpickedpallettotals($debug = false) {
+            return get_orderpickeditemqtytotalsbypallet($this->sessionid, $this->ordernbr, $this->itemnbr, $debug);
+        }
+        
+        /**
          * Returns the Picked Qty + already pulled qty for the Order, not just user
          * // NOTE this Total is total picked for the order, not just what the user has picked
          * @return int total Picked for this item on the order
@@ -179,6 +188,7 @@
         public function get_orderpickedtotal() {
             return $this->qtypulled + $this->get_userpickedtotal();
         }
+        
         
         /**
          * Returns if there has been Qty pulled for this Item / Order
@@ -228,7 +238,7 @@
          * @param  int    $palletnbr Pallet Number
          * @return int               Max record number for this Order Item barcode
          */
-        public function get_pickedmaxrecordnumberforbarcode($barcode, $palletnbr = 0, $debug = false) {
+        public function get_pickedmaxrecordnumberforbarcode($barcode, $palletnbr = 1, $debug = false) {
             return get_orderpickedbarcodemaxrecordnumber($this->sessionid, $this->ordernbr, $this->itemnbr, $barcode, $palletnbr, $debug);
         }
         
@@ -238,9 +248,9 @@
          * @param int    $palletnbr Pallet Number
          * @param bool   $debug     Run in debug? If so, return SQL Query
          */
-        public function add_barcode($barcode, $palletnbr = 0, $debug = false) {
+        public function add_barcode($barcode, $palletnbr = 1, $debug = false) {
             if (BarcodedItem::find_barcodeitemid($barcode) == $this->itemnbr) {
-                return insert_orderpickedbarcode($this->sessionid, $this->ordernbr, $barcode, $debug);
+                return insert_orderpickedbarcode($this->sessionid, $this->ordernbr, $barcode, $palletnbr, $debug);
             } else {
                 DplusWire::wire('session')->error("$barcode is not a barcode for Item $this->itemnbr", ProcessWire\Notice::log);
                 return false;
@@ -253,8 +263,8 @@
          * @param int    $palletnbr Pallet Number
          * @param bool   $debug     Run in debug? If so, return SQL Query
          */
-        public function remove_barcode($barcode, $palletnbr = 0, $debug = false) {
-            return remove_orderpickedbarcode($this->sessionid, $this->ordernbr, $barcode, $debug);
+        public function remove_barcode($barcode, $palletnbr = 1, $debug = false) {
+            return remove_orderpickedbarcode($this->sessionid, $this->ordernbr, $barcode, $palletnbr, $debug);
         }
         
         /**

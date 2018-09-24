@@ -8,11 +8,31 @@
 		use MagicMethodTraits;
 		use CreateFromObjectArrayTraits;
 		use CreateClassArrayTraits;
-
+		
+		/**
+		 * Session Identifier
+		 * @var string
+		 */
 		protected $sessionid;
+		
+		/**
+		 * Record Number
+		 * @var int
+		 */
 		protected $recno;
+		
+		/**
+		 * Date 
+		 * @var int
+		 */
 		protected $date;
+		
+		/**
+		 * Time
+		 * @var int
+		 */
 		protected $time;
+		
 		/**
 		 * Record Type
 		 * SORD = Sales Order | QUOT Quote | CART Cart
@@ -147,7 +167,7 @@
 		 * @return string
 		 */
 		public function generate_jsonurl() {
-			$url = new Purl\Url(wire('config')->pages->ajax."json/dplus-notes/");
+			$url = new Purl\Url(DplusWire::wire('config')->pages->ajax."json/dplus-notes/");
 			$url->query->setData(array(
 				'key1' => $this->key1,
 				'key2' => $this->key2,
@@ -167,7 +187,7 @@
 		 * @param  string $type      Type of Qnote CART|SORD|QUOT
 		 * @param  string $key1      For CART = SESSIONID, SORD = Order #, QUOT = Quote #
 		 * @param  string $key2      Line #
-		 * @return bool            [description]
+		 * @return bool              Can qnote be written for this quote / order ?
 		 */
 		public static function can_write($sessionID, $type, $key1, $key2) {
 			switch ($type) {
@@ -175,13 +195,13 @@
 					return true;
 					break;
 				case 'SORD':
-					$order = SalesOrder::load($sessionID, $key1);
-					$salesorder = SalesOrderHistory::is_saleshistory($key1);
-					if ($salesorder) {
+					$saleshistory = SalesOrderHistory::is_saleshistory($key1);
+					if ($saleshistory) {
 						return false;
-						break;
+					} else {
+						$order = SalesOrder::load($sessionID, $key1);
+						return $order->can_edit();
 					}
-					return $order->can_edit();
 					break;
 				case 'QUOT':
 					$quote = Quote::load($sessionID, $key1);
