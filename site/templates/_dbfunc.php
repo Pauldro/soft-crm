@@ -3693,6 +3693,7 @@
 			$q->where('origintype', ['I', 'V', 'L', 'C']);
 			$q->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]));
 		}
+		$q->where('itemstatus', '!=', 'I');
 		$q->order($q->expr("itemid LIKE UCASE([]) DESC", [$search]));
 		$q->group('itemid');
 		$q->limit($limit, $q->generate_offset($page, $limit));
@@ -3725,6 +3726,7 @@
 			$q->where('origintype', ['I', 'V', 'L', 'C']);
 			$q->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]));
 		}
+		$q->where('itemstatus', '!=', 'I');
 		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
@@ -3768,6 +3770,7 @@
 		$expression = $nextorprev == 'next' ? "MAX(recno) + 1" : "MIN(recno) - 1";
 		$q->field($q->expr($expression));
 		$q->where('itemid', $itemID);
+		$q->where('itemstatus', '!=', 'I');
 		$sql = DplusWire::wire('database')->prepare($q->render());
 
 		if ($debug) {
