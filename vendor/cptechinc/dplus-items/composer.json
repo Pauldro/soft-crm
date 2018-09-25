@@ -2,7 +2,7 @@
 	"name": "cptechinc/dplus-items",
     "type": "library",
     "description": "Classes for Dplus Items",
-    "keywords": ["crm"],
+    "keywords": ["items"],
     "homepage": "http://github.com/cptechinc/dplus-items",
 	"autoload": {
 		"files": [

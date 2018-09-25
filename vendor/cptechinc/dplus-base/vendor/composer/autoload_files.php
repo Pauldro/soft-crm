@@ -15,4 +15,5 @@ return array(
     'bd8bf74d70613675ab92685140191001' => $baseDir . '/src/DplusDateTime.class.php',
     '158870b1f2d9e740dbb61458a8e9f8e4' => $baseDir . '/src/Stringer.class.php',
     'e7bd84634f16b13048928918a5f7e5ad' => $baseDir . '/src/QueryBuilder.class.php',
+    '0e48fd94f28322d747df8afedd18f8c0' => $baseDir . '/src/utfport.php',
 );

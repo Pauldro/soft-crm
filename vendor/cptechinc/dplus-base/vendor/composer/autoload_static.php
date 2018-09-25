@@ -16,6 +16,7 @@ class ComposerStaticInit88cf2e8d27212994237a95cfcf23603b
         'bd8bf74d70613675ab92685140191001' => __DIR__ . '/../..' . '/src/DplusDateTime.class.php',
         '158870b1f2d9e740dbb61458a8e9f8e4' => __DIR__ . '/../..' . '/src/Stringer.class.php',
         'e7bd84634f16b13048928918a5f7e5ad' => __DIR__ . '/../..' . '/src/QueryBuilder.class.php',
+        '0e48fd94f28322d747df8afedd18f8c0' => __DIR__ . '/../..' . '/src/utfport.php',
     );
 
     public static function getInitializer(ClassLoader $loader)

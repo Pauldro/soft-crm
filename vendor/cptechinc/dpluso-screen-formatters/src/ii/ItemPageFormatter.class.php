@@ -87,7 +87,7 @@
 		 * @return string HTML
 		 */
 		protected function generate_othersections() {
-			$bootstrap = new Contento;
+			$bootstrap = new HTMLWriter();
 			$content = '';
 			
 			for ($i = 2; $i < 5; $i++) {

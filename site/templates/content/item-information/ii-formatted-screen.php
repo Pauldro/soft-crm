@@ -8,7 +8,7 @@
 	if ($config->ajax && $input->post->text('action') != 'preview') {
 		$url = new Purl\Url($page->fullURL->getUrl());
 		$url->query->set('view', 'print');
-		echo $page->bootstrap->create_element('p', '', $page->bootstrap->makeprintlink($url->getUrl(), 'View Printable Version'));
+		echo $page->bootstrap->create_element('p', '', $page->bootstrap->generate_printlink($url->getUrl(), 'View Printable Version'));
 	}
 	
 	if (file_exists($tableformatter->fullfilepath)) {

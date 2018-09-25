@@ -12,7 +12,7 @@
 	<div class="tab-content">
 		<div role="tabpanel" class="tab-pane active" id="note">
 			<?php if ($config->ajax) : ?>
-				<?= $page->bootstrap->create_element('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version')); ?>
+				<?= $page->bootstrap->create_element('p', '', $page->bootstrap->generate_printlink($config->filename, 'View Printable Version')); ?>
 			<?php endif; ?>
 			<?php include $config->paths->content."user-actions/crud/read/note-details.php"; ?>
 		</div>

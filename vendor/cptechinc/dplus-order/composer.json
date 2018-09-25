@@ -2,8 +2,8 @@
 	"name": "cptechinc/dplus-order",
     "type": "library",
     "description": "Classes for Dplus Orders, Quotes, and Carts",
-    "keywords": ["crm"],
-    "homepage": "http://github.com/cptechinc/dpluso-processwire-classes",
+    "keywords": ["sales-order", "quote", "cart", "cartquote", "detail", "qnote"],
+    "homepage": "http://github.com/cptechinc/dplus-order",
 	"autoload": {
 		"files": [
             "src/Order.interface.php",

@@ -5,7 +5,7 @@
 	if ($config->ajax) {
 		$url = new Purl\Url($page->fullURL->getUrl());
 		$url->query->set('View', 'print');
-		echo $page->bootstrap->create_element('p', '', $page->bootstrap->makeprintlink($url->getUrl(), 'View Printable Version'));
+		echo $page->bootstrap->create_element('p', '', $page->bootstrap->generate_printlink($url->getUrl(), 'View Printable Version'));
 	}
 	
 	if (file_exists($costfile)) {
