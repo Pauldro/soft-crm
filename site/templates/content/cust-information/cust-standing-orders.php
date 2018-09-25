@@ -12,7 +12,7 @@
 		$standingjson = $standingjson ? $standingjson : array('error' => true, 'errormsg' => 'The Customer Standing Orders JSON contains errors JSON ERROR: '.json_last_error());
 		
 		if ($standingjson['error']) {
-			echo $page->bootstrap->createalert('warning', $standingjson['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $standingjson['errormsg']);
 		} else {
 			$custcolumns = array_keys($standingjson['columns']['custinfo']);
 			$itemcolumns = array_keys($standingjson['columns']['iteminfo']);
@@ -22,6 +22,6 @@
 			}
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information Not Available');
+		echo $page->bootstrap->alertpanel('warning', 'Information Not Available');
 	}
  ?>

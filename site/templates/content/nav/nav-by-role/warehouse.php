@@ -4,7 +4,7 @@
 	<?php endif; ?>
 	<li> <a href="#"><?= $appconfig->companydisplayname; ?></a> </li>
 
-	<li> <a href="<?= $config->pages->index; ?>"><i class="glyphicon glyphicon-home"></i> Home</a> </li>
+	<li> <a href="<?= $config->user_roles[$user->mainrole]['homepage']; ?>"><i class="glyphicon glyphicon-home"></i> Home</a> </li>
 
 	<?php if (has_dpluspermission($user->loginid, 'wm')) : ?>
 		<li> <a href="<?= $config->pages->warehouse; ?>"><i class="fa fa-building-o" aria-hidden="true"></i> Warehouse</a> </li>

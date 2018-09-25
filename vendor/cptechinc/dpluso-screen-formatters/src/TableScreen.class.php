@@ -238,12 +238,12 @@
 				$this->process_json();
 
 				if ($this->json['error']) {
-					return $bootstrap->createalert('warning', $this->json['errormsg']);
+					return $bootstrap->alertpanel('warning', $this->json['errormsg']);
 				} else {
 					return $generatejavascript ? $this->generate_screen() . $this->generate_javascript() : $this->generate_screen();
 				}
 			} else {
-				return $bootstrap->createalert('warning', 'Information Not Available');
+				return $bootstrap->alertpanel('warning', 'Information Not Available');
 			}
 		}
 

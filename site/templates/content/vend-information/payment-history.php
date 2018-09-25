@@ -11,13 +11,13 @@
 		$paymentjson = json_decode(convertfiletojson($paymentfile), true);
 		$paymentjson ? $paymentjson : array('error' => true, 'errormsg' => 'The VI Payment History JSON contains errors. JSON ERROR: ' . json_last_error());
 		if ($paymentjson['error']) {
-			echo $page->bootstrap->createalert('warning', $paymentjson['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $paymentjson['errormsg']);
 		} else {
 			$table = include $config->paths->content. 'vend-information/screen-formatters/logic/payment-history.php';
 			include $config->paths->content. 'vend-information/tables/payment-history-formatted.php';
 			include $config->paths->content. 'vend-information/scripts/payments.js.php';
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information not available.');
+		echo $page->bootstrap->alertpanel('warning', 'Information not available.');
 	}
 ?>

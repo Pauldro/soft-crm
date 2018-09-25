@@ -12,7 +12,7 @@
 		$notesjson = $notesjson ? $notesjson : array('error' => true, 'errormsg' => 'The Vendor Notes JSON contains errors. JSON ERROR: '.json_last_error()); 
 
 		if ($notesjson['error']) {
-			echo $page->bootstrap->createalert('warning', $notesjson['errormsg']); 
+			echo $page->bootstrap->alertpanel('warning', $notesjson['errormsg']); 
 		} else {
 			$internalcolumns = array_keys($notesjson['columns']['internal notes']);
 			$purchasecolumns = array_keys($notesjson['columns']['purchase order notes']);
@@ -50,10 +50,10 @@
 					echo '</div>';
 				echo '</div>';
 			} else {
-				echo $page->bootstrap->createalert('warning', 'Information Not Available'); 
+				echo $page->bootstrap->alertpanel('warning', 'Information Not Available'); 
 			} // END if (sizeof($notesjson['data']) > 0)
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Vendor has no Notes'); 
+		echo $page->bootstrap->alertpanel('warning', 'Vendor has no Notes'); 
 	}
 ?>

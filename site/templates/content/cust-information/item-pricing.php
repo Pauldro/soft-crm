@@ -12,7 +12,7 @@
 		$pricejson = $pricejson ? $pricejson : array('error' => true, 'errormsg' => 'The Item Price JSON contains errors. JSON ERROR: ' . json_last_error());
 		
 		if ($pricejson['error']) {
-			echo $page->bootstrap->createalert('warning', $pricejson['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $pricejson['errormsg']);
 		} else {
 			$standardpricecolumns = array_keys($pricejson['columns']['standard pricing']);
 			$customerpricecolumns = array_keys($pricejson['columns']['customer pricing']);
@@ -36,6 +36,6 @@
 			echo '</div>';
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information Not Available');
+		echo $page->bootstrap->alertpanel('warning', 'Information Not Available');
 	}
  ?>

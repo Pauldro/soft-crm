@@ -147,7 +147,7 @@
         public function generate_iteminfotable() {
             $bootstrap = new HTMLWriter();
             if ($this->json['error']) {
-                return $bootstrap->createalert('warning', $this->json['errormsg']);
+                return $bootstrap->alertpanel('warning', $this->json['errormsg']);
             } else {
                 $tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
                 $tb->tr()->td('', $bootstrap->b('', 'Item ID:'))->td('', $this->json['itemid'])->td('colspan=2', $this->json['desc1']);

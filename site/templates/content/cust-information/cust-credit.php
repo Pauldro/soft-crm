@@ -12,7 +12,7 @@
 		$creditjson = $creditjson ? $creditjson : array('error' => true, 'errormsg' => 'The Customer Credit JSON contains errors. JSON ERROR: '.json_last_error());
 
 		if ($creditjson['error']) {
-			echo $page->bootstrap->createalert('warning', $creditjson['errormsg']); 
+			echo $page->bootstrap->alertpanel('warning', $creditjson['errormsg']); 
 		} else {
 			$leftcolumns = array_keys($creditjson['columns']['left']);
 			$rightcolumns = array_keys($creditjson['columns']['right']);
@@ -66,11 +66,11 @@
 					echo '</div>';
 				}
 			} else {
-				echo $page->bootstrap->createalert('warning', 'Information Not Available'); 
+				echo $page->bootstrap->alertpanel('warning', 'Information Not Available'); 
 			}
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Customer has no Contacts'); 
+		echo $page->bootstrap->alertpanel('warning', 'Customer has no Contacts'); 
 	}
 
  ?>

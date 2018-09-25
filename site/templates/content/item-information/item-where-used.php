@@ -13,7 +13,7 @@
 		$whereusedjson = $whereusedjson ? $whereusedjson : array('error' => true, 'errormsg' => 'The Item Where Used JSON contains errors. JSON ERROR: '.json_last_error());
 		
 		if ($whereusedjson['error']) {
-			echo $page->bootstrap->createalert('warning', $whereusedjson['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $whereusedjson['errormsg']);
 		} else {
 			$kitcolumns = array_keys($whereusedjson['columns']['kit']);
 			$bomcolumns = array_keys($whereusedjson['columns']['bom']);
@@ -63,6 +63,6 @@
 			}
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information Not Available');
+		echo $page->bootstrap->alertpanel('warning', 'Information Not Available');
 	}
  ?>

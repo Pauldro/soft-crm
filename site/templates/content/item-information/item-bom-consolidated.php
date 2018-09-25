@@ -12,7 +12,7 @@
 		$bomjson = $bomjson ? $bomjson : array('error' => true, 'errormsg' => 'The BOM Item Inquiry Consolidated JSON contains errors. JSON ERROR: '.json_last_error());
 		
 		if ($bomjson['error']) {
-			echo $page->bootstrap->createalert('warning', $bomjson['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $bomjson['errormsg']);
 		} else {
 			$componentcolumns = array_keys($bomjson['columns']['component']);
 			$warehousecolumns = array_keys($bomjson['columns']['warehouse']);
@@ -64,7 +64,7 @@
 			echo "<p><b>Warehouses that meet the Requirement: </b> $warehouses</p>";
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information Not Available');
+		echo $page->bootstrap->alertpanel('warning', 'Information Not Available');
 	}
 	
 ?>

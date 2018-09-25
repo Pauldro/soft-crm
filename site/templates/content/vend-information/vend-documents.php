@@ -18,7 +18,7 @@
 		$docjson = $docjson ? $docjson : array('error' => true, 'errormsg' => 'The Item Documents JSON contains errors. JSON ERROR: '.json_last_error());
 		
 		if ($docjson['error']) {
-			echo $page->bootstrap->createalert('warning', $docjson['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $docjson['errormsg']);
 		} else {
 			$columns = array_keys($docjson['columns']);
 			$documents = array_keys($docjson['data']);
@@ -47,6 +47,6 @@
 			echo $tb->close();
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information Not Available');
+		echo $page->bootstrap->alertpanel('warning', 'Information Not Available');
 	}
  ?>

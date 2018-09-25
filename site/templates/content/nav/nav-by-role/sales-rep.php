@@ -4,7 +4,7 @@
 	<?php endif; ?>
 	<li> <a href="#"><?= $appconfig->companydisplayname; ?></a> </li>
 
-	<li> <a href="<?= $config->pages->index; ?>"><i class="glyphicon glyphicon-home"></i> Home</a> </li>
+	<li> <a href="<?= $config->user_roles[$user->mainrole]['homepage']; ?>"><i class="glyphicon glyphicon-home"></i> Home</a> </li>
 
 	<?php if ($user->hasPermission('can-run-reports')) : ?>
 		<li> <a href="<?= $config->pages->reports; ?>"> <i class="glyphicon glyphicon-duplicate"></i> Reports</a> </li>

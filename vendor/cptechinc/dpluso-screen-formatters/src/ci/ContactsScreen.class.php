@@ -54,7 +54,7 @@
 					$content .= $this->generate_formsection();
 				}
 			} else {
-				$content = $page->bootstrap->createalert('warning', 'Information Not Available'); 
+				$content = $page->bootstrap->alertpanel('warning', 'Information Not Available'); 
 			} // END if (sizeof($this->json['data']) > 0)
             return $content;
         }

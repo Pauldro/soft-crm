@@ -14,7 +14,7 @@
 		$costjson = $costjson ? $costjson : array('error' => true, 'errormsg' => 'The Item Costing JSON contains errors. JSON ERROR: '.json_last_error());
 		
 		if ($costjson['error']) {
-			echo $page->bootstrap->createalert('warning', $costjson['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $costjson['errormsg']);
 		} else {
 			$warehousecolumns = array_keys($costjson['columns']['warehouse']);
 			$vendorcolumns = array_keys($costjson['columns']['vendor']);
@@ -129,6 +129,6 @@
 			echo $page->bootstrap->close('div');
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information Not Available');
+		echo $page->bootstrap->alertpanel('warning', 'Information Not Available');
 	}
 ?>

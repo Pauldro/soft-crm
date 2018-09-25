@@ -12,7 +12,7 @@
 		$uninvoicedjson ? $uninvoicedjson : array('error' => true, 'errormsg' => 'The VI Uninvoiced Purchase Orders JSON contains errors. JSON ERROR: ' . json_last_error());
 		
 		if ($uninvoicedjson['error']) {
-			echo $page->bootstrap->createalert('warning', $uninvoicedjson['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $uninvoicedjson['errormsg']);
 		} else {
 			$headercolumns = array_keys($uninvoicedjson['columns']['header']);
 		    $detailcolumns = array_keys($uninvoicedjson['columns']['details']);
@@ -89,6 +89,6 @@
 			}
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information not available.');
+		echo $page->bootstrap->alertpanel('warning', 'Information not available.');
 	}
 ?>

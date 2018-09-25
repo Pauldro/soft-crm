@@ -16,7 +16,7 @@
 		$tableformatter->process_json();
 		
 		if ($tableformatter->json['error']) {
-			echo $page->bootstrap->createalert('warning', $tableformatter->json['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $tableformatter->json['errormsg']);
 		} else {
 			$session->itemid = isset($tableformatter->json['itemid']) ? $tableformatter->json['itemid'] : $input->get->text('itemid');
 			$print = $input->get->text('view') == 'print' ? true : false;
@@ -26,5 +26,5 @@
 			$session->remove('itemid');
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information Not Available');
+		echo $page->bootstrap->alertpanel('warning', 'Information Not Available');
 	}

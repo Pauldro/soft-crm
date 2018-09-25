@@ -14,7 +14,7 @@
             PUBLIC FUNCTIONS
         ============================================================ */
 		public function generate_screen() {
-			return empty($this->json['data']) ? $page->bootstrap->createalert('warning', 'Information Not Available') : '';
+			return empty($this->json['data']) ? $page->bootstrap->alertpanel('warning', 'Information Not Available') : '';
 		}
 		
 		/**

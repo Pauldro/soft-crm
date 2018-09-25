@@ -15,7 +15,7 @@
 		$jsonstock = $jsonstock ? $jsonstock : array('error' => true, 'errormsg' => 'The Stock Info JSON contains errors. JSON ERROR: '.json_last_error());
 		
 		if ($jsonstock['error']) {
-			echo $page->bootstrap->createalert('warning', $jsonstock['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $jsonstock['errormsg']);
 		} else {
 			$columns = array_keys($jsonstock['columns']);
 			$tb = new Table('class=table table-striped table-condensed table-bordered table-excel');
@@ -44,6 +44,6 @@
 			echo $tb->close();
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information Not Available');
+		echo $page->bootstrap->alertpanel('warning', 'Information Not Available');
 	}
 ?>

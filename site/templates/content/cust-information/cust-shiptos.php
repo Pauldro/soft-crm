@@ -7,7 +7,7 @@
 		$shiptojson = $shiptojson ? $shiptojson : array('error' => true, 'errormsg' => 'The customer Ship-tos Inquiry JSON contains errors');
 		
 		if ($shiptojson['error']) {
-			echo $page->bootstrap->createalert('warning', $shiptojson['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $shiptojson['errormsg']);
 		} else {
 			if (sizeof($shiptojson['data']) > 0) {
 				$columns = array_keys($shiptojson['columns']);
@@ -41,10 +41,10 @@
 				echo $tb->close();
 				include $config->paths->content."cust-information/scripts/cust-shiptos.js.php"; 
 			} else {
-				echo $page->bootstrap->createalert('warning', 'Customer has no Shiptos');
+				echo $page->bootstrap->alertpanel('warning', 'Customer has no Shiptos');
 			}
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information Not Available');
+		echo $page->bootstrap->alertpanel('warning', 'Information Not Available');
 	}
  ?>

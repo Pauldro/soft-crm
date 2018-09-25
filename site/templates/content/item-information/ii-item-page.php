@@ -14,7 +14,7 @@
 		$tableformatter->process_json();
 		
 		if ($tableformatter->json['error']) {
-			echo $page->bootstrap->createalert('warning', $tableformatter->json['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $tableformatter->json['errormsg']);
 		} else {
 			echo $tableformatter->generate_screen();
 			echo $tableformatter->generate_javascript();
@@ -35,6 +35,6 @@
 			}
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information Not Available');
+		echo $page->bootstrap->alertpanel('warning', 'Information Not Available');
 	}
 ?>
