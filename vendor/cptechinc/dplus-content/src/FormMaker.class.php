@@ -9,6 +9,7 @@
 			CONSTRUCTOR FUNCTIONS 
 		============================================================ */
         public function __construct($attr = '', $openform = true) {
+            $this->bootstrap = new HTMLWriter();
             self::$count++;
             $this->formstring = $this->indent() . $openform ? $this->open('form', $attr) : '';
             $this->openform = $openform;
@@ -36,15 +37,15 @@
 			CLASS FUNCTIONS 
 		============================================================ */
         public function input($attr = '') {
-            $this->formstring .= $this->indent() . $this->input($attr);
+            $this->formstring .= $this->indent() . parent::input($attr);
         }
         
         public function select($attr = '', array $keyvalues, $selectvalue = null) {
-            $this->formstring .= $this->indent() . $this->select($attr, $keyvalues, $selectvalue);
+            $this->formstring .= $this->indent() . parent::select($attr, $keyvalues, $selectvalue);
         }
         
         public function button($attr = '', $content) {
-            $this->formstring .= $this->indent() . $this->button($attr, $content);
+            $this->formstring .= $this->indent() . parent::button($attr, $content);
         }
         
         public function add($str) {
@@ -52,12 +53,12 @@
         }
         
         public function close($element = '') {
-            $this->formstring .= $this->close($element);
+            $this->formstring .= parent::close($element);
         }
         
         public function finish() {
 			if ($this->openform) {
-				$this->formstring .= $this->close('form');
+				$this->formstring .= parent::close('form');
 			}
             return $this->formstring;
         }

@@ -23,7 +23,9 @@
 	include_once($config->paths->vendor."cptechinc/dplus-base/vendor/autoload.php");
 	include_once($config->paths->vendor."cptechinc/dplus-processwire/vendor/autoload.php");
 	include_once($config->paths->vendor."cptechinc/dplus-content/vendor/autoload.php");
-	include_once($config->paths->vendor."cptechinc/dpluso-processwire-classes/vendor/autoload.php");
+	include_once($config->paths->vendor."cptechinc/dplus-dpluso/vendor/autoload.php");
+	include_once($config->paths->vendor."cptechinc/dplus-items/vendor/autoload.php");
+	include_once($config->paths->vendor."cptechinc/dplus-order/vendor/autoload.php");
 	include_once($config->paths->vendor."cptechinc/dpluso-screen-formatters/vendor/autoload.php");
 	include_once($config->paths->vendor."cptechinc/dplus-services/vendor/autoload.php");
 	include_once($config->paths->vendor."cptechinc/dpluso-warehouse-classes/vendor/autoload.php");
