@@ -1,0 +1,13 @@
+{
+	"name": "cptechinc/dplus-items",
+    "type": "library",
+    "description": "Classes for Dplus Items",
+    "keywords": ["crm"],
+    "homepage": "http://github.com/cptechinc/dplus-items",
+	"autoload": {
+		"files": [
+			"src/PricingItem.class.php",
+			"src/XRefItem.class.php"
+		]
+	}
+}
