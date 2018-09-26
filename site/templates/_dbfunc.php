@@ -856,9 +856,10 @@
 	 * @param  bool   $debug    Run in debug? If true, return SQL Query
 	 * @return array            Top Selling Customers
 	 */
-	function get_topxsellingcustomers(int $limit, $loginID = '',  $debug = false) {
+	function get_topxsellingcustomers($limit, $loginID = '',  $debug = false) {
 		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
-		$login = (LogmUser::load($loginID))->get_custpermloginid();
+		$user = LogmUser::load($loginID);
+		$login = $user->get_custpermloginid();
 		$q = (new QueryBuilder())->table('custperm');
 		$q->where('loginid', $login);
 		$q->where('shiptoid', '');
