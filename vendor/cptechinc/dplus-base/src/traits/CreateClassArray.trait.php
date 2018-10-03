@@ -20,4 +20,8 @@
         public function _toArray() {
 			return $this::remove_nondbkeys(get_object_vars($this));
  		}
+        
+        public function _toJSON() {
+            return json_encode($this->_toArray());
+        }
     }

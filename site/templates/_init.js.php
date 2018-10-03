@@ -224,10 +224,14 @@
                 ]
             ],
             'warehouse' => [
+                'json' => [
+                    'session' => "{$config->pages->ajaxjson}warehouse/session/"
+                ],
                 'picking' => [
                     'sales_order' => [
                         'redir' => [
-                            'redir' => $config->pages->salesorderpicking."redir/"
+                            'redir' => $config->pages->salesorderpicking."redir/",
+                            'cancel_order' => $config->pages->salesorderpicking."redir/?action=cancel-order"
                         ]
                     ]
                 ]

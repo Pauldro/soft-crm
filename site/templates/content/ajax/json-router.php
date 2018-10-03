@@ -42,6 +42,9 @@
         case 'products':
             include $config->paths->content."ajax/json/products-json-router.php";
             break;
+        case 'warehouse':
+            include $config->paths->content."warehouse/json-router.php";
+            break;
         default:
             throw new Wire404Exception();
             break;

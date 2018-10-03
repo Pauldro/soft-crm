@@ -216,7 +216,7 @@
         
         
         public function get_caseqtyforqty($qty) {
-            return floor(($qty) / $this->caseqty);
+            return $this->caseqty < 1 ? 0 : floor(($qty) / $this->caseqty);
         }
         
         public function get_qtycasedescription($qty) {

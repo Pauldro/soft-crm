@@ -115,6 +115,11 @@
 			$url->query->remove('ordn');
 			$session->loc = $url->getUrl();
 			break;
+		case 'cancel-order':
+			$whsesession = WhseSession::load(session_id());
+			$data = array("DBNAME=$config->dplusdbname", 'CANCELSTART', "ORDERNBR=$whsesession->ordn");
+			$session->loc = $input->$requestmethod->text('page');
+			break;
 		case 'remove-order-locks':
 			$ordn = $input->$requestmethod->text('ordn');
 			$data = array("DBNAME=$config->dplusdbname", 'REFRESHPD', "ORDERNBR=$ordn");

@@ -282,4 +282,8 @@
             $url->query->set('action', 'initiate-whse')->set('sessionID', $sessionID);
             curl_redir($url->getUrl());
         }
+        
+        public static function remove_nondbkeys($array) {
+ 			return $array;
+ 		}
     }

@@ -52,8 +52,8 @@
 		<?php endif; ?>
 		<tr>
 			<td class="control-label">Qty Picked</td> 
-			<td class="text-right"><?= $pickitem->get_userpickedtotal(); ?></td>
-			<td class="text-right"><?= $pickitem->get_qtycasedescription($pickitem->get_userpickedtotal()); ?></td>
+			<td class="text-right"><?= intval($pickitem->get_userpickedtotal()); ?></td>
+			<td class="text-right"><?= $pickitem->get_qtycasedescription(intval($pickitem->get_userpickedtotal())); ?></td>
 		</tr>
 		<tr class="<?= $pickitem->has_pickedtoomuch() ? 'bg-warning' : (($pickitem->has_qtyremaining()) ? '' : 'bg-success'); ?>">
 			<td class="control-label">Qty Remaining</td> 
@@ -85,11 +85,6 @@
             </span>
         </div>
     </form>
-	<div class="form-group">
-		<a href="<?= $pickorder->generate_addpalleturl(); ?>" class="btn btn-emerald">
-			<i class="fa fa-cart-plus" aria-hidden="true"></i> Add Pallet
-		</a>
-	</div>
 	
 	<div class="row">
 		<div class="col-sm-3 col-xs-6 form-group">
