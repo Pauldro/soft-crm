@@ -15,7 +15,7 @@
             PUBLIC FUNCTIONS
        	============================================================ */
         public function generate_screen() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = $this->generate_salesusagetable();
             
             foreach (array_keys($this->json['data']['24month']) as $warehouse) {
@@ -28,7 +28,7 @@
         }
         
         public function generate_javascript() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
             $script = new JavaScripter(false);
 			$content = $bootstrap->open('script', '');
 				$content .= "\n";
@@ -145,9 +145,9 @@
          * @return string HTML Table with Item Information
          */
         public function generate_iteminfotable() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             if ($this->json['error']) {
-                return $bootstrap->createalert('warning', $this->json['errormsg']);
+                return $bootstrap->alertpanel('warning', $this->json['errormsg']);
             } else {
                 $tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
                 $tb->tr()->td('', $bootstrap->b('', 'Item ID:'))->td('', $this->json['itemid'])->td('colspan=2', $this->json['desc1']);
@@ -193,7 +193,7 @@
          * @return string       HTML for the Warehouse Data
          */
         protected function generate_warehousediv($whse) {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $heading = $bootstrap->h3('', $this->json['data']['24month'][$whse]['whse name']);
             if ($this->forprint) {
                 $tablediv = $bootstrap->div("role=tabpanel|class=tab-pane active|id=$whse-table", $this->generate_warehousetable($whse));
@@ -217,7 +217,7 @@
          * @return string       HTML table with Warehouse Item Data
          */
         protected function generate_warehousetable($whse) {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $tb = new Table("class=table table-striped table-bordered table-condensed table-excel no-bottom|id=$whse");
             $tb->tablesection('thead');
             $tb->tr();

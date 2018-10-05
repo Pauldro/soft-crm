@@ -232,18 +232,18 @@
 		 * @return string                    HTML for screen
 		 */
 		public function process_andgeneratescreen($generatejavascript = false) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			if (file_exists($this->fullfilepath)) {
 				// JSON file will be false if an error occurred during file_get_contents or json_decode
 				$this->process_json();
 
 				if ($this->json['error']) {
-					return $bootstrap->createalert('warning', $this->json['errormsg']);
+					return $bootstrap->alertpanel('warning', $this->json['errormsg']);
 				} else {
 					return $generatejavascript ? $this->generate_screen() . $this->generate_javascript() : $this->generate_screen();
 				}
 			} else {
-				return $bootstrap->createalert('warning', 'Information Not Available');
+				return $bootstrap->alertpanel('warning', 'Information Not Available');
 			}
 		}
 
@@ -260,7 +260,7 @@
 		 * @return string  HTML select
 		 */
 		public function generate_shownotesselect() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$array = array();
 			foreach (DplusWire::wire('config')->yesnoarray as $key => $value) {
 				$array[$value] = $key;
@@ -278,7 +278,7 @@
 		 * @param string $column the key in which we use to look up the value
 		 */
 		public static function generate_formattedcelldata($type, $parent, $column) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$celldata = '';
 			$qtyregex = "/(quantity)/i";
 
@@ -322,7 +322,7 @@
 		 * @return string         Value or HTML content
 		 */
 		public static function generate_celldata($parent, $column) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			if (in_array($column, self::$trackingcolumns)) {
 				$href = self::generate_trackingurl($parent['Service Type'], $parent[$column]);
 				return $href ? $bootstrap->a("href=$href|target=_blank", $parent[$column]) : $parent[$column];

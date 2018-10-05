@@ -7,13 +7,13 @@
 		$shiptojson = $shiptojson ? $shiptojson : array('error' => true, 'errormsg' => 'The customer Ship-tos Inquiry JSON contains errors');
 		
 		if ($shiptojson['error']) {
-			echo $page->bootstrap->createalert('warning', $shiptojson['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $shiptojson['errormsg']);
 		} else {
 			if (sizeof($shiptojson['data']) > 0) {
 				$columns = array_keys($shiptojson['columns']);
 				$link = $config->pages->customer."redir/?action=ci-customer&custID=$custID";
 				$attr = "href=$link|class=btn btn-sm btn-primary";
-				echo $page->bootstrap->openandclose('a', $attr, '<i class="glyphicon glyphicon-remove"></i> Clear Ship-to');
+				echo $page->bootstrap->create_element('a', $attr, '<i class="glyphicon glyphicon-remove"></i> Clear Ship-to');
 				$tb = new Table("class=table table-striped table-bordered table-condensed table-excel|id=shiptolist");
 				$tb->tablesection('thead');
 					$tb->tr();
@@ -30,7 +30,7 @@
 							$content = '';
 							if ($column == 'shipid') {
 								$link = $config->pages->customer.'redir/?action=ci-shipto-info&custID='.$custID.'&shipID='.$shipto['shipid'];
-								$content = $page->bootstrap->openandclose('a', "href=$link|class=btn btn-sm btn-primary", $shipto[$column]);
+								$content = $page->bootstrap->create_element('a', "href=$link|class=btn btn-sm btn-primary", $shipto[$column]);
 							} else {
 								$content = $shipto[$column];
 							}
@@ -41,10 +41,10 @@
 				echo $tb->close();
 				include $config->paths->content."cust-information/scripts/cust-shiptos.js.php"; 
 			} else {
-				echo $page->bootstrap->createalert('warning', 'Customer has no Shiptos');
+				echo $page->bootstrap->alertpanel('warning', 'Customer has no Shiptos');
 			}
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information Not Available');
+		echo $page->bootstrap->alertpanel('warning', 'Information Not Available');
 	}
  ?>

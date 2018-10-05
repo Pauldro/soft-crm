@@ -20,7 +20,7 @@
 		}
 
 		public function generate_shiptotable(Customer $customer) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$tb = new Table("class=table table-striped table-bordered table-condensed table-excel");
 			foreach (array_keys($this->json['columns']['top']) as $column) {
 				if ($this->json['columns']['top'][$column]['heading'] == '' && $this->json['data']['top'][$column] == '') {
@@ -36,7 +36,7 @@
 							$attr = ($shipto->shiptoid == $customer->shipID) ? "value=$shipto->shiptoid|selected" : "value=$shipto->shiptoid";
 							$options .= $bootstrap->option($attr, $show);
 						}
-						$select = $bootstrap->openandclose('select', "class=form-control input-sm|onchange=refreshshipto(this.value, '$customer->custID')", $options);
+						$select = $bootstrap->create_element('select', "class=form-control input-sm|onchange=refreshshipto(this.value, '$customer->custID')", $options);
 						$tb->td('', $select);
 					} else {
 						$tb->td('', $this->json['data']['top'][$column]);

@@ -1,5 +1,5 @@
 <h3>Enter Order Number</h3>
-<form action="<?= $page->child('name=redir')->url; ?>" method="post" class="allow-enterkey-submit">
+<form action="<?= $page->child('name=redir')->url; ?>" method="post" class="allow-enterkey-submit sales-order-entry-form" id="sales-order-entry-form">
     <input type="hidden" name="action" value="start-order">
     <input type="hidden" name="page" value="<?= $page->fullURL->getUrl(); ?>">
     <div class="input-group form-group">

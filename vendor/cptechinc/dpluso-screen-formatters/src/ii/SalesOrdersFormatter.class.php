@@ -19,7 +19,7 @@
        	============================================================ */
         public function generate_screen() {
 			$url = new \Purl\Url(DplusWire::wire('config')->pages->ajaxload."ii/ii-documents/order/");
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = '';
 			$this->generate_tableblueprint();
 			
@@ -64,7 +64,7 @@
 											$itemID = $this->json['itemid'];
 											$url->query->setData(array('itemID' => $this->json['itemid'], 'ordn' => $ordn, 'returnpage' => urlencode(DplusWire::wire('page')->fullURL->getUrl())));
 											$href = $url->getUrl();
-											$celldata .= "&nbsp; " . $bootstrap->openandclose('a', "href=$href|class=load-order-documents|title=Load Order Documents|aria-label=Load Order Documents|data-ordn=$ordn|data-itemid=$itemID|data-type=ii-sales-orders", $bootstrap->createicon('fa fa-file-text'));
+											$celldata .= "&nbsp; " . $bootstrap->create_element('a', "href=$href|class=load-order-documents|title=Load Order Documents|aria-label=Load Order Documents|data-ordn=$ordn|data-itemid=$itemID|data-type=ii-sales-orders", $bootstrap->icon('fa fa-file-text'));
 										}
 										$tb->td("colspan=$colspan|class=$class", $celldata);
 									} else {
@@ -108,7 +108,7 @@
         }
 		
 		public function generate_javascript() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$content = '';
 			if (!$this->forprint) {
 				if ($this->tableblueprint['detail']['maxrows'] < 2) {

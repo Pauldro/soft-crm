@@ -19,7 +19,7 @@
             PUBLIC FUNCTIONS
        	============================================================= */
         public function generate_screen() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = '';
 			$this->generate_tableblueprint();
 
@@ -155,7 +155,7 @@
         }
 
 		public function generate_javascript() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$content = $bootstrap->open('script', '');
 				$content .= "\n";
 				$content .= "\n";

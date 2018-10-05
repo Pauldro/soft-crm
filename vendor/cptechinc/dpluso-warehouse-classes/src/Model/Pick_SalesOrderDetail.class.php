@@ -214,6 +214,16 @@
             return $this->qtyordered - ($this->get_orderpickedtotal());
         }
         
+        
+        public function get_caseqtyforqty($qty) {
+            return $this->caseqty < 1 ? 0 : floor(($qty) / $this->caseqty);
+        }
+        
+        public function get_qtycasedescription($qty) {
+            $caseqty = $this->get_caseqtyforqty($qty);
+            return $caseqty == 1 ? "$caseqty case &nbsp;" : "$caseqty cases";
+        }
+        
         /**
          * Returns if Qty picked is more than needed
          * @return bool Have user picked too much?

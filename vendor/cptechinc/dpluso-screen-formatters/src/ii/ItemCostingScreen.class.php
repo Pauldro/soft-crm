@@ -15,7 +15,7 @@
             PUBLIC FUNCTIONS
        	============================================================= */
         public function generate_screen() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = $this->generate_itemtable();
             
             if ($this->forprint) {
@@ -63,7 +63,7 @@
          * @return string HTML for the Warehouse Section
          */
 		public function generate_whsesection() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$content = '';
 			if (!isset($this->json['data']['warehouse'])) return $content;
 			
@@ -95,7 +95,7 @@
          * @return string HTML for the Vendor Section
          */
 		public function generate_vendorsection() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$content = '';
 			foreach ($this->json['data']['vendor'] as $vendor) {
 				$content .= '<h3>'.$vendor['vend id'].'</h3>';

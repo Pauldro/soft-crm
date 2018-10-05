@@ -3,7 +3,7 @@
 	// $contactfile = $config->jsonfilepath."vicontv-vicontact.json";
 
 	if ($config->ajax) {
-		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
+		echo $page->bootstrap->create_element('p', '', $page->bootstrap->generate_printlink($config->filename, 'View Printable Version'));
 	}
 
 	if (file_exists($contactfile)) {
@@ -12,7 +12,7 @@
 		$contactjson = $contactjson ? $contactjson : array('error' => true, 'errormsg' => 'The Vendor Contacts JSON contains errors. JSON ERROR: '.json_last_error());
 
 		if ($contactjson['error']) {
-			echo $page->bootstrap->createalert('warning', $contactjson['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $contactjson['errormsg']);
 		} else {
 			$vendorleftcolumns = array_keys($contactjson['columns']['vendor']['vendorleft']);
 			$vendorrightcolumns = array_keys($contactjson['columns']['vendor']['vendorright']);
@@ -139,10 +139,10 @@
 					echo $tb->close();
 				}
 			} else {
-				echo $page->bootstrap->createalert('warning', 'Information Not Available');
+				echo $page->bootstrap->alertpanel('warning', 'Information Not Available');
 			} // END if (sizeof($contactjson['data']) > 0)
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Vendor has no Contacts');
+		echo $page->bootstrap->alertpanel('warning', 'Vendor has no Contacts');
 	}
 ?>

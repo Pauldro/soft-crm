@@ -28,7 +28,7 @@
     $paginator = new Paginator($input->pageNum, $totalcount, $page->fullURL, $addtype, 'data-loadinto=".results" data-focus=".results"');
 
     if ($config->ajax) {
-		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
+		echo $page->bootstrap->create_element('p', '', $page->bootstrap->generate_printlink($config->filename, 'View Printable Version'));
 	}
 
     echo $page->bootstrap->open('div', 'class=results');

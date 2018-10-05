@@ -5,7 +5,7 @@
 	if ($config->ajax) {
 		$url = new Purl\Url($page->fullURL->getUrl());
 		$url->query->set('View', 'print');
-		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($url->getUrl(), 'View Printable Version'));
+		echo $page->bootstrap->create_element('p', '', $page->bootstrap->generate_printlink($url->getUrl(), 'View Printable Version'));
 	}
 	
 	if (file_exists($costfile)) {
@@ -14,7 +14,7 @@
 		$costjson = $costjson ? $costjson : array('error' => true, 'errormsg' => 'The Item Costing JSON contains errors. JSON ERROR: '.json_last_error());
 		
 		if ($costjson['error']) {
-			echo $page->bootstrap->createalert('warning', $costjson['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $costjson['errormsg']);
 		} else {
 			$warehousecolumns = array_keys($costjson['columns']['warehouse']);
 			$vendorcolumns = array_keys($costjson['columns']['vendor']);
@@ -33,9 +33,9 @@
 			echo $tb->close();
 			
 			echo $page->bootstrap->open('ul', 'class=nav nav-tabs|role=tablist');
-				echo $page->bootstrap->openandclose('li', 'role=presentation|class=active', $page->bootstrap->openandclose('a', 'href=#whse|aria-controls=warehouse|role=tab|data-toggle=tab', 'Warehouse'));
-				echo $page->bootstrap->openandclose('li', 'role=presentation', $page->bootstrap->openandclose('a', 'href=#vendor|aria-controls=vendor|role=tab|data-toggle=tab', 'Vendor'));
-				echo $page->bootstrap->openandclose('li', 'role=presentation', $page->bootstrap->openandclose('a', 'href=#lastpurchase|aria-controls=lastpurchase|role=tab|data-toggle=tab', 'Last Purchase'));
+				echo $page->bootstrap->create_element('li', 'role=presentation|class=active', $page->bootstrap->create_element('a', 'href=#whse|aria-controls=warehouse|role=tab|data-toggle=tab', 'Warehouse'));
+				echo $page->bootstrap->create_element('li', 'role=presentation', $page->bootstrap->create_element('a', 'href=#vendor|aria-controls=vendor|role=tab|data-toggle=tab', 'Vendor'));
+				echo $page->bootstrap->create_element('li', 'role=presentation', $page->bootstrap->create_element('a', 'href=#lastpurchase|aria-controls=lastpurchase|role=tab|data-toggle=tab', 'Last Purchase'));
 			echo $page->bootstrap->close('ul');
 			
 			echo $page->bootstrap->open('div', '');
@@ -129,6 +129,6 @@
 			echo $page->bootstrap->close('div');
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information Not Available');
+		echo $page->bootstrap->alertpanel('warning', 'Information Not Available');
 	}
 ?>

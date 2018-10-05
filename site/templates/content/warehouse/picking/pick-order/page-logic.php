@@ -1,6 +1,6 @@
 <?php
     if (!WhseSession::does_sessionexist(session_id())) {
-        WhseSession::start_session(session_id(), $page->fullURL);
+        WhseSession::start_session(session_id());
         $whsesession = WhseSession::load(session_id());
         $whsesession->start_pickingsession();
         $page->body = $config->paths->content."warehouse/picking/choose-sales-order-form.php";
@@ -14,9 +14,10 @@
             } else if (!$whsesession->has_bin() && !$whsesession->is_orderfinished()) {
                 if ($whsesession->is_orderonhold() || $whsesession->is_orderverified() || $whsesession->is_orderinvoiced()) {
                     $page->body = $config->paths->content."warehouse/picking/order-on-hold.php";
+                } elseif ($whsesession->is_usingwrongfunction()) {
+                    $page->body = $config->paths->content."warehouse/picking/wrong-function.php";
                 } else {
                     $page->title = 'Choose Starting Bin';
-                    $page->title = var_dump($whsesession->is_orderinvalid());
                     $page->body = $config->paths->content."warehouse/picking/choose-bin-form.php";
                 }
             } else {

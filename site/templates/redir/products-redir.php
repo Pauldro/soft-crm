@@ -18,84 +18,84 @@
 	*
 	* switch ($action) {
 	*	case 'item-search':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		ITNOSRCH=$query
 	*		CUSTID=$custID
 	*		break;
 	*	case 'ii-select':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IISELECT
 	*		ITEMID=$itemID
 	*		CUSTID=$custID **OPTIONAL
 	*		SHIPID=$shipID **OPTIONAL
 	*		break;
 	*	case 'item-info':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		ITNOSRCH=$query
 	*		CUSTID=$custID
 	*		break;
 	*	case 'get-item-price':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IIPRICING
 	*		ITEMID=$itemID
 	*		CUSTID=$custID
 	*		break;
 	*	case 'ii-pricing':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IIPRICE n2zz725p
 	*		ITEMID=$itemID
 	*		CUSTID=$custID **OPTIONAL
 	*		SHIPID=$shipID **OPTIONAL
 	*		break;
 	*	case 'ii-costing':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IICOST n2zz721p
 	*		ITEMID=$itemID
 	*		break;
 	*	case 'ii-purchase-order':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IIPURCHORDR n2zz708p
 	*		ITEMID=$itemID
 	*		break;
 	*	case 'ii-quotes':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IIQUOTE n2zz716p
 	*		ITEMID=$itemID
 	*		break;
 	*	case 'ii-purchase-history':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IIPURCHHIST n2zz709p
 	*		ITEMID=$itemID
 	*		break;
 	*	case 'ii-where-used':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IIWHEREUSED n2zz717p
 	*		ITEMID=$itemID
 	*		break;
 	*	case 'ii-kit':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IIKIT n2zz718p
 	*		ITEMID=$itemID
 	*		QTYNEEDED=$qty
 	*		break;
 	*	case 'ii-item-bom':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IIBOMSINGLE|IIBOMCONS
 	*		ITEMID=$itemID
 	*		QTYNEEDED=$qty
 	*		break;
 	*	case 'ii-usage':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IIUSAGE
 	*		ITEMID=$itemID
 	*		break;
 	*	case 'ii-notes':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IINOTES
 	*		ITEMID=$itemID
 	*		break;
 	*	case 'ii-misc':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IIMISC
 	*		ITEMID=$itemID
 	*		break;
@@ -103,30 +103,30 @@
 	*		//TODO replace ii-usage, ii-notes, ii-misc
 	*		break;
 	*	case 'ii-activity':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IIACTIVITY n2zz711p
 	*		ITEMID=$itemID
 	*		DATE=$date
 	*		break;
 	*	case 'ii-requirements':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IIREQUIRE n2zz714p
 	*		ITEMID=$itemID
 	*		WHSE=$whse
 	*		REQAVL=REQ|AVL
 	*		break;
 	*	case 'ii-lot-serial':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IILOTSER n2zz712p
 	*		ITEMID=$itemID
 	*		break;
 	*	case 'ii-sales-orders':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IISALESORDR n2zz706p
 	*		ITEMID=$itemID
 	*		break;
 	*	case 'ii-sales-history':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IISALESHIST n2zz705p
 	*		ITEMID=$itemID
 	*		CUSTID=$custID **OPTIONAL
@@ -134,24 +134,24 @@
 	*		DATE=$date
 	*		break;
 	*	case 'ii-stock':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IISTKBYWHSE n2zz707p
 	*		ITEMID=$itemID
 	*		break;
 	*	case 'ii-substitutes':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		IISUB n2zz713p
 	*		ITEMID=$itemID
 	*		break;
 	*	case 'ii-documents':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		DOCVIEW n2zz735p
 	*		FLD1CD=IT
 	*		FLD1DATA=$itemID
 	*		FLD21DESC=$desc
 	*		break;
 	*	case 'ii-uments':
-	*		DBNAME=$config->DBNAME
+	*		DBNAME=$config->dplusdbname
 	*		DOCVIEW
 	*		FLD1CD=SO
 	*		FLD1DATA=$ordn
@@ -168,11 +168,11 @@
             $q = ($input->post->q ? $input->post->text('q') : $input->get->text('q'));
 			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
 			if (empty($custID)) { $custID == $config->defaultweb; }
-			$data = array('DBNAME' => $config->dbName, 'ITNOSRCH' => strtoupper($q), 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'ITNOSRCH' => strtoupper($q), 'CUSTID' => $custID);
             break;
 		case 'ii-select':
 			if ($session->iidate) { $session->remove('iidate'); }
-			$data = array('DBNAME' => $config->dbName, 'IISELECT' => false, 'ITEMID' => $itemID);
+			$data = array('DBNAME' => $config->dplusdbname, 'IISELECT' => false, 'ITEMID' => $itemID);
 			$session->loc = $config->pages->iteminfo."?itemID=".urlencode($itemID);
             if ($input->post->custID) { $custID = $input->post->custID; } else { $custID = $input->get->text('custID'); }
             if ($input->post->shipID) { $shipID = $input->post->shipID; } else { $shipID = $input->get->text('shipID'); }
@@ -183,64 +183,64 @@
             $q = ($input->post->q ? $input->post->text('q') : $input->get->text('q'));
 			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
 			if (empty($custID)) { $custID == $config->defaultweb; }
-			$data = array('DBNAME' => $config->dbName, 'ITNOSRCH' => $q, 'ITEMID' => $itemID, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'ITNOSRCH' => $q, 'ITEMID' => $itemID, 'CUSTID' => $custID);
             break;
         case 'get-item-price':
 			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
 			if (empty($custID)) { $custID == $config->defaultweb; }
-			$data = array('DBNAME' => $config->dbName, 'IIPRICING' => false, 'ITEMID' => $itemID, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'IIPRICING' => false, 'ITEMID' => $itemID, 'CUSTID' => $custID);
             break;
 		case 'ii-pricing': //II INFORMATION
-			$data = array('DBNAME' => $config->dbName, 'IIPRICE' => false, 'ITEMID' => $itemID);
+			$data = array('DBNAME' => $config->dplusdbname, 'IIPRICE' => false, 'ITEMID' => $itemID);
 			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
 			$shipID = ($input->post->shipID ? $input->post->text('shipID') : $input->get->text('shipID'));
 			if (!empty($custID))  {$data['CUSTID'] = $custID; } if (!empty($shipID)) {$data['SHIPID'] = $shipID; }
             break;
 		case 'ii-costing':
-			$data = array('DBNAME' => $config->dbName, 'IICOST' => false, 'ITEMID' => $itemID);
+			$data = array('DBNAME' => $config->dplusdbname, 'IICOST' => false, 'ITEMID' => $itemID);
             break;
 		case 'ii-purchase-order':
-			$data = array('DBNAME' => $config->dbName, 'IIPURCHORDR' => false, 'ITEMID' => $itemID);
+			$data = array('DBNAME' => $config->dplusdbname, 'IIPURCHORDR' => false, 'ITEMID' => $itemID);
             break;
 		case 'ii-quotes':
-			$data = array('DBNAME' => $config->dbName, 'IIQUOTE' => false, 'ITEMID' => $itemID);
+			$data = array('DBNAME' => $config->dplusdbname, 'IIQUOTE' => false, 'ITEMID' => $itemID);
 			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
 			if (!empty($custID))  {$data['CUSTID'] = $custID; }
             break;
 		case 'ii-purchase-history':
-			$data = array('DBNAME' => $config->dbName, 'IIPURCHHIST' => false, 'ITEMID' => $itemID);
+			$data = array('DBNAME' => $config->dplusdbname, 'IIPURCHHIST' => false, 'ITEMID' => $itemID);
             break;
 		case 'ii-where-used':
-			$data = array('DBNAME' => $config->dbName, 'IIWHEREUSED' => false, 'ITEMID' => $itemID);
+			$data = array('DBNAME' => $config->dplusdbname, 'IIWHEREUSED' => false, 'ITEMID' => $itemID);
             break;
 		case 'ii-kit':
 			$qty = ($input->post->qty ? $input->post->text('qty') : $input->get->text('qty'));
-			$data = array('DBNAME' => $config->dbName, 'IIKIT' => false, 'ITEMID' => $itemID, 'QTYNEEDED' => $qty);
+			$data = array('DBNAME' => $config->dplusdbname, 'IIKIT' => false, 'ITEMID' => $itemID, 'QTYNEEDED' => $qty);
             break;
 		case 'ii-item-bom':
             $qty = ($input->post->qty ? $input->post->text('qty') : $input->get->text('qty'));
             $bom = ($input->post->bom ? $input->post->text('bom') : $input->get->text('bom'));
             if ($bom == 'single') {
-				$data = array('DBNAME' => $config->dbName, 'IIBOMSINGLE' => false, 'ITEMID' => $itemID, 'QTYNEEDED' => $qty);
+				$data = array('DBNAME' => $config->dplusdbname, 'IIBOMSINGLE' => false, 'ITEMID' => $itemID, 'QTYNEEDED' => $qty);
             } elseif ($bom == 'consolidated') {
-				$data = array('DBNAME' => $config->dbName, 'IIBOMCONS' => false, 'ITEMID' => $itemID, 'QTYNEEDED' => $qty);
+				$data = array('DBNAME' => $config->dplusdbname, 'IIBOMCONS' => false, 'ITEMID' => $itemID, 'QTYNEEDED' => $qty);
             }
             break;
 		case 'ii-usage':
-			$data = array('DBNAME' => $config->dbName, 'IIUSAGE' => false, 'ITEMID' => $itemID);
+			$data = array('DBNAME' => $config->dplusdbname, 'IIUSAGE' => false, 'ITEMID' => $itemID);
             break;
         case 'ii-notes':
-			$data = array('DBNAME' => $config->dbName, 'IINOTES' => false, 'ITEMID' => $itemID);
+			$data = array('DBNAME' => $config->dplusdbname, 'IINOTES' => false, 'ITEMID' => $itemID);
             break;
 		case 'ii-misc':
-			$data = array('DBNAME' => $config->dbName, 'IIMISC' => false, 'ITEMID' => $itemID);
+			$data = array('DBNAME' => $config->dplusdbname, 'IIMISC' => false, 'ITEMID' => $itemID);
             break;
 		case 'ii-general':
 			//TODO replace ii-usage, ii-notes, ii-misc
 			break;
 		case 'ii-activity':
             $custID = $shipID = $date = '';
-			$data = array('DBNAME' => $config->dbName, 'IIACTIVITY' => false, 'ITEMID' => $itemID);
+			$data = array('DBNAME' => $config->dplusdbname, 'IIACTIVITY' => false, 'ITEMID' => $itemID);
             $date = ($input->post->date ? $input->post->text('date') : $input->get->text('date'));
             if (!empty($date)) {$data['DATE'] = date('Ymd', strtotime($date)); }
             break;
@@ -248,17 +248,17 @@
             $whse = ($input->post->whse ? $input->post->text('whse') : $input->get->text('whse'));
             $screentype = ($input->post->screentype ? $input->post->text('screentype') : $input->get->text('screentype'));
             //screen type would be REQ or AVL
-			$data = array('DBNAME' => $config->dbName, 'IIREQUIRE' => false, 'ITEMID' => $itemID, 'WHSE' => $whse, 'REQAVL' => $screentype);
+			$data = array('DBNAME' => $config->dplusdbname, 'IIREQUIRE' => false, 'ITEMID' => $itemID, 'WHSE' => $whse, 'REQAVL' => $screentype);
             break;
 		case 'ii-lot-serial':
-			$data = array('DBNAME' => $config->dbName, 'IILOTSER' => false, 'ITEMID' => $itemID);
+			$data = array('DBNAME' => $config->dplusdbname, 'IILOTSER' => false, 'ITEMID' => $itemID);
             break;
 		case 'ii-sales-orders':
-			$data = array('DBNAME' => $config->dbName, 'IISALESORDR' => false, 'ITEMID' => $itemID);
+			$data = array('DBNAME' => $config->dplusdbname, 'IISALESORDR' => false, 'ITEMID' => $itemID);
             break;
 		case 'ii-sales-history':
             $date = '';
-			$data = array('DBNAME' => $config->dbName, 'IISALESHIST' => false, 'ITEMID' => $itemID);
+			$data = array('DBNAME' => $config->dplusdbname, 'IISALESHIST' => false, 'ITEMID' => $itemID);
 			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
 			$shipID = ($input->post->shipID ? $input->post->text('shipID') : $input->get->text('shipID'));
 			$date = ($input->post->date ? $input->post->text('date') : $input->get->text('date'));
@@ -266,21 +266,21 @@
             if (!empty($date)) { $data['DATE'] = date('Ymd', strtotime($date)); }
             break;
        case 'ii-stock':
-			$data = array('DBNAME' => $config->dbName, 'IISTKBYWHSE' => false, 'ITEMID' => $itemID);
+			$data = array('DBNAME' => $config->dplusdbname, 'IISTKBYWHSE' => false, 'ITEMID' => $itemID);
             break;
         case 'ii-substitutes':
-			$data = array('DBNAME' => $config->dbName, 'IISUB' => false, 'ITEMID' => $itemID);
+			$data = array('DBNAME' => $config->dplusdbname, 'IISUB' => false, 'ITEMID' => $itemID);
             break;
 		case 'ii-documents': 
 			$desc = XRefItem::get_itemdescription($itemID);
 			$session->sql = XRefItem::get_itemdescription($itemID);
-			$data = array('DBNAME' => $config->dbName, 'DOCVIEW' => false, 'FLD1CD' => 'IT', 'FLD1DATA' => $itemID, 'FLD1DESC' => $desc);
+			$data = array('DBNAME' => $config->dplusdbname, 'DOCVIEW' => false, 'FLD1CD' => 'IT', 'FLD1DATA' => $itemID, 'FLD1DESC' => $desc);
             break;
 		case 'ii-order-documents':
 			$ordn = $input->get->text('ordn');
 			$type = $input->get->text('type');
 			$desc = XRefItem::get_itemdescription($itemID);
-			$data = array('DBNAME' => $config->dbName, 'DOCVIEW' => false, 'FLD1CD' => $config->documentstoragetypes[$type], 'FLD1DATA' => $ordn, 'FLD2CD' => 'IT', 'FLD2DATA' => $itemID);
+			$data = array('DBNAME' => $config->dplusdbname, 'DOCVIEW' => false, 'FLD1CD' => $config->documentstoragetypes[$type], 'FLD1DATA' => $ordn, 'FLD2CD' => 'IT', 'FLD2DATA' => $itemID);
             break;
     }
 

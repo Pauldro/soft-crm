@@ -4,7 +4,7 @@
 
 	$href = $config->pages->ajax.'load/ci/ci-53weeks/?custID='.urlencode($custID);
 	if ($page->name == 'cust-info') {
-		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($href, 'View Printable Version'));
+		echo $page->bootstrap->create_element('p', '', $page->bootstrap->generate_printlink($href, 'View Printable Version'));
 	}
 ?>
 

@@ -7,7 +7,7 @@
 		$tb->td('colspan=2', $costjson['desc1']);
 	$tb->tr();
 		$tb->td('', '<b>Vendor ID</b>');
-		$button = $page->bootstrap->openandclose('button', "type=button|class=btn btn-primary btn-sm|data-dismiss=modal|onclick=iicust('ii-pricing')", 'Change Customer');
+		$button = $page->bootstrap->create_element('button', "type=button|class=btn btn-primary btn-sm|data-dismiss=modal|onclick=iicust('ii-pricing')", 'Change Customer');
 		$content = $costjson['vendid']." - ".$costjson['vendname'] . ' &nbsp; ';
 		$tb->td('colspan=2', $content);
 	$tb->tr();

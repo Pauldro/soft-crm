@@ -14,7 +14,7 @@
             PUBLIC FUNCTIONS
         ============================================================ */
 		public function generate_screen() {
-			return empty($this->json['data']) ? $page->bootstrap->createalert('warning', 'Information Not Available') : '';
+			return empty($this->json['data']) ? $page->bootstrap->alertpanel('warning', 'Information Not Available') : '';
 		}
 		
 		/**
@@ -23,7 +23,7 @@
 		 * @return string             HTML table with Customer data
 		 */
 		public function generate_customertable(Customer $customer) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$tb = new Table("class=table table-striped table-bordered table-condensed table-excel");
 			foreach (array_keys($this->json['columns']['top']) as $column) {
 				if ($this->json['columns']['top'][$column]['heading'] == '' && $this->json['data']['top'][$column] == '') {
@@ -39,7 +39,7 @@
 				}
 			}
 			if (has_dpluspermission(DplusWire::wire('user')->loginid, 'eso') || has_dpluspermission(DplusWire::wire('user')->loginid, 'eqo')) {
-				$button = $bootstrap->button('type=button|class=btn btn-primary|data-toggle=modal|data-target=#item-lookup-modal', $bootstrap->createicon('glyphicon glyphicon-plus'). ' Item Entry');
+				$button = $bootstrap->button('type=button|class=btn btn-primary|data-toggle=modal|data-target=#item-lookup-modal', $bootstrap->icon('glyphicon glyphicon-plus'). ' Item Entry');
 				$tb->tr()->td('colspan=2', $bootstrap->p('class=text-center', $button));
 			}
 			return $tb->close();
@@ -51,7 +51,7 @@
 		 * @return string             HTML table with Customer Shipto data
 		 */
 		public function generate_shiptotable(Customer $customer) {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$tb = new Table("class=table table-striped table-bordered table-condensed table-excel");
 			foreach (array_keys($this->json['columns']['top']) as $column) {
 				if ($this->json['columns']['top'][$column]['heading'] == '' && $this->json['data']['top'][$column] == '') {
@@ -67,7 +67,7 @@
 							$show = $shipto->shiptoid.' '.$shipto->name.' - '.$shipto->city.', '.$shipto->state;
 							$options .= $bootstrap->option("value=$shipto->shiptoid", $show);
 						}
-						$select = $bootstrap->openandclose('select', "class=form-control input-sm|onchange=refreshshipto(this.value, '$customer->custID')", $options);
+						$select = $bootstrap->create_element('select', "class=form-control input-sm|onchange=refreshshipto(this.value, '$customer->custID')", $options);
 						$tb->td('', 'Ship-to ID');
 						$tb->td('', $select);
 					} else {
@@ -91,7 +91,7 @@
 			$form->input("type=hidden|name=shipID|class=shipID|value=$customer->shipID");
 			$form->input("type=hidden|name=nextshipID|class=nextshipID|value=".$customer->get_nextshiptoid());
 			$input = $form->bootstrap->input("type=text|class=form-control input-sm not-round custID|name=custID|value=$customer->custID");
-			$button = $form->bootstrap->button('type=submit|class=btn btn-sm btn-default not-round', $form->bootstrap->createicon('glyphicon glyphicon-search'));  //FIX for accessibility
+			$button = $form->bootstrap->button('type=submit|class=btn btn-sm btn-default not-round', $form->bootstrap->icon('glyphicon glyphicon-search'));  //FIX for accessibility
 			$span = $form->bootstrap->span('class=input-group-btn', $button);
 			$form->add($form->bootstrap->div('class=input-group custom-search-form', $input.$span));
 			return $form->finish();

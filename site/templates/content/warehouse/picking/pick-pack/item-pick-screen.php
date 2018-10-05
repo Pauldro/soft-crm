@@ -3,8 +3,8 @@
 	<h2>Head to <?= $pickitem->bin; ?></h2>
 	<table class="table table-condensed table-striped">
 		<tr>
-			<td class="control-label">Current Pallet #</td> 
-			<td class="text-right">
+			<td class="control-label">Current Pallet #</td>
+			<td class="text-right" colspan="2">
 				<form action="<?= $pickorder->get_redirURL(); ?>" method="get">
 					<input type="hidden" name="action" value="set-pallet">
 					<input type="hidden" name="page" value="<?= $page->fullURL; ?>">
@@ -21,17 +21,17 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="control-label">Order #</td> <td class="text-right"><?= $pickitem->ordn; ?></td>
+			<td class="control-label">Order #</td> <td class="text-right" colspan="2"><?= $pickitem->ordn; ?></td>
 		</tr>
 		<tr>
-			<td class="control-label">Bin #</td> <td class="text-right"><?= $pickitem->bin; ?></td>
+			<td class="control-label">Bin #</td> <td class="text-right" colspan="2"><?= $pickitem->bin; ?></td>
 		</tr>
 		<tr>
-			<td class="control-label">Expected Qty</td> <td class="text-right"><?= $pickitem->binqty; ?></td>
+			<td class="control-label">Expected Qty</td> <td class="text-right" colspan="2"><?= $pickitem->binqty; ?></td>
 		</tr>
 		<tr>
 			<td class="control-label">Item ID</td> 
-			<td class="text-right">
+			<td class="text-right" colspan="2">
 				<?= $pickitem->itemid; ?>
 				<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#item-info-modal">
 					Item Info
@@ -39,18 +39,26 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="control-label">Qty Needed</td> <td class="text-right"><?= $pickitem->qtyordered; ?></td>
+			<td class="control-label">Qty Needed</td> 
+			<td class="text-right"><?= $pickitem->qtyordered; ?></td>
+			<td class="text-right"><?= $pickitem->get_qtycasedescription($pickitem->qtyordered); ?></td>
 		</tr>
 		<?php if ($pickitem->has_qtypulled()) : ?>
 			<tr>
-				<td class="control-label">Previously Picked</td> <td class="text-right"><?= $pickitem->qtypulled; ?></td>
+				<td class="control-label">Previously Picked</td> 
+				<td class="text-right"><?= $pickitem->qtypulled; ?></td>
+				<td><?= $pickitem->get_qtycasedescription($pickitem->qtypulled); ?></td>
 			</tr>
 		<?php endif; ?>
 		<tr>
-			<td class="control-label">Qty Picked</td> <td class="text-right"><?= $pickitem->get_userpickedtotal(); ?></td>
+			<td class="control-label">Qty Picked</td> 
+			<td class="text-right"><?= intval($pickitem->get_userpickedtotal()); ?></td>
+			<td class="text-right"><?= $pickitem->get_qtycasedescription(intval($pickitem->get_userpickedtotal())); ?></td>
 		</tr>
 		<tr class="<?= $pickitem->has_pickedtoomuch() ? 'bg-warning' : (($pickitem->has_qtyremaining()) ? '' : 'bg-success'); ?>">
-			<td class="control-label">Qty Remaining</td> <td class="text-right"><?= $pickitem->get_qtyremaining(); ?></td>
+			<td class="control-label">Qty Remaining</td> 
+			<td class="text-right"><?= $pickitem->get_qtyremaining(); ?></td>
+			<td class="text-right"><?= $pickitem->get_qtycasedescription($pickitem->get_qtyremaining()); ?></td>
 		</tr>
 	</table>
 	
@@ -77,11 +85,6 @@
             </span>
         </div>
     </form>
-	<div class="form-group">
-		<a href="<?= $pickorder->generate_addpalleturl(); ?>" class="btn btn-emerald">
-			<i class="fa fa-cart-plus" aria-hidden="true"></i> Add Pallet
-		</a>
-	</div>
 	
 	<div class="row">
 		<div class="col-sm-3 col-xs-6 form-group">

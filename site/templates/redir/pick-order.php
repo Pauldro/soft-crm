@@ -16,20 +16,20 @@
 	*
 	* switch ($action) {
 	*	case 'initiate-pick':
-	*		DBNAME=$config->dbName
+	*		DBNAME=$config->dplusdbname
 	*		LOGIN=$user->loginid
 	*		break;
 	*	case 'start-order':
-	*		DBNAME=$config->dbName
+	*		DBNAME=$config->dplusdbname
 	*		STARTORDER
 	*		ORDERNBR=$ordn
 	*		break;
 	*	case 'select-bin':
-	*		DBNAME=$config->dbName
+	*		DBNAME=$config->dplusdbname
 	*		SETBIN=$bin
 	*		break;
 	*	case 'next-bin':
-	*		DBNAME=$config->dbName
+	*		DBNAME=$config->dplusdbname
 	*		NEXTBIN
 	*		break;
 	* }
@@ -40,54 +40,54 @@
 		case 'initiate-whse':
 			$login = get_loginrecord($sessionID);
 			$loginID = $login['loginid'];
-			$data = array("DBNAME=$config->dbName", "LOGIN=$loginID");
+			$data = array("DBNAME=$config->dplusdbname", "LOGIN=$loginID");
 			break;
 		case 'start-pick':
-			$data = array("DBNAME=$config->dbName", 'PICKING');
+			$data = array("DBNAME=$config->dplusdbname", 'PICKING');
 			break;
 		case 'start-pick-pack':
-			$data = array("DBNAME=$config->dbName", 'PACKING');
+			$data = array("DBNAME=$config->dplusdbname", 'PACKING');
 			break;
 		case 'logout':
-			$data = array("DBNAME=$config->dbName", 'LOGOUT');
+			$data = array("DBNAME=$config->dplusdbname", 'LOGOUT');
 			$session->loc = $config->pages->salesorderpicking;
 			break;
 		case 'start-order':
 			$ordn = $input->$requestmethod->text('ordn');
 			$url = new Purl\Url($input->$requestmethod->text('page'));
-			$data = array("DBNAME=$config->dbName", 'STARTORDER', "ORDERNBR=$ordn");
+			$data = array("DBNAME=$config->dplusdbname", 'STARTORDER', "ORDERNBR=$ordn");
 			$url->query->set('ordn', $ordn);
 			$session->loc = $url->getUrl();
 			break;
 		case 'select-bin':
 			$bin = strtoupper($input->$requestmethod->text('bin'));
-			$data = array("DBNAME=$config->dbName", "SETBIN=$bin");
+			$data = array("DBNAME=$config->dplusdbname", "SETBIN=$bin");
 			$session->loc = $input->$requestmethod->text('page');
 			break;
 		case 'next-bin':
-			$data = array("DBNAME=$config->dbName", 'NEXTBIN');
+			$data = array("DBNAME=$config->dplusdbname", 'NEXTBIN');
 			$session->loc = $input->$requestmethod->text('page');
 			break;
 		case 'add-pallet':
-			$data = array("DBNAME=$config->dbName", 'NEWPALLET');
+			$data = array("DBNAME=$config->dplusdbname", 'NEWPALLET');
 			$session->loc = $input->$requestmethod->text('page');
 			break;
 		case 'set-pallet':
 			$palletnbr = $input->$requestmethod->text('palletnbr');
-			$data = array("DBNAME=$config->dbName", "GOTOPALLET=$palletnbr");
+			$data = array("DBNAME=$config->dplusdbname", "GOTOPALLET=$palletnbr");
 			$session->loc = $input->$requestmethod->text('page');
 			break;
 		case 'finish-item':
 			$item = Pick_SalesOrderDetail::load(session_id());
 			$totalpicked = $item->get_userpickedtotal();
-			$data = array("DBNAME=$config->dbName", 'ACCEPTITEM', "ORDERNBR=$item->ordernbr ", "LINENBR=$item->linenbr", "ITEMID=$item->itemnbr", "ITEMQTY=$totalpicked");
+			$data = array("DBNAME=$config->dplusdbname", 'ACCEPTITEM', "ORDERNBR=$item->ordernbr ", "LINENBR=$item->linenbr", "ITEMID=$item->itemnbr", "ITEMQTY=$totalpicked");
 			$session->loc = $input->$requestmethod->text('page');
 			break;
 		case 'finish-item-pick-pack':
 			$item = Pick_SalesOrderDetail::load(session_id());
 			$totals = $item->get_userpickedpallettotals();
 			$session->sql = $item->get_userpickedpallettotals(true);
-			$data = array("DBNAME=$config->dbName", 'ACCEPTITEM', "ORDERNBR=$item->ordernbr ", "LINENBR=$item->linenbr", "ITEMID=$item->itemnbr");
+			$data = array("DBNAME=$config->dplusdbname", 'ACCEPTITEM', "ORDERNBR=$item->ordernbr ", "LINENBR=$item->linenbr", "ITEMID=$item->itemnbr");
 			foreach ($totals as $total) {
 				$pallet = str_pad($total['palletnbr'], 4, ' ');
 				$qty = str_pad($total['qty'], 10, ' ');
@@ -98,26 +98,31 @@
 		case 'skip-item':
 			$whsesession = WhseSession::load(session_id());
 			$pickitem = Pick_SalesOrderDetail::load(session_id());
-			$data = array("DBNAME=$config->dbName", 'SKIPITEM', "ORDERNBR=$pickitem->ordn", "LINENBR=$pickitem->linenbr");
+			$data = array("DBNAME=$config->dplusdbname", 'SKIPITEM', "ORDERNBR=$pickitem->ordn", "LINENBR=$pickitem->linenbr");
 			$session->loc = $input->$requestmethod->text('page');
 			break;
 		case 'finish-order':
 			$whsesession = WhseSession::load(session_id());
-			$data = array("DBNAME=$config->dbName", 'COMPLETEORDER', "ORDERNBR=$whsesession->ordn");
+			$data = array("DBNAME=$config->dplusdbname", 'COMPLETEORDER', "ORDERNBR=$whsesession->ordn");
 			$url = new Purl\Url($input->$requestmethod->text('page'));
 			$url->query->remove('ordn');
 			$session->loc = $url->getUrl();
 			break;
 		case 'exit-order':
 			$whsesession = WhseSession::load(session_id());
-			$data = array("DBNAME=$config->dbName", 'STOPORDER', "ORDERNBR=$whsesession->ordn");
+			$data = array("DBNAME=$config->dplusdbname", 'STOPORDER', "ORDERNBR=$whsesession->ordn");
 			$url = new Purl\Url($input->$requestmethod->text('page'));
 			$url->query->remove('ordn');
 			$session->loc = $url->getUrl();
 			break;
+		case 'cancel-order':
+			$whsesession = WhseSession::load(session_id());
+			$data = array("DBNAME=$config->dplusdbname", 'CANCELSTART', "ORDERNBR=$whsesession->ordn");
+			$session->loc = $input->$requestmethod->text('page');
+			break;
 		case 'remove-order-locks':
 			$ordn = $input->$requestmethod->text('ordn');
-			$data = array("DBNAME=$config->dbName", 'REFRESHPD', "ORDERNBR=$ordn");
+			$data = array("DBNAME=$config->dplusdbname", 'REFRESHPD', "ORDERNBR=$ordn");
 			$session->loc = $config->pages->salesorderpicking;
 			break;
 		case 'add-barcode':

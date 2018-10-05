@@ -4,7 +4,7 @@
 	//$whereusedfile = $config->jsonfilepath."iiuse2-iiwhereused.json";
 	
 	if ($config->ajax) {
-		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
+		echo $page->bootstrap->create_element('p', '', $page->bootstrap->generate_printlink($config->filename, 'View Printable Version'));
 	}
 	
 	if (file_exists($whereusedfile)) {
@@ -13,7 +13,7 @@
 		$whereusedjson = $whereusedjson ? $whereusedjson : array('error' => true, 'errormsg' => 'The Item Where Used JSON contains errors. JSON ERROR: '.json_last_error());
 		
 		if ($whereusedjson['error']) {
-			echo $page->bootstrap->createalert('warning', $whereusedjson['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $whereusedjson['errormsg']);
 		} else {
 			$kitcolumns = array_keys($whereusedjson['columns']['kit']);
 			$bomcolumns = array_keys($whereusedjson['columns']['bom']);
@@ -63,6 +63,6 @@
 			}
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information Not Available');
+		echo $page->bootstrap->alertpanel('warning', 'Information Not Available');
 	}
  ?>

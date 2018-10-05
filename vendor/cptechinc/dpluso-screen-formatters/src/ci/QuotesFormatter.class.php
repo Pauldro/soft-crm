@@ -21,7 +21,7 @@
         ============================================================ */
         public function generate_screen() {
 			$url = new \Purl\Url(DplusWire::wire('config')->pages->ajaxload."ci/ci-documents/quote/");
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
 			$this->generate_tableblueprint();
 			$content = '';
 
@@ -67,7 +67,7 @@
 										$custID = $this->json['custid'];
 										$url->query->setData(array('custID' => $custID, 'qnbr' => $qnbr, 'returnpage' => urlencode(DplusWire::wire('page')->fullURL->getUrl())));
 										$href = $url->getUrl();
-										$celldata .= "&nbsp; " . $bootstrap->openandclose('a', "href=$href|class=load-quote-documents|title=Load Order Documents|aria-label=Load Quote Documents|data-qnbr=$qnbr|data-custid=$custID|data-type=$this->type", $bootstrap->createicon('fa fa-file-text'));
+										$celldata .= "&nbsp; " . $bootstrap->create_element('a', "href=$href|class=load-quote-documents|title=Load Order Documents|aria-label=Load Quote Documents|data-qnbr=$qnbr|data-custid=$custID|data-type=$this->type", $bootstrap->icon('fa fa-file-text'));
 									}
             						$tb->td("colspan=$colspan|class=$class", $celldata);
             					} else {

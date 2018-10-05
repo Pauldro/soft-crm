@@ -6,7 +6,7 @@
 		$tb->td('colspan=2', $pricejson['desc1']);
 	$tb->tr();
 		$tb->td('', '<b>Customer ID</b>');
-		$button = $page->bootstrap->openandclose('button', "type=button|class=btn btn-primary btn-sm|data-dismiss=modal|onclick=iicust('ii-pricing')", 'Change Customer');
+		$button = $page->bootstrap->create_element('button', "type=button|class=btn btn-primary btn-sm|data-dismiss=modal|onclick=iicust('ii-pricing')", 'Change Customer');
 		$content = $pricejson['custid']." - ".$pricejson['cust name'] . ' &nbsp; ';
 		$tb->td('colspan=2', $content);
 	$tb->tr();

@@ -326,7 +326,6 @@
  */
 function write_dplusfile($data, $filename) {
 	$file = '';
-	echo var_dump($data);
 	foreach ($data as $line) {
 		$file .= $line . "\n";
 	}

@@ -3,7 +3,7 @@
 	// $purchaseorderfile = $config->jsonfilepath."viunrv-viunreleased.json";
 	
 	if ($config->ajax) {
-		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
+		echo $page->bootstrap->create_element('p', '', $page->bootstrap->generate_printlink($config->filename, 'View Printable Version'));
 	}
 	
 	if (file_exists($purchaseorderfile)) {
@@ -11,13 +11,13 @@
 		$purchaseorderjson = json_decode(convertfiletojson($purchaseorderfile), true);
 		$purchaseorderjson ? $purchaseorderjson : array('error' => true, 'errormsg' => 'The VI Unreleased Purchase Orders JSON contains errors. JSON ERROR: ' . json_last_error());
 		if ($purchaseorderjson['error']) {
-			echo $page->bootstrap->createalert('warning', $purchaseorderjson['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $purchaseorderjson['errormsg']);
 		} else {
 			$table = include $config->paths->content. 'vend-information/screen-formatters/logic/unreleased-purchase-order.php';
 			include $config->paths->content. 'vend-information/tables/unreleased-purchase-order-formatted.php';
 			include $config->paths->content. 'vend-information/scripts/unreleased-purchase-orders.js.php';
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information not available.');
+		echo $page->bootstrap->alertpanel('warning', 'Information not available.');
 	}
 ?>

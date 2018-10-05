@@ -17,7 +17,7 @@
             PUBLIC FUNCTIONS
        	============================================================ */
         public function generate_screen() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = '';
 			$count = 0; 
             //if ($column['sortavailable'] == 'n') { $array[] = $count; }

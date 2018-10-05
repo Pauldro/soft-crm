@@ -214,10 +214,12 @@ $(document).ready(function() {
 			var formurl = URI(form.attr('action'));
 			formurl.removeQuery(/^completed/);
 			formurl.removeQuery(/^assignedto/);
+			formurl.removeQuery(/^actiontype/);
 			var focus = form.data('focus');
 			var loadinto = form.data('loadinto');
 			var querystring = formurl.query() + "&"+ form.serialize();
 			formurl.query(querystring).query(cleanparams).normalizeQuery();
+			
 			href = formurl.toString();
 
 			$(loadinto).loadin(href, function() {

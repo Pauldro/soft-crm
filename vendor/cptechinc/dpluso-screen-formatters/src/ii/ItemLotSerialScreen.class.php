@@ -15,7 +15,7 @@
           PUBLIC FUNCTIONS
        	============================================================ */
         public function generate_screen() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = '';
             $columns = array_keys($this->json['columns']);
 			$count = 0; 

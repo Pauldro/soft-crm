@@ -18,7 +18,7 @@
             PUBLIC FUNCTIONS
        	============================================================ */
         public function generate_screen() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $content = '';
 			$this->generate_tableblueprint();
 			$item = XRefItem::load($this->json['itemid']);
@@ -44,7 +44,7 @@
 		 * @return string HTML Table
 		 */
 		protected function generate_itemformsection() {
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$itemID = $this->json['itemid'];
 			$custID = DplusWire::wire('input')->get->text('custID');
 			$shipID = DplusWire::wire('input')->get->text('shipID');
@@ -67,7 +67,7 @@
 					$form->div('class=form-group', false);
 						$form->div('class=input-group custom-search-form', false);
 							$form->input("type=text|class=form-control not-round itemID|name=itemID|placeholder=Search ItemID, X-ref|value=$itemID");
-							$button = $form->bootstrap->button('type=submit|class=btn btn-default not-round', $form->bootstrap->createicon('glyphicon glyphicon-search'));
+							$button = $form->bootstrap->button('type=submit|class=btn btn-default not-round', $form->bootstrap->icon('glyphicon glyphicon-search'));
 							$form->span('class=input-group-btn', $button);
 						$form->close('div');
 					$form->close('div');
@@ -87,7 +87,7 @@
 		 * @return string HTML
 		 */
 		protected function generate_othersections() {
-			$bootstrap = new Contento;
+			$bootstrap = new HTMLWriter();
 			$content = '';
 			
 			for ($i = 2; $i < 5; $i++) {

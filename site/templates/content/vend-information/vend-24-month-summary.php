@@ -3,7 +3,7 @@
 	// $summaryfile = $config->jsonfilepath."vimthv-vimonthsum.json";
 
     if ($config->ajax) {
-		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
+		echo $page->bootstrap->create_element('p', '', $page->bootstrap->generate_printlink($config->filename, 'View Printable Version'));
 	}
 
 ?>

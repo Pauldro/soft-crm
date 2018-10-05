@@ -3,7 +3,7 @@
 	//$uninvoicedfile = $config->jsonfilepath."viuni-viuninvoiced.json";
 	
 	if ($config->ajax) {
-		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
+		echo $page->bootstrap->create_element('p', '', $page->bootstrap->generate_printlink($config->filename, 'View Printable Version'));
 	}
 	
 	if (file_exists($uninvoicedfile)) {
@@ -12,7 +12,7 @@
 		$uninvoicedjson ? $uninvoicedjson : array('error' => true, 'errormsg' => 'The VI Uninvoiced Purchase Orders JSON contains errors. JSON ERROR: ' . json_last_error());
 		
 		if ($uninvoicedjson['error']) {
-			echo $page->bootstrap->createalert('warning', $uninvoicedjson['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $uninvoicedjson['errormsg']);
 		} else {
 			$headercolumns = array_keys($uninvoicedjson['columns']['header']);
 		    $detailcolumns = array_keys($uninvoicedjson['columns']['details']);
@@ -89,6 +89,6 @@
 			}
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information not available.');
+		echo $page->bootstrap->alertpanel('warning', 'Information not available.');
 	}
 ?>

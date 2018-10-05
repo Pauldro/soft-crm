@@ -22,7 +22,7 @@
             CLASS FUNCTIONS
        	============================================================ */
         protected function generate_misctable() {
-            $bootstrap = new Contento();
+            $bootstrap = new HTMLWriter();
             $tb = new Table('class=table table-striped table-condensed table-excel');
             foreach ($this->json['data'] as $misc) {
                 foreach (array_keys($this->json['columns']['misc info']) as $column) {

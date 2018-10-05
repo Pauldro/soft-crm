@@ -6,7 +6,7 @@
 	$itemlink->query = '';
 	
 	if ($config->ajax) {
-		echo $page->bootstrap->openandclose('p', '', $page->bootstrap->makeprintlink($config->filename, 'View Printable Version'));
+		echo $page->bootstrap->create_element('p', '', $page->bootstrap->generate_printlink($config->filename, 'View Printable Version'));
 	}
 
 	if (file_exists($stockfile))  {
@@ -15,7 +15,7 @@
 		$jsonstock = $jsonstock ? $jsonstock : array('error' => true, 'errormsg' => 'The Stock Info JSON contains errors. JSON ERROR: '.json_last_error());
 		
 		if ($jsonstock['error']) {
-			echo $page->bootstrap->createalert('warning', $jsonstock['errormsg']);
+			echo $page->bootstrap->alertpanel('warning', $jsonstock['errormsg']);
 		} else {
 			$columns = array_keys($jsonstock['columns']);
 			$tb = new Table('class=table table-striped table-condensed table-bordered table-excel');
@@ -33,7 +33,7 @@
 						$class = $config->textjustify[$jsonstock['columns'][$column]['datajustify']];
 						if ($column == "Item ID") {
 							$itemlink->query->setData(array("action" => "ii-select", "custID" => $custID, 'itemID' => $warehouse[$column]));;
-							$content = $page->bootstrap->openandclose('a', "href=".$itemlink->getUrl(), $warehouse[$column]);
+							$content = $page->bootstrap->create_element('a', "href=".$itemlink->getUrl(), $warehouse[$column]);
 						} else {
 							$content = $warehouse[$column];
 						}
@@ -44,6 +44,6 @@
 			echo $tb->close();
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information Not Available');
+		echo $page->bootstrap->alertpanel('warning', 'Information Not Available');
 	}
 ?>

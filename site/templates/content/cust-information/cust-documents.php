@@ -4,9 +4,9 @@
 	
 	if ($input->get->returnpage) {
 		$returnurl = urldecode($input->get->text('returnpage'));
-		$icon = $page->bootstrap->createicon('fa fa-arrow-circle-left');
-		$link = $page->bootstrap->openandclose('a', "href=$returnurl|class=h3 modal-load info-screen|data-modal=#ajax-modal|modal-size=xl", "$icon Go Back");
-		echo $page->bootstrap->openandclose('div', 'class=form-group', $link);
+		$icon = $page->bootstrap->icon('fa fa-arrow-circle-left');
+		$link = $page->bootstrap->create_element('a', "href=$returnurl|class=h3 modal-load info-screen|data-modal=#ajax-modal|modal-size=xl", "$icon Go Back");
+		echo $page->bootstrap->create_element('div', 'class=form-group', $link);
 	}
 	
 	if (file_exists($docfile)) {
@@ -15,7 +15,7 @@
 		$docjson = $docjson ? $docjson : array('error' => true, 'errormsg' => 'The Cust Documents JSON contains errors. JSON ERROR: '.json_last_error());
 		
 		if ($docjson['error']) {
-			echo $page->bootstrap->createalert('warning', $docjson['errormsg']); 
+			echo $page->bootstrap->alertpanel('warning', $docjson['errormsg']); 
 		} else {
 			$columns = array_keys($docjson['columns']);
 			$documents = array_keys($docjson['data']);
@@ -35,13 +35,13 @@
 						$class = $config->textjustify[$docjson['columns'][$column]['datajustify']];
 						$tb->td("class=$class", $docjson['data'][$doc][$column]);
 					}
-					$content = $page->bootstrap->openandclose('button', "class=btn btn-sm btn-primary load-doc|data-doc=$doc", '<i class="fa fa-file-o" aria-hidden="true"></i> Load');
+					$content = $page->bootstrap->create_element('button', "class=btn btn-sm btn-primary load-doc|data-doc=$doc", '<i class="fa fa-file-o" aria-hidden="true"></i> Load');
 					$tb->td("class=$class", $content);
 				}
 			$tb->closetablesection('tbody');
 			echo $tb->close();
 		}
 	} else {
-		echo $page->bootstrap->createalert('warning', 'Information Not Available'); 
+		echo $page->bootstrap->alertpanel('warning', 'Information Not Available'); 
 	}
 ?>
