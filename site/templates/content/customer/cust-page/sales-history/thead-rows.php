@@ -1,8 +1,8 @@
 <tr>
 	<th>Detail</th>
 	<th>
-		<a href="<?= $orderpanel->generate_tablesortbyurl("orderno") ; ?>" class="load-link" <?= $orderpanel->ajaxdata; ?>>
-				Order # <?= $orderpanel->tablesorter->generate_sortsymbol('orderno'); ?>
+		<a href="<?= $orderpanel->generate_tablesortbyurl("ordernumber") ; ?>" class="load-link" <?= $orderpanel->ajaxdata; ?>>
+				Order # <?= $orderpanel->tablesorter->generate_sortsymbol('ordernumber'); ?>
 		</a>
 	</th>
 	<th colspan="2">
@@ -17,8 +17,8 @@
 		</a>
 	</th>
 	<th>
-		<a href="<?= $orderpanel->generate_tablesortbyurl("orderdate") ; ?>" class="load-link" <?= $orderpanel->ajaxdata; ?>>
-			Order Date: <?= $orderpanel->tablesorter->generate_sortsymbol('orderdate'); ?>
+		<a href="<?= $orderpanel->generate_tablesortbyurl("order_date") ; ?>" class="load-link" <?= $orderpanel->ajaxdata; ?>>
+			Order Date: <?= $orderpanel->tablesorter->generate_sortsymbol('order_date'); ?>
 		</a>
 	</th>
 	<th>

@@ -36,7 +36,7 @@
 		public function generate_dplusnotesrequesturl(Order $order, $linenbr) {
 			$url = new \Purl\Url($this->pageurl->getUrl());
 			$url->path = DplusWire::wire('config')->pages->notes."redir/";
-			$url->query->setData(array('action' => 'get-order-notes', 'ordn' => $order->orderno, 'linenbr' => $linenbr));
+			$url->query->setData(array('action' => 'get-order-notes', 'ordn' => $order->ordernumber, 'linenbr' => $linenbr));
 			return $url->getUrl();
 		}
 
@@ -105,7 +105,7 @@
 		 */
 		public function generate_documentsrequesturltrait(Order $order, OrderDetail $orderdetail = null) {
 			$url = $this->generate_ordersredirurl();
-			$url->query->setData(array('action' => 'get-order-documents', 'ordn' => $order->orderno));
+			$url->query->setData(array('action' => 'get-order-documents', 'ordn' => $order->ordernumber));
 			if ($orderdetail) {
 				$url->query->set('itemdoc', $orderdetail->itemid);
 			}
@@ -113,19 +113,13 @@
 		}
 
 		/**
-		 * Returns URL to edit order page
+		 * Returns URL to Request Edit Order
 		 * @param  Order  $order SalesOrder
 		 * @return string        URL to edit order page
 		 */
 		public function generate_editurl(Order $order) {
 			$url = $this->generate_ordersredirurl();
-			$url->query->setData(array('action' => 'get-order-details','ordn' => $order->orderno));
-
-			if ($order->can_edit()) {
-				$url->query->set('lock', 'lock');
-			} else {
-				$url->query->set('readonly', 'readonly');
-			}
+			$url->query->setData(array('action' => 'get-order-edit','ordn' => $order->ordernumber));
 			return $url->getUrl();
 		}
 
@@ -147,8 +141,8 @@
 		 * @return string        URL to view print page
 		 */
 		public function generate_viewprinturl(Order $order) {
-			$url = new \Purl\Url($this->generate_loaddetailsurl($order));
-			$url->query->set('print', 'true');
+			$url = $this->generate_ordersredirurl();
+			$url->query->setData(array('action' => 'get-order-print','ordn' => $order->ordernumber));
 			return $url->getUrl();
 		}
 
@@ -161,7 +155,7 @@
 		public function generate_viewprintpageurl(Order $order) {
 			$url = new \Purl\Url($this->pageurl->getUrl());
 			$url->path = DplusWire::wire('config')->pages->print."order/";
-			$url->query->set('ordn', $order->orderno);
+			$url->query->set('ordn', $order->ordernumber);
 			$url->query->set('view', 'pdf');
 			return $url->getUrl();
 		}
@@ -174,7 +168,7 @@
 		 */
 		public function generate_sendemailurl(Order $order) {
 			$url = new \Purl\Url(DplusWire::wire('config')->pages->email."sales-order/");
-			$url->query->set('ordn', $order->orderno);
+			$url->query->set('ordn', $order->ordernumber);
 			$url->query->set('referenceID', $this->sessionID);
 			return $url->getUrl();
 		}
@@ -199,7 +193,7 @@
 		public function generate_viewlinkeduseractionsurl(Order $order) {
 			$url = new \Purl\Url($this->pageurl->getUrl());
 			$url->path = DplusWire::wire('config')->pages->useractions;
-			$url->query->setData(array('ordn' => $order->orderno));
+			$url->query->setData(array('ordn' => $order->ordernumber));
 			return $url->getUrl();
 		}
 
@@ -225,7 +219,7 @@
 		public function generate_viewdetailurl(Order $order, OrderDetail $detail) {
 			$url = new \Purl\Url($this->pageurl->getUrl());
 			$url->path = DplusWire::wire('config')->pages->ajax."load/view-detail/order/";
-			$url->query->setData(array('ordn' => $order->orderno, 'line' => $detail->linenbr));
+			$url->query->setData(array('ordn' => $order->ordernumber, 'line' => $detail->linenbr));
 			return $url->getUrl();
 		}
 
@@ -239,7 +233,7 @@
 		 */
 		public function generate_loaddetailsurltrait(Order $order) {
 			$url = $this->generate_ordersredirurl();
-			$url->query->setData(array('action' => 'get-order-details', 'ordn' => $order->orderno));
+			$url->query->setData(array('action' => 'get-order-details', 'ordn' => $order->ordernumber));
 			return $url->getUrl();
 		}
 
@@ -262,7 +256,7 @@
 		 */
 		public function generate_detailviewediturl(Order $order, OrderDetail $detail) {
 			$url = new \Purl\Url(DplusWire::wire('config')->pages->ajaxload.'edit-detail/order/');
-			$url->query->setData(array('ordn' => $order->orderno, 'line' => $detail->linenbr));
+			$url->query->setData(array('ordn' => $order->ordernumber, 'line' => $detail->linenbr));
 			return $url->getUrl();
 		}
 
@@ -295,7 +289,7 @@
 		 */
 		public function generate_trackingrequesturltrait(Order $order) {
 			$url = $this->generate_ordersredirurl();
-			$url->query->setData(array('action' => 'get-order-tracking', 'ordn' => $order->orderno));
+			$url->query->setData(array('action' => 'get-order-tracking', 'ordn' => $order->ordernumber));
 			return $url->getUrl();
 		}
 
@@ -306,7 +300,7 @@
 		 * @return array        SalesOrderDetails Array | SQL Query
 		 */
 		public function get_orderdetails(Order $order, $debug = false) {
-			return get_orderdetails($this->sessionID, $order->orderno, true, $debug);
+			return get_orderdetails($this->sessionID, $order->ordernumber, true, $debug);
 		}
 
 		/**

@@ -5,12 +5,9 @@
 	*
 	* */
 
-	if ($input->requestMethod('POST')) {
-		$requestmethod = 'post';
-	} else {
-		$requestmethod = 'get';
-	}
+	$requestmethod = $input->requestMethod('POST') ? 'post' : 'get';
 	$action = $input->$requestmethod->text('action');
+	
 
 	// USED FOR MAINLY ORDER LISTING FUNCTIONS
 	$pagenumber = (!empty($input->get->page) ? $input->get->int('page') : 1);
@@ -139,18 +136,28 @@
 			$session->{'orders-loaded-for'} = $user->loginid;
 			$session->{'orders-updated'} = date('m/d/Y h:i A');
 			break;
-		case 'get-order-details':
+		case 'get-order-edit':
 			$ordn = $input->get->text('ordn');
-			$custID = SalesOrderHistory::is_saleshistory($ordn) ? SalesOrderHistory::find_custid($ordn) : get_custidfromorder(session_id(), $ordn);
-			$data = array('DBNAME' => $config->dplusdbname, 'ORDRDET' => $ordn, 'CUSTID' => $custID);
-			
+			$custID = SalesOrderHistory::is_saleshistory($ordn) ? SalesOrderHistory::find_custid($ordn) : SalesOrder::find_custid($ordn);
+			$data = array('DBNAME' => $config->dplusdbname, 'ORDRDET' => $ordn);
 			if ($input->get->lock) {
 				$data['LOCK'] = false;
-				$session->loc = $config->pages->editorder."?ordn=".$ordn;
-			} elseif ($input->get->print) {
-				$session->loc = $config->pages->print."order/?ordn=".$ordn;
-			} elseif ($input->get->readonly) {
-				$session->loc = $config->pages->editorder."?ordn=".$ordn;
+			}
+			$session->loc = "{$config->pages->editorder}?ordn=$ordn";
+			break;
+		case 'get-order-print':
+			$ordn = $input->get->text('ordn');
+			$custID = SalesOrderHistory::is_saleshistory($ordn) ? SalesOrderHistory::find_custid($ordn) : SalesOrder::find_custid($ordn);
+			$data = array('DBNAME' => $config->dplusdbname, 'ORDRDET' => $ordn, 'CUSTID' => $custID);
+			$session->loc = "{$config->pages->print}order/?ordn=$ordn";
+			break;
+		case 'get-order-details':
+			$ordn = $input->get->text('ordn');
+			$custID = SalesOrderHistory::is_saleshistory($ordn) ? SalesOrderHistory::find_custid($ordn) : SalesOrder::find_custid($ordn);
+			$data = array('DBNAME' => $config->dplusdbname, 'ORDRDET' => $ordn, 'CUSTID' => $custID);
+			
+			if ($input->$requestmethod->page) {
+				$session->loc = $input->$requestmethod->text('page');
 			} else {
 				$url = new Purl\Url($config->pages->ajaxload);
 				$insertafter = ($input->get->text('type') == 'history') ? 'sales-history' : 'sales-orders';
@@ -170,11 +177,13 @@
 				Paginator::paginate_purl($url, $pagenumber, $insertafter);
 				$session->loc = $url->getUrl();
 			}
+			
 			break;
 		case 'get-order-tracking':
 			$ordn = $input->get->text('ordn');
-			$custID = SalesOrderOEHead::find_custid($ordn);
+			$custID = SalesOrder::find_custid($ordn);
 			$data = array('DBNAME' => $config->dplusdbname, 'ORDRTRK' => $ordn, 'CUSTID' => $custID);
+			
 			if ($input->get->ajax) {
 				$session->loc = $config->pages->ajax."load/order/tracking/?ordn=".$ordn;
 			} elseif ($input->get->page == 'edit') {
@@ -202,7 +211,7 @@
 			break;
 		case 'get-order-documents':
 			$ordn = $input->get->text('ordn');
-			$custID = SalesOrderOEHead::find_custid($ordn);
+			$custID = SalesOrder::find_custid($ordn);
 
 			if ($input->get->page == 'edit') {
 				$session->loc = $config->pages->ajax.'load/order/documents/?ordn='.$ordn;
@@ -234,16 +243,16 @@
 			break;
 		case 'edit-new-order':
 			$ordn = get_createdordn(session_id());
-			$custID = SalesOrderOEHead::find_custid($ordn);
+			$custID = SalesOrder::find_custid($ordn);
 			$data = array('DBNAME' => $config->dplusdbname, 'ORDRDET' => $ordn, 'CUSTID' => $custID, 'LOCK' => false);
 			$session->createdorder = $ordn;
-			$session->loc = $config->pages->edit.'order/?ordn=' . $ordn;
+			$session->loc = "{$config->pages->editorder}?ordn=$ordn";
 			break;
 		case 'update-orderhead':
 			$ordn = $input->post->text("ordn");
 			$intl = $input->post->text("intl");
 
-			$order = SalesOrder::load(session_id(), $ordn);
+			$order = SalesOrderEdit::load(session_id(), $ordn);
 			$order->set('shiptoid', $input->post->text('shiptoid'));
 			$order->set('custpo', $input->post->text("custpo"));
 			$order->set('shipname', $input->post->text("shiptoname"));
@@ -278,7 +287,7 @@
 				$order->set('extension', $input->post->text("contact-extension"));
 				$order->set('faxnbr', $input->post->text("contact-fax"));
 			}
-			$custID = SalesOrderOEHead::find_custid($ordn);
+			$custID = SalesOrder::find_custid($ordn);
 			$session->sql = $order->update();
 
 			$order->set('paymenttype', $input->post->text("paytype"));
@@ -304,7 +313,7 @@
 			$itemID = $input->post->text('itemID');
 			$qty = determine_qty($input, $requestmethod, $itemID); // TODO MAKE IN CART DETAIL
 			$ordn = $input->post->text('ordn');
-			$custID = SalesOrderOEHead::find_custid($ordn);
+			$custID = SalesOrder::find_custid($ordn);
 			$data = array('DBNAME' => $config->dplusdbname, 'SALEDET' => false, 'ORDERNO' => $ordn, 'ITEMID' => $itemID, 'QTY' => "$qty", 'CUSTID' => $custID);
 			$session->loc = $input->post->page;
 			$session->editdetail = true;
@@ -338,7 +347,7 @@
 			$orderdetail->set('ponbr', $input->post->text('ponbr'));
 			$orderdetail->set('poref', $input->post->text('poref'));
 			$orderdetail->set('spcord', 'S');
-			$orderdetail->update();
+			$orderdetail->save();
 
 			$data = array('DBNAME' => $config->dplusdbname, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => '0', 'ITEMID' => 'N', 'QTY' => $qty, 'CUSTID' => $custID);
 
@@ -352,7 +361,7 @@
 		case 'quick-update-line':
 			$ordn = $input->post->text('ordn');
 			$linenbr = $input->post->text('linenbr');
-			$custID = SalesOrderOEHead::find_custid($ordn);
+			$custID = SalesOrder::find_custid($ordn);
 			$orderdetail = SalesOrderDetail::load(session_id(), $ordn, $linenbr);
 			// $orderdetail->set('whse', $input->post->text('whse'));
 			$qty = determine_qty($input, $requestmethod, $orderdetail->itemid); // TODO MAKE IN CART DETAIL
@@ -393,7 +402,7 @@
 				$orderdetail->set('desc1', $input->post->text('desc1'));
 				$orderdetail->set('desc2', $input->post->text('desc2'));
 			}
-			$custID = SalesOrderOEHead::find_custid($ordn);
+			$custID = SalesOrder::find_custid($ordn);
 			$session->sql = $orderdetail->update();
 			$data = array('DBNAME' => $config->dplusdbname, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'CUSTID' => $custID);
 
@@ -411,7 +420,7 @@
 			$orderdetail->set('qty', '0');
 			$session->sql = $orderdetail->update();
 			$session->editdetail = true;
-			$custID = SalesOrderOEHead::find_custid($ordn);
+			$custID = SalesOrder::find_custid($ordn);
 			$data = array('DBNAME' => $config->dplusdbname, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'QTY' => '0', 'CUSTID' => $custID);
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
@@ -425,7 +434,7 @@
 			$orderdetail = SalesOrderDetail::load(session_id(), $ordn, $linenbr);
 			$orderdetail->set('qty', '0');
 			$session->sql = $orderdetail->update();
-			$custID = SalesOrderOEHead::find_custid($ordn);
+			$custID = SalesOrder::find_custid($ordn);
 			$data = array('DBNAME' => $config->dplusdbname, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => $linenbr, 'QTY' => '0', 'CUSTID' => $custID);
 
 			if ($input->post->page) {

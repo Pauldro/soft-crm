@@ -18,7 +18,7 @@
 		if ($config->modal) {
 			include $config->paths->content.'common/modals/include-ajax-modal.php';
 		} else {
-			include($page->body);
+			include $page->body;
 		}
 	} else {
 		include $config->paths->content."common/include-blank-page.php";

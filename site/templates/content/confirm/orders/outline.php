@@ -6,7 +6,7 @@
 		<img src="<?= $appconfig->companylogo->url; ?>" class="img-responsive" alt="<?= $appconfig->companydisplayname.' logo'; ?>">
 	</div>
 	<div class="col-sm-6 text-right">
-		<h1>Order # <?= $order->orderno; ?></h1>
+		<h1>Order # <?= $order->ordernumber; ?></h1>
 	</div>
 </div>
 <div class="row">
@@ -23,8 +23,8 @@
 	</div>
 </div>
 <div class="row">
-	<div class="col-sm-6">
-		<div class="page-header"><h3>Bill-to</h3></div>
+	<div class="col-xs-4">
+		<div class="address-header"><h3>Bill-to</h3></div>
 		<address>
 			<?= $order->custname; ?><br>
 			<?= $order->billaddress; ?><br>
@@ -34,8 +34,8 @@
 			<?= $order->billcity.", ".$order->billstate." ".$order->billzip; ?>
 		</address>
 	</div>
-	<div class="col-sm-6">
-		<div class="page-header"><h3>Ship-to</h3></div>
+	<div class="col-xs-4">
+		<div class="address-header"><h3>Ship-to</h3></div>
 		<address>
 			<?= $order->shipname; ?><br>
 			<?= $order->shipaddress; ?><br>
@@ -43,6 +43,14 @@
 				<?= $order->shipaddress2; ?><br>
 			<?php endif; ?>
 			<?= $order->shipcity.", ".$order->shipstate." ".$order->shipzip; ?>
+		</address>
+	</div>
+	<div class="col-xs-4">
+		<div class="address-header"><h3>Contact</h3></div>
+		<address>
+			<?= $order->contact; ?><br>
+			<?= $page->stringerbell->format_phone($order->phone); ?><br>
+			<?= $order->email; ?>
 		</address>
 	</div>
 </div>

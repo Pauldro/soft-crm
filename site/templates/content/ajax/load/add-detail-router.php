@@ -10,7 +10,7 @@
         case 'order':
             $ordn = $input->get->text('ordn');
             $page->title = 'Add multiple items for Order #'. $ordn;
-            $custID = SalesOrderOEHead::find_custid($ordn);
+            $custID = SalesOrder::find_custid($ordn);
             $formaction = $config->pages->orders."redir/";
             break;
 		case 'quote':

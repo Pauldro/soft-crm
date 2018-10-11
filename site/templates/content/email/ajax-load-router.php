@@ -10,7 +10,7 @@
 			$queryarray = $queryurl->query->getData();
 			
 			if (isset($queryarray['ordn'])) {
-				$order = SalesOrderOEHead::load($queryarray['ordn']);
+				$order = SalesOrder::load($queryarray['ordn']);
 				$email = $order->contact_email;
 				$contact = $order->contact;
 			} elseif(isset($queryarray['qnbr'])) {

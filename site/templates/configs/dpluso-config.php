@@ -35,15 +35,3 @@
 		'sales-manager' => 'slsmgr',
 		'warehouse' => 'whse'
 	);
-<<<<<<< HEAD
-	
-	$config->rolehomepages = array(
-		'default' => $config->pages->dashboard,
-		'sales-rep' => $config->pages->dashboard,
-		'sales-manager' => $config->pages->dashboard,
-		'warehouse' => $config->pages->warehouse
-	);
-	
-	$config->salesorder_statuses = array('P' => 'Picked', 'N' => 'New', 'V' => 'Verified', 'I' => 'Invoiced');
-=======
->>>>>>> master

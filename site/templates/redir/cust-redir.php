@@ -319,11 +319,15 @@
 			}
 			break;
 		case 'shop-as-customer':
-			$session->custID = $custID;
 			$data = array('DBNAME' => $config->dplusdbname, 'CARTCUST' => false, 'CUSTID' => $custID);
-            if (!empty($shipID)) {$data['SHIPID'] = $shipID; $session->shipID = $shipID; }
-			if (!has_carthead(session_id())) {
-				$session->sql = insert_carthead(session_id(), $custID, $shipID);
+            if (!empty($shipID)) {$data['SHIPID'] = $shipID; }
+			if (!CartQuote::cart_exists(session_id())) {
+				$cart = new CartQuote();
+				$cart->set('sessionid', session_id());
+				$cart->set('custid', $custID);
+				$cart->set('shiptoid', $shipID);
+				$session->sql = $cart->save(true);
+				$cart->save();
 			}
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');

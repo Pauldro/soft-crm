@@ -10,16 +10,16 @@
         <?php endif; ?>
 		<?php $orderpanel->get_orders(); ?>
         <?php foreach ($orderpanel->orders as $order) : ?>
-            <tr class="<?= $orderpanel->generate_rowclass($order); ?>" id="<?= $order->orderno; ?>">
+            <tr class="<?= $orderpanel->generate_rowclass($order); ?>" id="<?= $order->ordernumber; ?>">
             	<td class="text-center"><?= $orderpanel->generate_expandorcollapselink($order);?></td>
-                <td> <?= $order->orderno; ?></td>
+                <td> <?= $order->ordernumber; ?></td>
                 <td><?= $order->custpo; ?></td>
                 <td>
                     <a href="<?= $orderpanel->generate_customershiptourl($order); ?>"><?= $order->shiptoid; ?></a>
                     <span class="pull-right"><?= $orderpanel->generate_shiptopopover($order); ?></span>
                 </td>
-                <td align="right">$ <?= $page->stringerbell->format_money($order->total_order); ?></td> <td align="right" ><?= DplusDateTime::format_date($order->orderdate); ?></td>
-                <td align="right"><?= $config->salesorder_statuses[$order->status]; ?></td>
+                <td align="right">$ <?= $page->stringerbell->format_money($order->total_order); ?></td> <td align="right" ><?= DplusDateTime::format_date($order->order_date); ?></td>
+                <td align="right"><?= $order->get_statusdescription(); ?></td>
                 <td colspan="4">
                     <span class="col-xs-3"><?= $orderpanel->generate_loaddocumentslink($order); ?></span>
                     <span class="col-xs-3"><?= $orderpanel->generate_loadtrackinglink($order); ?></span>
@@ -28,7 +28,7 @@
                 </td>
             </tr>
 
-            <?php if ($order->orderno == $input->get->text('ordn')) : ?>
+            <?php if ($order->ordernumber == $input->get->text('ordn')) : ?>
             	<?php if ($input->get->show == 'documents' && (!$input->get('item-documents'))) : ?>
                 	<?php include $config->paths->content.'customer/cust-page/sales-orders/documents-rows.php'; ?>
                 <?php endif; ?>
@@ -57,7 +57,7 @@
 					<?= $orderpanel->generate_viewlinkeduseractionslink($order); ?>
 				</td>
                 <td>
-                	<a class="btn btn-primary btn-sm" onClick="reorder('<?= $order->orderno; ?>')">
+                	<a class="btn btn-primary btn-sm" onClick="reorder('<?= $order->ordernumber; ?>')">
                     	<span class="glyphicon glyphicon-shopping-cart" title="re-order"></span> Reorder Order
                     </a>
                 </td>

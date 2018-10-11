@@ -14,7 +14,7 @@
 				'datatype' => 'char',
 				'label' => 'CustID'
 			),
-			'orderno' => array(
+			'ordernumber' => array(
 				'querytype' => 'between',
 				'datatype' => 'char',
 				'label' => 'Order #'
@@ -24,9 +24,10 @@
 				'datatype' => 'numeric',
 				'label' => 'Order Total'
 			),
-			'orderdate' => array(
+			'order_date' => array(
 				'querytype' => 'between',
 				'datatype' => 'date',
+				'date-format' => 'Ymd',
 				'label' => 'Order Date'
 			),
 			'status' => array(
@@ -92,13 +93,13 @@
 			parent::generate_filter($input);
 			$this->filters['custid'] = array($this->custID);
 
-			if (isset($this->filters['orderdate'])) {
-				if (empty($this->filters['orderdate'][0])) {
-					$this->filters['orderdate'][0] = date('m/d/Y', strtotime($this->get_minsalesorderdate('orderdate')));
+			if (isset($this->filters['order_date'])) {
+				if (empty($this->filters['order_date'][0])) {
+					$this->filters['order_date'][0] = date('m/d/Y', strtotime($this->get_minsalesorderdate('order_date')));
 				}
 
-				if (empty($this->filters['orderdate'][1])) {
-					$this->filters['orderdate'][1] = date('m/d/Y');
+				if (empty($this->filters['order_date'][1])) {
+					$this->filters['order_date'][1] = date('m/d/Y');
 				}
 			}
 

@@ -15,7 +15,7 @@
 				'datatype' => 'char',
 				'label' => 'CustID'
 			),
-			'orderno' => array(
+			'ordernumber' => array(
 				'querytype' => 'between',
 				'datatype' => 'char',
 				'label' => 'Order #'
@@ -25,7 +25,7 @@
 				'datatype' => 'numeric',
 				'label' => 'Order Total'
 			),
-			'orderdate' => array(
+			'order_date' => array(
 				'querytype' => 'between',
 				'datatype' => 'date',
 				'date-format' => 'Ymd',
@@ -55,7 +55,7 @@
 		public function get_orders($loginID = '', $debug = false) {
 			$useclass = true;
 			if ($this->tablesorter->orderby) {
-				if ($this->tablesorter->orderby == 'orderdate') {
+				if ($this->tablesorter->orderby == 'order_date') {
 					$orders = get_customersaleshistoryorderdate($this->custID, $this->shipID, DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $loginID, $useclass, $debug);
 				} elseif ($this->tablesorter->orderby == 'invoice_date') {
 					$orders = get_customersaleshistoryinvoicedate($this->custID, $this->shipID, DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->filters, $this->filterable, $loginID, $useclass, $debug);
@@ -96,19 +96,19 @@
 		public function generate_filter(ProcessWire\WireInput $input) {
 			$this->generate_defaultfilter($input);
 
-			if (isset($this->filters['orderdate'])) {
-				if (empty($this->filters['orderdate'][0])) {
-					$this->filters['orderdate'][0] = date('m/d/Y', strtotime(get_minsaleshistoryorderdate($this->sessionID, 'orderdate', $this->custID, $this->shipID)));
+			if (isset($this->filters['order_date'])) {
+				if (empty($this->filters['order_date'][0])) {
+					$this->filters['order_date'][0] = date('m/d/Y', strtotime(get_minsaleshistoryorderdate('order_date', $this->custID, $this->shipID)));
 				}
 
-				if (empty($this->filters['orderdate'][1])) {
-					$this->filters['orderdate'][1] = date('m/d/Y');
+				if (empty($this->filters['order_date'][1])) {
+					$this->filters['order_date'][1] = date('m/d/Y');
 				}
 			}
 
 			if (isset($this->filters['invoice_date'])) {
 				if (empty($this->filters['invoice_date'][0])) {
-					$this->filters['invoice_date'][0] = date('m/d/Y', strtotime(get_minsaleshistoryorderdate($this->sessionID, 'invoice_date', $this->custID, $this->shipID)));
+					$this->filters['invoice_date'][0] = date('m/d/Y', strtotime(get_minsaleshistoryorderdate('invoice_date', $this->custID, $this->shipID)));
 				}
 
 				if (empty($this->filters['invoice_date'][1])) {

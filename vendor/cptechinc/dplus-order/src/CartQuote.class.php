@@ -76,6 +76,79 @@
 		 * @return array        with certain keys removed
 		 */
 		public static function remove_nondbkeys($array) {
+			unset($array['type']);
+			unset($array['careof']);
+			unset($array['shipdate']);
+			unset($array['revdate']);
+			unset($array['expdate']);
+			unset($array['editord']);
+			unset($array['sconame']);
+			unset($array['phintl']);
+			unset($array['extension']);
+			unset($array['releasenbr']);
+			unset($array['pricedisp']);
+			unset($array['taxcodedisp']);
+			unset($array['termtype']);
+			unset($array['rqstdate']);
+			unset($array['shipcom']);
+			unset($array['fob']);
+			unset($array['deliverydesc']);
+			unset($array['cardnumber']);
+			unset($array['cardexpire']);
+			unset($array['cardcode']);
+			unset($array['cardapproval']);
+			unset($array['totalcost']);
+			unset($array['totaldiscount']);
+			unset($array['paymenttype']);
+			unset($array['srcdatefrom']);
+			unset($array['srcdatethru']);
+			unset($array['prntfmt']);
+			unset($array['prntfmtdisp']);
+			unset($array['dateoforder']);
+			unset($array['sessionid']);
+			unset($array['recno']);
+			unset($array['quotdate']);
+			unset($array['billname']);
+			unset($array['billaddress']);
+			unset($array['billaddress2']);
+			unset($array['billaddress3']);
+			unset($array['billcountry']);
+			unset($array['billcity']);
+			unset($array['billstate']);
+			unset($array['billzip']);
+			unset($array['shipname']);
+			unset($array['shipaddress']);
+			unset($array['shipaddress2']);
+			unset($array['shipaddress3']);
+			unset($array['shipcountry']);
+			unset($array['shipcity']);
+			unset($array['shipstate']);
+			unset($array['shipzip']);
+			unset($array['contact']);
+			unset($array['sp1name']);
+			unset($array['sp2']);
+			unset($array['sp2name']);
+			unset($array['sp2disp']);
+			unset($array['sp3']);
+			unset($array['sp3name']);
+			unset($array['sp3disp']);
+			unset($array['shipviacd']);
+			unset($array['shipviadesc']);
+			unset($array['custpo']);
+			unset($array['custref']);
+			unset($array['status']);
+			unset($array['phone']);
+			unset($array['faxnbr']);
+			unset($array['email']);
+			unset($array['whse']);
+			unset($array['taxcode']);
+			unset($array['taxcodedesc']);
+			unset($array['termcode']);
+			unset($array['termcodedesc']);
+			unset($array['pricecode']);
+			unset($array['pricecodedesc']);
+			unset($array['error']);
+			unset($array['errormsg']);
 			return $array;
 		}
 
@@ -83,8 +156,20 @@
 			CRUD FUNCTIONS
 		============================================================ */
 		/**
-		 * returns CartQuote from carthed table
-		 * @param  string $sessionID Session
+		 * Returns if Cart Head Exists
+		 * @param  string $sessionID Session ID
+		 * @param  bool   $debug     Whether or not to Return Cart Quote or SQL QUERY
+		 * @return bool              Is the carthed defined?
+		 * @uses Read (CRUD)
+		 * @source _dbfunc.php
+		 */
+		public static function cart_exists($sessionID, $debug = false) {
+			return has_carthead($sessionID, $debug);
+		}
+
+		/**
+		 * Returns CartQuote from carthed table
+		 * @param  string $sessionID Session ID
 		 * @param  bool   $debug     Whether or not to Return Cart Quote or SQL QUERY
 		 * @return CartQuote         Or SQL Query
 		 * @uses Read (CRUD)
@@ -93,9 +178,38 @@
 		public static function load($sessionID, $debug = false) {
 			return get_carthead($sessionID, $debug);
 		}
-
+		
+		/**
+		 * Saves Changes to Database
+		 * // NOTE Checks if carthed exists already in database
+		 * @param  bool    $debug Run in debug? If so returns SQL Query
+		 * @return int     Rows Inserted
+		 * @source _dbfunc.php
+		 */
+		public function save($debug = false) {
+			if (empty($this->date)) {
+				return $this->insert($debug);
+			} else {
+				return $this->update($debug);
+			}
+		}
+		/**
+		 * Inserts carthead record
+		 * @param  bool   $debug Run in debug? If so, returns SQL Query
+		 * @return int           How many records where inserted
+		 */
+		public function insert($debug = false) {
+			return insert_carthead($this->sessionid, $this, $debug);
+		}
+		
+		
+		/**
+		 * Updates carthead record
+		 * @param  bool   $debug Run in debug? If so, returns SQL Query
+		 * @return int           How many records where updated
+		 */
 		public function update($debug = false) {
-			// TODO
+			return update_carthead($this->sessionid, $this, $debug);
 		}
 
 		/**
@@ -125,5 +239,4 @@
 		public static function get_cartcustid($sessionID, $debug = false) {
 			return get_custidfromcart($sessionID, $debug);
 		}
-
 	}

@@ -19,7 +19,7 @@
 				'datatype' => 'char',
 				'label' => 'CustID'
 			),
-			'orderno' => array(
+			'ordernumber' => array(
 				'querytype' => 'between',
 				'datatype' => 'char',
 				'label' => 'Order #'
@@ -29,9 +29,10 @@
 				'datatype' => 'numeric',
 				'label' => 'Order Total'
 			),
-			'orderdate' => array(
+			'order_date' => array(
 				'querytype' => 'between',
 				'datatype' => 'date',
+				'date-format' => 'Ymd',
 				'label' => 'Order Date'
 			),
 			'status' => array(
@@ -65,7 +66,7 @@
 				$orders = get_salesorders_orderby(DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $this->filters, $this->filterable, $useclass = true, $debug);
 			} else {
 				// DEFAULT BY ORDER DATE SINCE SALES ORDER # CAN BE ROLLED OVER
-				$this->tablesorter->orderby = 'orderdate';
+				$this->tablesorter->orderby = 'order_date';
 				$this->tablesorter->sortrule = 'DESC';
 				$orders = get_salesorders_orderby(DplusWire::wire('session')->display, $this->pagenbr, $this->tablesorter->sortrule, $this->tablesorter->orderby, $this->filters, $this->filterable, $useclass = true, $debug);
 			}
@@ -104,14 +105,14 @@
 		public function generate_expandorcollapselink(Order $order) {
 			$bootstrap = new HTMLWriter();
 			
-			if ($order->orderno == $this->activeID) {
+			if ($order->ordernumber == $this->activeID) {
 				$href = $this->generate_closedetailsurl($order);
 				$ajaxdata = $this->generate_ajaxdataforcontento();
 				$addclass = 'load-link';
 				$icon = '-';
 			} else {
 				$href = $this->generate_loaddetailsurl($order);
-				$ajaxdata = "data-loadinto=$this->loadinto|data-focus=#$order->orderno";
+				$ajaxdata = "data-loadinto=$this->loadinto|data-focus=#$order->ordernumber";
 				$addclass = 'generate-load-link';
 				$icon = '+';
 			}
@@ -119,7 +120,7 @@
 		}
 
 		public function generate_rowclass(Order $order) {
-			return ($this->activeID == $order->orderno) ? 'selected' : '';
+			return ($this->activeID == $order->ordernumber) ? 'selected' : '';
 		}
 
 		public function generate_loadurl() {
@@ -157,16 +158,10 @@
 		}
 
 		public function generate_loaddetailsurl(Order $order) {
+			$pageurl = new \Purl\Url($this->pageurl->getUrl());
+			$pageurl->query->set('ordn', $order->ordernumber);
 			$url = new \Purl\Url($this->generate_loaddetailsurltrait($order));
-			$url->query->set('page', $this->pagenbr);
-			$url->query->set('orderby', $this->tablesorter->orderbystring);
-
-			if (!empty($this->filters)) {
-				$url->query->set('filter', 'filter');
-				foreach ($this->filters as $filter => $value) {
-					$url->query->set($filter, implode('|', $value));
-				}
-			}
+			$url->query->set('page', $pageurl->getUrl());
 			return $url->getUrl();
 		}
 
@@ -190,10 +185,10 @@
 				return '';
 			}
 			$action = DplusWire::wire('config')->pages->cart.'redir/';
-			$id = $order->orderno.'-'.$detail->itemid.'-form';
+			$id = $order->ordernumber.'-'.$detail->itemid.'-form';
 			$form = new FormMaker("method=post|action=$action|class=item-reorder|id=$id");
 			$form->input("type=hidden|name=action|value=add-to-cart");
-			$form->input("type=hidden|name=ordn|value=$order->orderno");
+			$form->input("type=hidden|name=ordn|value=$order->ordernumber");
 			$form->input("type=hidden|name=custID|value=$order->custid");
 			$form->input("type=hidden|name=itemID|value=$detail->itemid");
 			$form->input("type=hidden|name=qty|value=".intval($detail->qty));
@@ -206,13 +201,13 @@
 			$stringerbell = new StringerBell();
 			parent::generate_filter($input);
 
-			if (isset($this->filters['orderdate'])) {
-				if (empty($this->filters['orderdate'][0])) {
-					$this->filters['orderdate'][0] = date('m/d/Y', strtotime(get_minsalesorderdate('orderdate')));
+			if (isset($this->filters['order_date'])) {
+				if (empty($this->filters['order_date'][0])) {
+					$this->filters['order_date'][0] = date('m/d/Y', strtotime(get_minsalesorderdate('order_date')));
 				}
 
-				if (empty($this->filters['orderdate'][1])) {
-					$this->filters['orderdate'][1] = date('m/d/Y');
+				if (empty($this->filters['order_date'][1])) {
+					$this->filters['order_date'][1] = date('m/d/Y');
 				}
 			}
 
@@ -310,9 +305,9 @@
 			if ($order->can_edit()) {
 				$icon = $bootstrap->icon('glyphicon glyphicon-pencil');
 				$title = "Edit this Order";
-			} elseif ($order->editord == 'L') {
+			} elseif ($order->is_lockedbyuser()) {
 				if (DplusWire::wire('user')->hasorderlocked) {
-					if ($order->orderno == DplusWire::wire('user')->lockedordn) {
+					if ($order->ordernumber == DplusWire::wire('user')->lockedordn) {
 						$icon = $bootstrap->icon('glyphicon glyphicon-wrench');
 						$title = "Edit this Order";
 					} else {

@@ -1,6 +1,6 @@
 <form action="<?= $config->pages->orders.'redir/'; ?>" method="post" class="quick-entry-add allow-enterkey-submit" id="quick-entry-add" data-validated="">
 	<input type="hidden" name="action" value="add-to-order">
-	<input type="hidden" name="ordn" value="<?= $order->orderno; ?>">
+	<input type="hidden" name="ordn" value="<?= $order->ordernumber; ?>">
 	<input type="hidden" name="custID" value="<?= $order->custid; ?>">
 	<div class="row">
 		<div class="col-xs-9 sm-padding">

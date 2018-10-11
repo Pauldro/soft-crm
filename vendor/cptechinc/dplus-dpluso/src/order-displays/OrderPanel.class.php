@@ -129,17 +129,10 @@
 		 * @return string        HTML for bootstrap popover
 		 */
 		public function generate_shiptopopover(Order $order) {
-<<<<<<< HEAD:vendor/cptechinc/dpluso-processwire-classes/src/OrderPanel.class.php
-			$bootstrap = new Contento();
+			$bootstrap = new HTMLWriter();
 			$address = $order->shipto_address1.'<br>';
 			$address .= (!empty($order->shipto_address2)) ? $order->shipto_address2."<br>" : '';
 			$address .= $order->shipto_city.", ". $order->shipto_state.' ' . $order->shipto_zip;
-=======
-			$bootstrap = new HTMLWriter();
-			$address = $order->shipaddress.'<br>';
-			$address .= (!empty($order->shipaddress2)) ? $order->shipaddress2."<br>" : '';
-			$address .= $order->shipcity.", ". $order->shipstate.' ' . $order->shipzip;
->>>>>>> master:vendor/cptechinc/dplus-dpluso/src/order-displays/OrderPanel.class.php
 			$attr = "tabindex=0|role=button|class=btn btn-default bordered btn-sm|data-toggle=popover";
 			$attr .= "|data-placement=top|data-trigger=focus|data-html=true|title=Ship-To Address|data-content=$address";
 			return $bootstrap->create_element('a', $attr, '<b>?</b>');

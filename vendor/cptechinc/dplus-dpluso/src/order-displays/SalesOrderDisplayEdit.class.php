@@ -15,7 +15,8 @@
 		 * @return SalesOrderEdit          Sales Order
 		 */
 		public function get_order($debug = false) {
-			return SalesOrderEdit::load($this->ordn, $debug);
+			$ordn = str_pad($this->ordn, 10, '0', STR_PAD_LEFT);
+			return SalesOrderEdit::load($this->sessionID, $ordn, $debug);
 		}
 		
 		/**
@@ -45,13 +46,13 @@
 		public function generate_unlockurl(Order $order) {
 			$url = $this->generate_ordersredirurl();
 			$url->query->set('action', 'unlock-order');
-			$url->query->set('ordn', $order->orderno);
+			$url->query->set('ordn', $order->ordernumber);
 			return $url->getUrl();
 		}
 
 		public function generate_confirmationurl(Order $order) {
 			$url = new \Purl\Url(DplusWire::wire('config')->pages->confirmorder);
-			$url->query->set('ordn', $order->orderno);
+			$url->query->set('ordn', $order->ordernumber);
 			return $url->getUrl();
 		}
 
@@ -80,8 +81,13 @@
 		public function generate_detailvieweditlink(Order $order, OrderDetail $detail) {
 			$bootstrap = new HTMLWriter();
 			$href = $this->generate_detailviewediturl($order, $detail);
-			$icon = $bootstrap->icon('glyphicon glyphicon-pencil');
-			return $bootstrap->create_element('a', "href=$href|class=btn btn-sm btn-warning update-line|title=Edit Line|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$order->custid|aria-label=View Detail Line", $icon);
+			if ($order->can_edit()) {
+				$icon = $bootstrap->icon('glyphicon glyphicon-pencil');
+				return $bootstrap->create_element('a', "href=$href|class=btn btn-sm btn-warning update-line|title=Edit Line|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$order->custid|aria-label=View Detail Line", $icon);
+			} else {
+				$icon = $bootstrap->icon('fa fa-eye');
+				return $bootstrap->a("href=$href|class=update-line|title=Edit Line|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$order->custid|aria-label=View Detail Line", $icon);
+			}
 		}
 
 		/**
@@ -94,7 +100,7 @@
 			$bootstrap = new HTMLWriter();
 			$icon = $bootstrap->icon('glyphicon glyphicon-trash') . $bootstrap->create_element('span', 'class=sr-only', 'Delete Line');
 			$url = $this->generate_ordersredirurl();
-			$url->query->setData(array('action' => 'remove-line-get', 'ordn' => $order->orderno, 'linenbr' => $detail->linenbr, 'page' => $this->pageurl->getUrl()));
+			$url->query->setData(array('action' => 'remove-line-get', 'ordn' => $order->ordernumber, 'linenbr' => $detail->linenbr, 'page' => $this->pageurl->getUrl()));
 			$href = $url->getUrl();
 			return $bootstrap->a("href=$href|class=btn btn-sm btn-danger|title=Delete Item", $icon);
 		}

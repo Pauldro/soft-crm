@@ -29,7 +29,7 @@
 	</tr>
 	<?php if ($input->get->text('item-document')) : ?>
 		<?php if ($input->get->text('item-document') == $detail->itemid) : ?>
-			<?php $itemdocs = get_item_docs(session_id(), $order->orderno, $detail->itemid, false); ?>
+			<?php $itemdocs = get_item_docs(session_id(), $order->ordernumber, $detail->itemid, false); ?>
 			<?php foreach ($itemdocs->fetchAll() as $itemdoc) : ?>
 				<tr class="docs">
 					<td colspan="2"></td>

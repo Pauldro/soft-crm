@@ -3,7 +3,7 @@
 	 * Dplus Qnotes are for Notes for Quotes and Orders and the functions
 	 * needed to update the notes on them
 	 */
-	class QNote {
+	class Qnote {
 		use ThrowErrorTrait;
 		use MagicMethodTraits;
 		use CreateFromObjectArrayTraits;
@@ -199,7 +199,7 @@
 					if ($saleshistory) {
 						return false;
 					} else {
-						$order = SalesOrder::load($sessionID, $key1);
+						$order = SalesOrder::load($key1);
 						return $order->can_edit();
 					}
 					break;

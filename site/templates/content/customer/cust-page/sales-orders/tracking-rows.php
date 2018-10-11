@@ -1,10 +1,10 @@
-<?php $trackings = get_ordertracking(session_id(), $order->orderno); ?>
+<?php $trackings = get_ordertracking(session_id(), $order->ordernumber); ?>
 <?php foreach($trackings as $tracking) : ?>
-	<?php $carrier = $tracking['servtype']; $link = ""; $link = returntracklink($tracking['servtype'], $tracking['tracknbr'], $order->orderno); ?>
+	<?php $carrier = $tracking['servtype']; $link = ""; $link = returntracklink($tracking['servtype'], $tracking['tracknbr'], $order->ordernumber); ?>
     <tr class="detail tracking">
         <td colspan="3"><b>Shipped:</b>  <?= $carrier; ?></td>
 		<td colspan="2"><b>Tracking No.:</b>
-            <?php if ($link == "#$order->orderno" ): ?>
+            <?php if ($link == "#$order->ordernumber" ): ?>
                 <?php echo $tracking['tracknbr']; ?>
             <?php else : ?>
                 <b><a href="<?= $link; ?>"target="_blank" title="Click To Track"><?= $tracking['tracknbr']; ?></a></b>

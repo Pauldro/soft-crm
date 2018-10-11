@@ -16,10 +16,10 @@
 		/**
 		 * Returns Sales Order from database
 		 * @param  bool             $debug Run in debug? If So, returns SQL Query 
-		 * @return SalesOrderOEHead        Sales Order
+		 * @return SalesOrder        Sales Order
 		 */
 		public function get_order($debug = false) {
-			return SalesOrderOEHead::load($this->ordn, $debug);
+			return SalesOrder::load($this->ordn, $debug);
 		}
 		
 		

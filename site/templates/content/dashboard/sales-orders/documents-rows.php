@@ -2,7 +2,7 @@
     <td colspan="2">Documents</td> <td colspan="2">Document Type</td> <td align="right">Date</td> <td align="right">Time</td>
     <td></td> <td></td> <td></td> <td></td> <td></td>
 </tr>
-<?php $orderdocs = get_orderdocs(session_id(), $order->orderno); ?>
+<?php $orderdocs = get_orderdocs(session_id(), $order->ordernumber); ?>
 <?php foreach ($orderdocs as $orderdoc) : ?>
 	<?php $filename = $orderdoc['pathname']; ?>
 	<tr class="detail">
