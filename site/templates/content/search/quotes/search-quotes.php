@@ -65,7 +65,7 @@
             					<?= $quotepanel->generate_expandorcollapselink($quote); ?>
             				</td>
             				<td><?= $quote->quotnbr; ?></td>
-            				<td><a href="<?= $quotepanel->generate_customerurl($quote); ?>"><?= $quote->custid; ?></a> <span class="glyphicon glyphicon-share" aria-hidden="true"></span><br><?= get_customername($quote->custid); ?></td>
+            				<td><a href="<?= $quotepanel->generate_customerurl($quote); ?>"><?= $quote->custid; ?></a> <span class="glyphicon glyphicon-share" aria-hidden="true"></span><br><?= Customer::get_customernamefromid($quote->custid); ?></td>
             				<td><?= $quote->shiptoid; ?></td>
             				<td><?= $quote->quotdate; ?></td>
             				<td><?= $quote->revdate; ?></td>

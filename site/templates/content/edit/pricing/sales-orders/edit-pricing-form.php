@@ -46,7 +46,7 @@
 					</div>
 				</div>
 				<div class="col-sm-6">
-					<div class="jumbotron item-detail-heading"> <div class=""> <h4><?= get_customername($custID); ?> History</h4> </div> </div>
+					<div class="jumbotron item-detail-heading"> <div class=""> <h4><?= Customer::get_customernamefromid($custID); ?> History</h4> </div> </div>
 					<?php $tableformatter= $page->screenformatterfactory->generate_screenformatter('item-purchasehistory'); ?>
 					<?php include $config->paths->content.'common/include-tableformatter-display.php'; ?>
 				</div>

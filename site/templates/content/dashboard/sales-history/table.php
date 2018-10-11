@@ -12,7 +12,7 @@
 			<tr class="<?= $orderpanel->generate_rowclass($order); ?>" id="<?= $order->ordernumber; ?>">
 				<td class="text-center"><?= $orderpanel->generate_expandorcollapselink($order); ?></td>
 				<td><?= $order->ordernumber; ?></td>
-				<td><a href="<?= $orderpanel->generate_customerurl($order); ?>"><?= $order->custid; ?></a> <span class="glyphicon glyphicon-share" aria-hidden="true"></span><br><?= get_customername($order->custid); ?></td>
+				<td><a href="<?= $orderpanel->generate_customerurl($order); ?>"><?= $order->custid; ?></a> <span class="glyphicon glyphicon-share" aria-hidden="true"></span><br><?= Customer::get_customernamefromid($order->custid); ?></td>
 				<td><?= $order->custpo; ?></td>
 				<td>
 					<a href="<?= $orderpanel->generate_customershiptourl($order); ?>"><?= $order->shiptoid; ?></a>

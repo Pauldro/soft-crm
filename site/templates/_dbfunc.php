@@ -114,6 +114,7 @@
 			return $sql->fetchColumn();
 		}
 	}
+	
 /* =============================================================
 	CUSTOMER FUNCTIONS
 ============================================================ */
@@ -166,7 +167,6 @@
 	/**
 	 * Returns the number of records in the custperm table
 	 * @param  string   $userID User Login ID
-	 * @param
 	 * @param  bool     $debug  Run in debug? IF so return SQL Query
 	 * @return int              Number of custperm records
 	 */
@@ -185,12 +185,35 @@
 			return $sql->fetchColumn();
 		}
 	}
+	
+	/**
+	 * Returns if Customer / Shipto have a custperm record?
+	 * @param  string $custID   Customer ID
+	 * @param  string $shiptoID Customer Shipto ID
+	 * @param  bool   $debug    Run in debug? IF so return SQL Query
+	 * @return bool             Does Customer / Shipto have a custperm record?
+	 */
+	function has_custperm($custID, $shiptoID = '', $debug = false) {
+		$q = (new QueryBuilder())->table('custperm');
+		$q->field('COUNT(*)');
+		$q->where('custid', $custID);
+		if (!empty($shiptoID)) {
+			$q->where('shiptoid', $shiptoID);
+		}
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return boolval($sql->fetchColumn());
+		}
+	}
 
 	/**
 	 * Insert custperm record
 	 * @param  Customer $customer Customer Object with properties needed such as salesper1, custid, shiptoid
 	 * @param  string   $loginID  User Login ID, if blank, will use current User ID
-	 * @param  bool     $debug    Run in debug?
+	 * @param  bool     $debug    Run in debug? If so, return Query
 	 * @return string             SQL Query
 	 */
 	function insert_custperm(Customer $customer, $loginID, $debug = false) {
@@ -211,24 +234,40 @@
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			return $q->generate_sqlquery($q->params);
+			return DplusWire::wire('dplusdatabase')->lastInsertId();
 		}
 	}
-
+	
+	/**
+	 * Change Customer ID in the custperm table
+	 * @param  string $originalcustID Current Customer ID
+	 * @param  string $newcustID      New Customer ID
+	 * @param  bool   $debug          Run in debug? If so, return Query
+	 * @return bool                   Was CustID changed?
+	 */
 	function change_custpermcustid($originalcustID, $newcustID, $debug = false) {
 		$q = (new QueryBuilder())->table('custperm');
 		$q->mode('update');
 		$q->set('custid', $newcustID);
 		$q->where('custid', $originalcustID);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
 		if ($debug) {
 			return $q->generate_sqlquery();
 		} else {
 			$sql->execute($q->params);
-			return $q->generate_sqlquery();
+			return $sql->rowCount() > 0 ? true : false;
 		}
 	}
-
+	
+	/**
+	 * Returns if User has access to Customer
+	 * @param  string $custID   Customer ID
+	 * @param  string $shiptoID Customer Shipto ID
+	 * @param  string $loginID  User Login
+	 * @param  bool   $debug    Run in debug? If so, return Query
+	 * @return bool             Does user have access to customer?
+	 */
 	function can_accesscustomer($custID, $shiptoID = '', $loginID = '', $debug = false) {
 		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
 		$user = LogmUser::load($loginID);
@@ -248,13 +287,20 @@
 				return $q->generate_sqlquery($q->params);
 			} else {
 				$sql->execute($q->params);
-				return $sql->fetchColumn();
+				return boolval($sql->fetchColumn());
 			}
 		} else {
 			return true;
 		}
 	}
-
+	
+	/**
+	 * Returns Customer custindex record
+	 * @param  string   $custID   Customer ID
+	 * @param  bool     $shiptoID Customer Shipto ID
+	 * @param  bool     $debug    Run in debug? If so, return Query
+	 * @return Customer           Customer Index record as Customer Class
+	 */
 	function get_customer($custID, $shiptoID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('custindex');
 		$q->where('custid', $custID);
@@ -276,32 +322,29 @@
 			return $sql->fetch();
 		}
 	}
-
-	function get_customername($custID) {
-		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT name FROM custindex WHERE custid = :custID LIMIT 1");
-		$switching = array(':custID' => $custID);
-		$sql->execute($switching);
-		return $sql->fetchColumn();
-	}
-
-	function get_shiptoname($custID, $shipID, $debug = false) {
-		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT name FROM custindex WHERE custid = :custID AND shiptoid = :shipID LIMIT 1");
-		$switching = array(':custID' => $custID, ':shipID' => $shipID); $withquotes = array(true, true);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return $sql->fetchColumn();
+	
+	/**
+	 * Returns the Customer Name
+	 * @param  string $custID   Customer ID
+	 * @param  string $shiptoID Customer Shipto ID
+	 * @param  bool   $debug    Run in debug? If so, return Query
+	 * @return string           Customer Name
+	 */
+	function get_customershiptoname($custID, $shiptoID = '', $debug = false) {
+		$q = (new QueryBuilder())->table('custindex');
+		$q->field('name');
+		$q->where('custid', $custID);
+		if (!empty($shiptoID)) {
+			$q->where('shiptoid', $shiptoID);
 		}
-	}
-
-	function get_firstcustindexrecord($debug) {
-		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM custindex LIMIT 1");
+		$q->limit(1);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
 		if ($debug) {
-			return $sql->queryString;
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute();
-			return $sql->fetch(PDO::FETCH_ASSOC);
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
 		}
 	}
 
@@ -336,18 +379,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function get_shiptoinfo($custID, $shipID, $debug) {
-		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM custindex WHERE custid = :custID AND shiptoid = :shipID LIMIT 1");
-		$switching = array(':custID' => $custID, ':shipID' => $shipID); $withquotes = array(true, true);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return $sql->fetch(PDO::FETCH_ASSOC);
-		}
-	}
-
+	
 	/**
 	 * Returns an array of Shiptos (Customer objects) that the User has access to
 	 * LoginID can be provided or it will default to the current user
@@ -479,7 +511,16 @@
 			return $sql->fetchAll();
 		}
 	}
-
+	
+	/**
+	 * Returns if User can Access Customer Contact
+	 * @param  string $custID    Customer ID
+	 * @param  string $shiptoID  Customer Shipto ID
+	 * @param  string $contactID Customer (Shipto) Contact ID
+	 * @param  string $loginID   User Login ID
+	 * @param  bool   $debug     Run in debug? If true will return SQL Query
+	 * @return bool              Can User Access Contact?
+	 */
 	function can_accesscustomercontact($custID, $shiptoID, $contactID, $loginID = '', $debug = false) {
 		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
 		$user = LogmUser::load($loginID);
@@ -500,13 +541,21 @@
 				return $q->generate_sqlquery($q->params);
 			} else {
 				$sql->execute($q->params);
-				return $sql->fetchColumn();
+				return boolval($sql->fetchColumn());
 			}
 		} else {
 			return 1;
 		}
 	}
-
+	
+	/**
+	 * Returns instance of the Contact Class with contact data
+	 * @param  string $custID    Customer ID
+	 * @param  string $shiptoID  Customer Shipto ID
+	 * @param  string $contactID Customer (Shipto) Contact ID
+	 * @param  bool   $debug     Run in debug? If true will return SQL Query
+	 * @return Contact          Customer Contact
+	 */
 	function get_customercontact($custID, $shiptoID = '', $contactID = '', $debug = false) {
 		$q = (new QueryBuilder())->table('custindex');
 		$q->limit(1);

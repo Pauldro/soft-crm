@@ -8,13 +8,13 @@
             break;
 		case 'ci-shiptos':
 			$custID = $input->get->text('custID');
-			$page->title = 'Viewing ' . get_customername($custID) . ' shiptos';
+			$page->title = 'Viewing ' . Customer::get_customernamefromid($custID) . ' shiptos';
 			$page->body = $config->paths->content."cust-information/cust-shiptos.php";
 			break;
 		case 'ci-shipto-info':
 			$custID = $input->get->text('custID');
 			$shipID = $input->get->text('shipID');
-			$page->title = 'Viewing ' . get_customername($custID) . ' shipto ' . $shipID;
+			$page->title = 'Viewing ' . Customer::get_customernamefromid($custID) . ' shipto ' . $shipID;
 			$page->body = $config->paths->content."cust-information/cust-shipto-info.php";
 			break;
         case 'ci-pricing-search':
@@ -37,18 +37,18 @@
             break;
 		case 'ci-open-invoices':
 			$custID = $input->get->text('custID');
-			$page->title = get_customername($custID) . ' Open Invoice Inquiry';
+			$page->title = Customer::get_customernamefromid($custID) . ' Open Invoice Inquiry';
             $tableformatter = $page->screenformatterfactory->generate_screenformatter('ci-open-invoices');
 			$page->body = $config->paths->content."cust-information/ci-formatted-screen.php";
 			break;
 		case 'ci-standing-orders':
 			$custID = $input->get->text('custID');
-			$page->title = get_customername($custID) . ' Standing Orders Inquiry';
+			$page->title = Customer::get_customernamefromid($custID) . ' Standing Orders Inquiry';
 			$page->body = $config->paths->content."cust-information/cust-standing-orders.php";
 			break;
 		case 'ci-payment-history':
 			$custID = $input->get->text('custID');
-			$page->title = get_customername($custID) . ' Payment History Inquiry';
+			$page->title = Customer::get_customernamefromid($custID) . ' Payment History Inquiry';
             $tableformatter = $page->screenformatterfactory->generate_screenformatter('ci-payment-history');
 			$page->body = $config->paths->content."cust-information/ci-formatted-screen.php";
 			break;
@@ -62,41 +62,41 @@
                     $page->title = "Quote #" . $input->get->text('qnbr'). ' Documents';
                     break;
                 default:
-                    $page->title = get_customername($custID) . ' Documents';
+                    $page->title = Customer::get_customernamefromid($custID) . ' Documents';
                     break;
             }
 			$page->body = $config->paths->content."cust-information/cust-documents.php";
 			break;
 		case 'ci-quotes':
 			$custID = $input->get->text('custID');
-			$page->title = get_customername($custID) . ' Quote Inquiry';
+			$page->title = Customer::get_customernamefromid($custID) . ' Quote Inquiry';
             $tableformatter = $page->screenformatterfactory->generate_screenformatter('ci-quotes');
 			$page->body = $config->paths->content."cust-information/ci-formatted-screen.php";
 			break;
 		case 'ci-contacts':
 			$custID = $input->get->text('custID');
-			$page->title = get_customername($custID) . ' Contacts Inquiry';
+			$page->title = Customer::get_customernamefromid($custID) . ' Contacts Inquiry';
             $tableformatter = $page->screenformatterfactory->generate_screenformatter('ci-contacts');
 			$page->body = $config->paths->content."cust-information/ci-formatted-screen.php";
 			break;
 		case 'ci-contacts':
 			$custID = $input->get->text('custID');
-			$page->title = get_customername($custID) . ' Contacts Inquiry';
+			$page->title = Customer::get_customernamefromid($custID) . ' Contacts Inquiry';
 			$page->body = $config->paths->content."cust-information/cust-contacts.php";
 			break;
 		case 'ci-credit':
 			$custID = $input->get->text('custID');
-			$page->title = get_customername($custID) . ' Credit Inquiry';
+			$page->title = Customer::get_customernamefromid($custID) . ' Credit Inquiry';
 			$page->body = $config->paths->content."cust-information/cust-credit.php";
 			break;
 		case 'ci-payments':
 			$custID = $input->get->text('custID');
-			$page->title = get_customername($custID) . ' Credit Inquiry';
+			$page->title = Customer::get_customernamefromid($custID) . ' Credit Inquiry';
 			$page->body = $config->paths->content."cust-information/cust-credit.php";
 			break;
         case 'ci-sales-orders':
 			$custID = $input->get->text('custID');
-			$page->title = get_customername($custID) . ' Sales Order Inquiry';
+			$page->title = Customer::get_customernamefromid($custID) . ' Sales Order Inquiry';
             $tableformatter = $page->screenformatterfactory->generate_screenformatter('ci-sales-orders');
 			$page->body = $config->paths->content."cust-information/ci-formatted-screen.php";
 			break;
@@ -104,22 +104,22 @@
 			$custID = $input->get->text('custID');
             if ($input->urlSegment(3) == 'form') {
                 $action = 'ci-sales-history';
-                $page->title = get_customername($custID) . ' Choose a Starting Date';
+                $page->title = Customer::get_customernamefromid($custID) . ' Choose a Starting Date';
     			$page->body = $config->paths->content."cust-information/forms/cust-sales-history-form.php";
             } else {
-                $page->title = get_customername($custID) . ' Sales History Inquiry';
+                $page->title = Customer::get_customernamefromid($custID) . ' Sales History Inquiry';
                 $tableformatter = $page->screenformatterfactory->generate_screenformatter('ci-sales-history');
     			$page->body = $config->paths->content."cust-information/ci-formatted-screen.php";
             }
 			break;
         case 'ci-custpo':
 			$custID = $input->get->text('custID');
-			$page->title = get_customername($custID) . ' Customer PO Inquiry';
+			$page->title = Customer::get_customernamefromid($custID) . ' Customer PO Inquiry';
 			$page->body = $config->paths->content."cust-information/cust-po.php";
 			break;
         case 'ci-53weeks':
 			$custID = $input->get->text('custID');
-			$page->title = get_customername($custID) . ' 52 Week Sales Data';
+			$page->title = Customer::get_customernamefromid($custID) . ' 52 Week Sales Data';
 			$page->body = $config->paths->content."cust-information/cust-sales-data.php";
 			break;
         default:

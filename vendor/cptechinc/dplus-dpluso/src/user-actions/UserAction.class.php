@@ -158,8 +158,8 @@
 			if (!empty($this->title)) {
 				return $this->title;
 			}
-			$desc = $this->has_customerlink() ? 'CustID: '. get_customername($this->customerlink) : '';
-			$desc .=  $this->has_shiptolink() ? ' ShipID: '. get_shiptoname($this->customerlink, $this->shiptolink, false) : '';
+			$desc = $this->has_customerlink() ? 'CustID: '. Customer::get_customernamefromid($this->customerlink) : '';
+			$desc .=  $this->has_shiptolink() ? ' ShipID: '. Customer::get_customernamefromid($this->customerlink, $this->shiptolink) : '';
 			$desc .=  $this->has_contactlink() ? ' Contact: '. $this->contactlink : '';
 			$desc .=  $this->has_salesorderlink() ? ' Sales Order #' . $this->salesorderlink : '';
 			$desc .=  $this->has_quotelink() ? ' Quote #' . $this->quotelink : '';
@@ -175,8 +175,8 @@
 		 */
 		public function generate_message($message) {
 			$regex = '/({replace})/i';
-			$replace = $this->has_customerlink() ? get_customername($this->customerlink)." ($this->customerlink)" : '';
-			$replace .= $this->has_shiptolink() ? " Shipto: " . get_shiptoname($this->customerlink, $this->shiptolink, false)." ($this->shiptolink)" : '';
+			$replace = $this->has_customerlink() ? Customer::get_customernamefromid($this->customerlink)." ($this->customerlink)" : '';
+			$replace .= $this->has_shiptolink() ? " Shipto: " . Customer::get_customernamefromid($this->customerlink, $this->shiptolink)." ($this->shiptolink)" : '';
 			$replace .= $this->has_contactlink() ? " Contact: " . $this->contactlink : '';
 			$replace .= $this->has_salesorderlink() ? " Sales Order #" . $this->salesorderlink : '';
 			$replace .= $this->has_quotelink() ? " Quote #" . $this->quotelink : '';

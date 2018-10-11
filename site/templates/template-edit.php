@@ -34,7 +34,7 @@
 				$quote = $editquotedisplay->get_quote();
 				$editquotedisplay->canedit = $quote->can_edit();
 				$prefix = ($editquotedisplay->canedit) ? 'Editing' : 'Viewing';
-				$page->title = "$prefix Quote #" . $qnbr . ' for ' . get_customername($quote->custid);
+				$page->title = "$prefix Quote #" . $qnbr . ' for ' . Customer::get_customernamefromid($quote->custid);
 				$page->body = $config->paths->content."edit/quotes/outline.php";
 				$config->scripts->append(hashtemplatefile('scripts/edit/edit-quotes.js'));
 				$config->scripts->append(hashtemplatefile('scripts/edit/edit-pricing.js'));

@@ -464,7 +464,7 @@
 			$data = array('DBNAME' => $config->dplusdbname, 'CICONTACT' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID);
 			break;
 		case 'ci-documents':
-			$custname = get_customername($custID);
+			$custname = Customer::get_customernamefromid($custID);
 			$data = array('DBNAME' => $config->dplusdbname, 'DOCVIEW' => false, 'FLD1CD' => 'CU', 'FLD1DATA' => $custID, 'FLD1DESC' => $custname);
 			break;
 		case 'ci-order-documents':
