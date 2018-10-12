@@ -1,11 +1,13 @@
 <?php
 	namespace Dplus\Content;
 
+	use Dplus\ProcessWire\DplusWire as DplusWire;
+
 	/**
 	 * Class for dealing with Pagination for AJAX or non AJAX pages
 	 */
 	class Paginator {
-		use \Dplus\Base\AttributeParser;
+		use Dplus\Base\AttributeParser;
 
 		/**
 		 * Page Number
@@ -51,7 +53,6 @@
 			$this->pageurl = new \Purl\Url($pageurl);
 			$this->insertafter = $insertafter;
 			$this->ajaxdata = $this->parse_ajaxdata($ajaxdata);
-
 			$this::setup_displayonpage();
 		}
 
@@ -82,8 +83,8 @@
 			$form .= $bootstrap->label('', 'Results Per Page') . '&nbsp; &nbsp;';
 			$form .= $bootstrap->open('select', 'class=form-control input-sm results-per-page|name=results-per-page');
 
-			foreach (\Dplus\ProcessWire\DplusWire::wire('config')->showonpageoptions as $val) {
-				if ($val == \Dplus\ProcessWire\DplusWire::wire('session')->display) {
+			foreach (DplusWire::wire('config')->showonpageoptions as $val) {
+				if ($val == DplusWire::wire('session')->display) {
 					$form .= $bootstrap->create_element('option',"value=$val|selected", $val);
 				} else {
 					$form .= $bootstrap->create_element('option',"value=$val", $val);
@@ -103,7 +104,7 @@
 		public function __toString() {
 			$bootstrap = new HTMLWriter();
 			$list = '';
-			$totalpages = ceil($this->count / \Dplus\ProcessWire\DplusWire::wire('session')->display);
+			$totalpages = ceil($this->count / DplusWire::wire('session')->display);
 			$totalpages = $totalpages == 0 ? 1 : $totalpages;
 
 			if ($this->pagenbr == 1) {
@@ -211,11 +212,11 @@
 		* Initializes the Dplus\ProcessWire\DplusWire::wire('session')->display value;
 		*/
 		public static function setup_displayonpage() {
-			if (\Dplus\ProcessWire\DplusWire::wire('input')->get->display) {
-				\Dplus\ProcessWire\DplusWire::wire('session')->display = \Dplus\ProcessWire\DplusWire::wire('input')->get->text('display');
+			if (DplusWire::wire('input')->get->display) {
+				DplusWire::wire('session')->display = DplusWire::wire('input')->get->text('display');
 			} else {
-				if (!\Dplus\ProcessWire\DplusWire::wire('session')->display) {
-					\Dplus\ProcessWire\DplusWire::wire('session')->display = \Dplus\ProcessWire\DplusWire::wire('config')->showonpage;
+				if (!DplusWire::wire('session')->display) {
+					DplusWire::wire('session')->display = DplusWire::wire('config')->showonpage;
 				}
 			}
 		}

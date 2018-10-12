@@ -14,7 +14,7 @@ return array(
     'OrderDetail' => $baseDir . '/src/OrderDetail.class.php',
     'OrderDetailInterface' => $baseDir . '/src/OrderDetail.interface.php',
     'OrderInterface' => $baseDir . '/src/Order.interface.php',
-    'Qnote' => $baseDir . '/src/Qnote.class.php',
+    'QNote' => $baseDir . '/src/Qnote.class.php',
     'Quote' => $baseDir . '/src/Quote.class.php',
     'QuoteDetail' => $baseDir . '/src/QuoteDetail.class.php',
     'SalesOrder' => $baseDir . '/src/SalesOrderOE.class.php',

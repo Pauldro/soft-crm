@@ -1,14 +1,12 @@
 <?php
 	namespace Dplus\Content;
 
-use Dplus;
-
 	/**
 	 * Class that generates HTML
 	 */
 	class HTMLWriter {
-		use \Dplus\Base\AttributeParser;
-		use \Dplus\Base\ThrowErrorTrait;
+		use Dplus\Base\AttributeParser;
+		use Dplus\Base\ThrowErrorTrait;
 
 		/**
 		 * Array of HTML elements that need a closing tag
@@ -67,7 +65,6 @@ use Dplus;
 			* @return string HTML Element
 			*/
 			public function __call($name, $args) {
-				
 				if (!method_exists($this, $name)) {
 					$attr = isset($args[0]) ? $args[0] : '';
 					$content = isset($args[1]) ? $args[1] : '';

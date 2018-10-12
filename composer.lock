@@ -114,7 +114,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-base.git",
-                "reference": "5865837f7ae1b64a43697ba39224aefea70391e7"
+                "reference": "a39947ad902cb009eb50c51e8de710fd94fe216e"
             },
             "require": {
                 "atk4/dsql": "1.1"
@@ -148,7 +148,7 @@
                 "dplus-attributes",
                 "dplus-base"
             ],
-            "time": "2018-10-11T16:20:21+00:00"
+            "time": "2018-10-12T20:42:45+00:00"
         },
         {
             "name": "cptechinc/dplus-content",
@@ -156,7 +156,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-content.git",
-                "reference": "9f7d263697e0a601579061c7acdbfd4eab01d65e"
+                "reference": "582df7027399ca2938bd9c5ababb2f39c955c9f8"
             },
             "type": "library",
             "autoload": {
@@ -173,7 +173,7 @@
                 "paginator",
                 "table"
             ],
-            "time": "2018-10-11T19:57:43+00:00"
+            "time": "2018-10-12T20:47:35+00:00"
         },
         {
             "name": "cptechinc/dplus-file-services",
@@ -181,7 +181,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-file-services.git",
-                "reference": "8e5de22444bc7a664a932d87cb9f584c3b6f5c0c"
+                "reference": "405166738862a883884adf58dc7958990f5e4503"
             },
             "type": "library",
             "autoload": {
@@ -194,7 +194,7 @@
             "keywords": [
                 "crm"
             ],
-            "time": "2018-10-11T20:38:47+00:00"
+            "time": "2018-10-12T20:53:10+00:00"
         },
         {
             "name": "cptechinc/dplus-order",
@@ -202,7 +202,7 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-order.git",
-                "reference": "c35a500a74af3ea8a7c1d8bde7538d634a71014e"
+                "reference": "20d7d76f5e5a4e5c7c4714245eed6fe45ca46806"
             },
             "type": "library",
             "autoload": {
@@ -220,7 +220,7 @@
                 "quote",
                 "sales-order"
             ],
-            "time": "2018-10-11T20:06:10+00:00"
+            "time": "2018-10-12T20:35:00+00:00"
         },
         {
             "name": "eoghanobrien/php-simple-mail",

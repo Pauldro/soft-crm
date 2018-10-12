@@ -15,7 +15,7 @@ class ComposerStaticInitd5ef6c43ea1093d87aa144ef184de290
         'OrderDetail' => __DIR__ . '/../..' . '/src/OrderDetail.class.php',
         'OrderDetailInterface' => __DIR__ . '/../..' . '/src/OrderDetail.interface.php',
         'OrderInterface' => __DIR__ . '/../..' . '/src/Order.interface.php',
-        'Qnote' => __DIR__ . '/../..' . '/src/Qnote.class.php',
+        'QNote' => __DIR__ . '/../..' . '/src/Qnote.class.php',
         'Quote' => __DIR__ . '/../..' . '/src/Quote.class.php',
         'QuoteDetail' => __DIR__ . '/../..' . '/src/QuoteDetail.class.php',
         'SalesOrder' => __DIR__ . '/../..' . '/src/SalesOrderOE.class.php',

@@ -1,6 +1,9 @@
 <?php
 	namespace Dplus\Base;
 	
+	/**
+	 * Functions that allow filtering of data through Arrays
+	 */
 	trait Filterable {
 		/**
 		 * Looks through the $input->get for properties that have the same name
