@@ -1,4 +1,6 @@
 <?php
+    use Dplus\ProcessWire\DplusWire as DplusWire;
+    
 	/**
 	 * Class for editing Sales Orders from ordrhed
 	 */

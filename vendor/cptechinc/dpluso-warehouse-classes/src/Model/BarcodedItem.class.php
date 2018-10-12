@@ -3,10 +3,10 @@
      * Class for dealing and getting information from Barcode Items
      */
     class BarcodedItem {
-        use ThrowErrorTrait;
-		use MagicMethodTraits;
-		use CreateFromObjectArrayTraits;
-		use CreateClassArrayTraits;
+        use Dplus\Base\ThrowErrorTrait;
+		use Dplus\Base\MagicMethodTraits;
+		use Dplus\Base\CreateFromObjectArrayTraits;
+		use Dplus\Base\CreateClassArrayTraits;
         
         /**
          * Barcode Number

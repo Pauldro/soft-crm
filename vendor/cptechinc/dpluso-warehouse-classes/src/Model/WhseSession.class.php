@@ -1,12 +1,14 @@
 <?php
+    use Dplus\ProcessWire\DplusWire as DplusWire;
+    
     /**
      * Class to Interact with the Whse Session Record for one session
      */
     class WhseSession {
-        use ThrowErrorTrait;
-		use MagicMethodTraits;
-		use CreateFromObjectArrayTraits;
-		use CreateClassArrayTraits;
+        use Dplus\Base\ThrowErrorTrait;
+		use Dplus\Base\MagicMethodTraits;
+		use Dplus\Base\CreateFromObjectArrayTraits;
+		use Dplus\Base\CreateClassArrayTraits;
         
         /**
          * Session Identifier

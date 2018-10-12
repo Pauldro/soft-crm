@@ -1,4 +1,6 @@
 <?php
+	use Dplus\ProcessWire\DplusWire as DplusWire;
+	
 	class SalesOrderPanel extends OrderPanel implements OrderDisplayInterface, SalesOrderDisplayInterface, OrderPanelInterface, SalesOrderPanelInterface {
 		use SalesOrderDisplayTraits;
 
@@ -103,7 +105,7 @@
 		}
 
 		public function generate_expandorcollapselink(Order $order) {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			
 			if ($order->ordernumber == $this->activeID) {
 				$href = $this->generate_closedetailsurl($order);
@@ -131,7 +133,7 @@
 		}
 
 		public function generate_refreshlink() {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			$href = $this->generate_loadurl();
 			$icon = $bootstrap->icon('fa fa-refresh');
 			$ajaxdata = $this->generate_ajaxdataforcontento();
@@ -145,7 +147,7 @@
 		}
 
 		public function generate_iconlegend() {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			$content = $bootstrap->create_element('i', 'class=glyphicon glyphicon-shopping-cart|title=Re-order Icon', '') . ' = Re-order <br>';
 			$content .= $bootstrap->create_element('i', "class=material-icons|title=Documents Icon", '&#xE873;') . '&nbsp; = Documents <br>'; 
 			$content .= $bootstrap->create_element('i', 'class=glyphicon glyphicon-plane hover|title=Tracking Icon', '') . ' = Tracking <br>';
@@ -186,7 +188,7 @@
 			}
 			$action = DplusWire::wire('config')->pages->cart.'redir/';
 			$id = $order->ordernumber.'-'.$detail->itemid.'-form';
-			$form = new FormMaker("method=post|action=$action|class=item-reorder|id=$id");
+			$form = new Dplus\Content\FormMaker("method=post|action=$action|class=item-reorder|id=$id");
 			$form->input("type=hidden|name=action|value=add-to-cart");
 			$form->input("type=hidden|name=ordn|value=$order->ordernumber");
 			$form->input("type=hidden|name=custID|value=$order->custid");
@@ -198,7 +200,7 @@
 		}
 
 		public function generate_filter(ProcessWire\WireInput $input) {
-			$stringerbell = new StringerBell();
+			$stringerbell = new Dplus\Base\StringerBell();
 			parent::generate_filter($input);
 
 			if (isset($this->filters['order_date'])) {
@@ -231,7 +233,7 @@
 			LINKS ARE HTML LINKS, AND URLS ARE THE URLS THAT THE HREF VALUE
 		============================================================ */
 		public function generate_loadtrackinglink(Order $order) { 
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			if ($order->has_tracking()) {
 				$href = $this->generate_trackingrequesturl($order);
 				$content = $bootstrap->create_element('span', "class=sr-only", 'View Tracking');
@@ -257,7 +259,7 @@
 			LINKS ARE HTML LINKS, AND URLS ARE THE URLS THAT THE HREF VALUE
 		============================================================ */
 		public function generate_loaddplusnoteslink(Order $order, $linenbr = '0') {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			$href = $this->generate_dplusnotesrequesturl($order, $linenbr);
 
 			if ($order->can_edit()) {
@@ -273,7 +275,7 @@
 		}
 
 		public function generate_loaddocumentslink(Order $order, OrderDetail $orderdetail = null) {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			$href = $this->generate_documentsrequesturl($order, $orderdetail);
 			$icon = $bootstrap->icon('fa fa-file-text');
 			$ajaxdata = $this->generate_ajaxdataforcontento();
@@ -293,7 +295,7 @@
 		}
 
 		public function generate_editlink(Order $order) {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			/*
 				ORDER LOCK LOGIC
 				-------------------------------------
@@ -322,19 +324,24 @@
 				$icon = $bootstrap->icon('glyphicon glyphicon-eye-open');
 				$title = "Open in read-only mode";
 			}
-			$href = $this->generate_editurl($order);
+			$url = new Purl\Url($this->generate_editurl($order));
+			
+			if ($order->can_edit() || $order->is_lockedbyuser()) {
+				$url->query->set('edit', 'edit');
+			}
+			$href = $url->getUrl();
 			return $bootstrap->create_element('a', "href=$href|class=edit-order h3|title=$title", $icon);
 		}
 
 		public function generate_viewlinkeduseractionslink(Order $order) {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			$href = $this->generate_viewlinkeduseractionsurl($order);
 			$icon = $bootstrap->create_element('span','class=h3', $bootstrap->icon('glyphicon glyphicon-check'));
 			return $bootstrap->create_element('a', "href=$href|class=load-into-modal|data-modal=$this->modal", $icon." View Associated Actions");
 		}
 
 		public function generate_detailvieweditlink(Order $order, OrderDetail $detail) {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			$href = $this->generate_detailviewediturl($order, $detail);
 			return $bootstrap->create_element('a', "href=$href|class=update-line|data-kit=$detail->kititemflag|data-itemid=$detail->itemid|data-custid=$order->custid|aria-label=View Detail Line", $detail->itemid);	
 		}

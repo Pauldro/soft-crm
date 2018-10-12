@@ -1,4 +1,6 @@
 <?php
+	use Dplus\ProcessWire\DplusWire as DplusWire;
+	
 	class SalesOrderHistoryPanel extends SalesOrderPanel {
 		/**
 		 * Array of SalesOrderHistory
@@ -95,7 +97,7 @@
 		}
 
 		public function generate_expandorcollapselink(Order $order) {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 
 			if ($order->ordernumber == $this->activeID) {
 				$href = $this->generate_closedetailsurl($order);
@@ -125,7 +127,7 @@
 		}
 
 		public function generate_clearsearchlink() {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			$href = $this->generate_loadurl();
 			$icon = $bootstrap->icon('fa fa-search-minus');
 			$ajaxdata = $this->generate_ajaxdataforcontento();
@@ -133,7 +135,7 @@
 		}
 
 		public function generate_refreshlink() {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			$href = $this->generate_loadurl();
 			$icon = $bootstrap->icon('fa fa-refresh');
 			$ajaxdata = $this->generate_ajaxdataforcontento();
@@ -158,7 +160,7 @@
 			}
 			$action = DplusWire::wire('config')->pages->cart.'redir/';
 			$id = $order->ordernumber.'-'.$detail->itemid.'-form';
-			$form = new FormMaker("method=post|action=$action|class=item-reorder|id=$id");
+			$form = new Dplus\Content\FormMaker("method=post|action=$action|class=item-reorder|id=$id");
 			$form->input("type=hidden|name=action|value=add-to-cart");
 			$form->input("type=hidden|name=ordn|value=$order->ordernumber");
 			$form->input("type=hidden|name=custID|value=$order->custid");
@@ -170,12 +172,12 @@
 		}
 		
 		public function generate_filter(ProcessWire\WireInput $input) {
-			$stringerbell = new StringerBell();
+			$stringerbell = new Dplus\Base\StringerBell();
 			$this->generate_defaultfilter($input);
 
 			if (isset($this->filters['order_date'])) {
 				if (empty($this->filters['order_date'][0])) {
-					$this->filters['order_date'][0] = DplusDateTime::format_date(get_minsaleshistoryorderdate('orderdate'));
+					$this->filters['order_date'][0] = Dplus\Base\DplusDateTime::format_date(get_minsaleshistoryorderdate('orderdate'));
 				}
 
 				if (empty($this->filters['order_date'][1])) {

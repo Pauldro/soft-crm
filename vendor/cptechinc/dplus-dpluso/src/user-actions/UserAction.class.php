@@ -1,12 +1,14 @@
 <?php
+	use Dplus\ProcessWire\DplusWire as DplusWire;
+	
 	/**
 	 * Class for Notes and Tasks
 	 */
 	class UserAction {
-		use ThrowErrorTrait;
-		use MagicMethodTraits;
-		use CreateFromObjectArrayTraits;
-		use CreateClassArrayTraits;
+		use Dplus\Base\ThrowErrorTrait;
+		use Dplus\Base\MagicMethodTraits;
+		use Dplus\Base\CreateFromObjectArrayTraits;
+		use Dplus\Base\CreateClassArrayTraits;
 
 		protected $id;
 		protected $datecreated;
@@ -205,7 +207,7 @@
 		public function generate_duedatedisplay($format) {
 			switch ($this->actiontype) {
 				case 'task':
-					return DplusDateTime::format_date($this->duedate, $format);
+					return Dplus\Base\DplusDateTime::format_date($this->duedate, $format);
 					break;
 				default:
 					return 'N/A';
@@ -234,7 +236,7 @@
 		 */
 		public function generate_actionsubtypedescription() {
 			$page = DplusWire::wire('pages')->get("/config/actions/types/$this->actiontype/$this->actionsubtype");
-			return ($page instanceof NullPage) ? '' : $page->subtypeicon.' '.$page->actionsubtypelabel;
+			return ($page instanceof \ProcessWire\NullPage) ? '' : $page->subtypeicon.' '.$page->actionsubtypelabel;
 		}
 
 		/**

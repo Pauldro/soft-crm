@@ -1,5 +1,7 @@
 <?php
-    class QueryBuilder extends atk4\dsql\Query {
+    namespace Dplus\Base;
+    
+    class QueryBuilder extends \atk4\dsql\Query {
         /**
          * $sqlkeywords is a list of SQL keywords that will be shown in uppercase when we debug the query
          * @var array
@@ -70,8 +72,8 @@
                                 $this->where($this->expr("DATE($filter) = STR_TO_DATE([], '%m/%d/%Y')", $filtervalue));
                             } elseif ($filtertypes[$filter]['datatype'] == 'date') {
                                 $dateformat = $this->generate_dateformat($filter, $filtertypes);
-                                $this->where($this->expr("STR_TO_DATE($filter, '$dateformat') = STR_TO_DATE([], '%m/%d/%Y')", $filtervalue));
-                            } elseif ($filtertypes[$filter]['datatype'] == 'numeric') {
+                                $this->where($this->expr("STR_TO_DATE($filter, '$dateformat') BETWEEN STR_TO_DATE([], '%m/%d/%Y') AND STR_TO_DATE([], '%m/%d/%Y')", $filtervalue));
+                            } else if ($filtertypes[$filter]['datatype'] == 'numeric') {
                                 $this->where($this->expr("$filter = CAST([] AS DECIMAL) ", $filtervalue));
                             } else {
                                 $this->where($filter, $filtervalue[0]);
@@ -83,7 +85,7 @@
                             } elseif ($filtertypes[$filter]['datatype'] == 'date') {
                                 $dateformat = $this->generate_dateformat($filter, $filtertypes);
                                 $this->where($this->expr("STR_TO_DATE($filter, '$dateformat') BETWEEN STR_TO_DATE([], '%m/%d/%Y') AND STR_TO_DATE([], '%m/%d/%Y')", $filtervalue));
-                            } elseif ($filtertypes[$filter]['datatype'] == 'numeric') {
+                            } else if ($filtertypes[$filter]['datatype'] == 'numeric') {
                                 $this->where($this->expr("$filter between CAST([] as DECIMAL) and CAST([] as DECIMAL)", $filtervalue));
                             } else {
                                 $this->where($this->expr("$filter between [] and []", $filtervalue));

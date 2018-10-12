@@ -135,7 +135,7 @@ Expressions can be nested several times::
     $age['age'] = new Expression("year(now()) - year(birth_date)");
     $age['default_age'] = 18;
 
-    $query -> table('user') -> field($age, 'calculated_age');
+    $query ->Dplus\Content\Table('user') -> field($age, 'calculated_age');
 
     // select coalesce(year(now()) - year(birth_date), :a) `calculated_age` from `user`
 

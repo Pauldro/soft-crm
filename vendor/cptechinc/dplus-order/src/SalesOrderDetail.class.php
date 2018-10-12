@@ -137,36 +137,12 @@
 		public static function load($sessionID, $ordn, $linenbr, $debug = false) {
 			return get_orderdetail($sessionID, $ordn, $linenbr, $debug);
 		}
-		
-		/**
-		 * Saves Changes to Database
-		 * // NOTE Checks if Detail exists already in database
-		 * @param  bool    $debug Run in debug? If so returns SQL Query
-		 * @return [type]  [description]
-		 * @source _dbfunc.php
-		 */
-		public function save($debug = false) {
-			if (empty($this->date)) {
-				return $this->insert($debug);
-			} else {
-				return $this->update($debug);
-			}
-		}
-		
-		/**
-		 * Inserts SalesOrderDetail in Database
-		 * @param  bool   $debug Run in debug? If so returns SQL Query
-		 * @return string        SQL QUERY
-		 * @source _dbfunc.php
-		 */
-		public function insert($debug = false) {
-			return insert_orderdetail($this->sessionid, $this, $debug);
-		}
 
 		/**
-		 * Updates SalesOrderDetail in ordrdet
-		 * @param  bool   $debug Run in debug? If so returns SQL Query
+		 * Updates SalesOrderDetail in orderdet
+		 * @param  bool   $debug Whether or not SQL is Executed
 		 * @return string        SQL QUERY
+		 * @uses Update (CRUD)
 		 * @source _dbfunc.php
 		 */
 		public function update($debug = false) {

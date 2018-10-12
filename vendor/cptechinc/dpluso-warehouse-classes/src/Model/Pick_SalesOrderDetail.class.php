@@ -1,12 +1,14 @@
 <?php
+    use Dplus\ProcessWire\DplusWire as DplusWire;
+    
     /**
      * Class for the Pick Sales Order Detail Item
      */
     class Pick_SalesOrderDetail {
-		use ThrowErrorTrait;
-		use MagicMethodTraits;
-		use CreateFromObjectArrayTraits;
-		use CreateClassArrayTraits;
+		use Dplus\Base\ThrowErrorTrait;
+		use Dplus\Base\MagicMethodTraits;
+		use Dplus\Base\CreateFromObjectArrayTraits;
+		use Dplus\Base\CreateClassArrayTraits;
         
         /**
          * Session Identifier

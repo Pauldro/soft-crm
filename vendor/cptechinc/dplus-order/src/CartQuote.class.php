@@ -44,9 +44,14 @@
 		public function has_documents() {
 			return $this->hasdocuments == 'Y' ? true : false;
 		}
-
+		
+		/**
+		 * Does Cart have tracking
+		 * // NOTE this is only here to comply with Orders Interface
+		 * @return bool 
+		 */
 		public function has_tracking() {
-			return $this->hastracking == 'Y' ? true : false;
+			return false;
 		}
 
 		public function has_notes() {
@@ -76,9 +81,6 @@
 		 * @return array        with certain keys removed
 		 */
 		public static function remove_nondbkeys($array) {
-			unset($array['type']);
-			unset($array['careof']);
-			unset($array['shipdate']);
 			unset($array['revdate']);
 			unset($array['expdate']);
 			unset($array['editord']);
@@ -170,8 +172,8 @@
 		/**
 		 * Returns CartQuote from carthed table
 		 * @param  string $sessionID Session ID
-		 * @param  bool   $debug     Whether or not to Return Cart Quote or SQL QUERY
-		 * @return CartQuote         Or SQL Query
+		 * @param  bool   $debug     Run in debug? If so, return SQL Query
+		 * @return CartQuote
 		 * @uses Read (CRUD)
 		 * @source _dbfunc.php
 		 */
@@ -180,33 +182,32 @@
 		}
 		
 		/**
-		 * Saves Changes to Database
-		 * // NOTE Checks if carthed exists already in database
-		 * @param  bool    $debug Run in debug? If so returns SQL Query
-		 * @return int     Rows Inserted
+		 * Saves (Updates / Creates) Database for Cart head
+		 * @param  bool   $debug Run in debug? If so, return SQL Query
+		 * @return bool          Was it Saved?
 		 * @source _dbfunc.php
 		 */
 		public function save($debug = false) {
-			if (empty($this->date)) {
-				return $this->insert($debug);
-			} else {
+			if (self::cart_exists($this->sessionid)) {
 				return $this->update($debug);
+			} else {
+				return $this->create($debug);
 			}
 		}
+		
 		/**
-		 * Inserts carthead record
-		 * @param  bool   $debug Run in debug? If so, returns SQL Query
-		 * @return int           How many records where inserted
+		 * Inserts Cart Head Data into database
+		 * @param  bool   $debug Run in debug? If so, return SQL Query
+		 * @return bool          Was Cart Head record created?
 		 */
-		public function insert($debug = false) {
+		public function create($debug = false) {
 			return insert_carthead($this->sessionid, $this, $debug);
 		}
 		
-		
 		/**
-		 * Updates carthead record
-		 * @param  bool   $debug Run in debug? If so, returns SQL Query
-		 * @return int           How many records where updated
+		 * Updates Cart Head Data into database
+		 * @param  bool   $debug Run in debug? If so, return SQL Query
+		 * @return bool          Was Cart Head record updated?
 		 */
 		public function update($debug = false) {
 			return update_carthead($this->sessionid, $this, $debug);

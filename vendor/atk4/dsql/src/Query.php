@@ -73,7 +73,7 @@ class Query extends Expression
     /**
      * Name or alias of base table to use when using default join().
      *
-     * This is set by table(). If you are using multiple tables,
+     * This is set byDplus\Content\Table(). If you are using multiple tables,
      * then $main_table is set to false as it is irrelevant.
      *
      * @var null|false|string
@@ -204,7 +204,7 @@ class Query extends Expression
      *
      * @return $this
      */
-    public function table($table, $alias = null)
+    public functionDplus\Content\Table($table, $alias = null)
     {
         // comma-separated table names
         if (is_string($table) && strpos($table, ',') !== false) {
@@ -239,7 +239,7 @@ class Query extends Expression
             $alias = $table;
         }
 
-        // main_table will be set only if table() is called once.
+        // main_table will be set only ifDplus\Content\Table() is called once.
         // it's used as "default table" when joining with other tables, see join().
         // on multiple calls, main_table will be false and we won't
         // be able to join easily anymore.

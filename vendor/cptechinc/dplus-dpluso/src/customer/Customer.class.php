@@ -1,11 +1,13 @@
 <?php
+    use Dplus\ProcessWire\DplusWire as DplusWire;
+    
 	/**
 	 * Class for dealing with Customers
 	 * Derived from the custindex Table
 	 */
     class Customer extends Contact {
-        use CreateFromObjectArrayTraits;
-		use CreateClassArrayTraits;
+        use Dplus\Base\CreateFromObjectArrayTraits;
+		use Dplus\Base\CreateClassArrayTraits;
         
         /* =============================================================
 			GETTER FUNCTIONS

@@ -1,10 +1,12 @@
 <?php 
+	use Dplus\ProcessWire\DplusWire as DplusWire;
+	
 	/**
 	 * Blueprint for Order Display classes
 	 */
 	abstract class OrderDisplay {
-		use ThrowErrorTrait;
-		use MagicMethodTraits;
+		use Dplus\Base\ThrowErrorTrait;
+		use Dplus\Base\MagicMethodTraits;
 		
 		/**
 		 * URL object that contains the Path to the page
@@ -45,7 +47,7 @@
 		 * @return string        HTML Link
 		 */
 		public function generate_customershiptolink(Order $order) {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			$href = $this->generate_customershiptourl($order);
 			$icon = $bootstrap->icon('fa fa-user');
 			return $bootstrap->create_element('a', "href=$href|class=btn btn-block btn-primary", $icon. " Go to Customer Page");   

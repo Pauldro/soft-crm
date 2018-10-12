@@ -1,4 +1,6 @@
 <?php
+	use Dplus\ProcessWire\DplusWire as DplusWire;
+	
 	/**
 	 * Traits that will be shared by Sales Order Displays like Displays or Panels
 	 */
@@ -14,7 +16,7 @@
 		 * @return string          HTML link to view Dplus Notes
 		 */
 		public function generate_loaddplusnoteslink(Order $order, $linenbr = '0') {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			$href = $this->generate_dplusnotesrequesturl($order, $linenbr);
 
 			if ($order->can_edit()) {
@@ -63,7 +65,7 @@
 		 * @uses
 		 */
 		public function generate_loadheaderdocumentslink(Order $order, OrderDetail $orderdetail = null) {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			$href = $this->generate_documentsrequesturl($order, $orderdetail);
 			$icon = $bootstrap->icon('fa fa-file-text');
 			$ajaxdata = "data-loadinto=.docs|data-focus=.docs|data-click=#documents-link";
@@ -83,7 +85,7 @@
 		 * @uses
 		 */
 		public function generate_loaddetaildocumentslink(Order $order, OrderDetail $orderdetail = null) {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			$href = $this->generate_documentsrequesturl($order, $orderdetail);
 			$icon = $bootstrap->icon('fa fa-file-text');
 			$ajaxdata = "data-loadinto=.docs|data-focus=.docs|data-click=#documents-link";
@@ -129,7 +131,7 @@
 		 * @return string        HTML link to view print page
 		 */
 		public function generate_viewprintlink(Order $order) {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			$href = $this->generate_viewprinturl($order);
 			$icon = $bootstrap->create_element('span','class=h3', $bootstrap->icon('glyphicon glyphicon-print'));
 			return $bootstrap->create_element('a', "href=$href|target=_blank", $icon." View Printable Order");
@@ -179,7 +181,7 @@
 		 * @return string        HTML Link to view linked user actions
 		 */
 		public function generate_viewlinkeduseractionslink(Order $order) {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			$href = $this->generate_viewlinkeduseractionsurl($order);
 			$icon = $bootstrap->create_element('span','class=h3', $bootstrap->icon('glyphicon glyphicon-check'));
 			return $bootstrap->create_element('a', "href=$href|target=_blank", $icon." View Associated Actions");
@@ -204,7 +206,7 @@
 		 * @return string              HTML Link
 		 */
 		public function generate_viewdetaillink(Order $order, OrderDetail $detail) {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			$href = $this->generate_viewdetailurl($order, $detail);
 			$icon = $bootstrap->icon('fa fa-info-circle');
 			return $bootstrap->create_element('a', "href=$href|class=h3 view-item-details|data-itemid=$detail->itemid|data-kit=$detail->kititemflag|data-modal=#ajax-modal", $icon);
@@ -269,7 +271,7 @@
 		 * @return string        HTML Link
 		 */
 		public function generate_loadtrackinglink(Order $order) {
-			$bootstrap = new HTMLWriter();
+			$bootstrap = new Dplus\Content\HTMLWriter();
 			$href = $this->generate_trackingrequesturl($order);
 			$icon = $bootstrap->create_element('i','class=glyphicon glyphicon-plane hover|style=top: 3px; padding-right: 5px; font-size: 130%;|aria-hidden=true', '');
 			$ajaxdata = "data-loadinto=.tracking|data-focus=.tracking|data-click=#tracking-tab-link";

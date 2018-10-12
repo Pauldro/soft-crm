@@ -1,13 +1,15 @@
 <?php
+	use Dplus\ProcessWire\DplusWire as DplusWire;
+	
 	/**
 	 * Dplus Qnotes are for Notes for Quotes and Orders and the functions
 	 * needed to update the notes on them
 	 */
 	class Qnote {
-		use ThrowErrorTrait;
-		use MagicMethodTraits;
-		use CreateFromObjectArrayTraits;
-		use CreateClassArrayTraits;
+		use \Dplus\Base\ThrowErrorTrait;
+		use \Dplus\Base\MagicMethodTraits;
+		use \Dplus\Base\CreateFromObjectArrayTraits;
+		use \Dplus\Base\CreateClassArrayTraits;
 		
 		/**
 		 * Session Identifier
@@ -195,8 +197,7 @@
 					return true;
 					break;
 				case 'SORD':
-					$saleshistory = SalesOrderHistory::is_saleshistory($key1);
-					if ($saleshistory) {
+					if (SalesOrderHistory::is_saleshistory($key1)) {
 						return false;
 					} else {
 						$order = SalesOrder::load($key1);
