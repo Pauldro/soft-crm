@@ -20,7 +20,7 @@
 					<span class="pull-right"><?= $orderpanel->generate_shiptopopover($order); ?></span>
 				</td>
 				<td align="right">$ <?= $page->stringerbell->format_money($order->total_order); ?></td>
-				<td align="right"><?= DplusDateTime::format_date($order->order_date); ?></td>
+				<td align="right"><?= Dplus\Base\DplusDateTime::format_date($order->order_date); ?></td>
 				<td align="right"><?= $order->get_statusdescription(); ?></td>
 				<td colspan="3">
 					<span class="col-xs-3"><?= $orderpanel->generate_loaddocumentslink($order); ?></span>

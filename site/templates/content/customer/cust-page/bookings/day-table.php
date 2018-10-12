@@ -6,7 +6,7 @@
 		<?php foreach ($bookings as $booking) : ?>
 			<tr>
 				<td>
-					<?= DplusDateTime::format_date($booking['bookdate']); ?>
+					<?= Dplus\Base\DplusDateTime::format_date($booking['bookdate']); ?>
 				</td>
 				<td class="text-right">$ <?= $page->stringerbell->format_money($booking['amount']); ?></td>
 				<td class="text-right"><?= $bookingspanel->generate_viewsalesordersbydaylink($booking['bookdate']); ?></td>

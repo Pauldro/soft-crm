@@ -12,6 +12,6 @@
 			<b><a href="<?= $config->documentstorage.$filename; ?>" title="Click to View Document" target="_blank" ><?= $orderdoc['title']; ?></a></b>
 		</td>
 		<td align="right"><?= $orderdoc['createdate']; ?></td>
-		<td align="right"><?= DplusDateTime::format_dplustime($orderdoc['createtime']); ?></td> <td></td><td></td> <td></td> <td></td> <td></td>
+		<td align="right"><?= Dplus\Base\DplusDateTime::format_dplustime($orderdoc['createtime']); ?></td> <td></td><td></td> <td></td> <td></td> <td></td>
 	</tr>
 <?php endforeach; ?>

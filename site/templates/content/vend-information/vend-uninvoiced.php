@@ -20,7 +20,7 @@
 			$columncount = $detailcolumns > $headercolumns ? sizeof($detailcolumns) : sizeof($headercolumns);
 			
 			if (sizeof($uninvoicedjson['data']) > 0) {
-				$tb = new Table('class=table table-striped table-bordered table-condensed table-excel|id=uninvoiced');
+				$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel|id=uninvoiced');
 				$tb->tablesection('thead');
 					$tb->tr();
 					foreach ($headercolumns as $column) {

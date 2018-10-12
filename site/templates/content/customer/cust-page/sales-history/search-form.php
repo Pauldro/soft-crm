@@ -4,8 +4,8 @@
 	<div class="row">
 		<div class="col-sm-2">
 			<h4>Order #</h4>
-			<input class="form-control form-group inline input-sm" type="text" name="orderno[]" value="<?= $orderpanel->get_filtervalue('orderno'); ?>" placeholder="From Order #">
-			<input class="form-control form-group inline input-sm" type="text" name="orderno[]" value="<?= $orderpanel->get_filtervalue('orderno', 1); ?>" placeholder="Through Order #">
+			<input class="form-control form-group inline input-sm" type="text" name="ordernumber[]" value="<?= $orderpanel->get_filtervalue('ordernumber'); ?>" placeholder="From Order #">
+			<input class="form-control form-group inline input-sm" type="text" name="ordernumber[]" value="<?= $orderpanel->get_filtervalue('ordernumber', 1); ?>" placeholder="Through Order #">
 		</div>
         <div class="col-sm-2">
 			<h4>Cust PO</h4>
@@ -28,11 +28,11 @@
 		</div>
 		<div class="col-sm-2">
 			<h4>Order Date</h4>
-			<?php $name = 'orderdate[]'; $value = $orderpanel->get_filtervalue('orderdate'); ?>
+			<?php $name = 'order_date[]'; $value = $orderpanel->get_filtervalue('order_date'); ?>
 			<?php include $config->paths->content."common/date-picker.php"; ?>
 			<label class="small text-muted">From Date </label>
 
-			<?php $name = 'orderdate[]'; $value = $orderpanel->get_filtervalue('orderdate', 1); ?>
+			<?php $name = 'order_date[]'; $value = $orderpanel->get_filtervalue('order_date', 1); ?>
 			<?php include $config->paths->content."common/date-picker.php"; ?>
 			<label class="small text-muted">Through Date </label>
 		</div>

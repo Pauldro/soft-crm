@@ -2,7 +2,7 @@
     $q = $input->get->text('q');
     $items = get_itemsearchresults(session_id(), $config->showonpage, $input->pageNum());
     $itemcount = count_itemsearchresults(session_id());
-    $paginator = new Paginator($input->pageNum, $itemcount, $page->fullURL, 'quick-entry-search', 'data-loadinto=".results" data-focus=".results"');
+    $paginator = new Dplus\Content\Paginator($input->pageNum, $itemcount, $page->fullURL, 'quick-entry-search', 'data-loadinto=".results" data-focus=".results"');
 ?>
 <div class="qe-results">
     <h3>Item Results for "<?= $q; ?>"</h3>

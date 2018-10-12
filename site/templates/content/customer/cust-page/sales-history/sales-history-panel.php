@@ -6,7 +6,7 @@
 	$orderpanel->generate_filter($input);
 	$orderpanel->get_ordercount();
 
-	$paginator = new Paginator($orderpanel->pagenbr, $orderpanel->count, $orderpanel->pageurl->getUrl(), $orderpanel->paginationinsertafter, $orderpanel->ajaxdata);
+	$paginator = new Dplus\Content\Paginator($orderpanel->pagenbr, $orderpanel->count, $orderpanel->pageurl->getUrl(), $orderpanel->paginationinsertafter, $orderpanel->ajaxdata);
 ?>
 <div class="panel panel-primary not-round" id="cust-sales-history-panel">
 	 <div class="panel-heading not-round" id="cust-sales-history-panel-heading">

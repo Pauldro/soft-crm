@@ -140,7 +140,7 @@
 			$ordn = $input->get->text('ordn');
 			$custID = SalesOrderHistory::is_saleshistory($ordn) ? SalesOrderHistory::find_custid($ordn) : SalesOrder::find_custid($ordn);
 			$data = array('DBNAME' => $config->dplusdbname, 'ORDRDET' => $ordn);
-			if ($input->get->lock) {
+			if ($input->get->edit) {
 				$data['LOCK'] = false;
 			}
 			$session->loc = "{$config->pages->editorder}?ordn=$ordn";
@@ -174,15 +174,14 @@
 					}
 				}
 				$url->query = "ordn=$ordn$linkaddon";
-				Paginator::paginate_purl($url, $pagenumber, $insertafter);
+				Dplus\Content\Paginator::paginate_purl($url, $pagenumber, $insertafter);
 				$session->loc = $url->getUrl();
 			}
 			
 			break;
 		case 'get-order-tracking':
 			$ordn = $input->get->text('ordn');
-			$custID = SalesOrder::find_custid($ordn);
-			$data = array('DBNAME' => $config->dplusdbname, 'ORDRTRK' => $ordn, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'ORDRTRK' => $ordn);
 			
 			if ($input->get->ajax) {
 				$session->loc = $config->pages->ajax."load/order/tracking/?ordn=".$ordn;
@@ -205,13 +204,12 @@
 				}
 				$url->query = "ordn=$ordn$linkaddon";
 				$url->query->set('show', 'tracking');
-				Paginator::paginate_purl($url, $pagenumber, $insertafter);
+				Dplus\Content\Paginator::paginate_purl($url, $pagenumber, $insertafter);
 				$session->loc = $url->getUrl();
 			}
 			break;
 		case 'get-order-documents':
 			$ordn = $input->get->text('ordn');
-			$custID = SalesOrder::find_custid($ordn);
 
 			if ($input->get->page == 'edit') {
 				$session->loc = $config->pages->ajax.'load/order/documents/?ordn='.$ordn;
@@ -236,10 +234,10 @@
 				if ($input->get->itemdoc) {
 					$url->query->set('itemdoc', $input->get->text('itemdoc'));
 				}
-				Paginator::paginate_purl($url, $pagenumber, $insertafter);
+				Dplus\Content\Paginator::paginate_purl($url, $pagenumber, $insertafter);
 				$session->loc = $url->getUrl();
 			}
-			$data = array('DBNAME' => $config->dplusdbname, 'ORDDOCS' => $ordn, 'CUSTID' => $custID);
+			$data = array('DBNAME' => $config->dplusdbname, 'ORDDOCS' => $ordn);
 			break;
 		case 'edit-new-order':
 			$ordn = get_createdordn(session_id());

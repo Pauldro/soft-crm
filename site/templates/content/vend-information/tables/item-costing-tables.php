@@ -1,6 +1,6 @@
 <?php 
 
-	$tb = new Table('class=table table-striped table-condensed table-excel');
+	$tb = new Dplus\Content\Table('class=table table-striped table-condensed table-excel');
 	$tb->tr();
 		$tb->td('', '<b>Item ID</b>');
 		$tb->td('', $costjson['itemid']);
@@ -15,7 +15,7 @@
 		$tb->td('colspan=2', $costjson['purchuom']);
 	$itemtable = $tb->close();
 	
-	$tb = new Table('class=table table-striped table-condensed table-excel');
+	$tb = new Dplus\Content\Table('class=table table-striped table-condensed table-excel');
 	$tb->tablesection('thead');
 		$tb->tr();
 		foreach ($costjson['columns']['vendor costing'] as $column) {

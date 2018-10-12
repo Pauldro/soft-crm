@@ -5,7 +5,7 @@
     $custindex = new CustomerIndex($pageurl, '#cust-index-search-form', '#cust-index-search-form');
     $custindex->set_pagenbr($input->pageNum);
     $resultscount = $custindex->count_searchcustindex($input->get->text('q'));
-    $paginator = new Paginator($custindex->pagenbr, $resultscount, $custindex->pageurl, 'cust-index', $custindex->ajaxdata);
+    $paginator = new Dplus\Content\Paginator($custindex->pagenbr, $resultscount, $custindex->pageurl, 'cust-index', $custindex->ajaxdata);
 ?>
 
 <div id="cust-results">
@@ -54,7 +54,7 @@
                             <td><?= $page->stringerbell->highlight($cust->shiptoid, $input->get->q); ?></td>
                             <td><?= $page->stringerbell->highlight($cust->generate_address(), $input->get->q); ?></td>
                             <td><a href="tel:<?= $cust->phone; ?>" title="Click To Call"><?= $page->stringerbell->highlight($cust->phone, $input->get->q); ?></a></td>
-                            <td class="text-right"><?= empty($cust->get_lastsaledate($user->loginid)) ? 'N/A' : DplusDateTime::format_date($cust->get_lastsaledate($user->loginid)); ?></td>
+                            <td class="text-right"><?= empty($cust->get_lastsaledate($user->loginid)) ? 'N/A' : Dplus\Base\DplusDateTime::format_date($cust->get_lastsaledate($user->loginid)); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else : ?>

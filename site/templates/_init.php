@@ -24,10 +24,11 @@
 	include_once($config->paths->vendor."cptechinc/dplus-processwire/vendor/autoload.php");
 	include_once($config->paths->vendor."cptechinc/dplus-content/vendor/autoload.php");
 	include_once($config->paths->vendor."cptechinc/dplus-dpluso/vendor/autoload.php");
-	include_once($config->paths->vendor."cptechinc/dplus-items/vendor/autoload.php");
 	include_once($config->paths->vendor."cptechinc/dplus-order/vendor/autoload.php");
+	include_once($config->paths->vendor."cptechinc/dplus-file-services/vendor/autoload.php");
+	
+	include_once($config->paths->vendor."cptechinc/dplus-items/vendor/autoload.php");
 	include_once($config->paths->vendor."cptechinc/dpluso-screen-formatters/vendor/autoload.php");
-	include_once($config->paths->vendor."cptechinc/dplus-services/vendor/autoload.php");
 	include_once($config->paths->vendor."cptechinc/dpluso-warehouse-classes/vendor/autoload.php");
 	
 	// AFTER LOADING CONFIGS, CLASSES, AND FUNCTIONS CHECK FOR LOGIN
@@ -50,8 +51,9 @@
 		$page->fullURL->join($config->filename);
 	}
 	
-	$page->stringerbell = new StringerBell();
-	$page->htmlwriter = new HTMLWriter();
+	
+	$page->stringerbell = new Dplus\Base\StringerBell();
+	$page->htmlwriter = new Dplus\Content\HTMLWriter();
 	$page->bootstrap = $page->htmlwriter;
 	$page->screenformatterfactory = new \ScreenFormatterFactory(session_id());
 	$itemlookup = new ItemLookupModal();
@@ -60,6 +62,7 @@
 	TableScreenMaker::set_testfiledirectory($config->paths->vendor."cptechinc/dpluso-screen-formatters/src/examples/");
 	TableScreenMaker::set_fieldfiledirectory($config->companyfiles."json/");
 	FormFieldsConfig::set_defaultconfigdirectory($config->paths->templates."configs/customer/");
+
 	
 	// ADD DEFAULT CSS FILES
 	$config->styles->append(hashtemplatefile('styles/bootstrap.min.css'));

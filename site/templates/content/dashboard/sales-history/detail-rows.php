@@ -37,7 +37,7 @@
 						<b><a href="<?= $config->pathtofiles.$itemdoc['pathname']; ?>" title="Click to View Document" target="_blank" ><?php echo $itemdoc['title']; ?></a></b>
 					</td>
 					<td class="text-right"><?= $itemdoc['createdate']; ?></td>
-					<td class="text-right"><?= DplusDateTime::format_dplustime($itemdoc['createtime']) ?></td>
+					<td class="text-right"><?= Dplus\Base\DplusDateTime::format_dplustime($itemdoc['createtime']) ?></td>
 				</tr>
 			<?php endforeach; ?>
 		<?php endif; ?>

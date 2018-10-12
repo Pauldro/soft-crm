@@ -1,5 +1,5 @@
 <?php
-    $tb = new Table('class=order');
+    $tb = new Dplus\Content\Table('class=order');
     $tb->tablesection('thead');
         $tb->tr();
         $tb->th('', 'Item');

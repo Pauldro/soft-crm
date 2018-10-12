@@ -20,7 +20,7 @@
 			
 			if (isset($whereusedjson['data']['kit'])) {
 				echo '<h3>Kit</h3>';
-				$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+				$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
 				$tb->tablesection('thead');
 					$tb->tr();
 					foreach($whereusedjson['columns']['kit'] as $column) {
@@ -42,7 +42,7 @@
 			
 			if (isset($whereusedjson['data']['bom'])) {
 				echo '<h3>BOM</h3>';
-				$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+				$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
 				$tb->tablesection('thead');
 					$tb->tr();
 					foreach($whereusedjson['columns']['bom'] as $column) {

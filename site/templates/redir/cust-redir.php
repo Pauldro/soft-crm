@@ -4,10 +4,10 @@
 	* @param string $action
 	*
 	*/
-
-	$action = ($input->post->action ? $input->post->text('action') : $input->get->text('action'));
-	$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
-	$shipID = ($input->post->shipID ? $input->post->text('shipID') : $input->get->text('shipID'));
+	$requestmethod = $input->requestMethod('POST') ? 'post' : 'get';
+	$action = $input->$requestmethod->text('action');
+	$custID = $input->$requestmethod->text('custID');
+	$shipID = $input->$requestmethod->text('shipID');
 
 	$session->{'from-redirect'} = $page->url;
 
@@ -321,14 +321,7 @@
 		case 'shop-as-customer':
 			$data = array('DBNAME' => $config->dplusdbname, 'CARTCUST' => false, 'CUSTID' => $custID);
             if (!empty($shipID)) {$data['SHIPID'] = $shipID; }
-			if (!CartQuote::cart_exists(session_id())) {
-				$cart = new CartQuote();
-				$cart->set('sessionid', session_id());
-				$cart->set('custid', $custID);
-				$cart->set('shiptoid', $shipID);
-				$session->sql = $cart->save(true);
-				$cart->save();
-			}
+			
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
 			} elseif ($input->get->page) {

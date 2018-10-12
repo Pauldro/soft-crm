@@ -9,7 +9,7 @@
 	$items = search_items($q, $custID, $session->display, $input->pageNum);
 	$resultscount = count_searchitems($q, $custID);
 	$insertafter = 'item-search-results';
-	$paginator = new Paginator($input->pageNum, $resultscount, $pageurl, $insertafter, "data-loadinto='#item-results' data-focus='#item-results'");
+	$paginator = new Dplus\Content\Paginator($input->pageNum, $resultscount, $pageurl, $insertafter, "data-loadinto='#item-results' data-focus='#item-results'");
 	
 ?>
 

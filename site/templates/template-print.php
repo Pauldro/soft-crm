@@ -41,12 +41,12 @@
         $url->query->set('referenceID', $sessionID);
     	$url->query->set('view', 'pdf');
 		
-        $pdfmaker = new PDFMaker($sessionID, $page->name, $url->getUrl());
+        $pdfmaker = new Dplus\FileServices\PDFMaker($sessionID, $page->name, $url->getUrl());
         $result = $pdfmaker->process();
 		
 		switch ($page->name) { //$page->name is what we are printing
 	        case 'quote':
-				$folders = PDFMaker::$folders;
+				$folders = Dplus\FileServices\PDFMaker::$folders;
 				$url = new Purl\Url($page->fullURL->getUrl());
 				$url->path = $config->pages->account."redir/";
 				$url->query->setData(array(

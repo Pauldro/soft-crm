@@ -5,7 +5,6 @@
 	<br>
 	<div class="tab-content">
 		<div role="tabpanel" class="tab-pane active" id="task">
-			<?= $task->actionsubtype; ?>
 			<form action="<?= $config->pages->useractions."add/"; ?>" method="POST" id="new-action-form" data-refresh="#actions-panel" data-modal="#ajax-modal" onKeyPress="return disable_enterkey(event)">
 				<input type="hidden" name="action" value="reschedule-task">
 				<input type="hidden" name="customerlink" value="<?= $task->customerlink; ?>">

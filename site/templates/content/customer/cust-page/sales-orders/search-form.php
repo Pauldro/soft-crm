@@ -18,8 +18,8 @@
 		</div>
         <div class="col-sm-2">
 			<h4>Order #</h4>
-			<input class="form-control form-group inline input-sm" type="text" name="orderno[]" value="<?= $orderpanel->get_filtervalue('ordernumber'); ?>" placeholder="From Order #">
-			<input class="form-control form-group inline input-sm" type="text" name="orderno[]" value="<?= $orderpanel->get_filtervalue('ordernumber', 1); ?>" placeholder="Through Order #">
+			<input class="form-control form-group inline input-sm" type="text" name="ordernumber[]" value="<?= $orderpanel->get_filtervalue('ordernumber'); ?>" placeholder="From Order #">
+			<input class="form-control form-group inline input-sm" type="text" name="ordernumber[]" value="<?= $orderpanel->get_filtervalue('ordernumber', 1); ?>" placeholder="Through Order #">
 		</div>
 		<div class="col-sm-2">
 			<h4>Cust PO</h4>

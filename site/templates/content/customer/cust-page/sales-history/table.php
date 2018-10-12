@@ -18,13 +18,12 @@
 					<span class="pull-right"><?= $orderpanel->generate_shiptopopover($order); ?></span>
 				</td>
 				<td class="text-right">$ <?= $page->stringerbell->format_money($order->total_order); ?></td>
-				<td class="text-right"><?= DplusDateTime::format_date($order->orderdate); ?></td>
-				<td class="text-right"><?= DplusDateTime::format_date($order->invoice_date); ?></td>
+				<td class="text-right"><?= Dplus\Base\DplusDateTime::format_date($order->order_date); ?></td>
+				<td class="text-right"><?= Dplus\Base\DplusDateTime::format_date($order->invoice_date); ?></td>
 				<td colspan="3">
 					<span class="col-xs-3"><?= $orderpanel->generate_loaddocumentslink($order); ?></span>
 					<span class="col-xs-3"><?= $orderpanel->generate_loadtrackinglink($order); ?></span>
 					<span class="col-xs-3"><?= $orderpanel->generate_loaddplusnoteslink($order, '0'); ?></span>
-					<span class="col-xs-3"><?= $orderpanel->generate_editlink($order); ?></span>
 				</td>
 			</tr>
 

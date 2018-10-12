@@ -5,7 +5,7 @@
 		$action = $input->post->text('action');
 
 		$note = new UserAction();
-		$note->set('actiontype', 'notes');
+		$note->set('actiontype', 'note');
 		$note->set('id', $input->post->text('id'));
 		$note->set('actionsubtype', $input->post->text('subtype'));
 		$note->set('customerlink', $input->post->text('customerlink'));
@@ -19,7 +19,8 @@
 		$note->set('assignedto', $input->post->text('assignedto'));
 		$note->set('createdby', $user->loginid);
 		$note->set('assignedby', $user->loginid);
-
+		$note->set('dateupdated', date("Y-m-d H:i:s"));
+		
 		if (empty($note->customerlink)) {
 			if (!empty($note->salesorderlink)) {
 				$note->set('customerlink', SalesOrder::find_custid($note->salesorderlink));

@@ -25,8 +25,8 @@
 	<div class="col-xs-6">
 		<div class="row">
 			<table class="pull-right">
-				<tr> <td class="col-xs-6"><label>Order Date:</label></td> <td class="col-xs-6 text-right"><?= DplusDateTime::format_date($order->orderdate); ?></td> </tr>
-				<tr> <td class="col-xs-6"><label>Request Date:</label></td> <td class="col-xs-6 text-right"><?= DplusDateTime::format_date($order->request_date); ?></td> </tr>
+				<tr> <td class="col-xs-6"><label>Order Date:</label></td> <td class="col-xs-6 text-right"><?= Dplus\Base\DplusDateTime::format_date($order->orderdate); ?></td> </tr>
+				<tr> <td class="col-xs-6"><label>Request Date:</label></td> <td class="col-xs-6 text-right"><?= Dplus\Base\DplusDateTime::format_date($order->request_date); ?></td> </tr>
 				<tr> <td class="col-xs-6"><label>Status:</label></td> <td class="col-xs-6 text-right"><?= $order->status; ?></td> </tr>
 				<tr> <td class="col-xs-6"><label>Customer ID:</label></td> <td class="col-xs-6 text-right"><?= $order->custid; ?></td> </tr>
 				<tr> <td class="col-xs-6"><label>Customer PO:</label></td> <td class="col-xs-6 text-right"><?= $order->custpo; ?></td> </tr>

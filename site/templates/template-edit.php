@@ -1,5 +1,4 @@
 <?php
-
 	switch ($page->name) { //$page->name is what we are editing
 		case 'order':
 			if ($input->get->ordn) {
@@ -12,7 +11,7 @@
 					$page->title = "Order #" . $ordn . ' failed to load';
 					$page->body = false;
 				} else {
-					$editorderdisplay->canedit = ($input->get->readonly) ? false : $order->can_edit();
+					$editorderdisplay->canedit = $user->loginid == SalesOrder::get_orderlockuser($ordn) ? true : false;
 					$prefix = ($editorderdisplay->canedit) ? 'Editing' : 'Viewing';
 					$page->title = "$prefix Order #" . $ordn . ' for ' . Customer::get_customernamefromid($custID);
 					$config->scripts->append(hashtemplatefile('scripts/edit/card-validate.js'));

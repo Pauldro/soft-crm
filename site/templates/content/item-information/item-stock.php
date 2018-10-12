@@ -18,7 +18,7 @@
 			echo $page->bootstrap->alertpanel('warning', $jsonstock['errormsg']);
 		} else {
 			$columns = array_keys($jsonstock['columns']);
-			$tb = new Table('class=table table-striped table-condensed table-bordered table-excel');
+			$tb = new Dplus\Content\Table('class=table table-striped table-condensed table-bordered table-excel');
 			$tb->tablesection('thead');
 				$tb->tr();
 				foreach ($jsonstock['columns'] as $column) {

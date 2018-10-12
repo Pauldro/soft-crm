@@ -14,7 +14,7 @@
 				<?php foreach ($salesorders as $salesorder) : ?>
 					<?php $customer = Customer::load($salesorder['custid'], $salesorder['shiptoid']); ?>
 					<tr>
-						<td><?= DplusDateTime::format_date($salesorder['bookdate']); ?></td>
+						<td><?= Dplus\Base\DplusDateTime::format_date($salesorder['bookdate']); ?></td>
 						<td class="text-right"><?= $salesorder['salesordernbr']; ?></td>
 						<?php if ($customer) : ?>
 							<td><a href="<?= $customer->generate_customerurl(); ?>"><?= $customer->get_customername(); ?></a> <span class="glyphicon glyphicon-share"></span></td>
@@ -23,7 +23,7 @@
 							<td><?= $salesorder['custid']; ?></td>
 							<td><?= $salesorder['shiptoid']; ?></td>
 						<?php endif; ?>
-						<td class="text-right"><?= $bookingspanel->generate_viewsalesorderdaylink($salesorder['salesordernbr'], DplusDateTime::format_date($salesorder['bookdate'])); ?></td>
+						<td class="text-right"><?= $bookingspanel->generate_viewsalesorderdaylink($salesorder['salesordernbr'], Dplus\Base\DplusDateTime::format_date($salesorder['bookdate'])); ?></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php else : ?>

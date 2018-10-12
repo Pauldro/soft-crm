@@ -1,7 +1,9 @@
 <?php
 	use atk4\dsql\Query;
 	use atk4\dsql\Expression;
-
+	use Dplus\Base\QueryBuilder;
+	use Dplus\ProcessWire\DplusWire as DplusWire;
+	
 /* =============================================================
 	LOGIN FUNCTIONS
 ============================================================ */
@@ -1448,7 +1450,7 @@
 		}
 	}
 
-	function get_minsaleshistoryordertotal($sessionID, $custID = false, $shipID = false, $debug = false) {
+	function get_minsaleshistoryordertotal($custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field($q->expr("MIN(total_order)"));
 		if ($custID) {
@@ -1717,7 +1719,7 @@
 		$user = LogmUser::load($loginID);
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('saleshist.*');
-		$q->field($q->expr("STR_TO_DATE(orderdate, '%Y%m%d') as dateoforder"));
+		$q->field($q->expr("STR_TO_DATE(order_date, '%Y%m%d') as dateoforder"));
 
 		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
 			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
@@ -2019,7 +2021,7 @@
 		$user = LogmUser::load($loginID);
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('saleshist.*');
-		$q->field($q->expr("STR_TO_DATE(orderdate, '%Y%m%d') as dateoforder"));
+		$q->field($q->expr("STR_TO_DATE(order_date, '%Y%m%d') as dateoforder"));
 		$q->where('custid', $custID);
 
 		if (!empty($shiptoID)) {
@@ -3404,8 +3406,8 @@
 	 * Inserts new carthead record
 	 * @param  string    $sessionID Session Identifier
 	 * @param  CartQuote $cart      Cart Header
-	 * @param  bool      $debug     Run in debug? SQL Query
-	 * @return int                  Rows affected
+	 * @param  bool      $debug     Run in debug? IF so, return SQL Query
+	 * @return bool                 Was Record Inserted?
 	 */
 	function insert_carthead($sessionID, CartQuote $cart, $debug = false) {
 		$properties = array_keys($cart->_toArray());
@@ -3414,7 +3416,9 @@
 		$cart->set('date', date('Ymd'));
 		$cart->set('time', date('His'));
 		foreach ($properties as $property) {
-			$q->set($property, $cart->$property);
+			if (!empty($cart->$property)) {
+				$q->set($property, $cart->$property);
+			}
 		}
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
@@ -3430,8 +3434,8 @@
 	 * Updates carthead record
 	 * @param  string    $sessionID Session Identifier
 	 * @param  CartQuote $cart      Cart Header
-	 * @param  bool      $debug     Run in debug? SQL Query
-	 * @return int                  Rows affected
+	 * @param  bool      $debug     Run in debug? If so, return SQL Query
+	 * @return int                  Was Record Updated?
 	 */
 	function update_carthead($sessionID, CartQuote $cart, $debug = false) {
 		$originalcart = CartQuote::load($sessionID);
@@ -3452,7 +3456,7 @@
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			return $sql->rowCount();
+			return boolval($sql->rowCount());
 		}
 	}
 
@@ -3534,6 +3538,34 @@
 			$sql->execute($q->params);
 			$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrder');
 			return $sql->fetch();
+		}
+	}
+	
+	function is_orderlocked($ordn, $debug = false) {
+		$q = (new QueryBuilder())->table('oe_head');
+		$q->field('lockedby');
+		$q->where('ordernumber', $ordn);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return !empty($sql->fetchColumn()) ? true : false;
+		}
+	}
+	
+	function get_orderlocklogin($ordn, $debug = false) {
+		$q = (new QueryBuilder())->table('oe_head');
+		$q->field('lockedby');
+		$q->where('ordernumber', $ordn);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
 		}
 	}
 	
@@ -3675,17 +3707,17 @@
 		}
 	}
 
-	function edit_orderhead($sessionID, $ordn, $order, $debug = false) {
-		$orginalorder = SalesOrder::load($sessionID, $ordn);
+	function edit_orderhead($sessionID, $ordn, SalesOrderEdit $order, $debug = false) {
+		$orginalorder = SalesOrderEdit::load($sessionID, $ordn);
 		$properties = array_keys($order->_toArray());
-		$q = (new QueryBuilder())->table('oe_head');
+		$q = (new QueryBuilder())->table('ordrhed');
 		$q->mode('update');
 		foreach ($properties as $property) {
 			if ($order->$property != $orginalorder->$property) {
 				$q->set($property, $order->$property);
 			}
 		}
-		$q->where('ordernumber', $order->ordernumber);
+		$q->where('orderno', $order->ordernumber);
 		$q->where('sessionid', $order->sessionid);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
@@ -3700,13 +3732,13 @@
 	}
 
 	function edit_orderhead_credit($sessionID, $ordn, $paytype, $ccno, $expdate, $ccv, $debug = false) {
-		$q = (new QueryBuilder())->table('oe_head');
+		$q = (new QueryBuilder())->table('ordrhed');
 		$q->mode('update');
 		$q->set('paymenttype', $paytype);
 		$q->set('cardnumber', $q->expr('AES_ENCRYPT([], HEX([]))', [$ccno, $sessionID]));
 		$q->set('cardexpire', $q->expr('AES_ENCRYPT([], HEX([]))', [$expdate, $sessionID]));
 		$q->set('cardcode', $q->expr('AES_ENCRYPT([], HEX([]))', [$ccv, $sessionID]));
-		$q->where('ordernumber', $ordn);
+		$q->where('orderno', $ordn);
 		$q->where('sessionid', $sessionID);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 

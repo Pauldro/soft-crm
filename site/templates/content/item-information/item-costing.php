@@ -20,7 +20,7 @@
 			$vendorcolumns = array_keys($costjson['columns']['vendor']);
 			$purchasecolumns = array_keys($costjson['columns']['last purchase']);
 			
-			$tb = new Table('class=table table-striped table-condensed table-excel');
+			$tb = new Dplus\Content\Table('class=table table-striped table-condensed table-excel');
 			$tb->tr();
 			$tb->td('', '<b>Item ID</b>')->td('', $costjson['itemid'])->td('colspan=2', $costjson['desc1']);
 			
@@ -44,7 +44,7 @@
 				echo $page->bootstrap->open('div', 'role=tabpanel|class=tab-pane active|id=whse');
 					foreach ($costjson['data']['warehouse'] as $whse) {
 						echo '<h3>'.$whse['whse name'].'</h3>';
-						$tb = new Table('class=table table-striped table-bordered table-condensed table-excel no-bottom');
+						$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel no-bottom');
 						$tb->tablesection('thead')->tr();
 							foreach ($costjson['columns']['warehouse'] as $column) {
 								$class = $config->textjustify[$column['headingjustify']];
@@ -69,7 +69,7 @@
 						echo '<h3>'.$vendor['vend id'].'</h3>';
 						echo $page->bootstrap->open('div', 'class=row');
 							echo $page->bootstrap->open('div', 'class=col-sm-6');
-								$tb = new Table('class=table table-striped table-bordered table-condensed table-excel no-bottom');
+								$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel no-bottom');
 								$tb->tr()->td('', 'Vendor:')->td('', $vendor['vend name']);
 								$tb->tr()->td('', 'Phone Nbr:')->td('', $vendor['vend phone']);
 								$tb->tr()->td('', 'Purch UoM:')->td('', $vendor['vend uom']);
@@ -81,7 +81,7 @@
 							echo $page->bootstrap->close('div'); // CLOSES col-sm-6
 							
 							echo $page->bootstrap->open('div', 'class=col-sm-6');
-								$tb = new Table('class=table table-striped table-bordered table-condensed table-excel no-bottom');
+								$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel no-bottom');
 								$tb->tr();
 								$tb->tablesection('thead');
 									foreach ($costjson['columns']['vendor'] as $column) {
@@ -106,7 +106,7 @@
 				echo $page->bootstrap->close('div'); // CLOSES #vendor
 				
 				echo $page->bootstrap->open('div', 'role=tabpanel|class=tab-pane|id=lastpurchase');
-					$tb = new Table('class=table table-striped table-bordered table-condensed table-excel no-bottom');
+					$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel no-bottom');
 					$tb->tr();
 					$tb->tablesection('thead');
 						foreach ($costjson['columns']['last purchase'] as $column) {

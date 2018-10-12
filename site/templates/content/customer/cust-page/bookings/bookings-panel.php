@@ -7,7 +7,7 @@
 	
 	foreach ($bookings as $booking) {
 		$bookdata = array(
-			'bookdate' => DplusDateTime::format_date($booking['bookdate'], 'Y-m-d'),
+			'bookdate' => Dplus\Base\DplusDateTime::format_date($booking['bookdate'], 'Y-m-d'),
 			'amount' => floatval($booking['amount'])
 		);
 		if ($bookingspanel->interval == 'day') {

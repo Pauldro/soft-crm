@@ -129,7 +129,7 @@
 			if (DplusWire::wire('modules')->isInstalled('QtyPerCase')) {
 				$case_qtys = $input->post->{'case-qty'};
 				$bottle_qtys = $input->post->{'bottle-qty'};
-				$qtypercase = DplusWire::wire('modules')->get('QtyPerCase');
+				$qtypercase = Dplus\ProcessWire\DplusWire::wire('modules')->get('QtyPerCase');
 				$data = $qtypercase->generate_multipleitemdata($data, $itemids, $case_qtys, $bottle_qtys);
 			} else {
 				$qtys = $input->post->qty;

@@ -161,12 +161,12 @@
 			} else {
 				if ($input->get->custID) {
 					if ($input->get->shipID) {
-						$session->loc = Paginator::paginate_url($config->pages->ajax."load/quotes/cust/{$input->get->custID}/shipto-{$input->get->shipID}/?qnbr=".$qnbr.$linkaddon, $pagenumber, "shipto-{$input->get->shipID}", '');
+						$session->loc = Dplus\Content\Paginator::paginate_url($config->pages->ajax."load/quotes/cust/{$input->get->custID}/shipto-{$input->get->shipID}/?qnbr=".$qnbr.$linkaddon, $pagenumber, "shipto-{$input->get->shipID}", '');
 					} else {
-						$session->loc = Paginator::paginate_url($config->pages->ajax."load/quotes/cust/{$input->get->custID}/?qnbr=".$qnbr.$linkaddon, $pagenumber, $input->get->custID, '');
+						$session->loc = Dplus\Content\Paginator::paginate_url($config->pages->ajax."load/quotes/cust/{$input->get->custID}/?qnbr=".$qnbr.$linkaddon, $pagenumber, $input->get->custID, '');
 					}
 				} else {
-					$session->loc = Paginator::paginate_url($config->pages->ajax."load/quotes/salesrep/?qnbr=".$qnbr.$linkaddon, $pagenumber, "quotes", '');
+					$session->loc = Dplus\Content\Paginator::paginate_url($config->pages->ajax."load/quotes/salesrep/?qnbr=".$qnbr.$linkaddon, $pagenumber, "quotes", '');
 				}
 			}
 			break;

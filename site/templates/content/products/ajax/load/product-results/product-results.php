@@ -25,7 +25,7 @@
     }
     $items = get_itemsearchresults(session_id(), $config->showonpage, $input->pageNum());
     $totalcount = count_itemsearchresults(session_id());
-    $paginator = new Paginator($input->pageNum, $totalcount, $page->fullURL, $addtype, 'data-loadinto=".results" data-focus=".results"');
+    $paginator = new Dplus\Content\Paginator($input->pageNum, $totalcount, $page->fullURL, $addtype, 'data-loadinto=".results" data-focus=".results"');
 
     if ($config->ajax) {
 		echo $page->bootstrap->create_element('p', '', $page->bootstrap->generate_printlink($config->filename, 'View Printable Version'));

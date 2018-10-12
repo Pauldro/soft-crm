@@ -1,5 +1,5 @@
 <?php 
-    $tb = new Table('class=table table-striped table-condensed table-excel');
+    $tb = new Dplus\Content\Table('class=table table-striped table-condensed table-excel');
     $tb->tr('class=bg-primary');
         $tb->td('', '<b>Item ID</b>');
         $tb->td('', $subjson['itemid']);
@@ -7,7 +7,7 @@
     $subtable = $tb->close();
 
     if (!empty($subjson['data']['substitute items'])) {
-        $tb = new Table('class=table table-striped table-condensed table-excel');
+        $tb = new Dplus\Content\Table('class=table table-striped table-condensed table-excel');
     	$tb->tablesection('thead');
     		$tb->tr();
     		foreach ($subjson['columns']['substitute items'] as $column) {
@@ -29,7 +29,7 @@
     }
     
     if (!empty($subjson['data']['internal notes'])) {
-        $tb = new Table('class=table table-striped table-condensed table-excel');
+        $tb = new Dplus\Content\Table('class=table table-striped table-condensed table-excel');
         $tb->tablesection('body');
             $count = count($subjson['data']['internal notes']);
             for ($i = 1; $i < $count + 1; $i++) {

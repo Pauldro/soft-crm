@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "17d38af129f5dd73a97cefc47f003610",
+    "content-hash": "924edb800e1a3699834443437f5eb614",
     "packages": [
         {
             "name": "atk4/core",
@@ -109,17 +109,131 @@
             "time": "2017-03-08T09:52:14+00:00"
         },
         {
+            "name": "cptechinc/dplus-base",
+            "version": "dev-psr4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cptechinc/dplus-base.git",
+                "reference": "5865837f7ae1b64a43697ba39224aefea70391e7"
+            },
+            "require": {
+                "atk4/dsql": "1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dplus\\Base\\": "src/"
+                },
+                "files": [
+                    "src/utfport.php"
+                ]
+            },
+            "authors": [
+                {
+                    "name": "Paul Gomez",
+                    "email": "paul@cptechinc.com",
+                    "homepage": "https://www.cptechinc.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Barbara Bullemer",
+                    "email": "barbara@cptechinc.com",
+                    "homepage": "https://www.cptechinc.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Base Classes and Attributes",
+            "homepage": "https://github.com/cptechinc/dplus-base",
+            "keywords": [
+                "dplus-attributes",
+                "dplus-base"
+            ],
+            "time": "2018-10-11T16:20:21+00:00"
+        },
+        {
+            "name": "cptechinc/dplus-content",
+            "version": "dev-psr4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cptechinc/dplus-content.git",
+                "reference": "9f7d263697e0a601579061c7acdbfd4eab01d65e"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dplus\\Content\\": "src/"
+                }
+            },
+            "description": "Dplus Content Classes",
+            "homepage": "http://github.com/cptechinc/dplus-content",
+            "keywords": [
+                "HTML",
+                "TablePageSorter",
+                "form",
+                "paginator",
+                "table"
+            ],
+            "time": "2018-10-11T19:57:43+00:00"
+        },
+        {
+            "name": "cptechinc/dplus-file-services",
+            "version": "dev-psr4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cptechinc/dplus-file-services.git",
+                "reference": "8e5de22444bc7a664a932d87cb9f584c3b6f5c0c"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dplus\\FileServices\\": "src/"
+                }
+            },
+            "description": "Classes for Dplus Services",
+            "homepage": "http://github.com/cptechinc/dplus-file-services",
+            "keywords": [
+                "crm"
+            ],
+            "time": "2018-10-11T20:38:47+00:00"
+        },
+        {
+            "name": "cptechinc/dplus-order",
+            "version": "dev-psr4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cptechinc/dplus-order.git",
+                "reference": "c35a500a74af3ea8a7c1d8bde7538d634a71014e"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "description": "Classes for Dplus Orders, Quotes, and Carts",
+            "homepage": "http://github.com/cptechinc/dplus-order",
+            "keywords": [
+                "cart",
+                "cartquote",
+                "detail",
+                "qnote",
+                "quote",
+                "sales-order"
+            ],
+            "time": "2018-10-11T20:06:10+00:00"
+        },
+        {
             "name": "eoghanobrien/php-simple-mail",
-            "version": "1.7.0",
+            "version": "1.7.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/eoghanobrien/php-simple-mail.git",
-                "reference": "0fd0eb6f4766aee69cf991484e61b2b832fa6614"
+                "reference": "9b8d4c01c7c0cac769ba42ccd08a73ecee855825"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eoghanobrien/php-simple-mail/zipball/0fd0eb6f4766aee69cf991484e61b2b832fa6614",
-                "reference": "0fd0eb6f4766aee69cf991484e61b2b832fa6614",
+                "url": "https://api.github.com/repos/eoghanobrien/php-simple-mail/zipball/9b8d4c01c7c0cac769ba42ccd08a73ecee855825",
+                "reference": "9b8d4c01c7c0cac769ba42ccd08a73ecee855825",
                 "shasum": ""
             },
             "require": {
@@ -153,7 +267,7 @@
                 "email",
                 "php5"
             ],
-            "time": "2017-02-17T07:32:04+00:00"
+            "time": "2018-03-16T19:29:23+00:00"
         },
         {
             "name": "jeremykendall/php-domain-parser",
@@ -243,17 +357,20 @@
         },
         {
             "name": "mikehaertl/php-shellcommand",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikehaertl/php-shellcommand.git",
-                "reference": "727e2143578796c714a50c0a350459758ff16c43"
+                "reference": "903ee95d3ee8f65ebbe4c6e17705d1d91760521a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikehaertl/php-shellcommand/zipball/727e2143578796c714a50c0a350459758ff16c43",
-                "reference": "727e2143578796c714a50c0a350459758ff16c43",
+                "url": "https://api.github.com/repos/mikehaertl/php-shellcommand/zipball/903ee95d3ee8f65ebbe4c6e17705d1d91760521a",
+                "reference": "903ee95d3ee8f65ebbe4c6e17705d1d91760521a",
                 "shasum": ""
+            },
+            "require": {
+                "php": ">= 5.4.0"
             },
             "type": "library",
             "autoload": {
@@ -275,7 +392,7 @@
             "keywords": [
                 "shell"
             ],
-            "time": "2018-02-16T07:02:50+00:00"
+            "time": "2018-07-07T07:35:36+00:00"
         },
         {
             "name": "mikehaertl/php-tmpfile",
@@ -436,7 +553,11 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "jwage/purl": 20
+        "jwage/purl": 20,
+        "cptechinc/dplus-base": 20,
+        "cptechinc/dplus-content": 20,
+        "cptechinc/dplus-order": 20,
+        "cptechinc/dplus-file-services": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
