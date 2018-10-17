@@ -1,6 +1,6 @@
 <?php
 	// $note is loaded by Crud Controller
-	$notedisplay = new UserActionDisplay($page->fullURL);
+	$notedisplay = new Dplus\Dpluso\UserActions\UserActionDisplay($page->fullURL);
 	$contact = Contact::load($note->customerlink, $note->shiptolink, $note->contactlink);
 ?>
 

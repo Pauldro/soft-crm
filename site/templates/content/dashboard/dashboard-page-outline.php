@@ -1,7 +1,7 @@
 <?php if ($appconfig->child('name=dplus')->has_crm) : ?>
 	<div class="row">
 		<div class="col-sm-12">
-			<?php $actionpanel = new ActionsPanel(session_id(), $page->fullURL, $input); ?>
+			<?php $actionpanel = new Dplus\Dpluso\UserActions\ActionsPanel(session_id(), $page->fullURL, $input); ?>
 			<?php include $config->paths->content."user-actions/user-actions-panel.php"; ?>
 		</div>
 	</div>

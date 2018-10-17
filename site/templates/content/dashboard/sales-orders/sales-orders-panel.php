@@ -1,5 +1,5 @@
 <?php
-	$orderpanel = new SalesOrderPanel(session_id(), $page->fullURL, '#ajax-modal', '#orders-panel', $config->ajax);
+	$orderpanel = new Dplus\Dpluso\OrderDisplays\SalesOrderPanel(session_id(), $page->fullURL, '#ajax-modal', '#orders-panel', $config->ajax);
 	$orderpanel->pagenbr = $input->pageNum;
 	$orderpanel->activeID = !empty($input->get->ordn) ? $input->get->text('ordn') : false;
 	$orderpanel->generate_filter($input);

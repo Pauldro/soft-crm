@@ -1,5 +1,5 @@
 <?php
-	$quotepanel = new RepQuotePanel(session_id(), $page->fullURL, '#ajax-modal', "#quotes-panel", $config->ajax);
+	$quotepanel = new Dplus\Dpluso\OrderDisplays\RepQuotePanel(session_id(), $page->fullURL, '#ajax-modal', "#quotes-panel", $config->ajax);
 	$quotepanel->pagenbr = $input->pageNum;
 	$quotepanel->activeID = !empty($input->get->qnbr) ? $input->get->text('qnbr') : false;
 	$quotepanel->generate_filter($input);

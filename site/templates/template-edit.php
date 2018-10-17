@@ -1,4 +1,7 @@
 <?php
+	use Dplus\Dpluso\OrderDisplays\EditSalesOrderDisplay, Dplus\Dpluso\OrderDisplays\EditQuoteDisplay;
+	use Dplus\Dpluso\Configs\FormFieldsConfig;
+	
 	switch ($page->name) { //$page->name is what we are editing
 		case 'order':
 			if ($input->get->ordn) {
@@ -39,7 +42,7 @@
 				$config->scripts->append(hashtemplatefile('scripts/edit/edit-pricing.js'));
 				$itemlookup->set_customer($quote->custid, $quote->shiptoid);
 				$itemlookup = $itemlookup->set_qnbr($qnbr);
-				$formconfig = new FormFieldsConfig('quote');
+				$formconfig = new Dplus\Dpluso\Configs\FormFieldsConfig('quote');
 			} else {
 				throw new Wire404Exception();
 			}

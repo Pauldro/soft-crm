@@ -40,9 +40,9 @@
 					$config->json = true;
 					$page->body = $config->paths->content."user-actions/crud/update/$type.php";
 				} else {
-					$message = "Writing $type for {replace} ";
+					$message = "Writing $type for {replace}";
 					$page->title = $action->generate_message($message);
-					$editactiondisplay = new EditUserActionsDisplay($page->fullURL);
+					$editactiondisplay = new Dplus\Dpluso\UserActions\EditUserActionsDisplay($page->fullURL);
 					include $config->paths->content."user-actions/crud/update/$type-form-router.php";
 				}
 			}
@@ -58,29 +58,29 @@
 			} else {
 				if ($input->get->ordn) {
 					$ordn = $input->get->text('ordn');
-					$actionpanel = new SalesOrderActionsPanel(session_id(), $page->fullURL, $input, $config->ajax);
+					$actionpanel = new Dplus\Dpluso\UserActions\SalesOrderActionsPanel(session_id(), $page->fullURL, $input, $config->ajax);
 					$actionpanel->set_ordn($input->get->text('ordn'));
 					$page->body = $config->paths->content.'user-actions/user-actions-panel.php';
 				} elseif ($input->get->qnbr) {
 					$qnbr = $input->get->text('qnbr');
-					$actionpanel = new QuoteActionsPanel(session_id(), $page->fullURL, $input);
+					$actionpanel = new Dplus\Dpluso\UserActions\QuoteActionsPanel(session_id(), $page->fullURL, $input);
 					$actionpanel->set_qnbr($qnbr);
 					$page->body = $config->paths->content.'user-actions/user-actions-panel.php';
 				} elseif ($input->get->contactID) {
 					$custID = $input->get->text('custID');
 					$shipID = $input->get->text('shipID');
 					$contactID = $input->get->text('contactID');
-					$actionpanel = new ContactActionsPanel(session_id(), $page->fullURL, $input, $config->ajax);
+					$actionpanel = new Dplus\Dpluso\UserActions\ContactActionsPanel(session_id(), $page->fullURL, $input, $config->ajax);
 					$actionpanel->set_contact($input->get->text('custID'), $input->get->text('shiptoID'), $input->get->text('contactID'));
 					$page->body = $config->paths->content.'user-actions/user-actions-panel.php';
 				} elseif ($input->get->custID) {
 					$custID = $input->get->text('custID');
 					$shipID = $input->get->text('shipID');
-					$actionpanel = new CustomerActionsPanel(session_id(), $page->fullURL, $input, $config->ajax);
+					$actionpanel = new Dplus\Dpluso\UserActions\CustomerActionsPanel(session_id(), $page->fullURL, $input, $config->ajax);
 					$actionpanel->set_customer($input->get->text('custID'), $input->get->text('shiptoID'));
 					$page->body = $config->paths->content.'user-actions/user-actions-panel.php';
 				} else {
-					$actionpanel = new ActionsPanel(session_id(), $page->fullURL, $input, $config->ajax);
+					$actionpanel = new Dplus\Dpluso\UserActions\ActionsPanel(session_id(), $page->fullURL, $input, $config->ajax);
 					$page->body = $config->paths->content.'user-actions/user-actions-panel.php';
 				}
 			}

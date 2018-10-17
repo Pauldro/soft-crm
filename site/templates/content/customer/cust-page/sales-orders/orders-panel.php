@@ -1,5 +1,5 @@
 <?php
-	$orderpanel = new CustomerSalesOrderPanel(session_id(), $page->fullURL, '#ajax-modal', '#orders-panel', $config->ajax);
+	$orderpanel = new Dplus\Dpluso\OrderDisplays\CustomerSalesOrderPanel(session_id(), $page->fullURL, '#ajax-modal', '#orders-panel', $config->ajax);
 	$orderpanel->set_customer($custID, $shipID);
 	$orderpanel->pagenbr = $input->pageNum;
 	$orderpanel->activeID = !empty($input->get->ordn) ? $input->get->text('ordn') : false;

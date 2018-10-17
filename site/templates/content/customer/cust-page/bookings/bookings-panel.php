@@ -1,5 +1,5 @@
 <?php
-	$bookingspanel = new CustomerBookingsPanel(session_id(), $page->fullURL, '#ajax-modal', 'data-loadinto=#bookings-panel|data-focus=#bookings-panel');
+	$bookingspanel = new Dplus\Dpluso\Bookings\CustomerBookingsPanel(session_id(), $page->fullURL, '#ajax-modal', 'data-loadinto=#bookings-panel|data-focus=#bookings-panel');
 	$bookingspanel->generate_filter($input);
     $bookingspanel->set_customer($customer->custid, $customer->shiptoid);
 	$bookings = $bookingspanel->get_bookings();

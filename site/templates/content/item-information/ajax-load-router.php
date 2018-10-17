@@ -1,5 +1,5 @@
 <?php
-    if (does_systemconfigexist($user, 'iio', false)) {
+    if (does_systemconfigexist($user->loginid, 'iio')) {
         $iiconfig = json_decode(get_systemconfiguration($user->loginid, $configtype, false), true);
     } else {
         $iiconfig = json_decode(file_get_contents($config->paths->content."salesrep/configs/item-info-options.json"), true);

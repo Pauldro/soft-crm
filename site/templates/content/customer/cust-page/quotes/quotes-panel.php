@@ -1,5 +1,5 @@
 <?php
-	$quotepanel = new CustomerQuotePanel(session_id(), $page->fullURL, '#ajax-modal', "#quotes-panel", $config->ajax);
+	$quotepanel = new Dplus\Dpluso\OrderDisplays\CustomerQuotePanel(session_id(), $page->fullURL, '#ajax-modal', "#quotes-panel", $config->ajax);
 	$quotepanel->set_customer($custID, $shipID);
 	$quotepanel->pagenbr = $input->pageNum;
 	$quotepanel->activeID = !empty($input->get->qnbr) ? $input->get->text('qnbr') : false;

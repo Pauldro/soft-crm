@@ -9,8 +9,18 @@
 
 		<?php $orderpanel->get_orders(); ?>
 		<?php foreach($orderpanel->orders as $order) : ?>
-			<tr class="<?= $orderpanel->generate_rowclass($order); ?>" id="<?= $order->ordernumber; ?>">
-				<td class="text-center"><?= $orderpanel->generate_expandorcollapselink($order); ?></td>
+			<tr class="<?= $order->ordernumber == $input->get->text('ordn') ? 'selected' : ''; ?>" id="<?= $order->ordernumber; ?>">
+				<td class="text-center">
+					<?php if ($order->ordernumber == $input->get->text('ordn')) : ?>
+						<a href="<?= $orderpanel->generate_closedetailsurl($order); ?>" class="btn btn-sm btn-primary load-link" <?= $orderpanel->ajaxdata; ?>>
+							<i class="fa fa-minus" aria-hidden="true"></i> <span class="sr-only">Close <?= $order->ordernumber; ?> Details</span>
+						</a>
+					<?php else : ?>
+						<a href="<?= $orderpanel->generate_loaddetailsurl($order); ?>" class="btn btn-sm btn-primary generate-load-link" <?= $orderpanel->ajaxdata; ?>>
+							<i class="fa fa-plus" aria-hidden="true"></i> <span class="sr-only">Load <?= $order->ordernumber; ?> Details</span>
+						</a>
+					<?php endif; ?>
+				</td>
 				<td><?= $order->ordernumber; ?></td>
 				<td colspan="2"><?= $order->custpo; ?></td>
 				<td>

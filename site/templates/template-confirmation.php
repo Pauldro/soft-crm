@@ -1,4 +1,7 @@
 <?php
+    use Dplus\Dpluso\OrderDisplays\EditSalesOrderDisplay;
+    use Dplus\Dpluso\OrderDisplays\QuoteDisplay;
+    
     switch ($page->parent->name) { //$page->name is what we are editing
         case 'order':
             $ordn = $input->get->text('ordn');

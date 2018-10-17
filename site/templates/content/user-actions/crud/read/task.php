@@ -1,6 +1,6 @@
 <?php
 	// $task is loaded by Crud Controller
-	$taskdisplay = new UserActionDisplay($page->fullURL);
+	$taskdisplay = new Dplus\Dpluso\UserActions\UserActionDisplay($page->fullURL);
 
 	$contact = Contact::load($task->customerlink, $task->shiptolink, $task->contactlink);
 

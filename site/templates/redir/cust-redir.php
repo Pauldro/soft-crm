@@ -319,8 +319,12 @@
 			}
 			break;
 		case 'shop-as-customer':
-			$data = array('DBNAME' => $config->dplusdbname, 'CARTCUST' => false, 'CUSTID' => $custID);
-            if (!empty($shipID)) {$data['SHIPID'] = $shipID; }
+			$cart = new CartQuote();
+			$cart->set('sessionid', session_id());
+			$cart->set('custid', $custID);
+			$cart->set('shiptoid', $shipID);
+			$cart->save();
+			$data = false;
 			
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
@@ -504,8 +508,10 @@
 			$data = array('DBNAME' => $config->dplusdbname, 'CICUSTPO' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID, 'CUSTPO' => $custpo);
 			break;
 	}
-
-	writedplusfile($data, $filename);
+	
+	if (!empty($data)) {
+		writedplusfile($data, $filename);
+	}
 	curl_redir("127.0.0.1/cgi-bin/".$config->cgis['default']."?fname=$filename");
 	if (!empty($session->get('loc')) && !$config->ajax) {
 		header("Location: $session->loc");

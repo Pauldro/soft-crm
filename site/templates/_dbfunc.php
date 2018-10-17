@@ -3286,7 +3286,7 @@
 	 */
 	function has_carthead($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('carthed');
-		$q->field($q->expr("IF(COUNT(*) > 1, 1, 0)"));
+		$q->field($q->expr("IF(COUNT(*) > 0, 1, 0)"));
 		$q->where('sessionid', $sessionID);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
@@ -4122,15 +4122,15 @@
 	/**
 	 * Returns if System Config Exist for this user
 	 * @param  string $userID        User ID
-	 * @param  string $configuration Config Code
+	 * @param  string $configtype    Config Code
 	 * @param  bool $debug           Run in debug? If so, return SQL Query
 	 * @return int                   Does User Config Exist
 	 */
-	function does_systemconfigexist($userID, $configuration, $debug) {
+	function does_systemconfigexist($userID, $configtype, $debug = false) {
 		$q = (new QueryBuilder())->table('userconfigs');
 		$q->field($q->expr("IF(COUNT(*) > 0, 1, 0)"));
 		$q->where('user', $userID);
-		$q->where('configtype', $config);
+		$q->where('configtype', $configtype);
 		
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
@@ -4148,7 +4148,7 @@
 	 * @param  bool   $debug         Run in debug? If so, return SQL Query
 	 * @return string                JSON encoded config
 	 */
-	function get_systemconfiguration($userID, $configuration, $debug) {
+	function get_systemconfiguration($userID, $configuration, $debug = false) {
 		$q = (new QueryBuilder())->table('userconfigs');
 		$q->field($q->expr("data"));
 		$q->where('user', $userID);

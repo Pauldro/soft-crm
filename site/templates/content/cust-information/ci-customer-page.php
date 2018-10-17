@@ -26,7 +26,7 @@
 <?php if ($appconfig->child('name=dplus')->has_crm) : ?>
 	<div class="row">
 		<div class="col-xs-12">
-			<?php $actionpanel = new CustomerActionsPanel(session_id(), $page->fullURL, $input); ?>
+			<?php $actionpanel = new Dplus\Dpluso\UserActions\CustomerActionsPanel(session_id(), $page->fullURL, $input); ?>
 			<?php $actionpanel->set_customer($customer->custid, $customer->shiptoid); ?>
 			<?php include $config->paths->content.'user-actions/user-actions-panel.php'; ?>
 		</div>

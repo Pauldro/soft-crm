@@ -1,6 +1,6 @@
 <?php
 	// $action is Loaded by Crud Controller
-	$actiondisplay = new UserActionDisplay($page->fullURL);
+	$actiondisplay = new Dplus\Dpluso\UserActions\UserActionDisplay($page->fullURL);
     $contactinfo = get_customercontact($action->customerlink, $action->shiptolink, $action->contactlink, false);
 ?>
 

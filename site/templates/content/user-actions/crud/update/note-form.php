@@ -1,4 +1,4 @@
-<form action="<?= $editactiondisplay->generate_posteditactionurl(); ?>" method="post" id="new-action-form" data-refresh="#actions-panel" data-modal="#ajax-modal" onKeyPress="return disable_enterkey(event)">
+<form action="<?= $editactiondisplay->generate_editactionurl($note); ?>" method="post" id="new-action-form" data-refresh="#actions-panel" data-modal="#ajax-modal" onKeyPress="return disable_enterkey(event)">
 	<input type="hidden" name="action" value="update-note">
 	<input type="hidden" name="id" value="<?= $note->id; ?>">
 	<input type="hidden" name="customerlink" value="<?= $note->customerlink; ?>">

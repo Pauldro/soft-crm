@@ -1,5 +1,5 @@
 <?php
-	$editactiondisplay = new EditUserActionsDisplay($page->fullURL);
+	$editactiondisplay = new Dplus\Dpluso\UserActions\EditUserActionsDisplay($page->fullURL);
 	$task->set('actiontype', 'task');
 ?>
 <div>
