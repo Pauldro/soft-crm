@@ -1,11 +1,18 @@
 <?php
-	use Dplus\ProcessWire\DplusWire as DplusWire;
+	namespace Dplus\Dpluso\ScreenFormatters\CI;
+
+	use Dplus\ProcessWire\DplusWire;
+	use Dplus\Content\HTMLWriter;
+	use Dplus\Content\Table;
+	use Dplus\Content\FormMaker;	
+	use \Customer;
+	use Dplus\Dpluso\ScreenFormatters\TableScreenMaker;
 	
 	/**
 	 * Formatter for CI Customer Screen
 	 * Formattable
 	 */
-	class CI_CustomerScreen extends TableScreenMaker {
+	class CustomerScreen extends TableScreenMaker {
 		protected $tabletype = 'normal'; // grid or normal
 		protected $type = 'ci-customer-page'; // ii-sales-history
 		protected $title = 'Customer Screen';
@@ -13,8 +20,8 @@
 		protected $testprefix = 'cicust'; // iish
 
 		/* =============================================================
-            PUBLIC FUNCTIONS
-        ============================================================ */
+				PUBLIC FUNCTIONS
+			============================================================ */
 		public function generate_screen() {
 			return empty($this->json['data']) ? $page->bootstrap->alertpanel('warning', 'Information Not Available') : '';
 		}
@@ -25,14 +32,15 @@
 		 * @return string             HTML table with Customer data
 		 */
 		public function generate_customertable(Customer $customer) {
-			$bootstrap = new Dplus\Content\HTMLWriter();
-			$tb = new Dplus\Content\Table("class=table table-striped table-bordered table-condensed table-excel");
+			$bootstrap = new HTMLWriter();
+			$tb = new Table("class=table table-striped table-bordered table-condensed table-excel");
 			foreach (array_keys($this->json['columns']['top']) as $column) {
 				if ($this->json['columns']['top'][$column]['heading'] == '' && $this->json['data']['top'][$column] == '') {
 
 				} else {
 					$tb->tr();
 					$tb->td('', $this->json['columns']['top'][$column]['heading']);
+					
 					if ($column == 'customerid') {
 						$tb->td('', $this->generate_pageform($customer));
 					} else {
@@ -53,8 +61,8 @@
 		 * @return string             HTML table with Customer Shipto data
 		 */
 		public function generate_shiptotable(Customer $customer) {
-			$bootstrap = new Dplus\Content\HTMLWriter();
-			$tb = new Dplus\Content\Table("class=table table-striped table-bordered table-condensed table-excel");
+			$bootstrap = new HTMLWriter();
+			$tb = new Table("class=table table-striped table-bordered table-condensed table-excel");
 			foreach (array_keys($this->json['columns']['top']) as $column) {
 				if ($this->json['columns']['top'][$column]['heading'] == '' && $this->json['data']['top'][$column] == '') {
 
@@ -88,7 +96,7 @@
 		 */
 		public function generate_pageform(Customer $customer) {
 			$action = DplusWire::wire('config')->pages->ajax."load/customers/cust-index/";
-			$form = new Dplus\Content\FormMaker("action=$action|method=POST|id=ci-cust-lookup|class=allow-enterkey-submit");
+			$form = new FormMaker("action=$action|method=POST|id=ci-cust-lookup|class=allow-enterkey-submit");
 			$form->input("type=hidden|name=action|value=ci-item-lookup");
 			$form->input("type=hidden|name=shipID|class=shipID|value=$customer->shipID");
 			$form->input("type=hidden|name=nextshipID|class=nextshipID|value=".$customer->get_nextshiptoid());
@@ -104,7 +112,7 @@
 		 * @return string  HTML table with the formattted field definitions for the left column
 		 */
 		public function generate_tableleft() {
-			$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
+			$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
 			foreach (array_keys($this->json['columns']['left']) as $column) {
 				if ($this->json['columns']['left'][$column]['heading'] == '' && $this->json['data']['left'][$column] == '') {
 
@@ -123,7 +131,7 @@
 		 * @return string  HTML table with the formattted field definitions for the right column
 		 */
 		public function generate_tableright() {
-			$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
+			$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
 			
 			foreach (array('activity', 'saleshistory') as $section) {
 				if ($section != 'rfml') {
@@ -156,4 +164,4 @@
 			}
 			return $tb->close();
 		}
-	}
+}

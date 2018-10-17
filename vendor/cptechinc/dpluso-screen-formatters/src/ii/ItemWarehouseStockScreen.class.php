@@ -1,11 +1,16 @@
-<?php 
-    use Dplus\ProcessWire\DplusWire as DplusWire;
-    
-    /**
-     * Formatter for II Item Warehouse Stock Screen
-     * Not Formattable
-     */
-     class II_ItemWarehouseStockScreen extends TableScreenMaker {
+<?php
+	namespace Dplus\Dpluso\ScreenFormatters\II;
+	
+	use Dplus\ProcessWire\DplusWire;
+	use Dplus\Content\HTMLWriter;
+	use Dplus\Content\Table;
+	use Dplus\Dpluso\ScreenFormatters\TableScreenMaker;
+	
+	/**
+	 * Formatter for II Item Warehouse Stock Screen
+	 * Not Formattable
+	 */
+	 class ItemWarehouseStockScreen extends TableScreenMaker {
 		protected $tabletype = 'normal'; // grid or normal
 		protected $type = 'ii-stock'; 
 		protected $title = 'Item Stock by Warehouse';
@@ -13,19 +18,19 @@
 		protected $testprefix = 'debugstkbywhse';
 
 		protected $datasections = array();
-        
-        /* =============================================================
-            PUBLIC FUNCTIONS
-       	============================================================ */
-        public function generate_screen() {
-            $bootstrap = new Dplus\Content\HTMLWriter();
-            $content = '';
-            
-            foreach($this->json['data'] as $whse) {
-                $content .= $bootstrap->h3('', $whse['Whse Name']);
-                
-                // Warehouse Totals
-                $tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
+		
+		/* =============================================================
+			PUBLIC FUNCTIONS
+		============================================================ */
+		public function generate_screen() {
+			$bootstrap = new HTMLWriter();
+			$content = '';
+			
+			foreach($this->json['data'] as $whse) {
+				$content .= $bootstrap->h3('', $whse['Whse Name']);
+				
+				// Warehouse Totals
+				$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
 				$tb->tablesection('thead');
 					$tb->tr();
 					foreach($this->json['columns']['warehouse'] as $column) {
@@ -41,10 +46,10 @@
 					}
 				$tb->closetablesection('tbody');
 				$content .= $tb->close();
-                
-                // Stock By Lot 
-                if (array_key_exists('lots', $whse)) {
-                    $tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
+				
+				// Stock By Lot 
+				if (array_key_exists('lots', $whse)) {
+					$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
 					$tb->tr();
 					foreach ($this->json['columns']['lots'] as $column) {
 						$class = DplusWire::wire('config')->textjustify[$column['headingjustify']];
@@ -63,7 +68,7 @@
 							$class = DplusWire::wire('config')->textjustify[$this->json['columns']['lots'][$column]['datajustify']];
 							$tb->td("class=$class", $lot[$column]."123");
 						}
-                        
+						
 						foreach($lot['orders'] as $order) {
 							$tb->tr();
 							foreach(array_keys($this->json['columns']['orders']) as $column) {
@@ -73,8 +78,8 @@
 						}
 					}
 					$content .= $tb->close();
-                }
+				}
 			}
-            return $content;
-        }
-    }
+			return $content;
+		}
+	}

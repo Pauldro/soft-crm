@@ -684,26 +684,34 @@
 
 		/**
 		 * Returns if the user can edit this order
+		 * // NOTE if $userID is not supplied it will validate against current User
 		 * 1. Checks if the Sales Orders can be edited at all
 		 * 2. Checks if the User has the permissions to edit orders
 		 * 3. Checks if Sales Order is able to be edited
-		 * 4. Checks if the Sales Order was just created
-		 * @return bool Can Order Be edited by user?
+		 * 4. Checks if the Sales Order was just created, by this user session
+		 * @param  string $userID User ID to validate if they can edit order
+		 * @return bool           Can Order Be edited by user?
 		 * @uses DplusWire::wire('session')->createdorder
 		 */
-		public function can_edit() {
+		public function can_edit($userID = '') {
+			$userID = !empty($userID) ? $userID : DplusWire::wire('user')->loginid;
+			
+			// 1. Checks if the Sales Orders can be edited at all
 			$config = DplusWire::wire('pages')->get('/config/')->child("name=sales-orders");
-			$user_permitted = has_dpluspermission(DplusWire::wire('user')->loginid, 'eso');
-			$can_edit = empty($this->lockedby) ? true : false;
-
+			
+			// 2. Checks if the User has the permissions to edit orders
+			$user_permitted = has_dpluspermission($userID, 'eso');
+			
+			// 3. Checks if Sales Order is not locked, or the user is locking it
+			$can_edit = (!$this->is_locked() || $this->is_lockedbyuser($userID)) ? true : false;
+			
+			// 4.Checks if the Sales Order was just created, by this user session
+			$was_createdbyusersession = $this->ordernumber == DplusWire::wire('session')->get('createdorder');
+			
 			// Can edit Sales Orders Config
 			if ($config->allow_edit) {
-				if ($user_permitted) {
-					return $can_edit;
-				} else {
-					return false;
-				}
-			} elseif ($this->orderno == DplusWire::wire('session')->get('createdorder')) {
+				return $user_permitted ? $can_edit : false;
+			} elseif ($was_createdbyusersession) {
 				return true;
 			} else {
 				return false;
@@ -712,7 +720,7 @@
 
 		/**
 		 * Returns if Sales Order is being locked for editing
-		 * @return boolean
+		 * @return bool
 		 */
 		public function is_locked() {
 			return !empty($this->lockedby) ? true : false;
@@ -722,7 +730,7 @@
 		 * Return if Order Is on Review
 		 * // NOTE $this->holdstatuscode = R
 		 * 
-		 * @return boolean Is Order On Review?
+		 * @return bool Is Order On Review?
 		 */
 		public function is_onreview() {
 			return $this->holdstatus == 'R' ? true : false;
@@ -730,6 +738,8 @@
 
 		/**
 		 * Is the Order locked by the Current User?
+		 * // NOTE Will default to current logged in User ID if user ID is not provided
+		 * @param  string $userID User ID to compare $this->lockedby field against
 		 * @return bool
 		 */
 		public function is_lockedbyuser($userID = '') {

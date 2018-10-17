@@ -1,12 +1,19 @@
 <?php
-	use Dplus\ProcessWire\DplusWire as DplusWire;
+	namespace Dplus\Dpluso\ScreenFormatters\CI;
+
+	use Dplus\ProcessWire\DplusWire;
+	use Dplus\Content\HTMLWriter;
+	use Dplus\Content\Table;
+	use Dplus\Dpluso\ScreenFormatters\TableScreenMaker;
+	use Dplus\Dpluso\ScreenFormatters\TableScreenFormatter;
+	
 	
 	/**
 	 * Formatter CI PAYMENTS HISTORY
 	 * Formattable
 	 */
-	class CI_PaymentHistoryFormatter extends TableScreenFormatter {
-        protected $tabletype = 'normal'; // grid or normal
+	class PaymentHistoryFormatter extends TableScreenFormatter {
+		protected $tabletype = 'normal'; // grid or normal
 		protected $type = 'ci-payment-history';
 		protected $title = 'Customer Payment History';
 		protected $datafilename = 'cipayment';
@@ -17,13 +24,13 @@
 		);
 
 		/* =============================================================
-            PUBLIC FUNCTIONS
-        ============================================================ */
-        public function generate_screen() {
-            $bootstrap = new Dplus\Content\HTMLWriter();
+			PUBLIC FUNCTIONS
+		============================================================ */
+		public function generate_screen() {
+			$bootstrap = new HTMLWriter();
 			$this->generate_tableblueprint();
 
-			$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel|id=payments');
+			$tb = new Table('class=table table-striped table-bordered table-condensed table-excel|id=payments');
 			$tb->tablesection('thead');
 				for ($x = 1; $x < $this->tableblueprint['detail']['maxrows'] + 1; $x++) {
 					$tb->tr();
@@ -68,11 +75,11 @@
 				}
 			$tb->closetablesection('tbody');
 			return $tb->close();
-        }
+		}
 
-        public function generate_javascript() {
+		public function generate_javascript() {
 			if (!$this->forprint) {
-				$bootstrap = new Dplus\Content\HTMLWriter();
+				$bootstrap = new HTMLWriter();
 				$content = $bootstrap->open('script', '');
 					$content .= "\n";
 					if ($this->tableblueprint['detail']['maxrows'] == 1) {
@@ -87,4 +94,4 @@
 				return '';
 			}
 		}
-    }
+	}

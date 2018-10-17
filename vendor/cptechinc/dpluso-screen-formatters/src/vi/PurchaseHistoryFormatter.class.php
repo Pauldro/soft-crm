@@ -1,12 +1,18 @@
 <?php
-	use Dplus\ProcessWire\DplusWire as DplusWire;
+	namespace Dplus\Dpluso\ScreenFormatters\VI;
+	
+	use Dplus\ProcessWire\DplusWire;
+	use Dplus\Content\HTMLWriter;
+	use Dplus\Content\Table;
+	use Dplus\Dpluso\ScreenFormatters\TableScreenMaker;
+	use Dplus\Dpluso\ScreenFormatters\TableScreenFormatter;
 	
 	/**
 	 * Formatter for VI Purchase History Screen
 	 * Formattable
 	 */
-	class VI_PurchaseHistoryFormatter extends TableScreenFormatter {
-        protected $tabletype = 'normal'; // grid or normal
+	class PurchaseHistoryFormatter extends TableScreenFormatter {
+		protected $tabletype = 'normal'; // grid or normal
 		protected $type = 'vi-purchase-history'; // ii-sales-history
 		protected $title = 'Vendor Purchase History';
 		protected $datafilename = 'vipurchhist'; // iisaleshist.json
@@ -17,14 +23,14 @@
 		);
 		
 		/* =============================================================
-            PUBLIC FUNCTIONS
-       	============================================================= */
-        public function generate_screen() {
-            $bootstrap = new Dplus\Content\HTMLWriter();
-            $content = '';
+			PUBLIC FUNCTIONS
+		============================================================= */
+		public function generate_screen() {
+			$bootstrap = new HTMLWriter();
+			$content = '';
 			$this->generate_tableblueprint();
-		    
-			$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel|id=purchase-history');
+			
+			$tb = new Table('class=table table-striped table-bordered table-condensed table-excel|id=purchase-history');
 			$tb->tablesection('thead');
 				for ($x = 1; $x < $this->tableblueprint['detail']['maxrows'] + 1; $x++) {
 					$tb->tr();
@@ -114,10 +120,10 @@
 				
 			$tb->closetablesection('tbody');
 			return $tb->close();
-        }
+		}
 		
 		public function generate_javascript() {
-			$bootstrap = new Dplus\Content\HTMLWriter();
+			$bootstrap = new HTMLWriter();
 			$content = $bootstrap->open('script', '');
 				$content .= "\n";
 
@@ -125,4 +131,4 @@
 			$content .= $bootstrap->close('script');
 			return $content;
 		}
-    }
+	}

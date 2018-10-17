@@ -1,14 +1,14 @@
 <?php
-	use Dplus\ProcessWire\DplusWire as DplusWire;
+	use Dplus\ProcessWire\DplusWire;
 	
 	/**
 	 * Class for Items from the Pricing table
 	 */
 	class PricingItem {
-		use Dplus\Base\ThrowErrorTrait;
-		use Dplus\Base\MagicMethodTraits;
-		use Dplus\Base\CreateFromObjectArrayTraits;
-		use Dplus\Base\CreateClassArrayTraits;
+		use \Dplus\Base\ThrowErrorTrait;
+		use \Dplus\Base\MagicMethodTraits;
+		use \Dplus\Base\CreateFromObjectArrayTraits;
+		use \Dplus\Base\CreateClassArrayTraits;
 
 		protected $sessionid;
 		protected $recno;
@@ -75,17 +75,25 @@
 		protected $nsitemgroup;
 		protected $itemtype;
 		protected $supercedes;
+
 		/**
 		 * If Item is Active
 		 * @var string
 		 * (A)ctive | (D)elete when empty | (I)nactive
 		 */
-        protected $activestatus;
+		protected $activestatus;
+		
+		/**
+		 * Common Property aliases
+		 *
+		 * @var array
+		 */
 		protected $fieldaliases = array(
 			'itemID' => 'itemid',
 			'shipfromID' => 'shipfromid',
 			'vendorID' => 'vendorid'
 		);
+
 		protected $historyfields = array('lastsold', 'lastqty', 'lastprice');
 
 		/* =============================================================

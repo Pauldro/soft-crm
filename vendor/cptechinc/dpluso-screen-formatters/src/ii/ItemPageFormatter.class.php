@@ -1,12 +1,19 @@
 <?php
-	use Dplus\ProcessWire\DplusWire as DplusWire;
+	namespace Dplus\Dpluso\ScreenFormatters\II;
+	
+	use Dplus\ProcessWire\DplusWire;
+	use Dplus\Content\HTMLWriter;
+	use Dplus\Content\FormMaker;
+	use Dplus\Content\Table;
+	use Dplus\Dpluso\ScreenFormatters\TableScreenFormatter;
+	use \XRefItem;
 	
 	/**
 	 * Formatter for the II Item Page
 	 * Formattable
 	 */
-	class II_ItemPageFormatter extends TableScreenFormatter {
-        protected $tabletype = 'grid'; // grid or normal
+	class ItemPageFormatter extends TableScreenFormatter {
+		protected $tabletype = 'grid'; // grid or normal
 		protected $type = 'ii-item-page'; // ii-sales-history
 		protected $title = 'Item Page';
 		protected $datafilename = 'iiitem'; // iisaleshist.json
@@ -17,11 +24,11 @@
 		);
 		
 		/* =============================================================
-            PUBLIC FUNCTIONS
-       	============================================================ */
-        public function generate_screen() {
-            $bootstrap = new Dplus\Content\HTMLWriter();
-            $content = '';
+			PUBLIC FUNCTIONS
+		============================================================ */
+		public function generate_screen() {
+			$bootstrap = new HTMLWriter();
+			$content = '';
 			$this->generate_tableblueprint();
 			$item = XRefItem::load($this->json['itemid']);
 			
@@ -35,22 +42,22 @@
 			}
 			
 			$content .= $bootstrap->div('class=row', $this->generate_othersections());
-            return $content;
-        }
+			return $content;
+		}
 		
 		/* =============================================================
-            CLASS FUNCTIONS
-       	============================================================ */
+			CLASS FUNCTIONS
+		============================================================ */
 		/**
 		 * Returns the table that contains the Item Form
 		 * @return string HTML Table
 		 */
 		protected function generate_itemformsection() {
-			$bootstrap = new Dplus\Content\HTMLWriter();
+			$bootstrap = new HTMLWriter();
 			$itemID = $this->json['itemid'];
 			$custID = DplusWire::wire('input')->get->text('custID');
 			$shipID = DplusWire::wire('input')->get->text('shipID');
-			$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
+			$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
 
 			foreach ($this->tableblueprint['header']['sections']['1'] as $column) {
 				$tb->tr();
@@ -62,7 +69,7 @@
 				
 				if ($column['id'] == 'Item ID') {
 					$action = DplusWire::wire('config')->pages->ajax."load/ii/search-results/modal/";
-					$form = new Dplus\Content\FormMaker("action=$action|method=POST|id=ii-item-lookup|class=allow-enterkey-submit");
+					$form = new FormMaker("action=$action|method=POST|id=ii-item-lookup|class=allow-enterkey-submit");
 					$form->input('type=hidden|name=action|value=ii-item-lookup');
 					$form->input("type=hidden|name=custID|class=custID|value=$custID");
 					$form->input("type=hidden|name=shipID|class=shipID|value=$shipID");
@@ -89,12 +96,12 @@
 		 * @return string HTML
 		 */
 		protected function generate_othersections() {
-			$bootstrap = new Dplus\Content\HTMLWriter();
+			$bootstrap = new HTMLWriter();
 			$content = '';
 			
 			for ($i = 2; $i < 5; $i++) {
 				$content .= $bootstrap->open('div', 'class=col-sm-4 form-group');
-				$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
+				$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
 
 				foreach ($this->tableblueprint['header']['sections']["$i"] as $column) {
 					$tb->tr();
@@ -147,5 +154,5 @@
 				}
 			}
 			$this->tableblueprint = $table;
-        }
-    }
+		}
+	}

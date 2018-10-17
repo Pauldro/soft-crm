@@ -1,4 +1,6 @@
 <?php 
+	namespace Dplus\Dpluso\Items;
+	
 	use Dplus\ProcessWire\DplusWire as DplusWire;
 	
 	/**
@@ -6,8 +8,8 @@
 	 * generates the specific data needed when the results need to be for a worksheet, sales order, or quote. 
 	 */
 	class ItemLookupModal {
-		use Dplus\Base\ThrowErrorTrait;
-		use Dplus\Base\MagicMethodTraits;
+		use \Dplus\Base\ThrowErrorTrait;
+		use \Dplus\Base\MagicMethodTraits;
 		
 		/**
 		 * Type

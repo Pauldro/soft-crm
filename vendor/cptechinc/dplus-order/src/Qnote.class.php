@@ -1,5 +1,5 @@
 <?php
-	use Dplus\ProcessWire\DplusWire as DplusWire;
+	use Dplus\ProcessWire\DplusWire;
 	
 	/**
 	 * Dplus Qnotes are for Notes for Quotes and Orders and the functions

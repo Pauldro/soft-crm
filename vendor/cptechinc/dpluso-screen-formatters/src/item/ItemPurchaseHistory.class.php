@@ -1,24 +1,30 @@
-<?php 
+<?php
+	namespace Dplus\Dpluso\ScreenFormatters\Item;
+	
+	use Dplus\Dpluso\ScreenFormatters\TableScreenMaker;
+	use Dplus\Content\HTMLWriter;
+	use Dplus\Content\Table;
+	
 	/**
 	 * Item history Parses and generates the display for 
 	 * item history
 	 * Used on Edit Item Detail 
 	 */
-     class Item_ItemPurchaseHistory extends TableScreenMaker {
+	 class ItemPurchaseHistory extends TableScreenMaker {
 		protected $tabletype = 'normal'; // grid or normal
 		protected $type = 'item-purchasehistory'; 
 		protected $title = 'Item Purchase History';
 		protected $datafilename = 'prichist'; 
 		protected $testprefix = 'iiprc';
 		protected $datasections = array();
-        
-        /* =============================================================
-          PUBLIC FUNCTIONS
-       	============================================================ */
-        public function generate_screen() {
-            $bootstrap = new Dplus\Content\HTMLWriter();
-            $content = '';
-			$tb = new Dplus\Content\Table('class=table item-pricing table-striped table-condensed table-bordered print-hidden');
+		
+		/* =============================================================
+			PUBLIC FUNCTIONS
+		============================================================ */
+		public function generate_screen() {
+			$bootstrap = new HTMLWriter();
+			$content = '';
+			$tb = new Table('class=table item-pricing table-striped table-condensed table-bordered print-hidden');
 			$tb->tablesection('thead');
 				$tb->tr();
 				foreach($this->json['columns'] as $column => $name)  {
@@ -38,5 +44,5 @@
 				}
 			$tb->closetablesection('tbody');
 			return $tb->close();
-        }
-    }
+		}
+	}

@@ -6,14 +6,15 @@ namespace Composer\Autoload;
 
 class ComposerStaticInit75e338935a35fd4eb607c6562ccd82cb
 {
-    public static $files = array (
-        '0df284a44f1fd2dffdda4619a34b6144' => __DIR__ . '/../..' . '/src/PricingItem.class.php',
-        '591e127ef591c89433e629e587c94fd4' => __DIR__ . '/../..' . '/src/XRefItem.class.php',
+    public static $classMap = array (
+        'PricingItem' => __DIR__ . '/../..' . '/src/PricingItem.class.php',
+        'XRefItem' => __DIR__ . '/../..' . '/src/XRefItem.class.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
+            $loader->classMap = ComposerStaticInit75e338935a35fd4eb607c6562ccd82cb::$classMap;
 
         }, null, ClassLoader::class);
     }

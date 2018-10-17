@@ -1,11 +1,16 @@
 <?php
-	use Dplus\ProcessWire\DplusWire as DplusWire;
+	namespace Dplus\Dpluso\ScreenFormatters\CI;
+
+	use Dplus\ProcessWire\DplusWire;
+	use Dplus\Content\HTMLWriter;
+	use Dplus\Content\Table;
+	use \Customer;
 	
 	/**
 	 * Formatter for CI Customer Shipto Screen
 	 * Formattable
 	 */
-	class CI_CustomerShiptoScreen extends CI_CustomerScreen {
+	class CustomerShiptoScreen extends CustomerScreen {
 		protected $tabletype = 'normal'; // grid or normal
 		protected $type = 'ci-customer-shipto-page'; // ii-sales-history
 		protected $title = 'Customer Shipto Screen';
@@ -13,17 +18,17 @@
 		protected $testprefix = 'cicust'; // iish
 		
 		/* =============================================================
-            PUBLIC FUNCTIONS
-        ============================================================ */
+			PUBLIC FUNCTIONS
+		============================================================ */
 		public function generate_customertable(Customer $customer) {
-			$tableformatter = new CI_CustomerScreen($this->sessionID);
+			$tableformatter = new CustomerScreen($this->sessionID);
 			$tableformatter->process_json();
 			return $tableformatter->generate_customertable($customer);
 		}
 
 		public function generate_shiptotable(Customer $customer) {
-			$bootstrap = new Dplus\Content\HTMLWriter();
-			$tb = new Dplus\Content\Table("class=table table-striped table-bordered table-condensed table-excel");
+			$bootstrap = new HTMLWriter();
+			$tb = new Table("class=table table-striped table-bordered table-condensed table-excel");
 			foreach (array_keys($this->json['columns']['top']) as $column) {
 				if ($this->json['columns']['top'][$column]['heading'] == '' && $this->json['data']['top'][$column] == '') {
 
@@ -51,7 +56,7 @@
 		}
 
 		public function generate_tableright() {
-			$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
+			$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
 
 			foreach (array('activity', 'saleshistory') as $section) {
 				$tb->tablesection('thead');

@@ -5,9 +5,6 @@
     "keywords": ["items"],
     "homepage": "http://github.com/cptechinc/dplus-items",
 	"autoload": {
-		"files": [
-			"src/PricingItem.class.php",
-			"src/XRefItem.class.php"
-		]
+		"classmap": ["src/"]
 	}
 }

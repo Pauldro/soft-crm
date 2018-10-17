@@ -1,5 +1,5 @@
 <?php
-    use Dplus\ProcessWire\DplusWire as DplusWire;
+    use Dplus\ProcessWire\DplusWire;
     
 	/**
 	 * Class for editing Sales Orders from ordrhed
@@ -131,31 +131,14 @@
 		
 		/**
 		 * Returns if the user can edit this order
-		 * 1. Checks if the Sales Orders can be edited at all
-		 * 2. Checks if the User has the permissions to edit orders
-		 * 3. Checks if Sales Order is able to be edited
-		 * 4. Checks if the Sales Order was just created
-		 * @return bool Can Order Be edited by user?
-		 * @uses DplusWire::wire('session')->createdorder
+		 * // NOTE if $userID is not supplied it will validate against current User
+		 * @param  string $userID User ID
+		 * @return bool           Can Order Be edited by user?
+		 * @uses SalesOrder::load(), SalesOrder::can_edit()
 		 */
-		public function can_edit() {
-			$config = DplusWire::wire('pages')->get('/config/')->child("name=sales-orders");
-			$config->allow_edit;
-			$user_permitted = has_dpluspermission(DplusWire::wire('user')->loginid, 'eso');
-			$can_edit = $this->editord == 'Y' ? true : false;
-			
-			// Can edit Sales Orders Config
-			if ($config->allow_edit) {
-				if ($user_permitted) {
-					return $can_edit;
-				} else {
-					return false;
-				}
-			} elseif ($this->orderno == DplusWire::wire('session')->get('createdorder')) {
-				return true;
-			} else {
-				return false;
-			}
+		public function can_edit($userID = '') {
+			$order = SalesOrder::load($this->orderno);
+			return $order->can_edit($userID);
 		}
 
 		public function is_phoneintl() {
