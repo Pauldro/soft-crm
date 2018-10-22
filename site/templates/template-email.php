@@ -1,11 +1,12 @@
 <?php
     $sessionID = $input->get->referenceID ? $input->get->text('referenceID') : session_id();
-    $emailer = new DplusEmailer($user->loginid);
-    $emailer->set_filedirectory($config->documentstoragedirectory);
+    $emailer = new Dplus\FileServices\DplusEmailer();
+    $emailer->set_fromlogmuser($user->loginid);
     
     if ($input->requestMethod() == "POST") {
+        $emailto = Dplus\FileServices\EmailContact::create_fromarray(array('email' => $input->post->text('email'), 'name' => $input->post->text('emailname')));
         $emailer->set_subject($input->post->text('subject'));
-        $emailer->set_emailto($input->post->text('email'), $input->post->text('emailname'));
+        $emailer->add_emailto($emailto);
         $emailer->set_body($input->post->text('message'));
         $emailer->set_selfbcc(true);
     }
@@ -13,26 +14,27 @@
     switch ($page->name) { //$page->name is what we are printing
         case 'sales-order':
             $ordn = $input->get->text('ordn');
-            $orderdisplay = new SalesOrderDisplay($sessionID, $page->fullURL, '#ajax-modal', $ordn);
+            $orderdisplay = new Dplus\Dpluso\OrderDisplays\SalesOrderDisplay($sessionID, $page->fullURL, '#ajax-modal', $ordn);
             $order = $orderdisplay->get_order(); 
             $printurl = new \Purl\Url($orderdisplay->generate_viewprintpageurl($order));
             break;
         case 'quote':
             $qnbr = $input->get->text('qnbr');
-            $quotedisplay = new QuoteDisplay($sessionID, $page->fullURL, '#ajax-modal', $qnbr);
+            $quotedisplay = new Dplus\Dpluso\OrderDisplays\QuoteDisplay($sessionID, $page->fullURL, '#ajax-modal', $qnbr);
             $quote = $quotedisplay->get_quote();
             $printurl = new \Purl\Url($quotedisplay->generate_viewprintpageurl($quote));
             break;
     }
+    
 	$printurl->query->set('referenceID', $sessionID);
-	$pdfmaker = new PDFMaker($sessionID, $page->name, $printurl->getUrl());
+	$pdfmaker = new Dplus\FileServices\PDFMaker($sessionID, $page->name, $printurl->getUrl());
 	$file = $pdfmaker->process();
     
     if ($file) {
         $error = false;
         $notifytype = 'success';
         $icon = 'fa fa-paper-plane-o';
-        $emailer->set_file($file);
+        $emailer->add_file($file);
         $emailsent = $emailer->send();
         
         if ($emailsent) {
@@ -50,7 +52,7 @@
 				'notifytype' => $notifytype,
 				'message' => $msg,
 				'icon' => $icon,
-                'from' => $emailer->emailfrom
+                'from' => $emailer->emailfrom->email
 			)
         );
     } else {

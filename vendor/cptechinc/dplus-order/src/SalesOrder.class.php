@@ -17,7 +17,7 @@
 		 * Sales Order Number
 		 * @var string
 		 */
-		protected $orderno;
+		protected $ordernumber;
 
 		/**
 		 * Sales Order Status

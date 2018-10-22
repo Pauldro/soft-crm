@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d2a3769f7bf0878e86c955d35fb85a31",
+    "content-hash": "be293926a200db7ecd3a5f71ceb1e0f5",
     "packages": [
         {
             "name": "atk4/core",
@@ -406,6 +406,38 @@
             "time": "2018-10-17T16:38:10+00:00"
         },
         {
+            "name": "cptechinc/dpluso-warehouse",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cptechinc/dpluso-warehouse.git",
+                "reference": "0d9186fc787977265e2034f0dd340926d1452292"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cptechinc/dpluso-warehouse/zipball/0d9186fc787977265e2034f0dd340926d1452292",
+                "reference": "0d9186fc787977265e2034f0dd340926d1452292",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/PickSalesOrderDisplay.class.php",
+                    "src/Model/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Classes for Warehouse Dplus Online",
+            "homepage": "http://github.com/cptechinc/dpluso-warehouse",
+            "keywords": [
+                "dplus-pack",
+                "dplus-pick",
+                "dplus-warehouse",
+                "dpluso-warehouse"
+            ],
+            "time": "2018-10-18T15:17:45+00:00"
+        },
+        {
             "name": "eoghanobrien/php-simple-mail",
             "version": "1.7.1",
             "source": {
@@ -744,7 +776,8 @@
         "cptechinc/dplus-dpluso": 20,
         "cptechinc/dplus-content": 20,
         "cptechinc/dpluso-screen-formatters": 20,
-        "cptechinc/dplus-file-services": 20
+        "cptechinc/dplus-file-services": 20,
+        "cptechinc/dpluso-warehouse": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

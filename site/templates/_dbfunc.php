@@ -1083,9 +1083,7 @@
 
 	function get_salesorders($limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('oe_head');
-		$q->field('oe_head.*');
 		$q->field($q->expr("STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder"));
-		$q->where('type', 'O');
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
 		}
@@ -1113,7 +1111,7 @@
 		if (!empty($shipID)) {
 			$q->where('shiptoid', $shipID);
 		}
-		$q->where('type', 'O');
+		
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
 		}
@@ -1162,14 +1160,13 @@
 
 	function get_customerordersorderdate($sessionID, $custID, $shipID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug) {
 		$q = (new QueryBuilder())->table('oe_head');
-		$q->field('oe_head.*');
 		$q->field($q->expr("STR_TO_DATE(order_date, '%m/%d/%Y') as dateoforder"));
 		$q->where('sessionid', $sessionID);
 		$q->where('custid', $custID);
 		if (!empty($shipID)) {
 			$q->where('shiptoid', $shipID);
 		}
-		$q->where('type', 'O');
+		
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
 		}

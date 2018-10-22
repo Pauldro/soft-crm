@@ -204,7 +204,7 @@ class Query extends Expression
      *
      * @return $this
      */
-    public functionDplus\Content\Table($table, $alias = null)
+    public function Table($table, $alias = null)
     {
         // comma-separated table names
         if (is_string($table) && strpos($table, ',') !== false) {

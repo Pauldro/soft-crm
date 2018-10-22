@@ -41,7 +41,8 @@
         "cptechinc/dplus-dpluso": "dev-psr4",
         "cptechinc/dplus-content": "dev-psr4",
         "cptechinc/dpluso-screen-formatters": "dev-master",
-        "cptechinc/dplus-file-services": "dev-psr4"
+        "cptechinc/dplus-file-services": "dev-psr4",
+        "cptechinc/dpluso-warehouse": "dev-master"
     },
     "autoload": {
         "files": [ 

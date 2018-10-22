@@ -1,5 +1,5 @@
 <?php
-	use Dplus\ProcessWire\DplusWire as DplusWire;
+	use Dplus\ProcessWire\DplusWire;
 	
 	function renderNavTree($items, $maxDepth = 3) {
 		// if we've been given just one item, convert it to an array of items
