@@ -30,7 +30,7 @@
 				            $formaction = $config->pages->cart."redir/";
 				            $ordn = '';
 				            break;
-				        case 'order':
+				        case 'sales-order':
 				            $ordn = $input->get->text('ordn');
 				            $custID = SalesOrder::find_custid($ordn);
 							$formaction = $config->pages->orders."redir/";

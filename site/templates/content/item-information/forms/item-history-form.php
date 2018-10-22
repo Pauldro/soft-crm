@@ -23,7 +23,7 @@
             </div>
             <div class="form-group">
                 <label for="">Customer ID</label>
-                <input type="text" class="form-control not-round custID" name="custID" placeholder="CustID" value="<?php echo $custID; ?>">
+                <input type="text" class="form-control not-round custID" name="custID" placeholder="CustID" value="<?= $custID; ?>">
             </div>
             <button type="submit" class="btn btn-primary btn-sm">Submit</button> &nbsp; &nbsp;
             <button type="button" class="btn btn-primary btn-sm" onclick="iicust('ii-item-hist');">Choose Cust</button>

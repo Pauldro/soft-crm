@@ -1,5 +1,5 @@
 <?php 
-	$bookingspanel = new BookingsPanel(session_id(), $page->fullURL, '#ajax-modal'); 
+	$bookingspanel = new Dplus\Dpluso\Bookings\BookingsPanel(session_id(), $page->fullURL, '#ajax-modal'); 
 	$date = $input->get->text('date');
 	$salesorders = $bookingspanel->get_daybookingordernumbers($date);
 	$count = $bookingspanel->count_daybookingordernumbers($date);

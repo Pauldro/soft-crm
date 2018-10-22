@@ -4,7 +4,7 @@
 	$quotepanel->activeID = !empty($input->get->qnbr) ? $input->get->text('qnbr') : false;
 	$quotepanel->generate_filter($input);
 	$quotepanel->get_quotecount();
-
+	
 	$paginator = new Dplus\Content\Paginator($quotepanel->pagenbr, $quotepanel->count, $quotepanel->pageurl->getUrl(), $quotepanel->paginationinsertafter, $quotepanel->ajaxdata);
 ?>
 <div class="panel panel-primary not-round" id="quotes-panel">

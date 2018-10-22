@@ -2074,7 +2074,6 @@
 		$expression = $q->expr('IF (COUNT(*) = 1, 1, IF(COUNT(DISTINCT(custid)) > 1, COUNT(*), 0)) as count');
 		if (!empty($filter)) {
 			$expression = $q->expr('COUNT(*)');
-			$q->generate_filters($filter, $filtertypes);
 		}
 		$q->field($expression);
 		$q->where('sessionid', $sessionID);
@@ -3087,8 +3086,11 @@
 		$q = (new QueryBuilder())->table('useractions');
 		$q->mode('update');
 		$q->generate_setdifferencesquery($oldlinks->_toArray(), $newlinks->_toArray());
-		$q->generate_query($oldlinks->get_linkswithvaluesarray());
 		$q->set('dateupdated', date("Y-m-d H:i:s"));
+		foreach ($oldlinks->get_linkswithvaluesarray() as $linkcolumn => $val) {
+			$q->where($linkcolumn, $val);
+		}
+		
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
