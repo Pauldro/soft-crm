@@ -3,6 +3,7 @@
 	 * Class to handle Quotes
 	 */
 	class CartQuote extends Order implements OrderInterface {
+		protected $sessionid;
 		protected $custname;
 		protected $orderno;
 		protected $orderdate;
@@ -44,11 +45,11 @@
 		public function has_documents() {
 			return $this->hasdocuments == 'Y' ? true : false;
 		}
-		
+
 		/**
 		 * Does Cart have tracking
 		 * // NOTE this is only here to comply with Orders Interface
-		 * @return bool 
+		 * @return bool
 		 */
 		public function has_tracking() {
 			return false;
@@ -107,7 +108,6 @@
 			unset($array['prntfmt']);
 			unset($array['prntfmtdisp']);
 			unset($array['dateoforder']);
-			unset($array['sessionid']);
 			unset($array['recno']);
 			unset($array['quotdate']);
 			unset($array['billname']);
@@ -180,7 +180,7 @@
 		public static function load($sessionID, $debug = false) {
 			return get_carthead($sessionID, $debug);
 		}
-		
+
 		/**
 		 * Saves (Updates / Creates) Database for Cart head
 		 * @param  bool   $debug Run in debug? If so, return SQL Query
@@ -194,7 +194,7 @@
 				return $this->create($debug);
 			}
 		}
-		
+
 		/**
 		 * Inserts Cart Head Data into database
 		 * @param  bool   $debug Run in debug? If so, return SQL Query
@@ -203,7 +203,7 @@
 		public function create($debug = false) {
 			return insert_carthead($this->sessionid, $this, $debug);
 		}
-		
+
 		/**
 		 * Updates Cart Head Data into database
 		 * @param  bool   $debug Run in debug? If so, return SQL Query

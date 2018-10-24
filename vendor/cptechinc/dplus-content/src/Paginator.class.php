@@ -7,37 +7,39 @@
 	 * Class for dealing with Pagination for AJAX or non AJAX pages
 	 */
 	class Paginator {
+		use \Dplus\Base\ThrowErrorTrait;
+		use \Dplus\Base\MagicMethodTraits;
 		use \Dplus\Base\AttributeParser;
 
 		/**
 		 * Page Number
 		 * @var int
 		 */
-		public $pagenbr;
+		protected $pagenbr;
 
 		/**
 		 * Number of Items to paginate for
 		 * @var int
 		 */
-		public $count;
+		protected $count;
 
 		/**
 		 * Page URL
 		 * @var \Purl\Url
 		 */
-		public $pageurl;
+		protected $pageurl;
 
 		/**
-		 * AJAX DATA
+		 * Ajax Data string data-focus="{focus}" data-loadinto="{loadinto}"
 		 * @var string
 		 */
-		public $ajaxdata;
+		protected $ajaxdata;
 
 		/**
 		 * Where to insert pagination path segment
 		 * @var string
 		 */
-		public $insertafter;
+		protected $insertafter;
 
 		/**
 		 * CONSTRUCTOR
@@ -52,7 +54,7 @@
 			$this->count = $count;
 			$this->pageurl = new \Purl\Url($pageurl);
 			$this->insertafter = $insertafter;
-			$this->ajaxdata = $this->parse_ajaxdata($ajaxdata);
+			$this->ajaxdata = !empty($ajaxdata) ? $this->parse_ajaxdata($ajaxdata) : ''; 
 			$this::setup_displayonpage();
 		}
 
@@ -76,7 +78,7 @@
 			$url = new \Purl\Url($this->pageurl);
 			$url->query->remove('display');
 			$href = $url->getUrl();
-			$ajaxdata = $this->generate_ajaxdataforcontento();
+			$ajaxdata = (!empty($this->ajaxdata)) ? $this->generate_ajaxdataforcontento() : '';
 			$bootstrap = new HTMLWriter();
 
 			$form = $bootstrap->open('div', 'class=form-group');
@@ -93,7 +95,7 @@
 			$form .= $bootstrap->close('select');
 			$form .= $bootstrap->close('div');
 
-			$ajaxload = $this->ajaxdata ? 'ajax-load' : '';
+			$ajaxload = !empty($this->ajaxdata) ? 'ajax-load' : '';
 			return $bootstrap->form("action=$href|method=get|class=form-inline results-per-page-form $ajaxload|$ajaxdata", $form);
 		}
 
@@ -121,7 +123,7 @@
 			} else {
 				$href = $this->paginate($this->pagenbr - 1);
 				$ajaxdetails = (!empty($this->ajaxdata)) ? "class=load-link|".$this->generate_ajaxdataforcontento() : '';
-				$link = $bootstrap->a('a', "href=$href|aria-label=Previous|$ajaxdetails", '<span aria-hidden="true">&laquo;</span>');
+				$link = $bootstrap->a("href=$href|aria-label=Previous|$ajaxdetails", '<span aria-hidden="true">&laquo;</span>');
 				$list .= $bootstrap->li('', $link);
 			}
 
@@ -246,7 +248,7 @@
 				$list .= $bootstrap->create_element('li', 'class=page-item disabled', $link);
 			} else {
 				$href = $this->paginate($this->pagenbr - 1);
-				$ajaxdetails = (!empty($this->ajaxdata)) ? "class=page-link load-link|".$this->generate_ajaxdataforcontento() : '';
+				$ajaxdetails = (!empty($this->ajaxdata)) ? "class=page-link load-link|".$this->generate_ajaxdataforcontento() : 'class=page-link';
 				$link = $bootstrap->create_element('a', "href=$href|aria-label=Previous|$ajaxdetails", '<span aria-hidden="true">&laquo;</span>');
 				$list .= $bootstrap->create_element('li', 'class=page-item', $link);
 			}
@@ -255,12 +257,12 @@
 				if ($i > 0) {
 					if ($this->pagenbr == $i) {
 						$href = $this->paginate($i);
-						$ajaxdetails = (!empty($this->ajaxdata)) ? "class=page-link load-link|".$this->generate_ajaxdataforcontento() : '';
+						$ajaxdetails = (!empty($this->ajaxdata)) ? "class=page-link load-link|".$this->generate_ajaxdataforcontento() : 'class=page-link';
 						$link = $bootstrap->a("href=$href|$ajaxdetails", $i);
 						$list .= $bootstrap->li('class=page-item active', $link);
 					} elseif ($i < ($totalpages + 1)) {
 						$href = $this->paginate($i);
-						$ajaxdetails = (!empty($this->ajaxdata)) ? "class=page-link load-link|".$this->generate_ajaxdataforcontento() : '';
+						$ajaxdetails = (!empty($this->ajaxdata)) ? "class=page-link load-link|".$this->generate_ajaxdataforcontento() : 'class=page-link';
 						$link = $bootstrap->a("href=$href|$ajaxdetails", $i);
 						$list .= $bootstrap->li('class=page-item', $link);
 					}
@@ -272,7 +274,7 @@
 				$list .= $bootstrap->li('class=page-item disabled', $link);
 			} else {
 				$href = $this->paginate($this->pagenbr + 1);
-				$ajaxdetails = (!empty($this->ajaxdata)) ? "class=page-link load-link|".$this->generate_ajaxdataforcontento() : '';
+				$ajaxdetails = (!empty($this->ajaxdata)) ? "class=page-link load-link|".$this->generate_ajaxdataforcontento() : 'class=page-link';
 				$link = $bootstrap->a("href=$href|aria-label=Next|$ajaxdetails", '<span aria-hidden="true">&raquo;</span>');
 				$list .= $bootstrap->li('class=page-item', $link);
 			}

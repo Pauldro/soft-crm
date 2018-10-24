@@ -17,7 +17,7 @@
 		 * Sales Order Number
 		 * @var string
 		 */
-		protected $ordernumber;
+		protected $orderno;
 
 		/**
 		 * Sales Order Status
@@ -28,6 +28,7 @@
 
 		/**
 		 * Hold Status Code
+		 * NOTE: The code is Case Sensitive
 		 * A = Customer is on Credit Hold
 		 * B = A detail line did not meet minimum margin requirements, Was an A, C, or H before
 		 * C = Over Credit Limit
@@ -717,6 +718,22 @@
 				return false;
 			}
 		}
+		
+		/**
+		 * Returns if User can edit an order that may be on review
+		 * @param  string $userID  User ID to validate if they can edit order
+		 * @return bool            Can Order Be edited by user?
+		 */
+		public function can_editapproved($userID = '') {
+			$userID = !empty($userID) ? $userID : DplusWire::wire('user')->loginid;
+			$user = LogmUser::load($userID);
+			
+			if ($this->is_onreview()) {
+				return !$user->is_salesrep() ? true : false;
+			} else {
+				return $this->can_edit($userID);
+			}
+		}
 
 		/**
 		 * Returns if Sales Order is being locked for editing
@@ -735,6 +752,16 @@
 		public function is_onreview() {
 			return $this->holdstatus == 'R' ? true : false;
 		}
+		
+		/**
+		 * Returns if Order is approved
+		 * // NOTE lower case n means order has been approved
+		 * @return bool is order approved?
+		 */
+		public function is_approved() {
+			return $this->holdstatus == 'n' ? true : false;
+		}
+		
 
 		/**
 		 * Is the Order locked by the Current User?
