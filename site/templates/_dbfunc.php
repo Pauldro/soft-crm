@@ -3401,6 +3401,7 @@
 			return $sql->fetch();
 		}
 	}
+	
 	/**
 	 * Inserts new carthead record
 	 * @param  string    $sessionID Session Identifier
@@ -3520,6 +3521,26 @@
 /* =============================================================
 	OE HEAD FUNCTIONS
 ============================================================ */
+	/**
+	 * Returns if Sales Order exists in the oe_head table
+	 * @param  string $ordn   Sales Order Number
+	 * @param  bool   $debug  Run in debug? If so, will return SQL Query
+	 * @return bool           Does Sales Order exist?
+	 */
+	function does_salesorderexist($ordn, $debug = false) {
+		$q = (new QueryBuilder())->table('oe_head');
+		$q->field($q->expr("IF(COUNT(*) > 0, 1, 0)"));
+		$q->where('ordernumber', $ordn);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return boolval($sql->fetchColumn());
+		}
+	}
+	
 	/**
 	 * Returns the Sales Order from the oe_head table
 	 * @param  string $ordn      Sales Order Number

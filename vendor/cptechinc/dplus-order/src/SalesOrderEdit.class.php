@@ -103,6 +103,10 @@
 		// Properties needed by MYSQL to sort
 		protected $dateoforder;
 
+		/**
+		 * Aliases for the properties
+		 * @var array
+		 */
 		protected $fieldaliases = array(
 			'ordernumber' => 'orderno'
 		);
@@ -141,6 +145,15 @@
 			return $order->can_edit($userID);
 		}
 
+		/**
+		 * Returns if Sales Order is on review
+		 * @return bool
+		 */
+		public function is_onreview() {
+            $order = SalesOrder::load($this->orderno);
+			return $order->is_onreview();
+        }
+
 		public function is_phoneintl() {
 			return $this->phintl == 'Y' ? true : false;
 		}
@@ -166,14 +179,21 @@
 		/* =============================================================
 			CRUD FUNCTIONS
 		============================================================ */
-		
+		/**
+		 * Is there a Sales Order Edit record?
+		 * @param string $sessionID Session ID
+		 * @param string $ordn      Sales Order Number
+		 * @param bool   $debug     Run in debug? If so, will return SQL Query
+		 * @return void
+		 */
 		public static function exists($sessionID, $ordn, $debug = false) {
 			return does_salesordereditexist($sessionID, $ordn, $debug);
 		}
+
 		/**
 		 * Returns SalesOrder from ordrhed
 		 * @param  string          $sessionID Session ID
-		 * @param  string          $ordn      Sales Order #
+		 * @param  string          $ordn      Sales Order Number
 		 * @param  bool            $debug     Run in debug? If so, will return SQL Query
 		 * @return SalesOrderEdit             Editable Sales Order
 		 * @uses Read (CRUD)

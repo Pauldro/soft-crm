@@ -372,7 +372,7 @@ class QueryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     *Dplus\Content\Table() should return $this Query for chaining.
+     * table() should return $this Query for chaining.
      *
      * @covers ::table
      */

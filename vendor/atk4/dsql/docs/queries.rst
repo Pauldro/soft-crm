@@ -120,7 +120,7 @@ to re-use your query efficiently::
     $query
         -> where('id', 123)
         -> field('id')
-        ->Dplus\Content\Table('user')
+        -> table('user')
         -> set($data)
         ;
 
@@ -212,7 +212,7 @@ Modifying Select Query
 Setting Table
 -------------
 
-.. php:method::Dplus\Content\Table($table, $alias)
+.. php:method:: table($table, $alias)
 
     Specify a table to be used in a query.
 
@@ -260,12 +260,12 @@ Finally, you can also specify a different query instead of table, by simply
 passing another :php:class:`Query` object::
 
     $sub_q = $c->dsql();
-    $sub_q ->Dplus\Content\Table('employee');
+    $sub_q -> table('employee');
     $sub_q -> where('name', 'John');
 
     $q = $c->dsql();
     $q -> field('surname');
-    $q ->Dplus\Content\Table($sub_q, 'sub');
+    $q -> table($sub_q, 'sub');
 
     // SELECT `surname` FROM (SELECT * FROM `employee` WHERE `name` = :a) `sub`
 

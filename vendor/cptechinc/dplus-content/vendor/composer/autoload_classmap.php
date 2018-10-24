@@ -11,6 +11,7 @@ return array(
     'Dplus\\Content\\HTMLWriter' => $baseDir . '/src/HTMLWriter.class.php',
     'Dplus\\Content\\JavaScripter' => $baseDir . '/src/JavaScripter.class.php',
     'Dplus\\Content\\Paginator' => $baseDir . '/src/Paginator.class.php',
+    'Dplus\\Content\\PaginatorBootstrap4' => $baseDir . '/src/Paginator.class.php',
     'Dplus\\Content\\Table' => $baseDir . '/src/Table.class.php',
     'Dplus\\Content\\TablePageSorter' => $baseDir . '/src/TablePageSorter.class.php',
 );
