@@ -16,7 +16,7 @@
 			<label>Verify</label>
 			<input class="pull-right" type="checkbox" name="status[]" value="V" <?= ($orderpanel->has_filtervalue('status', 'V')) ? 'checked' : ''; ?>>
 		</div>
-        <div class="col-sm-2">
+		<div class="col-sm-2">
 			<h4>Order #</h4>
 			<input class="form-control form-group inline input-sm" type="text" name="ordernumber[]" value="<?= $orderpanel->get_filtervalue('ordernumber'); ?>" placeholder="From Order #">
 			<input class="form-control form-group inline input-sm" type="text" name="ordernumber[]" value="<?= $orderpanel->get_filtervalue('ordernumber', 1); ?>" placeholder="Through Order #">
@@ -29,26 +29,26 @@
 			<h4>Order Total</h4>
 			<div class="input-group form-group">
 				<input class="form-control form-group inline input-sm" type="text" name="total_order[]" id="cust-order-total-min" value="<?= $orderpanel->get_filtervalue('total_order'); ?>" placeholder="From Order Total">
-	            <span class="input-group-btn">
-	            	<button type="button" class="btn btn-default input-sm not-round" onclick="$('#cust-order-total-min').val('<?= $orderpanel->get_minsalesordertotal(); ?>')"> <span class="fa fa-angle-double-down" aria-hidden="true"></span> <span class="sr-only">Min</span> </button>
-	            </span>
-	        </div>
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default input-sm not-round" onclick="$('#cust-order-total-min').val('<?= $orderpanel->get_minsalesordertotal(); ?>')"> <span class="fa fa-angle-double-down" aria-hidden="true"></span> <span class="sr-only">Min</span> </button>
+				</span>
+			</div>
 			<div class="input-group form-group">
 				<input class="form-control form-group inline input-sm" type="text" name="total_order[]" id="cust-order-total-max" value="<?= $orderpanel->get_filtervalue('total_order', 1); ?>" placeholder="Through Order Total">
-	            <span class="input-group-btn">
-	            	<button type="button" class="btn btn-default input-sm not-round" onclick="$('#cust-order-total-max').val('<?= $orderpanel->get_maxsalesordertotal(); ?>')"> <span class="fa fa-angle-double-up" aria-hidden="true"></span> <span class="sr-only">Max</span> </button>
-	            </span>
-	        </div>
+				<span class="input-group-btn">
+					<button type="button" class="btn btn-default input-sm not-round" onclick="$('#cust-order-total-max').val('<?= $orderpanel->get_maxsalesordertotal(); ?>')"> <span class="fa fa-angle-double-up" aria-hidden="true"></span> <span class="sr-only">Max</span> </button>
+				</span>
+			</div>
 		</div>
 		<div class="col-sm-2">
-            <h4>Order Date</h4>
+			<h4>Order Date</h4>
 			<?php $name = 'order_date[]'; $value = $orderpanel->get_filtervalue('order_date'); ?>
 			<?php include $config->paths->content."common/date-picker.php"; ?>
-            <label class="small text-muted">From Date </label>
+			<label class="small text-muted">From Date </label>
 			<?php $name = 'order_date[]'; $value = $orderpanel->get_filtervalue('order_date', 1); ?>
 			<?php include $config->paths->content."common/date-picker.php"; ?>
-            <label class="small text-muted">Through Date </label>
-        </div>
+			<label class="small text-muted">Through Date </label>
+		</div>
 	</div>
 	<br>
 	<div class="row">
@@ -57,10 +57,12 @@
 		</div>
 		<div class="col-sm-12 form-group">
 			<?php if ($input->get->filter) : ?>
-		        <div>
-		            <?= $orderpanel->generate_clearsearchlink(); ?>
-		        </div>
-		    <?php endif; ?>
+				<div>
+				<a href="<?= $orderpanel->generate_loadurl(); ?>" class="generate-load-link btn btn-warning btn-block" data-loadinto="<?= $orderpanel->loadinto; ?>" data-focus="<?= $orderpanel->focus; ?>">
+					Clear Search <i class="fa fa-search-minus" aria-hidden="true"></i>
+				</a>
+				</div>
+			<?php endif; ?>
 		</div>
 	</div>
 </form>

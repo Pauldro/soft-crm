@@ -2,7 +2,7 @@
 	use atk4\dsql\Query;
 	use atk4\dsql\Expression;
 	use Dplus\Base\QueryBuilder;
-	use Dplus\ProcessWire\DplusWire as DplusWire;
+	use Dplus\ProcessWire\DplusWire;
 	
 /* =============================================================
 	LOGIN FUNCTIONS
@@ -1057,7 +1057,6 @@
 ============================================================ */
 	/**
 	 * Counts the Number of Sales Orders in oe_head that match the filter criteria
-	 * // NOTE filter for salesreps should be done by the filters
 	 * @param  bool   $filter      Array of filters and the values to filter for
 	 * @param  bool   $filtertypes Array of filter properties
 	 * @param  bool   $debug       Run in debug? If so, return SQL query
@@ -1065,12 +1064,27 @@
 	 */
 	function count_salesorders($filter = false, $filtertypes = false, $debug = false) {
 		$q = (new QueryBuilder())->table('oe_head');
-		$expression = $q->expr('IF (COUNT(*) = 1, 1, IF(COUNT(DISTINCT(custid)) > 1, COUNT(*), 0)) as count');
+		$q->field($q->expr('COUNT(*)'));
+		
+		if (isset($filter['salesperson'])) {
+			$salespeople = $filter['salesperson'];
+			$ordersquery = (new QueryBuilder())->table('oe_head');
+			$ordersquery->field('ordernumber');
+			$ordersquery->where(
+				$ordersquery
+				->orExpr()
+				->where('salesperson_1', $salespeople)
+				->where('salesperson_2', $salespeople)
+				->where('salesperson_3', $salespeople)
+			);
+			$q->where('ordernumber', $ordersquery);
+			unset($filter['salesperson']);
+		}
+		
 		if (!empty($filter)) {
-			$expression = $q->expr('COUNT(*)');
 			$q->generate_filters($filter, $filtertypes);
 		}
-		$q->field($expression);
+		
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
@@ -1080,15 +1094,41 @@
 			return $sql->fetchColumn();
 		}
 	}
-
+	
+	/**
+	 * Returns an array of SalesOrder that match the filter criteria
+	 * @param  int    $limit       Number of Records to Return
+	 * @param  int    $page        Page Number
+	 * @param  string $sortrule    Sort (ASC)ENDING | (DESC)ENDING
+	 * @param  bool   $filter      Array of filters and their values
+	 * @param  bool   $filtertypes Array of filter properties
+	 * @param  bool   $useclass    Return records as SalesOrder class?
+	 * @param  bool   $debug       Run in Debug? If so, return SQL Query
+	 * @return array               Sales Orders that match the filter criteria
+	 */
 	function get_salesorders($limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('oe_head');
-		$q->field($q->expr("STR_TO_DATE(orderdate, '%m/%d/%Y') as dateoforder"));
+		
+		if (isset($filter['salesperson'])) {
+			$salespeople = $filter['salesperson'];
+			$ordersquery = (new QueryBuilder())->table('oe_head');
+			$ordersquery->field('ordernumber');
+			$ordersquery->where(
+				$ordersquery
+				->orExpr()
+				->where('salesperson_1', $salespeople)
+				->where('salesperson_2', $salespeople)
+				->where('salesperson_3', $salespeople)
+			);
+			$q->where('ordernumber', $ordersquery);
+			unset($filter['salesperson']);
+		}
+		
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
 		}
 		$q->limit($limit, $q->generate_offset($page, $limit));
-		$q->order('dateoforder ' . $sortrule);
+		$q->order('order_date' . $sortrule);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
@@ -1103,28 +1143,6 @@
 		}
 	}
 	
-	function count_customerorders($sessionID, $custID, $shipID, $filter = false, $filtertypes = false, $debug) {
-		$q = (new QueryBuilder())->table('oe_head');
-		$q->field($q->expr('COUNT(*) as count'));
-		$q->where('sessionid', $sessionID);
-		$q->where('custid', $custID);
-		if (!empty($shipID)) {
-			$q->where('shiptoid', $shipID);
-		}
-		
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
-		}
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			return $sql->fetchColumn();
-		}
-	}
-
 	/**
 	 * Returns an array of SalesOrder that match the filter criteria
 	 * @param  int    $limit       Number of Records to Return
@@ -1139,6 +1157,21 @@
 	 */
 	function get_salesorders_orderby($limit = 10, $page = 1, $sortrule, $orderby, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('oe_head');
+		
+		if (isset($filter['salesperson'])) {
+			$ordersquery = (new QueryBuilder())->table('oe_head');
+			$ordersquery->field('ordernumber');
+			$ordersquery->where(
+				$ordersquery
+				->orExpr()
+				->where('salesperson_1', $filter['salesperson'])
+				->where('salesperson_2', $filter['salesperson'])
+				->where('salesperson_3', $filter['salesperson'])
+			);
+			$q->where('ordernumber', $ordersquery);
+			unset($filter['salesperson']);
+		}
+		
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
 		}
@@ -1155,33 +1188,6 @@
 				return $sql->fetchAll();
 			}
 			return $sql->fetchAll();
-		}
-	}
-
-	function get_customerordersorderdate($sessionID, $custID, $shipID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug) {
-		$q = (new QueryBuilder())->table('oe_head');
-		$q->field($q->expr("STR_TO_DATE(order_date, '%m/%d/%Y') as dateoforder"));
-		$q->where('sessionid', $sessionID);
-		$q->where('custid', $custID);
-		if (!empty($shipID)) {
-			$q->where('shiptoid', $shipID);
-		}
-		
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
-		}
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$q->order('dateoforder ' . $sortrule);
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrder');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
 
@@ -1227,15 +1233,31 @@
 
 	/**
 	 * Returns the Max Order Total for Sales Orders that
-	 * @param  string $custID Customer ID, if blank will not filter to one customer
-	 * @param  string $shipID Customer Shipto Id
-	 * @param  bool   $debug  Run in debug? If so return SQL Query
-	 * @return float          Max Sales Order Total
+	 * @param  string $custID      Customer ID, if blank will not filter to one customer
+	 * @param  string $shipID      Customer Shipto Id
+	 * @param  bool   $filter      Array of filters and their values
+	 * @param  bool   $filtertypes Array of filter properties
+	 * @param  bool   $debug       Run in debug? If so return SQL Query
+	 * @return float               Max Sales Order Total
 	 */
-	function get_maxsalesordertotal($custID = '', $shipID = '', $debug = false) {
+	function get_maxsalesordertotal($custID = '', $shipID = '', $filter, $filtertypes, $debug = false) {
 		$q = (new QueryBuilder())->table('oe_head');
 		$q->field($q->expr('MAX(total_order)'));
-
+		
+		if (isset($filter['salesperson'])) {
+			$ordersquery = (new QueryBuilder())->table('oe_head');
+			$ordersquery->field('ordernumber');
+			$ordersquery->where(
+				$ordersquery
+				->orExpr()
+				->where('salesperson_1', $filter['salesperson'])
+				->where('salesperson_2', $filter['salesperson'])
+				->where('salesperson_3', $filter['salesperson'])
+			);
+			$q->where('ordernumber', $ordersquery);
+			unset($filter['salesperson']);
+		}
+		
 		if (!empty($custID)) {
 			$q->where('custid', $custID);
 
@@ -1254,16 +1276,32 @@
 	}
 
 	/**
-	 * Returns the min Order Total for Sales Orders that
-	 * @param  string $custID Customer ID, if blank will not filter to one customer
-	 * @param  string $shipID Customer Shipto Id
-	 * @param  bool   $debug  Run in debug? If so return SQL Query
-	 * @return float          min Sales Order Total
+	 * Returns the Min Order Total for Sales Orders that
+	 * @param  string $custID      Customer ID, if blank will not filter to one customer
+	 * @param  string $shipID      Customer Shipto ID
+	 * @param  bool   $filter      Array of filters and their values
+	 * @param  bool   $filtertypes Array of filter properties
+	 * @param  bool   $debug       Run in debug? If so return SQL Query
+	 * @return float               Min Sales Order Total
 	 */
-	function get_minsalesordertotal($custID = '', $shipID = '', $debug = false) {
+	function get_minsalesordertotal($custID = '', $shipID = '', $filter, $filtertypes, $debug = false) {
 		$q = (new QueryBuilder())->table('oe_head');
 		$q->field($q->expr('MIN(total_order)'));
-
+		
+		if (isset($filter['salesperson'])) {
+			$ordersquery = (new QueryBuilder())->table('oe_head');
+			$ordersquery->field('ordernumber');
+			$ordersquery->where(
+				$ordersquery
+				->orExpr()
+				->where('salesperson_1', $filter['salesperson'])
+				->where('salesperson_2', $filter['salesperson'])
+				->where('salesperson_3', $filter['salesperson'])
+			);
+			$q->where('ordernumber', $ordersquery);
+			unset($filter['salesperson']);
+		}
+		
 		if (!empty($custID)) {
 			$q->where('custid', $custID);
 
@@ -1281,27 +1319,39 @@
 	}
 
 	/**
-	 * Returns the min Order TDate for Sales Orders that
-	 * @param  string $field  Which Sales Order Date Property
-	 * @param  string $custID Customer ID, if blank will not filter to one customer
-	 * @param  string $shipID Customer Shipto Id
-	 * @param  bool   $debug  Run in debug? If so return SQL Query
-	 * @return string         min Sales Order Date
+	 * Returns the Min Order Date for Sales Orders that meets the filter criteria
+	 * @param  string $custID      Customer ID, if blank will not filter to one customer
+	 * @param  string $shipID      Customer Shipto ID
+	 * @param  string $field       Which Sales Order Date Property
+	 * @param  bool   $filter      Array of filters and their values
+	 * @param  bool   $filtertypes Array of filter properties
+	 * @param  bool   $debug       Run in debug? If so return SQL Query
+	 * @return string              Min Sales Order Date
 	 */
-	function get_minsalesorderdate($field, $custID = false, $shipID = false, $debug = false) {
+	function get_minsalesorderdate($field, $custID = false, $shipID = false, $filter, $filtertypes, $debug = false) {
 		$q = (new QueryBuilder())->table('oe_head');
 		$q->field($q->expr("MIN($field)"));
-		$q->where('sessionid', $sessionID);
-
+		
+		if (isset($filter['salesperson'])) {
+			$ordersquery = (new QueryBuilder())->table('oe_head');
+			$ordersquery->field('ordernumber');
+			$ordersquery->where(
+				$ordersquery
+				->orExpr()
+				->where('salesperson_1', $filter['salesperson'])
+				->where('salesperson_2', $filter['salesperson'])
+				->where('salesperson_3', $filter['salesperson'])
+			);
+			$q->where('ordernumber', $ordersquery);
+			unset($filter['salesperson']);
+		}
+		
 		if (!empty($custID)) {
 			$q->where('custid', $custID);
 
 			if (!(empty($shipID))) {
 				$q->where('shiptoid', $shipID);
 			}
-		}
-		if ($shipID) {
-			$q->where('shiptoid', $shipID);
 		}
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
@@ -1312,7 +1362,15 @@
 			return $sql->fetchColumn();
 		}
 	}
-
+	
+	/**
+	 * Returns an array of SalesOrderDetail for an Order
+	 * @param  string $sessionID Session Identifier
+	 * @param  string $ordn      Sales Order Number
+	 * @param  bool   $useclass  Use Class? Or return as array
+	 * @param  bool   $debug     Run in debug? If so return SQL Query
+	 * @return array             Sales Order Details
+	 */
 	function get_orderdetails($sessionID, $ordn, $useclass = false, $debug) {
 		$q = (new QueryBuilder())->table('ordrdet');
 		$q->where('sessionid', $sessionID);
@@ -1486,19 +1544,27 @@
 	 * 		'label' => 'order-date'
 	 * 	)
 	 * )
-	 * @param  string  $loginID     User Login ID, if blank, will use the current User
 	 * @param  bool    $debug       Run in debug? If so, return SQL Query
 	 * @return int                  Number of Orders that meet filter requirements
 	 */
-	function count_usersaleshistory($filter = false, $filterable = false, $loginID = '', $debug = false) {
-		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
-		$user = LogmUser::load($loginID);
+	function count_saleshistory($filter = false, $filterable = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field('COUNT(*)');
 
-		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
+		if (isset($filter['salesperson'])) {
+			$ordersquery = (new QueryBuilder())->table('saleshist');
+			$ordersquery->field('ordernumber');
+			$ordersquery->where(
+				$ordersquery
+				->orExpr()
+				->where('salesperson_1', $filter['salesperson'])
+				//->where('salesperson_2', $filter['salesperson'])
+				//->where('salesperson_3', $filter['salesperson'])
+			);
+			$q->where('ordernumber', $ordersquery);
+			unset($filter['salesperson']);
 		}
+		
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filterable);
 		}
@@ -1535,19 +1601,27 @@
 	 * 		'label' => 'order-date'
 	 * 	)
 	 * )
-	 * @param  string $loginID       User Login ID, if blank, will use the current User
 	 * @param  bool   $useclass      Return records as a SalesOrderHistory object? (or array)
 	 * @param  bool   $debug         Run in debug?
 	 * @return array                 array of SalesOrderHistory objects | array of sales history orders as arrays
 	 */
-	function get_usersaleshistory($limit = 10, $page = 1, $filter = false, $filterable = false, $loginID = '', $useclass = false, $debug = false) {
-		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
-		$user = LogmUser::load($loginID);
+	function get_saleshistory($limit = 10, $page = 1, $filter = false, $filterable = false, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 
-		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
+		if (isset($filter['salesperson'])) {
+			$ordersquery = (new QueryBuilder())->table('saleshist');
+			$ordersquery->field('ordernumber');
+			$ordersquery->where(
+				$ordersquery
+				->orExpr()
+				->where('salesperson_1', $filter['salesperson'])
+				//->where('salesperson_2', $filter['salesperson'])
+				//->where('salesperson_3', $filter['salesperson'])
+			);
+			$q->where('ordernumber', $ordersquery);
+			unset($filter['salesperson']);
 		}
+		
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filterable);
 		}
@@ -1591,447 +1665,33 @@
 	 * 		'label' => 'order-date'
 	 * 	)
 	 * )
-	 * @param  string $loginID       User Login ID, if blank, will use the current User
 	 * @param  bool   $useclass      Return records as a SalesOrderHistory object? (or array)
-	 * @param  bool   $debug         Run in debug?
+	 * @param  bool   $debug         Run in debug? If so return SQL Query
 	 * @return array                 array of SalesOrderHistory objects | array of sales history orders as arrays
 	 */
-	function get_usersaleshistoryorderby($limit = 10, $page = 1, $sortrule = 'ASC', $orderby, $filter = false, $filterable = false, $loginID = '', $useclass = false, $debug = false) {
-		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
-		$user = LogmUser::load($loginID);
-
+	function get_saleshistory_orderby($limit = 10, $page = 1, $sortrule = 'ASC', $orderby, $filter = false, $filterable = false, $useclass = true, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
-
-		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
+		
+		if (isset($filter['salesperson'])) {
+			$ordersquery = (new QueryBuilder())->table('saleshist');
+			$ordersquery->field('ordernumber');
+			$ordersquery->where(
+				$ordersquery
+				->orExpr()
+				->where('salesperson_1', $filter['salesperson'])
+				//->where('salesperson_2', $filter['salesperson'])
+				//->where('salesperson_3', $filter['salesperson'])
+			);
+			$q->where('ordernumber', $ordersquery);
+			unset($filter['salesperson']);
 		}
+
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filterable);
 		}
 		$q->order($orderby .' '. $sortrule);
 		$q->limit($limit, $q->generate_offset($page, $limit));
 
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrderHistory');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	/**
-	 * Returns an array of Sales History Records (sorted by invoice date) that meet the filter criteria
-	 * for the User
-	 * @param  int    $limit       Number of Records to return
-	 * @param  int    $page        Page Number to start from
-	 * @param  string $sortrule    Sort Rule ASC | DESC
-	 * @param  array  $filter      Array that contains the column and the values to filter for
-	 * ex. array(
-	 * 	'ordertotal' => array (123.64, 465.78)
-	 * )
-	 * @param  array   $filterable  Array that contains the filterable columns as keys, and the rules needed
-	 * ex. array(
-	 * 	'ordertotal' => array(
-	 * 		'querytype' => 'between',
-	 * 		'datatype' => 'numeric',
-	 * 		'label' => 'Order Total'
-	 * 	),
-	 * 	'orderdate' => array(
-	 * 		'querytype' => 'between',
-	 * 		'datatype' => 'date',
-	 * 		'date-format' => 'Ymd',
-	 * 		'label' => 'order-date'
-	 * 	)
-	 * )
-	 * @param  string $loginID     User Login ID, if blank, will use the current User
-	 * @param  bool   $useclass    Return records as a SalesOrderHistory object? (or array)
-	 * @param  bool   $debug       Run in debug?
-	 * @return array                 array of SalesOrderHistory objects | array of sales history orders as arrays
-	 */
-	function get_usersaleshistoryinvoicedate($limit = 10, $page = 1, $sortrule, $filter = false, $filterable = false, $loginID = '', $useclass = false, $debug = false) {
-		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
-		$user = LogmUser::load($loginID);
-		$q = (new QueryBuilder())->table('saleshist');
-		$q->field('saleshist.*');
-		$q->field($q->expr("STR_TO_DATE(invoice_date, '%Y%m%d') as dateofinvoice"));
-
-		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
-		}
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filterable);
-		}
-		$q->order('dateofinvoice ' . $sortrule);
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrderHistory');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-	/**
-	 * Returns an array of Sales History Records (sorted by invoice date) that meet the filter criteria
-	 * for the User
-	 * @param  int    $limit       Number of Records to return
-	 * @param  int    $page        Page Number to start from
-	 * @param  string $sortrule    Sort Rule ASC | DESC
-	 * @param  array  $filter      Array that contains the column and the values to filter for
-	 * ex. array(
-	 * 	'ordertotal' => array (123.64, 465.78)
-	 * )
-	 * @param  array   $filterable  Array that contains the filterable columns as keys, and the rules needed
-	 * ex. array(
-	 * 	'ordertotal' => array(
-	 * 		'querytype' => 'between',
-	 * 		'datatype' => 'numeric',
-	 * 		'label' => 'Order Total'
-	 * 	),
-	 * 	'orderdate' => array(
-	 * 		'querytype' => 'between',
-	 * 		'datatype' => 'date',
-	 * 		'date-format' => 'Ymd',
-	 * 		'label' => 'order-date'
-	 * 	)
-	 * )
-	 * @param  string $loginID     User Login ID, if blank, will use the current User
-	 * @param  bool   $useclass    Return records as a SalesOrderHistory object? (or array)
-	 * @param  bool   $debug       Run in debug?
-	 * @return array               array of SalesOrderHistory objects | array of sales history orders as arrays
-	 */
-	function get_usersaleshistoryorderdate($limit = 10, $page = 1, $sortrule, $filter = false, $filterable = false, $loginID = '', $useclass = false, $debug = false) {
-		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
-		$user = LogmUser::load($loginID);
-		$q = (new QueryBuilder())->table('saleshist');
-		$q->field('saleshist.*');
-		$q->field($q->expr("STR_TO_DATE(order_date, '%Y%m%d') as dateoforder"));
-
-		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
-		}
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filterable);
-		}
-		$q->order('dateoforder ' . $sortrule);
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrderHistory');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	/**
-	 * Returns the Number of Sales History orders that meet the filter criteria
-	 * for the User
-	 * @param  string $custID      Customer ID
-	 * @param  string $shiptoID    Customer Shipto ID
-	 * @param  array  $filter      Array that contains the column and the values to filter for
-	 * ex. array(
-	 * 	'ordertotal' => array (123.64, 465.78)
-	 * )
-	 * @param  array   $filterable  Array that contains the filterable columns as keys, and the rules needed
-	 * ex. array(
-	 * 	'ordertotal' => array(
-	 * 		'querytype' => 'between',
-	 * 		'datatype' => 'numeric',
-	 * 		'label' => 'Order Total'
-	 * 	),
-	 * 	'orderdate' => array(
-	 * 		'querytype' => 'between',
-	 * 		'datatype' => 'date',
-	 * 		'date-format' => 'Ymd',
-	 * 		'label' => 'order-date'
-	 * 	)
-	 * )
-	 * @param  string $loginID     User Login ID, if blank, will use the current User
-	 * @param  bool   $debug       Run in debug?
-	 * @return int                 Number of Sales History Records
-	 */
-	function count_customersaleshistory($custID, $shiptoID = '', $filter = false, $filterable = false, $loginID = '', $debug = false) {
-		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
-		$user = LogmUser::load($loginID);
-		$q = (new QueryBuilder())->table('saleshist');
-		$q->field('COUNT(*)');
-		$q->where('custid', $custID);
-
-		if (!empty($shiptoID)) {
-			$q->where('shiptoid', $shiptoID);
-		}
-
-		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
-		}
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filterable);
-		}
-
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			return $sql->fetchColumn();
-		}
-	}
-
-	/**
-	 * Returns an array of Sales History orders for a Customer that meet the filter criteria
-	 * for that User
-	 * @param  string $custID    Customer ID
-	 * @param  string $shiptoID  Customer Shipto ID
-	 * @param  int    $limit     Number of Records to return
-	 * @param  int    $page      Page to start offset from
-	 * @param  array  $filter    Array that contains the column and the values to filter for
-	 * ex. array(
-	 * 	'ordertotal' => array (123.64, 465.78)
-	 * )
-	 * @param  array   $filterable  Array that contains the filterable columns as keys, and the rules needed
-	 * ex. array(
-	 * 	'ordertotal' => array(
-	 * 		'querytype' => 'between',
-	 * 		'datatype' => 'numeric',
-	 * 		'label' => 'Order Total'
-	 * 	),
-	 * 	'orderdate' => array(
-	 * 		'querytype' => 'between',
-	 * 		'datatype' => 'date',
-	 * 		'date-format' => 'Ymd',
-	 * 		'label' => 'order-date'
-	 * 	)
-	 * )
-	 * @param  string $loginID    User Login ID, if blank, will use the current User
-	 * @param  bool   $useclass   Return records as a SalesOrderHistory object? (or array)
-	 * @param  bool   $debug      Run in debug?
-	 * @return array              array of SalesOrderHistory objects | array of sales history orders as arrays
-	 */
-	function get_customersaleshistory($custID, $shiptoID = '', $limit = 10, $page = 1, $filter = false, $filterable = false, $loginID = '', $useclass = false, $debug = false) {
-		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
-		$user = LogmUser::load($loginID);
-		$q = (new QueryBuilder())->table('saleshist');
-		$q->where('custid', $custID);
-
-		if (!empty($shiptoID)) {
-			$q->where('shiptoid', $shiptoID);
-		}
-		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
-		}
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filterable);
-		}
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrderHistory');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	/**
-	 * Returns an array of Sales History orders (sorted by a column) for a Customer that meet the filter criteria
-	 * for that User
-	 * @param  string $custID      Customer ID
-	 * @param  string $shiptoID    Customer Shipto ID
-	 * @param  int    $limit       Number of Records to return
-	 * @param  int    $page        Page Number to start offset from
-	 * @param  string $sortrule    Sort Rule ASC | DESC
-	 * @param  string $orderby     Column to sort on
-	 * @param  array  $filter      Array that contains the column and the values to filter for
-	 * ex. array(
-	 * 	'ordertotal' => array (123.64, 465.78)
-	 * )
-	 * @param  array   $filterable  Array that contains the filterable columns as keys, and the rules needed
-	 * ex. array(
-	 * 	'ordertotal' => array(
-	 * 		'querytype' => 'between',
-	 * 		'datatype' => 'numeric',
-	 * 		'label' => 'Order Total'
-	 * 	),
-	 * 	'orderdate' => array(
-	 * 		'querytype' => 'between',
-	 * 		'datatype' => 'date',
-	 * 		'date-format' => 'Ymd',
-	 * 		'label' => 'order-date'
-	 * 	)
-	 * )
-	 * @param  string $loginID    User Login ID, if blank, will use the current User
-	 * @param  bool   $useclass   Return records as a SalesOrderHistory object? (or array)
-	 * @param  bool   $debug      Run in debug?
-	 * @return array             array of SalesOrderHistory objects | array of sales history orders as arrays
-	 */
-	function get_customersaleshistoryorderby($custID, $shiptoID = '', $limit = 10, $page = 1, $sortrule, $orderby, $filter = false, $filterable = false, $loginID = '', $useclass = false, $debug = false) {
-		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
-		$user = LogmUser::load($loginID);
-		$q = (new QueryBuilder())->table('saleshist');
-		$q->where('custid', $custID);
-
-		if (!empty($shiptoID)) {
-			$q->where('shiptoid', $shiptoID);
-		}
-		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
-		}
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filterable);
-		}
-		$q->order($orderby .' '. $sortrule);
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrderHistory');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	/**
-	 * Returns an array of Sales History orders (sorted by invoice date) for a Customer that meet the filter criteria
-	 * for that User
-	 * @param  string $custID      Customer ID
-	 * @param  string $shiptoID    Customer Shipto ID
-	 * @param  int    $limit       Number of Records to return
-	 * @param  int    $page        Page Number to start offset from
-	 * @param  string $sortrule    Sort Rule ASC | DESC
-	 * @param  array  $filter      Array that contains the column and the values to filter for
-	 * ex. array(
-	 * 	'ordertotal' => array (123.64, 465.78)
-	 * )
-	 * @param  array   $filterable  Array that contains the filterable columns as keys, and the rules needed
-	 * ex. array(
-	 * 	'ordertotal' => array(
-	 * 		'querytype' => 'between',
-	 * 		'datatype' => 'numeric',
-	 * 		'label' => 'Order Total'
-	 * 	),
-	 * 	'orderdate' => array(
-	 * 		'querytype' => 'between',
-	 * 		'datatype' => 'date',
-	 * 		'date-format' => 'Ymd',
-	 * 		'label' => 'order-date'
-	 * 	)
-	 * )
-	 * @param  string $loginID    User Login ID, if blank, will use the current User
-	 * @param  bool   $useclass   Return records as a SalesOrderHistory object? (or array)
-	 * @param  bool   $debug      Run in debug?
-	 * @return array             array of SalesOrderHistory objects | array of sales history orders as arrays
-	 */
-	function get_customersaleshistoryinvoicedate($custID, $shiptoID = '', $limit = 10, $page = 1, $sortrule, $filter = false, $filterable = false, $loginID= '', $useclass = false, $debug = false) {
-		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
-		$user = LogmUser::load($loginID);
-		$q = (new QueryBuilder())->table('saleshist');
-		$q->field('saleshist.*');
-		$q->field($q->expr("STR_TO_DATE(invoice_date, '%Y%m%d') as dateofinvoice"));
-		$q->where('custid', $custID);
-
-		if (!empty($shiptoID)) {
-			$q->where('shiptoid', $shiptoID);
-		}
-		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
-		}
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filterable);
-		}
-		$q->order('dateofinvoice ' . $sortrule);
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrderHistory');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	/**
-	 * Returns an array of Sales History orders (sorted by order date) for a Customer that meet the filter criteria
-	 * for that User
-	 * @param  string $custID      Customer ID
-	 * @param  string $shiptoID    Customer Shipto ID
-	 * @param  int    $limit       Number of Records to return
-	 * @param  int    $page        Page Number to start offset from
-	 * @param  string $sortrule    Sort Rule ASC | DESC
-	 * @param  array  $filter      Array that contains the column and the values to filter for
-	 * ex. array(
-	 * 	'ordertotal' => array (123.64, 465.78)
-	 * )
-	 * @param  array   $filterable  Array that contains the filterable columns as keys, and the rules needed
-	 * ex. array(
-	 * 	'ordertotal' => array(
-	 * 		'querytype' => 'between',
-	 * 		'datatype' => 'numeric',
-	 * 		'label' => 'Order Total'
-	 * 	),
-	 * 	'orderdate' => array(
-	 * 		'querytype' => 'between',
-	 * 		'datatype' => 'date',
-	 * 		'date-format' => 'Ymd',
-	 * 		'label' => 'order-date'
-	 * 	)
-	 * )
-	 * @param  string $loginID    User Login ID, if blank, will use the current User
-	 * @param  bool   $useclass   Return records as a SalesOrderHistory object? (or array)
-	 * @param  bool   $debug      Run in debug?
-	 * @return array             array of SalesOrderHistory objects | array of sales history orders as arrays
-	 */
-	function get_customersaleshistoryorderdate($custID, $shiptoID = '', $limit = 10, $page = 1, $sortrule, $filter = false, $filterable = false, $loginID = '', $useclass = false, $debug = false) {
-		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
-		$user = LogmUser::load($loginID);
-		$q = (new QueryBuilder())->table('saleshist');
-		$q->field('saleshist.*');
-		$q->field($q->expr("STR_TO_DATE(order_date, '%Y%m%d') as dateoforder"));
-		$q->where('custid', $custID);
-
-		if (!empty($shiptoID)) {
-			$q->where('shiptoid', $shiptoID);
-		}
-		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) {
-			$q->where('salesperson_1', DplusWire::wire('user')->salespersonid);
-		}
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filterable);
-		}
-		$q->order('dateoforder ' . $sortrule);
-		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
@@ -2048,28 +1708,15 @@
 /* =============================================================
 	QUOTES FUNCTIONS
 ============================================================ */
-	function hasaquotelocked($sessionID) {
-		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT COUNT(*) FROM quotelock WHERE sessionid = :sessionID");
-		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
-		$sql->execute($switching);
-		return $sql->fetchColumn();
-	}
-
-	function getlockedquotenbr($sessionID) {
-		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT quotenbr FROM quotelock WHERE sessionid = :sessionID");
-		$switching = array(':sessionID' => $sessionID); $withquotes = array(true);
-		$sql->execute($switching);
-		return $sql->fetchColumn();
-	}
-
-	function caneditquote($sessionID, $qnbr) {
-		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT COUNT(*) FROM quotelock WHERE sessionid = :sessionID AND quotenbr = :qnbr");
-		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr);
-		$sql->execute($switching);
-		return $sql->fetchColumn();
-	}
-
-	function count_userquotes($sessionID, $filter = false, $filtertypes = false, $debug = false) {
+	/**
+	 * Returns the Number of Quotes that match filter
+	 * @param  string  $sessionID   Session Identifier
+	 * @param  array   $filter      Array that contains the column and the values to filter for
+	 * @param  array   $filtertypes Array that contains the filterable columns as keys, and the rules needed
+	 * @param  bool    $debug       Run in debug? If so return SQL Query
+	 * @return int                  Number of Quotes 
+	 */
+	function count_quotes($sessionID, $filter = false, $filtertypes = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$expression = $q->expr('IF (COUNT(*) = 1, 1, IF(COUNT(DISTINCT(custid)) > 1, COUNT(*), 0)) as count');
 		if (!empty($filter)) {
@@ -2077,6 +1724,22 @@
 		}
 		$q->field($expression);
 		$q->where('sessionid', $sessionID);
+		
+		
+		if (isset($filter['salesperson'])) {
+			$quotesquery = (new QueryBuilder())->table('quothed');
+			$quotesquery->field('quotnbr');
+			$quotesquery->where(
+				$quotesquery
+				->orExpr()
+				->where('sp1', $filter['salesperson'])
+				->where('sp2', $filter['salesperson'])
+				->where('sp3', $filter['salesperson'])
+			);
+			$q->where('quotnbr', $quotesquery);
+			unset($filter['salesperson']);
+		}
+		
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
 		}
@@ -2089,19 +1752,40 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function get_maxquotetotal($sessionID, $custID = false, $shipID = false, $debug = false) {
+	
+	/**
+	 * Returns the Max Quote Total
+	 * @param  string  $sessionID   Session Identifier
+	 * @param  array   $filter      Array that contains the column and the values to filter for
+	 * @param  array   $filtertypes Array that contains the filterable columns as keys, and the rules needed
+	 * @param  bool    $debug       Run in debug? If so return SQL Query
+	 * @return float               Max Quote Total
+	 */
+	function get_maxquotetotal($sessionID, $filter = false, $filtertypes = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field($q->expr('MAX(ordertotal)'));
 		$q->where('sessionid', $sessionID);
-
-		if (!empty($custID)) {
-			$q->where('custid', $custID);
-
-			if (!empty($shipID)) {
-				$q->where('shiptoid', $shipID);
+		
+		if (isset($filter['salesperson'])) {
+			$quotesquery = (new QueryBuilder())->table('quothed');
+			$quotesquery->field('quotnbr');
+			$quotesquery->where(
+				$quotesquery
+				->orExpr()
+				->where('sp1', $filter['salesperson'])
+				->where('sp2', $filter['salesperson'])
+				->where('sp3', $filter['salesperson'])
+			);
+			$q->where('quotnbr', $quotesquery);
+			unset($filter['salesperson']);
+		}
+		
+		if (!empty($filter)) {
+			if (isset($filter['custid'])) {
+				$q->where('custid', $filter['custid']);
 			}
 		}
+		
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2110,19 +1794,40 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function get_minquotetotal($sessionID, $custID = false, $shipID = false, $debug = false) {
+	
+	/**
+	 * Returns the Min Quote Total
+	 * @param  string  $sessionID   Session Identifier
+	 * @param  array   $filter      Array that contains the column and the values to filter for
+	 * @param  array   $filtertypes Array that contains the filterable columns as keys, and the rules needed
+	 * @param  bool    $debug       Run in debug? If so return SQL Query
+	 * @return float               Min Quote Total
+	 */
+	function get_minquotetotal($sessionID, $filter = false, $filtertypes = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field($q->expr('MIN(ordertotal)'));
 		$q->where('sessionid', $sessionID);
-
-		if (!empty($custID)) {
-			$q->where('custid', $custID);
-
-			if (!empty($shipID)) {
-				$q->where('shiptoid', $shipID);
+		
+		if (isset($filter['salesperson'])) {
+			$quotesquery = (new QueryBuilder())->table('quothed');
+			$quotesquery->field('quotnbr');
+			$quotesquery->where(
+				$quotesquery
+				->orExpr()
+				->where('sp1', $filter['salesperson'])
+				->where('sp2', $filter['salesperson'])
+				->where('sp3', $filter['salesperson'])
+			);
+			$q->where('quotnbr', $quotesquery);
+			unset($filter['salesperson']);
+		}
+		
+		if (!empty($filter)) {
+			if (isset($filter['custid'])) {
+				$q->where('custid', $filter['custid']);
 			}
 		}
+		
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
@@ -2131,13 +1836,39 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function get_minquotedate($sessionID, $field, $custID = false, $debug = false) {
+	
+	/**
+	 * Returns the Min Quote Date
+	 * @param  string  $sessionID   Session Identifier
+	 * @param  string  $field       Date Column
+	 * @param  array   $filter      Array that contains the column and the values to filter for
+	 * @param  array   $filtertypes Array that contains the filterable columns as keys, and the rules needed
+	 * @param  bool    $debug       Run in debug? If so return SQL Query
+	 * @return string               Min Quote Date
+	 */
+	function get_minquotedate($sessionID, $field, $filter = false, $filtertypes = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field($q->expr("MIN(STR_TO_DATE($field, '%m/%d/%Y'))"));
 		$q->where('sessionid', $sessionID);
-		if ($custID) {
-			$q->where('custid', $custID);
+		
+		if (isset($filter['salesperson'])) {
+			$quotesquery = (new QueryBuilder())->table('quothed');
+			$quotesquery->field('quotnbr');
+			$quotesquery->where(
+				$quotesquery
+				->orExpr()
+				->where('sp1', $filter['salesperson'])
+				->where('sp2', $filter['salesperson'])
+				->where('sp3', $filter['salesperson'])
+			);
+			$q->where('quotnbr', $quotesquery);
+			unset($filter['salesperson']);
+		}
+		
+		if (!empty($filter)) {
+			if (isset($filter['custid'])) {
+				$q->where('custid', $filter['custid']);
+			}
 		}
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
@@ -2148,280 +1879,14 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function get_userquotes($sessionID, $limit, $page = 1, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
-		$q = (new QueryBuilder())->table('quothed');
-		$q->field('quothed.*');
-		$q->where('sessionid', $sessionID);
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
-		}
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'Quote');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	function get_userquotesquotedate($sessionID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
-		$q = (new QueryBuilder())->table('quothed');
-		$q->field('quothed.*');
-		$q->field($q->expr("STR_TO_DATE(quotdate, '%m/%d/%Y') as quotedate"));
-		$q->where('sessionid', $sessionID);
-
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
-		}
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$q->order('quotedate', $sortrule);
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'Quote');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	function get_userquotesrevdate($sessionID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
-		$q = (new QueryBuilder())->table('quothed');
-		$q->field('quothed.*');
-		$q->field($q->expr("STR_TO_DATE(revdate, '%m/%d/%Y') as reviewdate"));
-		$q->where('sessionid', $sessionID);
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
-		}
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$q->order('reviewdate', $sortrule);
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'Quote');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	function get_userquotesexpdate($sessionID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
-		$q = (new QueryBuilder())->table('quothed');
-		$q->field('quothed.*');
-		$q->field($q->expr("STR_TO_DATE(expdate, '%m/%d/%Y') as expiredate"));
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
-		}
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$q->order('expiredate', $sortrule);
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'Quote');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	function get_userquotesorderby($sessionID, $limit = 10, $page = 1, $sortrule, $orderby, $filter = false, $filtertypes = false, $useclass = true, $debug = false) {
-		$q = (new QueryBuilder())->table('quothed');
-		$q->field('quothed.*');
-		$q->where('sessionid', $sessionID);
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
-		}
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$q->order($orderby, $sortrule);
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'Quote');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	function count_customerquotes($sessionID, $custID, $shipID, $filter = false, $filtertypes = false, $debug = false) {
-		$q = (new QueryBuilder())->table('quothed');
-		$q->field('COUNT(*)');
-		$q->where('sessionid', $sessionID);
-		$q->where('custid', $custID);
-		if (!empty($shipID)) {
-			$q->where('shiptoid', $shipID);
-		}
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
-		}
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			return $sql->fetchColumn();
-		}
-	}
-
-	function get_customerquotes($sessionID, $custID, $shipID, $limit = 10, $page = 1, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
-		$q = (new QueryBuilder())->table('quothed');
-		$q->where('sessionid', $sessionID);
-		$q->where('custid', $custID);
-		if (!empty($shipID)) {
-			$q->where('shiptoid', $shipID);
-		}
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
-		}
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'Quote');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	function get_customerquotesquotedate($sessionID, $custID, $shipID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
-		$q = (new QueryBuilder())->table('quothed');
-		$q->field('quothed.*');
-		$q->field($q->expr("STR_TO_DATE(quotdate, '%m/%d/%Y') as quotedate"));
-		$q->where('sessionid', $sessionID);
-		$q->where('custid', $custID);
-		if (!empty($shipID)) {
-			$q->where('shiptoid', $shipID);
-		}
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
-		}
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$q->order('quotedate', $sortrule);
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'Quote');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	function get_customerquotesrevdate($sessionID, $custID, $shipID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
-		$q = (new QueryBuilder())->table('quothed');
-		$q->field('quothed.*');
-		$q->field($q->expr("STR_TO_DATE(revdate, '%m/%d/%Y') as reviewdate"));
-		$q->where('sessionid', $sessionID);
-		$q->where('custid', $custID);
-		if (!empty($shipID)) {
-			$q->where('shiptoid', $shipID);
-		}
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
-		}
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$q->order('reviewdate', $sortrule);
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'Quote');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	function get_customerquotesexpdate($sessionID, $custID, $shipID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
-		$q = (new QueryBuilder())->table('quothed');
-		$q->field('quothed.*');
-		$q->field($q->expr("STR_TO_DATE(expdate, '%m/%d/%Y') as expiredate"));
-		$q->where('sessionid', $sessionID);
-		$q->where('custid', $custID);
-		if (!empty($shipID)) {
-			$q->where('shiptoid', $shipID);
-		}
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
-		}
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$q->order('expiredate', $sortrule);
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'Quote');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
-	function get_customerquotesorderby($sessionID, $custID, $shipID, $limit = 10, $page = 1, $sortrule, $orderby, $filter = false, $filtertypes = false, $useclass = true, $debug = false) {
-		$q = (new QueryBuilder())->table('quothed');
-		$q->where('sessionid', $sessionID);
-		$q->where('custid', $custID);
-		if (!empty($shipID)) {
-			$q->where('shiptoid', $shipID);
-		}
-		if (!empty($filter)) {
-			$q->generate_filters($filter, $filtertypes);
-		}
-		$q->limit($limit, $q->generate_offset($page, $limit));
-		$q->order($orderby, $sortrule);
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			if ($useclass) {
-				$sql->setFetchMode(PDO::FETCH_CLASS, 'Quote');
-				return $sql->fetchAll();
-			}
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
-		}
-	}
-
+	
+	/**
+	 * Returns Customer ID from Quote
+	 * @param  string $sessionID Session Identifier
+	 * @param  string $qnbr      Quote Number
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return string            Customer ID from Quote
+	 */
 	function get_custidfromquote($sessionID, $qnbr, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('custid');
@@ -2436,7 +1901,14 @@
 			return $sql->fetchColumn();
 		}
 	}
-
+	
+	/**
+	 * Returns Customer Shipto ID from Quote
+	 * @param  string $sessionID Session Identifier
+	 * @param  string $qnbr      Quote Number
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return string            Customer Shipto ID from Quote
+	 */
 	function get_shiptoidfromquote($sessionID, $qnbr, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field('shiptoid');
@@ -2449,6 +1921,252 @@
 		} else {
 			$sql->execute($q->params);
 			return $sql->fetchColumn();
+		}
+	}
+	
+	/**
+	 * Returns the Quotes that meet the filter criteria
+	 * @param  string $sessionID   Session Identifier
+	 * @param  int    $limit       Number of Quotes to Return
+	 * @param  int    $page        Page to Generate offset for
+	 * @param  array  $filter      Array that contains the column and the values to filter for
+	 * @param  array  $filtertypes Array that contains the filterable columns as keys, and the rules needed
+	 * @param  bool   $useclass    Return Quote as Quote | array
+	 * @param  bool   $debug       Run in debug? If so, return SQL Query
+	 * @return array               Quotes
+	 */
+	function get_quotes($sessionID, $limit, $page = 1, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
+		$q = (new QueryBuilder())->table('quothed');
+		$q->where('sessionid', $sessionID);
+		
+		if (isset($filter['salesperson'])) {
+			$quotesquery = (new QueryBuilder())->table('quothed');
+			$quotesquery->field('quotnbr');
+			$quotesquery->where(
+				$quotesquery
+				->orExpr()
+				->where('sp1', $filter['salesperson'])
+				->where('sp2', $filter['salesperson'])
+				->where('sp3', $filter['salesperson'])
+			);
+			$q->where('quotnbr', $quotesquery);
+			unset($filter['salesperson']);
+		}
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
+		$q->limit($limit, $q->generate_offset($page, $limit));
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			if ($useclass) {
+				$sql->setFetchMode(PDO::FETCH_CLASS, 'Quote');
+				return $sql->fetchAll();
+			}
+			return $sql->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}
+	
+	/**
+	 * Returns the Quotes that meet the filter criteria, and Sorted by Quote Date
+	 * @param  string $sessionID   Session Identifier
+	 * @param  int    $limit       Number of Quotes to Return
+	 * @param  int    $page        Page to Generate offset for
+	 * @param  string $sortrule    Sort ASC | DESC
+	 * @param  array  $filter      Array that contains the column and the values to filter for
+	 * @param  array  $filtertypes Array that contains the filterable columns as keys, and the rules needed
+	 * @param  bool   $useclass    Return Quote as Quote | array
+	 * @param  bool   $debug       Run in debug? If so, return SQL Query
+	 * @return array               Quotes
+	 */
+	function get_quotes_orderby_quotedate($sessionID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
+		$q = (new QueryBuilder())->table('quothed');
+		$q->field('quothed.*');
+		$q->field($q->expr("STR_TO_DATE(quotdate, '%m/%d/%Y') as quotedate"));
+		$q->where('sessionid', $sessionID);
+		
+		if (isset($filter['salesperson'])) {
+			$quotesquery = (new QueryBuilder())->table('quothed');
+			$quotesquery->field('quotnbr');
+			$quotesquery->where(
+				$quotesquery
+				->orExpr()
+				->where('sp1', $filter['salesperson'])
+				->where('sp2', $filter['salesperson'])
+				->where('sp3', $filter['salesperson'])
+			);
+			$q->where('quotnbr', $quotesquery);
+			unset($filter['salesperson']);
+		}
+		
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
+		$q->limit($limit, $q->generate_offset($page, $limit));
+		$q->order('quotedate', $sortrule);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			if ($useclass) {
+				$sql->setFetchMode(PDO::FETCH_CLASS, 'Quote');
+				return $sql->fetchAll();
+			}
+			return $sql->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}
+	
+	/**
+	 * Returns the Quotes that meet the filter criteria, and Sorted by Review Date
+	 * @param  string $sessionID   Session Identifier
+	 * @param  int    $limit       Number of Quotes to Return
+	 * @param  int    $page        Page to Generate offset for
+	 * @param  string $sortrule    Sort ASC | DESC
+	 * @param  array  $filter      Array that contains the column and the values to filter for
+	 * @param  array  $filtertypes Array that contains the filterable columns as keys, and the rules needed
+	 * @param  bool   $useclass    Return Quote as Quote | array
+	 * @param  bool   $debug       Run in debug? If so, return SQL Query
+	 * @return array               Quotes
+	 */
+	function get_quotes_orderby_revdate($sessionID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
+		$q = (new QueryBuilder())->table('quothed');
+		$q->field('quothed.*');
+		$q->field($q->expr("STR_TO_DATE(revdate, '%m/%d/%Y') as reviewdate"));
+		$q->where('sessionid', $sessionID);
+		
+		if (isset($filter['salesperson'])) {
+			$quotesquery = (new QueryBuilder())->table('quothed');
+			$quotesquery->field('quotnbr');
+			$quotesquery->where(
+				$quotesquery
+				->orExpr()
+				->where('sp1', $filter['salesperson'])
+				->where('sp2', $filter['salesperson'])
+				->where('sp3', $filter['salesperson'])
+			);
+			$q->where('quotnbr', $quotesquery);
+			unset($filter['salesperson']);
+		}
+		
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
+		$q->limit($limit, $q->generate_offset($page, $limit));
+		$q->order('reviewdate', $sortrule);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			if ($useclass) {
+				$sql->setFetchMode(PDO::FETCH_CLASS, 'Quote');
+				return $sql->fetchAll();
+			}
+			return $sql->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}
+	/**
+	 * Returns the Quotes that meet the filter criteria, and Sorted Expiration Date
+	 * @param  string $sessionID   Session Identifier
+	 * @param  int    $limit       Number of Quotes to Return
+	 * @param  int    $page        Page to Generate offset for
+	 * @param  string $sortrule    Sort ASC | DESC
+	 * @param  array  $filter      Array that contains the column and the values to filter for
+	 * @param  array  $filtertypes Array that contains the filterable columns as keys, and the rules needed
+	 * @param  bool   $useclass    Return Quote as Quote | array
+	 * @param  bool   $debug       Run in debug? If so, return SQL Query
+	 * @return array               Quotes
+	 */
+	function get_quotes_orderby_expdate($sessionID, $limit = 10, $page = 1, $sortrule, $filter = false, $filtertypes = false, $useclass = false, $debug = false) {
+		$q = (new QueryBuilder())->table('quothed');
+		$q->field('quothed.*');
+		$q->field($q->expr("STR_TO_DATE(expdate, '%m/%d/%Y') as expiredate"));
+		
+		if (isset($filter['salesperson'])) {
+			$quotesquery = (new QueryBuilder())->table('quothed');
+			$quotesquery->field('quotnbr');
+			$quotesquery->where(
+				$quotesquery
+				->orExpr()
+				->where('sp1', $filter['salesperson'])
+				->where('sp2', $filter['salesperson'])
+				->where('sp3', $filter['salesperson'])
+			);
+			$q->where('quotnbr', $quotesquery);
+			unset($filter['salesperson']);
+		}
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
+		$q->limit($limit, $q->generate_offset($page, $limit));
+		$q->order('expiredate', $sortrule);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			if ($useclass) {
+				$sql->setFetchMode(PDO::FETCH_CLASS, 'Quote');
+				return $sql->fetchAll();
+			}
+			return $sql->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}
+	
+	/**
+	 * Returns the Quotes that meet the filter criteria, and Sorted by $column
+	 * @param  string $sessionID   Session Identifier
+	 * @param  int    $limit       Number of Quotes to Return
+	 * @param  int    $page        Page to Generate offset for
+	 * @param  string $sortrule    Sort ASC | DESC
+	 * @param  string $orderby     Column to Order By
+	 * @param  array  $filter      Array that contains the column and the values to filter for
+	 * @param  array  $filtertypes Array that contains the filterable columns as keys, and the rules needed
+	 * @param  bool   $useclass    Return Quote as Quote | array
+	 * @param  bool   $debug       Run in debug? If so, return SQL Query
+	 * @return array               Quotes
+	 */
+	function get_quotes_orderby($sessionID, $limit = 10, $page = 1, $sortrule = 'ASC', $orderby, $filter = false, $filtertypes = false, $useclass = true, $debug = false) {
+		$q = (new QueryBuilder())->table('quothed');
+		$q->field('quothed.*');
+		$q->where('sessionid', $sessionID);
+		
+		if (isset($filter['salesperson'])) {
+			$quotesquery = (new QueryBuilder())->table('quothed');
+			$quotesquery->field('quotnbr');
+			$quotesquery->where(
+				$quotesquery
+				->orExpr()
+				->where('sp1', $filter['salesperson'])
+				->where('sp2', $filter['salesperson'])
+				->where('sp3', $filter['salesperson'])
+			);
+			$q->where('quotnbr', $quotesquery);
+			unset($filter['salesperson']);
+		}
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
+		}
+		$q->limit($limit, $q->generate_offset($page, $limit));
+		$q->order($orderby, $sortrule);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			if ($useclass) {
+				$sql->setFetchMode(PDO::FETCH_CLASS, 'Quote');
+				return $sql->fetchAll();
+			}
+			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
 
@@ -2469,12 +2187,30 @@
 			return $sql->fetch(PDO::FETCH_ASSOC);
 		}
 	}
+	
+	function count_quotedetails($sessionID, $qnbr, $debug = false) {
+		$q = (new QueryBuilder())->table('quotdet');
+		$q->field($q->expr('COUNT(*)'));
+		$q->where('quotenbr', $qnbr);
+		$q->where('sessionid', $sessionID);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
-	function get_quotedetails($sessionID, $qnbr, $useclass, $debug) {
-		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM quotdet WHERE sessionid = :sessionID AND quotenbr = :qnbr");
-		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr); $withquotes = array(true, true);
 		if ($debug) {
-			returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery();
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+	
+	function get_quotedetails($sessionID, $qnbr, $useclass = false, $debug) {
+		$q = (new QueryBuilder())->table('quothed');
+		$q->where('sessionid', $sessionID);
+		$q->where('quotenbr', $qnbr);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($switching);
 			if ($useclass) {
@@ -2484,18 +2220,7 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-
-	function get_quoteline($sessionID, $qnbr, $line, $debug) {
-		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM quotdet WHERE sessionid = :sessionID AND quotenbr = :qnbr AND linenbr = :line");
-		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr, ':line' => $line); $withquotes = array(true, true, true);
-		if ($debug) {
-			return	returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return $sql->fetch(PDO::FETCH_ASSOC);
-		}
-	}
-
+	
 	function get_quotedetail($sessionID, $qnbr, $linenbr, $debug = false) {
 		$q = (new QueryBuilder())->table('quotdet');
 		$q->where('sessionid', $sessionID);
@@ -2512,17 +2237,6 @@
 		}
 	}
 
-	function getquotelinedetail($sessionID, $qnbr, $line, $debug) {
-		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM quotdet WHERE sessionid = :sessionID AND quotenbr = :qnbr AND linenbr = :linenbr");
-		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr, ':linenbr' => $line); $withquotes = array(true, true, true);
-		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
-		} else {
-			$sql->execute($switching);
-			return $sql->fetch(PDO::FETCH_ASSOC);
-		}
-	}
-
 	function nextquotelinenbr($sessionID, $qnbr) {
 		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT MAX(linenbr) FROM quotdet WHERE sessionid = :sessionID AND quotenbr = :qnbr ");
 		$switching = array(':sessionID' => $sessionID, ':qnbr' => $qnbr); $withquotes = array(true, true);
@@ -2530,20 +2244,7 @@
 		return intval($sql->fetchColumn()) + 1;
 	}
 
-	function count_quotedetails($sessionID, $qnbr, $debug = false) {
-		$q = (new QueryBuilder())->table('quotdet');
-		$q->field($q->expr('COUNT(*)'));
-		$q->where('quotenbr', $qnbr);
-		$q->where('sessionid', $sessionID);
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery();
-		} else {
-			$sql->execute($q->params);
-			return $sql->fetchColumn();
-		}
-	}
+	
 
 	function edit_quotehead($sessionID, $qnbr, Quote $quote, $debug = false) {
 		$originalquote = Quote::load($sessionID, $qnbr);

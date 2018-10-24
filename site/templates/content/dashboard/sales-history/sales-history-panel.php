@@ -1,18 +1,23 @@
 <?php
-	$orderpanel = new Dplus\Dpluso\OrderDisplays\SalesOrderHistoryPanel(session_id(), $page->fullURL, '#ajax-modal', '#sales-history-panel', $config->ajax);
-	$orderpanel->pagenbr = $input->pageNum;
-	$orderpanel->activeID = !empty($input->get->ordn) ? $input->get->text('ordn') : false;
+	use Dplus\Dpluso\OrderDisplays\SalesOrderHistoryPanel;
+	use Dplus\Content\Paginator;
+	
+	$orderpanel = new SalesOrderHistoryPanel(session_id(), $page->fullURL, '#ajax-modal', '#sales-history-panel', $config->ajax);
+	$orderpanel->set('pagenbr', $input->pageNum);
+	$orderpanel->set('activeID', !empty($input->get->ordn) ? $input->get->text('ordn') : false);
 	$orderpanel->generate_filter($input);
 	$orderpanel->get_ordercount();
 
-	$paginator = new Dplus\Content\Paginator($orderpanel->pagenbr, $orderpanel->count, $orderpanel->pageurl->getUrl(), $orderpanel->paginationinsertafter, $orderpanel->ajaxdata);
+	$paginator = new Paginator($orderpanel->pagenbr, $orderpanel->count, $orderpanel->pageurl->getUrl(), $orderpanel->paginationinsertafter, $orderpanel->ajaxdata);
 ?>
 <div class="panel panel-primary not-round" id="sales-history-panel">
 	 <div class="panel-heading not-round" id="sales-history-panel-heading">
 		<?php if (!empty($orderpanel->filters)) : ?>
-			<a href="#orders-div" data-parent="#sales-history-panel" data-toggle="collapse">
+			<a href="#sales-history-div" data-parent="#sales-history-panel" data-toggle="collapse">
 				<?= $orderpanel->generate_filterdescription(); ?> <span class="caret"></span> <span class="badge"><?= $orderpanel->count; ?></span> &nbsp; | &nbsp;
-				<?= $orderpanel->generate_refreshlink(); ?>
+				<a href="<?= $orderpanel->generate_loadurl(); ?>" class="generate-load-link" data-loadinto="<?= $orderpanel->loadinto; ?>" data-focus="<?= $orderpanel->focus; ?>">
+					<i class="fa fa-refresh" aria-hidden="true"></i> Refresh Orders
+				</a>
 			</a>
 		<?php elseif ($orderpanel->count > 0) : ?>
 			<a href="#sales-history-div" data-parent="#sales-history-panel" data-toggle="collapse">Your Shipped Orders<span class="caret"></span></a> &nbsp; <span class="badge"> <?= $orderpanel->count; ?></span>

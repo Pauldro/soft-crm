@@ -27,13 +27,13 @@
 			<div class="input-group form-group">
 				<input class="form-control form-group inline input-sm" type="text" name="subtotal[]" id="quote-total-min" value="<?= $quotepanel->get_filtervalue('subtotal'); ?>" placeholder="From Quote Total">
 				<span class="input-group-btn">
-					<button type="button" class="btn btn-default btn-sm not-round" onclick="$('#quote-total-min').val('<?= get_minquotetotal(session_id()); ?>')"> <span class="fa fa-angle-double-down" aria-hidden="true"></span> <span class="sr-only">Search</span> </button>
+					<button type="button" class="btn btn-default btn-sm not-round" onclick="$('#quote-total-min').val('<?= $quotepanel->get_minquotetotal(); ?>')"> <span class="fa fa-angle-double-down" aria-hidden="true"></span> <span class="sr-only">Search</span> </button>
 				</span>
 			</div>
 			<div class="input-group form-group">
 				<input class="form-control form-group inline input-sm" type="text" name="subtotal[]" id="quote-total-max" value="<?= $quotepanel->get_filtervalue('subtotal', 1); ?>" placeholder="Through Quote Total">
 				<span class="input-group-btn">
-					<button type="button" class="btn btn-default btn-sm not-round" onclick="$('#quote-total-max').val('<?= get_maxquotetotal(session_id()); ?>')"> <span class="fa fa-angle-double-up" aria-hidden="true"></span> <span class="sr-only">Search</span> </button>
+					<button type="button" class="btn btn-default btn-sm not-round" onclick="$('#quote-total-max').val('<?= $quotepanel->get_maxquotetotal(); ?>')"> <span class="fa fa-angle-double-up" aria-hidden="true"></span> <span class="sr-only">Search</span> </button>
 				</span>
 			</div>
 		</div>
@@ -74,7 +74,9 @@
 	</div>
 	<?php if ($input->get->filter) : ?>
 		<div>
-			<?= $quotepanel->generate_clearsearchlink(); ?>
+			<a href="<?= $quotepanel->generate_loadurl(); ?>" class="generate-load-link btn btn-warning btn-block" data-loadinto="<?= $quotepanel->loadinto; ?>" data-focus="<?= $quotepanel->focus; ?>">
+				Clear Search <i class="fa fa-search-minus" aria-hidden="true"></i>
+			</a>
 		</div>
 	<?php endif; ?>
 </form>

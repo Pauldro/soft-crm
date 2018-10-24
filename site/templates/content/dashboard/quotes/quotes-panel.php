@@ -1,11 +1,14 @@
 <?php
-	$quotepanel = new Dplus\Dpluso\OrderDisplays\RepQuotePanel(session_id(), $page->fullURL, '#ajax-modal', "#quotes-panel", $config->ajax);
-	$quotepanel->pagenbr = $input->pageNum;
-	$quotepanel->activeID = !empty($input->get->qnbr) ? $input->get->text('qnbr') : false;
+	use Dplus\Dpluso\OrderDisplays\QuotePanel;
+	use Dplus\Content\Paginator;
+	
+	$quotepanel = new QuotePanel(session_id(), $page->fullURL, '#ajax-modal', "#quotes-panel", $config->ajax);
+	$quotepanel->set('pagenbr', $input->pageNum);
+	$quotepanel->set('activeID', !empty($input->get->qnbr) ? $input->get->text('qnbr') : false);
 	$quotepanel->generate_filter($input);
 	$quotepanel->get_quotecount();
 	
-	$paginator = new Dplus\Content\Paginator($quotepanel->pagenbr, $quotepanel->count, $quotepanel->pageurl->getUrl(), $quotepanel->paginationinsertafter, $quotepanel->ajaxdata);
+	$paginator = new Paginator($quotepanel->pagenbr, $quotepanel->count, $quotepanel->pageurl->getUrl(), $quotepanel->paginationinsertafter, $quotepanel->ajaxdata);
 ?>
 <div class="panel panel-primary not-round" id="quotes-panel">
 	<div class="panel-heading not-round" id="quotes-panel-heading">
@@ -13,12 +16,18 @@
 			<a href="#quotes-div" data-parent="#quotes-panel" data-toggle="collapse">
 				<?= $quotepanel->generate_filterdescription(); ?> <span class="caret"></span> <span class="badge"><?= $quotepanel->count; ?></span> &nbsp; | &nbsp;
 			</a>
-			<?= $quotepanel->generate_refreshlink(); ?>
+			<a href="<?= $quotepanel->generate_loadurl(); ?>" class="generate-load-link" data-loadinto="<?= $quotepanel->loadinto; ?>" data-focus="<?= $quotepanel->focus; ?>">
+				<i class="fa fa-refresh" aria-hidden="true"></i> Refresh Quotes
+			</a>
 		<?php elseif ($quotepanel->count > 0) : ?>
 			<a href="#quotes-div" data-parent="#quotes-panel" data-toggle="collapse">Your Quotes <span class="caret"></span></a> &nbsp; <span class="badge"><?= $quotepanel->count; ?></span> &nbsp; | &nbsp;
-			<?= $quotepanel->generate_refreshlink(); ?>
+			<a href="<?= $quotepanel->generate_loadurl(); ?>" class="generate-load-link" data-loadinto="<?= $quotepanel->loadinto; ?>" data-focus="<?= $quotepanel->focus; ?>">
+				<i class="fa fa-refresh" aria-hidden="true"></i> Refresh Quotes
+			</a>
 		<?php else : ?>
-			<?= $quotepanel->generate_loadlink(); ?>
+			<a href="<?= $quotepanel->generate_loadurl(); ?>" class="generate-load-link" data-loadinto="<?= $quotepanel->loadinto; ?>" data-focus="<?= $quotepanel->focus; ?>">
+				Load Quotes
+			</a>
 		<?php endif; ?>
 		&nbsp; &nbsp;
 		<?= $quotepanel->generate_lastloadeddescription(); ?>

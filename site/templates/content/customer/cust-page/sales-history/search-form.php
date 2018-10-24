@@ -7,7 +7,7 @@
 			<input class="form-control form-group inline input-sm" type="text" name="ordernumber[]" value="<?= $orderpanel->get_filtervalue('ordernumber'); ?>" placeholder="From Order #">
 			<input class="form-control form-group inline input-sm" type="text" name="ordernumber[]" value="<?= $orderpanel->get_filtervalue('ordernumber', 1); ?>" placeholder="Through Order #">
 		</div>
-        <div class="col-sm-2">
+		<div class="col-sm-2">
 			<h4>Cust PO</h4>
 			<input class="form-control inline input-sm" type="text" name="custpo[]" value="<?= $orderpanel->get_filtervalue('custpo'); ?>" placeholder="Cust PO">
 		</div>
@@ -54,10 +54,12 @@
 		</div>
 		<div class="col-sm-12 form-group">
 			<?php if ($input->get->filter) : ?>
-		        <div>
-		            <?= $orderpanel->generate_clearsearchlink(); ?>
-		        </div>
-		    <?php endif; ?>
+				<div>
+					<a href="<?= $orderpanel->generate_loadurl(); ?>" class="generate-load-link btn btn-warning btn-block" data-loadinto="<?= $orderpanel->loadinto; ?>" data-focus="<?= $orderpanel->focus; ?>">
+						Clear Search <i class="fa fa-search-minus" aria-hidden="true"></i>
+					</a>
+				</div>
+			<?php endif; ?>
 		</div>
 	</div>
 </form>

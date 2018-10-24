@@ -36,7 +36,9 @@
 	<th colspan="2">
 		<?= $quotepanel->generate_iconlegend(); ?>
 		<?php if (isset($input->get->orderby)) : ?>
-			<?= $quotepanel->generate_clearsortlink(); ?>
+			<a href="<?= $quotepanel->generate_clearsorturl(); ?>" class="btn btn-warning btn-sm load-link" data-loadinto="<?= $quotepanel->loadinto; ?>" data-focus="<?= $quotepanel->focus; ?>">
+				Clear Sorting
+			</a>
 		<?php endif; ?>
 	</th>
 </tr>

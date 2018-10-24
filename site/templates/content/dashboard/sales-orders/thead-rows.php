@@ -30,7 +30,9 @@
 	 <th colspan="3">
 		<?= $orderpanel->generate_iconlegend(); ?>
 		<?php if (isset($input->get->orderby)) : ?>
-			<?= $orderpanel->generate_clearsortlink(); ?>
+			<a href="<?= $orderpanel->generate_clearsorturl(); ?>" class="btn btn-warning btn-sm load-link" data-loadinto="<?= $orderpanel->loadinto; ?>" data-focus="<?= $orderpanel->focus; ?>">
+				Clear Sorting
+			</a>
 		<?php endif; ?>
 	</th>
 </tr>
