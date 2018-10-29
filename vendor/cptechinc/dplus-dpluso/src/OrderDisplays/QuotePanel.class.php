@@ -93,7 +93,7 @@
 		 * @return string           Min Date
 		 */
 		public function get_mindate($datetype = 'quotdate', $debug = false) {
-			return get_minquotedate($this->sessionID, $datetype, $this->filters, $this->filterable, $debug);
+			return get_minquotedate($this->sessionID, $custID = '', $shiptoID = '', $datetype, $this->filters, $this->filterable, $debug);
 		}
 		
 		/**
@@ -102,7 +102,7 @@
 		 * @return float          Max Quote Total
 		 */
 		public function get_maxquotetotal($debug = false) {
-			return get_maxquotetotal($this->sessionID, $this->filters, $this->filterable, $debug);
+			return get_maxquotetotal($this->sessionID, $custID = '', $shiptoID = '', $this->filters, $this->filterable, $debug);
 		}
 		
 		/**
@@ -111,7 +111,7 @@
 		 * @return float          Miin Quote Total
 		 */
 		public function get_minquotetotal($debug = false) {
-			return get_minquotetotal($this->sessionID, $this->filters, $this->filterable, $debug);
+			return get_minquotetotal($this->sessionID, $custID = '', $shiptoID = '', $this->filters, $this->filterable, $debug);
 		}
 
 		/**

@@ -5,7 +5,9 @@
 	use Dplus\Content\FormMaker;
 	use Dplus\Base\DplusDateTime;
 	
-	// Use Statements for Model Classes which are non-namespaced
+	/**
+	 * Use Statements for Model Classes which are non-namespaced
+	 */
 	use Order, OrderDetail;
 	
 	class SalesOrderHistoryPanel extends SalesOrderPanel {
@@ -91,6 +93,34 @@
 			}
 			return $debug ? $orders : $this->orders = $orders;
 		}
+		
+		/**
+		 * Returns the Max Sales Order Total
+		 * @param  bool   $debug Return SQL Query?
+		 * @return float         Max Sales Order Total
+		 */
+		public function get_maxsalesordertotal($debug = false) {
+			return get_maxsaleshistoryordertotal($custID = '', $shipID = '', $this->filters, $this->filterable, $debug);
+		}
+
+		/**
+		 * Returns the Min Sales Order Total
+		 * @param  bool   $debug Return SQL Query?
+		 * @return float         Min Sales Order Total
+		 */
+		public function get_minsalesordertotal($debug = false) {
+			return get_minsaleshistoryordertotal($custID = '', $shipID = '', $this->filters, $this->filterable, $debug);
+		}
+		
+		/**
+		 * REturns the Min Sales Order Date field value for $field
+		 * @param  string $field Date Column to return Min Date
+		 * @param  bool   $debug Run in debug? If so, return SQL Query
+		 * @return string        Min $field Date
+		 */
+		public function get_mindate($field = 'order_date', $debug = false) {
+			return get_minsaleshistoryorderdate($field, $custID = '', $shipID = '', $this->filters, $this->filterable, $debug);
+		}
 
 		/* =============================================================
 			OrderPanelInterface Functions
@@ -146,7 +176,7 @@
 
 			if (isset($this->filters['order_date'])) {
 				if (empty($this->filters['order_date'][0])) {
-					$this->filters['order_date'][0] = DplusDateTime::format_date($this->get_minsaleshistoryorderdate('order_date'));
+					$this->filters['order_date'][0] = DplusDateTime::format_date($this->get_mindate('order_date'));
 				}
 
 				if (empty($this->filters['order_date'][1])) {
@@ -156,7 +186,7 @@
 
 			if (isset($this->filters['invoice_date'])) {
 				if (empty($this->filters['invoice_date'][0])) {
-					$this->filters['invoice_date'][0] = date('m/d/Y', strtotime($this->get_minsaleshistoryorderdate('invoice_date')));
+					$this->filters['invoice_date'][0] = date('m/d/Y', strtotime($this->get_mindate('invoice_date')));
 				}
 
 				if (empty($this->filters['invoice_date'][1])) {

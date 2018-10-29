@@ -219,13 +219,20 @@
 		 * @return string Description of the filters
 		 */
 		public function generate_filterdescription() {
-			if (empty($this->filters)) return '';
-			$desc = 'Searching '.$this->generate_paneltypedescription().' with';
-
-			foreach ($this->filters as $filter => $value) {
-				$desc .= " " . QueryBuilder::generate_filterdescription($filter, $value, $this->filterable);
+			$user = LogmUser::load($this->userID);
+			if ($user->is_salesrep()) {
+				unset($this->filters['salesperson']);
 			}
-			return $desc;
+			
+			if (empty($this->filters)) {
+				return '';
+			} else {
+				$desc = 'Searching '.$this->generate_paneltypedescription().' with';
+				foreach ($this->filters as $filter => $value) {
+					$desc .= " " . QueryBuilder::generate_filterdescription($filter, $value, $this->filterable);
+				}
+				return $desc;
+			}
 		}
 
 		/**

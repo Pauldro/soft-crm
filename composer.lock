@@ -304,12 +304,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-order.git",
-                "reference": "35938d31e84d4a491216a36692140db10eced4f0"
+                "reference": "12f3b56ad7b1293b21af1061fed0831f256261a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dplus-order/zipball/35938d31e84d4a491216a36692140db10eced4f0",
-                "reference": "35938d31e84d4a491216a36692140db10eced4f0",
+                "url": "https://api.github.com/repos/cptechinc/dplus-order/zipball/12f3b56ad7b1293b21af1061fed0831f256261a1",
+                "reference": "12f3b56ad7b1293b21af1061fed0831f256261a1",
                 "shasum": ""
             },
             "type": "library",
@@ -329,7 +329,7 @@
                 "quote",
                 "sales-order"
             ],
-            "time": "2018-10-23T19:20:04+00:00"
+            "time": "2018-10-24T21:54:35+00:00"
         },
         {
             "name": "cptechinc/dplus-processwire",

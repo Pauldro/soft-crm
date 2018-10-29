@@ -15,20 +15,21 @@
 	<div class="panel-heading not-round" id="cust-sales-history-panel-heading">
 		<?php if (!empty($orderpanel->filters)) : ?>
 			<a href="#cust-sales-history-div" data-parent="#cust-sales-history-panel" data-toggle="collapse">
-				<?= $orderpanel->generate_filterdescription(); ?> <span class="caret"></span> <span class="badge"><?= $orderpanel->count; ?></span> &nbsp; | &nbsp;
+				Shipped Orders <?= $orderpanel->generate_filterdescription(); ?> <span class="caret"></span>
 			</a>
+			<span class="badge pull-right"><?= $orderpanel->count; ?></span>
 		<?php elseif ($orderpanel->count > 0) : ?>
 			<a href="#cust-sales-history-div" data-parent="#cust-sales-history-panel" data-toggle="collapse">
-				Customer Shipped Orders<span class="caret"></span>
+				Shipped Orders <span class="caret"></span>
 			</a> 
-			&nbsp; <span class="badge"> <?= $orderpanel->count; ?></span>
+			<span class="badge pull-right"> <?= $orderpanel->count; ?></span>
 		<?php else : ?>
 			<a href="#cust-sales-history-div" data-parent="#cust-sales-history-panel" data-toggle="collapse">
-				Customer Shipped Orders<span class="caret"></span>
+				Shipped Orders Shipped Orders<span class="caret"></span>
 			</a> 
-			&nbsp; <span class="badge"> <?= $orderpanel->count; ?></span>
-			<span class="pull-right"><?= $orderpanel->generate_pagenumberdescription(); ?> </span>
+			<span class="badge"> <?= $orderpanel->count; ?></span>
 		<?php endif; ?>
+		<span class="pull-right"><?= $orderpanel->generate_pagenumberdescription(); ?> &nbsp; </span>
 	</div>
 	 <div id="cust-sales-history-div" class="<?= $orderpanel->collapse; ?>">
 		<div class="panel-body">

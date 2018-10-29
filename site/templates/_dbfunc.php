@@ -1467,8 +1467,17 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function get_minsaleshistoryorderdate($field, $custID = false, $shipID = false, $debug = false) {
+	/**
+	 * Returns the Min Date $field from the Sales History Table
+	 * @param  string $field        Order Date Column
+	 * @param  string $custID       Customer ID
+	 * @param  string $shipID       Customer Shipto ID 
+	 * @param  array  $filter       Array that contains the column and the values to filter for
+	 * @param  array  $filtertypes  Array that contains the filterable columns as keys, and the rules needed
+	 * @param  bool   $debug        Run in debug? If so, return SQL Query
+	 * @return float                Min Sales Order Date
+	 */
+	function get_minsaleshistoryorderdate($field, $custID = '', $shipID = '', $filter = array(), $filtertypes = array(), $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field($q->expr("MIN(STR_TO_DATE(CAST($field as CHAR(12)), '%Y%m%d'))"));
 		if ($custID) {
@@ -1486,15 +1495,25 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function get_maxsaleshistoryordertotal($custID = false, $shipID = false, $debug = false) {
+	
+	/**
+	 * Returns the Max Sales Order Total from the Sales History Table
+	 * @param  string $custID       Customer ID
+	 * @param  string $shipID       Customer Shipto ID 
+	 * @param  array  $filter       Array that contains the column and the values to filter for
+	 * @param  array  $filtertypes  Array that contains the filterable columns as keys, and the rules needed
+	 * @param  bool   $debug        Run in debug? If so, return SQL Query
+	 * @return float                Max Sales Order Total
+	 */
+	function get_maxsaleshistoryordertotal($custID = '', $shipID = '', $filter = array(), $filtertypes = array(), $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field($q->expr("MAX(total_order)"));
-		if ($custID) {
+		
+		if (!empty($custID)) {
 			$q->where('custid', $custID);
-		}
-		if ($shipID) {
-			$q->where('shiptoid', $shipID);
+			if (!empty($shipID)) {
+				$q->where('shiptoid', $shipID);
+			}
 		}
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
@@ -1504,15 +1523,24 @@
 			return $sql->fetchColumn();
 		}
 	}
-
-	function get_minsaleshistoryordertotal($custID = false, $shipID = false, $debug = false) {
+	
+	/**
+	 * Returns the Min Sales Order Total from the Sales History Table
+	 * @param  string $custID       Customer ID
+	 * @param  string $shipID       Customer Shipto ID 
+	 * @param  array  $filter       Array that contains the column and the values to filter for
+	 * @param  array  $filtertypes  Array that contains the filterable columns as keys, and the rules needed
+	 * @param  bool   $debug        Run in debug? If so, return SQL Query
+	 * @return float                Min Sales Order Total
+	 */
+	function get_minsaleshistoryordertotal($custID = '', $shipID = '', $filter = array(), $filtertypes = array(), $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->field($q->expr("MIN(total_order)"));
-		if ($custID) {
+		if (!empty($custID)) {
 			$q->where('custid', $custID);
-		}
-		if ($shipID) {
-			$q->where('shiptoid', $shipID);
+			if (!empty($shipID)) {
+				$q->where('shiptoid', $shipID);
+			}
 		}
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
@@ -1756,12 +1784,14 @@
 	/**
 	 * Returns the Max Quote Total
 	 * @param  string  $sessionID   Session Identifier
+	 * @param  string  $custID      Customer ID 
+	 * @param  string  $shiptoID    Customer Shipto ID
 	 * @param  array   $filter      Array that contains the column and the values to filter for
 	 * @param  array   $filtertypes Array that contains the filterable columns as keys, and the rules needed
 	 * @param  bool    $debug       Run in debug? If so return SQL Query
 	 * @return float               Max Quote Total
 	 */
-	function get_maxquotetotal($sessionID, $filter = false, $filtertypes = false, $debug = false) {
+	function get_maxquotetotal($sessionID, $custID = '', $shiptoID = '', $filter = false, $filtertypes = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field($q->expr('MAX(ordertotal)'));
 		$q->where('sessionid', $sessionID);
@@ -1780,11 +1810,13 @@
 			unset($filter['salesperson']);
 		}
 		
-		if (!empty($filter)) {
-			if (isset($filter['custid'])) {
-				$q->where('custid', $filter['custid']);
+		if (!empty($custID)) {
+			$q->where('custid', $custID);
+			if (!empty($shiptoID)) {
+				$q->where('shiptoid', $shiptoID);
 			}
 		}
+
 		
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		if ($debug) {
@@ -1798,12 +1830,14 @@
 	/**
 	 * Returns the Min Quote Total
 	 * @param  string  $sessionID   Session Identifier
+	 * @param  string  $custID      Customer ID 
+	 * @param  string  $shiptoID    Customer Shipto ID
 	 * @param  array   $filter      Array that contains the column and the values to filter for
 	 * @param  array   $filtertypes Array that contains the filterable columns as keys, and the rules needed
 	 * @param  bool    $debug       Run in debug? If so return SQL Query
 	 * @return float               Min Quote Total
 	 */
-	function get_minquotetotal($sessionID, $filter = false, $filtertypes = false, $debug = false) {
+	function get_minquotetotal($sessionID, $custID = '', $shiptoID = '', $filter = false, $filtertypes = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field($q->expr('MIN(ordertotal)'));
 		$q->where('sessionid', $sessionID);
@@ -1822,9 +1856,10 @@
 			unset($filter['salesperson']);
 		}
 		
-		if (!empty($filter)) {
-			if (isset($filter['custid'])) {
-				$q->where('custid', $filter['custid']);
+		if (!empty($custID)) {
+			$q->where('custid', $custID);
+			if (!empty($shiptoID)) {
+				$q->where('shiptoid', $shiptoID);
 			}
 		}
 		
@@ -1840,13 +1875,15 @@
 	/**
 	 * Returns the Min Quote Date
 	 * @param  string  $sessionID   Session Identifier
+	 * @param  string  $custID      Customer ID 
+	 * @param  string  $shiptoID    Customer Shipto ID
 	 * @param  string  $field       Date Column
 	 * @param  array   $filter      Array that contains the column and the values to filter for
 	 * @param  array   $filtertypes Array that contains the filterable columns as keys, and the rules needed
 	 * @param  bool    $debug       Run in debug? If so return SQL Query
 	 * @return string               Min Quote Date
 	 */
-	function get_minquotedate($sessionID, $field, $filter = false, $filtertypes = false, $debug = false) {
+	function get_minquotedate($sessionID, $custID = '', $shiptoID = '', $field, $filter = false, $filtertypes = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->field($q->expr("MIN(STR_TO_DATE($field, '%m/%d/%Y'))"));
 		$q->where('sessionid', $sessionID);
@@ -1865,9 +1902,10 @@
 			unset($filter['salesperson']);
 		}
 		
-		if (!empty($filter)) {
-			if (isset($filter['custid'])) {
-				$q->where('custid', $filter['custid']);
+		if (!empty($custID)) {
+			$q->where('custid', $custID);
+			if (!empty($shiptoID)) {
+				$q->where('shiptoid', $shiptoID);
 			}
 		}
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());

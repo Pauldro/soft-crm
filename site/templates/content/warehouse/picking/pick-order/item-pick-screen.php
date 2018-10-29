@@ -1,4 +1,7 @@
-<?php include "{$config->paths->content}warehouse/picking/item.js.php"; ?>
+<?php 
+	use Dplus\ProcessWire\DplusWire;
+	include "{$config->paths->content}warehouse/picking/item.js.php"; 
+?>
 <div>
 	<h2>Head to <?= $pickitem->bin; ?></h2>
 	<table class="table table-condensed table-striped">
@@ -57,7 +60,7 @@
 	<form action="<?= "{$config->pages->salesorderpicking}redir/"; ?>" method="POST" class="allow-enterkey-submit">
 		<input type="hidden" name="action" value="add-barcode">
 		<input type="hidden" name="palletnbr" value="<?= $whsesession->palletnbr; ?>">
-		<input type="hidden" name="page" value="<?= $page->fullURL; ?>">
+		<input type="hidden" name="page" value="<?= $page->fullURL->getUrl(); ?>">
         <div class="input-group form-group">
             <input class="form-control" name="barcode" placeholder="Barcode" type="text" autofocus>
             <span class="input-group-btn">

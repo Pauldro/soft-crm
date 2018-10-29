@@ -14,16 +14,20 @@
 	<div class="panel-heading not-round" id="quotes-panel-heading">
 		<?php if ($input->get->filter) : ?>
 			<a href="#quotes-div" data-parent="#quotes-panel" data-toggle="collapse">
-				<?= $quotepanel->generate_filterdescription(); ?> <span class="caret"></span> <span class="badge"><?= $quotepanel->count; ?></span> &nbsp; | &nbsp;
+				Quotes <?= $quotepanel->generate_filterdescription(); ?> <span class="caret"></span>
 			</a>
+			&nbsp; | &nbsp;
 			<a href="<?= $quotepanel->generate_loadurl(); ?>" class="generate-load-link" data-loadinto="<?= $quotepanel->loadinto; ?>" data-focus="<?= $quotepanel->focus; ?>">
 				<i class="fa fa-refresh" aria-hidden="true"></i> Refresh Quotes
 			</a>
+			<span class="badge pull-right"><?= $quotepanel->count; ?></span> 
 		<?php elseif ($quotepanel->count > 0) : ?>
-			<a href="#quotes-div" data-parent="#quotes-panel" data-toggle="collapse">Your Quotes <span class="caret"></span></a> &nbsp; <span class="badge"><?= $quotepanel->count; ?></span> &nbsp; | &nbsp;
+			<a href="#quotes-div" data-parent="#quotes-panel" data-toggle="collapse">Quotes <span class="caret"></span></a> 
+			&nbsp; | &nbsp;
 			<a href="<?= $quotepanel->generate_loadurl(); ?>" class="generate-load-link" data-loadinto="<?= $quotepanel->loadinto; ?>" data-focus="<?= $quotepanel->focus; ?>">
 				<i class="fa fa-refresh" aria-hidden="true"></i> Refresh Quotes
 			</a>
+			<span class="badge pull-right"><?= $quotepanel->count; ?></span> 
 		<?php else : ?>
 			<a href="<?= $quotepanel->generate_loadurl(); ?>" class="generate-load-link" data-loadinto="<?= $quotepanel->loadinto; ?>" data-focus="<?= $quotepanel->focus; ?>">
 				Load Quotes
@@ -31,7 +35,7 @@
 		<?php endif; ?>
 		&nbsp; &nbsp;
 		<?= $quotepanel->generate_lastloadeddescription(); ?>
-		<span class="pull-right"><?= $quotepanel->generate_pagenumberdescription(); ?></span>
+		<span class="pull-right"><?= $quotepanel->generate_pagenumberdescription(); ?> &nbsp;</span>
 	</div>
 	<div id="quotes-div" class="<?= $quotepanel->collapse; ?>">
 		<div class="panel-body">

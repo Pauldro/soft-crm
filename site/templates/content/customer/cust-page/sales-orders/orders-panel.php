@@ -15,22 +15,21 @@
 	<div class="panel-heading not-round" id="orders-panel-heading">
 		<?php if ($input->get->filter) : ?>
 			<a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">
-				<?= $orderpanel->generate_filterdescription(); ?> <span class="caret"></span> <span class="badge"><?= $orderpanel->count; ?></span> &nbsp; | &nbsp;
+				Sales Orders <?= $orderpanel->generate_filterdescription(); ?> <span class="caret"></span>
 			</a>
+			<span class="badge"><?= $orderpanel->count; ?> &nbsp; </span>
 		<?php elseif ($orderpanel->count > 0) : ?>
 			<a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">
-				Customer Orders <span class="caret"></span>
+				Sales Orders <span class="caret"></span>
 			</a> 
-			<span class="badge"> <?= $orderpanel->count; ?></span> &nbsp; | &nbsp;
+			<span class="badge pull-right"> <?= $orderpanel->count; ?></span>
 		<?php elseif (isset($input->get->ordn)) : ?>
 			<a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">
-				Customer Orders <span class="caret"></span>
+				Sales Orders <span class="caret"></span>
 			</a> 
-			<span class="badge"> <?= $orderpanel->count; ?></span> &nbsp; | &nbsp;
+			<span class="badge pull-right"> <?= $orderpanel->count; ?></span>
 		<?php endif; ?>
-		&nbsp; &nbsp;
-		<?= $orderpanel->generate_lastloadeddescription(); ?>
-		<span class="pull-right"><?= $orderpanel->generate_pagenumberdescription(); ?></span>
+		<span class="pull-right"><?= $orderpanel->generate_pagenumberdescription(); ?> &nbsp; </span> 
 	</div>
 	<div id="orders-div" class="<?= $orderpanel->collapse; ?>">
 		<div class="panel-body">

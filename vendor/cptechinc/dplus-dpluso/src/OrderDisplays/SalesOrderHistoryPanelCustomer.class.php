@@ -3,6 +3,11 @@
 	
 	use Dplus\ProcessWire\DplusWire;
 	
+	/**
+	 * Use Statements for Model Classes which are non-namespaced
+	 */
+	use Order, OrderDetail;
+	
 	class CustomerSalesOrderHistoryPanel extends SalesOrderHistoryPanel {
 		use OrderPanelCustomerTraits;
 
@@ -52,28 +57,50 @@
 				'label' => 'Sales Person 1'
 			)
 		);
+		
+		/* =============================================================
+			SalesOrderPanelInterface Functions
+		============================================================ */
+		/**
+		 * Returns the Max Sales Order Total
+		 * @param  bool   $debug Run in debug? IF so, return SQL Query
+		 * @return float         Max Sales Order Total
+		 */
+		public function get_maxsalesordertotal($debug = false) {
+			return get_maxsaleshistoryordertotal($this->custID, $this->shipID, $this->filters, $this->filterable, $debug);
+		}
+
+		/**
+		 * Returns the Min Sales Order Total
+		 * @param  bool   $debug Run in debug? IF so, return SQL Query
+		 * @return float         Min Sales Order Total
+		 */
+		public function get_minsalesordertotal($debug = false) {
+			return get_minsaleshistoryordertotal($this->custID, $this->shipID, $this->filters, $this->filterable, $debug);
+		}
+		
+		/**
+		 * REturns the Min Sales Order Date field value for $field
+		 * @param  string $field Date Column to return Min Date
+		 * @param  bool   $debug Run in debug? If so, return SQL Query
+		 * @return string        Min $field Date
+		 */
+		public function get_mindate($field = 'order_date', $debug = false) {
+			return get_minsaleshistoryorderdate($field, $this->custID, $this->shipID, $this->filters, $this->filterable, $debug);
+		}
 
 		/* =============================================================
 			OrderPanelInterface Functions
 			LINKS ARE HTML LINKS, AND URLS ARE THE URLS THAT THE HREF VALUE
 		============================================================ */
 
-		public function generate_loaddetailsurl(\Order $order) {
+		public function generate_loaddetailsurl(Order $order) {
 			$url = new \Purl\Url(parent::generate_loaddetailsurl($order));
 			$url->query->set('custID', $this->custID);
 			if (!empty($this->shipID)) {
 				$url->query->set('shipID', $this->shipID);
 			}
 			return $url->getUrl();
-		}
-
-		public function generate_lastloadeddescription() {
-			if (DplusWire::wire('session')->{'orders-loaded-for'}) {
-				if (DplusWire::wire('session')->{'orders-loaded-for'} == $this->custID) {
-					return 'Last Updated : ' . DplusWire::wire('session')->{'orders-updated'};
-				}
-			}
-			return '';
 		}
 
 		public function generate_filter(\ProcessWire\WireInput $input) {
@@ -112,7 +139,7 @@
 				}
 
 				if (!strlen($this->filters['total_order'][1])) {
-					$this->filters['total_order'][1] = get_maxsaleshistoryordertotal($this->custID, $this->shipID);
+					$this->filters['total_order'][1] = $this->get_maxsalesordertotal();
 				}
 			}
 		}
@@ -121,7 +148,7 @@
 			SalesOrderDisplayInterface Functions
 			LINKS ARE HTML LINKS, AND URLS ARE THE URLS THAT THE HREF VALUE
 		============================================================ */
-		public function generate_trackingrequesturl(\Order $order) {
+		public function generate_trackingrequesturl(Order $order) {
 			$url = new \Purl\Url(parent::generate_trackingrequesturl($order));
 			$url->query->set('custID', $this->custID);
 			if (!empty($this->shipID)) {
@@ -135,7 +162,7 @@
 			OrderDisplayInterface Functions
 			LINKS ARE HTML LINKS, AND URLS ARE THE URLS THAT THE HREF VALUE
 		============================================================ */
-		public function generate_documentsrequesturl(\Order $order, \OrderDetail $orderdetail = null) {
+		public function generate_documentsrequesturl(Order $order, OrderDetail $orderdetail = null) {
 			$url = new \Purl\Url(parent::generate_documentsrequesturl($order, $orderdetail));
 			$url->query->set('custID', $this->custID);
 			if (!empty($this->shipID)) {
