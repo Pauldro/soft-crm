@@ -1667,6 +1667,8 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
+	
+	
 
 	/**
 	 * Returns an array of Sales History Records (sorted) that meet the filter criteria
@@ -1731,6 +1733,21 @@
 				return $sql->fetchAll();
 			}
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}
+	
+	function get_saleshistoryorder($ordn, $debug = false) {
+		$q = (new QueryBuilder())->table('saleshist');
+		$q->where('ordernumber', $ordn);
+
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'SalesOrderHistory');
+			return $sql->fetch();
 		}
 	}
 /* =============================================================
@@ -2242,7 +2259,7 @@
 	}
 	
 	function get_quotedetails($sessionID, $qnbr, $useclass = false, $debug) {
-		$q = (new QueryBuilder())->table('quothed');
+		$q = (new QueryBuilder())->table('quotdet');
 		$q->where('sessionid', $sessionID);
 		$q->where('quotenbr', $qnbr);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
@@ -2250,7 +2267,7 @@
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			if ($useclass) {
 				$sql->setFetchMode(PDO::FETCH_CLASS, 'QuoteDetail');
 				return $sql->fetchAll();
@@ -2995,7 +3012,7 @@
 	}
 
 	function get_itemgroups($debug = false) {
-		$q = (new QueryBuilder())->table('itemgroup');
+		$q = (new QueryBuilder())->table('itemgroups');
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {

@@ -1,4 +1,7 @@
 <?php
+	use Dplus\Dpluso\OrderDisplays\SalesOrderDisplay;
+	use Dplus\Dpluso\OrderDisplays\QuoteDisplay;
+	
 	$salespersonjson = json_decode(file_get_contents($config->companyfiles."json/salespersontbl.json"), true);
     $sessionID = $input->get->referenceID ? $input->get->text('referenceID') : session_id();
     $emailurl = new Purl\Url($config->pages->ajaxload."email/email-file-form/");
@@ -8,8 +11,8 @@
     switch ($page->name) { //$page->name is what we are printing
         case 'order':
             $ordn = $input->get->text('ordn');
-            $orderdisplay = new Dplus\Dpluso\OrderDisplays\SalesOrderDisplay($sessionID, $page->fullURL, '#ajax-modal', $ordn);
-            $order = $orderdisplay->get_order();
+            $orderdisplay = new SalesOrderDisplay($sessionID, $page->fullURL, '#ajax-modal', $ordn);
+            $order = SalesOrderHistory::is_saleshistory($ordn) ? SalesOrderHistory::load($ordn) : $orderdisplay->get_order();
             $page->title = 'Order #' . $ordn;
             $emailurl->query->set('printurl', $orderdisplay->generate_sendemailurl($order));
 
@@ -21,7 +24,7 @@
             break;
         case 'quote':
             $qnbr = $input->get->text('qnbr');
-            $quotedisplay = new Dplus\Dpluso\OrderDisplays\QuoteDisplay($sessionID, $page->fullURL, '#ajax-modal', $qnbr);
+            $quotedisplay = new QuoteDisplay($sessionID, $page->fullURL, '#ajax-modal', $qnbr);
             $quote = $quotedisplay->get_quote();
             $page->title = 'Quote #' . $qnbr;
             $emailurl->query->set('printurl', $quotedisplay->generate_sendemailurl($quote));
