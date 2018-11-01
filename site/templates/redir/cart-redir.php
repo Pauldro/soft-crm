@@ -1,30 +1,24 @@
 <?php
+	use Dplus\ProcessWire\DplusWire;
+	
 	/**
 	* CART REDIRECT
 	*  @param string $action
 	*
 	*/
-
-	$custID = $shipID = '';
-
-	if ($input->requestMethod('POST')) {
-		$requestmethod = 'post';
-	} else {
-		$requestmethod = 'get';
-	}
+	
+	// Figure out page request method, then grab needed inputs
+	$requestmethod = $input->requestMethod('POST') ? 'post' : 'get';
 	$action = $input->$requestmethod->text('action');
-
+	
+	// Set up filename and sessionID in case this was made through cURL
+	$filename = ($input->$requestmethod->sessionID) ? $input->$requestmethod->text('sessionID') : session_id();
+	$sessionID = ($input->$requestmethod->sessionID) ? $input->$requestmethod->text('sessionID') : session_id();
+	
+	// Set up custID & shipID for requests
 	$custID = $input->$requestmethod->text('custID');
 	$shipID = $input->$requestmethod->text('shipID');
-
-	if ($input->$requestmethod->sessionID) {
-		$filename = $input->$requestmethod->text('sessionID');
-		$sessionID = $input->$requestmethod->text('sessionID');
-	} else {
-		$filename = session_id();
-		$sessionID = session_id();
-	}
-
+	
 	/**
 	* CART REDIRECT
 	*
@@ -85,18 +79,22 @@
 	*
 	**/
 
-    switch ($action) {
-        case 'add-to-cart':
+	switch ($action) {
+		case 'add-to-cart':
 			$itemID = $input->$requestmethod->text('itemID');
 			$qty = determine_qty($input, $requestmethod, $itemID); // TODO MAKE IN CART DETAIL
-			$data = array('DBNAME' => $config->dplusdbname, 'CARTDET' => false, 'ITEMID' => $itemID, 'QTY' => "$qty");
-			$data['CUSTID'] = empty($custID) ? $config->defaultweb : $custID;
-			if (!empty($shipID)) {$data['SHIPTOID'] = $shipID; }
-			if ($input->post->whse) { if (!empty($input->post->whse)) { $data['WHSE'] = $input->post->whse; } }
-			$session->data = $data;
-            $session->addtocart = 'You added ' . $qty . ' of ' . $itemID . ' to your cart';
-            $session->loc = $input->post->page;
-            break;
+			$custID = !empty($custID) ? $custID : $config->defaultweb;
+			$whse = $input->$requestmethod->text('whse');
+			$data = array("DBNAME=$config->dplusdbname", 'CARTDET', "ITEMID=$itemID", "QTY=$qty", "CUSTID=$custID");
+			if (!empty($shipID)) {
+				$data[] = "SHIPTOID=$shipID";
+			}
+			if (!empty($whse)) {
+				$data[] = "WHSE=$whse";
+			}
+			$session->addtocart = 'You added ' . $qty . ' of ' . $itemID . ' to your cart';
+			$session->loc = $input->post->page;
+			break;
 		case 'add-nonstock-item':
 			$qty = $input->$requestmethod->text('qty');
 			$cartdetail = new CartDetail();
@@ -118,28 +116,33 @@
 			$cartdetail->set('poref', $input->post->text('poref'));
 			$cartdetail->set('spcord', 'S');
 			$session->sql = $cartdetail->create();
-			$data = array('DBNAME' => $config->dplusdbname, 'CARTDET' => false, 'LINENO' => '0', 'ITEMID' => 'N', 'QTY' => $qty, 'CUSTID' => $custID, 'stuff' => 'stuff');
+			$data = array("DBNAME=$config->dplusdbname", 'CARTDET', 'LINENO=0', 'ITEMID=N', "QTY=$qty", "CUSTID=$custID");
 			$session->loc = $config->pages->cart;
 			break;
 		case 'add-multiple-items':
-			$itemids = $input->post->itemID;
-			$qtys = $input->post->qty;
+			$itemids = $input->$requestmethod->itemID;
 			$data = array("DBNAME=$config->dplusdbname", 'CARTADDMULTIPLE', "CUSTID=$custID");
 
 			if (DplusWire::wire('modules')->isInstalled('QtyPerCase')) {
-				$case_qtys = $input->post->{'case-qty'};
-				$bottle_qtys = $input->post->{'bottle-qty'};
-				$qtypercase = Dplus\ProcessWire\DplusWire::wire('modules')->get('QtyPerCase');
+				$case_qtys = $input->$requestmethod->{'case-qty'};
+				$bottle_qtys = $input->$requestmethod->{'bottle-qty'};
+				$qtypercase = DplusWire::wire('modules')->get('QtyPerCase');
+				// TODO FIX tHIS for new DATA array
 				$data = $qtypercase->generate_multipleitemdata($data, $itemids, $case_qtys, $bottle_qtys);
 			} else {
-				$qtys = $input->post->qty;
-				$data = writedataformultitems($data, $itemids, $qtys);
+				$qtys = $input->$requestmethod->qty;
+				for ($i = 0; $i < sizeof($items); $i++) {
+					$itemID = str_pad(DplusWire::wire('sanitizer')->text($items[$i]), 30, ' ');
+					$qty = DplusWire::wire('sanitizer')->text($qtys[$i]);
+					$qty = !empty($qty) ? $qty : "1";
+					$data[] = "ITEMID={$itemID}QTY=$qty";
+				}
 			}
-            $session->addtocart = sizeof($itemIDs);
-            $session->loc = $config->pages->cart;
+			$session->addtocart = sizeof($itemIDs);
+			$session->loc = $config->pages->cart;
 			break;
 		case 'reorder':
-			$from = $input->get->text('from');
+			$from = $input->$requestmethod->text('from');
 			$itemids = array();
 			$qtys = array();
 			switch ($from) {
@@ -150,32 +153,36 @@
 					foreach ($details as $detail) {
 						$itemids[] = $detail->itemid;
 						$qtys[] = $detail->qty;
-		 			}
+					}
 					break;
 			}
 			$data = array("DBNAME=$config->dplusdbname", 'CARTADDMULTIPLE', "CUSTID=$custID");
-			$data = writedataformultitems($data, $itemids, $qtys);
+			for ($i = 0; $i < sizeof($items); $i++) {
+				$itemID = str_pad(DplusWire::wire('sanitizer')->text($items[$i]), 30, ' ');
+				$qty = DplusWire::wire('sanitizer')->text($qtys[$i]);
+				$qty = !empty($qty) ? $qty : "1";
+				$data[] = "ITEMID={$itemID}QTY=$qty";
+			}
 			$session->loc = $config->pages->cart;
 			break;
 		case 'quick-update-line':
-			$linenbr = $input->post->text('linenbr');
+			$linenbr = $input->$requestmethod->text('linenbr');
 			$cartdetail = CartDetail::load($sessionID, $linenbr);
 			$qty = determine_qty($input, $requestmethod, $cartdetail->itemid); // TODO MAKE IN CART DETAIL
 			$custID = CartQuote::get_cartcustid($sessionID);
+			$custID = !empty($custID) ? $custID : $config->defaultweb;
 			// $cartdetail->set('whse', $input->post->text('whse'));
 			$cartdetail->set('qty', $qty);
-			$cartdetail->set('price', $input->post->text('price'));
-			$cartdetail->set('rshipdate', $input->post->text('rqstdate'));
+			$cartdetail->set('price', $input->$requestmethod->text('price'));
+			$cartdetail->set('rshipdate', $input->$requestmethod->text('rqstdate'));
 			$session->sql = $cartdetail->update();
-			$data = array('DBNAME' => $config->dplusdbname, 'CARTDET' => false, 'LINENO' => $linenbr);
-			$data['CUSTID'] = empty($custID) ? $config->defaultweb : $custID;
-			if (!empty($shipID)) {$data['SHIPTOID'] = $shipID; }
-			writedplusfile($data, $sessionID);
+			$data = array("DBNAME=$config->dplusdbname", 'CARTDET', "LINENO=$linenbr", "CUSTID=$custID");
 			$session->loc = $config->pages->cart;
 			break;
 		case 'update-line':
 			$linenbr = $input->post->text('linenbr');
 			$cartdetail = CartDetail::load($sessionID, $linenbr);
+			$custID = !empty($custID) ? $custID : $config->defaultweb;
 			$qty = determine_qty($input, $requestmethod, $cartdetail->itemid); // TODO MAKE IN CART DETAIL
 			$cartdetail->set('price', $input->post->text('price'));
 			$cartdetail->set('discpct', $input->post->text('discount'));
@@ -197,10 +204,7 @@
 			}
 			$session->sql = $cartdetail->update();
 			$session->loc = $input->post->text('page');
-			$data = array('DBNAME' => $config->dplusdbname, 'CARTDET' => false, 'LINENO' => $linenbr);
-			$data['CUSTID'] = empty($custID) ? $config->defaultweb : $custID;
-			if (!empty($shipID)) {$data['SHIPTOID'] = $shipID; }
-			writedplusfile($data, $sessionID);
+			$data = array("DBNAME=$config->dplusdbname", 'CARTDET', "LINENO=$linenbr", "CUSTID=$custID");
 			$session->loc = $config->pages->cart;
 			break;
 		case 'remove-line':
@@ -208,27 +212,26 @@
 			$cartdetail = CartDetail::load($sessionID, $linenbr);
 			$cartdetail->set('qty', '0');
 			$session->sql = $cartdetail->update();
+			$custID = CartQuote::get_cartcustid($sessionID);
+			$custID = !empty($custID) ? $custID : $config->defaultweb;
+			$data = array("DBNAME=$config->dplusdbname", 'CARTDET', "LINENO=$linenbr", 'QTY=0', "CUSTID=$custID");
 			$session->loc = $config->pages->cart;
-			$custID = get_custidfromcart(session_id());
-			$data = array('DBNAME' => $config->dplusdbname, 'CARTDET' => false, 'LINENO' => $linenbr, 'QTY' => '0');
-			$data['CUSTID'] = empty($custID) ? $config->defaultweb : $custID;
-			if (!empty($shipID)) {$data['SHIPTOID'] = $shipID; }
 			break;
 		case 'empty-cart':
-			$data = array('DBNAME' => $config->dplusdbname, 'EMPTYCART' => false);
+			$data = array("DBNAME=$config->dplusdbname", 'EMPTYCART');
 			$session->loc = $config->pages->cart;
 			break;
-        case 'create-sales-order':
-			$data = array('DBNAME' => $config->dplusdbname, 'CREATESO' => false);
-           	$session->loc = $config->pages->orders . "redir/?action=edit-new-order";
-            break;
+		case 'create-sales-order':
+			$data = array("DBNAME=$config->dplusdbname", 'CREATESO');
+			$session->loc = "{$config->pages->orders}redir/?action=edit-new-order";
+			break;
 		case 'create-quote':
-			$data = array('DBNAME' => $config->dplusdbname, 'CREATEQT' => false);
-           	$session->loc = $config->pages->quotes . "redir/?action=edit-new-quote";
-            break;
+			$data = array("DBNAME=$config->dplusdbname", 'CREATEQT');
+			$session->loc = "{$config->pages->quotes}redir/?action=edit-new-quote";
+			break;
 	}
 
-	writedplusfile($data, $filename);
+	write_dplusfile($data, $filename);
 	curl_redir("127.0.0.1/cgi-bin/".$config->cgis['default']."?fname=$filename");
 	if (!empty($session->get('loc')) && !$config->ajax) {
 		header("Location: $session->loc");
