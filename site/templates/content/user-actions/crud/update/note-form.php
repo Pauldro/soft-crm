@@ -31,7 +31,7 @@
 			<?php if (!empty($note->shiptolink)) : ?>
 				<tr>
 					<td>Ship-to: </td>
-					<td><a href="<?= $editactiondisplay->generate_shiptourl($note); ?>"><?= Customer::load($note->customerlink, $note->shiptolink). " ($note->shiptolink)"; ?></a></td>
+					<td><a href="<?= $editactiondisplay->generate_shiptourl($note); ?>"><?= Customer::get_customernamefromid($note->customerlink, $note->shiptolink). " ($note->shiptolink)"; ?></a></td>
 				</tr>
 			<?php endif; ?>
 			<?php if (!empty($note->contactlink)) : ?>
