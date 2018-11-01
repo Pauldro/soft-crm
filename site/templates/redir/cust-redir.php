@@ -321,9 +321,10 @@
 		case 'shop-as-customer':
 			$cart = new CartQuote();
 			$cart->set('sessionid', session_id());
-			$cart->set('custid', $custID);
-			$cart->set('shiptoid', $shipID);
-			$cart->save();
+			$cart->set('custid', "$custID");
+			$cart->set('shiptoid', "$shipID");
+			$session->sql = $cart->save(true);
+			$cart->create();
 			$data = false;
 			
 			if ($input->post->page) {
@@ -511,8 +512,9 @@
 	
 	if (!empty($data)) {
 		writedplusfile($data, $filename);
+		curl_redir("127.0.0.1/cgi-bin/".$config->cgis['default']."?fname=$filename");
 	}
-	curl_redir("127.0.0.1/cgi-bin/".$config->cgis['default']."?fname=$filename");
+	
 	if (!empty($session->get('loc')) && !$config->ajax) {
 		header("Location: $session->loc");
 	}
