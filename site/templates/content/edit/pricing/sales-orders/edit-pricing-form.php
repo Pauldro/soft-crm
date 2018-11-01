@@ -137,7 +137,7 @@
 							<select name="nsitemgroup" class="form-control input-sm">
 								<option value="">None</option>
 								<?php foreach ($groups as $group) : ?>
-									<?php if ($group['code'] == $linedetail->nsitemgroup) : ?>
+									<?php if ($group['itemgroup'] == $linedetail->nsitemgroup) : ?>
 										<option value="<?= $group['code']; ?>" selected><?= $group['desc']; ?></option>
 									<?php else: ?>
 										<option value="<?= $group['code']; ?>"><?= $group['desc']; ?></option>
