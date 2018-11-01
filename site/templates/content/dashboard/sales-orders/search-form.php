@@ -74,7 +74,7 @@
 		<div class="col-sm-12 form-group">
 			<?php if ($input->get->filter) : ?>
 				<div>
-					<a href="<?= $orderpanel->generate_loadurl(); ?>" class="generate-load-link btn btn-warning btn-block" data-loadinto="<?= $orderpanel->loadinto; ?>" data-focus="<?= $orderpanel->focus; ?>">
+					<a href="<?= $orderpanel->generate_loadurl(); ?>" class="load-link btn btn-warning btn-block" data-loadinto="<?= $orderpanel->loadinto; ?>" data-focus="<?= $orderpanel->focus; ?>">
 						Clear Search <i class="fa fa-search-minus" aria-hidden="true"></i>
 					</a>
 				</div>
