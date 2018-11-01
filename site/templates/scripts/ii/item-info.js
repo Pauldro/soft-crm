@@ -440,7 +440,7 @@ $(function() {
 		var modal = config.modals.ajax;
 		var loadinto =  modal+" .modal-content";
 		var href = URI(config.urls.customer.load.loadindex).addQuery('function', dplusfunction).addQuery('modal', 'modal').normalizeQuery().toString();
-		$('.modal').modal('hide');
+		
 		$(loadinto).loadin(href, function() {
 			$(modal).find('.modal-body').addClass('modal-results');
 			$(modal).resizemodal('lg').modal();

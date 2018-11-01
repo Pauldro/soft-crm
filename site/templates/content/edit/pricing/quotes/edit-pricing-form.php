@@ -42,7 +42,7 @@
             		<?php include $config->paths->content."edit/pricing/item-price-breaks.php"; ?>
             	</div>
             	<div class="col-sm-6">
-            		<div class="jumbotron item-detail-heading"> <div class=""> <h4><?= get_customername($custID); ?> History</h4> </div> </div>
+            		<div class="jumbotron item-detail-heading"> <div class=""> <h4><?= Customer::get_customernamefromid($custID); ?> History</h4> </div> </div>
           			<?php include $config->paths->content."edit/pricing/item-history.php"; ?>
             	</div>
             </div>
@@ -96,7 +96,7 @@
 					</td>
 				</tr>
 			</table>
-			<div class="<?php if (!in_array($linedetail->spcord, $config->specialordercodes)) {echo 'hidden';} ?>">
+			<div class="<?php if (!in_array($linedetail->spcord, array_keys($config->specialordertypes))) {echo 'hidden';} ?>">
 				<h4>Special Order Details</h4>
 				<table class="table table-bordered table-striped table-condensed">
 					<tr>
@@ -131,7 +131,7 @@
                             <select name="nsitemgroup" class="form-control input-sm">
                                 <option value="">None</option>
                                 <?php foreach ($groups as $group) : ?>
-									<?php if ($group['code'] == $linedetail->nsitemgroup) : ?>
+									<?php if ($group['itemgroup'] == $linedetail->nsitemgroup) : ?>
 										<option value="<?= $group['code']; ?>" selected><?= $group['desc']; ?></option>
 									<?php else: ?>
 										<option value="<?= $group['code']; ?>"><?= $group['desc']; ?></option>

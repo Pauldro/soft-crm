@@ -1,4 +1,6 @@
 <?php 
+	use Dplus\Dpluso\Bookings\BookingsPanel;
+	
 	$bookingspanel = new BookingsPanel(session_id(), $page->fullURL); 
 	$date = $input->get->text('date');
 	$details = $bookingspanel->get_bookingdayorderdetails($ordn, $date);

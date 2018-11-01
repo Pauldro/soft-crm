@@ -1,5 +1,5 @@
 <?php
-	$item = getitemfromim($itemID, false); 
+	$item = get_itemfrompricing($itemID); 
 	$specs = $pricing = $item;
 	if (!file_exists($config->imagefiledirectory.$item['image'])) {$item['image'] = 'notavailable.png'; }
 ?>

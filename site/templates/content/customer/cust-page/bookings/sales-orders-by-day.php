@@ -1,5 +1,5 @@
 <?php 
-	$bookingspanel = new CustomerBookingsPanel(session_id(), $page->fullURL, '#ajax-modal'); 
+	$bookingspanel = new Dplus\Dpluso\Bookings\CustomerBookingsPanel(session_id(), $page->fullURL, '#ajax-modal'); 
 	$bookingspanel->set_customer($customer->custid, $customer->shiptoid);
 	$date = $input->get->text('date');
 	$salesorders = $bookingspanel->get_daybookingordernumbers($date);
@@ -14,9 +14,9 @@
 			<?php if ($count) : ?>
 				<?php foreach ($salesorders as $salesorder) : ?>
 					<tr>
-						<td><?= DplusDateTime::format_date($salesorder['bookdate']); ?></td>
+						<td><?= Dplus\Base\DplusDateTime::format_date($salesorder['bookdate']); ?></td>
 						<td class="text-right"><?= $salesorder['salesordernbr']; ?></td>
-						<td class="text-right"><?= $bookingspanel->generate_viewsalesorderdaylink($salesorder['salesordernbr'], DplusDateTime::format_date($salesorder['bookdate'])); ?></td>
+						<td class="text-right"><?= $bookingspanel->generate_viewsalesorderdaylink($salesorder['salesordernbr'], Dplus\Base\DplusDateTime::format_date($salesorder['bookdate'])); ?></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php else : ?>

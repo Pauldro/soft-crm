@@ -3,10 +3,10 @@
     $pageurl->path = ($input->get->q) ? $pageurl->path : $config->pages->ajaxload."customers/cust-index/";
     $pageurl->query->set('function', 'os-order-search');
     $pageurl->query->set('field', $input->get->text('field'));
-    $custindex = new CustomerIndex($pageurl, '#cust-index-search-form', '#cust-index-search-form');
+    $custindex = new Dplus\Dpluso\Customer\CustomerIndex($pageurl, '#cust-index-search-form', '#cust-index-search-form');
     $custindex->set_pagenbr($input->pageNum);
     $resultscount = $custindex->count_searchcustindex($input->get->text('q'));
-    $paginator = new Paginator($custindex->pagenbr, $resultscount, $custindex->pageurl, 'cust-index', $custindex->ajaxdata);
+    $paginator = new Dplus\Content\Paginator($custindex->pagenbr, $resultscount, $custindex->pageurl, 'cust-index', $custindex->ajaxdata);
     $field = $input->get->text('field');
 ?>
 
@@ -19,7 +19,7 @@
         </thead>
         <tbody>
             <?php if ($resultscount > 0) : ?>
-                <?php foreach ($custresults as $cust) : ?>
+                <?php foreach ($custindex->search_custindexpaged($input->get->text('q'), $input->pageNum) as $cust) : ?>
                     <tr>
                         <td>
                             <a href="#" onclick="fill_frommodal('<?= $field; ?>', '<?= $cust->custid; ?>')">

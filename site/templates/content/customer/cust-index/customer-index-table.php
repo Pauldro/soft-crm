@@ -29,7 +29,7 @@
 						<td><a href="tel:<?= $cust->phone; ?>" title="Click To Call"><?= $page->stringerbell->highlight($cust->phone, $input->get->q); ?></a></td>
 						<td class="text-right">$ <?= $page->stringerbell->format_money($cust->get_amountsold()); ?></td>
 						<td class="text-right"> <?= $cust->get_timesold(); ?></td>
-						<td> <?= DplusDateTime::format_date($cust->get_lastsaledate()); ?></td>
+						<td> <?= Dplus\Base\DplusDateTime::format_date($cust->get_lastsaledate()); ?></td>
 					</tr>
 				<?php endforeach; ?>
 			<?php else : ?>

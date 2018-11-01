@@ -1,7 +1,10 @@
 <?php
+	use Dplus\Dpluso\OrderDisplays\SalesOrderPanel;
+	use Dplus\Content\Paginator;
+	
 	$orderpanel = new SalesOrderPanel(session_id(), $page->fullURL, '#ajax-modal', '#orders-panel', $config->ajax);
-	$orderpanel->pagenbr = $input->pageNum;
-	$orderpanel->activeID = !empty($input->get->ordn) ? $input->get->text('ordn') : false;
+	$orderpanel->set('pagenbr', $input->pageNum);
+	$orderpanel->set('activeID', !empty($input->get->ordn) ? $input->get->text('ordn') : false);
 	$orderpanel->generate_filter($input);
 	$orderpanel->get_ordercount();
 
@@ -11,20 +14,24 @@
 	<div class="panel-heading not-round" id="order-panel-heading">
 		<?php if (!empty($orderpanel->filters)) : ?>
 			<a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">
-				<?= $orderpanel->generate_filterdescription(); ?> <span class="caret"></span> <span class="badge"><?= $orderpanel->count; ?></span> &nbsp; | &nbsp;
-				<?= $orderpanel->generate_refreshlink(); ?>
+				Sales Orders <?= $orderpanel->generate_filterdescription(); ?> <span class="caret"></span> 
 			</a>
+			<span class="badge pull-right"><?= $orderpanel->count; ?></span>
 		<?php elseif ($orderpanel->count > 0) : ?>
-				<a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">Your Orders <span class="caret"></span></a> &nbsp; <span class="badge"> <?= $orderpanel->count; ?></span> &nbsp; | &nbsp;
-				<?= $orderpanel->generate_refreshlink(); ?>
+			<a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">
+				Sales Orders <span class="caret"></span>
+			</a> 
+			<span class="badge pull-right"> <?= $orderpanel->count; ?></span>
 		<?php else : ?>
-			<?= $orderpanel->generate_loadlink(); ?>
+			<a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">
+				Sales Orders <span class="caret"></span>
+			</a> 
+			<span class="badge pull-right"> <?= $orderpanel->count; ?></span>
 		<?php endif; ?>
-		&nbsp; &nbsp;
-		<?= $orderpanel->generate_lastloadeddescription(); ?>
-		<span class="pull-right"><?= $orderpanel->generate_pagenumberdescription(); ?> </span>
+		<span class="pull-right"><?= $orderpanel->generate_pagenumberdescription(); ?> &nbsp; </span> 
 	</div>
 	<div id="orders-div" class="<?= $orderpanel->collapse; ?>">
+		<br>
 		<div class="panel-body">
 			<div class="row">
 				<div class="col-sm-6">

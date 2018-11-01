@@ -60,8 +60,8 @@
         <?php $signinlog->get_signinlog(); ?>
 		<?php foreach ($signinlog->logs as $log) : ?>
     		<tr>
-                <td><?= DplusDateTime::format_date($log['date']); ?></td>
-                <td><?= DplusDateTime::format_date($log['date'], "H:i A"); ?></td>
+                <td><?= Dplus\Base\DplusDateTime::format_date($log['date']); ?></td>
+                <td><?= Dplus\Base\DplusDateTime::format_date($log['date'], "H:i A"); ?></td>
     			<td><?= LogmUser::find_username($log['user']); ?></td>
     		</tr>
         <?php endforeach; ?>

@@ -1,11 +1,16 @@
 <?php
+    namespace Dplus\Dpluso\Customer;
+    
+    use Dplus\ProcessWire\DplusWire;
+    use Dplus\Content\TablePageSorter;
+    
     /**
      * Class for dealing with the Customer Index database table
      */
     class CustomerIndex {
-        use ThrowErrorTrait;
-		use MagicMethodTraits;
-        use AttributeParser;
+        use \Dplus\Base\ThrowErrorTrait;
+		use \Dplus\Base\MagicMethodTraits;
+        use \Dplus\Base\AttributeParser;
         
         /**
 		 * Array of filters that will apply to the orders
@@ -40,7 +45,7 @@
         
         /**
          * Table Sorter - for sorting results
-         * @var TablePageSorter
+         * @var  TablePageSorter
          */
         protected $tablesorter;
         
@@ -64,12 +69,12 @@
         
         /**
          * Constructs CustIndex and instantiates tablesorter
-         * @param Purl\Url $url       Page URL 
+         * @param \Purl\Url $url       Page URL 
          * @param string   $loadinto  HTML element to load into for AJAX
          * @param string   $focus     HTML element to focus on for AJAX
          */
-        public function __construct(Purl\Url $url, $loadinto, $focus) {
-            $this->pageurl = new Purl\Url($url->getUrl());
+        public function __construct(\Purl\Url $url, $loadinto, $focus) {
+            $this->pageurl = new \Purl\Url($url->getUrl());
             $this->loadinto = $this->focus = $loadinto;
 			$this->ajaxdata = "data-loadinto='$this->loadinto' data-focus='$this->focus'";
             $this->tablesorter = new TablePageSorter($this->pageurl->query->get('orderby'));

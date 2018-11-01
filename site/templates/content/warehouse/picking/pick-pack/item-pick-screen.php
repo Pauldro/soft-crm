@@ -1,4 +1,7 @@
-<?php include "{$config->paths->content}warehouse/picking/item.js.php"; ?>
+<?php 
+	use Dplus\ProcessWire\DplusWire;
+	include "{$config->paths->content}warehouse/picking/item.js.php"; 
+?>
 <div>
 	<h2>Head to <?= $pickitem->bin; ?></h2>
 	<table class="table table-condensed table-striped">

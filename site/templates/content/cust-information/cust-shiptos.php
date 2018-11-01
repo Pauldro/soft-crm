@@ -14,7 +14,7 @@
 				$link = $config->pages->customer."redir/?action=ci-customer&custID=$custID";
 				$attr = "href=$link|class=btn btn-sm btn-primary";
 				echo $page->bootstrap->create_element('a', $attr, '<i class="glyphicon glyphicon-remove"></i> Clear Ship-to');
-				$tb = new Table("class=table table-striped table-bordered table-condensed table-excel|id=shiptolist");
+				$tb = new Dplus\Content\Table("class=table table-striped table-bordered table-condensed table-excel|id=shiptolist");
 				$tb->tablesection('thead');
 					$tb->tr();
 					foreach ($columns as $column) {

@@ -1,4 +1,6 @@
 <?php
+	use Dplus\ProcessWire\DplusWire;
+	
 	/**
 	 * Class for the Individual Items in the User's Cart
 	 */

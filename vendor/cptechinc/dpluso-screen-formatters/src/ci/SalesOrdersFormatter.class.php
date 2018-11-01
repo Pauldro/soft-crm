@@ -1,10 +1,18 @@
 <?php
+	namespace Dplus\Dpluso\ScreenFormatters\CI;
+	
+	use Dplus\ProcessWire\DplusWire;
+	use Dplus\Content\HTMLWriter;
+	use Dplus\Content\Table;
+	use Dplus\Dpluso\ScreenFormatters\TableScreenMaker;
+	use Dplus\Dpluso\ScreenFormatters\TableScreenFormatter;
+	
 	/**
 	 * Formatter CI Sales Orders Screen
 	 * Formattable
 	 */
-	class CI_SalesOrdersFormatter extends TableScreenFormatter {
-        protected $tabletype = 'normal'; // grid or normal
+	class SalesOrdersFormatter extends TableScreenFormatter {
+		protected $tabletype = 'normal'; // grid or normal
 		protected $type = 'ci-sales-orders'; // ii-sales-history
 		protected $title = 'Customer Sales Orders';
 		protected $datafilename = 'cisalesordr'; // iisaleshist.json
@@ -18,18 +26,18 @@
 			"total" => "Total",
 			"shipments" => "Shipments"
 		);
-        
+		
 		/* =============================================================
-            PUBLIC FUNCTIONS
-        ============================================================ */
-        public function generate_screen() {
+			PUBLIC FUNCTIONS
+		============================================================ */
+		public function generate_screen() {
 			$url = new \Purl\Url(DplusWire::wire('config')->pages->ajaxload."ci/ci-documents/order/");
-            $bootstrap = new HTMLWriter();
-            $content = '';
+			$bootstrap = new HTMLWriter();
+			$content = '';
 			$this->generate_tableblueprint();
 			
-            foreach ($this->json['data'] as $whseid => $whse) {
-                $content .= $bootstrap->h3('', $whse['Whse Name']);
+			foreach ($this->json['data'] as $whseid => $whse) {
+				$content .= $bootstrap->h3('', $whse['Whse Name']);
 				
 				$tb = new Table("class=table table-striped table-bordered table-condensed table-excel|id=$whseid");
 				$tb->tablesection('thead');
@@ -39,7 +47,7 @@
 					foreach($whse['orders'] as $order) {
 						for ($x = 1; $x < $this->tableblueprint['header']['maxrows'] + 1; $x++) {
 							$attr = ($x == 1) ? 'class=first-txn-row' : '';
-         					$tb->tr($attr);
+							$tb->tr($attr);
 							$columncount = 0;
 							for ($i = 1; $i < $this->tableblueprint['cols'] + 1; $i++) {
 								if (isset($this->tableblueprint['header']['rows'][$x]['columns'][$i])) {
@@ -224,5 +232,5 @@
 				$content .= $tb->close();
 			}
 			return $content;
-        }
-    }
+		}
+	}

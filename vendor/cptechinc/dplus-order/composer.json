@@ -5,20 +5,6 @@
     "keywords": ["sales-order", "quote", "cart", "cartquote", "detail", "qnote"],
     "homepage": "http://github.com/cptechinc/dplus-order",
 	"autoload": {
-		"files": [
-            "src/Order.interface.php",
-            "src/OrderDetail.interface.php",
-            "src/Order.class.php",
-            "src/SalesOrder.class.php",
-            "src/CartQuote.class.php",
-            "src/Quote.class.php",
-            "src/SalesOrderHistory.class.php",
-            "src/OrderDetail.class.php",
-            "src/CartDetail.class.php",
-			"src/QuoteDetail.class.php",
-			"src/SalesOrderDetail.class.php",
-            "src/OrderCreditCard.class.php",
-            "src/Qnote.class.php"
-		]
+		"classmap": ["src/"]
 	}
 }

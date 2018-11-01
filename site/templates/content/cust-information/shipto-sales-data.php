@@ -30,7 +30,7 @@
 										<td><?= $location->get_name(); ?></td>
 										<td class="text-right"><?= $shipto['timesold']; ?></td>
 										<td class="text-right">$ <?= $page->stringerbell->format_money($shipto['amountsold']); ?></td>
-										<td class="text-right"><?= $shipto['lastsaledate'] == 0 ? '' : DplusDateTime::format_date($shipto['lastsaledate']); ?></td>
+										<td class="text-right"><?= $shipto['lastsaledate'] == 0 ? '' : Dplus\Base\DplusDateTime::format_date($shipto['lastsaledate']); ?></td>
 									</tr>
 								<?php endforeach; ?>
 							</tbody>

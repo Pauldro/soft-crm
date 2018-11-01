@@ -1,6 +1,7 @@
 <?php
+	
 	$filteron = $input->urlSegment(2);
-
+	
 	switch ($filteron) {
 		case 'customer':
 			$custID = $sanitizer->text($input->urlSegment(3));
@@ -15,7 +16,7 @@
 			$page->body = $config->paths->content.'customer/cust-page/bookings/bookings-panel.php';
 			break;
 		case 'sales-orders':
-			$date = DplusDateTime::format_date($input->get->text('date'));
+			$date = Dplus\Base\DplusDateTime::format_date($input->get->text('date'));
 			$custID = $input->get->text('custID');
 			$shipID = $input->get->text('shipID');
 
@@ -33,7 +34,7 @@
 			break;
 		case 'sales-order':
 			$ordn = $input->get->text('ordn');
-			$date = DplusDateTime::format_date($input->get->text('date'));
+			$date = Dplus\Base\DplusDateTime::format_date($input->get->text('date'));
 			$page->title = "Viewing Sales Order # $ordn on $date";
 			$page->body = $config->paths->content.'bookings/sales-order-diff.php';
 			break;

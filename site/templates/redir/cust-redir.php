@@ -4,10 +4,10 @@
 	* @param string $action
 	*
 	*/
-
-	$action = ($input->post->action ? $input->post->text('action') : $input->get->text('action'));
-	$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
-	$shipID = ($input->post->shipID ? $input->post->text('shipID') : $input->get->text('shipID'));
+	$requestmethod = $input->requestMethod('POST') ? 'post' : 'get';
+	$action = $input->$requestmethod->text('action');
+	$custID = $input->$requestmethod->text('custID');
+	$shipID = $input->$requestmethod->text('shipID');
 
 	$session->{'from-redirect'} = $page->url;
 
@@ -319,12 +319,14 @@
 			}
 			break;
 		case 'shop-as-customer':
-			$session->custID = $custID;
-			$data = array('DBNAME' => $config->dplusdbname, 'CARTCUST' => false, 'CUSTID' => $custID);
-            if (!empty($shipID)) {$data['SHIPID'] = $shipID; $session->shipID = $shipID; }
-			if (!has_carthead(session_id())) {
-				$session->sql = insert_carthead(session_id(), $custID, $shipID);
-			}
+			$cart = new CartQuote();
+			$cart->set('sessionid', session_id());
+			$cart->set('custid', "$custID");
+			$cart->set('shiptoid', "$shipID");
+			$session->sql = $cart->save(true);
+			$cart->create();
+			$data = false;
+			
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
 			} elseif ($input->get->page) {
@@ -460,7 +462,7 @@
 			$data = array('DBNAME' => $config->dplusdbname, 'CICONTACT' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID);
 			break;
 		case 'ci-documents':
-			$custname = get_customername($custID);
+			$custname = Customer::get_customernamefromid($custID);
 			$data = array('DBNAME' => $config->dplusdbname, 'DOCVIEW' => false, 'FLD1CD' => 'CU', 'FLD1DATA' => $custID, 'FLD1DESC' => $custname);
 			break;
 		case 'ci-order-documents':
@@ -507,9 +509,12 @@
 			$data = array('DBNAME' => $config->dplusdbname, 'CICUSTPO' => false, 'CUSTID' => $custID, 'SHIPID' => $shipID, 'CUSTPO' => $custpo);
 			break;
 	}
-
-	writedplusfile($data, $filename);
-	curl_redir("127.0.0.1/cgi-bin/".$config->cgis['default']."?fname=$filename");
+	
+	if (!empty($data)) {
+		writedplusfile($data, $filename);
+		curl_redir("127.0.0.1/cgi-bin/".$config->cgis['default']."?fname=$filename");
+	}
+	
 	if (!empty($session->get('loc')) && !$config->ajax) {
 		header("Location: $session->loc");
 	}

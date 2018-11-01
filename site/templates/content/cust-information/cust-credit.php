@@ -21,7 +21,7 @@
 			if (sizeof($creditjson['data']) > 0) {
 				echo '<div class="row">';
 					echo '<div class="col-sm-6">';
-						$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+						$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
 						foreach ($leftcolumns as $column) {
 							$tb->tr();
 							$heading = '<b> '.$creditjson['columns']['left'][$column]['heading'].' &nbsp;</b>';
@@ -32,7 +32,7 @@
 						echo $tb->close();
 					echo '</div>';
 					echo '<div class="col-sm-6">';
-						$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+						$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
 						foreach ($rightcolumns as $column) {
 							$tb->tr();
 							$tb->td('class='.$config->textjustify[$creditjson['columns']['right'][$column]['headingjustify']], $creditjson['columns']['right'][$column]['heading']);
@@ -46,7 +46,7 @@
 					echo '<h3>Notes</h3>';
 					echo '<div class="row">';
 						echo '<div class="col-sm-12">';
-							$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+							$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
 							$tb->tablesection('thead');
 								$tb->tr();
 								foreach ($notescolumns as $column) {

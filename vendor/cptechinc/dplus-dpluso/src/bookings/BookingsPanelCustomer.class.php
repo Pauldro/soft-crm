@@ -1,10 +1,17 @@
 <?php
+	namespace Dplus\Dpluso\Bookings;
+	
+	use Dplus\ProcessWire\DplusWire;
+	use Dplus\Base\DplusDateTime;
+	use Dplus\Content\HTMLWriter;
+	use \Customer;
+	
 	/**
 	 * Class for handling of getting and displaying booking records from the database for a Customer
 	 * @author Barbara Bullemer barbara@cptechinc.com
 	 */
 	class CustomerBookingsPanel extends BookingsPanel {
-		use OrderPanelCustomerTraits;
+		use \Dplus\Dpluso\OrderDisplays\OrderPanelCustomerTraits;
 
 		/* =============================================================
 			GETTER FUNCTIONS
@@ -127,7 +134,7 @@
 		 * @return string URL
 		 */
 		public function generate_refreshurl() {
-			$url = new Purl\Url($this->pageurl->getURL());
+			$url = new \Purl\Url($this->pageurl->getURL());
 			$url->query = '';
 			return $url->getURL();
 		}
@@ -161,9 +168,9 @@
 		/**
 		 * Looks through the $input->get for properties that have the same name
 		 * as filterable properties, then we populate $this->filter with the key and value
-		 * @param  ProcessWire\WireInput $input Use the get property to get at the $_GET[] variables
+		 * @param  \ProcessWire\WireInput $input Use the get property to get at the $_GET[] variables
 		 */
-		public function generate_filter(ProcessWire\WireInput $input) {
+		public function generate_filter(\ProcessWire\WireInput $input) {
 			if (!$input->get->filter) {
 				$this->filters = array(
 					'bookdate' => array(date('m/d/Y', strtotime('-1 year')), date('m/d/Y'))
@@ -195,11 +202,11 @@
 		/**
 		 * Defines the filter for default
 		 * Goes back one year
-		 * @param  ProcessWire\WireInput $input Use the get property to get at the $_GET[] variables
+		 * @param  \ProcessWire\WireInput $input Use the get property to get at the $_GET[] variables
 		 * @param  string                $interval Allows to defined interval
 		 * @return void
 		 */
-		protected function generate_defaultfilter(ProcessWire\WireInput $input, $interval = '') {
+		protected function generate_defaultfilter(\ProcessWire\WireInput $input, $interval = '') {
 			if (!empty($inteval)) {
 				$this->set_interval($interval);
 			}
@@ -245,7 +252,7 @@
 		 * @return string       URL to view the date's booked orders
 		 */
 		public function generate_viewsalesordersbydayurl($date) {
-			$url = new Purl\Url($this->pageurl->getUrl());
+			$url = new \Purl\Url($this->pageurl->getUrl());
 			$url->path = DplusWire::wire('config')->pages->ajaxload."bookings/sales-orders/";
 			$url->query = '';
 			$url->query->set('date', $date);
@@ -277,7 +284,7 @@
 		 * @return string       URL to view bookings for that order # and date
 		 */
 		public function generate_viewsalesorderdayurl($ordn, $date) {
-			$url = new Purl\Url($this->pageurl->getUrl());
+			$url = new \Purl\Url($this->pageurl->getUrl());
 			$url->path = DplusWire::wire('config')->pages->ajaxload."bookings/sales-order/";
 			$url->query = '';
 			$url->query->set('ordn', $ordn);

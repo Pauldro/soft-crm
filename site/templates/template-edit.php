@@ -1,20 +1,22 @@
 <?php
-
+	use Dplus\Dpluso\OrderDisplays\EditSalesOrderDisplay, Dplus\Dpluso\OrderDisplays\EditQuoteDisplay;
+	use Dplus\Dpluso\Configs\FormFieldsConfig;
+	
 	switch ($page->name) { //$page->name is what we are editing
 		case 'order':
 			if ($input->get->ordn) {
 				$ordn = $input->get->text('ordn');
-				$custID = get_custidfromorder(session_id(), $ordn);
+				$custID = SalesOrder::find_custid($ordn);
 				$editorderdisplay = new EditSalesOrderDisplay(session_id(), $page->fullURL, '#ajax-modal', $ordn);
 				$order = $editorderdisplay->get_order();
 
 				if (!$order) {
 					$page->title = "Order #" . $ordn . ' failed to load';
-					$page->body = '';
+					$page->body = false;
 				} else {
-					$editorderdisplay->canedit = ($input->get->readonly) ? false : $order->can_edit();
+					$editorderdisplay->canedit = $user->loginid == SalesOrder::get_orderlockuser($ordn) ? true : false;
 					$prefix = ($editorderdisplay->canedit) ? 'Editing' : 'Viewing';
-					$page->title = "$prefix Order #" . $ordn . ' for ' . get_customername($custID);
+					$page->title = "$prefix Order #" . $ordn . ' for ' . Customer::get_customernamefromid($custID);
 					$config->scripts->append(hashtemplatefile('scripts/edit/card-validate.js'));
 					$config->scripts->append(hashtemplatefile('scripts/edit/edit-orders.js'));
 					$config->scripts->append(hashtemplatefile('scripts/edit/edit-pricing.js'));
@@ -34,13 +36,13 @@
 				$quote = $editquotedisplay->get_quote();
 				$editquotedisplay->canedit = $quote->can_edit();
 				$prefix = ($editquotedisplay->canedit) ? 'Editing' : 'Viewing';
-				$page->title = "$prefix Quote #" . $qnbr . ' for ' . get_customername($quote->custid);
+				$page->title = "$prefix Quote #" . $qnbr . ' for ' . Customer::get_customernamefromid($quote->custid);
 				$page->body = $config->paths->content."edit/quotes/outline.php";
 				$config->scripts->append(hashtemplatefile('scripts/edit/edit-quotes.js'));
 				$config->scripts->append(hashtemplatefile('scripts/edit/edit-pricing.js'));
 				$itemlookup->set_customer($quote->custid, $quote->shiptoid);
 				$itemlookup = $itemlookup->set_qnbr($qnbr);
-				$formconfig = new FormFieldsConfig('quote');
+				$formconfig = new Dplus\Dpluso\Configs\FormFieldsConfig('quote');
 			} else {
 				throw new Wire404Exception();
 			}

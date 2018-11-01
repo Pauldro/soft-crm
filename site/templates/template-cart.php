@@ -1,12 +1,12 @@
 <?php
-    $cartdisplay = new CartDisplay(session_id(), $page->fullURL, '#ajax-modal');
+    $cartdisplay = new Dplus\Dpluso\OrderDisplays\CartDisplay(session_id(), $page->fullURL, '#ajax-modal');
     $cart = $cartdisplay->get_cartquote();
 
     if (!(empty($cart->custid))) {
         $custID = $cart->custid;
         $shipID = $cart->shiptoid;
         $itemlookup->set_customer($custID, $shipID);
-        $page->pagetitle = "Quick Entry for ".get_customername($custID);
+        $page->pagetitle = "Quick Entry for ".Customer::get_customernamefromid($custID);
         $noteurl = $config->pages->notes.'redir/?action=get-cart-notes';
         $config->scripts->append(hashtemplatefile('scripts/pages/cart.js'));
     	$config->scripts->append(hashtemplatefile('scripts/edit/edit-pricing.js'));

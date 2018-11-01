@@ -1,49 +1,56 @@
-<?php 
-    /**
-     * II Item Costing Screen
-     * Not Formattable
-     */
-     class II_ItemCostingScreen extends TableScreenMaker {
+<?php
+	namespace Dplus\Dpluso\ScreenFormatters\II;
+	
+	use Dplus\ProcessWire\DplusWire;
+	use Dplus\Content\HTMLWriter;
+	use Dplus\Content\Table;
+	use Dplus\Dpluso\ScreenFormatters\TableScreenMaker;
+	
+	/**
+	 * II Item Costing Screen
+	 * Not Formattable
+	 */
+	 class ItemCostingScreen extends TableScreenMaker {
 		protected $tabletype = 'normal'; // grid or normal
 		protected $type = 'ii-cost'; 
 		protected $title = 'Item Costing';
 		protected $datafilename = 'iicost'; 
 		protected $testprefix = 'iicost';
 		protected $datasections = array();
-        
-        /* =============================================================
-            PUBLIC FUNCTIONS
-       	============================================================= */
-        public function generate_screen() {
-            $bootstrap = new HTMLWriter();
-            $content = $this->generate_itemtable();
-            
-            if ($this->forprint) {
-                $content .= $bootstrap->h2('class=page-header', 'Warehouse');
-                $content .= $bootstrap->div('class=form-group', $this->generate_whsesection());
-                $content .= $bootstrap->h2('class=page-header', 'Vendor');
-                $content .= $bootstrap->div('class=form-group', $this->generate_vendorsection());
-                $content .= $bootstrap->h2('class=page-header', 'Last Purchase');
-                $content .= $bootstrap->div('class=form-group', $this->generate_lastpurchasedtable());
-            } else {
-                $listitems = $bootstrap->li('role=presentation|class=active', $bootstrap->a('href=#whse|aria-controls=warehouse|role=tab|data-toggle=tab', 'Warehouse'));
-    			$listitems .= $bootstrap->li('role=presentation', $bootstrap->a('href=#vendor|aria-controls=vendor|role=tab|data-toggle=tab', 'Vendor'));
-    			$listitems .= $bootstrap->li('role=presentation', $bootstrap->a('href=#lastpurchase|aria-controls=lastpurchase|role=tab|data-toggle=tab', 'Last Purchase'));
-    			$content .= $bootstrap->ul('class=nav nav-tabs|role=tablist', $listitems);
-    			
-    			$tabs = $bootstrap->div('role=tabpanel|class=tab-pane active|id=whse', $this->generate_whsesection());
-    			$tabs .= $bootstrap->div('role=tabpanel|class=tab-pane|id=vendor', $this->generate_vendorsection());
-    			$tabs .= $bootstrap->div('role=tabpanel|class=tab-pane|id=lastpurchase', $this->generate_lastpurchasedtable());
-    			
-    			$content .= $bootstrap->div('', $bootstrap->div('class=tab-content', $tabs));
-            }
-			return $content;
-        }
 		
-        /**
-         * Returns HTML Item Description Table
-         * @return string HTML Item Description Table
-         */
+		/* =============================================================
+			PUBLIC FUNCTIONS
+		============================================================= */
+		public function generate_screen() {
+			$bootstrap = new HTMLWriter();
+			$content = $this->generate_itemtable();
+			
+			if ($this->forprint) {
+				$content .= $bootstrap->h2('class=page-header', 'Warehouse');
+				$content .= $bootstrap->div('class=form-group', $this->generate_whsesection());
+				$content .= $bootstrap->h2('class=page-header', 'Vendor');
+				$content .= $bootstrap->div('class=form-group', $this->generate_vendorsection());
+				$content .= $bootstrap->h2('class=page-header', 'Last Purchase');
+				$content .= $bootstrap->div('class=form-group', $this->generate_lastpurchasedtable());
+			} else {
+				$listitems = $bootstrap->li('role=presentation|class=active', $bootstrap->a('href=#whse|aria-controls=warehouse|role=tab|data-toggle=tab', 'Warehouse'));
+				$listitems .= $bootstrap->li('role=presentation', $bootstrap->a('href=#vendor|aria-controls=vendor|role=tab|data-toggle=tab', 'Vendor'));
+				$listitems .= $bootstrap->li('role=presentation', $bootstrap->a('href=#lastpurchase|aria-controls=lastpurchase|role=tab|data-toggle=tab', 'Last Purchase'));
+				$content .= $bootstrap->ul('class=nav nav-tabs|role=tablist', $listitems);
+				
+				$tabs = $bootstrap->div('role=tabpanel|class=tab-pane active|id=whse', $this->generate_whsesection());
+				$tabs .= $bootstrap->div('role=tabpanel|class=tab-pane|id=vendor', $this->generate_vendorsection());
+				$tabs .= $bootstrap->div('role=tabpanel|class=tab-pane|id=lastpurchase', $this->generate_lastpurchasedtable());
+				
+				$content .= $bootstrap->div('', $bootstrap->div('class=tab-content', $tabs));
+			}
+			return $content;
+		}
+		
+		/**
+		 * Returns HTML Item Description Table
+		 * @return string HTML Item Description Table
+		 */
 		public function generate_itemtable() {
 			$tb = new Table('class=table table-striped table-condensed table-excel');
 			$tb->tr();
@@ -58,10 +65,10 @@
 			return $tb->close();
 		}
 		
-        /**
-         * Returns HTML for the Warehouse Section with lot information
-         * @return string HTML for the Warehouse Section
-         */
+		/**
+		 * Returns HTML for the Warehouse Section with lot information
+		 * @return string HTML for the Warehouse Section
+		 */
 		public function generate_whsesection() {
 			$bootstrap = new HTMLWriter();
 			$content = '';
@@ -90,10 +97,10 @@
 			return $content;
 		}
 		
-        /**
-         * Returns HTML for the Vendor Section
-         * @return string HTML for the Vendor Section
-         */
+		/**
+		 * Returns HTML for the Vendor Section
+		 * @return string HTML for the Vendor Section
+		 */
 		public function generate_vendorsection() {
 			$bootstrap = new HTMLWriter();
 			$content = '';
@@ -137,10 +144,10 @@
 			return $content;
 		}
 		
-        /**
-         * Returns HTML Table for the last purchased
-         * @return string HTML Table for the last purchased
-         */
+		/**
+		 * Returns HTML Table for the last purchased
+		 * @return string HTML Table for the last purchased
+		 */
 		function generate_lastpurchasedtable() {
 			$tb = new Table('class=table table-striped table-bordered table-condensed table-excel no-bottom');
 			$tb->tr();
@@ -161,4 +168,4 @@
 			$tb->closetablesection('tbody');
 			return $tb->close();
 		}
-    }
+	}

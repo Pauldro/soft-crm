@@ -32,7 +32,7 @@
     </tr>
     <?php if ($input->get->text('item-document')) : ?>
         <?php if ($input->get->text('item-document') == $detail->itemid) : ?>
-            <?php $itemdocs = get_item_docs(session_id(), $order->orderno, $detail->itemid, false); ?>
+            <?php $itemdocs = get_item_docs(session_id(), $order->ordernumber, $detail->itemid, false); ?>
             <?php foreach ($itemdocs->fetchAll() as $itemdoc) : ?>
                 <tr class="docs">
                     <td colspan="2"></td>
@@ -40,7 +40,7 @@
                         <b><a href="<?= $config->pathtofiles.$itemdoc['pathname'];; ?>" title="Click to View Document" target="_blank" ><?php echo $itemdoc['title']; ?></a></b>
                     </td>
                     <td align="right"><?= $itemdoc['createdate']; ?></td>
-                    <td align="right"><?= DplusDateTime::format_dplustime($itemdoc['createtime']) ?></td>
+                    <td align="right"><?= Dplus\Base\DplusDateTime::format_dplustime($itemdoc['createtime']) ?></td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>

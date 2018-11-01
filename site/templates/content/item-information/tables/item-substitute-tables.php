@@ -1,5 +1,5 @@
 <?php 
-	$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+	$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
 	$tb->tr();
 	$tb->td('', 'Item ID:');
 	$content = $substitutejson['itemid'] . "<br>";
@@ -14,7 +14,7 @@
 	$tb->td('', $content);
 	$itemtable = $tb->close();
 
-	$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+	$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
 	$tb->tr();
 	$tb->td('', 'Sale UoM');
 	$tb->td('', $substitutejson['sale uom']);
@@ -23,7 +23,7 @@
 	$tb->td('', $substitutejson['base price']);
 	$saletable = $tb->close();
 
-	$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+	$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
 	$tb->tablesection('thead');
 		$tb->tr();
 		foreach ($substitutejson['columns'] as $column) {

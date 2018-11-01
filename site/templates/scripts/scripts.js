@@ -445,7 +445,7 @@ $(document).ready(function() {
 				$.notify({
 					icon: "glyphicon glyphicon-shopping-cart",
 					message: msg +"<br> (Click this Message to go to the cart.)" ,
-					url: config.urls.cart,
+					url: config.urls.cart.page,
 					target: '_self'
 				},{
 					type: "success",

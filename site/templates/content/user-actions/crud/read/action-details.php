@@ -6,13 +6,13 @@
 		<td>Action Type:</td> <td><?= $action->generate_actionsubtypedescription(); ?></td>
 	</tr>
 	<tr>
-		<td>Written on:</td> <td><?= DplusDateTime::format_date($action->datecreated, 'm/d/Y g:i A'); ?></td>
+		<td>Written on:</td> <td><?= Dplus\Base\DplusDateTime::format_date($action->datecreated, 'm/d/Y g:i A'); ?></td>
 	</tr>
 	<tr>
 		<td>Written by:</td> <td><?= $action->createdby; ?></td>
 	</tr>
 	<tr>
-		<td>Completed:</td> <td><?= DplusDateTime::format_date($action->datecompleted, 'm/d/Y g:i A'); ?></td>
+		<td>Completed:</td> <td><?= Dplus\Base\DplusDateTime::format_date($action->datecompleted, 'm/d/Y g:i A'); ?></td>
 	</tr>
 	<?php if ($action->has_customerlink()) : ?>
 		<tr>

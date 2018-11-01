@@ -1,11 +1,13 @@
 <?php
+    use Dplus\ProcessWire\DplusWire;
+    
 	/**
 	 * Class for Items that reside in the itemsearch table
 	 */
     class XRefItem {
-        use CreateFromObjectArrayTraits;
-		use CreateClassArrayTraits;
-		use ThrowErrorTrait;
+        use \Dplus\Base\CreateFromObjectArrayTraits;
+		use \Dplus\Base\CreateClassArrayTraits;
+		use \Dplus\Base\ThrowErrorTrait;
 
 		/**
 		 * Part or Item (ID or #)
@@ -116,6 +118,7 @@
         }
 
 		/**
+		 * // TODO Separate this into the dplus-dpluso classes 
 		 * Returns URL to Load the Item Information page for this item
 		 * @param  mixed $custID Provide Customer ID if pricing and other things need to be for particular customer
 		 * @return string         II Load URL
@@ -128,6 +131,7 @@
         }
 
 		/**
+		 * // TODO Separate this into the dplus-dpluso classes 
 		 * Returns the string for javascript function for this particular item for CI
 		 * @param  string $action Action to to run
 		 * @return string         Javascript function with this itemid parameterized
@@ -148,6 +152,7 @@
         }
 
 		/**
+		 * // TODO Separate this into the dplus-dpluso classes 
 		 * Returns the string for javascript function for this particular item for VI
 		 * @param  string $action Action to to run
 		 * @return string         Javascript function with this itemid parameterized

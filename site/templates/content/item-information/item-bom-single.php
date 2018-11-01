@@ -20,7 +20,7 @@
 			echo "<p><b>Kit Qty:</b> ".$bomjson['qtyneeded']."</p>";
 			foreach ($bomjson['data']['component'] as $component)  {
 				echo "<h3>".$component['component item']."</h3>";
-				$tb = new Table('class=table table-striped table-bordered table-condensed table-excel no-bottom');
+				$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel no-bottom');
 				$tb->tablesection('thead');
 					$tb->tr();
 					foreach($bomjson['columns']['component'] as $column) {
@@ -37,7 +37,7 @@
 				$tb->closetablesection('tbody');
 				echo $tb->close();
 				
-				$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+				$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
 				$tb->tablesection('thead');
 					$tb->tr();
 					foreach($bomjson['columns']['warehouse'] as $column) {

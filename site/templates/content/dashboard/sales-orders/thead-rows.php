@@ -1,8 +1,8 @@
 <tr>
 	<th>Detail</th>
 	<th>
-		<a href="<?= $orderpanel->generate_tablesortbyurl("orderno") ; ?>" class="load-link" <?= $orderpanel->ajaxdata; ?>>
-			Order # <?= $orderpanel->tablesorter->generate_sortsymbol('orderno'); ?>
+		<a href="<?= $orderpanel->generate_tablesortbyurl("ordernumber") ; ?>" class="load-link" <?= $orderpanel->ajaxdata; ?>>
+			Order # <?= $orderpanel->tablesorter->generate_sortsymbol('ordernumber'); ?>
 		</a>
 	</th>
 	<th> Customer </th>
@@ -13,13 +13,13 @@
 	</th>
 	<th>Ship-To</th>
 	<th>
-		<a href="<?= $orderpanel->generate_tablesortbyurl("ordertotal") ; ?>" class="load-link" <?= $orderpanel->ajaxdata; ?>>
-			Order Totals <?= $orderpanel->tablesorter->generate_sortsymbol('ordertotal'); ?>
+		<a href="<?= $orderpanel->generate_tablesortbyurl("total_order") ; ?>" class="load-link" <?= $orderpanel->ajaxdata; ?>>
+			Order Totals <?= $orderpanel->tablesorter->generate_sortsymbol('total_order'); ?>
 		</a>
 	</th>
 	<th>
-		<a href="<?= $orderpanel->generate_tablesortbyurl("orderdate") ; ?>" class="load-link" <?= $orderpanel->ajaxdata; ?>>
-			Order Date: <?= $orderpanel->tablesorter->generate_sortsymbol('orderdate'); ?>
+		<a href="<?= $orderpanel->generate_tablesortbyurl("order_date") ; ?>" class="load-link" <?= $orderpanel->ajaxdata; ?>>
+			Order Date: <?= $orderpanel->tablesorter->generate_sortsymbol('order_date'); ?>
 		</a>
 	 </th>
 	 <th class="text-center">
@@ -30,7 +30,9 @@
 	 <th colspan="3">
 		<?= $orderpanel->generate_iconlegend(); ?>
 		<?php if (isset($input->get->orderby)) : ?>
-			<?= $orderpanel->generate_clearsortlink(); ?>
+			<a href="<?= $orderpanel->generate_clearsorturl(); ?>" class="btn btn-warning btn-sm load-link" data-loadinto="<?= $orderpanel->loadinto; ?>" data-focus="<?= $orderpanel->focus; ?>">
+				Clear Sorting
+			</a>
 		<?php endif; ?>
 	</th>
 </tr>

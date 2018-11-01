@@ -1,5 +1,5 @@
 <?php
-	$custindex = new CustomerIndex($page->fullURL, $loadinto, $focus);
+	$custindex = new Dplus\Dpluso\Customer\CustomerIndex($page->fullURL, $loadinto, $focus);
 	$contactscount = $custindex->count_distinctcustindex();
 	
 	if ($input->get->q) {

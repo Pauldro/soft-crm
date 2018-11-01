@@ -29,7 +29,7 @@
 	</tr>
 	<?php if ($task->is_completed()) : ?>
 		<tr>
-			<td>Completed:</td> <td><?= DplusDateTime::format_date($action->datecompleted, 'm/d/Y g:i A'); ?></td>
+			<td>Completed:</td> <td><?= Dplus\Base\DplusDateTime::format_date($action->datecompleted, 'm/d/Y g:i A'); ?></td>
 		</tr>
 	<?php endif; ?>
 	<tr>

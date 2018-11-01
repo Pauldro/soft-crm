@@ -1,14 +1,14 @@
-<?php 
+<?php
 	/**
 	 * Class to Set up and define what Quotes, CartQuote, and Sales Orders Need to do and provide them
 	 * with shared functions and properties that they can extend
 	 */
 	abstract class Order {
-		use ThrowErrorTrait;
-		use MagicMethodTraits;
-		use CreateFromObjectArrayTraits;
-		use CreateClassArrayTraits;
-		
+		use \Dplus\Base\ThrowErrorTrait;
+		use \Dplus\Base\MagicMethodTraits;
+		use \Dplus\Base\CreateFromObjectArrayTraits;
+		use \Dplus\Base\CreateClassArrayTraits;
+
 		protected $sessionid;
 		protected $recno;
 		protected $date;
@@ -32,7 +32,7 @@
 		protected $shipcity;
 		protected $shipstate;
 		protected $shipzip;
-		protected $contact; 
+		protected $contact;
 		protected $sp1;
 		protected $sp1name;
 		protected $sp2;
@@ -59,13 +59,13 @@
 		protected $taxcode;
 		protected $taxcodedesc;
 		protected $termcode;
-		protected $termcodedesc; 
+		protected $termcodedesc;
 		protected $pricecode;
 		protected $pricecodedesc;
 		protected $error;
 		protected $errormsg;
 		protected $dummy;
-		
+
 		/* =============================================================
 			GETTER FUNCTIONS
 		============================================================ */
@@ -76,7 +76,7 @@
 		public function has_notes() {
 			return $this->hasnotes == 'Y' ? true : false;
 		}
-		
+
 		/**
 		 * Returns if Order has error
 		 * @return bool Y = true | N = false
@@ -84,17 +84,12 @@
 		public function has_error() {
 			return $this->error == 'Y' ? true : false;
 		}
-		
+
 		/**
 		 * Returns if Order has shiptoid defined
-		 * @return bool 
+		 * @return bool
 		 */
 		public function has_shipto() {
 			return (!empty($this->shiptoid));
 		}
-		
-		/* =============================================================
-			SETTER FUNCTIONS
-			MagicMethodTraits has set()
-		============================================================ */
 	}

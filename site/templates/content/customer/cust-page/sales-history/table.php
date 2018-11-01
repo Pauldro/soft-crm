@@ -6,28 +6,38 @@
 		<?php if ($orderpanel->count == 0 && $input->get->text('ordn') == '') : ?>
 			<tr> <td colspan="12" class="text-center">No Orders found! Try using a date range to find the order(s) you are looking for.</td> </tr>
 		<?php endif; ?>
-		
+
 		<?php $orderpanel->get_orders(); ?>
 		<?php foreach($orderpanel->orders as $order) : ?>
-			<tr class="<?= $orderpanel->generate_rowclass($order); ?>" id="<?= $order->orderno; ?>">
-				<td class="text-center"><?= $orderpanel->generate_expandorcollapselink($order); ?></td>
-				<td><?= $order->orderno; ?></td>
+			<tr class="<?= $order->ordernumber == $input->get->text('ordn') ? 'selected' : ''; ?>" id="<?= $order->ordernumber; ?>">
+				<td class="text-center">
+					<?php if ($order->ordernumber == $input->get->text('ordn')) : ?>
+						<a href="<?= $orderpanel->generate_closedetailsurl($order); ?>" class="btn btn-sm btn-primary load-link" <?= $orderpanel->ajaxdata; ?>>
+							<i class="fa fa-minus" aria-hidden="true"></i> <span class="sr-only">Close <?= $order->ordernumber; ?> Details</span>
+						</a>
+					<?php else : ?>
+						<a href="<?= $orderpanel->generate_loaddetailsurl($order); ?>" class="btn btn-sm btn-primary generate-load-link" <?= $orderpanel->ajaxdata; ?>>
+							<i class="fa fa-plus" aria-hidden="true"></i> <span class="sr-only">Load <?= $order->ordernumber; ?> Details</span>
+						</a>
+					<?php endif; ?>
+				</td>
+				<td><?= $order->ordernumber; ?></td>
 				<td colspan="2"><?= $order->custpo; ?></td>
 				<td>
 					<a href="<?= $orderpanel->generate_customershiptourl($order); ?>"><?= $order->shiptoid; ?></a>
+					<span class="pull-right"><?= $orderpanel->generate_shiptopopover($order); ?></span>
 				</td>
 				<td class="text-right">$ <?= $page->stringerbell->format_money($order->total_order); ?></td>
-				<td class="text-right"><?= DplusDateTime::format_date($order->orderdate); ?></td>
-				<td class="text-right"><?= DplusDateTime::format_date($order->invoice_date); ?></td>
+				<td class="text-right"><?= Dplus\Base\DplusDateTime::format_date($order->order_date); ?></td>
+				<td class="text-right"><?= Dplus\Base\DplusDateTime::format_date($order->invoice_date); ?></td>
 				<td colspan="3">
 					<span class="col-xs-3"><?= $orderpanel->generate_loaddocumentslink($order); ?></span>
 					<span class="col-xs-3"><?= $orderpanel->generate_loadtrackinglink($order); ?></span>
 					<span class="col-xs-3"><?= $orderpanel->generate_loaddplusnoteslink($order, '0'); ?></span>
-					<span class="col-xs-3"><?= $orderpanel->generate_editlink($order); ?></span>
 				</td>
 			</tr>
 
-			<?php if ($order->orderno == $input->get->text('ordn')) : ?>
+			<?php if ($order->ordernumber == $input->get->text('ordn')) : ?>
 				<?php if ($input->get->show == 'documents' && (!$input->get('item-documents'))) : ?>
 					<?php include $config->paths->content.'customer/cust-page/sales-history/documents-rows.php'; ?>
 				<?php endif; ?>
@@ -56,7 +66,7 @@
 						<?= $orderpanel->generate_viewlinkeduseractionslink($order); ?>
 					</td>
 					<td>
-						<a class="btn btn-primary btn-sm" onClick="reorder('<?= $order->orderno; ?>')">
+						<a class="btn btn-primary btn-sm" onClick="reorder('<?= $order->ordernumber; ?>')">
 							<span class="glyphicon glyphicon-shopping-cart" title="re-order"></span> Reorder Order
 						 </a>
 					</td>

@@ -39,7 +39,7 @@
 						<td class="control-label">AR Contact</td>
 						<td>
 							<?php $attr = "class=form-control input-sm|name=arcontact"; ?>
-							<?php $attr .= ((LogmUser::load($user->loginid))->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) ? '|disabled' : ''; ?>
+							<?php $attr .= ((LogmUser::load($user->loginid))->get_dplusrole() == Dplus\ProcessWire\DplusWire::wire('config')->roles['sales-rep']) ? '|disabled' : ''; ?>
 							<?= $page->bootstrap->select("$attr", array_flip($config->yesnoarray), 'N'); ?>
 						</td>
 					</tr>
@@ -47,7 +47,7 @@
 						<td class="control-label">Dunning Contact</td>
 						<td>
 							<?php $attr = "class=form-control input-sm|name=dunningcontact"; ?>
-							<?php $attr .= ((LogmUser::load($user->loginid))->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep']) ? '|disabled' : ''; ?>
+							<?php $attr .= ((LogmUser::load($user->loginid))->get_dplusrole() == Dplus\ProcessWire\DplusWire::wire('config')->roles['sales-rep']) ? '|disabled' : ''; ?>
 							<?= $page->bootstrap->select($attr, array_flip($config->yesnoarray), 'N'); ?>
 						</td>
 					</tr>

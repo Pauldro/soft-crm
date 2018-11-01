@@ -1,10 +1,19 @@
 <?php
+	namespace Dplus\Dpluso\ScreenFormatters\II;
+	
+	use Dplus\ProcessWire\DplusWire;
+	use Dplus\Content\HTMLWriter;
+	use Dplus\Content\FormMaker;
+	use Dplus\Content\Table;
+	use Dplus\Dpluso\ScreenFormatters\TableScreenFormatter;
+	use \XRefItem;
+	
 	/**
 	 * Formatter for the II Item Page
 	 * Formattable
 	 */
-	class II_ItemPageFormatter extends TableScreenFormatter {
-        protected $tabletype = 'grid'; // grid or normal
+	class ItemPageFormatter extends TableScreenFormatter {
+		protected $tabletype = 'grid'; // grid or normal
 		protected $type = 'ii-item-page'; // ii-sales-history
 		protected $title = 'Item Page';
 		protected $datafilename = 'iiitem'; // iisaleshist.json
@@ -15,11 +24,11 @@
 		);
 		
 		/* =============================================================
-            PUBLIC FUNCTIONS
-       	============================================================ */
-        public function generate_screen() {
-            $bootstrap = new HTMLWriter();
-            $content = '';
+			PUBLIC FUNCTIONS
+		============================================================ */
+		public function generate_screen() {
+			$bootstrap = new HTMLWriter();
+			$content = '';
 			$this->generate_tableblueprint();
 			$item = XRefItem::load($this->json['itemid']);
 			
@@ -33,12 +42,12 @@
 			}
 			
 			$content .= $bootstrap->div('class=row', $this->generate_othersections());
-            return $content;
-        }
+			return $content;
+		}
 		
 		/* =============================================================
-            CLASS FUNCTIONS
-       	============================================================ */
+			CLASS FUNCTIONS
+		============================================================ */
 		/**
 		 * Returns the table that contains the Item Form
 		 * @return string HTML Table
@@ -145,5 +154,5 @@
 				}
 			}
 			$this->tableblueprint = $table;
-        }
-    }
+		}
+	}

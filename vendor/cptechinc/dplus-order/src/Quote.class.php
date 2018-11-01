@@ -1,4 +1,6 @@
 <?php
+	use Dplus\ProcessWire\DplusWire;
+	
 	/**
 	 * Class for dealing with Quotes from quotehed
 	 */

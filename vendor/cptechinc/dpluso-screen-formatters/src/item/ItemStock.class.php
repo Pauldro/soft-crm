@@ -1,23 +1,29 @@
 <?php
+	namespace Dplus\Dpluso\ScreenFormatters\Item;
+	
+	use Dplus\Dpluso\ScreenFormatters\TableScreenMaker;
+	use Dplus\Content\HTMLWriter;
+	use Dplus\Content\Table;
+	
 	/**
 	 * Item Stock Parses and generates the display for 
 	 * item stock
 	 * Used on Edit Item Detail 
 	 */
-     class Item_ItemStock extends TableScreenMaker {
+	 class ItemStock extends TableScreenMaker {
 		protected $tabletype = 'normal'; // grid or normal
 		protected $type = 'item-stock'; 
 		protected $title = 'Item Stock';
 		protected $datafilename = 'stock'; 
 		protected $testprefix = 'iistk';
 		protected $datasections = array();
-        
-        /* =============================================================
-          PUBLIC FUNCTIONS
-       	============================================================ */
-        public function generate_screen() {
-            $bootstrap = new HTMLWriter();
-            $content = '';
+		
+		/* =============================================================
+			PUBLIC FUNCTIONS
+		============================================================ */
+		public function generate_screen() {
+			$bootstrap = new HTMLWriter();
+			$content = '';
 			$tb = new Table('class=table table-striped table-condensed table-bordered');
 			$tb->tablesection('thead');
 				$tb->tr();
@@ -47,5 +53,5 @@
 				}
 			$tb->closetablesection('tbody');
 			return $bootstrap->div('class=table-responsive', $tb->close());
-        }
-    }
+		}
+	}

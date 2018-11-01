@@ -1,7 +1,7 @@
 <?php if ($appconfig->child('name=dplus')->has_crm) : ?>
 	<div class="row">
 		<div class="col-sm-12">
-			<?php $actionpanel = new ActionsPanel(session_id(), $page->fullURL, $input); ?>
+			<?php $actionpanel = new Dplus\Dpluso\UserActions\ActionsPanel(session_id(), $page->fullURL, $input); ?>
 			<?php include $config->paths->content."user-actions/user-actions-panel.php"; ?>
 		</div>
 	</div>
@@ -35,11 +35,11 @@
 		<?php include $config->paths->content.'dashboard/sales-history/sales-history-panel.php'; ?>
 	</div>
 </div>
-<?php 
+<?php
 	if ($pages->get('/config/dashboard/')->show_salespanel) {
 		include "{$config->paths->content}/dashboard/sales-panel/sales-panel.js.php";
 	}
-	
+
 	if ($page->has_bookings && $pages->get('/config/dashboard/')->show_bookingspanel) {
 		include $config->paths->content."dashboard/bookings/bookings-line-chart.js.php";
 	}

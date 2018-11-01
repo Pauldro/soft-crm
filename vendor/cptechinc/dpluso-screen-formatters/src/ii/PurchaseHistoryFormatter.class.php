@@ -1,10 +1,18 @@
 <?php
+	namespace Dplus\Dpluso\ScreenFormatters\II;
+	
+	use Dplus\ProcessWire\DplusWire;
+	use Dplus\Content\HTMLWriter;
+	use Dplus\Content\Table;
+	use Dplus\Dpluso\ScreenFormatters\TableScreenMaker;
+	use Dplus\Dpluso\ScreenFormatters\TableScreenFormatter;
+	
 	/**
 	 * Formatter for II Purchase History Screen
 	 * Formattable
 	 */
-	class II_PurchaseHistoryFormatter extends TableScreenFormatter {
-        protected $tabletype = 'normal'; // grid or normal
+	class PurchaseHistoryFormatter extends TableScreenFormatter {
+		protected $tabletype = 'normal'; // grid or normal
 		protected $type = 'ii-purchase-history'; // ii-sales-history
 		protected $title = 'Item Purchase History';
 		protected $datafilename = 'iipurchhist'; // iisaleshist.json
@@ -12,19 +20,19 @@
 		protected $formatterfieldsfile = 'iiphfmattbl'; // iishfmtbl.json
 		protected $datasections = array(
 			"detail" => "Detail",
-            "lotserial" => "Lot / Serial"
+			"lotserial" => "Lot / Serial"
 		);
 		
 		/* =============================================================
-            PUBLIC FUNCTIONS
-       	============================================================ */
-        public function generate_screen() {
+			PUBLIC FUNCTIONS
+		============================================================ */
+		public function generate_screen() {
 			$url = new \Purl\Url(DplusWire::wire('config')->pages->ajaxload."ii/ii-documents/order/");
 			$itemID = $this->json['itemid'];
-            $bootstrap = new HTMLWriter();
-            $content = '';
+			$bootstrap = new HTMLWriter();
+			$content = '';
 			$this->generate_tableblueprint();
-		    
+			
 			foreach ($this->json['data'] as $whseid => $whse) {
 				$content .= $bootstrap->h3('', $whse['Whse Name']);
 				$tb = new Table("class=table table-striped table-bordered table-condensed table-excel|id=$whseid");
@@ -138,8 +146,8 @@
 					$tb->closetablesection('tfoot');
 					$content .= $tb->close();
 			}
-            return $content;
-        }
+			return $content;
+		}
 		
 		public function generate_javascript() {
 			$bootstrap = new HTMLWriter();
@@ -156,4 +164,4 @@
 			$content .= $bootstrap->close('script');
 			return $content;
 		}
-    }
+	}

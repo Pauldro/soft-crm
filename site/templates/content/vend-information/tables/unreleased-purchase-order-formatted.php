@@ -1,5 +1,5 @@
 <?php
-	$tb = new Table('class=table table-striped table-bordered table-condensed table-excel|id=unreleased-purchase-orders');
+	$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel|id=unreleased-purchase-orders');
 	$tb->tablesection('thead');
 		for ($x = 1; $x < $table['header']['maxrows'] + 1; $x++) {
 			$tb->tr();

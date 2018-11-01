@@ -1,8 +1,11 @@
 <?php
+    use Dplus\Dpluso\OrderDisplays\EditSalesOrderDisplay;
+    use Dplus\Dpluso\OrderDisplays\QuoteDisplay;
+    
     switch ($page->parent->name) { //$page->name is what we are editing
         case 'order':
             $ordn = $input->get->text('ordn');
-            $orderdisplay = new SalesOrderDisplay(session_id(), $page->fullURL, '#ajax-modal', $ordn);
+            $orderdisplay = new EditSalesOrderDisplay(session_id(), $page->fullURL, '#ajax-modal', $ordn);
             $order = $orderdisplay->get_order(); 
             $page->title = 'Summary for Order # '.$ordn;
             $page->body = $config->paths->content."confirm/orders/outline.php";

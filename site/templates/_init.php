@@ -20,21 +20,24 @@
 	// INCLUDE AUTOLOAD AND NECESSARY FUNCTIONS
 	include_once("./_func.php"); // include our shared functions
 	include_once("./_dbfunc.php");
-	include_once($config->paths->vendor."cptechinc/dplus-base/vendor/autoload.php");
-	include_once($config->paths->vendor."cptechinc/dplus-processwire/vendor/autoload.php");
-	include_once($config->paths->vendor."cptechinc/dplus-content/vendor/autoload.php");
-	include_once($config->paths->vendor."cptechinc/dplus-dpluso/vendor/autoload.php");
-	include_once($config->paths->vendor."cptechinc/dplus-items/vendor/autoload.php");
-	include_once($config->paths->vendor."cptechinc/dplus-order/vendor/autoload.php");
-	include_once($config->paths->vendor."cptechinc/dpluso-screen-formatters/vendor/autoload.php");
-	include_once($config->paths->vendor."cptechinc/dplus-services/vendor/autoload.php");
-	include_once($config->paths->vendor."cptechinc/dpluso-warehouse-classes/vendor/autoload.php");
+	
+	//include_once($config->paths->vendor."cptechinc/dplus-base/vendor/autoload.php");
+	// include_once($config->paths->vendor."cptechinc/dplus-content/vendor/autoload.php");
+	//include_once($config->paths->vendor."cptechinc/dplus-dpluso/vendor/autoload.php");
+	// include_once($config->paths->vendor."cptechinc/dplus-order/vendor/autoload.php");
+	// include_once($config->paths->vendor."cptechinc/dplus-file-services/vendor/autoload.php");
+	// 
+	// include_once($config->paths->vendor."cptechinc/dplus-items/vendor/autoload.php");
+	// 
+	// include_once($config->paths->vendor."cptechinc/dpluso-warehouse/vendor/autoload.php");
+	// 
+	//include_once($config->paths->vendor."cptechinc/dpluso-screen-formatters/vendor/autoload.php");
 	
 	// AFTER LOADING CONFIGS, CLASSES, AND FUNCTIONS CHECK FOR LOGIN
 	$user->loggedin = is_validlogin(session_id());
 	if ($user->loggedin) {
 		setup_user(session_id());
-		SigninLog::log_signin(session_id(), $user->loginid);
+		Dplus\Dpluso\General\SigninLog::log_signin(session_id(), $user->loginid);
 	} elseif ($page->template != 'template-login' && $page->template != 'redir' && $page->template != 'template-print') {
 		header('location: ' . $config->pages->login);
 		exit;
@@ -50,16 +53,18 @@
 		$page->fullURL->join($config->filename);
 	}
 	
-	$page->stringerbell = new StringerBell();
-	$page->htmlwriter = new HTMLWriter();
-	$page->bootstrap = $page->htmlwriter;
-	$page->screenformatterfactory = new \ScreenFormatterFactory(session_id());
-	$itemlookup = new ItemLookupModal();
 	
-	TableScreenMaker::set_filedirectory($config->jsonfilepath);
-	TableScreenMaker::set_testfiledirectory($config->paths->vendor."cptechinc/dpluso-screen-formatters/src/examples/");
-	TableScreenMaker::set_fieldfiledirectory($config->companyfiles."json/");
-	FormFieldsConfig::set_defaultconfigdirectory($config->paths->templates."configs/customer/");
+	$page->stringerbell = new Dplus\Base\StringerBell();
+	$page->htmlwriter = new Dplus\Content\HTMLWriter();
+	$page->bootstrap = $page->htmlwriter;
+	$page->screenformatterfactory = new Dplus\Dpluso\ScreenFormatters\ScreenFormatterFactory(session_id());
+	$itemlookup = new Dplus\Dpluso\Items\ItemLookupModal();
+	
+	Dplus\Dpluso\ScreenFormatters\TableScreenMaker::set_filedirectory($config->jsonfilepath);
+	Dplus\Dpluso\ScreenFormatters\TableScreenMaker::set_testfiledirectory($config->paths->vendor."cptechinc/dpluso-screen-formatters/src/examples/");
+	Dplus\Dpluso\ScreenFormatters\TableScreenMaker::set_fieldfiledirectory($config->companyfiles."json/");
+	Dplus\Dpluso\Configs\FormFieldsConfig::set_defaultconfigdirectory($config->paths->templates."configs/customer/");
+
 	
 	// ADD DEFAULT CSS FILES
 	$config->styles->append(hashtemplatefile('styles/bootstrap.min.css'));
@@ -90,4 +95,3 @@
 	if ($input->get->json) {
 		$config->json = true;
 	}
-	

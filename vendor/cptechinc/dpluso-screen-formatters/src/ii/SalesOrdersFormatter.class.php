@@ -1,10 +1,18 @@
 <?php
+	namespace Dplus\Dpluso\ScreenFormatters\II;
+	
+	use Dplus\ProcessWire\DplusWire;
+	use Dplus\Content\HTMLWriter;
+	use Dplus\Content\Table;
+	use Dplus\Dpluso\ScreenFormatters\TableScreenMaker;
+	use Dplus\Dpluso\ScreenFormatters\TableScreenFormatter;
+	
 	/**
 	 * Formatter for II Item Sales Orders
 	 * Formattable
 	 */
-	class II_SalesOrdersFormatter extends TableScreenFormatter {
-        protected $tabletype = 'normal'; // grid or normal
+	class SalesOrdersFormatter extends TableScreenFormatter {
+		protected $tabletype = 'normal'; // grid or normal
 		protected $type = 'ii-sales-orders'; // ii-sales-history
 		protected $title = 'Item Sales Orders';
 		protected $datafilename = 'iisalesordr'; // iisaleshist.json
@@ -13,18 +21,18 @@
 		protected $datasections = array(
 			"detail" => "Detail"
 		);
-        
+		
 		/* =============================================================
-            PUBLIC FUNCTIONS
-       	============================================================ */
-        public function generate_screen() {
+			PUBLIC FUNCTIONS
+		============================================================ */
+		public function generate_screen() {
 			$url = new \Purl\Url(DplusWire::wire('config')->pages->ajaxload."ii/ii-documents/order/");
-            $bootstrap = new HTMLWriter();
-            $content = '';
+			$bootstrap = new HTMLWriter();
+			$content = '';
 			$this->generate_tableblueprint();
 			
-            foreach ($this->json['data'] as $whseid => $whse) {
-                $content .= $bootstrap->h3('', $whse['Whse Name']);
+			foreach ($this->json['data'] as $whseid => $whse) {
+				$content .= $bootstrap->h3('', $whse['Whse Name']);
 				$tb = new Table("class=table table-striped table-bordered table-condensed table-excel|id=$whseid");
 				$tb->tablesection('thead');
 					for ($x = 1; $x < $this->tableblueprint['detail']['maxrows'] + 1; $x++) {
@@ -103,9 +111,9 @@
 				$tb->closetablesection('tfoot');
 				$table = $tb->close();
 				$content .= $table;
-            } // FOREACH Whse
-            return $content;
-        }
+			} // FOREACH Whse
+			return $content;
+		}
 		
 		public function generate_javascript() {
 			$bootstrap = new HTMLWriter();
@@ -125,4 +133,4 @@
 			}
 			return $content;
 		}
-    }
+	}

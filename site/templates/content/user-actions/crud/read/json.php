@@ -2,7 +2,7 @@
     header('Content-Type: application/json');
 
     $actionID = $input->get->text('id');
-    $actiondisplay = new UserActionDisplay($page->fullURL);
+    $actiondisplay = new Dplus\Dpluso\UserActions\UserActionDisplay($page->fullURL);
     $action = UserAction::load($actionID);
 
     if ($action) {

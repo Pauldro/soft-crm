@@ -6,7 +6,7 @@
 		<td>Note Type</td> <td><?= $note->generate_actionsubtypedescription(); ?></td>
 	</tr>
 	<tr>
-		<td>Written on:</td> <td><?= DplusDateTime::format_date($note->datecreated, 'm/d/Y g:i A'); ?></td>
+		<td>Written on:</td> <td><?= Dplus\Base\DplusDateTime::format_date($note->datecreated, 'm/d/Y g:i A'); ?></td>
 	</tr>
 	<tr>
 		<td>Written by:</td> <td><?= $note->createdby; ?></td>

@@ -4,7 +4,7 @@
     $orderpanel->activeID = !empty($input->get->ordn) ? $input->get->text('ordn') : false;
     $orderpanel->generate_filter($input);
     $orderpanel->get_ordercount();
-    $paginator = new Paginator($orderpanel->pagenbr, $orderpanel->count, $orderpanel->pageurl->getUrl(), $orderpanel->paginationinsertafter, $orderpanel->ajaxdata);
+    $paginator = new Dplus\Content\Paginator($orderpanel->pagenbr, $orderpanel->count, $orderpanel->pageurl->getUrl(), $orderpanel->paginationinsertafter, $orderpanel->ajaxdata);
     echo var_dump($orderpanel->filters);
     echo $orderpanel->get_ordercount(true);
 	echo var_dump($orderpanel->filters['orderdate']);

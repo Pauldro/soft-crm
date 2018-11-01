@@ -82,7 +82,6 @@
     						<?= $editorderdisplay->generate_loaddocumentslink($order, $detail); ?>
                             <?= $editorderdisplay->generate_loaddplusnoteslink($order, $detail->linenbr); ?>
     					</div>
-
     					<div class="col-xs-6 sm-padding">
                             <h4 class="visible-xs-block">Edit</h4>
 							<?php if ($order->can_edit()) : ?>
@@ -90,8 +89,18 @@
 									<span class="fa fa-floppy-o"></span> <span class="sr-only">Save Line</span>
 								</button>
 							<?php endif; ?>
-                            <?= $editorderdisplay->generate_detailvieweditlink($order, $detail); ?>
-                            <?= $editorderdisplay->generate_deletedetaillink($order, $detail); ?>
+							<?php if ($order->can_edit()) : ?>
+								<a href="<?= $editorderdisplay->generate_detailviewediturl($order, $detail); ?>" class="btn btn-sm btn-warning update-line" aria-label="Edit Detail Line" data-kit="<?= $detail->kititemflag; ?>" data-itemid="<?= $detail->itemid; ?>" data-custid="<?= $order->custid; ?>">
+									<i class="fa fa-pencil" aria-hidden="true"></i>
+								</a>
+								<a href="<?= $editorderdisplay->generate_deletedetailurl($order, $detail); ?>" class="btn btn-sm btn-danger" title="Delete Line">
+									<i class="fa fa-trash" aria-hidden="true"></i> <span class="sr-only">Delete Line</span>
+								</a>
+							<?php else : ?>
+								<a href="<?= $editorderdisplay->generate_detailviewediturl($order, $detail); ?>" class="btn btn-sm btn-default update-line" aria-label="View Detail Line" data-kit="<?= $detail->kititemflag; ?>" data-itemid="<?= $detail->itemid; ?>" data-custid="<?= $order->custid; ?>">
+									<i class="fa fa-eye" aria-hidden="true"></i>
+								</a>
+							<?php endif; ?>
     					</div>
     				</div>
     			</div>
@@ -99,4 +108,6 @@
         </div>
 	</form>
 <?php endforeach; ?>
-<?php include $config->paths->content.'edit/orders/order-details/add-quick-entry.php'; ?>
+<?php if ($order->can_edit()) : ?>
+	<?php include $config->paths->content.'edit/orders/order-details/add-quick-entry.php'; ?>
+<?php endif; ?>

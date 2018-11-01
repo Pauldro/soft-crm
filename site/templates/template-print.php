@@ -1,15 +1,18 @@
 <?php
+	use Dplus\Dpluso\OrderDisplays\SalesOrderDisplay;
+	use Dplus\Dpluso\OrderDisplays\QuoteDisplay;
+	
 	$salespersonjson = json_decode(file_get_contents($config->companyfiles."json/salespersontbl.json"), true);
     $sessionID = $input->get->referenceID ? $input->get->text('referenceID') : session_id();
-    $emailurl = new \Purl\Url($config->pages->ajaxload."email/email-file-form/");
+    $emailurl = new Purl\Url($config->pages->ajaxload."email/email-file-form/");
     $emailurl->query->set('referenceID', $sessionID);
-    $generator = new \Picqer\Barcode\BarcodeGeneratorPNG();
+    $generator = new Picqer\Barcode\BarcodeGeneratorPNG();
 	
     switch ($page->name) { //$page->name is what we are printing
         case 'order':
             $ordn = $input->get->text('ordn');
             $orderdisplay = new SalesOrderDisplay($sessionID, $page->fullURL, '#ajax-modal', $ordn);
-            $order = $orderdisplay->get_order();
+            $order = SalesOrderHistory::is_saleshistory($ordn) ? SalesOrderHistory::load($ordn) : $orderdisplay->get_order();
             $page->title = 'Order #' . $ordn;
             $emailurl->query->set('printurl', $orderdisplay->generate_sendemailurl($order));
 
@@ -41,12 +44,12 @@
         $url->query->set('referenceID', $sessionID);
     	$url->query->set('view', 'pdf');
 		
-        $pdfmaker = new PDFMaker($sessionID, $page->name, $url->getUrl());
+        $pdfmaker = new Dplus\FileServices\PDFMaker($sessionID, $page->name, $url->getUrl());
         $result = $pdfmaker->process();
 		
 		switch ($page->name) { //$page->name is what we are printing
 	        case 'quote':
-				$folders = PDFMaker::$folders;
+				$folders = Dplus\FileServices\PDFMaker::$folders;
 				$url = new Purl\Url($page->fullURL->getUrl());
 				$url->path = $config->pages->account."redir/";
 				$url->query->setData(array(

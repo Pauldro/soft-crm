@@ -1,5 +1,5 @@
 <?php 
-	$tb = new Table('class=table table-striped table-condensed table-excel');
+	$tb = new Dplus\Content\Table('class=table table-striped table-condensed table-excel');
 	$tb->tr();
 		$tb->td('', '<b>Item ID</b>');
 		$tb->td('', $pricejson['itemid']);
@@ -15,7 +15,7 @@
 	$itemtable = $tb->close();
 
 	// STANDARD CUSTOMER PRICING TABLE
-	$tb = new Table('class=table table-striped table-condensed table-excel');
+	$tb = new Dplus\Content\Table('class=table table-striped table-condensed table-excel');
 	$tb->tablesection('thead');
 		$tb->tr();
 		foreach($pricejson['columns']['standard pricing'] as $column) {
@@ -38,7 +38,7 @@
 	$standardpricingtable = $tb->close();
 
 	// CUSTROMER PRICING TABLE
-	$tb = new Table('class=table table-striped table-condensed table-excel');
+	$tb = new Dplus\Content\Table('class=table table-striped table-condensed table-excel');
 	$tb->tablesection('thead');
 		$tb->tr();
 		foreach($pricejson['columns']['customer pricing'] as $column) {
@@ -58,7 +58,7 @@
 	$customerpricingtable = $tb->close();
 
 	// DERIVED PRICING TABLE
-	$tb = new Table('class=table table-striped table-condensed table-excel');
+	$tb = new Dplus\Content\Table('class=table table-striped table-condensed table-excel');
 	$tb->tablesection('thead');
 		$tb->tr();
 		foreach($pricejson['columns']['pricing derived from'] as $column) {

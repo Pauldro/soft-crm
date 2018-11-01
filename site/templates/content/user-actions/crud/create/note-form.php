@@ -1,5 +1,5 @@
 <?php
-	$editactiondisplay = new EditUserActionsDisplay($page->fullURL);
+	$editactiondisplay = new Dplus\Dpluso\UserActions\EditUserActionsDisplay($page->fullURL);
 	$note->set('actiontype', 'note');
 ?>
 <form action="<?= $config->pages->useractions."add/"; ?>" method="POST" id="new-action-form" data-refresh="#actions-panel" data-modal="#ajax-modal">

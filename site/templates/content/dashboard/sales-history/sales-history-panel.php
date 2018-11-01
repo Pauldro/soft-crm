@@ -1,7 +1,10 @@
 <?php
+	use Dplus\Dpluso\OrderDisplays\SalesOrderHistoryPanel;
+	use Dplus\Content\Paginator;
+	
 	$orderpanel = new SalesOrderHistoryPanel(session_id(), $page->fullURL, '#ajax-modal', '#sales-history-panel', $config->ajax);
-	$orderpanel->pagenbr = $input->pageNum;
-	$orderpanel->activeID = !empty($input->get->ordn) ? $input->get->text('ordn') : false;
+	$orderpanel->set('pagenbr', $input->pageNum);
+	$orderpanel->set('activeID', !empty($input->get->ordn) ? $input->get->text('ordn') : false);
 	$orderpanel->generate_filter($input);
 	$orderpanel->get_ordercount();
 
@@ -10,16 +13,22 @@
 <div class="panel panel-primary not-round" id="sales-history-panel">
 	 <div class="panel-heading not-round" id="sales-history-panel-heading">
 		<?php if (!empty($orderpanel->filters)) : ?>
-			<a href="#orders-div" data-parent="#sales-history-panel" data-toggle="collapse">
-				<?= $orderpanel->generate_filterdescription(); ?> <span class="caret"></span> <span class="badge"><?= $orderpanel->count; ?></span> &nbsp; | &nbsp;
-				<?= $orderpanel->generate_refreshlink(); ?>
+			<a href="#sales-history-div" data-parent="#sales-history-panel" data-toggle="collapse">
+				Shipped Orders <?= $orderpanel->generate_filterdescription(); ?> <span class="caret"></span> 
 			</a>
+			<span class="badge pull-right"><?= $orderpanel->count; ?></span>
 		<?php elseif ($orderpanel->count > 0) : ?>
-			<a href="#sales-history-div" data-parent="#sales-history-panel" data-toggle="collapse">Your Shipped Orders<span class="caret"></span></a> &nbsp; <span class="badge"> <?= $orderpanel->count; ?></span>
+			<a href="#sales-history-div" data-parent="#sales-history-panel" data-toggle="collapse">
+				Shipped Orders <span class="caret"></span>
+			</a>
+			<span class="badge pull-right"> <?= $orderpanel->count; ?></span>
 		<?php else : ?>
-			<a href="#sales-history-div" data-parent="#sales-history-panel" data-toggle="collapse">Your Shipped Orders<span class="caret"></span></a> &nbsp; <span class="badge"> <?= $orderpanel->count; ?></span>
+			<a href="#sales-history-div" data-parent="#sales-history-panel" data-toggle="collapse">
+				Shipped Orders <span class="caret"></span>
+			</a>
+			<span class="badge pull-right"> <?= $orderpanel->count; ?></span>
 		<?php endif; ?>
-		<span class="pull-right"><?= $orderpanel->generate_pagenumberdescription(); ?> </span>
+		<span class="pull-right"><?= $orderpanel->generate_pagenumberdescription(); ?> &nbsp; </span>
 	 </div>
 	 <div id="sales-history-div" class="<?= $orderpanel->collapse; ?>">
 		<div class="panel-body">

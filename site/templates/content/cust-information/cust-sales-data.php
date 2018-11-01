@@ -15,7 +15,7 @@
 		<div class="alert alert-warning" role="alert"><?php echo $salesjson['errormsg']; ?></div>
 	<?php else : ?>
 		<?php $data = array_values($salesjson['data']); ?>
-		<h2><?= get_customername($custID); ?> 52 Week Sales Data</h2>
+		<h2><?= Customer::get_customernamefromid($custID); ?> 52 Week Sales Data</h2>
 
 		<div id="salesdata"></div>
 

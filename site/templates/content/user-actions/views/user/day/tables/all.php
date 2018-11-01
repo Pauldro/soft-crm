@@ -38,6 +38,9 @@
 
     <?php else : ?>
         <tr>
+            <td colspan="6" class="text-center h4">Today's Actions</td>
+        </tr>
+        <tr>
             <td colspan="6" class="text-center h4">No actions found for this day</td>
         </tr>
     <?php endif; ?>

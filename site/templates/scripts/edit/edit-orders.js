@@ -64,6 +64,7 @@ $(function() {
 						console.log($(formid).serializeform({ exitorder: 'true'}));
 						get_orderheadresults(ordn, formid, function() {
 							generateurl(function(url) {
+								console.log(url);
 								window.location.href = url;
 							});
 						});

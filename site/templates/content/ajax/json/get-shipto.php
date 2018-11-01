@@ -3,5 +3,5 @@
 	$custID = $input->get->text('custID');
 	$shipID = $input->get->text('shipID');
 
-	$shipto = get_shiptoinfo($custID, $shipID, false);
-	echo json_encode(array("response" => array("shipto" => $shipto)));
+	$shipto = Customer::load($custID, $shipID, false);
+	echo json_encode(array("response" => array("shipto" => $shipto->_toArray())));

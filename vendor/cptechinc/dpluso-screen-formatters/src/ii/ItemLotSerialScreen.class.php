@@ -1,23 +1,30 @@
 <?php
-    /**
-     * Formatter for II Lot Serial Screen
-     * Not Formattable
-     */
-     class II_ItemLotSerialScreen extends TableScreenMaker {
+	namespace Dplus\Dpluso\ScreenFormatters\II;
+	
+	use Dplus\ProcessWire\DplusWire;
+	use Dplus\Content\HTMLWriter;
+	use Dplus\Content\Table;
+	use Dplus\Dpluso\ScreenFormatters\TableScreenMaker;
+	
+	/**
+	 * Formatter for II Lot Serial Screen
+	 * Not Formattable
+	 */
+	 class ItemLotSerialScreen extends TableScreenMaker {
 		protected $tabletype = 'normal'; // grid or normal
 		protected $type = 'ii-lot-serial'; 
 		protected $title = 'Item Lot Serial';
 		protected $datafilename = 'iilotser'; 
 		protected $testprefix = 'iilot';
 		protected $datasections = array();
-        
-        /* =============================================================
-          PUBLIC FUNCTIONS
-       	============================================================ */
-        public function generate_screen() {
-            $bootstrap = new HTMLWriter();
-            $content = '';
-            $columns = array_keys($this->json['columns']);
+		 
+		/* =============================================================
+		  PUBLIC FUNCTIONS
+		============================================================ */
+		public function generate_screen() {
+			$bootstrap = new HTMLWriter();
+			$content = '';
+			$columns = array_keys($this->json['columns']);
 			$count = 0; 
 			$array = array(); 
 			foreach ($this->json['columns'] as $column) {
@@ -43,6 +50,6 @@
 				}
 			$tb->closetablesection('tbody');
 			$content = $tb->close();
-            return $content;
-        }
-    }
+			return $content;
+		}
+	}

@@ -1,7 +1,7 @@
 <?php
 	$salespersonjson = json_decode(file_get_contents($config->companyfiles."json/salespersontbl.json"), true);
 	$salespersoncodes = array_keys($salespersonjson['data']);
-	$paginator = new Paginator($actionpanel->pagenbr, $actionpanel->count_actions(), $actionpanel->generate_refreshurl(), $actionpanel->paginateafter, $actionpanel->ajaxdata);
+	$paginator = new Dplus\Content\Paginator($actionpanel->pagenbr, $actionpanel->count_actions(), $actionpanel->generate_refreshurl(), $actionpanel->paginateafter, $actionpanel->ajaxdata);
 
 	$actionpanel->set_view($input->get->text('view'));
 ?>

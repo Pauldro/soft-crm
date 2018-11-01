@@ -17,9 +17,11 @@
             break;
         case 'order':
             $ordn = $input->get->text('ordn');
-            $custID = get_custidfromorder(session_id(), $ordn);
+            $order = SalesOrder::load($ordn);
+            $custID = $order->custid;
             $linedetail = SalesOrderDetail::load(session_id(), $ordn, $linenbr);
-            if (can_editorder(session_id(), $ordn, false) && $ordn == get_lockedordn(session_id())) {
+            
+            if ($order->can_edit()) {
                 $formaction = $config->pages->orders."redir/";
                 $page->title = 'Edit Pricing for '. $linedetail->itemid;
 				$page->title .= (strlen($linedetail->vendoritemid)) ? ' &nbsp;'.$linedetail->vendoritemid : '';

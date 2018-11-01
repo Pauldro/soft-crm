@@ -1,9 +1,9 @@
 <?php if (!empty($custID)) : ?>
-    <tr> <td>Customer:</td> <td><?= get_customername($custID)." ($custID)"; ?></td> </tr>
+    <tr> <td>Customer:</td> <td><?= Customer::get_customernamefromid($custID)." ($custID)"; ?></td> </tr>
 <?php endif; ?>
 
 <?php if (!empty($shipID)) : ?>
-    <tr> <td>Ship-to:</td> <td><?= get_shiptoname($custID, $shipID, false). " ($shipID)"; ?></td>  </tr>
+    <tr> <td>Ship-to:</td> <td><?= Customer::get_customernamefromid($custID, $shipID). " ($shipID)"; ?></td>  </tr>
 <?php endif; ?>
 
 <?php if (!empty($contactID)) : ?>

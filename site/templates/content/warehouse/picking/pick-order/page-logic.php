@@ -1,4 +1,6 @@
 <?php
+    use Dplus\Warehouse\PickSalesOrderDisplay;
+    
     if (!WhseSession::does_sessionexist(session_id())) {
         WhseSession::start_session(session_id());
         $whsesession = WhseSession::load(session_id());

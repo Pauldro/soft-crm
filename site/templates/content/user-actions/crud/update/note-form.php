@@ -1,4 +1,4 @@
-<form action="<?= $editactiondisplay->generate_posteditactionurl(); ?>" method="post" id="new-action-form" data-refresh="#actions-panel" data-modal="#ajax-modal" onKeyPress="return disable_enterkey(event)">
+<form action="<?= $editactiondisplay->generate_editactionurl($note); ?>" method="post" id="new-action-form" data-refresh="#actions-panel" data-modal="#ajax-modal" onKeyPress="return disable_enterkey(event)">
 	<input type="hidden" name="action" value="update-note">
 	<input type="hidden" name="id" value="<?= $note->id; ?>">
 	<input type="hidden" name="customerlink" value="<?= $note->customerlink; ?>">
@@ -31,7 +31,7 @@
 			<?php if (!empty($note->shiptolink)) : ?>
 				<tr>
 					<td>Ship-to: </td>
-					<td><a href="<?= $editactiondisplay->generate_shiptourl($note); ?>"><?= Customer::load($note->customerlink, $note->shiptolink). " ($note->shiptolink)"; ?></a></td>
+					<td><a href="<?= $editactiondisplay->generate_shiptourl($note); ?>"><?= Customer::get_customernamefromid($note->customerlink, $note->shiptolink). " ($note->shiptolink)"; ?></a></td>
 				</tr>
 			<?php endif; ?>
 			<?php if (!empty($note->contactlink)) : ?>

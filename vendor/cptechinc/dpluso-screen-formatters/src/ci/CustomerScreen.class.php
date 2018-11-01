@@ -1,9 +1,18 @@
 <?php
+	namespace Dplus\Dpluso\ScreenFormatters\CI;
+
+	use Dplus\ProcessWire\DplusWire;
+	use Dplus\Content\HTMLWriter;
+	use Dplus\Content\Table;
+	use Dplus\Content\FormMaker;	
+	use \Customer;
+	use Dplus\Dpluso\ScreenFormatters\TableScreenMaker;
+	
 	/**
 	 * Formatter for CI Customer Screen
 	 * Formattable
 	 */
-	class CI_CustomerScreen extends TableScreenMaker {
+	class CustomerScreen extends TableScreenMaker {
 		protected $tabletype = 'normal'; // grid or normal
 		protected $type = 'ci-customer-page'; // ii-sales-history
 		protected $title = 'Customer Screen';
@@ -11,8 +20,8 @@
 		protected $testprefix = 'cicust'; // iish
 
 		/* =============================================================
-            PUBLIC FUNCTIONS
-        ============================================================ */
+				PUBLIC FUNCTIONS
+			============================================================ */
 		public function generate_screen() {
 			return empty($this->json['data']) ? $page->bootstrap->alertpanel('warning', 'Information Not Available') : '';
 		}
@@ -31,6 +40,7 @@
 				} else {
 					$tb->tr();
 					$tb->td('', $this->json['columns']['top'][$column]['heading']);
+					
 					if ($column == 'customerid') {
 						$tb->td('', $this->generate_pageform($customer));
 					} else {
@@ -154,4 +164,4 @@
 			}
 			return $tb->close();
 		}
-	}
+}

@@ -1,9 +1,14 @@
 <?php
+	namespace Dplus\Dpluso\ScreenFormatters;
+	
+	use Dplus\ProcessWire\DplusWire;
+	use Dplus\Content\HTMLWriter;
+	
 	/**
 	 * Abstract file to build Screen classes from and to provide properties and methods
 	 */
 	abstract class TableScreenMaker {
-		use ThrowErrorTrait;
+		use \Dplus\Base\ThrowErrorTrait;
 
 		/**
 		 * Session ID

@@ -1,12 +1,12 @@
 <?php
-	$bookingspanel = new BookingsPanel(session_id(), $page->fullURL, '#ajax-modal', 'data-loadinto=#bookings-panel|data-focus=#bookings-panel');
+	$bookingspanel = new Dplus\Dpluso\Bookings\BookingsPanel(session_id(), $page->fullURL, '#ajax-modal', 'data-loadinto=#bookings-panel|data-focus=#bookings-panel');
 	$bookingspanel->generate_filter($input);
 	$bookings = $bookingspanel->get_bookings();
 	$bookingdata = array();
 	
 	foreach ($bookings as $booking) {
 		$bookdata = array(
-			'bookdate' => DplusDateTime::format_date($booking['bookdate'], 'Y-m-d'),
+			'bookdate' => Dplus\Base\DplusDateTime::format_date($booking['bookdate'], 'Y-m-d'),
 			'amount' => floatval($booking['amount'])
 		);
 		

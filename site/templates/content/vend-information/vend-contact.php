@@ -34,7 +34,7 @@
 			if (sizeof($contactjson['data']) > 0) {
 				echo '<div class="row">';
 					echo '<div class="col-sm-6">';
-						$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+						$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
 						foreach ($vendorleftcolumns as $column) {
 							$tb->tr();
 							$tb->td('class='.$config->textjustify[$contactjson['columns']['vendor']['vendorleft'][$column]['headingjustify']], $contactjson['columns']['vendor']['vendorleft'][$column]['heading']);
@@ -44,7 +44,7 @@
 					echo '</div>';
 
 					echo '<div class="col-sm-6">';
-						$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+						$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
 						foreach ($vendorrightcolumns as $column) {
 							$tb->tr();
 							$tb->td('class='.$config->textjustify[$contactjson['columns']['vendor']['vendorright'][$column]['headingjustify']], $contactjson['columns']['vendor']['vendorright'][$column]['heading']);
@@ -62,7 +62,7 @@
 						foreach ($shipfm['shipfmcontacts'] as $contact) {
 							echo '<div class="row">';
 								echo '<div class="col-sm-6">';
-									$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+									$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
 									foreach ($shipfmleftcolumns as $column) {
 										$tb->tr();
 										$tb->td('class='.$config->textjustify[$contactjson['columns']['shipfm']['shipfmleft'][$column]['headingjustify']], $contactjson['columns']['shipfm']['shipfmleft'][$column]['heading']);
@@ -72,7 +72,7 @@
 								echo '</div>';
 
 								echo '<div class="col-sm-6">';
-									$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+									$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
 									foreach ($shipfmrightcolumns as $column) {
 										$tb->tr();
 										$tb->td('class='.$config->textjustify[$contactjson['columns']['shipfm']['shipfmright'][$column]['headingjustify']], $contactjson['columns']['shipfm']['shipfmright'][$column]['heading']);
@@ -87,7 +87,7 @@
 
 				echo '<h2>Vendor Contact Info</h2>';
 				if (isset($contactjson['data']['contact'])) {
-					$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+					$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
 						$tb->tablesection('thead');
 						$tb->tr();
 							foreach ($contactcolumns as $column) {
@@ -121,7 +121,7 @@
 
 				if (isset($contactjson['columns']['forms'])) {
 					echo '<h2>Forms Information</h2>';
-					$tb = new Table('class=table table-striped table-bordered table-condensed table-excel');
+					$tb = new Dplus\Content\Table('class=table table-striped table-bordered table-condensed table-excel');
 						$tb->tablesection('thead');
 							$tb->tr();
 							foreach ($formscolumns as $column) {

@@ -23,7 +23,7 @@
 			$columns = array_keys($docjson['columns']);
 			$documents = array_keys($docjson['data']);
 			
-			$tb = new Table('class=table table-striped table-condensed table-excel');
+			$tb = new Dplus\Content\Table('class=table table-striped table-condensed table-excel');
 			$tb->tablesection('thead');
 				$tb->tr();
 				foreach ($columns as $column) {

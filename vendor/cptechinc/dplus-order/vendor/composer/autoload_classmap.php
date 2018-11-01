@@ -6,4 +6,19 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'CartDetail' => $baseDir . '/src/CartDetail.class.php',
+    'CartQuote' => $baseDir . '/src/CartQuote.class.php',
+    'CustomerSalesOrderHistory' => $baseDir . '/src/CustomerSalesOrderHistoryPanel.class.php',
+    'Order' => $baseDir . '/src/Order.class.php',
+    'OrderCreditCard' => $baseDir . '/src/OrderCreditCard.class.php',
+    'OrderDetail' => $baseDir . '/src/OrderDetail.class.php',
+    'OrderDetailInterface' => $baseDir . '/src/OrderDetail.interface.php',
+    'OrderInterface' => $baseDir . '/src/Order.interface.php',
+    'QNote' => $baseDir . '/src/Qnote.class.php',
+    'Quote' => $baseDir . '/src/Quote.class.php',
+    'QuoteDetail' => $baseDir . '/src/QuoteDetail.class.php',
+    'SalesOrder' => $baseDir . '/src/SalesOrderOE.class.php',
+    'SalesOrderDetail' => $baseDir . '/src/SalesOrderDetail.class.php',
+    'SalesOrderEdit' => $baseDir . '/src/SalesOrder.class.php',
+    'SalesOrderHistory' => $baseDir . '/src/SalesOrderHistory.class.php',
 );

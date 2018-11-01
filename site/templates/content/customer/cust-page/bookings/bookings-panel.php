@@ -1,5 +1,5 @@
 <?php
-	$bookingspanel = new CustomerBookingsPanel(session_id(), $page->fullURL, '#ajax-modal', 'data-loadinto=#bookings-panel|data-focus=#bookings-panel');
+	$bookingspanel = new Dplus\Dpluso\Bookings\CustomerBookingsPanel(session_id(), $page->fullURL, '#ajax-modal', 'data-loadinto=#bookings-panel|data-focus=#bookings-panel');
 	$bookingspanel->generate_filter($input);
     $bookingspanel->set_customer($customer->custid, $customer->shiptoid);
 	$bookings = $bookingspanel->get_bookings();
@@ -7,7 +7,7 @@
 	
 	foreach ($bookings as $booking) {
 		$bookdata = array(
-			'bookdate' => DplusDateTime::format_date($booking['bookdate'], 'Y-m-d'),
+			'bookdate' => Dplus\Base\DplusDateTime::format_date($booking['bookdate'], 'Y-m-d'),
 			'amount' => floatval($booking['amount'])
 		);
 		if ($bookingspanel->interval == 'day') {

@@ -1,23 +1,29 @@
 <?php 
+	namespace Dplus\Dpluso\ScreenFormatters\Item;
+	
+	use Dplus\Dpluso\ScreenFormatters\TableScreenMaker;
+	use Dplus\Content\HTMLWriter;
+	use Dplus\Content\Table;
+	
 	/**
 	 * Item KitComponentsParses and generates the display for 
 	 * item KitComponents
 	 * Used on Add Item
 	 */
-     class Item_ItemKitComponents extends TableScreenMaker {
+	 class ItemKitComponents extends TableScreenMaker {
 		protected $tabletype = 'normal'; // grid or normal
 		protected $type = 'item-kitcomponents'; 
 		protected $title = 'Item Kit Components';
 		protected $datafilename = 'kititem'; 
 		protected $testprefix = 'iiprc';
 		protected $datasections = array();
-        
-        /* =============================================================
-          PUBLIC FUNCTIONS
-       	============================================================ */
-        public function generate_screen() {
-            $bootstrap = new HTMLWriter();
-            $content = '';
+		
+		/* =============================================================
+			PUBLIC FUNCTIONS
+		============================================================ */
+		public function generate_screen() {
+			$bootstrap = new HTMLWriter();
+			$content = '';
 			$tb = new Table('class=table item-pricing table-striped table-condensed table-bordered print-hidden');
 			$tb->tablesection('thead');
 				$tb->tr();
@@ -34,5 +40,5 @@
 				}
 			$tb->closetablesection('tbody');
 			return $tb->close();
-        }
-    }
+		}
+	}

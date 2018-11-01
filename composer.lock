@@ -1,10 +1,10 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "17d38af129f5dd73a97cefc47f003610",
+    "content-hash": "93bcffb6159ac52e1898d9d3cedfe0aa",
     "packages": [
         {
             "name": "atk4/core",
@@ -109,17 +109,346 @@
             "time": "2017-03-08T09:52:14+00:00"
         },
         {
-            "name": "eoghanobrien/php-simple-mail",
-            "version": "1.7.0",
+            "name": "cptechinc/dplus-base",
+            "version": "dev-master",
             "source": {
                 "type": "git",
-                "url": "https://github.com/eoghanobrien/php-simple-mail.git",
-                "reference": "0fd0eb6f4766aee69cf991484e61b2b832fa6614"
+                "url": "https://github.com/cptechinc/dplus-base.git",
+                "reference": "dc84bb989c226151a2cab90b9829f0abba4dda60"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/eoghanobrien/php-simple-mail/zipball/0fd0eb6f4766aee69cf991484e61b2b832fa6614",
-                "reference": "0fd0eb6f4766aee69cf991484e61b2b832fa6614",
+                "url": "https://api.github.com/repos/cptechinc/dplus-base/zipball/dc84bb989c226151a2cab90b9829f0abba4dda60",
+                "reference": "dc84bb989c226151a2cab90b9829f0abba4dda60",
+                "shasum": ""
+            },
+            "require": {
+                "atk4/dsql": "1.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dplus\\Base\\": "src/"
+                },
+                "files": [
+                    "src/utfport.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "authors": [
+                {
+                    "name": "Paul Gomez",
+                    "email": "paul@cptechinc.com",
+                    "homepage": "https://www.cptechinc.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Barbara Bullemer",
+                    "email": "barbara@cptechinc.com",
+                    "homepage": "https://www.cptechinc.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Base Classes and Attributes",
+            "homepage": "https://github.com/cptechinc/dplus-base",
+            "keywords": [
+                "dplus-attributes",
+                "dplus-base"
+            ],
+            "time": "2018-10-23T19:35:05+00:00"
+        },
+        {
+            "name": "cptechinc/dplus-content",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cptechinc/dplus-content.git",
+                "reference": "dbde82970b1863bd1054230f8e46ff306a71f98c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cptechinc/dplus-content/zipball/dbde82970b1863bd1054230f8e46ff306a71f98c",
+                "reference": "dbde82970b1863bd1054230f8e46ff306a71f98c",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dplus\\Content\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Dplus Content Classes",
+            "homepage": "http://github.com/cptechinc/dplus-content",
+            "keywords": [
+                "TablePageSorter",
+                "form",
+                "html",
+                "paginator",
+                "table"
+            ],
+            "time": "2018-10-24T21:48:43+00:00"
+        },
+        {
+            "name": "cptechinc/dplus-dpluso",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cptechinc/dplus-dpluso.git",
+                "reference": "0b1203479fc54f3993bfb16932916263dfc7c488"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cptechinc/dplus-dpluso/zipball/0b1203479fc54f3993bfb16932916263dfc7c488",
+                "reference": "0b1203479fc54f3993bfb16932916263dfc7c488",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dplus\\Dpluso\\Bookings\\": "src/Bookings/",
+                    "Dplus\\Dpluso\\Configs\\": "src/Configs/",
+                    "Dplus\\Dpluso\\Customer\\": "src/Customer/",
+                    "Dplus\\Dpluso\\General\\": "src/General/",
+                    "Dplus\\Dpluso\\Items\\": "src/Items/",
+                    "Dplus\\Dpluso\\Model\\": "src/Model/",
+                    "Dplus\\Dpluso\\OrderDisplays\\": "src/OrderDisplays/",
+                    "Dplus\\Dpluso\\UserActions\\": "src/UserActions/"
+                },
+                "classmap": [
+                    "src/Customer/Contact.class.php",
+                    "src/Customer/Customer.class.php",
+                    "src/Model/LogmUser.class.php",
+                    "src/Model/Vendor.class.php",
+                    "src/UserActions/UserAction.class.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Classes for Dplus Online",
+            "homepage": "http://github.com/cptechinc/dplus-dpluso",
+            "keywords": [
+                "customer",
+                "items",
+                "order-displays",
+                "user-actions"
+            ],
+            "time": "2018-10-24T21:47:00+00:00"
+        },
+        {
+            "name": "cptechinc/dplus-file-services",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cptechinc/dplus-file-services.git",
+                "reference": "20fc2fe7ab51a02fca7a79cfde01081e33095aa6"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cptechinc/dplus-file-services/zipball/20fc2fe7ab51a02fca7a79cfde01081e33095aa6",
+                "reference": "20fc2fe7ab51a02fca7a79cfde01081e33095aa6",
+                "shasum": ""
+            },
+            "require": {
+                "eoghanobrien/php-simple-mail": "^1.7",
+                "mikehaertl/phpwkhtmltopdf": "^2.3",
+                "picqer/php-barcode-generator": "^0.2.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dplus\\FileServices\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Classes for Dplus Services",
+            "homepage": "http://github.com/cptechinc/dplus-file-services",
+            "keywords": [
+                "dplus-csv",
+                "dplus-pdf",
+                "dplus-xls",
+                "pdf"
+            ],
+            "time": "2018-10-18T16:18:27+00:00"
+        },
+        {
+            "name": "cptechinc/dplus-items",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cptechinc/dplus-items.git",
+                "reference": "1ebc6faa9d348e382fa87466f4a550d923c5ea67"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cptechinc/dplus-items/zipball/1ebc6faa9d348e382fa87466f4a550d923c5ea67",
+                "reference": "1ebc6faa9d348e382fa87466f4a550d923c5ea67",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Classes for Dplus Items",
+            "homepage": "http://github.com/cptechinc/dplus-items",
+            "keywords": [
+                "items"
+            ],
+            "time": "2018-10-17T16:27:36+00:00"
+        },
+        {
+            "name": "cptechinc/dplus-order",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cptechinc/dplus-order.git",
+                "reference": "12f3b56ad7b1293b21af1061fed0831f256261a1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cptechinc/dplus-order/zipball/12f3b56ad7b1293b21af1061fed0831f256261a1",
+                "reference": "12f3b56ad7b1293b21af1061fed0831f256261a1",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Classes for Dplus Orders, Quotes, and Carts",
+            "homepage": "http://github.com/cptechinc/dplus-order",
+            "keywords": [
+                "cart",
+                "cartquote",
+                "detail",
+                "qnote",
+                "quote",
+                "sales-order"
+            ],
+            "time": "2018-10-24T21:54:35+00:00"
+        },
+        {
+            "name": "cptechinc/dplus-processwire",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cptechinc/dplus-processwire.git",
+                "reference": "518e22e55546caacdd50b0074364eb44c8b2e2bb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cptechinc/dplus-processwire/zipball/518e22e55546caacdd50b0074364eb44c8b2e2bb",
+                "reference": "518e22e55546caacdd50b0074364eb44c8b2e2bb",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/DplusWire.class.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Dplus Processwire",
+            "homepage": "http://github.com/cptechinc/dplus-processwire",
+            "keywords": [
+                "processwire-dplus"
+            ],
+            "time": "2018-10-12T21:47:36+00:00"
+        },
+        {
+            "name": "cptechinc/dpluso-screen-formatters",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cptechinc/dpluso-screen-formatters.git",
+                "reference": "3d3b5b89708ee60d7297d67a7043817a9220aae2"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cptechinc/dpluso-screen-formatters/zipball/3d3b5b89708ee60d7297d67a7043817a9220aae2",
+                "reference": "3d3b5b89708ee60d7297d67a7043817a9220aae2",
+                "shasum": ""
+            },
+            "require": {
+                "cptechinc/dplus-base": "dev-master",
+                "cptechinc/dplus-content": "dev-master",
+                "cptechinc/dplus-order": "dev-master",
+                "cptechinc/dplus-processwire": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Dplus\\Dpluso\\ScreenFormatters\\CI\\": "src/ci/",
+                    "Dplus\\Dpluso\\ScreenFormatters\\II\\": "src/ii/",
+                    "Dplus\\Dpluso\\ScreenFormatters\\VI\\": "src/vi/",
+                    "Dplus\\Dpluso\\ScreenFormatters\\Item\\": "src/item/"
+                },
+                "classmap": [
+                    "src/ScreenFormatterFactory.class.php",
+                    "src/TableScreen.class.php",
+                    "src/TableScreenFormatter.class.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Screen Formatter Classes for Dplus Online",
+            "homepage": "http://github.com/cptechinc/dpluso-screen-formatters",
+            "keywords": [
+                "ci",
+                "ii",
+                "screen-formatter",
+                "table-screen",
+                "vi"
+            ],
+            "time": "2018-10-22T20:43:43+00:00"
+        },
+        {
+            "name": "cptechinc/dpluso-warehouse",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/cptechinc/dpluso-warehouse.git",
+                "reference": "0d9186fc787977265e2034f0dd340926d1452292"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/cptechinc/dpluso-warehouse/zipball/0d9186fc787977265e2034f0dd340926d1452292",
+                "reference": "0d9186fc787977265e2034f0dd340926d1452292",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "src/PickSalesOrderDisplay.class.php",
+                    "src/Model/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "description": "Classes for Warehouse Dplus Online",
+            "homepage": "http://github.com/cptechinc/dpluso-warehouse",
+            "keywords": [
+                "dplus-pack",
+                "dplus-pick",
+                "dplus-warehouse",
+                "dpluso-warehouse"
+            ],
+            "time": "2018-10-18T15:17:45+00:00"
+        },
+        {
+            "name": "eoghanobrien/php-simple-mail",
+            "version": "1.7.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/eoghanobrien/php-simple-mail.git",
+                "reference": "9b8d4c01c7c0cac769ba42ccd08a73ecee855825"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/eoghanobrien/php-simple-mail/zipball/9b8d4c01c7c0cac769ba42ccd08a73ecee855825",
+                "reference": "9b8d4c01c7c0cac769ba42ccd08a73ecee855825",
                 "shasum": ""
             },
             "require": {
@@ -153,7 +482,7 @@
                 "email",
                 "php5"
             ],
-            "time": "2017-02-17T07:32:04+00:00"
+            "time": "2018-03-16T19:29:23+00:00"
         },
         {
             "name": "jeremykendall/php-domain-parser",
@@ -243,17 +572,20 @@
         },
         {
             "name": "mikehaertl/php-shellcommand",
-            "version": "1.4.0",
+            "version": "1.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mikehaertl/php-shellcommand.git",
-                "reference": "727e2143578796c714a50c0a350459758ff16c43"
+                "reference": "903ee95d3ee8f65ebbe4c6e17705d1d91760521a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mikehaertl/php-shellcommand/zipball/727e2143578796c714a50c0a350459758ff16c43",
-                "reference": "727e2143578796c714a50c0a350459758ff16c43",
+                "url": "https://api.github.com/repos/mikehaertl/php-shellcommand/zipball/903ee95d3ee8f65ebbe4c6e17705d1d91760521a",
+                "reference": "903ee95d3ee8f65ebbe4c6e17705d1d91760521a",
                 "shasum": ""
+            },
+            "require": {
+                "php": ">= 5.4.0"
             },
             "type": "library",
             "autoload": {
@@ -275,7 +607,7 @@
             "keywords": [
                 "shell"
             ],
-            "time": "2018-02-16T07:02:50+00:00"
+            "time": "2018-07-07T07:35:36+00:00"
         },
         {
             "name": "mikehaertl/php-tmpfile",
@@ -436,7 +768,16 @@
     "aliases": [],
     "minimum-stability": "dev",
     "stability-flags": {
-        "jwage/purl": 20
+        "jwage/purl": 20,
+        "cptechinc/dplus-base": 20,
+        "cptechinc/dplus-processwire": 20,
+        "cptechinc/dplus-order": 20,
+        "cptechinc/dplus-items": 20,
+        "cptechinc/dplus-dpluso": 20,
+        "cptechinc/dplus-content": 20,
+        "cptechinc/dpluso-screen-formatters": 20,
+        "cptechinc/dplus-file-services": 20,
+        "cptechinc/dpluso-warehouse": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,

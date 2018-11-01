@@ -1,9 +1,16 @@
 <?php
+	namespace Dplus\Dpluso\ScreenFormatters\CI;
+
+	use Dplus\ProcessWire\DplusWire;
+	use Dplus\Content\HTMLWriter;
+	use Dplus\Content\Table;
+	use \Customer;
+	
 	/**
 	 * Formatter for CI Customer Shipto Screen
 	 * Formattable
 	 */
-	class CI_CustomerShiptoScreen extends CI_CustomerScreen {
+	class CustomerShiptoScreen extends CustomerScreen {
 		protected $tabletype = 'normal'; // grid or normal
 		protected $type = 'ci-customer-shipto-page'; // ii-sales-history
 		protected $title = 'Customer Shipto Screen';
@@ -11,10 +18,10 @@
 		protected $testprefix = 'cicust'; // iish
 		
 		/* =============================================================
-            PUBLIC FUNCTIONS
-        ============================================================ */
+			PUBLIC FUNCTIONS
+		============================================================ */
 		public function generate_customertable(Customer $customer) {
-			$tableformatter = new CI_CustomerScreen($this->sessionID);
+			$tableformatter = new CustomerScreen($this->sessionID);
 			$tableformatter->process_json();
 			return $tableformatter->generate_customertable($customer);
 		}

@@ -1,4 +1,6 @@
 <?php
+	namespace Dplus\Base;
+	
 	/**
 	 * Functions that let the traited class have abilities to make arrays of an instance or
 	 * an array of all the properties
@@ -20,8 +22,4 @@
         public function _toArray() {
 			return $this::remove_nondbkeys(get_object_vars($this));
  		}
-        
-        public function _toJSON() {
-            return json_encode($this->_toArray());
-        }
     }

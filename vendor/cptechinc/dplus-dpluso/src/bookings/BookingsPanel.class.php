@@ -1,17 +1,23 @@
 <?php
+	namespace Dplus\Dpluso\Bookings;
+	
+	use Dplus\ProcessWire\DplusWire;
+	use Dplus\Content\HTMLWriter;
+	use Dplus\Base\DplusDateTime;
+	
 	/**
 	 * Class for handling of getting and displaying booking records from the database
 	 * @author Paul Gomez paul@cptechinc.com
 	 */
 	class BookingsPanel {
-		use ThrowErrorTrait;
-		use MagicMethodTraits;
-		use AttributeParser;
+		use \Dplus\Base\ThrowErrorTrait;
+		use \Dplus\Base\MagicMethodTraits;
+		use \Dplus\Base\AttributeParser;
 
 		/**
 		 * Object that stores page location and where to load
 		 * and search from
-		 * @var Purl\Url
+		 * @var \Purl\Url
 		 */
 		protected $pageurl;
 		/**
@@ -88,14 +94,14 @@
 		/**
 		 * Constructor
 		 * @param string  $sessionID Session Identifier
-		 * @param Purl\Url $pageurl  Object that contains the URL of the page
+		 * @param \Purl\Url $pageurl  Object that contains the URL of the page
 		 * @param string  $modal     ID of Modal to use
 		 * @param bool    $ajaxdata  Attributes used for ajax loading
 		 * @uses
 		 */
-		public function __construct($sessionID, Purl\Url $pageurl, $modal = '', $ajaxdata = false) {
+		public function __construct($sessionID, \Purl\Url $pageurl, $modal = '', $ajaxdata = false) {
 			$this->sessionID = $sessionID;
-			$this->pageurl = new Purl\Url($pageurl->getUrl());
+			$this->pageurl = new \Purl\Url($pageurl->getUrl());
 			$this->modal = $modal;
 			$this->ajaxdata = $this->parse_ajaxdata($ajaxdata);
 			$this->setup_pageurl();
@@ -231,7 +237,7 @@
 		 * @uses
 		 */
 		public function generate_refreshurl() {
-			$url = new Purl\Url($this->pageurl->getURL());
+			$url = new \Purl\Url($this->pageurl->getURL());
 			$url->query = '';
 			return $url->getURL();
 		}
@@ -265,9 +271,9 @@
 		/**
 		 * Looks through the $input->get for properties that have the same name
 		 * as filterable properties, then we populate $this->filter with the key and value
-		 * @param  ProcessWire\WireInput $input Use the get property to get at the $_GET[] variables
+		 * @param  \ProcessWire\WireInput $input Use the get property to get at the $_GET[] variables
 		 */
-		public function generate_filter(ProcessWire\WireInput $input) {
+		public function generate_filter(\ProcessWire\WireInput $input) {
 			if (!$input->get->filter) {
 				$this->filters = array(
 					'bookdate' => array(date('m/d/Y', strtotime('-1 year')), date('m/d/Y'))
@@ -326,11 +332,11 @@
 		/**
 		 * Defines the filter for default
 		 * Goes back one year
-		 * @param  ProcessWire\WireInput $input Use the get property to get at the $_GET[] variables
+		 * @param  \ProcessWire\WireInput $input Use the get property to get at the $_GET[] variables
 		 * @param  string                $interval Allows to defined interval
 		 * @return void
 		 */
-		protected function generate_defaultfilter(ProcessWire\WireInput $input, $interval = '') {
+		protected function generate_defaultfilter(\ProcessWire\WireInput $input, $interval = '') {
 			if (!empty($interval)) {
 				$this->set_interval($interval);
 			}
@@ -376,7 +382,7 @@
 		 * @return string       URL to view the date's booked orders
 		 */
 		public function generate_viewsalesordersbydayurl($date) {
-			$url = new Purl\Url($this->pageurl->getUrl());
+			$url = new \Purl\Url($this->pageurl->getUrl());
 			$url->path = DplusWire::wire('config')->pages->ajaxload."bookings/sales-orders/";
 			$url->query = '';
 			$url->query->set('date', $date);
@@ -418,7 +424,7 @@
 		 * @return string       URL to view bookings for that order # and date
 		 */
 		public function generate_viewsalesorderdayurl($ordn, $date) {
-			$url = new Purl\Url($this->pageurl->getUrl());
+			$url = new \Purl\Url($this->pageurl->getUrl());
 			$url->path = DplusWire::wire('config')->pages->ajaxload."bookings/sales-order/";
 			$url->query = '';
 			$url->query->set('ordn', $ordn);
@@ -451,7 +457,7 @@
 			$daysinmonth = cal_days_in_month(CAL_GREGORIAN, date('m', strtotime($date)), date('Y', strtotime($date)));
 			$lastofmonth = date("m/$daysinmonth/Y", strtotime($date));
 			
-			$url = new Purl\Url($this->pageurl->getUrl());
+			$url = new \Purl\Url($this->pageurl->getUrl());
 			$url->path = DplusWire::wire('config')->pages->ajaxload."bookings/";
 			$url->query = '';
 			$url->query->set('filter', 'filter');

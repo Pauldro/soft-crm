@@ -1,6 +1,6 @@
 <form action="<?= $config->pages->orders.'redir/'; ?>" method="post" class="quick-entry-add allow-enterkey-submit" id="quick-entry-add" data-validated="">
 	<input type="hidden" name="action" value="add-to-order">
-	<input type="hidden" name="ordn" value="<?= $order->orderno; ?>">
+	<input type="hidden" name="ordn" value="<?= $order->ordernumber; ?>">
 	<input type="hidden" name="custID" value="<?= $order->custid; ?>">
 	<div class="row">
 		<div class="col-xs-9 sm-padding">
@@ -28,7 +28,7 @@
 				</button>
 			</div>
 			<div class="col-md-2 form-group text-right sm-padding">
-				<a href="<?= $config->pages->ajax.'load/products/non-stock/form/'; ?>" class="btn btn-sm btn-primary load-into-modal nonstock-btn" data-modal="#ajax-modal" data-modalsize="xl">
+				<a href="<?= $config->pages->ajax.'load/products/non-stock/form/sales-order/'; ?>" class="btn btn-sm btn-primary load-into-modal nonstock-btn" data-modal="#ajax-modal" data-modalsize="xl">
 					<i class="fa fa-cube" aria-hidden="true"></i> Add Non-stock
 				</a>
 			</div>

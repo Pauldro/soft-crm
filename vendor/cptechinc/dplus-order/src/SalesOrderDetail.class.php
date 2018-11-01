@@ -47,7 +47,7 @@
 		 * @uses SalesOrder
 		 */
 		public function can_edit() {
-			$order = SalesOrder::load($this->sessionid, $this->orderno);
+			$order = SalesOrder::load($this->orderno);
 			return $order->can_edit();
 		}
 
