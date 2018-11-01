@@ -92,9 +92,4 @@
 		public function has_shipto() {
 			return (!empty($this->shiptoid));
 		}
-
-		/* =============================================================
-			SETTER FUNCTIONS
-			MagicMethodTraits has set()
-		============================================================ */
 	}
