@@ -17,14 +17,16 @@ site/modules
 site/assets
 wire
 
+
 # Project Configurations
 .ftpconfig
 .ftpignore
+.vscode
 site/config.php
 project.cson
 site/templates/config/customer/
 index.php
-vendor/composer
+vendor
 
 # Customer Configs
 vendor/cptechinc/dpluso-screen-formatters/src/default
