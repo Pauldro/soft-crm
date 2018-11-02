@@ -195,12 +195,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-dpluso.git",
-                "reference": "0b1203479fc54f3993bfb16932916263dfc7c488"
+                "reference": "d538b7ef88810a8b3af0b0097de061df06bf3434"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dplus-dpluso/zipball/0b1203479fc54f3993bfb16932916263dfc7c488",
-                "reference": "0b1203479fc54f3993bfb16932916263dfc7c488",
+                "url": "https://api.github.com/repos/cptechinc/dplus-dpluso/zipball/d538b7ef88810a8b3af0b0097de061df06bf3434",
+                "reference": "d538b7ef88810a8b3af0b0097de061df06bf3434",
                 "shasum": ""
             },
             "type": "library",
@@ -232,7 +232,7 @@
                 "order-displays",
                 "user-actions"
             ],
-            "time": "2018-10-24T21:47:00+00:00"
+            "time": "2018-10-29T16:35:33+00:00"
         },
         {
             "name": "cptechinc/dplus-file-services",
@@ -304,12 +304,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-order.git",
-                "reference": "12f3b56ad7b1293b21af1061fed0831f256261a1"
+                "reference": "dc06c1b02dfb884eeb83f4f72995817036263d57"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dplus-order/zipball/12f3b56ad7b1293b21af1061fed0831f256261a1",
-                "reference": "12f3b56ad7b1293b21af1061fed0831f256261a1",
+                "url": "https://api.github.com/repos/cptechinc/dplus-order/zipball/dc06c1b02dfb884eeb83f4f72995817036263d57",
+                "reference": "dc06c1b02dfb884eeb83f4f72995817036263d57",
                 "shasum": ""
             },
             "type": "library",
@@ -329,7 +329,7 @@
                 "quote",
                 "sales-order"
             ],
-            "time": "2018-10-24T21:54:35+00:00"
+            "time": "2018-10-29T16:31:07+00:00"
         },
         {
             "name": "cptechinc/dplus-processwire",
@@ -365,12 +365,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dpluso-screen-formatters.git",
-                "reference": "3d3b5b89708ee60d7297d67a7043817a9220aae2"
+                "reference": "362b8bf4146c954fccfb644e87560d4d95b40f1b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dpluso-screen-formatters/zipball/3d3b5b89708ee60d7297d67a7043817a9220aae2",
-                "reference": "3d3b5b89708ee60d7297d67a7043817a9220aae2",
+                "url": "https://api.github.com/repos/cptechinc/dpluso-screen-formatters/zipball/362b8bf4146c954fccfb644e87560d4d95b40f1b",
+                "reference": "362b8bf4146c954fccfb644e87560d4d95b40f1b",
                 "shasum": ""
             },
             "require": {
@@ -403,7 +403,7 @@
                 "table-screen",
                 "vi"
             ],
-            "time": "2018-10-22T20:43:43+00:00"
+            "time": "2018-10-29T17:31:02+00:00"
         },
         {
             "name": "cptechinc/dpluso-warehouse",
@@ -411,12 +411,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dpluso-warehouse.git",
-                "reference": "0d9186fc787977265e2034f0dd340926d1452292"
+                "reference": "8cd248f7f122621d9df5ce026aa3b588ffd76190"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dpluso-warehouse/zipball/0d9186fc787977265e2034f0dd340926d1452292",
-                "reference": "0d9186fc787977265e2034f0dd340926d1452292",
+                "url": "https://api.github.com/repos/cptechinc/dpluso-warehouse/zipball/8cd248f7f122621d9df5ce026aa3b588ffd76190",
+                "reference": "8cd248f7f122621d9df5ce026aa3b588ffd76190",
                 "shasum": ""
             },
             "type": "library",
@@ -435,7 +435,7 @@
                 "dplus-warehouse",
                 "dpluso-warehouse"
             ],
-            "time": "2018-10-18T15:17:45+00:00"
+            "time": "2018-10-25T21:45:22+00:00"
         },
         {
             "name": "eoghanobrien/php-simple-mail",
