@@ -32,7 +32,7 @@
 		<form action="<?= $formaction; ?>" method="post">
 			<input type="hidden" name="action" value="add-nonstock-item">
 			<input type="hidden" name="custID" value="<?= $custID; ?>">
-			<?php if ($addtype == 'order') : ?>
+			<?php if ($addtype == 'sales-order') : ?>
 				<input type="hidden" name="ordn" value="<?= $ordn; ?>">
 			<?php elseif ($addtype == 'quote') : ?>
 				<input type="hidden" name="qnbr" value="<?= $qnbr; ?>">
