@@ -243,8 +243,8 @@
             $session->loc = $fororder ? $config->pages->edit."quote-to-order/?qnbr=$qnbr" : $config->pages->edit."quote/?qnbr=$qnbr";
 			break;
 		case 'add-nonstock-item':
-			$qnbr = $input->post->text('qnbr');
-			$qty = $input->post->text('qty');
+			$qnbr = $input->$requestmethod->text('qnbr');
+			$qty = $input->$requestmethod->text('qty');
 			$quotedetail = new QuoteDetail();
 			$quotedetail->set('sessionid', session_id());
 			$quotedetail->set('quotenbr', $qnbr);
@@ -256,7 +256,7 @@
 			$quotedetail->set('desc2', $input->post->text('desc2'));
 			$quotedetail->set('vendorid', $input->post->text('vendorID'));
 			$quotedetail->set('shipfromid', $input->post->text('shipfromID'));
-			$quotedetail->set('vendoritemid', $input->post->text('vendoritemID'));
+			$quotedetail->set('vendoritemid', $input->post->text('itemID'));
 			$quotedetail->set('nsitemgroup', $input->post->text('nsitemgroup'));
 			//$quotedetail->set('ponbr', $input->post->text('ponbr'));
 			//$quotedetail->set('poref', $input->post->text('poref'));

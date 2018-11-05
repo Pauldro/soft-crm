@@ -7,7 +7,7 @@
 
 	$requestmethod = $input->requestMethod('POST') ? 'post' : 'get';
 	$action = $input->$requestmethod->text('action');
-	
+
 
 	// USED FOR MAINLY ORDER LISTING FUNCTIONS
 	$pagenumber = (!empty($input->get->page) ? $input->get->int('page') : 1);
@@ -155,7 +155,7 @@
 			$ordn = $input->get->text('ordn');
 			$custID = SalesOrderHistory::is_saleshistory($ordn) ? SalesOrderHistory::find_custid($ordn) : SalesOrder::find_custid($ordn);
 			$data = array('DBNAME' => $config->dplusdbname, 'ORDRDET' => $ordn, 'CUSTID' => $custID);
-			
+
 			if ($input->$requestmethod->page) {
 				$session->loc = $input->$requestmethod->text('page');
 			} else {
@@ -177,12 +177,12 @@
 				Dplus\Content\Paginator::paginate_purl($url, $pagenumber, $insertafter);
 				$session->loc = $url->getUrl();
 			}
-			
+
 			break;
 		case 'get-order-tracking':
 			$ordn = $input->get->text('ordn');
 			$data = array('DBNAME' => $config->dplusdbname, 'ORDRTRK' => $ordn);
-			
+
 			if ($input->get->ajax) {
 				$session->loc = $config->pages->ajax."load/order/tracking/?ordn=".$ordn;
 			} elseif ($input->get->page == 'edit') {
@@ -325,8 +325,8 @@
             $session->loc = $config->pages->edit."order/?ordn=".$ordn;
 			break;
 		case 'add-nonstock-item': // FIX
-			$ordn = $input->post->text('ordn');
-			$qty = $input->post->text('qty');
+			$ordn = $input->$requestmethod->text('ordn');
+			$qty = $input->$requestmethod->text('qty');
 			$orderdetail = new SalesOrderDetail();
 			$orderdetail->set('sessionid', session_id());
 			$orderdetail->set('linenbr', '0');
