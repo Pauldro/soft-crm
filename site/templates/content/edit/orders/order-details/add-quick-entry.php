@@ -28,7 +28,7 @@
 				</button>
 			</div>
 			<div class="col-md-2 form-group text-right sm-padding">
-				<a href="<?= $config->pages->ajax.'load/products/non-stock/form/sales-order/'; ?>" class="btn btn-sm btn-primary load-into-modal nonstock-btn" data-modal="#ajax-modal" data-modalsize="xl">
+				<a href="<?= $config->pages->ajax.'load/products/non-stock/form/sales-order/?ordn='.$order->ordernumber; ?>" class="btn btn-sm btn-primary load-into-modal nonstock-btn" data-modal="#ajax-modal" data-modalsize="xl">
 					<i class="fa fa-cube" aria-hidden="true"></i> Add Non-stock
 				</a>
 			</div>
