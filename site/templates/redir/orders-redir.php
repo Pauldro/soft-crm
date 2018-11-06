@@ -331,7 +331,9 @@
 			$orderdetail->set('sessionid', session_id());
 			$orderdetail->set('linenbr', '0');
 			$orderdetail->set('recno', '0');
-			$orderdetail->set('orderno', session_id());
+			$orderdetail->set('orderno', $ordn);
+			$orderdetail->set('itemid', 'N');
+			$orderdetail->set('vendoritemid', $input->post->text('itemID'));
 			$orderdetail->set('vendorid', $input->post->text('vendorID'));
 			$orderdetail->set('shipfromid', $input->post->text('shipfromID'));
 			$orderdetail->set('vendoritemid', $input->post->text('itemID'));
@@ -345,6 +347,11 @@
 			$orderdetail->set('ponbr', $input->post->text('ponbr'));
 			$orderdetail->set('poref', $input->post->text('poref'));
 			$orderdetail->set('spcord', 'S');
+			$orderdetail->set('date', date('Ymd'));
+			$orderdetail->set('time', date('His'));
+			$orderdetail->set('sublinenbr', '0');
+
+			$session->sql = $orderdetail->save(true);
 			$orderdetail->save();
 
 			$data = array('DBNAME' => $config->dplusdbname, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => '0', 'ITEMID' => 'N', 'QTY' => $qty, 'CUSTID' => $custID);

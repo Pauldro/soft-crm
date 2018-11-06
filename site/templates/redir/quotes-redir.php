@@ -263,12 +263,12 @@
 			$quotedetail->set('uom', $input->post->text('uofm'));
 			$quotedetail->set('spcord', 'S');
 			$session->sql = $quotedetail->create();
-
+			$fororder = $input->get->order ? true : false;
 			$data = array('DBNAME' => $config->dplusdbname, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => '0', 'ITEMID' => 'N', 'QTY' => $qty);
 			if ($input->post->page) {
 				$session->loc = $input->post->text('page');
 			} else {
-				$session->loc = $config->pages->edit."quote/?qnbr=".$qnbr;
+				$session->loc = $fororder ? $config->pages->edit."quote-to-order/?qnbr=$qnbr" : $config->pages->edit."quote/?qnbr=$qnbr";
 			}
 			$session->editdetail = true;
 			break;

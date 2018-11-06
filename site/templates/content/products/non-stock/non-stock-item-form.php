@@ -37,6 +37,9 @@
 			<?php elseif ($addtype == 'quote') : ?>
 				<input type="hidden" name="qnbr" value="<?= $qnbr; ?>">
 			<?php endif; ?>
+			<?php if ($input->get->page) : ?>
+				<input type="hidden" name="page" value="<?= $input->get->text('page'); ?>">
+			<?php endif; ?>
 			<table class="table table-condensed table-bordered table-striped">
 				<tr class="<?= $appconfig->show_vendorinfononstock ? '' : 'hidden'; ?>">
 					<td class="control-label">Vend ID:</td>
