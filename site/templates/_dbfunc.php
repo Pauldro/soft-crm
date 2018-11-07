@@ -4,6 +4,33 @@
 	use Dplus\Base\QueryBuilder;
 	use Dplus\ProcessWire\DplusWire;
 
+	/**
+	 * This file is a file for functions that interact with the database
+	 *
+	 * CRUD Create Read Update Delete
+	 *
+	 * Create functions
+	 *   1. insert_
+	 *   2. create_  ** PREFERED
+	 *   - Make sure that these functions return if insert worked
+	 *   - e.g. boolval(DplusWire::wire('dplusdatabase')->lastInsertId())
+	 * Read functions have many keywords to start the function name
+	 *   1. get_   returns the data as one record or an array
+	 *   2. count_ returns an integer of records that match query
+	 *   3. is_    returns bool for query
+	 *             e.g. boolval($sql->fetchColumn());
+	 * Update functions
+	 *   1. edit_
+	 *   2. update_   ** PREFERED
+	 *   - Make sure that these functions return if update worked
+	 *   - e.g. boolval($sql->rowCount()) // NOTE if no records were updated then it will return false
+	 * Delete functions will start with delete_ or remove_
+	 *   1. delete_
+	 *   2. remove_  ** PREFERED
+	 *   - Make sure that these functions return if update worked
+	 *   - e.g. boolval($sql->rowCount()) // NOTE if no records were updated then it will return false
+	 */
+
 /* =============================================================
 	LOGIN FUNCTIONS
 ============================================================ */
@@ -1200,7 +1227,7 @@
 	function get_custidfromsalesorder($ordn, $debug = false) {
 		$q = (new QueryBuilder())->table('oe_head');
 		$q->field('custid');
-		$q->where('ordernumber', "$ordn");
+		$q->where('ordernumber', $ordn);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
@@ -3106,7 +3133,7 @@
 			return $sql->fetch();
 		}
 	}
-	
+
 	/**
 	 * Inserts new carthead record
 	 * @param  string    $sessionID Session Identifier
@@ -3208,7 +3235,7 @@
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
-	
+
 	/**
 	 * Returns if Cart Detail Line Exists
 	 * @param  string     $sessionID Session Identifier
@@ -3460,11 +3487,11 @@
 			return $sql->fetch();
 		}
 	}
-	
+
 	/**
 	 * Inserts a Sales Order Detail Record
 	 * @param  string           $sessionID Session Identifier
-	 * @param  SalesOrderDetail $detail    
+	 * @param  SalesOrderDetail $detail
 	 * @param  bool             $debug     Run in debug? If so return SQL Query
 	 * @return bool                        Was Detail Inserted?
 	 */
@@ -3491,11 +3518,11 @@
 			return boolval(DplusWire::wire('dplusdatabase')->lastInsertId());
 		}
 	}
-	
+
 	/**
 	 * Updates a Sales Order Detail Record
 	 * @param  string           $sessionID Session Identifier
-	 * @param  SalesOrderDetail $detail    
+	 * @param  SalesOrderDetail $detail
 	 * @param  bool             $debug     Run in debug? If so return SQL Query
 	 * @return bool                        Was Detail Updated?
 	 */
@@ -3523,7 +3550,7 @@
 			return boolval($sql->rowCount());
 		}
 	}
-	
+
 	function edit_orderhead($sessionID, $ordn, SalesOrderEdit $order, $debug = false) {
 		$orginalorder = SalesOrderEdit::load($sessionID, $ordn);
 		$properties = array_keys($order->_toArray());

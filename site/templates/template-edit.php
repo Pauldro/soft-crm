@@ -1,12 +1,12 @@
 <?php
 	use Dplus\Dpluso\OrderDisplays\EditSalesOrderDisplay, Dplus\Dpluso\OrderDisplays\EditQuoteDisplay;
 	use Dplus\Dpluso\Configs\FormFieldsConfig;
-	
+
 	switch ($page->name) { //$page->name is what we are editing
 		case 'order':
 			if ($input->get->ordn) {
 				$ordn = $input->get->text('ordn');
-				$custID = SalesOrder::find_custid($ordn);
+				$custID = SalesOrderHistory::is_saleshistory($ordn) ? SalesOrderHistory::find_custid($ordn) : SalesOrder::find_custid($ordn);
 				$editorderdisplay = new EditSalesOrderDisplay(session_id(), $page->fullURL, '#ajax-modal', $ordn);
 				$order = $editorderdisplay->get_order();
 
@@ -70,7 +70,7 @@
 			throw new Wire404Exception();
 			break;
 	}
-	
+
 	if ($modules->isInstalled('QtyPerCase')) {
 		$config->scripts->append(hash_modulefile('QtyPerCase/js/quick-entry.js'));
 	} else {
