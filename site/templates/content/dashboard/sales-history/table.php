@@ -34,7 +34,6 @@
 					<span class="col-xs-3"><?= $orderpanel->generate_loaddocumentslink($order); ?></span>
 					<span class="col-xs-3"><?= $orderpanel->generate_loadtrackinglink($order); ?></span>
 					<span class="col-xs-3"><?= $orderpanel->generate_loaddplusnoteslink($order, '0'); ?></span>
-					<span class="col-xs-3"><?= $orderpanel->generate_editlink($order); ?></span>
 				</td>
 			</tr>
 
