@@ -219,7 +219,7 @@ $(document).ready(function() {
 			var loadinto = form.data('loadinto');
 			var querystring = formurl.query() + "&"+ form.serialize();
 			formurl.query(querystring).query(cleanparams).normalizeQuery();
-			
+
 			href = formurl.toString();
 
 			$(loadinto).loadin(href, function() {
@@ -1260,12 +1260,13 @@ $(document).ready(function() {
 /*==============================================================
 	EDIT ITEM FUNCTIONS
 =============================================================*/
-	function choose_itemwhse(itemID, whse) {
+	function choose_itemwhse(itemID, whse, itemavail) {
 		var form = '#'+itemID+"-form";
 		var whsefield = '.'+itemID+'-whse';
 		var whserow = '.'+whse+"-row";
 		$(form+" .item-whse-val").text(whse).parent().show();
 		$(whsefield).val(whse);
+		$(form+" .itemavail-val").text(itemavail).parent().show();
 		$('.warning').removeClass('warning');
 		$(whserow).addClass('warning');
 	}
