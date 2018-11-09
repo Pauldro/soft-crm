@@ -148,7 +148,7 @@
 			break;
 		case 'load-quote-details':
 			$qnbr = $input->get->text('qnbr');
-			$custID = get_custidfromquote(session_id(), $qnbr, false);
+			$custID = Quote::find_custid(session_id(), $qnbr, false);
 
 			$data = array('DBNAME' => $config->dplusdbname, 'LOADQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'CUSTID' => $custID);
 
@@ -172,7 +172,7 @@
 			$qnbr = $input->get->text('qnbr');
 			$date = date('Ymd');
 			$time = date('Hi');
-			$custID = get_custidfromquote(session_id(), $qnbr, false);
+			$custID = Quote::find_custid(session_id(), $qnbr, false);
 			$data = array('DBNAME' => $config->dplusdbname, 'EDITQUOTE' => false, 'QUOTENO' => $qnbr);
 			$session->loc= $config->pages->editquote."?qnbr=".$qnbr;
 			break;
@@ -274,7 +274,7 @@
 			$qnbr = $input->post->text('qnbr');
 			$linenbr = $input->post->text('linenbr');
 			$quotedetail = QuoteDetail::load(session_id(), $qnbr, $linenbr);
-			$custID = get_custidfromquote(session_id(), $qnbr);
+			$custID = Quote::find_custid(session_id(), $qnbr);
 			$qty = determine_qty($input, $requestmethod, $quotedetail->itemid); // TODO MAKE IN CART DETAIL
 			// $quotedetail->set('whse', $input->post->text('whse'));
 			$quotedetail->set('quotqty', $qty);
@@ -319,7 +319,7 @@
 				$quotedetail->set('desc2', $input->post->text('desc2')) ;
 			}
 
-			$custID = get_custidfromquote(session_id(), $qnbr);
+			$custID = Quote::find_custid(session_id(), $qnbr);
 			$session->sql = $quotedetail->update();
 
 			$data = array('DBNAME' => $config->dplusdbname, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'CUSTID' => $custID);
@@ -338,7 +338,7 @@
 			$quotedetail->set('quotqty', '0');
 			$quotedetail->set('linenbr', $input->post->text('linenbr'));
 			$session->sql = $quotedetail->update();
-			// $custID = get_custidfromquote(session_id(), $qnbr, false);
+			// $custID = Quote::find_custid(session_id(), $qnbr, false);
 			$data = array('DBNAME' => $config->dplusdbname, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'QTY' => '0', 'CUSTID' => $custID);
 
 			if ($input->post->page) {
@@ -354,7 +354,7 @@
 			$quotedetail = QuoteDetail::load(session_id(), $qnbr, $linenbr);
 			$quotedetail->set('quotqty', '0');
 			$session->sql = $quotedetail->update();
-			$custID = get_custidfromquote(session_id(), $qnbr, false);
+			$custID = Quote::find_custid(session_id(), $qnbr, false);
 			$data = array('DBNAME' => $config->dplusdbname, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'QTY' => '0', 'CUSTID' => $custID);
 
 			if ($input->get->page) {
@@ -385,7 +385,7 @@
 				}
 				$session->sql = $quotedetail->update();
 			}
-			$session->custID = $custID = get_custidfromquote(session_id(), $qnbr, false);
+			$session->custID = $custID = Quote::find_custid(session_id(), $qnbr, false);
 			$data = array('DBNAME' => $config->dplusdbname, 'QUOTETOORDER' => false, 'QUOTENO' => $qnbr, 'LINENO' => 'ALL');
 			$session->loc = $config->pages->orders."redir/?action=edit-new-order";
 			break;
