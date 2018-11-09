@@ -4,7 +4,7 @@
     <?php $shiptoid = $order->shiptoid; ?>
 <?php endif ;?>
 
-<legend>Ship-To <?= $order->shiptoid; ?></legend>
+<legend>Ship-To</legend>
 <?php if (100 == 1) : ?>
 	<div class="form-group">
 		<button type="button" class="btn btn-block btn-primary" id="load-shiptos">Load This Customer's Ship-tos</button>
