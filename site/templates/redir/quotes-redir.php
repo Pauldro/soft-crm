@@ -1,17 +1,15 @@
 <?php
+	use Dplus\Dpluso\OrderDisplays\QuotePanel;
+	use Dplus\Content\Paginator;
+
 	/**
 	*  QUOTE REDIRECT
 	* @param string $action
 	*
 	*/
 
-	if ($input->requestMethod('POST')) {
-		$requestmethod = 'post';
-	} else {
-		$requestmethod = 'get';
-	}
+	$requestmethod = $input->requestMethod('POST') ? 'post' : 'get';
 	$action = $input->$requestmethod->text('action');
-
 
 	// USED FOR MAINLY ORDER LISTING FUNCTIONS
 	$pagenumber = (!empty($input->get->page) ? $input->get->int('page') : 1);
@@ -161,12 +159,12 @@
 			} else {
 				if ($input->get->custID) {
 					if ($input->get->shipID) {
-						$session->loc = Dplus\Content\Paginator::paginate_url($config->pages->ajax."load/quotes/cust/{$input->get->custID}/shipto-{$input->get->shipID}/?qnbr=".$qnbr.$linkaddon, $pagenumber, "shipto-{$input->get->shipID}", '');
+						$session->loc = Paginator::paginate_url($config->pages->ajax."load/quotes/cust/{$input->get->custID}/shipto-{$input->get->shipID}/?qnbr=".$qnbr.$linkaddon, $pagenumber, "shipto-{$input->get->shipID}", '');
 					} else {
-						$session->loc = Dplus\Content\Paginator::paginate_url($config->pages->ajax."load/quotes/cust/{$input->get->custID}/?qnbr=".$qnbr.$linkaddon, $pagenumber, $input->get->custID, '');
+						$session->loc = Paginator::paginate_url($config->pages->ajax."load/quotes/cust/{$input->get->custID}/?qnbr=".$qnbr.$linkaddon, $pagenumber, $input->get->custID, '');
 					}
 				} else {
-					$session->loc = Dplus\Content\Paginator::paginate_url($config->pages->ajax."load/quotes/salesrep/?qnbr=".$qnbr.$linkaddon, $pagenumber, "quotes", '');
+					$session->loc = Paginator::paginate_url($config->pages->ajax."load/quotes/salesrep/?qnbr=".$qnbr.$linkaddon, $pagenumber, "quotes", '');
 				}
 			}
 			break;
