@@ -2687,6 +2687,21 @@
 		}
 	}
 
+	function get_totalitemavailablity($sessionID, $itemID, $debug = false) {
+		$q = (new QueryBuilder())->table('whseavail');
+		$q->where('sessionid', $sessionID);
+		$q->where('itemid', $itemID);
+		$q->field($q->expr('SUM(itemavail)'));
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+
 	function get_commissionprices($itemID, $debug = false) {
 		$q = (new QueryBuilder())->table('commprice');
 		$q->where('itemid', $itemID);

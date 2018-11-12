@@ -66,7 +66,7 @@
 						<tr> <td>List Price:</td> <td class="text-right">$ <?= $item->listprice; ?></td> </tr>
 					<?php endif; ?>
 					<tr> <td>Price:</td> <td class="text-right">$ <?= $item->price;?></td> </tr>
-					<tr> <td>In Stock:</td> <td class="itemavail-val text-right">Select Whse</td> </tr>
+					<tr> <td>In Stock:</td> <td class="text-right"><?= $item->get_totalavailable(); ?></td> </tr>
 					<tr class="item-whse-row"><td>Whse:</td> <td class="item-whse-val text-right"></td></tr>
 					<tr> <td>Qty:</td> <td class="text-right"><input type="text" class="form-control input-sm text-right qty" name="qty"></td> </tr>
 					<tr>

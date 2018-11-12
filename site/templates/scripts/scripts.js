@@ -1260,13 +1260,12 @@ $(document).ready(function() {
 /*==============================================================
 	EDIT ITEM FUNCTIONS
 =============================================================*/
-	function choose_itemwhse(itemID, whse, itemavail) {
+	function choose_itemwhse(itemID, whse) {
 		var form = '#'+itemID+"-form";
 		var whsefield = '.'+itemID+'-whse';
 		var whserow = '.'+whse+"-row";
 		$(form+" .item-whse-val").text(whse).parent().show();
 		$(whsefield).val(whse);
-		$(form+" .itemavail-val").text(itemavail).parent().show();
 		$('.warning').removeClass('warning');
 		$(whserow).addClass('warning');
 	}
