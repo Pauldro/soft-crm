@@ -236,7 +236,7 @@
 			$itemids = $input->post->itemID;
 			$qtys = $input->post->qty;
 			$fororder = $input->get->order ? true : false;
-			$data = array("DBNAME=$config->dplusdbname", 'ORDERADDMULTIPLE', "QUOTENO=$qnbr");
+			$data = array("DBNAME=$config->dplusdbname", 'QUOTEADDMULTIPLE', "QUOTENO=$qnbr");
 			$data = writedataformultitems($data, $itemids, $qtys);
             $session->loc = $fororder ? $config->pages->edit."quote-to-order/?qnbr=$qnbr" : $config->pages->edit."quote/?qnbr=$qnbr";
 			break;

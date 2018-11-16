@@ -323,6 +323,7 @@
 			$data = array("DBNAME=$config->dplusdbname", 'ORDERADDMULTIPLE', "ORDERNO=$ordn");
 			$data = writedataformultitems($data, $itemids, $qtys);
             $session->loc = $config->pages->edit."order/?ordn=".$ordn;
+			$session->editdetail = true;
 			break;
 		case 'add-nonstock-item': // FIX
 			$ordn = $input->$requestmethod->text('ordn');
