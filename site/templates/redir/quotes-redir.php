@@ -239,6 +239,7 @@
 			$data = array("DBNAME=$config->dplusdbname", 'QUOTEADDMULTIPLE', "QUOTENO=$qnbr");
 			$data = writedataformultitems($data, $itemids, $qtys);
             $session->loc = $fororder ? $config->pages->edit."quote-to-order/?qnbr=$qnbr" : $config->pages->edit."quote/?qnbr=$qnbr";
+			$session->editdetail = true;
 			break;
 		case 'add-nonstock-item':
 			$qnbr = $input->$requestmethod->text('qnbr');
