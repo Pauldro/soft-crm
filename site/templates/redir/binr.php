@@ -45,7 +45,15 @@
 			$data = array("DBNAME=$config->dplusdbname", 'LOGOUT');
 			$session->loc = $config->pages->salesorderpicking;
 			break;
-        
+		case 'inventory-search':
+			$q = $input->$requestmethod->text('scan');
+			$data = array("DBNAME=$config->dplusdbname", 'INVSEARCH', "QUERY=$q");
+			$session->loc = $input->$requestmethod->text('page')."?scan=$q";
+			break;
+		case 'choose-from-bin':
+			$data = array("DBNAME=$config->dplusdbname", 'FROMBIN');
+			$session->loc = $config->pages->salesorderpicking;
+			break;
 	}
 	
 	write_dplusfile($data, $filename);
