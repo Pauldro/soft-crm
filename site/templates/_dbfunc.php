@@ -5098,6 +5098,21 @@
 		}
 	}
 	
+	function count_invsearchbyitemid($sessionID, $itemID, $debug = false) {
+		$q = (new QueryBuilder())->table('invsearch');
+		$q->field($q->expr('COUNT(*)'));
+		$q->where('sessionid', $sessionID);
+		$q->where('itemid', $itemID);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+	
 	function get_invsearchitems($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('invsearch');
 		$q->where('sessionid', $sessionID);
