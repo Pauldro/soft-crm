@@ -1,7 +1,7 @@
 <div class="list-group">
     <?php if ($resultscount) : ?>
         <?php foreach ($items as $item) : ?>
-            <a href="<?= BinrSession::get_binritemurl($item->get_itemtypeproperty(), $item->get_itemidentifier()); ?>" class="list-group-item item-master-result">
+            <a href="<?= BinrSession::get_binritemurl($item->get_itemtypeproperty(), $item->get_itemidentifier()); ?>" class="list-group-item">
                 <div class="row">
                     <div class="col-xs-2">
                         <h4 class="list-group-item-heading"><?= strtoupper($item->get_itemtypepropertydesc()); ?></h4>
@@ -17,7 +17,7 @@
             </a>
         <?php endforeach; ?>
     <?php else : ?>
-        <a href="#" class="list-group-item item-master-result">
+        <a href="#" class="list-group-item">
             <div class="row">
                 <div class="col-xs-2">
                     <h4 class="list-group-item-heading">Item</h4>

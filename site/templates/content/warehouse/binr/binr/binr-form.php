@@ -1,7 +1,31 @@
 <div class="row">
 	<div class="col-sm-6">
 		<?php include __DIR__."/scanned-item-details.php"; ?>
-		
+		<div>
+			<h3>Select From Bin</h3>
+			<div class="list-group">
+				<div class="list-group-item">
+	                <div class="row">
+	                    <div class="col-xs-6">
+	                        <h4 class="list-group-item-heading">Bin</h4>
+	                    </div>
+	                    <div class="col-xs-6">
+	                        <h4 class="list-group-item-heading">On Hand</h4>
+	                    </div>
+	                </div>
+	            </div>
+				<a href="#" class="list-group-item">
+	                <div class="row">
+	                    <div class="col-xs-6">
+	                        <p class="list-group-item-text">Pack</p>
+	                    </div>
+	                    <div class="col-xs-6">
+	                        <p class="list-group-item-text text-right">26</p>
+	                    </div>
+	                </div>
+	            </a>
+			</div>
+		</div>
 		<div>
 			<h3>From</h3>
 			<div class="row">
