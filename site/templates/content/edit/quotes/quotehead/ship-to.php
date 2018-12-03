@@ -1,4 +1,4 @@
-<legend>Ship-To <?= $quote->shiptoid; ?></legend>
+<legend>Ship-To</legend>
 <table class="table table-striped table-bordered table-condensed">
 	<tr>
     	<td class="control-label"><?= $formconfig->fields['fields']['shiptoid']['label']; ?><?= $formconfig->generate_asterisk('shiptoid'); ?><input type="hidden" id="shipto-id" value="<?= $quote->shiptoid; ?>"></td>
@@ -6,8 +6,11 @@
         	<select class="form-control input-sm ordrhed <?= $formconfig->generate_showrequiredclass('shiptoid'); ?> shipto-select" name="shiptoid" data-custid="<?= $quote->custid; ?>">
 				<?php $shiptos = get_customershiptos($quote->custid); ?>
                 <?php foreach ($shiptos as $shipto) : ?>
-					<?php $selected =  ($shipto->shiptoid == $quote->shiptoid) ? 'selected' : ''; ?>
-                    <option value="<?= $shipto->shiptoid;?>" <?= $selected; ?>><?= $shipto->shiptoid.' - '.$shipto->name; ?></option>
+					<?php if ($quote->shiptoid == $shipto->shiptoid) : ?>
+                    	<option value="<?= $quote->shiptoid;?>" selected><?= $quote->shiptoid.' - '.$quote->shipname; ?></option>
+					<?php else : ?>
+						<option value="<?= $shipto->shiptoid;?>"><?= $shipto->shiptoid.' - '.$shipto->name; ?></option>
+					<?php endif; ?>
                 <?php endforeach; ?>
                 <option value="">Drop Ship To </option>
             </select>

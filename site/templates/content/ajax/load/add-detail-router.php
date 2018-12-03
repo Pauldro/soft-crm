@@ -17,7 +17,12 @@
 			$qnbr = $input->get->text('qnbr');
             $page->title = 'Add multiple items for Quote #'. $qnbr;
 			$custID = get_custidfromquote(session_id(), $qnbr);
-			$formaction = $config->pages->quotes."redir/";
+
+            if ($input->get->order) {
+                $formaction = $config->pages->quotes."redir/?order=true";
+            } else {
+                $formaction = $config->pages->quotes."redir/";
+            }
             break;
     }
 

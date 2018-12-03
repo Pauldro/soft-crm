@@ -7,7 +7,7 @@
 
 	$requestmethod = $input->requestMethod('POST') ? 'post' : 'get';
 	$action = $input->$requestmethod->text('action');
-	
+
 
 	// USED FOR MAINLY ORDER LISTING FUNCTIONS
 	$pagenumber = (!empty($input->get->page) ? $input->get->int('page') : 1);
@@ -155,7 +155,7 @@
 			$ordn = $input->get->text('ordn');
 			$custID = SalesOrderHistory::is_saleshistory($ordn) ? SalesOrderHistory::find_custid($ordn) : SalesOrder::find_custid($ordn);
 			$data = array('DBNAME' => $config->dplusdbname, 'ORDRDET' => $ordn, 'CUSTID' => $custID);
-			
+
 			if ($input->$requestmethod->page) {
 				$session->loc = $input->$requestmethod->text('page');
 			} else {
@@ -177,12 +177,12 @@
 				Dplus\Content\Paginator::paginate_purl($url, $pagenumber, $insertafter);
 				$session->loc = $url->getUrl();
 			}
-			
+
 			break;
 		case 'get-order-tracking':
 			$ordn = $input->get->text('ordn');
 			$data = array('DBNAME' => $config->dplusdbname, 'ORDRTRK' => $ordn);
-			
+
 			if ($input->get->ajax) {
 				$session->loc = $config->pages->ajax."load/order/tracking/?ordn=".$ordn;
 			} elseif ($input->get->page == 'edit') {
@@ -323,15 +323,18 @@
 			$data = array("DBNAME=$config->dplusdbname", 'ORDERADDMULTIPLE', "ORDERNO=$ordn");
 			$data = writedataformultitems($data, $itemids, $qtys);
             $session->loc = $config->pages->edit."order/?ordn=".$ordn;
+			$session->editdetail = true;
 			break;
 		case 'add-nonstock-item': // FIX
-			$ordn = $input->post->text('ordn');
-			$qty = $input->post->text('qty');
+			$ordn = $input->$requestmethod->text('ordn');
+			$qty = $input->$requestmethod->text('qty');
 			$orderdetail = new SalesOrderDetail();
 			$orderdetail->set('sessionid', session_id());
 			$orderdetail->set('linenbr', '0');
 			$orderdetail->set('recno', '0');
-			$orderdetail->set('orderno', session_id());
+			$orderdetail->set('orderno', $ordn);
+			$orderdetail->set('itemid', 'N');
+			$orderdetail->set('vendoritemid', $input->post->text('itemID'));
 			$orderdetail->set('vendorid', $input->post->text('vendorID'));
 			$orderdetail->set('shipfromid', $input->post->text('shipfromID'));
 			$orderdetail->set('vendoritemid', $input->post->text('itemID'));
@@ -345,6 +348,11 @@
 			$orderdetail->set('ponbr', $input->post->text('ponbr'));
 			$orderdetail->set('poref', $input->post->text('poref'));
 			$orderdetail->set('spcord', 'S');
+			$orderdetail->set('date', date('Ymd'));
+			$orderdetail->set('time', date('His'));
+			$orderdetail->set('sublinenbr', '0');
+
+			$session->sql = $orderdetail->save(true);
 			$orderdetail->save();
 
 			$data = array('DBNAME' => $config->dplusdbname, 'SALEDET' => false, 'ORDERNO' => $ordn, 'LINENO' => '0', 'ITEMID' => 'N', 'QTY' => $qty, 'CUSTID' => $custID);
