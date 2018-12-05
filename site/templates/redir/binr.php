@@ -5,7 +5,8 @@
 	
 	$session->fromredirect = $page->url;
 	$filename = $sessionID;
-
+	
+	$session->remove('binr');
 	/**
 	* PICKING ORDERS REDIRECT
 	* USES the whseman.log
@@ -50,9 +51,51 @@
 			$data = array("DBNAME=$config->dplusdbname", 'INVSEARCH', "QUERY=$q");
 			$session->loc = $input->$requestmethod->text('page')."?scan=$q";
 			break;
-		case 'choose-from-bin':
-			$data = array("DBNAME=$config->dplusdbname", 'FROMBIN');
-			$session->loc = $config->pages->salesorderpicking;
+		case 'search-item-bins':
+			$itemID = $input->$requestmethod->text('itemID');
+			$binID = $input->$requestmethod->text('binID');
+			$data = array("DBNAME=$config->dplusdbname", 'BININFO', "ITEMID=$itemID");
+			$returnurl = new Purl\Url($input->$requestmethod->text('page'));
+			$returnurl->query->remove('scan');
+			
+			if ($input->$requestmethod->serialnbr || $input->$requestmethod->lotnbr) {
+				if ($input->$requestmethod->serialnbr) {
+					$lotserial = $input->$requestmethod->text('serialnbr');
+					$returnurl->query->set('serialnbr', $lotserial);
+				} else {
+					$lotserial = $input->$requestmethod->text('lotnbr');
+					$returnurl->query->set('lotnbr', $lotserial);
+				}
+				$data[] = "LOTSERIAL=$lotserial";
+			} else {
+				$returnurl->query->set('itemID', $itemID);
+			}
+			
+			if (!empty($binID)) {
+				$returnurl->query->set('binID', $binID);
+			}
+			$session->loc = $returnurl->getUrl();
+			break;
+		case 'bin-reassign':
+			$itemID = $input->$requestmethod->text('itemID');
+			$frombin = $input->$requestmethod->text('from-bin');
+			$qty = $input->$requestmethod->text('qty');
+			$tobin = $input->$requestmethod->text('to-bin');
+			$data = array("DBNAME=$config->dplusdbname", 'BINR', "ITEMID=$itemID");
+			
+			if ($input->$requestmethod->serialnbr) {
+				$serialnbr = $input->$requestmethod->text('serialnbr');
+				$data[] = "SERIALNBR=$serialnbr";
+			}
+			if ($input->$requestmethod->lotnbr) {
+				$lotnbr = $input->$requestmethod->text('lotnbr');
+				$data[] = "LOTNBR=$lotnbr";
+			}
+			$data[] = "QTY=$qty";
+			$data[] = "FROMBIN=$frombin";
+			$data[] = "TOBIN=$tobin";
+			$session->loc = $input->$requestmethod->text('page');
+			$session->binr = 'true';
 			break;
 	}
 	

@@ -114,12 +114,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-base.git",
-                "reference": "b2e4467a41ed13fc664e8272dcad751a7c8494ee"
+                "reference": "b418f4c84f4e81e5417a2c3a66146cffb1d977bf"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dplus-base/zipball/b2e4467a41ed13fc664e8272dcad751a7c8494ee",
-                "reference": "b2e4467a41ed13fc664e8272dcad751a7c8494ee",
+                "url": "https://api.github.com/repos/cptechinc/dplus-base/zipball/b418f4c84f4e81e5417a2c3a66146cffb1d977bf",
+                "reference": "b418f4c84f4e81e5417a2c3a66146cffb1d977bf",
                 "shasum": ""
             },
             "require": {
@@ -156,7 +156,7 @@
                 "dplus-attributes",
                 "dplus-base"
             ],
-            "time": "2018-11-28T16:02:09+00:00"
+            "time": "2018-11-29T17:56:39+00:00"
         },
         {
             "name": "cptechinc/dplus-content",
@@ -196,12 +196,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-dpluso.git",
-                "reference": "43c67ad6bf4245dbda23aa44f208c478c4a50d5a"
+                "reference": "c417956ac3d87bd8a6b8b5f18da4ed84c49251d9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dplus-dpluso/zipball/43c67ad6bf4245dbda23aa44f208c478c4a50d5a",
-                "reference": "43c67ad6bf4245dbda23aa44f208c478c4a50d5a",
+                "url": "https://api.github.com/repos/cptechinc/dplus-dpluso/zipball/c417956ac3d87bd8a6b8b5f18da4ed84c49251d9",
+                "reference": "c417956ac3d87bd8a6b8b5f18da4ed84c49251d9",
                 "shasum": ""
             },
             "type": "library",
@@ -233,7 +233,7 @@
                 "order-displays",
                 "user-actions"
             ],
-            "time": "2018-11-16T14:44:47+00:00"
+            "time": "2018-12-03T17:51:54+00:00"
         },
         {
             "name": "cptechinc/dplus-file-services",
@@ -412,12 +412,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dpluso-warehouse.git",
-                "reference": "620f1384e21b5eb3cbf91e7ab7b83f6c6aaf95f4"
+                "reference": "e9503303987bda5173c8685e6c2002c981b3ec9e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dpluso-warehouse/zipball/620f1384e21b5eb3cbf91e7ab7b83f6c6aaf95f4",
-                "reference": "620f1384e21b5eb3cbf91e7ab7b83f6c6aaf95f4",
+                "url": "https://api.github.com/repos/cptechinc/dpluso-warehouse/zipball/e9503303987bda5173c8685e6c2002c981b3ec9e",
+                "reference": "e9503303987bda5173c8685e6c2002c981b3ec9e",
                 "shasum": ""
             },
             "type": "library",
@@ -436,7 +436,7 @@
                 "dplus-warehouse",
                 "dpluso-warehouse"
             ],
-            "time": "2018-11-28T19:57:45+00:00"
+            "time": "2018-12-05T16:00:37+00:00"
         },
         {
             "name": "eoghanobrien/php-simple-mail",

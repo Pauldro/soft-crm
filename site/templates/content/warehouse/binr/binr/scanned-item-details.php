@@ -1,11 +1,17 @@
 <table class="table table-condensed table-striped">
 	<tr>
-		<td>Item</td>
-		<td><?= $item->get_itemidentifier(); ?></td>
+		<td><b>Origin:</b> <?= strtoupper($item->xorigin); ?></td>
+		<td><?= $item->xitemid; ?></td>
 	</tr>
+	<?php if ($item->is_lotted() || $item->is_serialized()) : ?>
+		<tr>
+			<td><?= strtoupper($item->get_itemtypepropertydesc()); ?></td>
+			<td><?= $item->get_itemidentifier(); ?></td>
+		</tr>
+	<?php endif; ?>
 	<tr>
 		<td>Item ID</td>
-		<td> <?= $item->itemid; ?></td>
+		<td><?= $item->itemid; ?></td>
 	</tr>
 	<tr>
 		<td>Description</td>
@@ -18,11 +24,11 @@
 		</tr>
 	<?php endif; ?>
 	<tr>
-		<td>Origin</td>
-		<td><?= strtoupper($item->xorigin); ?></td>
+		<td>Primary Bin</td>
+		<td><?= $item->primarybin; ?></td>
 	</tr>
 	<tr>
-		<td>X-ref Item ID</td>
-		<td><?= $item->xitemid; ?></td>
+		<td>Current Bin</td>
+		<td><?= $item->bin; ?></td>
 	</tr>
 </table>
