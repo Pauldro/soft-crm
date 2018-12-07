@@ -22,5 +22,4 @@
     <body class="fuelux">
 		<?php include ($config->paths->content.'nav/nav-yt.php'); ?>
         <div class="container"><?php include $config->paths->content.'nav/yt-navigation.php';?></div>
-
         <br>

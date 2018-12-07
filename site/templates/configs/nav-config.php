@@ -45,3 +45,5 @@
     $config->pages->warehousepicking = $config->urls->root . "warehouse/picking/";
     $config->pages->salesorderpicking = $config->urls->root . "warehouse/picking/pick-order/";
     $config->pages->salesorderpickpacking = $config->urls->root . "warehouse/picking/pick-pack/";
+    $config->pages->menu_binr = $config->urls->root . "warehouse/binr/";
+    $config->pages->binr = $config->urls->root . "warehouse/binr/binr/";

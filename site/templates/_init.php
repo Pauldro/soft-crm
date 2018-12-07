@@ -81,6 +81,7 @@
 	$config->scripts->append(hashtemplatefile('scripts/libs/datatables-datetime.js'));
 	$config->scripts->append(hashtemplatefile('scripts/classes.js'));
 	$config->scripts->append(hashtemplatefile('scripts/libs/bootstrap-select.js'));
+	$config->scripts->append(hashtemplatefile('scripts/libs/jquery-validate.js'));
 	$config->scripts->append(hashtemplatefile('scripts/scripts.js'));
 	$config->scripts->append(hashtemplatefile('scripts/dplus-notes.js'));
 

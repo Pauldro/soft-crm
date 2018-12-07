@@ -10,6 +10,7 @@
         $whsesession = WhseSession::load(session_id());
         
         if ($input->get->ordn) {
+            
             // CHECK IF BIN IS DEFINED AND THAT tHE ORDER IS NOT IN FINISHED STATUS
             if ($whsesession->is_orderinvalid()) {
                 $page->body = $config->paths->content."warehouse/picking/invalid-order.php";
@@ -20,7 +21,6 @@
                     $page->body = $config->paths->content."warehouse/picking/wrong-function.php";
                 } else {
                     $page->title = 'Choose Starting Bin';
-                    $page->title = var_dump($whsesession->is_orderinvalid());
                     $page->body = $config->paths->content."warehouse/picking/choose-bin-form.php";
                 }
             } else {

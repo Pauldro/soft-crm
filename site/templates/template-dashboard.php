@@ -9,5 +9,4 @@
 			$page->body = $config->paths->content.'dashboard/dashboard-page-outline.php'; 
 			break;
 	}
-	
 	include $config->paths->content."common/include-page.php";
