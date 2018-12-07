@@ -26,7 +26,7 @@
 					$addtype = $input->urlSegment(4);
 					switch ($addtype) {
 						case 'cart':
-				            $custID = get_custidfromcart(session_id(), false);
+							$custID = CartQuote::get_cartcustid(session_id());
 				            $formaction = $config->pages->cart."redir/";
 				            $ordn = '';
 				            break;

@@ -259,7 +259,7 @@
 		case 'ii-sales-history':
             $date = '';
 			$data = array('DBNAME' => $config->dplusdbname, 'IISALESHIST' => false, 'ITEMID' => $itemID);
-			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
+			$custID = ($input->post->custID ? strtoupper($input->post->text('custID')) : strtoupper($input->get->text('custID')));
 			$shipID = ($input->post->shipID ? $input->post->text('shipID') : $input->get->text('shipID'));
 			$date = ($input->post->date ? $input->post->text('date') : $input->get->text('date'));
             if (!empty($custID)) {$data['CUSTID'] = $custID; } if (!empty($shipID)) {$data['SHIPID'] = $shipID; }
@@ -271,7 +271,7 @@
         case 'ii-substitutes':
 			$data = array('DBNAME' => $config->dplusdbname, 'IISUB' => false, 'ITEMID' => $itemID);
             break;
-		case 'ii-documents': 
+		case 'ii-documents':
 			$desc = XRefItem::get_itemdescription($itemID);
 			$session->sql = XRefItem::get_itemdescription($itemID);
 			$data = array('DBNAME' => $config->dplusdbname, 'DOCVIEW' => false, 'FLD1CD' => 'IT', 'FLD1DATA' => $itemID, 'FLD1DESC' => $desc);

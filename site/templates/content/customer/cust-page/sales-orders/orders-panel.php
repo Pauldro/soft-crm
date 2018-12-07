@@ -1,7 +1,7 @@
 <?php
 	use Dplus\Dpluso\OrderDisplays\CustomerSalesOrderPanel;
 	use Dplus\Content\Paginator;
-	
+
 	$orderpanel = new CustomerSalesOrderPanel(session_id(), $page->fullURL, '#ajax-modal', '#orders-panel', $config->ajax);
 	$orderpanel->set_customer($custID, $shipID);
 	$orderpanel->set('pagenbr', $input->pageNum);
@@ -21,15 +21,15 @@
 		<?php elseif ($orderpanel->count > 0) : ?>
 			<a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">
 				Sales Orders <span class="caret"></span>
-			</a> 
+			</a>
 			<span class="badge pull-right"> <?= $orderpanel->count; ?></span>
-		<?php elseif (isset($input->get->ordn)) : ?>
+		<?php else : ?>
 			<a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">
 				Sales Orders <span class="caret"></span>
-			</a> 
+			</a>
 			<span class="badge pull-right"> <?= $orderpanel->count; ?></span>
 		<?php endif; ?>
-		<span class="pull-right"><?= $orderpanel->generate_pagenumberdescription(); ?> &nbsp; </span> 
+		<span class="pull-right"><?= $orderpanel->generate_pagenumberdescription(); ?> &nbsp; </span>
 	</div>
 	<div id="orders-div" class="<?= $orderpanel->collapse; ?>">
 		<div class="panel-body">
@@ -38,7 +38,9 @@
 					<?= $paginator->generate_showonpage(); ?>
 				</div>
 				<div class="col-sm-6">
-					<button class="btn btn-primary toggle-order-search pull-right" type="button" data-toggle="collapse" data-target="#cust-orders-search-div" aria-expanded="false" aria-controls="cust-orders-search-div">Toggle Search <i class="fa fa-search" aria-hidden="true"></i></button>
+					<button class="btn btn-primary toggle-order-search pull-right" type="button" data-toggle="collapse" data-target="#cust-orders-search-div" aria-expanded="false" aria-controls="cust-orders-search-div">
+						Toggle Search <i class="fa fa-search" aria-hidden="true"></i>
+					</button>
 				</div>
 			</div>
 			<div id="cust-orders-search-div" class="<?= (empty($orderpanel->filters) || empty($input->get->filter)) ? 'collapse' : ''; ?>">
