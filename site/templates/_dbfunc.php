@@ -5217,6 +5217,8 @@
 	
 	/**
 	 * Returns the Number of Results for this session and item id
+	 * // NOTE COUNTING THE DISTINCT XREF ITEMID solves an issue where
+	 *         the item is the exact same, it's just an item with the same ITEMID / LOT SERIAL from different X-refs
 	 * @param  string $sessionID Session Identifier
 	 * @param  string $itemID    Item ID
 	 * @param  string $binID     Bin ID to grab Item
@@ -5225,7 +5227,7 @@
 	 */
 	function count_invsearch_itemid($sessionID, $itemID, $binID = '', $debug = false) {
 		$q = (new QueryBuilder())->table('invsearch');
-		$q->field($q->expr('COUNT(*)'));
+		$q->field($q->expr('COUNT(DISTINCT(xitemid))'));
 		$q->where('sessionid', $sessionID);
 		$q->where('itemid', $itemID);
 		
@@ -5243,7 +5245,9 @@
 	}
 	
 	/**
-	 * Returns the Number of Results for this session and Lot Number / Serial Number
+	 * Returns the Number of results for this session and Lot Number / Serial Number
+	 * // NOTE COUNTING THE DISTINCT XREF ITEMID solves an issue where
+	 *         the item is the exact same, it's just an item with the same ITEMID / LOT SERIAL from different X-refs
 	 * @param  string $sessionID Session Identifier
 	 * @param  string $lotserial Lot Number / Serial Number
 	 * @param  string $binID     Bin ID to grab Item
@@ -5252,7 +5256,7 @@
 	 */
 	function count_invsearch_lotserial($sessionID, $lotserial, $binID = '', $debug = false) {
 		$q = (new QueryBuilder())->table('invsearch');
-		$q->field($q->expr('COUNT(*)'));
+		$q->field($q->expr('COUNT(DISTINCT(xitemid))'));
 		$q->where('sessionid', $sessionID);
 		$q->where('lotserial', $lotserial);
 		
@@ -5451,7 +5455,6 @@
 		$q = (new QueryBuilder())->table('whse_tbl');
 		$q->where('whseid', $whseID);
 		$q->limit(1);
-
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		
 		if ($debug) {
