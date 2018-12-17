@@ -37,29 +37,70 @@ $(function() {
 		$('.binr-form').find('input[name=qty]').val(binqty);
 	});
 	
-	// $(".binr-form").validate({
-	// 	submitHandler : function(form) {
-	// 		if (input_frombin.val() == '') {
-	// 			swal({
-	// 				type: 'error',
-	// 				title: 'Error',
-	// 				text: 'Please Fill in the From Bin'
-	// 			});
-	// 		} else if (input_qty.val() == '') {
-	// 			swal({
-	// 				type: 'error',
-	// 				title: 'Error',
-	// 				text: 'Please fill in the Qty'
-	// 			});
-	// 		} else if (input_tobin.val() == '') {
-	// 			swal({
-	// 				type: 'error',
-	// 				title: 'Error',
-	// 				text: 'Please fill in the To Bin'
-	// 			});
-	// 		} else {
-	// 			form.submit();
-	// 		}
-	// 	}
-	// });
+	$(".binr-form").validate({
+		submitHandler : function(form) {
+			if (input_frombin.val() == '') {
+				swal({
+					type: 'error',
+					title: 'Error',
+					text: 'Please Fill in the From Bin'
+				});
+			} else if (input_qty.val() == '') {
+				swal({
+					type: 'error',
+					title: 'Error',
+					text: 'Please fill in the Qty'
+				});
+			} else if (input_tobin.val() == '') {
+				swal({
+					type: 'error',
+					title: 'Error',
+					text: 'Please fill in the To Bin'
+				});
+			} else if (whsesession.whse.bins.bins[input_tobin.val()] === undefined) {
+				swal({
+					type: 'error',
+					title: 'Error',
+					text: 'Please Choose a valid To bin'
+				});
+			} else {
+				form.submit();
+			}
+		}
+	});
+	
+	$("body").on("click", ".show-possible-bins", function(e) {
+		e.preventDefault();
+		var button = $(this);
+		
+		if (whsesession.whse.bins.arranged == 'list') {
+			var bins = {};
+			var binid = '';
+			var spacesneeded = 0;
+			var spaces = '';
+			
+			for (var key in whsesession.whse.bins.bins) {
+				binid = key;
+				spacesneeded = (8 - binid.length);
+				spaces = '';
+				for (var i = 0; i <= spacesneeded; i++) {
+					spaces += '&nbsp;';
+				}
+				bins[key] = binid + spaces + whsesession.whse.bins.bins[key];
+			}
+			
+			swal({
+				type: 'question',
+				title: 'Choose a bin',
+				input: 'select',
+				inputClass: 'form-control',
+				inputOptions: bins,
+			}).then(function (input) {
+				if (input) {
+					$('input[name=to-bin]').val(input);
+					swal.close();
+				} 
+			}).catch(swal.noop);;
+		}
+	});
 });

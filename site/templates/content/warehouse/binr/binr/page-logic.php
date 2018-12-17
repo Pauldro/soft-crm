@@ -3,6 +3,7 @@
 	$config->scripts->append(hashtemplatefile('scripts/warehouse/binr.js'));
 	$binID = '';
 	$whsesession = WhseSession::load(session_id());
+	$whsesession->init();
 	
 	if ($input->get->scan) {
 		$page->fullURL->query->remove('scan');

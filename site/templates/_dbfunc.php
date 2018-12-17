@@ -5440,3 +5440,66 @@
 			return $sql->fetchColumn();
 		}
 	}
+	
+	/**
+	 * Returns WhseConfig Record
+	 * @param  string $whseID Warehouse ID
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return WhseConfig     Whse Configuration
+	 */
+	function get_whsetbl($whseID, $debug = false) {
+		$q = (new QueryBuilder())->table('whse_tbl');
+		$q->where('whseid', $whseID);
+		$q->limit(1);
+
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'WhseConfig');
+			return $sql->fetch();
+		}
+	}
+	
+	/**
+	 * Returns the WhseBin for the range
+	 * @param  string $whseID Warehouse ID
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return WhseBin        
+	 */
+	function get_bnctl_range($whseID, $debug = false) {
+		$q = (new QueryBuilder())->table('bincntl');
+		$q->where('warehouse', $whseID);
+		$q->limit(1);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'WhseBin');
+			return $sql->fetch();
+		}
+	}
+	
+	/**
+	 * Returns the WhseBins for the range
+	 * @param  string $whseID Warehouse ID
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return array          WhseBin
+	 */
+	function get_bnctl_list($whseID, $debug = false) {
+		$q = (new QueryBuilder())->table('bincntl');
+		$q->where('warehouse', $whseID);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'WhseBin');
+			return $sql->fetchAll();
+		}
+	}
