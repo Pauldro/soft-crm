@@ -13,7 +13,7 @@
         </div>
         <div class="col-sm-6">
         	<?php include $config->paths->content.'edit/orders/orderhead/order-info.php'; ?>
-			<?php if ($editorderdisplay->canedit) : ?>
+			<?php if ($user->loginid == SalesOrder::get_orderlockuser($ordn)) : ?>
 				<div class="text-right form-group">
 					<button type="button" class="btn btn-success text-center" onclick="$('#salesdetail-link').click()">
 						<span class="glyphicon glyphicon-triangle-right"></span> Details Page
@@ -24,13 +24,13 @@
     </div>
     <div class="row">
 		<div class="col-sm-6">
-			<?php if ($editorderdisplay->canedit) : ?>
+			<?php if ($user->loginid == SalesOrder::get_orderlockuser($ordn)) : ?>
         		<button type="submit" class="btn btn-success btn-block text-center"><span class="glyphicon glyphicon-floppy-disk"></span> Save Changes</button>
 			<?php endif; ?>
 		</div>
     </div>
 	<hr>
-	<?php if (!$editorderdisplay->canedit) : ?>
+	<?php if (!$user->loginid == SalesOrder::get_orderlockuser($ordn)) : ?>
 		<?= $editorderdisplay->generate_confirmationlink($order); ?>
 	<?php else : ?>
 		<?= $editorderdisplay->generate_saveunlocklink($order); ?>

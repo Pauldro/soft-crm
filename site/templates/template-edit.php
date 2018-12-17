@@ -14,8 +14,7 @@
 					$page->title = "Order #" . $ordn . ' failed to load';
 					$page->body = false;
 				} else {
-					$editorderdisplay->canedit = $user->loginid == SalesOrder::get_orderlockuser($ordn) ? true : false;
-					$prefix = ($editorderdisplay->canedit) ? 'Editing' : 'Viewing';
+					$prefix = ($user->loginid == SalesOrder::get_orderlockuser($ordn)) ? 'Editing' : 'Viewing';
 					$page->title = "$prefix Order #" . $ordn . ' for ' . Customer::get_customernamefromid($custID);
 					$config->scripts->append(hashtemplatefile('scripts/edit/card-validate.js'));
 					$config->scripts->append(hashtemplatefile('scripts/edit/edit-orders.js'));
@@ -34,15 +33,14 @@
 				$qnbr = $input->get->text('qnbr');
 				$editquotedisplay = new EditQuoteDisplay(session_id(), $page->fullURL, '#ajax-modal', $qnbr);
 				$quote = $editquotedisplay->get_quote();
-				$editquotedisplay->canedit = $quote->can_edit();
-				$prefix = ($editquotedisplay->canedit) ? 'Editing' : 'Viewing';
+				$prefix = $quote->can_edit() ? 'Editing' : 'Viewing';
 				$page->title = "$prefix Quote #" . $qnbr . ' for ' . Customer::get_customernamefromid($quote->custid);
 				$page->body = $config->paths->content."edit/quotes/outline.php";
 				$config->scripts->append(hashtemplatefile('scripts/edit/edit-quotes.js'));
 				$config->scripts->append(hashtemplatefile('scripts/edit/edit-pricing.js'));
 				$itemlookup->set_customer($quote->custid, $quote->shiptoid);
 				$itemlookup = $itemlookup->set_qnbr($qnbr);
-				$formconfig = new Dplus\Dpluso\Configs\FormFieldsConfig('quote');
+				$formconfig = new FormFieldsConfig('quote');
 			} else {
 				throw new Wire404Exception();
 			}
@@ -52,7 +50,6 @@
 				$qnbr = $input->get->text('qnbr');
 				$editquotedisplay = new EditQuoteDisplay(session_id(), $page->fullURL, '#ajax-modal', $qnbr);
 				$quote = $editquotedisplay->get_quote();
-				$editquotedisplay->canedit = $quote->can_edit();
 				$page->title = "Creating a Sales Order from Quote #" . $qnbr;
 				$page->body = $config->paths->content."edit/quote-to-order/outline.php";
 				$config->scripts->append(hashtemplatefile('scripts/edit/edit-quotes.js'));
