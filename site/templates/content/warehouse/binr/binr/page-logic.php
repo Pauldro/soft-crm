@@ -12,7 +12,7 @@
 		$resultscount = InventorySearchItem::count_all(session_id());
 		
 		if ($resultscount == 0) {
-			$page->body = $config->paths->content."{$page->path}item-form.php";
+			$page->body = $config->paths->content."{$page->path}inventory-results.php";	
 		} elseif ($resultscount == 1) {
 			$item = InventorySearchItem::load_first(session_id());
 			$pageurl = $page->fullURL->getUrl();
