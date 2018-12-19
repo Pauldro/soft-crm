@@ -51,7 +51,6 @@ $(function() {
                 buttonsStyling: false,
                 confirmButtonText: 'Yes!'
             }).then(function (result) {
-                console.log(result);
                 if (result) {
                     window.location.href = button.attr('href');
                 }
@@ -60,6 +59,15 @@ $(function() {
             swal({
                 title: 'Are you sure?',
                 text: "You have picked too much",
+                type: 'warning',
+                confirmButtonClass: 'btn btn-success',
+                buttonsStyling: false,
+                confirmButtonText: 'Continue'
+            });
+        } else if (pickitem.item.qty.expected < pickitem.item.qty.picked) { 
+            swal({
+                title: 'Bin Error',
+                text: "You have picked more than expected bin qty",
                 type: 'warning',
                 confirmButtonClass: 'btn btn-success',
                 buttonsStyling: false,
@@ -117,7 +125,7 @@ $(function() {
     
     $("body").on("click", ".remove-sales-order-locks", function(e) {
         e.preventDefault();
-        
+
         swal({
 			title: "Enter the Order Number you'd like to erase locks for",
 			text: "Order Number",
@@ -137,7 +145,7 @@ $(function() {
 				var ordn = input;
                 var pageurl = URI();
                 var uri = URI(config.urls.warehouse.picking.sales_order.redir.redir);
-                uri.addQuery('action', 'remove-order-locks').addQuery('ordn', ordn);
+                uri.addQuery('action', 'remove-order-locks').addQuery('ordn', ordn).addQuery('page', pageurl.toString());
                 window.location.href = uri.toString();
 			}
 		}).catch(swal.noop);

@@ -5191,3 +5191,318 @@
 			return $sql->fetchColumn();
 		}
 	}
+
+/* =============================================================
+	BINR FUNCTIONS
+============================================================ */
+	/**
+	 * Returns the Number of Results for this session
+	 * @param  string $sessionID Session Identifier
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return int               Number of results for this session
+	 */
+	function count_invsearch($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('invsearch');
+		$q->field($q->expr('COUNT(*)'));
+		$q->where('sessionid', $sessionID);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+	
+	/**
+	 * Returns the Number of Results for this session and item id
+	 * // NOTE COUNTING THE DISTINCT XREF ITEMID solves an issue where
+	 *         the item is the exact same, it's just an item with the same ITEMID / LOT SERIAL from different X-refs
+	 * @param  string $sessionID Session Identifier
+	 * @param  string $itemID    Item ID
+	 * @param  string $binID     Bin ID to grab Item
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return int               Number of results for this session
+	 */
+	function count_invsearch_itemid($sessionID, $itemID, $binID = '', $debug = false) {
+		$q = (new QueryBuilder())->table('invsearch');
+		$q->field($q->expr('COUNT(DISTINCT(xitemid))'));
+		$q->where('sessionid', $sessionID);
+		$q->where('itemid', $itemID);
+		
+		if (!empty($binID)) {
+			$q->where('bin', $binID);
+		}
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+	
+	/**
+	 * Returns the Number of results for this session and Lot Number / Serial Number
+	 * // NOTE COUNTING THE DISTINCT XREF ITEMID solves an issue where
+	 *         the item is the exact same, it's just an item with the same ITEMID / LOT SERIAL from different X-refs
+	 * @param  string $sessionID Session Identifier
+	 * @param  string $lotserial Lot Number / Serial Number
+	 * @param  string $binID     Bin ID to grab Item
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return int               Number of results for this session
+	 */
+	function count_invsearch_lotserial($sessionID, $lotserial, $binID = '', $debug = false) {
+		$q = (new QueryBuilder())->table('invsearch');
+		$q->field($q->expr('COUNT(DISTINCT(xitemid))'));
+		$q->where('sessionid', $sessionID);
+		$q->where('lotserial', $lotserial);
+		
+		if (!empty($binID)) {
+			$q->where('bin', $binID);
+		}
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+	
+	/**
+	 * Returns an array of InventorySearchItem of invsearch results
+	 * @param  string $sessionID Session Identifier
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return array            Array of InventorySearchItem
+	 */
+	function get_invsearchitems($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('invsearch');
+		$q->where('sessionid', $sessionID);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'InventorySearchItem');
+			return $sql->fetchAll();
+		}
+	}
+	
+	/**
+	 * Returns the first item found in invsearch table
+	 * @param  string $sessionID Session Identifier
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return InventorySearchItem           
+	 */
+	function get_firstinvsearchitem($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('invsearch');
+		$q->where('sessionid', $sessionID);
+		$q->limit(1);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'InventorySearchItem');
+			return $sql->fetch();
+		}
+	}
+	
+	/**
+	 * Returns the first item found in invsearch table with the provided itemid
+	 * @param  string $sessionID Session Identifier
+	 * @param  string $itemID    Item ID
+	 * @param  string $binID     Bin ID to grab Item
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return InventorySearchItem
+	 */
+	function get_invsearchitem_itemid($sessionID, $itemID, $binID = '', $debug = false) {
+		$q = (new QueryBuilder())->table('invsearch');
+		$q->where('sessionid', $sessionID);
+		$q->where('itemid', $itemID);
+		
+		if (!empty($binID)) {
+			$q->where('bin', $binID);
+		}
+		$q->limit(1);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'InventorySearchItem');
+			return $sql->fetch();
+		}
+	}
+	
+	/**
+	 * Returns the first item found in invsearch table with the provided lotserial number
+	 * @param  string $sessionID Session Identifier
+	 * @param  string $lotserial Lot Number / Serial Number
+	 * @param  string $binID     Bin ID to grab Item
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return InventorySearchItem
+	 */
+	function get_invsearchitem_lotserial($sessionID, $lotserial, $binID = '', $debug = false) {
+		$q = (new QueryBuilder())->table('invsearch');
+		$q->where('sessionid', $sessionID);
+		$q->where('lotserial', $lotserial);
+		$q->limit(1);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'InventorySearchItem');
+			return $sql->fetch();
+		}
+	}
+	
+	/**
+	 * Returns an array of bins that this item ID is found in
+	 * @param  string $sessionID Session Identifier
+	 * @param  string $itemID    Item ID
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return array             ItemBinInfo
+	 */
+	function get_bininfo_itemid($sessionID, $itemID, $debug = false) {
+		$item = get_invsearchitem_itemid($sessionID, $itemID);
+		$q = (new QueryBuilder())->table('bininfo');
+		$q->where('sessionid', $sessionID);
+		$q->where('itemid', $itemID);
+		
+		if (!$item->is_lotted()) {
+			$q->field('*');
+			$q->field($q->expr('SUM(qty) AS qty'));
+			$q->group('bin');
+		} 
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'ItemBinInfo');
+			return $sql->fetchAll();
+		}
+	}
+	
+	/**
+	 * Returns an array of bins that this lotserial is found in
+	 * @param  string $sessionID  Session Identifier
+	 * @param  string $lotserial  Lot Number / Serial Number
+	 * @param  bool   $debug      Run in debug? If so, return SQL Query
+	 * @return array              ItemBinInfo
+	 */
+	function get_bininfo_lotserial($sessionID, $lotserial, $debug = false) {
+		$q = (new QueryBuilder())->table('bininfo');
+		$q->where('sessionid', $sessionID);
+		$q->where('lotserial', $lotserial);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'ItemBinInfo');
+			return $sql->fetchAll();
+		}
+	}
+	
+	/**
+	 * Returns qty for an item in its bin
+	 * @param  string              $sessionID  Session Identifier
+	 * @param  InventorySearchItem $item       Item
+	 * @param  bool                $debug      Run in debug? If so, return SQL Query
+	 * @return array              ItemBinInfo
+	 */
+	function get_bininfo_qty($sessionID, InventorySearchItem $item, $debug = false) {
+		$q = (new QueryBuilder())->table('bininfo');
+		$q->field('qty');
+		$q->where('sessionid', $sessionID);
+		$q->where('itemid', $item->itemid);
+		
+		if ($item->is_lotted() || $item->is_serialized()) {
+			$q->where('lotserial', $item->lotserial);
+		}
+		$q->where('bin', $item->bin);
+
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+	
+	/**
+	 * Returns WhseConfig Record
+	 * @param  string $whseID Warehouse ID
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return WhseConfig     Whse Configuration
+	 */
+	function get_whsetbl($whseID, $debug = false) {
+		$q = (new QueryBuilder())->table('whse_tbl');
+		$q->where('whseid', $whseID);
+		$q->limit(1);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'WhseConfig');
+			return $sql->fetch();
+		}
+	}
+	
+	/**
+	 * Returns the WhseBin for the range
+	 * @param  string $whseID Warehouse ID
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return WhseBin        
+	 */
+	function get_bnctl_range($whseID, $debug = false) {
+		$q = (new QueryBuilder())->table('bincntl');
+		$q->where('warehouse', $whseID);
+		$q->limit(1);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'WhseBin');
+			return $sql->fetch();
+		}
+	}
+	
+	/**
+	 * Returns the WhseBins for the range
+	 * @param  string $whseID Warehouse ID
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return array          WhseBin
+	 */
+	function get_bnctl_list($whseID, $debug = false) {
+		$q = (new QueryBuilder())->table('bincntl');
+		$q->where('warehouse', $whseID);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'WhseBin');
+			return $sql->fetchAll();
+		}
+	}

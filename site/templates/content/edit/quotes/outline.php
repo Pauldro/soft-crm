@@ -12,7 +12,7 @@
         $tabs['details']['tabcontent'] = $config->paths->siteModules.'QtyPerCase/content/edit/quote/details/details-page.php';
     }
 ?>
-<?php if (!$editquotedisplay->canedit) : ?>
+<?php if (!$quote->can_edit()) : ?>
    <div class="row">
        <div class="col-xs-12"><?php include $config->paths->content.'edit/quotes/read-only-msg.php'; ?></div>
     </div>

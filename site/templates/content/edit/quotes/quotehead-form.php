@@ -22,14 +22,14 @@
         </div>
         <div class="col-sm-6">
             <div class="text-right form-group">
-				<?php if ($editquotedisplay->canedit) : ?>
+				<?php if ($quote->can_edit()) : ?>
 	        		<button type="button" class="btn btn-success text-center" onclick="$('#quotedetail-link').click()"><span class="glyphicon glyphicon-triangle-right"></span> Details Page</button>
 				<?php endif; ?>
 	        </div>
         </div>
     </div>
     <hr>
-    <?php if (!$editquotedisplay->canedit) : ?>
+    <?php if (!$quote->can_edit()) : ?>
          <?= $editquotedisplay->generate_confirmationlink($quote); ?>
     <?php else : ?>
         <?php if (($config->pages->orderquote.'?qnbr='.$qnbr) != $config->filename && has_dpluspermission($user->loginid, 'eso')) : ?>

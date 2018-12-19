@@ -122,8 +122,14 @@
 			break;
 		case 'remove-order-locks':
 			$ordn = $input->$requestmethod->text('ordn');
+			$page = $input->$requestmethod->text('page');
 			$data = array("DBNAME=$config->dplusdbname", 'REFRESHPD', "ORDERNBR=$ordn");
-			$session->loc = $config->pages->salesorderpicking;
+			
+			if (!empty($page)) {
+				$session->loc = $page;
+			} else {
+				$session->loc = $config->pages->salesorderpicking;
+			}
 			break;
 		case 'add-barcode':
 			$barcode = $input->$requestmethod->text('barcode');

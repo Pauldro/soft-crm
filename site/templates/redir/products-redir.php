@@ -6,8 +6,9 @@
 	*
 	*/
 	$custID = $shipID = '';
-    $action = ($input->post->action ? $input->post->text('action') : $input->get->text('action'));
-	$itemID = ($input->post->itemID ? $input->post->text('itemID') : $input->get->text('itemID'));
+	$requestmethod = $input->requestMethod('POST') ? 'post' : 'get';
+	$action = $input->$requestmethod->text('action');
+	$itemID = $input->$requestmethod->text('itemID');
 	$filename = session_id();
 
 	/**
@@ -165,9 +166,8 @@
 
     switch ($action) {
         case 'item-search':
-            $q = ($input->post->q ? $input->post->text('q') : $input->get->text('q'));
-			$custID = ($input->post->custID ? $input->post->text('custID') : $input->get->text('custID'));
-			if (empty($custID)) { $custID == $config->defaultweb; }
+            $q = $input->$requestmethod->text('q');
+			$custID = !empty($input->$requestmethod->custID) ? $input->$requestmethod->text('custID') : $config->defaultweb;
 			$data = array('DBNAME' => $config->dplusdbname, 'ITNOSRCH' => strtoupper($q), 'CUSTID' => $custID);
             break;
 		case 'ii-select':
