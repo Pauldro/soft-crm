@@ -6,7 +6,6 @@ $(function() {
 	
 	
 	$("body").on("click", ".binr-inventory-result", function(e) {
-		
 		var button = $(this);
 		var desc = button.data('desc');
 		var qty = parseInt(button.data('qty'));

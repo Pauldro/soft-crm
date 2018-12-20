@@ -1,3 +1,6 @@
+<?php
+	use Dplus\Warehouse\Binr;
+?>
 <div class="form-group">
 	<a href="<?= $config->pages->binr; ?>" class="btn btn-primary not-round">
 		<i class="fa fa-arrow-left" aria-hidden="true"></i> Back to Search
@@ -6,7 +9,7 @@
 <div class="list-group">
 	<?php if ($resultscount) : ?>
 		<?php foreach ($items as $item) : ?>
-			<a href="<?= BinrSession::get_binritembinsURL($item); ?>" class="list-group-item binr-inventory-result" data-desc="<?= $item->get_itemtypepropertydesc(); ?>" data-item="<?= $item->get_itemidentifier(); ?>" data-qty="<?= $item->qty; ?>">
+			<a href="<?= Binr::get_item_binsURL($item); ?>" class="list-group-item binr-inventory-result" data-desc="<?= $item->get_itemtypepropertydesc(); ?>" data-item="<?= $item->get_itemidentifier(); ?>" data-qty="<?= $item->qty; ?>">
 				<div class="row">
 					<div class="col-xs-12">
 						<h4 class="list-group-item-heading"><?= strtoupper($item->get_itemtypepropertydesc()) . " " . $item->get_itemidentifier(); ?></h4>
