@@ -5580,8 +5580,7 @@
 		$q = (new QueryBuilder())->table('bincntl');
 		$q->field('COUNT(*)');
 		$q->where('warehouse', $whseID);
-		$q->where('binfrom', $binID);
-		$q->where($q->expr("[] BETWEEN binfrom AND binthrough", [$binID]));
+		$q->where($q->expr("[] BETWEEN binfrom AND binthru", [$binID]));
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		
 		if ($debug) {
