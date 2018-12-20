@@ -5,6 +5,7 @@ $(function() {
 	
 	$(".select-bin-form").validate({
 		submitHandler : function(form) {
+			
 			var valid_form = new SwalError(false, '', '');
 			var valid_bin = validate_binID();
 			
@@ -69,6 +70,8 @@ $(function() {
 		var error = false;
 		var title = '';
 		var msg = '';
+		var bin_lower = input_bin.val();
+		input_bin.val(bin_lower.toUpperCase());
 		
 		if (input_bin.val() == '') {
 			error = true;
@@ -77,11 +80,11 @@ $(function() {
 		} else if (whsesession.whse.bins.arranged == 'list' && whsesession.whse.bins.bins[input_bin.val()] === undefined) {
 			error = true;
 			title = 'Invalid Bin ID';
-			msg = 'Please Choose a valid To bin';
+			msg = 'Please Choose a valid bin ID';
 		} else if (whsesession.whse.bins.arranged == 'list' && input_bin.val() < whsesession.whse.bins.bins.from || input_bin.val() > whsesession.whse.bins.bins.through) {
 			error = true;
 			title = 'Invalid Bin ID';
-			msg = 'To Bin must be between ' + whsesession.whse.bins.bins.from + ' and ' + whsesession.whse.bins.bins.through;
+			msg = 'Bin must be between ' + whsesession.whse.bins.bins.from + ' and ' + whsesession.whse.bins.bins.through;
 		}
 		return new SwalError(error, title, msg);
 	}
