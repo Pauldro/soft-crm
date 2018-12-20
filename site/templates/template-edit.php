@@ -14,7 +14,7 @@
 					$page->title = "Order #" . $ordn . ' failed to load';
 					$page->body = false;
 				} else {
-					$prefix = ($user->loginid == SalesOrder::get_orderlockuser($ordn)) ? 'Editing' : 'Viewing';
+					$prefix = (!$user->loginid == SalesOrder::get_orderlockuser($ordn)) ? 'Editing' : 'Viewing';
 					$page->title = "$prefix Order #" . $ordn . ' for ' . Customer::get_customernamefromid($custID);
 					$config->scripts->append(hashtemplatefile('scripts/edit/card-validate.js'));
 					$config->scripts->append(hashtemplatefile('scripts/edit/edit-orders.js'));
