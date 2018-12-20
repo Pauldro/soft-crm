@@ -3,7 +3,6 @@
     
     $toolbar = false;
     $config->scripts->append(hashtemplatefile('scripts/warehouse/physical-count.js'));
-    echo WhseSession::load(session_id(), true);
     $whsesession = WhseSession::load(session_id());
 	$whsesession->init();
     $whseconfig = WhseConfig::load($whsesession->whseid);
