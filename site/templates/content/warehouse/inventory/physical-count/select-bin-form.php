@@ -5,6 +5,6 @@
             <label for="binID">Bin ID</label>
             <input type="text" class="form-control" id="binID" name="binID">
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary not-round"> <i class="fa fa-floppy-o" aria-hidden="true"></i> Submit</button>
     </form>
 </div>

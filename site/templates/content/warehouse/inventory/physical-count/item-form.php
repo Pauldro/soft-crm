@@ -19,6 +19,6 @@
                 </td>
             </tr>
         </table>
-        <button type="submit" class="btn btn-sm btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary not-round"> <i class="fa fa-floppy-o" aria-hidden="true"></i> Submit</button>
     </form>
 </div>

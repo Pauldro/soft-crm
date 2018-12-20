@@ -9,7 +9,6 @@
     
     
     if ($input->get->binID) {
-        if ($whseconfig->are_binslisted()) {
             $binID = $input->get->text('binID');
             if ($whseconfig->validate_bin($binID)) {
                 $physicalcounter = new PhysicalCount(session_id(), $page->fullURL);
@@ -54,10 +53,6 @@
             } else {
                 $page->body = __DIR__."/invalid-bin.php";
             }
-        } else {
-            
-        }
-        
     } else {
         $page->body = __DIR__."/select-bin-form.php";
     }
