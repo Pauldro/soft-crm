@@ -7,30 +7,43 @@
 	$filename = $sessionID;
 	
 	$session->remove('binr');
+	
 	/**
-	* PICKING ORDERS REDIRECT
+	* BINR REDIRECT
 	* USES the whseman.log
 	*
 	*
 	*
 	*
 	* switch ($action) {
-	*	case 'initiate-pick':
+	*	case 'initiate-whse':
 	*		DBNAME=$config->dplusdbname
-	*		LOGIN=$user->loginid
+	*		LOGIN=$loginID
 	*		break;
-	*	case 'start-order':
+	*	case 'logout':
 	*		DBNAME=$config->dplusdbname
-	*		STARTORDER
-	*		ORDERNBR=$ordn
+	*		LOGOUT
 	*		break;
-	*	case 'select-bin':
+	*	case 'inventory-search:
 	*		DBNAME=$config->dplusdbname
-	*		SETBIN=$bin
+	*		INVSEARCH
+	*		QUERY=$q
 	*		break;
-	*	case 'next-bin':
+	*	case 'search-item-bins'
 	*		DBNAME=$config->dplusdbname
-	*		NEXTBIN
+	*		BININFO
+	*		ITEMID=$itemID
+	*		LOTSERIAL=$lotserial **     // NOTE ONLY FOR LOTTED OR SERIALIZED ITEMS
+	*		break;
+	*	case 'bin-reassign':
+	*		DBNAME=$config->dplusdbname
+	*		BINR
+	*		ITEMID=$itemID
+	*		SERIALNBR=$serialnbr        // NOTE ONLY FOR SERIALIZED ITEMS
+	*		LOTNBR=$lotnbr              // NOTE ONLY FOR LOTTED ITEMS
+	*		QTY=$qty
+	*		FROMBIN=$frombin
+	*		TOBIN=$tobin
 	*		break;
 	* }
 	*
@@ -49,7 +62,9 @@
 		case 'inventory-search':
 			$q = $input->$requestmethod->text('scan');
 			$data = array("DBNAME=$config->dplusdbname", 'INVSEARCH', "QUERY=$q");
-			$session->loc = $input->$requestmethod->text('page')."?scan=$q";
+			$url = new Purl\Url($input->$requestmethod->text('page'));
+			$url->query->set('scan', $q);
+			$session->loc = $url->getUrl();
 			break;
 		case 'search-item-bins':
 			$itemID = $input->$requestmethod->text('itemID');
