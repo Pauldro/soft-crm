@@ -3349,7 +3349,7 @@
 			return $q->generate_sqlquery();
 		} else {
 			$sql->execute($q->params);
-			return $q->bool(DplusWire::wire('dplusdatabase')->lastInsertId());
+			return boolval(DplusWire::wire('dplusdatabase')->lastInsertId());
 		}
 	}
 

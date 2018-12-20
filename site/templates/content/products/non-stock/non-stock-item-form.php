@@ -1,3 +1,4 @@
+<?php $custID = $input->get->text('custID'); ?>
 <?php $vendors = get_vendors(false); ?>
 <?php if ($appconfig->show_vendorinfononstock) : ?>
 	<h3>Choose Vendor</h3>
