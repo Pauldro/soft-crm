@@ -3713,11 +3713,11 @@
 		if (empty($custID)) {
 			$q->where('origintype', ['I', 'V', 'L']);
 			$q->where(
-		        $q
-		        ->orExpr()
-		        ->where($q->expr("UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]))
-		        ->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]))
-		    );
+				$q
+				->orExpr()
+				->where($q->expr("UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]))
+				->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]))
+			);
 		} else {
 			$q->where('origintype', ['I', 'V', 'L', 'C']);
 			$q->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]));
@@ -3746,11 +3746,11 @@
 		if (empty($custID)) {
 			$q->where('origintype', ['I', 'V', 'L']);
 			$q->where(
-		        $q
-		        ->orExpr()
-		        ->where($q->expr("UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]))
-		        ->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]))
-		    );
+				$q
+				->orExpr()
+				->where($q->expr("UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]))
+				->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]))
+			);
 		} else {
 			$q->where('origintype', ['I', 'V', 'L', 'C']);
 			$q->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]));
@@ -4966,9 +4966,30 @@
 	 * @param  bool   $debug  Run in debug? If so, return SQL Query
 	 * @return array          BarcodedItems
 	 */
-	function get_barcodeditemsforitemid($itemID, $debug = false) {
+	function get_barcodes_itemid($itemID, $debug = false) {
 		$q = (new QueryBuilder())->table('barcodes');
 		$q->where('itemid', $itemID);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'BarcodedItem');
+			return $sql->fetchAll();
+		}
+	}
+	
+	/**
+	 * Returns distinct (unit of measure) barcoded Items for that Item ID
+	 * @param  string $itemID Item ID
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return array          BarcodedItems
+	 */
+	function get_barcodes_distinct_uom($itemID, $debug = false) {
+		$q = (new QueryBuilder())->table('barcodes');
+		$q->where('itemid', $itemID);
+		$q->group('unitqty');
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
@@ -5216,6 +5237,26 @@
 	}
 	
 	/**
+	 * Returns the Number of Results for this session
+	 * @param  string $sessionID Session Identifier
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return int               Number of results for this session
+	 */
+	function count_invsearch_distinct_xorigin($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('invsearch');
+		$q->field($q->expr('COUNT(DISTINCT(CONCAT(itemid, xorigin)))'));
+		$q->where('sessionid', $sessionID);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+	
+	/**
 	 * Returns the Number of Results for this session and item id
 	 * // NOTE COUNTING THE DISTINCT XREF ITEMID solves an issue where
 	 *         the item is the exact same, it's just an item with the same ITEMID / LOT SERIAL from different X-refs
@@ -5282,6 +5323,27 @@
 	function get_invsearchitems($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('invsearch');
 		$q->where('sessionid', $sessionID);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'InventorySearchItem');
+			return $sql->fetchAll();
+		}
+	}
+	
+	/**
+	 * Returns an array of InventorySearchItem of invsearch results
+	 * @param  string $sessionID Session Identifier
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return array            Array of InventorySearchItem
+	 */
+	function get_invsearchitems_distinct_xorigin($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('invsearch');
+		$q->where('sessionid', $sessionID);
+		$q->group('itemid, xorigin');
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 		
 		if ($debug) {
@@ -5504,5 +5566,64 @@
 			$sql->execute($q->params);
 			$sql->setFetchMode(PDO::FETCH_CLASS, 'WhseBin');
 			return $sql->fetchAll();
+		}
+	}
+	
+	/**
+	 * Returns if $binID is a correct bin ID according to the range rules
+	 * @param  string $whseID Warehouse ID
+	 * @param  string $binID  bin ID to validate
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return bool           Is $binID a valid bin?
+	 */
+	function validate_bnctl_binrange($whseID, $binID, $debug = false) {
+		$q = (new QueryBuilder())->table('bincntl');
+		$q->field('COUNT(*)');
+		$q->where('warehouse', $whseID);
+		$q->where($q->expr("[] BETWEEN binfrom AND binthru", [$binID]));
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'WhseBin');
+			return boolval($sql->fetchColumn());
+		}
+	}
+	
+	/**
+	 * Returns if $binID is an existing bin in the bin list
+	 * @param  string $whseID Warehouse ID
+	 * @param  string $binID  bin ID to validate
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return bool           Is $binID an existing bin?
+	 */
+	function validate_bnctl_binlist($whseID, $binID, $debug = false) {
+		$q = (new QueryBuilder())->table('bincntl');
+		$q->field('COUNT(*)');
+		$q->where('warehouse', $whseID);
+		$q->where('binfrom', $binID);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return boolval($sql->fetchColumn());
+		}
+	}
+	
+	function get_item_im($itemid, $debug = false) {
+		$q = (new QueryBuilder())->table('itemmaster');
+		$q->where('itemid', $itemid);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'ItemMasterItem');
+			return $sql->fetch();
 		}
 	}

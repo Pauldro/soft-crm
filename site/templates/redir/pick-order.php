@@ -15,9 +15,23 @@
 	*
 	*
 	* switch ($action) {
-	*	case 'initiate-pick':
+	* 	case 'initiate-whse':
+	*		DBNAME=$config->dplusdbname
+	*		LOGIN=$loginID
+	*		break;
+	*	case 'start-pick':
+	*		DBNAME=$config->dplusdbname
+	*		LOGIN=$loginID
+	*		PICKING
+	*		break;
+	*	case 'start-pick-pack':
 	*		DBNAME=$config->dplusdbname
 	*		LOGIN=$user->loginid
+	*		PACKING
+	*		break;
+	*	case 'logout':
+	*		DBNAME=$config->dplusdbname
+	*		LOGOUT
 	*		break;
 	*	case 'start-order':
 	*		DBNAME=$config->dplusdbname
@@ -31,6 +45,56 @@
 	*	case 'next-bin':
 	*		DBNAME=$config->dplusdbname
 	*		NEXTBIN
+	*		break;
+	*	case 'add-pallet':
+	*		DBNAME=$config->dplusdbname
+	*		NEWPALLET
+	*		break;
+	*	case 'set-pallet':
+	*		DBNAME=$config->dplusdbname
+	*		GOTOPALLET=$palletnbr
+	*		break;
+	*	case 'finish-item':
+	*		DBNAME=$config->dplusdbname
+	*		ACCEPTITEM
+	*		ORDERNBR=$ordn
+	*		LINENBR=$linenbr
+	*		ITEMID=$itemID
+	*		ITEMQTY=$totalpicked
+	*		break;
+	*	case 'accept-item':
+	*		DBNAME=$config->dplusdbname
+	*		ACCEPTITEM
+	*		ORDERNBR=$ordn
+	*		LINENBR=$linenbr
+	*		ITEMID=$itemID
+	*		PALLETNBR=$pallet|QTY=$qty  // NOTE 1 LINE FOR EACH PALLET
+	*		break;
+	*	case 'skip-item':
+	*		DBNAME=$config->dplusdbname
+	*		SKIPITEM
+	*		ORDERNBR=$ordn
+	*		LINENBR=$linenbr
+	*		break;
+	*	case 'finish-order':
+	*		DBNAME=$config->dplusdbname
+	*		COMPLETEORDER
+	*		ORDERNBR=$ordn
+	*		break;
+	*	case 'exit-order':
+	*		DBNAME=$config->dplusdbname
+	*		STOPORDER
+	*		ORDERNBR=$ordn
+	*		break;
+	*	case 'cancel-order':
+	*		DBNAME=$config->dplusdbname
+	*		CANCELSTART
+	*		ORDERNBR=$ordn
+	*		break;
+	*	case 'remove-order-locks':
+	*		DBNAME=$config->dplusdbname
+	*		REFRESHPD
+	*		ORDERNBR=$ordn
 	*		break;
 	* }
 	*

@@ -6,7 +6,6 @@ $(function() {
 	
 	
 	$("body").on("click", ".binr-inventory-result", function(e) {
-		
 		var button = $(this);
 		var desc = button.data('desc');
 		var qty = parseInt(button.data('qty'));
@@ -129,6 +128,8 @@ $(function() {
 		var error = false;
 		var title = '';
 		var msg = '';
+		var lowercase_frombin = input_frombin.val();
+		input_frombin.val(lowercase_frombin.toUpperCase());
 		
 		if (input_frombin.val() == '') {
 			error = true;
@@ -155,6 +156,8 @@ $(function() {
 		var error = false;
 		var title = '';
 		var msg = '';
+		var lowercase_tobin = input_tobin.val();
+		input_tobin.val(lowercase_tobin.toUpperCase());
 		
 		if (input_tobin.val() == '') {
 			error = true;

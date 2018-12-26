@@ -1,13 +1,14 @@
 <?php
-	// NOTE THE FOLLOWING IS FOR NORMAL ITEMS ONLY
-	$config->scripts->append(hashtemplatefile('scripts/warehouse/binr.js'));
+	use Dplus\Warehouse\Binr;
+	
 	$binID = '';
 	$whsesession = WhseSession::load(session_id());
 	$whsesession->init();
+	$binr = new Binr();
+	$config->scripts->append(hashtemplatefile('scripts/warehouse/binr.js'));
 	
 	if ($input->get->scan) {
 		$page->fullURL->query->remove('scan');
-		
 		$scan = $input->get->text('scan');
 		$resultscount = InventorySearchItem::count_all(session_id());
 		
@@ -21,38 +22,24 @@
 			$items = InventorySearchItem::get_all(session_id());
 			$page->body = $config->paths->content."{$page->path}inventory-results.php";
 		}
-	} elseif ($input->get->serialnbr) {
-		$serialnbr = $input->get->text('serialnbr');
-		$resultscount = InventorySearchItem::count_from_lotserial(session_id(), $serialnbr);
-		
-		if ($resultscount == 1) {
-			$item = InventorySearchItem::load_from_lotserial(session_id(), $serialnbr);
-			$page->body = $config->paths->content."{$page->path}binr-form.php";
-		} else {
-			$items = InventorySearchItem::get_all(session_id());
-			$page->body = $config->paths->content."{$page->path}inventory-results.php";
-		}
-	} elseif ($input->get->lotnbr) {
-		$lotnbr = $input->get->text('lotnbr');
+	} elseif (!empty($input->get->serialnbr) | !empty($input->get->lotnbr) | !empty($input->get->itemID)) {
 		$binID  = $input->get->text('binID');
 		
-		$resultscount = InventorySearchItem::count_from_lotserial(session_id(), $lotnbr, $binID);
-		
-		if ($resultscount == 1) {
-			$item = InventorySearchItem::load_from_lotserial(session_id(), $lotnbr, $binID);
-			$page->body = $config->paths->content."{$page->path}binr-form.php";
-		} else {
-			$items = InventorySearchItem::get_all(session_id());
-			$page->body = $config->paths->content."{$page->path}inventory-results.php";
+		if ($input->get->serialnbr) {
+			$serialnbr = $input->get->text('serialnbr');
+			$resultscount = InventorySearchItem::count_from_lotserial(session_id(), $serialnbr);
+			$item = $resultscount == 1 ? InventorySearchItem::load_from_lotserial(session_id(), $serialnbr) : false;
+		} elseif ($input->get->lotnbr) {
+			$lotnbr = $input->get->text('lotnbr');
+			$resultscount = InventorySearchItem::count_from_lotserial(session_id(), $lotnbr, $binID);
+			$item = $resultscount == 1 ? InventorySearchItem::load_from_lotserial(session_id(), $lotnbr, $binID) : false;
+		} elseif ($input->get->itemID) {
+			$itemID = $input->get->text('itemID');
+			$resultscount = InventorySearchItem::count_from_itemid(session_id(), $itemID, $binID);
+			$item = $resultscount == 1 ? InventorySearchItem::load_from_itemid(session_id(), $itemID, $binID) : false;
 		}
-	} elseif ($input->get->itemID) {
-		$itemID = $input->get->text('itemID');
-		$binID  = $input->get->text('binID');
-		
-		$resultscount = InventorySearchItem::count_from_itemid(session_id(), $itemID, $binID);
 		
 		if ($resultscount == 1) {
-			$item = InventorySearchItem::load_from_itemid(session_id(), $itemID, $binID);
 			$page->body = $config->paths->content."{$page->path}binr-form.php";
 		} else {
 			$items = InventorySearchItem::get_all(session_id());
