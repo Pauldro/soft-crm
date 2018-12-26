@@ -1,6 +1,7 @@
 <?php 
 	include "{$config->paths->content}warehouse/session.js.php"; 
 	$itemuoms = BarcodedItem::find_distinct_unitofmeasure($item->itemid);
+	$imitem = ItemMasterItem::load($item->itemid);
 ?>
 <div>
 	<form action="<?= $config->pages->menu_inventory."redir/"; ?>" method="POST" class="physical-count-form">
@@ -34,23 +35,32 @@
 				</tr>
 			<?php endif; ?>
 		</table>
+		<h3>Inventory</h3>
 		<table class="table table-striped">
 			<tr>
-				<td>Unit of Measure</td>
-				<td>UoM Qty</td>
-				<td>Count Qty</td>
-				<td>Total Qty</td>
+				<th>Pack Type</th>
+				<th>Qty in Pack</th>
+				<th>Qty Found</th>
+				<th>Total Qty</th>
 			</tr>
-			<?php foreach ($itemuoms as $itemuom) : ?>
-				<tr class="uom-row">
-					<td data-uom="<?= $itemuom->uom; ?>"><?= $itemuom->uom; ?></td>
-					<td data-unitqty="<?= $itemuom->unitqty; ?>"><?= $itemuom->unitqty; ?></td>
-					<td>
-						<input type="number" class="form-control input-sm text-right uom-value" name="<?= strtolower($itemuom->uom)."-qty"; ?>" value="0">
-					</td>
-					<td class="uom-total-qty text-right">0</td>
-				</tr>
-			<?php endforeach; ?>
+			<tr class="uom-row">
+				<td>Outer</td>
+				<td data-unitqty="<?= $imitem->outerpackqty; ?>"><?= $imitem->outerpackqty; ?></td>
+				<td><input type="number" class="form-control input-sm text-right uom-value" name="outer-pack-qty" value="0"></td>
+				<td class="uom-total-qty text-right">0</td>
+			</tr>
+			<tr class="uom-row">
+				<td>Inner</td>
+				<td data-unitqty="<?= $imitem->innerpackqty; ?>"><?= $imitem->innerpackqty; ?></td>
+				<td><input type="number" class="form-control input-sm text-right uom-value" name="inner-pack-qty" value="0"></td>
+				<td class="uom-total-qty text-right">0</td>
+			</tr>
+			<tr class="uom-row">
+				<td>Each</td>
+				<td data-unitqty="1">1</td>
+				<td><input type="number" class="form-control input-sm text-right uom-value" name="each-qty" value="0"></td>
+				<td class="uom-total-qty text-right">0</td>
+			</tr>
 			<tr class="bg-info">
 				<td></td>
 				<td></td>

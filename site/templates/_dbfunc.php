@@ -4989,7 +4989,7 @@
 	function get_barcodes_distinct_uom($itemID, $debug = false) {
 		$q = (new QueryBuilder())->table('barcodes');
 		$q->where('itemid', $itemID);
-		$q->group('uom');
+		$q->group('unitqty');
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
@@ -5611,5 +5611,19 @@
 		} else {
 			$sql->execute($q->params);
 			return boolval($sql->fetchColumn());
+		}
+	}
+	
+	function get_item_im($itemid, $debug = false) {
+		$q = (new QueryBuilder())->table('itemmaster');
+		$q->where('itemid', $itemid);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'ItemMasterItem');
+			return $sql->fetch();
 		}
 	}

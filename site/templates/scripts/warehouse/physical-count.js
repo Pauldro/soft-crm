@@ -5,7 +5,7 @@ $(function() {
 	
 	$(".select-bin-form").validate({
 		submitHandler : function(form) {
-			
+			update_total_count();
 			var valid_form = new SwalError(false, '', '');
 			var valid_bin = validate_binID();
 			

@@ -40,9 +40,10 @@
 		case 'physical-count':
 			$binID = $input->$requestmethod->text('binID');
 			$itemID = $input->$requestmethod->text('itemID');
+			$imitem = ItemMasterItem::load($itemID);
 			$returnurl = new Purl\Url($input->$requestmethod->text('page'));
 			$returnurl->query->remove('scan');
-			$qty = 0;
+			$qty_total = 0;
 			
 			if (!empty($input->$requestmethod->serialnbr) | !empty($input->$requestmethod->lotnbr)) {
 				if ($input->$requestmethod->serialnbr) {
@@ -56,11 +57,14 @@
 			} else {
 				$item = InventorySearchItem::load_from_itemid(session_id(), $itemID);
 			}
-			$itemuoms = BarcodedItem::find_distinct_unitofmeasure($item->itemid);
+			$outerpacks = $input->$requestmethod->int('outer-pack-qty');
+			$innerpacks = $input->$requestmethod->int('inner-pack-qty');
 			
-			foreach ($itemuoms as $itemuom) {
-				$qty += $input->$requestmethod->int(strtolower($itemuom->uom)."-qty");
-			}
+			$qty_outerpack = $outerpacks * $imitem->outerpackqty;
+			$qty_innerpack = $innerpacks * $imitem->innerpackqty;
+			$qty_each = $input->$requestmethod->int('each-qty');
+			
+			$qty_total = $qty_outerpack + $qty_innerpack + $qty_each;
 			
 			$data = array("DBNAME=$config->dplusdbname", "ITEMTAG", "ITEMID=$item->itemid", "BIN=$binID");
 			
@@ -68,7 +72,7 @@
 				$data[] = "LOTSERIAL=$item->lotserial";
 			}
 			
-			$data[] = "QTY=$qty";
+			$data[] = "QTY=$qty_total";
 			$session->loc = $returnurl->getUrl();
 			break;
 	}
