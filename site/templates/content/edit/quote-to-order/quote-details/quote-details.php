@@ -84,7 +84,15 @@
 							<h4 class="visible-xs-block">Details</h4>
 							<?= $editquotedisplay->generate_viewdetaillink($quote, $detail); ?>
 							<?= $editquotedisplay->generate_loaddocumentslink($quote, $detail); ?>
-							<?= $editquotedisplay->generate_loaddplusnoteslink($quote, $detail->linenbr); ?>
+							<?php if ($detail->has_notes()) : ?>
+								<a href="<?= $editquotedisplay->generate_dplusnotesrequestURL($order, $detail->linenbr); ?>" class="load-notes" title="View Order Notes" data-modal="<?= $editquotedisplay->modal; ?>">
+									<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
+								</a>
+							<?php else : ?>
+								<a href="<?= $editquotedisplay->generate_dplusnotesrequestURL($order, $detail->linenbr); ?>" class="load-notes text-muted" title="View Order Notes" data-modal="<?= $editquotedisplay->modal; ?>">
+									<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
+								</a>
+							<?php endif; ?>
 						</div>
 						<div class="col-xs-6 sm-padding">
 							<h4 class="visible-xs-block">Edit</h4>

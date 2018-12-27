@@ -26,7 +26,17 @@
         </td>
         <td class="text-right"><?= intval($detail->qtybackord); ?></td>
         <td class="text-right"><?= intval($detail->qtyshipped); ?></td>
-        <td><?= $orderpanel->generate_loaddplusnoteslink($order, $detail->linenbr); ?></td>
+        <td>
+            <?php if ($detail->has_notes()) : ?>
+				<a href="<?= $orderpanel->generate_dplusnotesrequestURL($order, $detail->linenbr); ?>" class="load-notes" title="View Order Notes" data-modal="<?= $orderpanel->modal; ?>">
+					<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
+				</a>
+			<?php else : ?>
+				<a href="<?= $orderpanel->generate_dplusnotesrequestURL($order, $detail->linenbr); ?>" class="load-notes text-muted" title="View Order Notes" data-modal="<?= $orderpanel->modal; ?>">
+					<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
+				</a>
+			<?php endif; ?>
+        </td>
         <td><?= $orderpanel->generate_detailreorderform($order, $detail); ?></td>
         <td><div><?= $orderpanel->generate_loaddocumentslink($order, $detail); ?></div></td>
     </tr>

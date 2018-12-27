@@ -80,7 +80,15 @@
                             <h4 class="visible-xs-block">Details</h4>
     						<?= $editorderdisplay->generate_viewdetaillink($order, $detail); ?>
     						<?= $editorderdisplay->generate_loaddocumentslink($order, $detail); ?>
-                            <?= $editorderdisplay->generate_loaddplusnoteslink($order, $detail->linenbr); ?>
+							<?php if ($detail->has_notes()) : ?>
+								<a href="<?= $editorderdisplay->generate_dplusnotesrequestURL($order, $detail->linenbr); ?>" class="load-notes" title="View Order Notes" data-modal="<?= $editorderdisplay->modal; ?>">
+									<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
+								</a>
+							<?php else : ?>
+								<a href="<?= $editorderdisplay->generate_dplusnotesrequestURL($order, $detail->linenbr); ?>" class="load-notes text-muted" title="View Order Notes" data-modal="<?= $editorderdisplay->modal; ?>">
+									<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
+								</a>
+							<?php endif; ?>
     					</div>
     					<div class="col-xs-6 sm-padding">
                             <h4 class="visible-xs-block">Edit</h4>

@@ -79,7 +79,15 @@
 						<a href="<?= $config->pages->ajax."load/view-detail/cart/?line=".$detail->linenbr; ?>" class="h3 view-item-details detail-line-icon" data-itemid="<?= $detail->itemid; ?>" data-kit="<?= $detail->kititemflag; ?>" data-modal="#ajax-modal">
 							<i class="fa fa-info-circle"></i>
 						</a>
-						<?= $cartdisplay->generate_loaddplusnoteslink($cart, $detail->linenbr); ?>
+						<?php if ($detail->has_notes()) : ?>
+							<a href="<?= $cartdisplay->generate_dplusnotesrequestURL($cart, $detail->linenbr); ?>" class="load-notes" title="View and Create Quote Notes" data-modal="<?= $cartdisplay->modal; ?>">
+								<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
+							</a>
+						<?php else : ?>
+							<a href="<?= $cartdisplay->generate_dplusnotesrequestURL($cart, $detail->linenbr); ?>" class="load-notes text-muted" title="Create Quote Notes" data-modal="<?= $cartdisplay->modal; ?>">
+								<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
+							</a>
+						<?php endif; ?>
 					</div>
 					<div class="col-xs-6 sm-padding">
 						<h4 class="visible-xs-block">Edit</h4>

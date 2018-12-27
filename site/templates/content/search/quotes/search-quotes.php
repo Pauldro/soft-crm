@@ -63,23 +63,33 @@
             			<tr class="<?= $quote->quotnbr == $input->get->text('qnbr') ? 'selected' : ''; ?>" id="<?= $quote->quotnbr; ?>">
             				<td class="text-center">
 								<?php if ($quote->quotnbr == $input->get->text('qnbr')) : ?>
-									<a href="<?= $quotepanel->generate_closedetailsurl($quote); ?>" class="btn btn-sm btn-primary load-link" <?= $quotepanel->ajaxdata; ?>>
+									<a href="<?= $quotepanel->generate_closedetailsURL($quote); ?>" class="btn btn-sm btn-primary load-link" <?= $quotepanel->ajaxdata; ?>>
 										<i class="fa fa-minus" aria-hidden="true"></i> <span class="sr-only">Close <?= $quote->quotnbr; ?> Details</span>
 									</a>
 								<?php else : ?>
-									<a href="<?= $quotepanel->generate_loaddetailsurl($quote); ?>" class="btn btn-sm btn-primary generate-load-link" <?= $quotepanel->ajaxdata; ?>>
+									<a href="<?= $quotepanel->generate_loaddetailsURL($quote); ?>" class="btn btn-sm btn-primary generate-load-link" <?= $quotepanel->ajaxdata; ?>>
 										<i class="fa fa-plus" aria-hidden="true"></i> <span class="sr-only">Load <?= $quote->quotnbr; ?> Details</span>
 									</a>
 								<?php endif; ?>
             				</td>
             				<td><?= $quote->quotnbr; ?></td>
-            				<td><a href="<?= $quotepanel->generate_customerurl($quote); ?>"><?= $quote->custid; ?></a> <span class="glyphicon glyphicon-share" aria-hidden="true"></span><br><?= Customer::get_customernamefromid($quote->custid); ?></td>
+            				<td><a href="<?= $quotepanel->generate_customerURL($quote); ?>"><?= $quote->custid; ?></a> <span class="glyphicon glyphicon-share" aria-hidden="true"></span><br><?= Customer::get_customernamefromid($quote->custid); ?></td>
             				<td><?= $quote->shiptoid; ?></td>
             				<td><?= $quote->quotdate; ?></td>
             				<td><?= $quote->revdate; ?></td>
             				<td><?= $quote->expdate; ?></td>
             				<td class="text-right">$ <?= $quote->subtotal; ?></td>
-            				<td><?= $quotepanel->generate_loaddplusnoteslink($quote, '0'); ?></td>
+            				<td>
+								<?php if ($quote->has_notes()) : ?>
+									<a href="<?= $editquotedisplay->generate_dplusnotesrequestURL($quote, 0); ?>" class="load-notes" title="View and Create Quote Notes" data-modal="<?= $editquotedisplay->modal; ?>">
+										<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
+									</a>
+								<?php else : ?>
+									<a href="<?= $editquotedisplay->generate_dplusnotesrequestURL($quote, 0); ?>" class="load-notes text-muted" title="Create Quote Notes" data-modal="<?= $editquotedisplay->modal; ?>">
+										<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
+									</a>
+								<?php endif; ?>
+            				</td>
             				<td><?= $quotepanel->generate_editlink($quote); ?></td>
             			</tr>
 
@@ -106,7 +116,7 @@
             					<td></td>
             					<td></td>
             					<td></td>
-            					<td><a href="<?= $quotepanel->generate_closedetailsurl(); ?>" class="btn btn-sm btn-danger load-link" <?= $quotepanel->ajaxdata; ?>>Close</a></td>
+            					<td><a href="<?= $quotepanel->generate_closedetailsURL(); ?>" class="btn btn-sm btn-danger load-link" <?= $quotepanel->ajaxdata; ?>>Close</a></td>
             					<td></td>
             				</tr>
             			<?php endif; ?>

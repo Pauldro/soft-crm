@@ -16,7 +16,7 @@
 			<tr> 
 				<td>CustID</td> 
 				<td>
-					<?= $quote->custid; ?> - <a href="<?= $customer->generate_customerurl(); ?>"><?= $customer->get_customername(); ?></a> 
+					<?= $quote->custid; ?> - <a href="<?= $customer->generate_customerURL(); ?>"><?= $customer->get_customername(); ?></a> 
 					<span class="glyphicon glyphicon-share"></span>
 				</td> 
 			</tr>
@@ -107,9 +107,11 @@
 </table>
 <div class="row">
 	<div class="col-sm-6">
-		<?= $quotedisplay->generate_customershiptolink($quote); ?>
+		<?= $quotedisplay->generate_editlink($quote); ?>
 	</div>
 	<div class="col-sm-6">
-		<?= $quotedisplay->generate_editlink($quote); ?>
+		<a href="<?= $quotedisplay->generate_customershiptoURL($order); ?>" class="btn btn-block btn-primary">
+			<i class="fa fa-user" aria-hidden="true"></i> Go To Customer Page
+		</a>
 	</div>
 </div>

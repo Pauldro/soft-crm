@@ -21,19 +21,19 @@
             <thead>
                 <tr>
                     <th width="100">
-                        <a href="<?= $custindex->generate_tablesortbyurl("custid") ; ?>" class="load-link" <?= $custindex->ajaxdata; ?>>
+                        <a href="<?= $custindex->generate_sortbyURL("custid") ; ?>" class="load-link" <?= $custindex->ajaxdata; ?>>
                             CustID <?= $custindex->tablesorter->generate_sortsymbol('custid'); ?>
                         </a>
                     </th> 
                     <th>
-                        <a href="<?= $custindex->generate_tablesortbyurl("name") ; ?>" class="load-link" <?= $custindex->ajaxdata; ?>>
+                        <a href="<?= $custindex->generate_sortbyURL("name") ; ?>" class="load-link" <?= $custindex->ajaxdata; ?>>
                             Customer Name <?= $custindex->tablesorter->generate_sortsymbol('name'); ?>
                         </a>
                     </th> 
                     <th>Ship-To</th> 
                     <th>Location</th>
                     <th width="100">
-                        <a href="<?= $custindex->generate_tablesortbyurl("phone") ; ?>" class="load-link" <?= $custindex->ajaxdata; ?>>
+                        <a href="<?= $custindex->generate_sortbyURL("phone") ; ?>" class="load-link" <?= $custindex->ajaxdata; ?>>
                             Phone <?= $custindex->tablesorter->generate_sortsymbol('phone'); ?>
                         </a>
                     </th>

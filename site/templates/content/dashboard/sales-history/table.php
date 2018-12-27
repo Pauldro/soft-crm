@@ -12,20 +12,20 @@
 			<tr class="<?= $order->ordernumber == $input->get->text('ordn') ? 'selected' : ''; ?>" id="<?= $order->ordernumber; ?>">
 				<td class="text-center">
 					<?php if ($order->ordernumber == $input->get->text('ordn')) : ?>
-						<a href="<?= $orderpanel->generate_closedetailsurl($order); ?>" class="btn btn-sm btn-primary load-link" <?= $orderpanel->ajaxdata; ?>>
+						<a href="<?= $orderpanel->generate_closedetailsURL($order); ?>" class="btn btn-sm btn-primary load-link" <?= $orderpanel->ajaxdata; ?>>
 							<i class="fa fa-minus" aria-hidden="true"></i> <span class="sr-only">Close <?= $order->ordernumber; ?> Details</span>
 						</a>
 					<?php else : ?>
-						<a href="<?= $orderpanel->generate_loaddetailsurl($order); ?>" class="btn btn-sm btn-primary generate-load-link" <?= $orderpanel->ajaxdata; ?>>
+						<a href="<?= $orderpanel->generate_loaddetailsURL($order); ?>" class="btn btn-sm btn-primary generate-load-link" <?= $orderpanel->ajaxdata; ?>>
 							<i class="fa fa-plus" aria-hidden="true"></i> <span class="sr-only">Load <?= $order->ordernumber; ?> Details</span>
 						</a>
 					<?php endif; ?>
 				</td>
 				<td><?= $order->ordernumber; ?></td>
-				<td><a href="<?= $orderpanel->generate_customerurl($order); ?>"><?= $order->custid; ?></a> <span class="glyphicon glyphicon-share" aria-hidden="true"></span><br><?= Customer::get_customernamefromid($order->custid); ?></td>
+				<td><a href="<?= $orderpanel->generate_customerURL($order); ?>"><?= $order->custid; ?></a> <span class="glyphicon glyphicon-share" aria-hidden="true"></span><br><?= Customer::get_customernamefromid($order->custid); ?></td>
 				<td><?= $order->custpo; ?></td>
 				<td>
-					<a href="<?= $orderpanel->generate_customershiptourl($order); ?>"><?= $order->shiptoid; ?></a>
+					<a href="<?= $orderpanel->generate_customershiptoURL($order); ?>"><?= $order->shiptoid; ?></a>
 				</td>
 				<td class="text-right">$ <?= $page->stringerbell->format_money($order->total_order); ?></td>
 				<td class="text-right"><?= Dplus\Base\DplusDateTime::format_date($order->order_date); ?></td>
@@ -33,7 +33,17 @@
 				<td colspan="3">
 					<span class="col-xs-3"><?= $orderpanel->generate_loaddocumentslink($order); ?></span>
 					<span class="col-xs-3"><?= $orderpanel->generate_loadtrackinglink($order); ?></span>
-					<span class="col-xs-3"><?= $orderpanel->generate_loaddplusnoteslink($order, '0'); ?></span>
+					<span class="col-xs-3">
+						<?php if ($order->has_notes()) : ?>
+							<a href="<?= $orderpanel->generate_dplusnotesrequestURL($order, 0); ?>" class="load-notes" title="View Order Notes" data-modal="<?= $orderpanel->modal; ?>">
+								<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
+							</a>
+						<?php else : ?>
+							<a href="<?= $orderpanel->generate_dplusnotesrequestURL($order, 0); ?>" class="load-notes text-muted" title="View Order Notes" data-modal="<?= $orderpanel->modal; ?>">
+								<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
+							</a>
+						<?php endif; ?>
+					</span>
 				</td>
 			</tr>
 
@@ -73,7 +83,7 @@
 					<td></td>
 					<td></td>
 					<td colspan="2">
-						<div class="pull-right"> <a class="btn btn-danger btn-sm load-link" href="<?= $orderpanel->generate_closedetailsurl($order); ?>" <?= $orderpanel->ajaxdata; ?>>Close</a> </div>
+						<div class="pull-right"> <a class="btn btn-danger btn-sm load-link" href="<?= $orderpanel->generate_closedetailsURL($order); ?>" <?= $orderpanel->ajaxdata; ?>>Close</a> </div>
 					</td>
 					<td></td>
 				</tr>

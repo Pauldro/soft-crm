@@ -101,6 +101,8 @@
 		<?= $orderdisplay->generate_editlink($order); ?>
 	</div>
 	<div class="col-sm-6 form-group">
-		<?= $orderdisplay->generate_customershiptolink($order); ?>
+		<a href="<?= $orderdisplay->generate_customershiptoURL($order); ?>" class="btn btn-block btn-primary">
+			<i class="fa fa-user" aria-hidden="true"></i> Go To Customer Page
+		</a>
 	</div>
 </div>
