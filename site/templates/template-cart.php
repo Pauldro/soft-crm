@@ -11,8 +11,8 @@
         $config->scripts->append(hashtemplatefile('scripts/pages/cart.js'));
     	$config->scripts->append(hashtemplatefile('scripts/edit/edit-pricing.js'));
         
-        if ($modules->isInstalled('QtyPerCase')) {
-            $config->scripts->append(hash_modulefile('QtyPerCase/js/quick-entry.js'));
+        if ($modules->isInstalled('CaseQtyBottle')) {
+            $config->scripts->append(hash_modulefile('CaseQtyBottle/js/quick-entry.js'));
         } else {
             $config->scripts->append(hashtemplatefile('scripts/edit/quick-entry.js'));
         }

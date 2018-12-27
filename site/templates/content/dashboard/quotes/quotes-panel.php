@@ -53,8 +53,8 @@
 		</div>
 		<div class="table-responsive">
 			<?php
-				if ($modules->isInstalled('QtyPerCase')) {
-					include $config->paths->siteModules.'QtyPerCase/content/dashboard/quotes/table.php';
+				if ($modules->isInstalled('f')) {
+					include $config->paths->siteModules.'CaseQtyBottle/content/dashboard/quotes/table.php';
 				} else {
 					include $config->paths->content.'dashboard/quotes/table.php';
 				}

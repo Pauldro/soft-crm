@@ -43,8 +43,8 @@
 			</div>
 			<div id="cust-sales-history-search-div" class="<?= (empty($orderpanel->filters)) ? 'collapse' : ''; ?>">
 				<?php
-					if ($modules->isInstalled('QtyPerCase')) {
-						include $config->paths->siteModules.'QtyPerCase/content/customer/sales-history/search-form.php';
+					if ($modules->isInstalled('CaseQtyBottle')) {
+						include $config->paths->siteModules.'CaseQtyBottle/content/customer/sales-history/search-form.php';
 					} else {
 						include $config->paths->content.'customer/cust-page/sales-history/search-form.php';
 					}

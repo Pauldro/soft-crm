@@ -16,8 +16,8 @@
             $page->title = 'Order #' . $ordn;
             $emailurl->query->set('printurl', $orderdisplay->generate_sendemailurl($order));
 
-			if ($modules->isInstalled('QtyPerCase')) {
-                $page->body = $config->paths->siteModules.'QtyPerCase/content/print/sales-order.php';
+			if ($modules->isInstalled('CaseQtyBottle')) {
+                $page->body = $config->paths->siteModules.'CaseQtyBottle/content/print/sales-order.php';
             } else {
                 $page->body = $config->paths->content."print/orders/outline.php";
             }
@@ -29,8 +29,8 @@
             $page->title = 'Quote #' . $qnbr;
             $emailurl->query->set('printurl', $quotedisplay->generate_sendemailurl($quote));
             
-            if ($modules->isInstalled('QtyPerCase')) {
-                $page->body = $config->paths->siteModules.'QtyPerCase/content/print/quotes.php';
+            if ($modules->isInstalled('CaseQtyBottle')) {
+                $page->body = $config->paths->siteModules.'CaseQtyBottle/content/print/quotes.php';
             } else {
                 $page->body = $config->paths->content."print/quotes/outline.php";
             }

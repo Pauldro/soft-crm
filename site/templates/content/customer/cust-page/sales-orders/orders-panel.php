@@ -49,8 +49,8 @@
 		</div>
 		<div class="table-responsive">
 			<?php
-				if ($modules->isInstalled('QtyPerCase')) {
-					include $config->paths->siteModules.'QtyPerCase/content/customer/sales-orders/table.php';
+				if ($modules->isInstalled('CaseQtyBottle')) {
+					include $config->paths->siteModules.'CaseQtyBottle/content/customer/sales-orders/table.php';
 				} else {
 					include $config->paths->content.'customer/cust-page/sales-orders/table.php';
 				}

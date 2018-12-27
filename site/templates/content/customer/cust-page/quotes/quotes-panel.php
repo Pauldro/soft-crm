@@ -54,8 +54,8 @@
 		</div>
 		<div class="table-responsive">
 			<?php
-				if ($modules->isInstalled('QtyPerCase')) {
-					include $config->paths->siteModules.'QtyPerCase/content/customer/quotes/table.php';
+				if ($modules->isInstalled('CaseQtyBottle')) {
+					include $config->paths->siteModules.'CaseQtyBottle/content/customer/quotes/table.php';
 				} else {
 					include $config->paths->content.'customer/cust-page/quotes/table.php';
 				}

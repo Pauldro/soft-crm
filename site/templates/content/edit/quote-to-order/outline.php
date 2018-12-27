@@ -6,8 +6,8 @@
         'details' => array('href' => 'details', "id" => 'quotedetail-link', 'text' => 'Quote Details', 'tabcontent' => $config->paths->content.'edit/quote-to-order/quote-details/details-page.php')
     );
 
-    if ($modules->isInstalled('QtyPerCase')) {
-        $tabs['details']['tabcontent'] = $config->paths->siteModules.'QtyPerCase/content/edit/quote-to-order/details/details-page.php';
+    if ($modules->isInstalled('CaseQtyBottle')) {
+        $tabs['details']['tabcontent'] = $config->paths->siteModules.'CaseQtyBottle/content/edit/quote-to-order/details/details-page.php';
     }
 ?>
 <?php if (!$quote->can_edit()) : ?>
