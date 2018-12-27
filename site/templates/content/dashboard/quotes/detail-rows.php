@@ -1,3 +1,4 @@
+<?php $details = $quotepanel->get_quotedetails($quote); ?>
 <tr class="detail">
     <th colspan="2" class="text-center">Item ID</th>
     <th colspan="2">Description</th>
@@ -8,8 +9,6 @@
     <th></th>
     <th></th>
 </tr>
-
-<?php $details = $quotepanel->get_quotedetails($quote); ?>
 
 <?php foreach ($details as $detail) : ?>
     <tr class="detail">

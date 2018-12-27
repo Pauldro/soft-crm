@@ -1,3 +1,7 @@
+<?php 
+    use Dplus\Base\DplusDateTime;
+    $details = $orderpanel->get_orderdetails($order);
+?>
 <tr class="detail item-header">
     <th></th>
     <th colspan="3" class="text-center">Item ID/Description</th>
@@ -9,7 +13,6 @@
     <th>Reorder</th>
     <th>Documents</th>
 </tr>
-<?php $details = $orderpanel->get_orderdetails($order); ?>
 <?php foreach ($details as $detail) : ?>
     <tr class="detail">
         <td></td>
@@ -38,7 +41,18 @@
 			<?php endif; ?>
         </td>
         <td><?= $orderpanel->generate_detailreorderform($order, $detail); ?></td>
-        <td><div><?= $orderpanel->generate_loaddocumentslink($order, $detail); ?></div></td>
+        <td>
+            <!--  Documents Link -->
+            <?php if ($detail->has_documents()) : ?>
+                <a href="<?= $orderpanel->generate_documentsrequestURL($order, $detail); ?>" class="h3 load-sales-docs" title="View Documents" data-loadinto=".docs" data-focus=".docs" data-click="#documents-link">
+                    <i class="fa fa-file-text" aria-hidden="true"></i>
+                </a>
+            <?php else : ?>
+                <a href="#" class="h3 text-muted" title="No Documents Found">
+                    <i class="fa fa-file-text" aria-hidden="true"></i>
+                </a>
+            <?php endif; ?>
+        </td>
     </tr>
     <?php if ($input->get->text('item-document')) : ?>
         <?php if ($input->get->text('item-document') == $detail->itemid) : ?>
@@ -50,7 +64,7 @@
                         <b><a href="<?= $config->pathtofiles.$itemdoc['pathname'];; ?>" title="Click to View Document" target="_blank" ><?php echo $itemdoc['title']; ?></a></b>
                     </td>
                     <td align="right"><?= $itemdoc['createdate']; ?></td>
-                    <td align="right"><?= Dplus\Base\DplusDateTime::format_dplustime($itemdoc['createtime']) ?></td>
+                    <td align="right"><?= DplusDateTime::format_dplustime($itemdoc['createtime']) ?></td>
                 </tr>
             <?php endforeach; ?>
         <?php endif; ?>

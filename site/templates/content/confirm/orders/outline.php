@@ -98,7 +98,15 @@
 <hr>
 <div class="row">
 	<div class="col-sm-6 form-group">
-		<?= $orderdisplay->generate_editlink($order); ?>
+		<?php if ($order->can_edit()) : ?>
+			<a href="<?= $orderdisplay->generate_editURL($order); ?>" class="btn btn-block btn-warning">
+				<i class="fa fa-pencil" aria-hidden="true"></i> Edit Sales Order
+			</a>
+		<?php else :?>
+			<a href="<?= $orderdisplay->generate_editURL($order); ?>" class="btn btn-block btn-warning">
+				<i class="fa fa-eye" aria-hidden="true"></i> View Sales Order
+			</a>
+		<?php endif; ?>
 	</div>
 	<div class="col-sm-6 form-group">
 		<a href="<?= $orderdisplay->generate_customershiptoURL($order); ?>" class="btn btn-block btn-primary">

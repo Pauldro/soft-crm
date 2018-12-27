@@ -1,3 +1,7 @@
+<?php 
+	use Dplus\ProcessWire\DplusWire; 
+	$quotepanel->get_quotes();
+?>
 <table class="table table-striped table-bordered table-condensed" id="quotes-table">
 	<thead>
 		<?php include $config->paths->content.'dashboard/quotes/thead-rows.php'; ?>
@@ -9,7 +13,6 @@
 			<?php endif; ?>
 		<?php endif; ?>
 
-		<?php $quotepanel->get_quotes(); ?>
 		<?php foreach ($quotepanel->quotes as $quote) : ?>
 			<tr class="<?= $quote->quotnbr == $input->get->text('qnbr') ? 'selected' : ''; ?>" id="<?= $quote->quotnbr; ?>">
 				<td class="text-center">
@@ -41,7 +44,17 @@
 						</a>
 					<?php endif; ?>
 				</td>
-				<td><?= $quotepanel->generate_editlink($quote); ?></td>
+				<td>
+					<?php if (DplusWire::wire('user')->hasquotelocked) : ?>
+						<a href="<?= $quotepanel->generate_editURL($quote); ?>" class="edit-order h3" title="Continue Editing">
+							<i class="fa fa-wrench" aria-hidden="true"></i> 
+						</a>
+					<?php else : ?>
+						<a href="<?= $quotepanel->generate_editURL($quote); ?>" class="edit-order h3" title="Edit Quote">
+							<i class="fa fa-pencil" aria-hidden="true"></i>
+						</a>
+					<?php endif; ?>
+				</td>
 			</tr>
 
 			<?php if ($quote->quotnbr == $input->get->text('qnbr')) : ?>

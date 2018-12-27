@@ -107,7 +107,9 @@
 </table>
 <div class="row">
 	<div class="col-sm-6">
-		<?= $quotedisplay->generate_editlink($quote); ?>
+		<a href="<?= $quotedisplay->generate_editURL($quote); ?>" class="btn btn-block btn-warning">
+			<i class="fa fa-eye" aria-hidden="true"></i> Edit Quote
+		</a>
 	</div>
 	<div class="col-sm-6">
 		<a href="<?= $quotedisplay->generate_customershiptoURL($order); ?>" class="btn btn-block btn-primary">

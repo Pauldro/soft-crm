@@ -79,7 +79,19 @@
     					<div class="col-xs-6 sm-padding">
                             <h4 class="visible-xs-block">Details</h4>
     						<?= $editorderdisplay->generate_viewdetaillink($order, $detail); ?>
-    						<?= $editorderdisplay->generate_loaddocumentslink($order, $detail); ?>
+							
+							<!--  Documents Link -->
+				            <?php if ($detail->has_documents()) : ?>
+				                <a href="<?= $orderpanel->generate_documentsrequestURL($order, $detail); ?>" class="h3 load-sales-docs" title="View Documents" data-loadinto=".docs" data-focus=".docs" data-click="#documents-link">
+				                    <i class="fa fa-file-text" aria-hidden="true"></i>
+				                </a>
+				            <?php else : ?>
+				                <a href="#" class="h3 text-muted" title="No Documents Found">
+				                    <i class="fa fa-file-text" aria-hidden="true"></i>
+				                </a>
+				            <?php endif; ?>
+							
+							<!--  Notes Link -->
 							<?php if ($detail->has_notes()) : ?>
 								<a href="<?= $editorderdisplay->generate_dplusnotesrequestURL($order, $detail->linenbr); ?>" class="load-notes" title="View Order Notes" data-modal="<?= $editorderdisplay->modal; ?>">
 									<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
