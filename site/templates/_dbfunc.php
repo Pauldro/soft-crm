@@ -3709,26 +3709,28 @@
 	function search_items($query, $custID, $limit, $page, $debug = false) {
 		$search = QueryBuilder::generate_searchkeyword($query);
 		$q = (new QueryBuilder())->table('itemsearch');
-
+		$q->where('itemstatus', '!=', 'I');
+		$matchexpression = $q->expr("MATCH(itemid, refitemid, desc1, desc2) AGAINST ([] IN BOOLEAN MODE)", ["'*$query*'"]);
+		
 		if (empty($custID)) {
 			$q->where('origintype', ['I', 'V', 'L']);
-			$q->where(
-				$q
-				->orExpr()
-				->where($q->expr("UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]))
-				->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]))
-			);
+			if (!empty($query)) {
+				$q->where($matchexpression);
+			}
 		} else {
 			$q->where('origintype', ['I', 'V', 'L', 'C']);
-			$q->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]));
+			if (!empty($query)) {
+				$q->where($matchexpression);
+			}
 		}
-		$q->where('itemstatus', '!=', 'I');
-		$q->order($q->expr("itemid LIKE UCASE([]) DESC", [$search]));
+		if (!empty($query)) {
+			$q->order($q->expr("itemid <> UCASE([])", [$query]));
+		}
 		$q->group('itemid');
 		$q->limit($limit, $q->generate_offset($page, $limit));
 
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
+		
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3742,20 +3744,21 @@
 		$search = QueryBuilder::generate_searchkeyword($query);
 		$q = (new QueryBuilder())->table('itemsearch');
 		$q->field('COUNT(DISTINCT(itemid))');
-
+		$q->where('itemstatus', '!=', 'I');
+		$matchexpression = $q->expr("MATCH(itemid, refitemid, desc1, desc2) AGAINST ([] IN BOOLEAN MODE)", ["'*$query*'"]);
+		
 		if (empty($custID)) {
 			$q->where('origintype', ['I', 'V', 'L']);
-			$q->where(
-				$q
-				->orExpr()
-				->where($q->expr("UCASE(CONCAT(itemid, ' ', originid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]))
-				->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]))
-			);
+			if (!empty($query)) {
+				$q->where($matchexpression);
+			}
 		} else {
 			$q->where('origintype', ['I', 'V', 'L', 'C']);
-			$q->where($q->expr("UCASE(CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2))"), 'like', $q->expr("UCASE([])",[$search]));
+			if (!empty($query)) {
+				$q->where($matchexpression));
+			}
 		}
-		$q->where('itemstatus', '!=', 'I');
+		
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
