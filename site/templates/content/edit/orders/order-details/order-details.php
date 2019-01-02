@@ -78,11 +78,9 @@
     				<div class="row">
     					<div class="col-xs-6 sm-padding">
                             <h4 class="visible-xs-block">Details</h4>
-    						<?= $editorderdisplay->generate_viewdetaillink($order, $detail); ?>
-							
 							<!--  Documents Link -->
 				            <?php if ($detail->has_documents()) : ?>
-				                <a href="<?= $orderpanel->generate_documentsrequestURL($order, $detail); ?>" class="h3 load-sales-docs" title="View Documents" data-loadinto=".docs" data-focus=".docs" data-click="#documents-link">
+				                <a href="<?= $orderpanel->generate_request_documentsURL($order, $detail); ?>" class="h3 load-sales-docs" title="View Documents" data-loadinto=".docs" data-focus=".docs" data-click="#documents-link">
 				                    <i class="fa fa-file-text" aria-hidden="true"></i>
 				                </a>
 				            <?php else : ?>
@@ -93,11 +91,11 @@
 							
 							<!--  Notes Link -->
 							<?php if ($detail->has_notes()) : ?>
-								<a href="<?= $editorderdisplay->generate_dplusnotesrequestURL($order, $detail->linenbr); ?>" class="load-notes" title="View Order Notes" data-modal="<?= $editorderdisplay->modal; ?>">
+								<a href="<?= $editorderdisplay->generate_request_dplusnotesURL($order, $detail->linenbr); ?>" class="load-notes" title="View Order Notes" data-modal="<?= $editorderdisplay->modal; ?>">
 									<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
 								</a>
 							<?php else : ?>
-								<a href="<?= $editorderdisplay->generate_dplusnotesrequestURL($order, $detail->linenbr); ?>" class="load-notes text-muted" title="View Order Notes" data-modal="<?= $editorderdisplay->modal; ?>">
+								<a href="<?= $editorderdisplay->generate_request_dplusnotesURL($order, $detail->linenbr); ?>" class="load-notes text-muted" title="View Order Notes" data-modal="<?= $editorderdisplay->modal; ?>">
 									<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
 								</a>
 							<?php endif; ?>
@@ -110,7 +108,7 @@
 								</button>
 							<?php endif; ?>
 							<?php if ($order->can_edit()) : ?>
-								<a href="<?= $editorderdisplay->generate_detailviewediturl($order, $detail); ?>" class="btn btn-sm btn-warning update-line" aria-label="Edit Detail Line" data-kit="<?= $detail->kititemflag; ?>" data-itemid="<?= $detail->itemid; ?>" data-custid="<?= $order->custid; ?>">
+								<a href="<?= $editorderdisplay->generate_vieweditdetailURL($order, $detail); ?>" class="btn btn-sm btn-warning update-line" aria-label="Edit Detail Line" data-kit="<?= $detail->kititemflag; ?>" data-itemid="<?= $detail->itemid; ?>" data-custid="<?= $order->custid; ?>">
 									<i class="fa fa-pencil" aria-hidden="true"></i>
 								</a>
 								<a href="<?= $editorderdisplay->generate_deletedetailurl($order, $detail); ?>" class="btn btn-sm btn-danger" title="Delete Line">

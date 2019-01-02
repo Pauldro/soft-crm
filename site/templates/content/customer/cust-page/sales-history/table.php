@@ -23,7 +23,7 @@
 							<i class="fa fa-minus" aria-hidden="true"></i> <span class="sr-only">Close <?= $order->ordernumber; ?> Details</span>
 						</a>
 					<?php else : ?>
-						<a href="<?= $orderpanel->generate_loaddetailsURL($order); ?>" class="btn btn-sm btn-primary generate-load-link" <?= $orderpanel->ajaxdata; ?>>
+						<a href="<?= $orderpanel->generate_request_detailsURL($order); ?>" class="btn btn-sm btn-primary generate-load-link" <?= $orderpanel->ajaxdata; ?>>
 							<i class="fa fa-plus" aria-hidden="true"></i> <span class="sr-only">Load <?= $order->ordernumber; ?> Details</span>
 						</a>
 					<?php endif; ?>
@@ -41,7 +41,7 @@
 					<span class="col-xs-3">
 						<!--  Documents Link -->
 			            <?php if ($order->has_documents()) : ?>
-			                <a href="<?= $orderpanel->generate_documentsrequestURL($order); ?>" class="h3 load-sales-docs" title="View Documents" data-loadinto=".docs" data-focus=".docs" data-click="#documents-link">
+			                <a href="<?= $orderpanel->generate_request_documentsURL($order); ?>" class="h3 load-sales-docs" title="View Documents" data-loadinto=".docs" data-focus=".docs" data-click="#documents-link">
 			                    <i class="fa fa-file-text" aria-hidden="true"></i>
 			                </a>
 			            <?php else : ?>
@@ -54,11 +54,11 @@
 					<span class="col-xs-3">
 						<!--  Notes Link -->
 						<?php if ($order->has_notes()) : ?>
-							<a href="<?= $orderpanel->generate_dplusnotesrequestURL($order, 0); ?>" class="load-notes" title="View and Create Order Notes" data-modal="<?= $quotepanel->modal; ?>">
+							<a href="<?= $orderpanel->generate_request_dplusnotesURL($order, 0); ?>" class="load-notes" title="View and Create Order Notes" data-modal="<?= $quotepanel->modal; ?>">
 								<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
 							</a>
 						<?php else : ?>
-							<a href="<?= $orderpanel->generate_dplusnotesrequestURL($order, 0); ?>" class="load-notes text-muted" title="Create Order Notes" data-modal="<?= $quotepanel->modal; ?>">
+							<a href="<?= $orderpanel->generate_request_dplusnotesURL($order, 0); ?>" class="load-notes text-muted" title="Create Order Notes" data-modal="<?= $quotepanel->modal; ?>">
 								<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
 							</a>
 						<?php endif; ?>
@@ -89,10 +89,14 @@
 
 				<tr class="detail last-detail">
 					<td colspan="2">
-						<?= $orderpanel->generate_viewprintlink($order); ?>
+						<a href="<?= $orderpanel->generate_printURL($order); ?>" target="_blank">
+							<span class="h4"><i class="fa fa-print" aria-hidden="true"></i></span> View Printable Order
+						</a>
 					</td>
 					<td colspan="3">
-						<?= $orderpanel->generate_viewlinkeduseractionslink($order); ?>
+						<a href="<?= $orderpanel->generate_linkeduseractionsURL($order); ?>" class="load-into-modal" data-modal="<?= $orderpanel->modal; ?>">
+							<span class="h4"><i class="fa fa-check-square-o" aria-hidden="true"></i></span> View Associated Actions
+						</a>
 					</td>
 					<td>
 						<a class="btn btn-primary btn-sm" onClick="reorder('<?= $order->ordernumber; ?>')">

@@ -80,11 +80,11 @@
 							<i class="fa fa-info-circle"></i>
 						</a>
 						<?php if ($detail->has_notes()) : ?>
-							<a href="<?= $cartdisplay->generate_dplusnotesrequestURL($cart, $detail->linenbr); ?>" class="load-notes" title="View and Create Quote Notes" data-modal="<?= $cartdisplay->modal; ?>">
+							<a href="<?= $cartdisplay->generate_request_dplusnotesURL($cart, $detail->linenbr); ?>" class="load-notes" title="View and Create Quote Notes" data-modal="<?= $cartdisplay->modal; ?>">
 								<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
 							</a>
 						<?php else : ?>
-							<a href="<?= $cartdisplay->generate_dplusnotesrequestURL($cart, $detail->linenbr); ?>" class="load-notes text-muted" title="Create Quote Notes" data-modal="<?= $cartdisplay->modal; ?>">
+							<a href="<?= $cartdisplay->generate_request_dplusnotesURL($cart, $detail->linenbr); ?>" class="load-notes text-muted" title="Create Quote Notes" data-modal="<?= $cartdisplay->modal; ?>">
 								<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
 							</a>
 						<?php endif; ?>
@@ -94,7 +94,11 @@
 						<button type="submit" name="button" class="btn btn-sm btn-info detail-line-icon" title="Save Changes">
 							<span class="fa fa-floppy-o"></span> <span class="sr-only">Save Line</span>
 						</button>
-						<?= $cartdisplay->generate_detailvieweditlink($cart, $detail); ?>
+						<a href="<?= $cartdisplay->generate_vieweditdetailURL($cart, $detail); ?>" class="update-line" data-kit="<?= $detail->kititemflag; ?>" data-itemid="<?= $detail->itemid; ?>" data-custid="<?= $cart->custid; ?>" aria-label="View Detail Line">
+							<button class="btn btn-sm btn-warning detail-line-icon">
+								<span class="fa fa-pencil"></span>
+							</button>
+						</a>
 						<a href="<?= $cartdisplay->generate_detaildeleteurl($cart, $detail); ?>" class="btn btn-sm btn-danger detail-line-icon">
 							<span class="glyphicon glyphicon-trash"></span>
 						</a>

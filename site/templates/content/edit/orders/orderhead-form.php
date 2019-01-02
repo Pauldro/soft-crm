@@ -24,15 +24,19 @@
     </div>
     <div class="row">
 		<div class="col-sm-6">
-			<?php if (!$user->loginid == SalesOrder::get_orderlockuser($ordn)) : ?>
+			<?php if ($user->loginid == SalesOrder::get_orderlockuser($ordn)) : ?>
         		<button type="submit" class="btn btn-success btn-block text-center"><span class="glyphicon glyphicon-floppy-disk"></span> Save Changes</button>
 			<?php endif; ?>
 		</div>
     </div>
 	<hr>
-	<?php if (!$user->loginid == SalesOrder::get_orderlockuser($ordn)) : ?>
-		<?= $editorderdisplay->generate_confirmationlink($order); ?>
+	<?php if ($user->loginid != SalesOrder::get_orderlockuser($order->ordernumber)) : ?>
+		<a href="<?= $editorderdisplay->generate_unlockurl($order); ?>" class="btn btn-block btn-success">
+			<span class="fa fa-arrow-right" aria-hidden="true"></span> Finished With Order
+		</a>
 	<?php else : ?>
-		<?= $editorderdisplay->generate_saveunlocklink($order); ?>
+		<a href="<?= $editorderdisplay->generate_unlockurl($order); ?>" class="btn btn-block btn-emerald save-unlock-order" data-form="#orderhead-form">
+			<span class="fa fa-unlock" aria-hidden="true"></span> Save and Exit
+		</a>
 	<?php endif; ?>
 </form>
