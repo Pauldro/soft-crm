@@ -3031,28 +3031,47 @@
 	}
 
 	function search_vendorspaged($limit = 10, $page = 1, $keyword, $debug) {
+		$q = (new QueryBuilder())->table('vendors');
 		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
-		$limiting = returnlimitstatement($limit, $page);
-		$search = '%'.str_replace(' ', '%',$keyword).'%';
-		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM vendors WHERE UCASE(CONCAT(vendid, ' ', shipfrom, ' ', name, ' ', address1, ' ', address2, ' ', address3, ' ', city, ' ', state, ' ', zip, ' ', country, ' ', phone, ' ', fax, ' ', email)) LIKE UCASE(:search) $limiting");
-		$switching = array(':search' => $search); $withquotes = array(true);
+		$search = QueryBuilder::generate_searchkeyword($keyword);
+
+		$matchexpression = $q->expr("MATCH(vendid, shipfrom, name, address1, address2, address3, city, state, zip, country, phone, fax, email) AGAINST ([] IN BOOLEAN MODE)", ["'*$keyword*'"]);
+
+		if (!empty($keyword)) {
+			$q->where($matchexpression);
+		}
+
+		$q->limit($limit, $q->generate_offset($page, $limit));
+
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
 
 	function count_searchvendors($keyword, $debug) {
+		$q = (new QueryBuilder())->table('vendors');
 		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
-		$search = '%'.str_replace(' ', '%',$keyword).'%';
-		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT COUNT(*) FROM vendors WHERE UCASE(CONCAT(vendid, ' ', shipfrom, ' ', name, ' ', address1, ' ', address2, ' ', address3, ' ', city, ' ', state, ' ', zip, ' ', country, ' ', phone, ' ', fax, ' ', email)) LIKE UCASE(:search)");
-		$switching = array(':search' => $search); $withquotes = array(true);
+		$search = QueryBuilder::generate_searchkeyword($keyword);
+
+		$matchexpression = $q->expr("MATCH(vendid, shipfrom, name, address1, address2, address3, city, state, zip, country, phone, fax, email) AGAINST ([] IN BOOLEAN MODE)", ["'*$keyword*'"]);
+
+		$q->field($q->expr('COUNT(*)'));
+
+		if (!empty($query)) {
+			$q->where($matchexpression);
+		}
+
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
