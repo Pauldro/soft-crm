@@ -3706,7 +3706,17 @@
 	/* =============================================================
 		ITEM MASTER FUNCTIONS
 	============================================================ */
-	function search_items($query, $custID, $limit, $page, $debug = false) {
+	/**
+	 * Returns an array of items that match the search query and with the customer ID if provided
+	 * // NOTE This uses full text index to do the searching on, make sure that is created
+	 * @param  string $query  Search Query
+	 * @param  string $custID Customer ID
+	 * @param  int    $limit  How many results to return
+	 * @param  int    $page   Oage of results to start on
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return array          Items that match the search query
+	 */
+	function search_items($query, $custID = '', $limit, $page, $debug = false) {
 		$search = QueryBuilder::generate_searchkeyword($query);
 		$q = (new QueryBuilder())->table('itemsearch');
 		$q->where('itemstatus', '!=', 'I');
@@ -3739,7 +3749,15 @@
 			return $sql->fetchAll();
 		}
 	}
-
+	
+	/**
+	 * Returns the numberof items that match the search query and with the customer ID if provided
+	 * // NOTE This uses full text index to do the searching on, make sure that is created
+	 * @param  string $query  Search Query
+	 * @param  string $custID Customer ID
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return int          Search Item Count
+	 */
 	function count_searchitems($query, $custID, $debug = false) {
 		$search = QueryBuilder::generate_searchkeyword($query);
 		$q = (new QueryBuilder())->table('itemsearch');
@@ -3755,17 +3773,16 @@
 		} else {
 			$q->where('origintype', ['I', 'V', 'L', 'C']);
 			if (!empty($query)) {
-				$q->where($matchexpression));
+				$q->where($matchexpression);
 			}
 		}
-		
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			return $sql->fetchColumn();
+			return intval($sql->fetchColumn());
 		}
 	}
 
