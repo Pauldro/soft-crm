@@ -831,7 +831,7 @@
 		$user = LogmUser::load($loginID);
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
 
-		$search = '%'.str_replace(' ', '%', str_replace('-', '', addslashes($keyword))).'%';
+		$search = QueryBuilder::generate_searchkeyword($keyword);
 		$q = (new QueryBuilder())->table('custindex');
 
 		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep'] && DplusWire::wire('pages')->get('/config/')->restrict_allowedcustomers) {
@@ -840,9 +840,13 @@
 			$permquery->where('loginid', [$loginID, $SHARED_ACCOUNTS]);
 			$q->where('(custid, shiptoid)','in', $permquery);
 		}
-		$fieldstring = implode(", ' ', ", array_keys(Contact::generate_classarray()));
 
-		$q->where($q->expr("UCASE(REPLACE(CONCAT($fieldstring), '-', '')) LIKE UCASE([])", [$search]));
+		$matchexpression = $q->expr("MATCH(custid, shiptoid, name, addr1, addr2, city, state, zip, phone, cellphone, contact, email, typecode, faxnbr, title) AGAINST ([] IN BOOLEAN MODE)", ["'*$keyword*'"]);
+
+		if (!empty($keyword)) {
+			$q->where($matchexpression);
+		}
+
 		$q->limit($limit, $q->generate_offset($page, $limit));
 
 		if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
@@ -865,8 +869,6 @@
 			}
 		}
 
-
-
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
@@ -877,6 +879,7 @@
 			return $sql->fetchAll();
 		}
 	}
+
 
 	/**
 	 * Returns the Number of custindex records that match the search
@@ -890,33 +893,31 @@
 		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
 		$user = LogmUser::load($loginID);
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
-		$search = QueryBuilder::generate_searchkeyword($query);
-		$groupedcustindexquery = (new QueryBuilder())->table('custindex')->group('custid, shiptoid');
+		$q = (new QueryBuilder())->table('custindex');
 
-		$q = new QueryBuilder();
-		$q->field($q->expr('COUNT(*)'));
+		$matchexpression = $q->expr("MATCH(custid, shiptoid, name, addr1, addr2, city, state, zip, phone, cellphone, contact, email, typecode, faxnbr, title) AGAINST ([] IN BOOLEAN MODE)", ["'*$query*'"]);
 
 		// CHECK if Users has restrictions by Application Config, then User permissions
 		if ($user->get_dplusrole() == DplusWire::wire('config')->roles['sales-rep'] && DplusWire::wire('pages')->get('/config/')->restrict_allowedcustomers) {
 			$custpermquery = (new QueryBuilder())->table('custperm')->field('custid, shiptoid')->where('loginid', [$loginID, $SHARED_ACCOUNTS]);
 
 			if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
-				$q->table($groupedcustindexquery, 'custgrouped');
+				$q->field($q->expr('COUNT(DISTINCT(CONCAT(custid, shiptoid)))'));
 			} else {
-				$q->table('custindex');
+				$q->field($q->expr('COUNT(*)'));
 			}
-
 			$q->where('(custid, shiptoid)','in', $custpermquery);
 		} else {
 			if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
-				$q->table($groupedcustindexquery, 'custgrouped');
+				$q->field($q->expr('COUNT(DISTINCT(CONCAT(custid, shiptoid)))'));
 			} else {
-				$q->table('custindex');
+				$q->field($q->expr('COUNT(*)'));
 			}
 		}
-		$fieldstring = implode(", ' ', ", array_keys(Contact::generate_classarray()));
 
-		$q->where($q->expr("UCASE(REPLACE(CONCAT($fieldstring), '-', '')) LIKE UCASE([])", [$search]));
+		if (!empty($query)) {
+			$q->where($matchexpression);
+		}
 
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
@@ -3030,28 +3031,47 @@
 	}
 
 	function search_vendorspaged($limit = 10, $page = 1, $keyword, $debug) {
+		$q = (new QueryBuilder())->table('vendors');
 		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
-		$limiting = returnlimitstatement($limit, $page);
-		$search = '%'.str_replace(' ', '%',$keyword).'%';
-		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT * FROM vendors WHERE UCASE(CONCAT(vendid, ' ', shipfrom, ' ', name, ' ', address1, ' ', address2, ' ', address3, ' ', city, ' ', state, ' ', zip, ' ', country, ' ', phone, ' ', fax, ' ', email)) LIKE UCASE(:search) $limiting");
-		$switching = array(':search' => $search); $withquotes = array(true);
+		$search = QueryBuilder::generate_searchkeyword($keyword);
+
+		$matchexpression = $q->expr("MATCH(vendid, shipfrom, name, address1, address2, address3, city, state, zip, country, phone, fax, email) AGAINST ([] IN BOOLEAN MODE)", ["'*$keyword*'"]);
+
+		if (!empty($keyword)) {
+			$q->where($matchexpression);
+		}
+
+		$q->limit($limit, $q->generate_offset($page, $limit));
+
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
 
 	function count_searchvendors($keyword, $debug) {
+		$q = (new QueryBuilder())->table('vendors');
 		$SHARED_ACCOUNTS = Processwire\wire('config')->sharedaccounts;
-		$search = '%'.str_replace(' ', '%',$keyword).'%';
-		$sql = DplusWire::wire('dplusdatabase')->prepare("SELECT COUNT(*) FROM vendors WHERE UCASE(CONCAT(vendid, ' ', shipfrom, ' ', name, ' ', address1, ' ', address2, ' ', address3, ' ', city, ' ', state, ' ', zip, ' ', country, ' ', phone, ' ', fax, ' ', email)) LIKE UCASE(:search)");
-		$switching = array(':search' => $search); $withquotes = array(true);
+		$search = QueryBuilder::generate_searchkeyword($keyword);
+
+		$matchexpression = $q->expr("MATCH(vendid, shipfrom, name, address1, address2, address3, city, state, zip, country, phone, fax, email) AGAINST ([] IN BOOLEAN MODE)", ["'*$keyword*'"]);
+
+		$q->field($q->expr('COUNT(*)'));
+
+		if (!empty($query)) {
+			$q->where($matchexpression);
+		}
+
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
 		if ($debug) {
-			return returnsqlquery($sql->queryString, $switching, $withquotes);
+			return $q->generate_sqlquery($q->params);
 		} else {
-			$sql->execute($switching);
+			$sql->execute($q->params);
 			return $sql->fetchAll(PDO::FETCH_ASSOC);
 		}
 	}
@@ -3721,7 +3741,7 @@
 		$q = (new QueryBuilder())->table('itemsearch');
 		$q->where('itemstatus', '!=', 'I');
 		$matchexpression = $q->expr("MATCH(itemid, refitemid, desc1, desc2) AGAINST ([] IN BOOLEAN MODE)", ["'*$query*'"]);
-		
+
 		if (empty($custID)) {
 			$q->where('origintype', ['I', 'V', 'L']);
 			if (!empty($query)) {
@@ -3740,7 +3760,7 @@
 		$q->limit($limit, $q->generate_offset($page, $limit));
 
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -3749,7 +3769,7 @@
 			return $sql->fetchAll();
 		}
 	}
-	
+
 	/**
 	 * Returns the numberof items that match the search query and with the customer ID if provided
 	 * // NOTE This uses full text index to do the searching on, make sure that is created
@@ -3764,7 +3784,7 @@
 		$q->field('COUNT(DISTINCT(itemid))');
 		$q->where('itemstatus', '!=', 'I');
 		$matchexpression = $q->expr("MATCH(itemid, refitemid, desc1, desc2) AGAINST ([] IN BOOLEAN MODE)", ["'*$query*'"]);
-		
+
 		if (empty($custID)) {
 			$q->where('origintype', ['I', 'V', 'L']);
 			if (!empty($query)) {
@@ -4999,7 +5019,7 @@
 			return $sql->fetchAll();
 		}
 	}
-	
+
 	/**
 	 * Returns distinct (unit of measure) barcoded Items for that Item ID
 	 * @param  string $itemID Item ID
@@ -5247,7 +5267,7 @@
 		$q->field($q->expr('COUNT(*)'));
 		$q->where('sessionid', $sessionID);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -5255,7 +5275,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	/**
 	 * Returns the Number of Results for this session
 	 * @param  string $sessionID Session Identifier
@@ -5267,7 +5287,7 @@
 		$q->field($q->expr('COUNT(DISTINCT(CONCAT(itemid, xorigin)))'));
 		$q->where('sessionid', $sessionID);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -5275,7 +5295,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	/**
 	 * Returns the Number of Results for this session and item id
 	 * // NOTE COUNTING THE DISTINCT XREF ITEMID solves an issue where
@@ -5291,12 +5311,12 @@
 		$q->field($q->expr('COUNT(DISTINCT(xitemid))'));
 		$q->where('sessionid', $sessionID);
 		$q->where('itemid', $itemID);
-		
+
 		if (!empty($binID)) {
 			$q->where('bin', $binID);
 		}
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -5304,7 +5324,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	/**
 	 * Returns the Number of results for this session and Lot Number / Serial Number
 	 * // NOTE COUNTING THE DISTINCT XREF ITEMID solves an issue where
@@ -5320,12 +5340,12 @@
 		$q->field($q->expr('COUNT(DISTINCT(xitemid))'));
 		$q->where('sessionid', $sessionID);
 		$q->where('lotserial', $lotserial);
-		
+
 		if (!empty($binID)) {
 			$q->where('bin', $binID);
 		}
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -5333,7 +5353,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	/**
 	 * Returns an array of InventorySearchItem of invsearch results
 	 * @param  string $sessionID Session Identifier
@@ -5344,7 +5364,7 @@
 		$q = (new QueryBuilder())->table('invsearch');
 		$q->where('sessionid', $sessionID);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -5353,7 +5373,7 @@
 			return $sql->fetchAll();
 		}
 	}
-	
+
 	/**
 	 * Returns an array of InventorySearchItem of invsearch results
 	 * @param  string $sessionID Session Identifier
@@ -5365,7 +5385,7 @@
 		$q->where('sessionid', $sessionID);
 		$q->group('itemid, xorigin');
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -5374,19 +5394,19 @@
 			return $sql->fetchAll();
 		}
 	}
-	
+
 	/**
 	 * Returns the first item found in invsearch table
 	 * @param  string $sessionID Session Identifier
 	 * @param  bool   $debug     Run in debug? If so, return SQL Query
-	 * @return InventorySearchItem           
+	 * @return InventorySearchItem
 	 */
 	function get_firstinvsearchitem($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('invsearch');
 		$q->where('sessionid', $sessionID);
 		$q->limit(1);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -5395,7 +5415,7 @@
 			return $sql->fetch();
 		}
 	}
-	
+
 	/**
 	 * Returns the first item found in invsearch table with the provided itemid
 	 * @param  string $sessionID Session Identifier
@@ -5408,13 +5428,13 @@
 		$q = (new QueryBuilder())->table('invsearch');
 		$q->where('sessionid', $sessionID);
 		$q->where('itemid', $itemID);
-		
+
 		if (!empty($binID)) {
 			$q->where('bin', $binID);
 		}
 		$q->limit(1);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -5423,7 +5443,7 @@
 			return $sql->fetch();
 		}
 	}
-	
+
 	/**
 	 * Returns the first item found in invsearch table with the provided lotserial number
 	 * @param  string $sessionID Session Identifier
@@ -5438,7 +5458,7 @@
 		$q->where('lotserial', $lotserial);
 		$q->limit(1);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -5447,7 +5467,7 @@
 			return $sql->fetch();
 		}
 	}
-	
+
 	/**
 	 * Returns an array of bins that this item ID is found in
 	 * @param  string $sessionID Session Identifier
@@ -5460,14 +5480,14 @@
 		$q = (new QueryBuilder())->table('bininfo');
 		$q->where('sessionid', $sessionID);
 		$q->where('itemid', $itemID);
-		
+
 		if (!$item->is_lotted()) {
 			$q->field('*');
 			$q->field($q->expr('SUM(qty) AS qty'));
 			$q->group('bin');
-		} 
+		}
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -5476,7 +5496,7 @@
 			return $sql->fetchAll();
 		}
 	}
-	
+
 	/**
 	 * Returns an array of bins that this lotserial is found in
 	 * @param  string $sessionID  Session Identifier
@@ -5489,7 +5509,7 @@
 		$q->where('sessionid', $sessionID);
 		$q->where('lotserial', $lotserial);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -5498,7 +5518,7 @@
 			return $sql->fetchAll();
 		}
 	}
-	
+
 	/**
 	 * Returns qty for an item in its bin
 	 * @param  string              $sessionID  Session Identifier
@@ -5511,14 +5531,14 @@
 		$q->field('qty');
 		$q->where('sessionid', $sessionID);
 		$q->where('itemid', $item->itemid);
-		
+
 		if ($item->is_lotted() || $item->is_serialized()) {
 			$q->where('lotserial', $item->lotserial);
 		}
 		$q->where('bin', $item->bin);
 
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -5526,7 +5546,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	/**
 	 * Returns WhseConfig Record
 	 * @param  string $whseID Warehouse ID
@@ -5538,7 +5558,7 @@
 		$q->where('whseid', $whseID);
 		$q->limit(1);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -5547,19 +5567,19 @@
 			return $sql->fetch();
 		}
 	}
-	
+
 	/**
 	 * Returns the WhseBin for the range
 	 * @param  string $whseID Warehouse ID
 	 * @param  bool   $debug  Run in debug? If so, return SQL Query
-	 * @return WhseBin        
+	 * @return WhseBin
 	 */
 	function get_bnctl_range($whseID, $debug = false) {
 		$q = (new QueryBuilder())->table('bincntl');
 		$q->where('warehouse', $whseID);
 		$q->limit(1);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -5568,7 +5588,7 @@
 			return $sql->fetch();
 		}
 	}
-	
+
 	/**
 	 * Returns the WhseBins for the range
 	 * @param  string $whseID Warehouse ID
@@ -5579,7 +5599,7 @@
 		$q = (new QueryBuilder())->table('bincntl');
 		$q->where('warehouse', $whseID);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -5588,7 +5608,7 @@
 			return $sql->fetchAll();
 		}
 	}
-	
+
 	/**
 	 * Returns if $binID is a correct bin ID according to the range rules
 	 * @param  string $whseID Warehouse ID
@@ -5602,7 +5622,7 @@
 		$q->where('warehouse', $whseID);
 		$q->where($q->expr("[] BETWEEN binfrom AND binthru", [$binID]));
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -5611,7 +5631,7 @@
 			return boolval($sql->fetchColumn());
 		}
 	}
-	
+
 	/**
 	 * Returns if $binID is an existing bin in the bin list
 	 * @param  string $whseID Warehouse ID
@@ -5625,7 +5645,7 @@
 		$q->where('warehouse', $whseID);
 		$q->where('binfrom', $binID);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-		
+
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
@@ -5633,7 +5653,7 @@
 			return boolval($sql->fetchColumn());
 		}
 	}
-	
+
 	function get_item_im($itemid, $debug = false) {
 		$q = (new QueryBuilder())->table('itemmaster');
 		$q->where('itemid', $itemid);

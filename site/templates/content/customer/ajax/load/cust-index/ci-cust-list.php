@@ -1,13 +1,15 @@
 <?php
+    use Dplus\Content\Paginator;
+    use Dplus\Dpluso\Customer\CustomerIndex;
+
     $pageurl = $page->fullURL;
     $pageurl->path = ($input->get->q) ? $pageurl->path : $config->pages->ajaxload."customers/cust-index/";
     $pageurl->query->set('function', 'ci');
-    $custindex = new Dplus\Dpluso\Customer\CustomerIndex($pageurl, '#cust-index-search-form', '#cust-index-search-form');
+    $custindex = new CustomerIndex($pageurl, '#cust-index-search-form', '#cust-index-search-form');
     $custindex->set_pagenbr($input->pageNum);
     $resultscount = $custindex->count_searchcustindex($input->get->text('q'));
-    $paginator = new Dplus\Content\Paginator($custindex->pagenbr, $resultscount, $custindex->pageurl, 'cust-index', $custindex->ajaxdata);
+    $paginator = new Paginator($custindex->pagenbr, $resultscount, $custindex->pageurl, 'cust-index', $custindex->ajaxdata);
 ?>
-
 <div id="cust-results">
     <?php if ($appconfig->allow_customeradd) : ?>
         <div class="form-group">
@@ -24,13 +26,13 @@
                         <a href="<?= $custindex->generate_sortbyURL("custid") ; ?>" class="load-link" <?= $custindex->ajaxdata; ?>>
                             CustID <?= $custindex->tablesorter->generate_sortsymbol('custid'); ?>
                         </a>
-                    </th> 
+                    </th>
                     <th>
                         <a href="<?= $custindex->generate_sortbyURL("name") ; ?>" class="load-link" <?= $custindex->ajaxdata; ?>>
                             Customer Name <?= $custindex->tablesorter->generate_sortsymbol('name'); ?>
                         </a>
-                    </th> 
-                    <th>Ship-To</th> 
+                    </th>
+                    <th>Ship-To</th>
                     <th>Location</th>
                     <th width="100">
                         <a href="<?= $custindex->generate_sortbyURL("phone") ; ?>" class="load-link" <?= $custindex->ajaxdata; ?>>

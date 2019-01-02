@@ -3,7 +3,7 @@
         $vendresults = search_vendorspaged($config->showonpage, $input->pageNum, $input->get->text('q'),  false);
         $resultscount = count_searchvendors($input->get->text('q'), false);
     }
-    
+
     $vendlink = new \Purl\Url($page->fullURL);
     $vendlink->path = $config->pages->vendor.'redir/';
     $vendlink->query = '';
@@ -25,19 +25,19 @@
                         <tr>
                             <td>
                                 <a href="<?= $vendlink; ?>">
-                                    <?= $page->stringerbell->highlight($vend['vendid'], $input->get->text('q'));?>
+                                    <?= $page->bootstrap->highlight($vend['vendid'], $input->get->text('q'));?>
                                 </a> &nbsp; <span class="glyphicon glyphicon-share"></span>
                             </td>
-                            <td><?= $page->stringerbell->highlight($vend['name'], $input->get->q); ?></td>
-                            <td><?= $page->stringerbell->highlight($vend['shipfrom'], $input->get->q); ?></td>
+                            <td><?= $page->bootstrap->highlight($vend['name'], $input->get->q); ?></td>
+                            <td><?= $page->bootstrap->highlight($vend['shipfrom'], $input->get->q); ?></td>
                             <td>
-                                <?= $page->stringerbell->highlight($vend['address1'], $input->get->q); ?>
-                                <?= $page->stringerbell->highlight($vend['address2'], $input->get->q); ?>
+                                <?= $page->bootstrap->highlight($vend['address1'], $input->get->q); ?>
+                                <?= $page->bootstrap->highlight($vend['address2'], $input->get->q); ?>
                             </td>
-                            <td><?= $page->stringerbell->highlight($vend['city'], $input->get->q); ?></td>
-                            <td><?= $page->stringerbell->highlight($vend['state'], $input->get->q); ?></td>
-                            <td><?= $page->stringerbell->highlight($vend['zip'], $input->get->q); ?></td>
-                            <td><a href="tel:<?= $vend['phone']; ?>" title="Click To Call"><?= $page->stringerbell->highlight($vend['phone'], $input->get->q); ?></a></td>
+                            <td><?= $page->bootstrap->highlight($vend['city'], $input->get->q); ?></td>
+                            <td><?= $page->bootstrap->highlight($vend['state'], $input->get->q); ?></td>
+                            <td><?= $page->bootstrap->highlight($vend['zip'], $input->get->q); ?></td>
+                            <td><a href="tel:<?= $vend['phone']; ?>" title="Click To Call"><?= $page->bootstrap->highlight($vend['phone'], $input->get->q); ?></a></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else : ?>
