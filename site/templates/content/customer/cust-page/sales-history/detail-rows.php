@@ -17,7 +17,9 @@
 	<tr class="detail">
 		<td></td>
 		<td colspan="3">
-			<?= $orderpanel->generate_detailvieweditlink($order, $detail); ?>
+			<a href="<?= $orderpanel->generate_vieweditdetailURL($order, $detail); ?>" class="update-line" data-kit="<?= $detail->kititemflag; ?>" data-itemid="<?= $detail->itemid; ?>" data-custid="<?= $order->custid; ?>" aria-label="View Detail Line">
+				<?= $detail->itemid; ?>
+			</a>
             <?= strlen($detail->vendoritemid) ? "($detail->vendoritemid)" : ''; ?> <br>
             <?= $detail->desc1. ' ' . $detail->desc2 ; ?>
 		</td>
@@ -31,11 +33,11 @@
 		<td class="text-right"><?= intval($detail->qtyshipped); ?></td>
 		<td>
 			<?php if ($detail->has_notes()) : ?>
-				<a href="<?= $orderpanel->generate_dplusnotesrequestURL($order, $detail->linenbr); ?>" class="load-notes" title="View and Create Order Notes" data-modal="<?= $quotepanel->modal; ?>">
+				<a href="<?= $orderpanel->generate_request_dplusnotesURL($order, $detail->linenbr); ?>" class="load-notes" title="View and Create Order Notes" data-modal="<?= $quotepanel->modal; ?>">
 					<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
 				</a>
 			<?php else : ?>
-				<a href="<?= $orderpanel->generate_dplusnotesrequestURL($order, $detail->linenbr); ?>" class="load-notes text-muted" title="Create Order Notes" data-modal="<?= $quotepanel->modal; ?>">
+				<a href="<?= $orderpanel->generate_request_dplusnotesURL($order, $detail->linenbr); ?>" class="load-notes text-muted" title="Create Order Notes" data-modal="<?= $quotepanel->modal; ?>">
 					<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
 				</a>
 			<?php endif; ?>
@@ -44,7 +46,7 @@
 		<td>
 			<!--  Documents Link -->
             <?php if ($detail->has_documents()) : ?>
-                <a href="<?= $orderpanel->generate_documentsrequestURL($order, $detail); ?>" class="h3 load-sales-docs" title="View Documents" data-loadinto=".docs" data-focus=".docs" data-click="#documents-link">
+                <a href="<?= $orderpanel->generate_request_documentsURL($order, $detail); ?>" class="h3 load-sales-docs" title="View Documents" data-loadinto=".docs" data-focus=".docs" data-click="#documents-link">
                     <i class="fa fa-file-text" aria-hidden="true"></i>
                 </a>
             <?php else : ?>

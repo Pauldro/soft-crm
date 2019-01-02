@@ -82,23 +82,34 @@
 					<div class="row">
 						<div class="col-xs-6 sm-padding">
 							<h4 class="visible-xs-block">Details</h4>
-							<?= $editquotedisplay->generate_viewdetaillink($quote, $detail); ?>
+							<!-- Edit Detail Link --> 
+							<a href="<?= $editquotedisplay->generate_vieweditdetailURL($quote, $detail); ?>" class="update-line" data-kit="<?= $detail->kititemflag; ?>" data-itemid="<?= $detail->itemid; ?>" data-custid="<?= $quote->custid; ?>" aria-label="Edit Detail Line">
+								<button class="btn btn-sm btn-warning detail-line-icon">
+									<span class="fa fa-pencil"></span>
+								</button>
+							</a>
+							<!-- Dplus Notes Link --> 
 							<?php if ($detail->has_notes()) : ?>
-								<a href="<?= $editquotedisplay->generate_dplusnotesrequestURL($order, $detail->linenbr); ?>" class="load-notes" title="View Order Notes" data-modal="<?= $editquotedisplay->modal; ?>">
+								<a href="<?= $editquotedisplay->generate_request_dplusnotesURL($order, $detail->linenbr); ?>" class="load-notes" title="View Order Notes" data-modal="<?= $editquotedisplay->modal; ?>">
 									<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
 								</a>
 							<?php else : ?>
-								<a href="<?= $editquotedisplay->generate_dplusnotesrequestURL($order, $detail->linenbr); ?>" class="load-notes text-muted" title="View Order Notes" data-modal="<?= $editquotedisplay->modal; ?>">
+								<a href="<?= $editquotedisplay->generate_request_dplusnotesURL($order, $detail->linenbr); ?>" class="load-notes text-muted" title="View Order Notes" data-modal="<?= $editquotedisplay->modal; ?>">
 									<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
 								</a>
 							<?php endif; ?>
 						</div>
 						<div class="col-xs-6 sm-padding">
 							<h4 class="visible-xs-block">Edit</h4>
-								<button type="submit" name="button" class="btn btn-sm btn-info detail-line-icon" title="Save Changes">
-									<span class="fa fa-floppy-o"></span> <span class="sr-only">Save Line</span>
+							<button type="submit" name="button" class="btn btn-sm btn-info detail-line-icon" title="Save Changes">
+								<span class="fa fa-floppy-o"></span> <span class="sr-only">Save Line</span>
+							</button>
+							<!-- Edit Detail Link --> 
+							<a href="<?= $editquotedisplay->generate_vieweditdetailURL($quote, $detail); ?>" class="update-line" data-kit="<?= $detail->kititemflag; ?>" data-itemid="<?= $detail->itemid; ?>" data-custid="<?= $quote->custid; ?>" aria-label="Edit Detail Line">
+								<button class="btn btn-sm btn-warning detail-line-icon">
+									<span class="fa fa-pencil"></span>
 								</button>
-	                        <?= $editquotedisplay->generate_detailvieweditlink($quote, $detail); ?>
+							</a>
 	                        <?= $editquotedisplay->generate_deletedetaillink($quote, $detail); ?>
 						</div>
 					</div>
