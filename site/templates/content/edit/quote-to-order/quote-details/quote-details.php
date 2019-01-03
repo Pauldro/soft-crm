@@ -82,7 +82,7 @@
 					<div class="row">
 						<div class="col-xs-6 sm-padding">
 							<h4 class="visible-xs-block">Details</h4>
-							<!-- Edit Detail Link --> 
+							<!-- View Detail Link --> 
 							<a href="<?= $editquotedisplay->generate_vieweditdetailURL($quote, $detail); ?>" class="update-line" data-kit="<?= $detail->kititemflag; ?>" data-itemid="<?= $detail->itemid; ?>" data-custid="<?= $quote->custid; ?>" aria-label="Edit Detail Line">
 								<button class="btn btn-sm btn-warning detail-line-icon">
 									<span class="fa fa-pencil"></span>
@@ -101,6 +101,7 @@
 						</div>
 						<div class="col-xs-6 sm-padding">
 							<h4 class="visible-xs-block">Edit</h4>
+							<!-- Save Detail Button --> 
 							<button type="submit" name="button" class="btn btn-sm btn-info detail-line-icon" title="Save Changes">
 								<span class="fa fa-floppy-o"></span> <span class="sr-only">Save Line</span>
 							</button>
@@ -110,7 +111,10 @@
 									<span class="fa fa-pencil"></span>
 								</button>
 							</a>
-	                        <?= $editquotedisplay->generate_deletedetaillink($quote, $detail); ?>
+							<!-- Remove Detail Link --> 
+							<a href="<?= $editquotedisplay->generate_removedetailURL($quote, $detail); ?>" class="btn btn-sm btn-danger" aria-label="Delete Line" title="Delete Line">
+								<span class="fa fa-trash-o"></span>
+							</a>
 						</div>
 					</div>
 				</div>

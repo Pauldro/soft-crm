@@ -22,8 +22,16 @@
 			</a>
 		<?php endif; ?>
 		
-
-		<?= $editorderdisplay->generate_loadtrackinglink($order); ?>
+		<!--  Order Tracking Link -->
+		<?php if ($order->has_tracking()) : ?>
+			<a href="<?= $orderpanel->generate_request_trackingURL($order); ?>" class="btn btn-primary btn btn-primary load-sales-tracking" title="Load Tracking" data-loadinto=".tracking" data-focus=".tracking" data-click="#tracking-tab-link">
+				<i class="fa fa-plane hover" style="top: 3px; padding-right: 5px; font-size: 130%;" aria-hidden="true"></i> Tracking
+			</a>
+		<?php else : ?>
+			<a href="#" class="btn btn-default" title="No Tracking Available">
+				<i class="fa fa-plane hover" style="top: 3px; padding-right: 5px; font-size: 130%;" aria-hidden="true"></i> No Tracking Available
+			</a>
+		<?php endif; ?>
 	</div>
 </div>
 <div class="text-center form-group hidden-sm hidden-md hidden-lg">
@@ -47,6 +55,14 @@
 				<i class="fa fa-file-text" aria-hidden="true"></i>
 			</a>
 		<?php endif; ?>
-		<?= $editorderdisplay->generate_loadtrackinglink($order); ?>
+		<?php if ($order->has_tracking()) : ?>
+			<a href="<?= $orderpanel->generate_request_trackingURL($order); ?>" class="btn btn-primary btn btn-primary load-sales-tracking" title="Load Tracking" data-loadinto=".tracking" data-focus=".tracking" data-click="#tracking-tab-link">
+				<i class="fa fa-plane hover" style="top: 3px; padding-right: 5px; font-size: 130%;" aria-hidden="true"></i> Tracking
+			</a>
+		<?php else : ?>
+			<a href="#" class="btn btn-default" title="No Tracking Available">
+				<i class="fa fa-plane hover" style="top: 3px; padding-right: 5px; font-size: 130%;" aria-hidden="true"></i> No Tracking Available
+			</a>
+		<?php endif; ?>
 	</div>
 </div>

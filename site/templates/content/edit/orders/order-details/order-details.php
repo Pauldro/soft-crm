@@ -102,19 +102,23 @@
     					</div>
     					<div class="col-xs-6 sm-padding">
                             <h4 class="visible-xs-block">Edit</h4>
+							<!--  Save Button -->
 							<?php if ($order->can_edit()) : ?>
 								<button type="submit" name="button" class="btn btn-sm btn-info detail-line-icon" title="Save Changes">
 									<span class="fa fa-floppy-o"></span> <span class="sr-only">Save Line</span>
 								</button>
 							<?php endif; ?>
 							<?php if ($order->can_edit()) : ?>
+								<!--  Edit Link -->
 								<a href="<?= $editorderdisplay->generate_vieweditdetailURL($order, $detail); ?>" class="btn btn-sm btn-warning update-line" aria-label="Edit Detail Line" data-kit="<?= $detail->kititemflag; ?>" data-itemid="<?= $detail->itemid; ?>" data-custid="<?= $order->custid; ?>">
 									<i class="fa fa-pencil" aria-hidden="true"></i>
 								</a>
-								<a href="<?= $editorderdisplay->generate_deletedetailurl($order, $detail); ?>" class="btn btn-sm btn-danger" title="Delete Line">
+								<!--  Delete Line Link -->
+								<a href="<?= $editorderdisplay->generate_removedetailURL($order, $detail); ?>" class="btn btn-sm btn-danger" title="Delete Line">
 									<i class="fa fa-trash" aria-hidden="true"></i> <span class="sr-only">Delete Line</span>
 								</a>
 							<?php else : ?>
+								<!--  View Details Link -->
 								<a href="<?= $editorderdisplay->generate_detailviewediturl($order, $detail); ?>" class="btn btn-sm btn-default update-line" aria-label="View Detail Line" data-kit="<?= $detail->kititemflag; ?>" data-itemid="<?= $detail->itemid; ?>" data-custid="<?= $order->custid; ?>">
 									<i class="fa fa-eye" aria-hidden="true"></i>
 								</a>

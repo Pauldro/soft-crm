@@ -31,11 +31,11 @@
     </div>
 	<hr>
 	<?php if ($user->loginid != SalesOrder::get_orderlockuser($order->ordernumber)) : ?>
-		<a href="<?= $editorderdisplay->generate_unlockurl($order); ?>" class="btn btn-block btn-success">
+		<a href="<?= $editorderdisplay->generate_unlockURL($order); ?>" class="btn btn-block btn-success">
 			<span class="fa fa-arrow-right" aria-hidden="true"></span> Finished With Order
 		</a>
 	<?php else : ?>
-		<a href="<?= $editorderdisplay->generate_unlockurl($order); ?>" class="btn btn-block btn-emerald save-unlock-order" data-form="#orderhead-form">
+		<a href="<?= $editorderdisplay->generate_unlockURL($order); ?>" class="btn btn-block btn-emerald save-unlock-order" data-form="#orderhead-form">
 			<span class="fa fa-unlock" aria-hidden="true"></span> Save and Exit
 		</a>
 	<?php endif; ?>
