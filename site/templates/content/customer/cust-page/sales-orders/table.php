@@ -39,9 +39,9 @@
                     <span class="col-xs-3">
 						<!--  Documents Link -->
 						<?php if ($order->has_documents()) : ?>
-							<a href="<?= $orderpanel->generate_request_documentsURL($order); ?>" class="h3 load-sales-docs" title="View Documents" data-loadinto=".docs" data-focus=".docs" data-click="#documents-link">
-								<i class="fa fa-file-text" aria-hidden="true"></i> Show Documents
-							</a>
+							<a href="<?= $orderpanel->generate_request_documentsURL($order); ?>" class="h3 generate-load-link" title="View Documents" data-loadinto="#orders-panel" data-focus="#orders-panel">
+			                    <i class="fa fa-file-text" aria-hidden="true"></i>
+			                </a>
 						<?php else : ?>
 							<a href="#" class="h3 text-muted" title="No Documents Found">
 								<i class="fa fa-file-text" aria-hidden="true"></i> No Documents Found

@@ -41,7 +41,7 @@
 					<span class="col-xs-3">
 						<!--  Documents Link -->
 			            <?php if ($order->has_documents()) : ?>
-			                <a href="<?= $orderpanel->generate_request_documentsURL($order); ?>" class="h3 load-sales-docs" title="View Documents" data-loadinto=".docs" data-focus=".docs" data-click="#documents-link">
+			                <a href="<?= $orderpanel->generate_request_documentsURL($order); ?>" class="h3 generate-load-link" title="View Documents" data-loadinto="#orders-panel" data-focus="#orders-panel">
 			                    <i class="fa fa-file-text" aria-hidden="true"></i>
 			                </a>
 			            <?php else : ?>
@@ -53,7 +53,7 @@
 					<span class="col-xs-3"><?= $orderpanel->generate_loadtrackinglink($order); ?></span>
 					<span class="col-xs-3">
 						<?php if ($order->has_notes()) : ?>
-							<a href="<?= $orderpanel->generate_request_dplusnotesURL($order, $detail->linenbr); ?>" class="load-notes" title="View Order Notes" data-modal="<?= $orderpanel->modal; ?>">
+							<a href="<?= $orderpanel->generate_request_dplusnotesURL($order); ?>" class="load-notes" title="View Order Notes" data-modal="<?= $orderpanel->modal; ?>">
 								<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
 							</a>
 						<?php else : ?>

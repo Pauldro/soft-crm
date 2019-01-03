@@ -1,7 +1,7 @@
 <?php $customer = Customer::load($quote->custid, $quote->shiptoid); ?>
 <div class="form-group hidden-print">
 	<a href="<?= $quotedisplay->generate_printURL($quote); ?>" target="_blank">
-		<i class="fa fa-print" aria-hidden="true"></i> View Printable Quote
+		<span class="h3"><i class="fa fa-print" aria-hidden="true"></i></span> View Printable Quote
 	</a>
 </div>
 <div class="row">

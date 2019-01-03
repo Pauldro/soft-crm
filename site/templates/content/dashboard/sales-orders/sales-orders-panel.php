@@ -41,7 +41,7 @@
 					<button class="btn btn-primary toggle-order-search pull-right" type="button" data-toggle="collapse" data-target="#orders-search-div" aria-expanded="false" aria-controls="orders-search-div">Toggle Search <i class="fa fa-search" aria-hidden="true"></i></button>
 				</div>
 			</div>
-			<div id="orders-search-div" class="<?= (empty($orderpanel->filters)) ? 'collapse' : ''; ?>">
+			<div id="orders-search-div" class="<?= (empty($input->get->filter)) ? 'collapse' : ''; ?>">
 				<?php include $config->paths->content.'dashboard/sales-orders/search-form.php'; ?>
 			</div>
 		</div>
