@@ -18,20 +18,20 @@ https://github.com/processwire/processwire/blob/master/README.md
 DPluso is a PHP based browser front-end for Distribution Plus.
 Starting off as a tool for Salesreps, The software allows them to handle many aspects of their Day to Day
 
-1. CRM 
+1. CRM
    We give the user the ability to Manage their Customers view sales data about their customer and
 review Quotes and Sales Orders. The User can also make notes and tasks regarding that customer.
 User can also run reports, some which are formattable, that give them further insight into their customer such as sales history,
 standing orders, open invoices etc.
 
 2. Ordering
-   Users can also create orders and quotes for their customers. They can add items to a cart and then decide if the items 
+   Users can also create orders and quotes for their customers. They can add items to a cart and then decide if the items
 need to be saved a quote or proceed with a sales order. The user can also can edit existing sales orders and quotes if they have permissions.
 
 3. Item Info
    Users can also can gain insight on the items they sell, run some formattable reports. They can view stock info, view sales history, view what lots the items is contained in.
-   
-   
+
+
 4. Vendor Info
 
 
@@ -56,6 +56,13 @@ and log in to the Processwire, click on Setup -> Export. Name it dpluso, get a z
     * Follow the steps use cptecomm login as the database credentials, name the database dpluso
     * For the admin link use manage, and the color scheme warm
     * For the admin credentials use the rcapsys login
+
+## MYSQL Fulltext Search Index
+* [MySQL documentation](https://dev.mysql.com/doc/refman/5.5/en/fulltext-fine-tuning.html)
+* Add the following to the MySQL configuration file
+```
+ft_min_word_len=2
+```
 
 ## Issues
 * Issues can be reported in our [github](https://github.com/cptechinc/soft-crm/issues)
