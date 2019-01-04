@@ -46,7 +46,7 @@
 		<td>
 			<!--  Documents Link -->
             <?php if ($detail->has_documents()) : ?>
-                <a href="<?= $orderpanel->generate_request_documentsURL($order, $detail); ?>" class="h3 load-sales-docs" title="View Documents" data-loadinto=".docs" data-focus=".docs" data-click="#documents-link">
+                <a href="<?= $orderpanel->generate_request_documentsURL($order, $detail); ?>" class="h3 generate-load-link" title="View Documents" data-loadinto="#cust-sales-history-panel" data-focus="#cust-sales-history-panel">
                     <i class="fa fa-file-text" aria-hidden="true"></i>
                 </a>
             <?php else : ?>

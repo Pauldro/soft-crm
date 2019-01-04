@@ -1,6 +1,6 @@
 <div class="form-group hidden-print">
 	<a href="<?= $orderdisplay->generate_printURL($order); ?>" target="_blank">
-		<i class="fa fa-print" aria-hidden="true"></i> View Printable Order
+		<span class="h3"><i class="fa fa-print" aria-hidden="true"></i></span> View Printable Order
 	</a>
 </div>
 <div class="row">

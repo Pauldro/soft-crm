@@ -30,7 +30,7 @@
     </div>
     <hr>
     <?php if (!$quote->can_edit()) : ?>
-		<a href="<?= $editquotedisplay->generate_unlockurl($quote); ?>" class="btn btn-block btn-success">
+		<a href="<?= $editquotedisplay->generate_unlockURL($quote); ?>" class="btn btn-block btn-success">
 			<i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Finished with quote
 		</a>
     <?php else : ?>

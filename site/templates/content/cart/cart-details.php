@@ -99,7 +99,7 @@
 								<span class="fa fa-pencil"></span>
 							</button>
 						</a>
-						<a href="<?= $cartdisplay->generate_detaildeleteurl($cart, $detail); ?>" class="btn btn-sm btn-danger detail-line-icon">
+						<a href="<?= $cartdisplay->generate_removedetailURL($cart, $detail); ?>" class="btn btn-sm btn-danger detail-line-icon">
 							<span class="glyphicon glyphicon-trash"></span>
 						</a>
 					</div>
