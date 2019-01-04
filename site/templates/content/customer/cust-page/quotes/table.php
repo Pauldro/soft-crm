@@ -1,4 +1,4 @@
-<?php 
+<?php
 	use Dplus\ProcessWire\DplusWire;
 	$quotepanel->get_quotes();
 ?>
@@ -35,14 +35,14 @@
 				<td>
 					<!-- Notes Link -->
 					<?php if ($quote->has_notes()) : ?>
-						<?= $title = ($quote->can_edit()) ? "View and Create Quote Notes" : "View Quote Notes"; ?>
+						<?php $title = ($quote->can_edit()) ? "View and Create Quote Notes" : "View Quote Notes"; ?>
 						<a href="<?= $quotepanel->generate_request_dplusnotesURL($quote, 0); ?>" class="load-notes" title="<?= $title; ?>" data-modal="<?= $quotepanel->modal; ?>">
-							<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i> <?= $title; ?>
+							<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
 						</a>
 					<?php else : ?>
-						<?= $title = ($quote->can_edit()) ? "Create Quote Notes" : "View Quote Notes"; ?>
+						<?php $title = ($quote->can_edit()) ? "Create Quote Notes" : "View Quote Notes"; ?>
 						<a href="<?= $quotepanel->generate_request_dplusnotesURL($quote, 0); ?>" class="load-notes text-muted" title="<?= $title; ?>" data-modal="<?= $quotepanel->modal; ?>">
-							<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i> <?= $title; ?>
+							<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
 						</a>
 					<?php endif; ?>
 				</td>
@@ -50,7 +50,7 @@
 					<!-- Edit Link -->
 					<?php if (DplusWire::wire('user')->hasquotelocked) : ?>
 						<a href="<?= $quotepanel->generate_editURL($quote); ?>" class="edit-order h3" title="Continue Editing">
-							<i class="fa fa-wrench" aria-hidden="true"></i> 
+							<i class="fa fa-wrench" aria-hidden="true"></i>
 						</a>
 					<?php else : ?>
 						<a href="<?= $quotepanel->generate_editURL($quote); ?>" class="edit-order h3" title="Edit Quote">
