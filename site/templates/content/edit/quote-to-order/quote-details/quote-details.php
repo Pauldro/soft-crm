@@ -83,18 +83,16 @@
 						<div class="col-xs-6 sm-padding">
 							<h4 class="visible-xs-block">Details</h4>
 							<!-- View Detail Link --> 
-							<a href="<?= $editquotedisplay->generate_vieweditdetailURL($quote, $detail); ?>" class="update-line" data-kit="<?= $detail->kititemflag; ?>" data-itemid="<?= $detail->itemid; ?>" data-custid="<?= $quote->custid; ?>" aria-label="Edit Detail Line">
-								<button class="btn btn-sm btn-warning detail-line-icon">
-									<span class="fa fa-pencil"></span>
-								</button>
+							<a href="<?= $editquotedisplay->generate_viewdetailURL($quote, $detail); ?>" class="h3 view-item-details detail-line-icon" data-itemid="<?= $detail->itemid; ?>" data-kit="<?= $detail->kititemflag; ?>" data-modal="<?= $editquotedisplay->modal; ?>">
+								<i class="fa fa-info-circle" aria-hidden="true"></i>
 							</a>
 							<!-- Dplus Notes Link --> 
 							<?php if ($detail->has_notes()) : ?>
-								<a href="<?= $editquotedisplay->generate_request_dplusnotesURL($order, $detail->linenbr); ?>" class="load-notes" title="View Order Notes" data-modal="<?= $editquotedisplay->modal; ?>">
+								<a href="<?= $editquotedisplay->generate_request_dplusnotesURL($quote, $detail->linenbr); ?>" class="load-notes" title="View Order Notes" data-modal="<?= $editquotedisplay->modal; ?>">
 									<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
 								</a>
 							<?php else : ?>
-								<a href="<?= $editquotedisplay->generate_request_dplusnotesURL($order, $detail->linenbr); ?>" class="load-notes text-muted" title="View Order Notes" data-modal="<?= $editquotedisplay->modal; ?>">
+								<a href="<?= $editquotedisplay->generate_request_dplusnotesURL($quote, $detail->linenbr); ?>" class="load-notes text-muted" title="View Order Notes" data-modal="<?= $editquotedisplay->modal; ?>">
 									<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
 								</a>
 							<?php endif; ?>
