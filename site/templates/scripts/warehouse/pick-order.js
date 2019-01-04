@@ -3,7 +3,6 @@ $(function() {
         e.preventDefault();
         var form = $(this);
         form.postform({}, function() {
-            console.log(config.urls.warehouse.json.session);
             $.getJSON(config.urls.warehouse.json.session, function(json) {
                 if (json.response.session.promptfunction.toUpperCase() == 'Y') {
                     swal({
@@ -40,7 +39,25 @@ $(function() {
         e.preventDefault();
         var button = $(this);
         
-        if (pickitem.item.qty.remaining > 0) {
+        if (pickitem.item.qty.expected < pickitem.item.qty.picked) { 
+            swal({
+                title: 'Bin Error',
+                text: "You have picked more than expected bin qty",
+                type: 'warning',
+                confirmButtonClass: 'btn btn-success',
+                buttonsStyling: false,
+                confirmButtonText: 'Continue'
+            });
+        } else if (pickitem.item.qty.remaining < 0) {
+            swal({
+                title: 'Are you sure?',
+                text: "You have picked too much",
+                type: 'warning',
+                confirmButtonClass: 'btn btn-success',
+                buttonsStyling: false,
+                confirmButtonText: 'Continue'
+            });
+        } else if (pickitem.item.qty.remaining > 0) {
             swal({
                 title: 'Are you sure?',
                 text: "You have not met the Quantity Requirments",
@@ -55,24 +72,6 @@ $(function() {
                     window.location.href = button.attr('href');
                 }
             }).catch(swal.noop);
-        } else if (pickitem.item.qty.remaining < 0) {
-            swal({
-                title: 'Are you sure?',
-                text: "You have picked too much",
-                type: 'warning',
-                confirmButtonClass: 'btn btn-success',
-                buttonsStyling: false,
-                confirmButtonText: 'Continue'
-            });
-        } else if (pickitem.item.qty.expected < pickitem.item.qty.picked) { 
-            swal({
-                title: 'Bin Error',
-                text: "You have picked more than expected bin qty",
-                type: 'warning',
-                confirmButtonClass: 'btn btn-success',
-                buttonsStyling: false,
-                confirmButtonText: 'Continue'
-            });
         } else {
             window.location.href = button.attr('href');
         }
@@ -125,7 +124,7 @@ $(function() {
     
     $("body").on("click", ".remove-sales-order-locks", function(e) {
         e.preventDefault();
-
+        
         swal({
 			title: "Enter the Order Number you'd like to erase locks for",
 			text: "Order Number",
