@@ -42,7 +42,7 @@
 					</button>
 				 </div>
 			</div>
-			<div id="sales-history-search-div" class="<?= (!empty($orderpanel->filters)) ? 'collapse' : ''; ?>">
+			<div id="sales-history-search-div" class="<?= (empty($orderpanel->filters) || empty($input->get->filter)) ? 'collapse' : ''; ?>">
 				<?php include $config->paths->content.'dashboard/sales-history/search-form.php'; ?>
 			</div>
 		  </div>

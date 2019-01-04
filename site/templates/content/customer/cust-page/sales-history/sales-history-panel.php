@@ -41,7 +41,7 @@
 					<button class="btn btn-primary toggle-order-search pull-right" type="button" data-toggle="collapse" data-target="#cust-sales-history-search-div" aria-expanded="false" aria-controls="sales-history-search-div">Toggle Search <i class="fa fa-search" aria-hidden="true"></i></button>
 				</div>
 			</div>
-			<div id="cust-sales-history-search-div" class="<?= (empty($orderpanel->filters)) ? 'collapse' : ''; ?>">
+			<div id="cust-sales-history-search-div" class="<?= (empty($orderpanel->filters) || empty($input->get->filter)) ? 'collapse' : ''; ?>">
 				<?php
 					if ($modules->isInstalled('CaseQtyBottle')) {
 						include $config->paths->siteModules.'CaseQtyBottle/content/customer/sales-history/search-form.php';

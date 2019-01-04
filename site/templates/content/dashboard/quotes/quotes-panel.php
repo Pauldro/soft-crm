@@ -47,13 +47,13 @@
 					<button class="btn btn-primary toggle-order-search pull-right" type="button" data-toggle="collapse" data-target="#quotes-search-div" aria-expanded="false" aria-controls="orders-search-div">Toggle Search <i class="fa fa-search" aria-hidden="true"></i></button>
 				</div>
 			</div>
-			<div id="quotes-search-div" class="<?= (empty($quotepanel->filters)) ? 'collapse' : ''; ?>">
+			<div id="quotes-search-div" class="<?= (empty($orderpanel->filters) || empty($input->get->filter)) ? 'collapse' : ''; ?>">
 				<?php include $config->paths->content.'dashboard/quotes/search-form.php'; ?>
 			</div>
 		</div>
 		<div class="table-responsive">
 			<?php
-				if ($modules->isInstalled('f')) {
+				if ($modules->isInstalled('CaseQtyBottle')) {
 					include $config->paths->siteModules.'CaseQtyBottle/content/dashboard/quotes/table.php';
 				} else {
 					include $config->paths->content.'dashboard/quotes/table.php';
