@@ -175,6 +175,13 @@
 			$custID = Quote::find_custid(session_id(), $qnbr, false);
 			$data = array('DBNAME' => $config->dplusdbname, 'EDITQUOTE' => false, 'QUOTENO' => $qnbr);
 			$session->loc= $config->pages->editquote."?qnbr=".$qnbr;
+			if ($input->get->quoteorigin) {
+				$session->panelorigin = 'quotes';
+				$session->paneloriginpage = $input->get->text('quoteorigin');
+				if ($input->get->custID) {
+					$session->panelcustomer = $input->get->text('custID');
+				}
+			}
 			break;
 		case 'edit-new-quote':
 			$qnbr = get_createdordn(session_id());
