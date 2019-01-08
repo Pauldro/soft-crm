@@ -114,7 +114,7 @@
 </div>
 <?php if ($session->panelorigin == 'orders') :  ?>
 	<?php $url = $session->panelcustomer ? $orderdisplay->generate_customershiptoURL($order) : $config->pages->dashboard; ?>
-	<a href="<?= $url; ?>" class="btn btn-block btn-default">
-		<span class="fa fa-unlock" aria-hidden="true"></span> Back to Panel
+	<a href="<?= $url; ?>" class="btn btn-block btn-info">
+		<span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Back to Panel
 	</a>
 <?php endif; ?>

@@ -7,9 +7,10 @@
 	$quotepanel->set('activeID', !empty($input->get->qnbr) ? $input->get->text('qnbr') : false);
 	$quotepanel->generate_filter($input);
 	$quotepanel->get_quotecount();
-	if ($session->panelorigin = 'quotes' && !$session->panelcustomer) {
+
+	if ($session->panelorigin == 'quotes' && !$session->panelcustomer) {
 		$url = new Purl\Url($session->paneloriginpage);
-		$quotepanel->set('pagenbr', Paginator::generate_pagenbr($url));
+		// $quotepanel->set('pagenbr', Paginator::generate_pagenbr($url));
 		$session->remove('panelorigin');
 	}
 

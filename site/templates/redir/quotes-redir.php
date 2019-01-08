@@ -30,6 +30,8 @@
 	$linkaddon = $sortaddon . $filteraddon;
 	$session->{'from-redirect'} = $page->url;
 	$session->remove('quote-search');
+	$session->remove('panelorigin');
+	$session->remove('paneloriginpage');
 	$session->filters = $filteraddon;
 	$filename = session_id();
 

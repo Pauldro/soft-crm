@@ -9,9 +9,9 @@
 	$quotepanel->generate_filter($input);
 	$quotepanel->get_quotecount();
 
-	if ($session->panelorigin = 'quotes' && $session->panelcustomer == $quotepanel->custID;) {
+	if ($session->panelorigin == 'quotes' && $session->panelcustomer == $quotepanel->custID;) {
 		$url = new Purl\Url($session->paneloriginpage);
-		$quotepanel->set('pagenbr', Paginator::generate_pagenbr($url));
+		// $quotepanel->set('pagenbr', Paginator::generate_pagenbr($url));
 		$session->remove('panelorigin');
 	}
 

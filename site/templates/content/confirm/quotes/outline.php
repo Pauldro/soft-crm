@@ -118,7 +118,7 @@
 </br>
 <?php if ($session->panelorigin == 'quotes') :  ?>
 	<?php $url = $session->panelcustomer ? $quotedisplay->generate_customershiptoURL($quote) : $config->pages->dashboard; ?>
-	<a href="<?= $url; ?>" class="btn btn-block btn-default">
-		<span class="fa fa-unlock" aria-hidden="true"></span> Back to Panel
+	<a href="<?= $url; ?>" class="btn btn-block btn-info">
+		<span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Back to Panel
 	</a>
 <?php endif; ?>

@@ -7,7 +7,9 @@
 	$orderpanel->set('activeID', !empty($input->get->ordn) ? $input->get->text('ordn') : false);
 	$orderpanel->generate_filter($input);
 	$orderpanel->get_ordercount();
-	if ($session->panelorigin = 'orders' && !$session->panelcustomer) {
+
+
+	if ($session->panelorigin == 'orders' && !$session->panelcustomer) {
 		$url = new Purl\Url($session->paneloriginpage);
 		$orderpanel->set('pagenbr', Paginator::generate_pagenbr($url));
 		$session->remove('panelorigin');
