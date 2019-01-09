@@ -57,5 +57,4 @@
         $page->body = __DIR__."/select-bin-form.php";
     }
     
-    
     include $config->paths->content."common/include-toolbar-page.php";
