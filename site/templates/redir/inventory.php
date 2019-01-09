@@ -32,9 +32,11 @@
 	switch ($action) {
 		case 'inventory-search':
 			$q = $input->$requestmethod->text('scan');
+			$binID = $input->$requestmethod->text('binID');
 			$data = array("DBNAME=$config->dplusdbname", 'INVSEARCH', "QUERY=$q");
 			$url = new Purl\Url($input->$requestmethod->text('page'));
 			$url->query->set('scan', $q);
+			$url->query->set('binID', $binID);
 			$session->loc = $url->getUrl();
 			break;
 		case 'physical-count':
