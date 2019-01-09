@@ -10,10 +10,10 @@
 				<i class="material-icons" aria-hidden="true">&#xE0B9;</i> Create Order Notes
 			</a>
 		<?php endif; ?>
-		
+
 		<!--  Documents Link -->
 		<?php if ($order->has_documents()) : ?>
-			<a href="<?= $orderpanel->generate_request_documentsURL($order); ?>" class="btn btn-primary load-sales-docs" title="View Documents" data-loadinto=".docs" data-focus=".docs" data-click="#documents-link">
+			<a href="<?= $editorderdisplay->generate_request_documentsURL($order); ?>" class="btn btn-primary load-sales-docs" title="View Documents" data-loadinto=".docs" data-focus=".docs" data-click="#documents-link">
 				<i class="fa fa-file-text" aria-hidden="true"></i> Show Documents
 			</a>
 		<?php else : ?>
@@ -21,10 +21,10 @@
 				<i class="fa fa-file-text" aria-hidden="true"></i> No Documents Found
 			</a>
 		<?php endif; ?>
-		
+
 		<!--  Order Tracking Link -->
 		<?php if ($order->has_tracking()) : ?>
-			<a href="<?= $orderpanel->generate_request_trackingURL($order); ?>" class="btn btn-primary btn btn-primary load-sales-tracking" title="Load Tracking" data-loadinto=".tracking" data-focus=".tracking" data-click="#tracking-tab-link">
+			<a href="<?= $editorderdisplay->generate_request_trackingURL($order); ?>" class="btn btn-primary btn btn-primary load-sales-tracking" title="Load Tracking" data-loadinto=".tracking" data-focus=".tracking" data-click="#tracking-tab-link">
 				<i class="fa fa-plane hover" style="top: 3px; padding-right: 5px; font-size: 130%;" aria-hidden="true"></i> Tracking
 			</a>
 		<?php else : ?>
@@ -47,7 +47,7 @@
 		<?php endif; ?>
 		<!--  Documents Link -->
 		<?php if ($order->has_documents()) : ?>
-			<a href="<?= $orderpanel->generate_request_documentsURL($order, $detail); ?>" class="btn btn-default load-sales-docs" title="View Documents" data-loadinto=".docs" data-focus=".docs" data-click="#documents-link">
+			<a href="<?= $editorderdisplay->generate_request_documentsURL($order, $detail); ?>" class="btn btn-default load-sales-docs" title="View Documents" data-loadinto=".docs" data-focus=".docs" data-click="#documents-link">
 				<i class="fa fa-file-text" aria-hidden="true"></i>
 			</a>
 		<?php else : ?>
@@ -56,7 +56,7 @@
 			</a>
 		<?php endif; ?>
 		<?php if ($order->has_tracking()) : ?>
-			<a href="<?= $orderpanel->generate_request_trackingURL($order); ?>" class="btn btn-primary btn btn-primary load-sales-tracking" title="Load Tracking" data-loadinto=".tracking" data-focus=".tracking" data-click="#tracking-tab-link">
+			<a href="<?= $editorderdisplay->generate_request_trackingURL($order); ?>" class="btn btn-primary btn btn-primary load-sales-tracking" title="Load Tracking" data-loadinto=".tracking" data-focus=".tracking" data-click="#tracking-tab-link">
 				<i class="fa fa-plane hover" style="top: 3px; padding-right: 5px; font-size: 130%;" aria-hidden="true"></i> Tracking
 			</a>
 		<?php else : ?>

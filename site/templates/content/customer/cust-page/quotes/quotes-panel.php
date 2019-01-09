@@ -1,7 +1,7 @@
 <?php
 	use Dplus\Dpluso\OrderDisplays\CustomerQuotePanel;
-	use Dplus\Content\Paginator; 
-	
+	use Dplus\Content\Paginator;
+
 	$quotepanel = new CustomerQuotePanel(session_id(), $page->fullURL, '#ajax-modal', "#quotes-panel", $config->ajax);
 	$quotepanel->set_customer($custID, $shipID);
 	$quotepanel->set('pagenbr', $input->pageNum);
@@ -9,13 +9,19 @@
 	$quotepanel->generate_filter($input);
 	$quotepanel->get_quotecount();
 
+	if ($session->panelorigin == 'quotes' && $session->panelcustomer == $quotepanel->custID) {
+		$url = new Purl\Url($session->paneloriginpage);
+		// $quotepanel->set('pagenbr', Paginator::generate_pagenbr($url));
+		$session->remove('panelorigin');
+	}
+
 	$paginator = new Paginator($quotepanel->pagenbr, $quotepanel->count, $quotepanel->pageurl->getUrl(), $quotepanel->paginationinsertafter, $quotepanel->ajaxdata);
 ?>
 <div class="panel panel-primary not-round" id="quotes-panel">
 	<div class="panel-heading not-round" id="quotes-panel-heading">
 		<?php if ($input->get->filter) : ?>
 			<a href="#quotes-div" data-parent="#quotes-panel" data-toggle="collapse">
-				<?= $quotepanel->generate_filterdescription(); ?> <span class="caret"></span> 
+				<?= $quotepanel->generate_filterdescription(); ?> <span class="caret"></span>
 			</a>
 			<span class="badge pull-right"><?= $quotepanel->count; ?></span>
 			<a href="<?= $quotepanel->generate_loadurl(); ?>" class="generate-load-link" data-loadinto="<?= $quotepanel->loadinto; ?>" data-focus="<?= $quotepanel->focus; ?>">
@@ -24,7 +30,7 @@
 		<?php elseif ($quotepanel->count > 0) : ?>
 			<a href="#quotes-div" data-parent="#quotes-panel" data-toggle="collapse">
 				Customer Quotes <span class="caret"></span>
-			</a> 
+			</a>
 			<span class="badge pull-right"><?= $quotepanel->count; ?></span>
 			<a href="<?= $quotepanel->generate_loadurl(); ?>" class="generate-load-link" data-loadinto="<?= $quotepanel->loadinto; ?>" data-focus="<?= $quotepanel->focus; ?>">
 				<i class="fa fa-refresh" aria-hidden="true"></i> Refresh Quotes

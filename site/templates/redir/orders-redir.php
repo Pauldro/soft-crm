@@ -29,6 +29,8 @@
 	$linkaddon = $sortaddon . $filteraddon;
 	$session->{'from-redirect'} = $page->url;
 	$session->remove('order-search');
+	$session->remove('panelorigin');
+	$session->remove('paneloriginpage');
 	$session->filters = $filteraddon;
 	$filename = session_id();
 
@@ -139,12 +141,18 @@
 		case 'get-order-edit':
 			$ordn = $input->get->text('ordn');
 			$custID = SalesOrderHistory::is_saleshistory($ordn) ? SalesOrderHistory::find_custid($ordn) : SalesOrder::find_custid($ordn);
-			$custID = SalesOrderHistory::is_saleshistory($ordn) ? SalesOrderHistory::find_custid($ordn) : SalesOrder::find_custid($ordn);
 			$data = array('DBNAME' => $config->dplusdbname, 'ORDRDET' => $ordn, 'CUSTID' => $custID);
 			//if ($input->get->edit) {
 				$data['LOCK'] = false;
 			//}
 			$session->loc = "{$config->pages->editorder}?ordn=$ordn";
+			if ($input->get->orderorigin) {
+				$session->panelorigin = 'orders';
+				$session->paneloriginpage = $input->get->text('orderorigin');
+				if ($input->get->custID) {
+					$session->panelcustomer = $input->get->text('custID');
+				}
+			}
 			break;
 		case 'get-order-print':
 			$ordn = $input->get->text('ordn');

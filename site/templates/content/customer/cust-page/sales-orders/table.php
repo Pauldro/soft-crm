@@ -1,4 +1,4 @@
-<?php 
+<?php
 	use Dplus\Base\DplusDateTime;
 	$orderpanel->get_orders();
 ?>
@@ -44,7 +44,7 @@
 			                </a>
 						<?php else : ?>
 							<a href="#" class="h3 text-muted" title="No Documents Found">
-								<i class="fa fa-file-text" aria-hidden="true"></i> No Documents Found
+								<i class="fa fa-file-text" aria-hidden="true"></i>
 							</a>
 						<?php endif; ?>
 					</span>
@@ -76,15 +76,15 @@
                     <span class="col-xs-3">
 						<?php if ($order->can_edit()) : ?>
 							<a href="<?= $orderpanel->generate_editURL($order); ?>" class="edit-order h3" title="Edit Order">
-								<i class="fa fa-pencil" aria-hidden="true"></i> 
+								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</a>
 						<?php elseif ($order->is_lockedbyuser()) : ?>
 							<a href="<?= $orderpanel->generate_editURL($order); ?>" class="edit-order h3" title="Continue Editing Order">
-								<i class="fa fa-wrench" aria-hidden="true"></i> 
+								<i class="fa fa-wrench" aria-hidden="true"></i>
 							</a>
 						<?php else : ?>
 							<a href="<?= $orderpanel->generate_editURL($order); ?>" class="edit-order h3" title="Open in read-only mode">
-								<i class="fa fa-eye" aria-hidden="true"></i> 
+								<i class="fa fa-eye" aria-hidden="true"></i>
 							</a>
 						<?php endif; ?>
 					</span>
@@ -92,15 +92,15 @@
             </tr>
 
             <?php if ($order->ordernumber == $input->get->text('ordn')) : ?>
-				<?php 
+				<?php
 					if ($input->get->show == 'documents' && (!$input->get('item-documents')))  {
 						include $config->paths->content.'customer/cust-page/sales-orders/documents-rows.php';
 					}
-					include $config->paths->content.'customer/cust-page/sales-orders/detail-rows.php'; 
-					include $config->paths->content.'customer/cust-page/sales-orders/total-rows.php'; 
-					
+					include $config->paths->content.'customer/cust-page/sales-orders/detail-rows.php';
+					include $config->paths->content.'customer/cust-page/sales-orders/total-rows.php';
+
 					if ($input->get->text('show') == 'tracking') {
-						include $config->paths->content.'customer/cust-page/sales-orders/tracking-rows.php'; 
+						include $config->paths->content.'customer/cust-page/sales-orders/tracking-rows.php';
 					}
 				?>
 		    	<?php if ($order->has_error()) : ?>
@@ -130,7 +130,7 @@
 					<td></td>
 	                <td colspan="2">
 	                    <div class="pull-right">
-							<a class="btn btn-danger btn-sm load-link" href="<?= $orderpanel->generate_closedetailsURL($order); ?>" <?= $orderpanel->ajaxdata; ?>>Close</a> 
+							<a class="btn btn-danger btn-sm load-link" href="<?= $orderpanel->generate_closedetailsURL($order); ?>" <?= $orderpanel->ajaxdata; ?>>Close</a>
 						</div>
 	                </td>
 	             	<td></td>

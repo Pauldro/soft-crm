@@ -15,12 +15,12 @@
 <div class="row">
 	<div class="col-sm-6">
 		<table class="table table-bordered table-striped table-condensed">
-			<tr> 
-				<td>CustID</td> 
+			<tr>
+				<td>CustID</td>
 				<td>
-					<?= $quote->custid; ?> - <a href="<?= $customer->generate_customerURL(); ?>"><?= $customer->get_customername(); ?></a> 
+					<?= $quote->custid; ?> - <a href="<?= $customer->generate_customerURL(); ?>"><?= $customer->get_customername(); ?></a>
 					<span class="glyphicon glyphicon-share"></span>
-				</td> 
+				</td>
 			</tr>
 			<tr>
 				<td>ShiptoID</td> <td><?= $quote->shiptoid; ?></td>
@@ -110,8 +110,15 @@
 		</a>
 	</div>
 	<div class="col-sm-6">
-		<a href="<?= $quotedisplay->generate_customershiptoURL($order); ?>" class="btn btn-block btn-primary">
+		<a href="<?= $quotedisplay->generate_customershiptoURL($quote); ?>" class="btn btn-block btn-primary">
 			<i class="fa fa-user" aria-hidden="true"></i> Go To Customer Page
 		</a>
 	</div>
 </div>
+</br>
+<?php if ($session->panelorigin == 'quotes') :  ?>
+	<?php $url = $session->panelcustomer ? $quotedisplay->generate_customershiptoURL($quote) : $config->pages->dashboard; ?>
+	<a href="<?= $url; ?>" class="btn btn-block btn-info">
+		<span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Back to Panel
+	</a>
+<?php endif; ?>

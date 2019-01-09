@@ -9,6 +9,12 @@
 	$orderpanel->generate_filter($input);
 	$orderpanel->get_ordercount();
 
+	if ($session->panelorigin == 'orders' && $session->panelcustomer == $orderpanel->custID) {
+		$url = new Purl\Url($session->paneloriginpage);
+		$orderpanel->set('pagenbr', Paginator::generate_pagenbr($url));
+		$session->remove('panelorigin');
+	}
+
 	$paginator = new Paginator($orderpanel->pagenbr, $orderpanel->count, $orderpanel->pageurl->getUrl(), $orderpanel->paginationinsertafter, $orderpanel->ajaxdata);
 ?>
 <div class="panel panel-primary not-round" id="orders-panel">

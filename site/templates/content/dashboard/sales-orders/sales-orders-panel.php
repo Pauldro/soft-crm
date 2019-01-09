@@ -1,12 +1,19 @@
 <?php
 	use Dplus\Dpluso\OrderDisplays\SalesOrderPanel;
 	use Dplus\Content\Paginator;
-	
+
 	$orderpanel = new SalesOrderPanel(session_id(), $page->fullURL, '#ajax-modal', '#orders-panel', $config->ajax);
 	$orderpanel->set('pagenbr', $input->pageNum);
 	$orderpanel->set('activeID', !empty($input->get->ordn) ? $input->get->text('ordn') : false);
 	$orderpanel->generate_filter($input);
 	$orderpanel->get_ordercount();
+
+
+	if ($session->panelorigin == 'orders' && !$session->panelcustomer) {
+		$url = new Purl\Url($session->paneloriginpage);
+		$orderpanel->set('pagenbr', Paginator::generate_pagenbr($url));
+		$session->remove('panelorigin');
+	}
 
 	$paginator = new Paginator($orderpanel->pagenbr, $orderpanel->count, $orderpanel->pageurl->getUrl(), $orderpanel->paginationinsertafter, $orderpanel->ajaxdata);
 ?>
@@ -14,21 +21,21 @@
 	<div class="panel-heading not-round" id="order-panel-heading">
 		<?php if (!empty($orderpanel->filters)) : ?>
 			<a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">
-				Sales Orders <?= $orderpanel->generate_filterdescription(); ?> <span class="caret"></span> 
+				Sales Orders <?= $orderpanel->generate_filterdescription(); ?> <span class="caret"></span>
 			</a>
 			<span class="badge pull-right"><?= $orderpanel->count; ?></span>
 		<?php elseif ($orderpanel->count > 0) : ?>
 			<a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">
 				Sales Orders <span class="caret"></span>
-			</a> 
+			</a>
 			<span class="badge pull-right"> <?= $orderpanel->count; ?></span>
 		<?php else : ?>
 			<a href="#orders-div" data-parent="#orders-panel" data-toggle="collapse">
 				Sales Orders <span class="caret"></span>
-			</a> 
+			</a>
 			<span class="badge pull-right"> <?= $orderpanel->count; ?></span>
 		<?php endif; ?>
-		<span class="pull-right"><?= $orderpanel->generate_pagenumberdescription(); ?> &nbsp; </span> 
+		<span class="pull-right"><?= $orderpanel->generate_pagenumberdescription(); ?> &nbsp; </span>
 	</div>
 	<div id="orders-div" class="<?= $orderpanel->collapse; ?>">
 		<br>

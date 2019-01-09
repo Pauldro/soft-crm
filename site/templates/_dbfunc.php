@@ -3586,7 +3586,7 @@
 		}
 	}
 
-	function edit_orderhead($sessionID, $ordn, SalesOrderEdit $order, $debug = false) {
+	function update_orderhead($sessionID, $ordn, SalesOrderEdit $order, $debug = false) {
 		$orginalorder = SalesOrderEdit::load($sessionID, $ordn);
 		$properties = array_keys($order->_toArray());
 		$q = (new QueryBuilder())->table('ordrhed');

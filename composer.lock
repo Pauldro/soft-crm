@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "content-hash": "93bcffb6159ac52e1898d9d3cedfe0aa",
@@ -196,12 +196,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-dpluso.git",
-                "reference": "b4756eac4fd711314431a850a711e04f4961c981"
+                "reference": "e49eea6c3d005af7718345cca8902ba84daea8cc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dplus-dpluso/zipball/b4756eac4fd711314431a850a711e04f4961c981",
-                "reference": "b4756eac4fd711314431a850a711e04f4961c981",
+                "url": "https://api.github.com/repos/cptechinc/dplus-dpluso/zipball/e49eea6c3d005af7718345cca8902ba84daea8cc",
+                "reference": "e49eea6c3d005af7718345cca8902ba84daea8cc",
                 "shasum": ""
             },
             "type": "library",
@@ -233,7 +233,7 @@
                 "order-displays",
                 "user-actions"
             ],
-            "time": "2019-01-04T17:25:40+00:00"
+            "time": "2019-01-04T20:33:48+00:00"
         },
         {
             "name": "cptechinc/dplus-file-services",
