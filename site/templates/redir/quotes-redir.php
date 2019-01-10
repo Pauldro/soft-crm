@@ -378,7 +378,6 @@
 			$qnbr = $input->get->text('qnbr');
 			$data = array('UNLOCKING QUOTE' => false);
 			$session->loc = $config->pages->edit."quote/confirm/?qnbr=".$qnbr.$linkaddon;
-			remove_orderlock($sessionID, $ordn, $userID, $debug);
 			break;
 		case 'send-quote-to-order':
 			$qnbr = $input->post->text('qnbr');
