@@ -2852,12 +2852,7 @@
 			return $q->generate_sqlquery();
 		} else {
 			$sql->execute($q->params);
-			$success = $sql->rowCount();
-			if ($success) {
-				return array("error" => false,  "sql" => $q->generate_sqlquery($q->params));
-			} else {
-				return boolval($sql->rowCount());
-			}
+			return boolval($sql->rowCount());
 		}
 	}
 
@@ -2895,6 +2890,7 @@
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
+			$action->set('id', DplusWire::wire('dplusdatabase')->lastInsertId());
 			return boolval(DplusWire::wire('dplusdatabase')->lastInsertId());
 		}
 	}
