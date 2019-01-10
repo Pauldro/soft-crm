@@ -3678,6 +3678,13 @@
 		$q->field($q->expr("abbreviation AS state"));
 		$q->field('name');
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+		$sql->execute($q->params);
+		return $sql->fetchAll(PDO::FETCH_ASSOC);
+	}
+
+	function get_countries() {
+		$q = (new QueryBuilder())->table('countries');
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		$sql->execute($q->params);
 		return $sql->fetchAll(PDO::FETCH_ASSOC);
