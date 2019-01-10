@@ -1,14 +1,14 @@
 <?php 
 	$tableformatter = $page->screenformatterfactory->generate_screenformatter('vi-payment-history');
-	
+
 	if ($input->requestMethod() == "POST") {
 		$tableformatter->generate_formatterfrominput($input);
 		$action = $input->post->text('action');
-		
+
 		switch ($action) {
 			case 'preview':
 				$page->body = $config->paths->content."vend-information/vi-formatted-screen.php";
-				
+
 				if ($config->ajax) {
 					include $page->body;
 				} else {
@@ -17,6 +17,7 @@
 				break;
 			case 'save-formatter':
 				$maxid = get_maxtableformatterid($user->loginid, 'vi-payment-history');
+				$session->sql = $tableformatter->save(true);
 				$page->body = $tableformatter->save_andrespond();
 				include $config->paths->content.'common/include-json-page.php';
 				break;
