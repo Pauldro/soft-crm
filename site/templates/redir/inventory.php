@@ -50,10 +50,8 @@
 			if (!empty($input->$requestmethod->serialnbr) | !empty($input->$requestmethod->lotnbr)) {
 				if ($input->$requestmethod->serialnbr) {
 					$lotserial = $input->$requestmethod->text('serialnbr');
-					$returnurl->query->set('serialnbr', $lotserial);
 				} elseif ($input->$requestmethod->lotnbr) {
 					$lotserial = $input->$requestmethod->text('lotnbr');
-					$returnurl->query->set('lotnbr', $lotserial);
 				}
 				$item = InventorySearchItem::load_from_lotserial(session_id(), $lotserial);
 			} else {
@@ -75,6 +73,10 @@
 			}
 			
 			$data[] = "QTY=$qty_total";
+			$returnurl->query->remove('lotnbr');
+			$returnurl->query->remove('serialnbr');
+			$returnurl->query->remove('itemID');
+			$returnurl->query->remove('itemid');
 			$session->loc = $returnurl->getUrl();
 			break;
 	}

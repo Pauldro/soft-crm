@@ -68,6 +68,15 @@
 				<td class="text-right physical-count-total">0</td>
 			</tr>
 		</table>
-		<button class="btn btn-sm not-round btn-emerald"><i class="fa fa-floppy-o" aria-hidden="true"></i> Submit</button>
+		<div class="row">
+			<div class="col-xs-6 form-group">
+				<button class="btn not-round btn-emerald"><i class="fa fa-floppy-o" aria-hidden="true"></i> Submit</button>
+			</div>
+			<div class="col-xs-6 form-group">
+				<a href="<?= $physicalcounter->get_cancel_itemURL(); ?>" class="btn not-round btn-warning">
+					<i class="fa fa-trash" aria-hidden="true"></i> Cancel
+				</a>
+			</div>
+		</div>
 	</form>
 </div>
