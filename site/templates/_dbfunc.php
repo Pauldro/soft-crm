@@ -3690,14 +3690,6 @@
 		return $sql->fetchAll(PDO::FETCH_ASSOC);
 	}
 
-	function get_countries() {
-		$q = (new QueryBuilder())->table('countries');
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		$sql->execute($q->params);
-		return $sql->fetchAll(PDO::FETCH_ASSOC);
-	}
-
 /* =============================================================
 	ITEM FUNCTIONS
 ============================================================ */
@@ -5287,7 +5279,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	/**
 	 * Returns an array of InventorySearchItem of invsearch results
 	 * @param  string $sessionID Session Identifier
@@ -5406,7 +5398,7 @@
 			return $sql->fetchAll();
 		}
 	}
-	
+
 	/**
 	 * Returns an array of InventorySearchItem of invsearch results
 	 * @param  string $sessionID Session Identifier
