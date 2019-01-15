@@ -1,5 +1,6 @@
 <?php
 	use Dplus\ProcessWire\DplusWire;
+	use Purl\Url;
 	
 	function renderNavTree($items, $maxDepth = 3) {
 		// if we've been given just one item, convert it to an array of items
@@ -117,25 +118,25 @@
 
 
 /* =============================================================
-   URL FUNCTIONS
- ============================================================ */
-	function paginate($url, $page, $insertafter, $hash) { // DEPRECATED 3/5/2018 MOVED TO Paginator
-		if (strpos($url, 'page') !== false) {
-			$regex = "((page)\d{1,3})";
-			if ($page > 1) { $replace = "page".$page; } else {$replace = ""; }
-			$newurl = preg_replace($regex, $replace, $url);
+	URL FUNCTIONS
+============================================================ */
+	 
+	function get_localhostURL($path) {
+		$config = DplusWire::wire('config');
+		$url = new Url('127.0.0.1');
+		
+		// IF the path provided contains the httpd directory path
+		if (strpos($path, $config->directory_httpd) !== false) {
+			$url->path = $path;
 		} else {
-			$insertafter = str_replace('/', '', $insertafter)."/";
-			$regex = "(($insertafter))";
-			if ($page > 1) { $replace = $insertafter."page".$page."/";} else {$replace = $insertafter; }
-			$newurl = preg_replace($regex, $replace, $url);
+			$url->path = $config->directory_httpd . $path;
 		}
-		return $newurl . $hash;
-	 }
+		return $url->getUrl();
+	}
 
 /* =============================================================
-   ORDERS FUNCTIONS
- ============================================================ */
+	ORDERS FUNCTIONS
+============================================================ */
 	function returntracklink($carrier, $tracknbr, $on) {
 		$link = '';
 		if (strpos(strtolower($carrier), 'fed') !== false) {
