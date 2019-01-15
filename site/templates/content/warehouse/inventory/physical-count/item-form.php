@@ -1,6 +1,12 @@
-<?php include "{$config->paths->content}warehouse/session.js.php";  ?>
+<?php 
+    if ($session->physicalcounthistory) {
+        $history = json_decode($session->physicalcounthistory, true);
+        $binhistory = $history[$binID];
+    }
+    include "{$config->paths->content}warehouse/session.js.php";
+?>
 
-<div>
+<div class="form-group">
     <form action="<?= "{$config->pages->menu_inventory}redir/"; ?>" id="physical-count-item-form" method="POST">
         <input type="hidden" name="action" value="inventory-search">
         <input type="hidden" name="page" value="<?= $page->fullURL->getUrl(); ?>">
@@ -16,9 +22,9 @@
         			</div>
                     <?php if ($whseconfig->are_binslisted()) : ?>
                         <br>
-                        <button class="btn btn-default next-bin">Next Bin</button>
-                        &nbsp; &nbsp;
                         <button class="btn btn-default prev-bin">Prev Bin</button>
+                        &nbsp; &nbsp;
+                        <button class="btn btn-default next-bin">Next Bin</button>
                     <?php endif; ?>
                 </td>
             </tr>
@@ -32,3 +38,24 @@
         <button type="submit" class="btn btn-primary not-round"> <i class="fa fa-floppy-o" aria-hidden="true"></i> Submit</button>
     </form>
 </div>
+<?php if (!empty($binhistory)) : ?>
+    <div>
+        <div class="row">
+            <div class="col-sm-6">
+                <h3>Bin Count History</h3>
+                <table class="table table-condensed table-striped">
+                    <tr>
+                        <th>Item ID</th>
+                        <th>Qty</th>
+                    </tr>
+                    <?php foreach ($binhistory as $itemid => $itemhistory) : ?>
+                        <tr>
+                            <td><?= $itemid; ?></td>
+                            <td class="text-right"><?= $itemhistory['qty']; ?></td>
+                        </tr>
+                    <?php endforeach; ?>
+                </table>
+            </div>
+        </div>
+    </div>
+<?php endif; ?>

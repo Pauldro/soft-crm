@@ -78,6 +78,16 @@
 			$returnurl->query->remove('itemID');
 			$returnurl->query->remove('itemid');
 			$session->loc = $returnurl->getUrl();
+			
+			$itemhistory = array('binID' => $binID, 'itemID' => $item->itemid, 'qty' => $qty_total);
+			
+			if ($session->physicalcounthistory) {
+				$history = json_decode($session->physicalcounthistory, true);
+			} else {
+				$history = array();
+			}
+			$history[$binID][$item->itemid] = $itemhistory;
+			$session->physicalcounthistory = json_encode($history);
 			break;
 	}
 	
