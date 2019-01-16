@@ -64,8 +64,8 @@
 								break;
 							default:
 								$items = InventorySearchItem::get_all_distinct_xorigin(session_id());
+								break;
 						}
-						
 						$page->body = __DIR__."/inventory-results.php";
 					}
 				} elseif (!empty($input->get->serialnbr) | !empty($input->get->lotnbr) | !empty($input->get->itemID) | !empty($input->get->itemid)) {
@@ -98,6 +98,5 @@
 	} else {
 		$page->body = __DIR__."/select-bin-form.php";
 	}
-	
-	
+
 	include $config->paths->content."common/include-toolbar-page.php";
