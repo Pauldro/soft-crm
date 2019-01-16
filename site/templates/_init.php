@@ -18,7 +18,7 @@ use Dplus\Base\Curl;
 	include_once($config->paths->templates."configs/nav-config.php");
 	include_once($config->paths->templates."configs/user-roles-config.php");
 	$appconfig = $pages->get('/config/');
-	
+
 	// INCLUDE AUTOLOAD AND NECESSARY FUNCTIONS
 	include_once("./_func.php"); // include our shared functions
 	include_once("./_dbfunc.php");
@@ -33,49 +33,49 @@ use Dplus\Base\Curl;
 		header('location: ' . $config->pages->login);
 		exit;
 	}
-	
+
 	// CONFIGS FOR JS
 	include_once($config->paths->templates."_init.js.php");  // includes class files
-	
+
 	// BUILD AND INSTATIATE CLASSES
 	$page->fullURL = new \Purl\Url($page->httpUrl);
 	$page->fullURL->path = '';
 	if (!empty($config->filename) && $config->filename != '/') {
 		$page->fullURL->join($config->filename);
 	}
-	
-	
+
+
 	$page->stringerbell = new Dplus\Base\StringerBell();
 	$page->htmlwriter = new Dplus\Content\HTMLWriter();
 	$page->bootstrap = $page->htmlwriter;
 	$page->curl = new Dplus\Base\Curl();
 	$page->screenformatterfactory = new Dplus\Dpluso\ScreenFormatters\ScreenFormatterFactory(session_id());
 	$itemlookup = new Dplus\Dpluso\Items\ItemLookupModal();
-	
+
 	Dplus\Dpluso\ScreenFormatters\TableScreenMaker::set_filedirectory($config->jsonfilepath);
 	Dplus\Dpluso\ScreenFormatters\TableScreenMaker::set_testfiledirectory($config->paths->vendor."cptechinc/dpluso-screen-formatters/src/examples/");
 	Dplus\Dpluso\ScreenFormatters\TableScreenMaker::set_fieldfiledirectory($config->companyfiles."json/");
 	Dplus\Dpluso\Configs\FormFieldsConfig::set_defaultconfigdirectory($config->paths->templates."configs/customer/");
 
-	
+
 	// ADD DEFAULT CSS FILES
-	$config->styles->append(hashtemplatefile('styles/bootstrap.min.css'));
+	$config->styles->append(hash_templatefile('styles/bootstrap.min.css'));
 	$config->styles->append('https://fonts.googleapis.com/icon?family=Material+Icons');
-	$config->styles->append(hashtemplatefile('styles/libraries.css'));
-	$config->styles->append(hashtemplatefile('styles/libs/bootstrap-select.css'));
-	$config->styles->append(hashtemplatefile('styles/styles.css'));
-	
+	$config->styles->append(hash_templatefile('styles/libraries.css'));
+	$config->styles->append(hash_templatefile('styles/libs/bootstrap-select.css'));
+	$config->styles->append(hash_templatefile('styles/styles.css'));
+
 	// ADD DEFAULT JS FILES
-	$config->scripts->append(hashtemplatefile('scripts/libraries.js'));
-	$config->scripts->append(hashtemplatefile('scripts/libs/timepicker.js'));
-	$config->scripts->append(hashtemplatefile('scripts/libs/key-listener.js'));
-	$config->scripts->append(hashtemplatefile('scripts/libs/datatables.js'));
-	$config->scripts->append(hashtemplatefile('scripts/libs/datatables-datetime.js'));
-	$config->scripts->append(hashtemplatefile('scripts/classes.js'));
-	$config->scripts->append(hashtemplatefile('scripts/libs/bootstrap-select.js'));
-	$config->scripts->append(hashtemplatefile('scripts/libs/jquery-validate.js'));
-	$config->scripts->append(hashtemplatefile('scripts/scripts.js'));
-	$config->scripts->append(hashtemplatefile('scripts/dplus-notes.js'));
+	$config->scripts->append(hash_templatefile('scripts/libraries.js'));
+	$config->scripts->append(hash_templatefile('scripts/libs/timepicker.js'));
+	$config->scripts->append(hash_templatefile('scripts/libs/key-listener.js'));
+	$config->scripts->append(hash_templatefile('scripts/libs/datatables.js'));
+	$config->scripts->append(hash_templatefile('scripts/libs/datatables-datetime.js'));
+	$config->scripts->append(hash_templatefile('scripts/classes.js'));
+	$config->scripts->append(hash_templatefile('scripts/libs/bootstrap-select.js'));
+	$config->scripts->append(hash_templatefile('scripts/libs/jquery-validate.js'));
+	$config->scripts->append(hash_templatefile('scripts/scripts.js'));
+	$config->scripts->append(hash_templatefile('scripts/dplus-notes.js'));
 
 
 	//$config->scripts->append($config->urls->modules . 'Inputfield/InputfieldCKEditor/ckeditor-4.6.1/ckeditor.js'));
@@ -84,7 +84,7 @@ use Dplus\Base\Curl;
 	if ($input->get->modal) {
 		$config->modal = true;
 	}
-	
+
 	if ($input->get->json) {
 		$config->json = true;
 	}
