@@ -2,14 +2,14 @@
 	use Dplus\Dpluso\OrderDisplays\QuotePanel;
 	use Dplus\Content\Paginator;
 
-	/**
-	*  QUOTE REDIRECT
-	* @param string $action
-	*
-	*/
-
+	// Figure out page request method, then grab needed inputs
 	$requestmethod = $input->requestMethod('POST') ? 'post' : 'get';
 	$action = $input->$requestmethod->text('action');
+
+	// Set up filename and sessionID in case this was made through cURL
+	$filename = ($input->$requestmethod->sessionID) ? $input->$requestmethod->text('sessionID') : session_id();
+	$sessionID = ($input->$requestmethod->sessionID) ? $input->$requestmethod->text('sessionID') : session_id();
+	$session->fromredirect = $page->url;
 
 	// USED FOR MAINLY ORDER LISTING FUNCTIONS
 	$pagenumber = (!empty($input->get->page) ? $input->get->int('page') : 1);
@@ -28,7 +28,6 @@
 	}
 
 	$linkaddon = $sortaddon . $filteraddon;
-	$session->{'from-redirect'} = $page->url;
 	$session->remove('quote-search');
 	$session->remove('panelorigin');
 	$session->remove('paneloriginpage');
@@ -38,7 +37,7 @@
 	//TODO merge get-quote-details and get-quote-details-print
 	/**
 	*  QUOTE REDIRECT
-	*
+	* @param string $action
 	*
 	*
 	*

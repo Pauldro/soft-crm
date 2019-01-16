@@ -1,11 +1,16 @@
 <?php
+	// Figure out page request method, then grab needed inputs
 	$requestmethod = $input->requestMethod('POST') ? 'post' : 'get';
 	$action = $input->$requestmethod->text('action');
-	$sessionID = $input->get->sessionID ? $input->$requestmethod->text('sessionID') : session_id();
+
+	// Set up filename and sessionID in case this was made through cURL
+	$filename = ($input->$requestmethod->sessionID) ? $input->$requestmethod->text('sessionID') : session_id();
+	$sessionID = ($input->$requestmethod->sessionID) ? $input->$requestmethod->text('sessionID') : session_id();
+
+	$session->fromredirect = $page->url;
 	
-	$session->{'from-redirect'} = $page->url;
-	$session->remove('order-search');
-	$filename = $sessionID;
+	
+
 
 	/**
 	* WAREHOUSE REDIRECT
@@ -16,10 +21,12 @@
 	*
 	* switch ($action) {
 	* 	case 'initiate-whse':
+	* 		- Logs into warehouse management creates whsesession record
 	*		DBNAME=$config->dplusdbname
 	*		LOGIN=$loginID
 	*		break;
 	*	case 'logout':
+	*		- Logs out of warehouse management clears whsesession record
 	*		DBNAME=$config->dplusdbname
 	*		LOGOUT
 	*		break;
@@ -30,7 +37,6 @@
 		case 'initiate-whse':
 			$login = get_loginrecord($sessionID);
 			$loginID = $login['loginid'];
-			echo $login['loginid'];
 			$data = array("DBNAME=$config->dplusdbname", "LOGIN=$loginID");
 			break;
 		case 'logout':
@@ -40,7 +46,7 @@
 	}
 	
 	write_dplusfile($data, $filename);
-	curl_redir("127.0.0.1/cgi-bin/".$config->cgis['whse']."?fname=$filename");
+	$page->curl->get("127.0.0.1/cgi-bin/".$config->cgis['whse']."?fname=$filename");
 	
 	if (!empty($session->get('loc'))) {
 		header("Location: $session->loc");

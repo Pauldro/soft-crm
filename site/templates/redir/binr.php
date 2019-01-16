@@ -1,11 +1,13 @@
 <?php
+	// Figure out page request method, then grab needed inputs
 	$requestmethod = $input->requestMethod('POST') ? 'post' : 'get';
 	$action = $input->$requestmethod->text('action');
-	$sessionID = !empty($input->$requestmethod->sessionID) ? $input->$requestmethod->text('sessionID') : session_id();
+	
+	// Set up filename and sessionID in case this was made through cURL
+	$filename = ($input->$requestmethod->sessionID) ? $input->$requestmethod->text('sessionID') : session_id();
+	$sessionID = ($input->$requestmethod->sessionID) ? $input->$requestmethod->text('sessionID') : session_id();
 	
 	$session->fromredirect = $page->url;
-	$filename = $sessionID;
-	
 	$session->remove('binr');
 	
 	/**
@@ -17,25 +19,31 @@
 	*
 	* switch ($action) {
 	*	case 'initiate-whse':
+	*		- Logs into warehouse management creates whsesession record
 	*		DBNAME=$config->dplusdbname
 	*		LOGIN=$loginID
 	*		break;
 	*	case 'logout':
+	*		- Logs out of warehouse management clears whsesession record
 	*		DBNAME=$config->dplusdbname
 	*		LOGOUT
 	*		break;
 	*	case 'inventory-search:
+	*		- Requests for $q to be found in the inventory
+	*		NOTE $q can be itemID, lotnbr, serialnbr, UPC, Customer ItemID, Vendor ItemID
 	*		DBNAME=$config->dplusdbname
 	*		INVSEARCH
 	*		QUERY=$q
 	*		break;
 	*	case 'search-item-bins'
+	*		- Find other Bins with this item
 	*		DBNAME=$config->dplusdbname
 	*		BININFO
 	*		ITEMID=$itemID
 	*		LOTSERIAL=$lotserial **     // NOTE ONLY FOR LOTTED OR SERIALIZED ITEMS
 	*		break;
 	*	case 'bin-reassign':
+	*		- Reassign Found Item from X BIN to Y BIN
 	*		DBNAME=$config->dplusdbname
 	*		BINR
 	*		ITEMID=$itemID
@@ -111,6 +119,11 @@
 			$data[] = "TOBIN=$tobin";
 			$session->loc = $input->$requestmethod->text('page');
 			$session->binr = 'true';
+			break;
+		case 'bin-transfer-contents';
+			$frombin = $input->$requestmethod->text('from-bin');
+			$tobin = $input->$requestmethod->text('to-bin');
+			$data = array("DBNAME=$config->dplusdbname", 'MOVEBIN', "FROMBIN=$frombin", "TOBIN=$tobin");
 			break;
 	}
 	

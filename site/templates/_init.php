@@ -10,6 +10,8 @@
  * we are using it just to include another file with shared functions.
  *
  */
+use Dplus\Base\Curl;
+
 	// APPLICATION CONFIGS
 	include_once($config->paths->templates."configs/dpluso-config.php");
 	$config->pages = new ProcessWire\Paths($config->rootURL);
@@ -20,21 +22,10 @@
 	// INCLUDE AUTOLOAD AND NECESSARY FUNCTIONS
 	include_once("./_func.php"); // include our shared functions
 	include_once("./_dbfunc.php");
-
-	//include_once($config->paths->vendor."cptechinc/dplus-base/vendor/autoload.php");
-	// include_once($config->paths->vendor."cptechinc/dplus-content/vendor/autoload.php");
-	//include_once($config->paths->vendor."cptechinc/dplus-dpluso/vendor/autoload.php");
-	// include_once($config->paths->vendor."cptechinc/dplus-order/vendor/autoload.php");
-	// include_once($config->paths->vendor."cptechinc/dplus-file-services/vendor/autoload.php");
-	//
-	// include_once($config->paths->vendor."cptechinc/dplus-items/vendor/autoload.php");
-	//
-	// include_once($config->paths->vendor."cptechinc/dpluso-warehouse/vendor/autoload.php");
-	//
-	//include_once($config->paths->vendor."cptechinc/dpluso-screen-formatters/vendor/autoload.php");
-
+	
 	// AFTER LOADING CONFIGS, CLASSES, AND FUNCTIONS CHECK FOR LOGIN
 	$user->loggedin = is_validlogin(session_id());
+	
 	if ($user->loggedin) {
 		setup_user(session_id());
 		Dplus\Dpluso\General\SigninLog::log_signin(session_id(), $user->loginid);
@@ -57,6 +48,7 @@
 	$page->stringerbell = new Dplus\Base\StringerBell();
 	$page->htmlwriter = new Dplus\Content\HTMLWriter();
 	$page->bootstrap = $page->htmlwriter;
+	$page->curl = new Dplus\Base\Curl();
 	$page->screenformatterfactory = new Dplus\Dpluso\ScreenFormatters\ScreenFormatterFactory(session_id());
 	$itemlookup = new Dplus\Dpluso\Items\ItemLookupModal();
 
