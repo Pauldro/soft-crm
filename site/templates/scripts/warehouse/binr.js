@@ -4,7 +4,20 @@ $(function() {
 	var input_tobin = $('.binr-form').find('input[name=to-bin]');
 	var input_qty = $('.binr-form').find('input[name=qty]');
 	
+	/**
+	 * The Order of Functions based on Order of Events
+	 * 1. Select Item (only if theres a list)
+	 * 2. Show From bin selection
+	 * 3. Choose From Bin
+	 * 4. Use bin Qty (if needed)
+	 * 5. Show Possible To Bins (if needed)
+	 * 6. Validate Form submit
+	 * 7. Helper Functions
+	 */
 	
+/////////////////////////////////////
+// 1. Select Item (only if theres a List)
+////////////////////////////////////
 	$("body").on("click", ".binr-inventory-result", function(e) {
 		var button = $(this);
 		var desc = button.data('desc');
@@ -21,6 +34,19 @@ $(function() {
 		}
 	});
 	
+/////////////////////////////////////
+// 2. Show From bin selection
+/////////////////////////////////////
+	$("body").on("click", ".show-select-bins", function(e) {
+		e.preventDefault();
+		var button = $(this);
+		var bindirection = button.data('direction');
+		$('.choose-'+bindirection+'-bins').parent().removeClass('hidden').focus();
+	});
+	
+/////////////////////////////////////
+// 3. Choose From Bin
+/////////////////////////////////////
 	$("body").on("click", ".choose-bin", function(e) {
 		e.preventDefault();
 		var binrow = $(this);
@@ -34,13 +60,9 @@ $(function() {
 		binrow.closest('.list-group').parent().addClass('hidden');
 	});
 	
-	$("body").on("click", ".show-select-bins", function(e) {
-		e.preventDefault();
-		var button = $(this);
-		var bindirection = button.data('direction');
-		$('.choose-'+bindirection+'-bins').parent().removeClass('hidden').focus();
-	});
-	
+/////////////////////////////////////
+// 4. Use bin Qty if needed
+/////////////////////////////////////
 	$("body").on("click", ".use-bin-qty", function(e) {
 		e.preventDefault();
 		var button = $(this);
@@ -51,6 +73,42 @@ $(function() {
 		input_qty.val(binqty);
 	});
 	
+/////////////////////////////////////
+// 5. Show Possible To Bins (if needed)
+/////////////////////////////////////
+	$("body").on("click", ".show-possible-bins", function(e) {
+		e.preventDefault();
+		var button = $(this);
+		
+		if (whsesession.whse.bins.arranged == 'list') { // IF WAREHOUSE HAS A BIN LIST
+			var bins = {};
+			var binid = '';
+			var spacesneeded = 0;
+			var spaces = '';
+			
+			for (var key in whsesession.whse.bins.bins) {
+				binid = key;
+				spacesneeded = (8 - binid.length);
+				spaces = '';
+				for (var i = 0; i <= spacesneeded; i++) {
+					spaces += '&nbsp;';
+				}
+				bins[key] = binid + spaces + whsesession.whse.bins.bins[key];
+			}
+			swal_choosebin(bins);
+		} else {
+			var msg = 'Warehouse bin range is between ' + whsesession.whse.bins.bins.from + ' and ' + whsesession.whse.bins.bins.through;
+			swal({
+				type: 'info',
+				title: 'Bin Range',
+				text: msg
+			}).catch(swal.noop);
+		}
+	});
+	
+/////////////////////////////////////
+// 6. Validate Form submit
+/////////////////////////////////////
 	$(".binr-form").validate({
 		submitHandler : function(form) {
 			var valid_frombin = validate_frombin();
@@ -78,38 +136,10 @@ $(function() {
 		}
 	});
 	
-	// IF WAREHOUSE HAS A BIN LIST
-	$("body").on("click", ".show-possible-bins", function(e) {
-		e.preventDefault();
-		var button = $(this);
-		
-		if (whsesession.whse.bins.arranged == 'list') {
-			var bins = {};
-			var binid = '';
-			var spacesneeded = 0;
-			var spaces = '';
-			
-			for (var key in whsesession.whse.bins.bins) {
-				binid = key;
-				spacesneeded = (8 - binid.length);
-				spaces = '';
-				for (var i = 0; i <= spacesneeded; i++) {
-					spaces += '&nbsp;';
-				}
-				bins[key] = binid + spaces + whsesession.whse.bins.bins[key];
-			}
-			swal_choosebin();
-		} else {
-			var msg = 'Warehouse bin range is between ' + whsesession.whse.bins.bins.from + ' and ' + whsesession.whse.bins.bins.through;
-			swal({
-				type: 'info',
-				title: 'Bin Range',
-				text: msg
-			}).catch(swal.noop);
-		}
-	});
-	
-	function swal_choosebin() {
+/////////////////////////////////////
+// Helper Functions
+/////////////////////////////////////
+	function swal_choosebin(bins) {
 		swal({
 			type: 'question',
 			title: 'Choose a bin',
