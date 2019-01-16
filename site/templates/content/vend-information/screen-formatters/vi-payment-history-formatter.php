@@ -24,6 +24,6 @@
 		}
 	} else {
 		$page->body = $config->paths->content."vend-information/screen-formatters/forms/vi-default.php";
-		$config->scripts->append(hashtemplatefile('scripts/table-formatter.js'));
+		$config->scripts->append(hash_templatefile('scripts/table-formatter.js'));
 		include $config->paths->content.'common/include-page.php';
 	}

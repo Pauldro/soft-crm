@@ -1,6 +1,6 @@
 <?php
     use Dplus\Warehouse\PickSalesOrderDisplay;
-    
+
     if (!WhseSession::does_sessionexist(session_id())) {
         WhseSession::start_session(session_id());
         $whsesession = WhseSession::load(session_id());
@@ -8,10 +8,10 @@
         $page->body = $config->paths->content."warehouse/picking/choose-sales-order-form.php";
     } else {
         $whsesession = WhseSession::load(session_id());
-        $config->scripts->append(hashtemplatefile('scripts/warehouse/pick-order.js'));
-        
+        $config->scripts->append(hash_templatefile('scripts/warehouse/pick-order.js'));
+
         if ($input->get->ordn) {
-            
+
             // CHECK IF BIN IS DEFINED AND THAT tHE ORDER IS NOT IN FINISHED STATUS
             if ($whsesession->is_orderinvalid()) {
                 $page->body = $config->paths->content."warehouse/picking/invalid-order.php";
@@ -36,7 +36,7 @@
                 } else {
                     if ($whsesession->is_orderfinished() || $whsesession->is_orderexited()) {
                         $whsesession->delete_orderpickeditems();
-                    } 
+                    }
                     $whsesession->start_pickpackingsession();
                     $page->body = $config->paths->content."warehouse/picking/choose-sales-order-form.php";
                 }
@@ -49,7 +49,6 @@
             $page->body = $config->paths->content."warehouse/picking/choose-sales-order-form.php";
         }
     }
-    
+
     $toolbar = false;
     include $config->paths->content."common/include-toolbar-page.php";
-    

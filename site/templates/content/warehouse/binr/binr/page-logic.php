@@ -1,19 +1,19 @@
 <?php
 	use Dplus\Warehouse\Binr;
-	
+
 	$binID = '';
 	$whsesession = WhseSession::load(session_id());
 	$whsesession->init();
 	$binr = new Binr();
-	$config->scripts->append(hashtemplatefile('scripts/warehouse/binr.js'));
-	
+	$config->scripts->append(hash_templatefile('scripts/warehouse/binr.js'));
+
 	if ($input->get->scan) {
 		$page->fullURL->query->remove('scan');
 		$scan = $input->get->text('scan');
 		$resultscount = InventorySearchItem::count_all(session_id());
-		
+
 		if ($resultscount == 0) {
-			$page->body = $config->paths->content."{$page->path}inventory-results.php";	
+			$page->body = $config->paths->content."{$page->path}inventory-results.php";
 		} elseif ($resultscount == 1) {
 			$item = InventorySearchItem::load_first(session_id());
 			$pageurl = $page->fullURL->getUrl();
@@ -24,7 +24,7 @@
 		}
 	} elseif (!empty($input->get->serialnbr) | !empty($input->get->lotnbr) | !empty($input->get->itemID)) {
 		$binID  = $input->get->text('binID');
-		
+
 		if ($input->get->serialnbr) {
 			$serialnbr = $input->get->text('serialnbr');
 			$resultscount = InventorySearchItem::count_from_lotserial(session_id(), $serialnbr);
@@ -38,7 +38,7 @@
 			$resultscount = InventorySearchItem::count_from_itemid(session_id(), $itemID, $binID);
 			$item = $resultscount == 1 ? InventorySearchItem::load_from_itemid(session_id(), $itemID, $binID) : false;
 		}
-		
+
 		if ($resultscount == 1) {
 			$page->body = $config->paths->content."{$page->path}binr-form.php";
 		} else {
