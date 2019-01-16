@@ -1,10 +1,13 @@
 <?php
+	// Figure out page request method, then grab needed inputs
 	$requestmethod = $input->requestMethod('POST') ? 'post' : 'get';
 	$action = $input->$requestmethod->text('action');
-	$sessionID = !empty($input->$requestmethod->sessionID) ? $input->$requestmethod->text('sessionID') : session_id();
-	
+
+	// Set up filename and sessionID in case this was made through cURL
+	$filename = ($input->$requestmethod->sessionID) ? $input->$requestmethod->text('sessionID') : session_id();
+	$sessionID = ($input->$requestmethod->sessionID) ? $input->$requestmethod->text('sessionID') : session_id();
+
 	$session->fromredirect = $page->url;
-	$filename = $sessionID;
 	
 	/**
 	* INVENTORY REDIRECT
@@ -15,11 +18,14 @@
 	*
 	* switch ($action) {
 	*	case 'inventory-search:
+	*		- Requests for $q to be found in the inventory
+	*		NOTE $q can be itemID, lotnbr, serialnbr, UPC, Customer ItemID, Vendor ItemID
 	*		DBNAME=$config->dplusdbname
 	*		INVSEARCH
 	*		QUERY=$q
 	*		break;
 	*	case 'physical-count':
+	*		- Sends the # of units found for this item as bin location
 	*		DBNAME=$config->dplusdbname
 	*		ITEMTAG
 	*		ITEMID=$itemID
