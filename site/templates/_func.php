@@ -1,6 +1,7 @@
 <?php
 	use Dplus\ProcessWire\DplusWire;
 	use Dplus\Dpluso\ScreenFormatters\TableScreenMaker;
+	use Purl\Url;
 
 	function renderNavTree($items, $maxDepth = 3) {
 		// if we've been given just one item, convert it to an array of items
@@ -111,44 +112,20 @@
 /* =============================================================
    URL FUNCTIONS
  ============================================================ */
-	function paginate($url, $page, $insertafter, $hash) { // DEPRECATED 3/5/2018 MOVED TO Paginator
-		if (strpos($url, 'page') !== false) {
-			$regex = "((page)\d{1,3})";
-			if ($page > 1) { $replace = "page".$page; } else {$replace = ""; }
-			$newurl = preg_replace($regex, $replace, $url);
-		} else {
-			$insertafter = str_replace('/', '', $insertafter)."/";
-			$regex = "(($insertafter))";
-			if ($page > 1) { $replace = $insertafter."page".$page."/";} else {$replace = $insertafter; }
-			$newurl = preg_replace($regex, $replace, $url);
-		}
-		return $newurl . $hash;
+	 function get_localhostURL($path) {
+		 $config = DplusWire::wire('config');
+		 $url = new Url('127.0.0.1');
+		 
+		 // IF the path provided contains the httpd directory path
+		 if (strpos($path, $config->directory_httpd) !== false) {
+			 $url->path = $path;
+		 } else {
+			 $url->path = $config->directory_httpd . $path;
+		 }
+		 return $url->getUrl();
 	 }
 
-/* =============================================================
-   ORDERS FUNCTIONS
- ============================================================ */
-	/**
-	 * Returns HTML Tracking Link
-	 * @param  string $servicetype Ex. Fedex, UPS, USPS
-	 * @param  string $tracknbr    Tracking Number
-	 * @return string             URL
-	 */
-	function generate_trackingurl($carrier, $tracknbr) {
-		$href = false;
-		if (strpos(strtolower($servicetype), 'fed') !== false) {
-			$href = "https://www.fedex.com/apps/fedextrack/?action=track&trackingnumber=$tracknbr&cntry_code=us";
-		} elseif (strpos(strtolower($servicetype), 'ups') !== false) {
-			$href = "http://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=$tracknbr&loc=en_us";
-		} elseif (strpos(strtolower($servicetype), 'gro') !== false) {
-			$href = "http://wwwapps.ups.com/WebTracking/track?track=yes&trackNums=$tracknbr&loc=en_us";
-		} elseif (strpos(strtolower($servicetype), 'usps') !== false) {
-			$href = "https://tools.usps.com/go/TrackConfirmAction?tLabels=$tracknbr";
-		} elseif (strpos(strtolower($servicetype), 'spee') !== false) {
-			$href = "http://packages.speedeedelivery.com/index.php?barcodes=$tracknbr";
-		}
-		return $href;
-	}
+
 
 /* =============================================================
   FILE FUNCTIONS

@@ -165,6 +165,14 @@ $(function() {
 			error = true;
 			title = 'Error';
 			msg = 'Please Fill in the From Bin';
+		} else if (whsesession.whse.bins.arranged == 'list' && whsesession.whse.bins.bins[input_frombin.val()] === undefined) {
+			error = true;
+			title = 'Invalid Bin ID';
+			msg = 'Please Choose a valid From bin';
+		} else if (whsesession.whse.bins.arranged == 'list' && input_frombin.val() < whsesession.whse.bins.bins.from || input_frombin.val() > whsesession.whse.bins.bins.through) {
+			error = true;
+			title = 'Invalid Bin ID';
+			msg = 'From Bin must be between ' + whsesession.whse.bins.bins.from + ' and ' + whsesession.whse.bins.bins.through;
 		}
 		return new SwalError(error, title, msg);
 	}

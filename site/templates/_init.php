@@ -10,7 +10,6 @@
  * we are using it just to include another file with shared functions.
  *
  */
-use Dplus\Base\Curl;
 
 	// APPLICATION CONFIGS
 	include_once($config->paths->templates."configs/dpluso-config.php");
