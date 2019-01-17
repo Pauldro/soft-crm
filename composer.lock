@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "93bcffb6159ac52e1898d9d3cedfe0aa",
@@ -412,12 +412,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dpluso-warehouse.git",
-                "reference": "70477dabcb29bdd6acd8a2153ab5cd6e992fe398"
+                "reference": "d7950c1a3f4530b55a7627bbc3416c26ed026a5b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dpluso-warehouse/zipball/70477dabcb29bdd6acd8a2153ab5cd6e992fe398",
-                "reference": "70477dabcb29bdd6acd8a2153ab5cd6e992fe398",
+                "url": "https://api.github.com/repos/cptechinc/dpluso-warehouse/zipball/d7950c1a3f4530b55a7627bbc3416c26ed026a5b",
+                "reference": "d7950c1a3f4530b55a7627bbc3416c26ed026a5b",
                 "shasum": ""
             },
             "type": "library",
@@ -438,7 +438,7 @@
                 "dplus-warehouse",
                 "dpluso-warehouse"
             ],
-            "time": "2019-01-10T16:31:22+00:00"
+            "time": "2019-01-15T20:23:11+00:00"
         },
         {
             "name": "eoghanobrien/php-simple-mail",
