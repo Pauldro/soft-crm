@@ -95,6 +95,13 @@
 			$history[$binID][$item->itemid] = $itemhistory;
 			$session->physicalcounthistory = json_encode($history);
 			break;
+		case 'bin-inquiry':
+			$binID = $input->$requestmethod->text('binID');
+			$data = array("DBNAME=$config->dplusdbname", 'BININQUIRY', "BINID=$binID");
+			$url = new Purl\Url($input->$requestmethod->text('page'));
+			$url->query->set('binID', $binID);
+			$session->loc = $url->getUrl();
+			break;
 	}
 	
 	write_dplusfile($data, $filename);

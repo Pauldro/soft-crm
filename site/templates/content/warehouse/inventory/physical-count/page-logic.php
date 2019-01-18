@@ -30,42 +30,13 @@
 
 				if ($input->get->scan) {
 					$itemquery = $input->get->text('scan');
-
-					// HOW TO GROUP ITEM RESULTS CAN BE CHANGED IN PROCESSWIRE /config/warehouse/inventory/
-					switch ($inventory_results_grouping) {
-						case 'distinct-item':
-							$resultscount = InventorySearchItem::count_distinct_itemid(session_id());
-							break;
-						case 'x-ref':
-							$resultscount = InventorySearchItem::count_distinct_xorigin(session_id());
-							break;
-						case 'all':
-							$resultscount = InventorySearchItem::count_all(session_id());
-							break;
-						default:
-							$resultscount = InventorySearchItem::count_distinct_xorigin(session_id());
-							break;
-					}
-
+					$resultscount = $functionconfig->inventory_haslotserial ? InventorySearchItem::count_all(session_id()) : InventorySearchItem::count_distinct_itemid(session_id());
+					
 					if ($resultscount == 1) {
 						$item = InventorySearchItem::load_first(session_id());
 						$page->body = __DIR__."/physical-count-form.php";
 					} else {
-						// HOW TO GROUP ITEM RESULTS CAN BE CHANGED IN PROCESSWIRE /config/warehouse/inventory/
-						switch ($inventory_results_grouping) {
-							case 'distinct-item':
-								$items = InventorySearchItem::get_all_distinct_itemid(session_id());
-								break;
-							case 'x-ref':
-								$items = InventorySearchItem::get_all_distinct_xorigin(session_id());
-								break;
-							case 'all':
-								$items = InventorySearchItem::get_all(session_id());
-								break;
-							default:
-								$items = InventorySearchItem::get_all_distinct_xorigin(session_id());
-								break;
-						}
+						$items = InventorySearchItem::get_all_distinct_itemid(session_id());
 						$page->body = __DIR__."/inventory-results.php";
 					}
 				} elseif (!empty($input->get->serialnbr) | !empty($input->get->lotnbr) | !empty($input->get->itemID) | !empty($input->get->itemid)) {

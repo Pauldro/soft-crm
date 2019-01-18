@@ -1,21 +1,17 @@
 <?php 
 	/**
-	 * Find Item Results
+	 * Bin Inquiry Results
 	 * 1. List Out all the distinct items found
 	 * 2. If item is Lotted Or Serialized DON'T list bin ID, but show total quantity, 
 	 *   1. Do a show / hide for theses individual items.
 	 */
-	
-	if ($input->get->scan) {
-		$title = "$resultscount Item";
-		$title .= ($resultscount == 1 ) ? '' : 's';
-	}
+	$title = "$resultscount Item";
+	$title .= ($resultscount == 1 ) ? '' : 's';
 ?>
 <div class="form-group">
-	<?php include __DIR__."/item-form.php"; ?>
+	<?php include __DIR__."/bin-form.php"; ?>
 </div>
-
-<?php if ($input->get->scan) : ?>
+<?php if ($input->get->binID) : ?>
 	<h3><?= $title; ?></h3>
 	<div class="list-group">
 		<?php if ($resultscount) : ?>

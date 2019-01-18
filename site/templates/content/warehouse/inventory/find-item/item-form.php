@@ -1,3 +1,8 @@
+<div class="form-group">
+	<a href="<?= $page->parent->url; ?>" class="btn btn-primary not-round">
+		<i class="fa fa-arrow-left" aria-hidden="true"></i> Return to Inventory Menu
+	</a>
+</div>
 <form action="<?= $page->parent->child('name=redir')->url; ?>" method="post" class="allow-enterkey-submit">
 	<input type="hidden" name="action" value="inventory-search">
 	<input type="hidden" name="page" value="<?= $page->fullURL->getUrl(); ?>">

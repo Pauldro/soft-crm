@@ -5328,6 +5328,33 @@
 			return $sql->fetchColumn();
 		}
 	}
+	
+	/**
+	 * Returns the total Qty of this item ID at provided bin
+	 * @param  string $sessionID Session Identifier
+	 * @param  string $itemID    Item ID
+	 * @param  string $binID     Bin ID to grab Item
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return int               Number of results for this session
+	 */
+	function get_invsearch_total_qty_itemid($sessionID, $itemID, $binID = '', $debug = false) {
+		$q = (new QueryBuilder())->table('invsearch');
+		$q->field($q->expr('SUM(qty)'));
+		$q->where('sessionid', $sessionID);
+		$q->where('itemid', $itemID);
+
+		if (!empty($binID)) {
+			$q->where('bin', $binID);
+		}
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
 
 	/**
 	 * Returns the Number of results for this session and Lot Number / Serial Number
@@ -5388,6 +5415,33 @@
 		$q = (new QueryBuilder())->table('invsearch');
 		$q->where('sessionid', $sessionID);
 		$q->group('itemid, xorigin');
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'InventorySearchItem');
+			return $sql->fetchAll();
+		}
+	}
+	
+	/**
+	 * Returns an array of InventorySearchItem of invsearch results
+	 * @param  string $sessionID Session Identifier
+	 * @param  string $itemID    Item ID
+	 * @param  string $binID     Bin ID
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return array             [InventorySearchItem]
+	 */
+	function get_all_invsearchitems_lotserial($sessionID, $itemID, $binID, $debug = false) {
+		$q = (new QueryBuilder())->table('invsearch');
+		$q->where('sessionid', $sessionID);
+		$q->where('itemid', $itemID);
+		
+		if (!empty($binID)) {
+			$q->where('bin', $binID);
+		}
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
