@@ -20,12 +20,14 @@
 	*
 	* switch ($action) {
 	*	case 'get-order-notes':
+	*		- Loads the Sales Order Notes for a Line
 	*		DBNAME=$config->dplusdbname
 	*		LQNOTE=SORD
 	*		KEY1=$ordn
 	*		KEY2=$linenbr
 	*		break;
 	*	case 'get-quote-notes':
+	*		- Loads the Quote Notes for a Line
 	*		DBNAME=$config->dplusdbname
 	*		LQNOTE=QUOT
 	*		KEY1=$qnbr
@@ -36,6 +38,7 @@
 	*		LOAD CART NOTES
 	*		break;
 	*	case 'edit-note':
+	*		- Edits the QNote for a Line
 	*		DBNAME=>$config->dplusdbname
 	*		RQNOTE=$rectype
 	*		KEY1=$key1,
@@ -47,6 +50,7 @@
 	*		FORM5=$form5
 	*		break;
 	*	case 'add-note':
+	*		- Adds QNote for a Line
 	*		DBNAME=>$config->dplusdbname
 	*		RQNOTE=$rectype
 	*		KEY1=$key1,
