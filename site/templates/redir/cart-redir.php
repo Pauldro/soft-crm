@@ -137,8 +137,8 @@
 				$data = $qtypercase->generate_multipleitemdata($data, $itemids, $case_qtys, $bottle_qtys);
 			} else {
 				$qtys = $input->$requestmethod->qty;
-				for ($i = 0; $i < sizeof($items); $i++) {
-					$itemID = str_pad(DplusWire::wire('sanitizer')->text($items[$i]), 30, ' ');
+				for ($i = 0; $i < sizeof($itemids); $i++) {
+					$itemID = str_pad(DplusWire::wire('sanitizer')->text($itemidss[$i]), 30, ' ');
 					$qty = DplusWire::wire('sanitizer')->text($qtys[$i]);
 					$qty = !empty($qty) ? $qty : "1";
 					$data[] = "ITEMID={$itemID}QTY=$qty";
