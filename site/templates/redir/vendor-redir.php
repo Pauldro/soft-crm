@@ -9,6 +9,7 @@
 
 	$session->fromredirect = $page->url;
 	$vendorID = $input->$requestmethod->text('vendorID');
+	
 	/**
 	* VENDOR REDIRECT
 	* @param string $action
