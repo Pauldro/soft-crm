@@ -9,7 +9,7 @@
 
 	$session->fromredirect = $page->url;
 	$vendorID = $input->$requestmethod->text('vendorID');
-	
+
 	/**
 	* VENDOR REDIRECT
 	* @param string $action
@@ -18,31 +18,37 @@
 	*
 	* switch ($action) {
 	* 	case 'vi-buttons': 760p
+	* 		- Loads the Permissioned VI functions
 	* 		DBNAME=$config->dplusdbname
 	*		VIBUTTONS
 	*		break;
 	*	case 'vi-vendor': 759p  //AUTO CALLS vi-buttons and vi-shipfromlist
+	*		- Loads the VI Vendor info for the Vendor page
 	*		DBNAME=$config->dplusdbname
 	*		VIVENDOR
 	*		VENDID=$vendorID
 	* 		break;
 	* 	case 'vi-shipfrom-list'
+	* 		- Loads the Vendor Shipfroms
 	* 		DBNAME=$config->dplusdbname
 	*		VISHIPFROMLIST
 	*		VENDID=$vendorID
 	* 		break;
 	*	case 'vi-payments'
+	*		- Loads the Vendor Payments
 	* 		DBNAME=$config->dplusdbname
 	*		VIPAYMENT n2zz764p
 	*		VENDID=$vendorID
 	* 		break;
 	*	case 'vi-shipfrom'
+	*		- Loads the Vendor Shipfrom Info
 	* 		DBNAME=$config->dplusdbname
 	*		VISHIPFROMINFO n2zz761p
 	*		VENDID=$vendorID
 	*		SHIPID=
 	* 		break;
 	*	case 'vi-purchase-history'
+	*		- Loads the Vendor Purchase History
 	* 		DBNAME=$config->dplusdbname
 	*		VIPURCHHIST n2zz766p
 	*		VENDID=$vendorID
@@ -50,51 +56,60 @@
 	*		DATE=
 	* 		break;
 	*	case 'vi-purchaseorder'
+	*		- Loads the Vendor Purchase Orders Screen
 	* 		DBNAME=$config->dplusdbname
 	*		VIPURCHORDR n2zz767p
 	*		VENDID=$vendorID
 	*		SHIPID=
 	* 		break;
 	*	case 'vi-contact'
+	*		- Loads the Vendor Contact Info
 	* 		DBNAME=$config->dplusdbname
 	*		VICONTACT n2zz768p
 	*		VENDID=$vendorID
 	*		SHIPID=
 	* 		break;
 	*	case 'vi-costing'
+	*		- Loads the Vendor Cost for an Item
 	* 		DBNAME=$config->dplusdbname
 	*		VICOST n2zz770p
 	*		VENDID=$vendorID
 	*		ITEMID=
 	* 		break;
 	*	case 'vi-unreleased'
+	*		- Loads the Vendor Unreleased Purchase Orders
 	* 		DBNAME=$config->dplusdbname
 	*		VIUNRELEASED n2zz772p
 	*		VENDID=$vendorID
 	*		SHIPID=
 	* 		break;
 	*	case 'vi-uninvoiced'
+	*		- Loads the Vendor Uninvoiced Purchase Orders
 	* 		DBNAME=$config->dplusdbname
 	*		VIUNINVOICED n2zz773p
 	*		VENDID=$vendorID
 	* 		break;
 	* 	case 'vi-open-invoices'
+	* 		- Loads the Vendor Open Invoices
 	* 		DBNAME=$config->dplusdbname
 	*		VIOPENINV n2zz765p
 	*		VENDID=$vendorID
 	* 		break;
 	* 	case 'vi-24monthsummary'
+	* 		- Loads the Vendor 24-month Summary
 	* 		DBNAME=$config->dplusdbname
 	*		VIMONTHSUM n2zz774p
 	*		VENDID=$vendorID
 	* 		break;
 	* 	case 'vi-notes'
+	* 		- Loads the Vendor Notes
 	* 		DBNAME=$config->dplusdbname
 	*		VINOTES
 	*		VENDID=$vendorID
 	*		SHIPID=
 	* 		break;
 	* 	case 'vi-docview'
+	* 		- Loads the Vendor Documents
 	* 		DBNAME=$config->dplusdbname
 	*		DOCVIEW n2zz735p
 	*		FLD1CO=VI
