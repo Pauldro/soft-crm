@@ -17,7 +17,6 @@
         <script src="<?= hash_templatefile('scripts/libs/jquery.js'); ?>"></script>
 		<script src="<?= hash_templatefile('scripts/libs/moment.js'); ?>"></script>
 		<script>moment().format();</script>
-		<?php include $config->paths->content.'common/phpjs/js-config.js.php'; ?>
 	</head>
     <body class="fuelux">
 		<?php include ($config->paths->content.'nav/nav-yt.php'); ?>
