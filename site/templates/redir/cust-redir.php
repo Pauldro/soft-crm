@@ -312,8 +312,6 @@
 				"TITLE=".$input->$requestmethod->text('contact-title'),
 				"NOTES="
 			);
-			echo json_encode($data);
-			exit;
 			$session->loc = $config->pages->customer.'redir/?action=load-new-customer';
 			break;
 		case 'load-new-customer':
