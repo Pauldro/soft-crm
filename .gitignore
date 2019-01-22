@@ -27,6 +27,7 @@ project.cson
 site/templates/config/customer/
 index.php
 /vendor
+site/templates/twig/cache/
 
 # Customer Configs
 vendor/cptechinc/dpluso-screen-formatters/src/default

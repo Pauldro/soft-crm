@@ -1,0 +1,5 @@
+<select name="{{ name }}" class="{{ class|replace({'.': ' ', '|': " "}) }}">
+	{% for value, label in options %}
+		<option value="{{ value }}" {{ (value == selected) ? 'selected' : '' }}>{{ label }}</option>
+	{% endfor %}
+</select>

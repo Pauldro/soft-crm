@@ -42,7 +42,8 @@
         "cptechinc/dplus-content": "dev-master",
         "cptechinc/dpluso-screen-formatters": "dev-master",
         "cptechinc/dplus-file-services": "dev-master",
-        "cptechinc/dpluso-warehouse": "dev-master"
+        "cptechinc/dpluso-warehouse": "dev-master",
+        "twig/twig": "^2.0"
     },
     "autoload": {
         "files": [ 

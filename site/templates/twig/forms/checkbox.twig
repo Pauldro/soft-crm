@@ -1,0 +1,10 @@
+{% if options is iterable %}
+	{% for value, label in options %}
+		<div class="{{ (value in disabled) ? 'disabled' : '' }}">
+			<label>
+				<input type="checkbox" value="{{ value }}">
+				{{ label }}
+			</label>
+		</div>
+	{% endfor %}
+{% endif %}
