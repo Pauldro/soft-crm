@@ -134,7 +134,7 @@
 
 	switch ($action) {
 		case 'load-quotes':
-			$data = array('DBNAME' => $config->dplusdbname, 'LOADREPQUOTEHED' => false);
+			$data = array("DBNAME=$config->dplusdbname", 'LOADREPQUOTEHED');
 			$session->loc = $config->pages->ajax."load/quotes/?qnbr=".$linkaddon;
 			$session->{'quotes-loaded-for'} = $user->loginid;
 			$session->{'quotes-updated'} = date('m/d/Y h:i A');
@@ -149,7 +149,7 @@
 			}
 			$url->query = "qnbr=".$linkaddon;
 			$session->loc = $url->getUrl();
-			$data = array('DBNAME' => $config->dplusdbname, 'LOADCUSTQUOTEHEAD' => false, 'TYPE' => 'QUOTE', 'CUSTID' => $custID);
+			$data = array("DBNAME=$config->dplusdbname", 'LOADCUSTQUOTEHEAD', "TYPE=QUOTE", "CUSTID=$custID");
 			$session->{'quotes-loaded-for'} = $custID;
 			$session->{'quotes-updated'} = date('m/d/Y h:i A');
 			break;
@@ -157,7 +157,7 @@
 			$qnbr = $input->get->text('qnbr');
 			$custID = Quote::find_custid(session_id(), $qnbr, false);
 
-			$data = array('DBNAME' => $config->dplusdbname, 'LOADQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'CUSTID' => $custID);
+			$data = array("DBNAME=$config->dplusdbname", 'LOADQUOTEDETAIL', "QUOTENO=$qnbr", "CUSTID=$custID");
 
 			if ($input->get->lock) {
 				$session->loc = $config->pages->editquote."?qnbr=".$qnbr;
@@ -180,7 +180,7 @@
 			$date = date('Ymd');
 			$time = date('Hi');
 			$custID = Quote::find_custid(session_id(), $qnbr, false);
-			$data = array('DBNAME' => $config->dplusdbname, 'EDITQUOTE' => false, 'QUOTENO' => $qnbr);
+			$data = array("DBNAME=$config->dplusdbname", 'EDITQUOTE', "QUOTENO=$qnbr");
 			$session->loc= $config->pages->editquote."?qnbr=".$qnbr;
 			if ($input->get->quoteorigin) {
 				$session->panelorigin = 'quotes';
@@ -194,7 +194,7 @@
 			$qnbr = get_createdordn(session_id());
 			$date = date('Ymd');
 			$time = date('Hi');
-			$data = array('DBNAME' => $config->dplusdbname, 'EDITQUOTE' => $qnbr, 'QUOTENO' => $qnbr);
+			$data = array("DBNAME=$config->dplusdbname", "EDITQUOTE=$qnbr", "QUOTENO=$qnbr");
 			$session->loc = $config->pages->editquote."?qnbr=".$qnbr;
 			break;
 		case 'update-quotehead':
@@ -220,12 +220,12 @@
 			$haschanges = $quote->has_changes();
 			$session->sql = $quote->update();
 
-			$data = array('DBNAME' => $config->dplusdbname, 'UPDATEQUOTEHEAD' => false, 'QUOTENO' => $qnbr);
+			$data = array("DBNAME=$config->dplusdbname", 'UPDATEQUOTEHEAD', "QUOTENO=$qnbr");
 
 			if ($input->$requestmethod->exitquote) {
 				$session->loc = $config->pages->edit."quote/confirm/?qnbr=".$qnbr.$linkaddon;
 				if (!$haschanges) {
-					$data = array('UNLOCKING QUOTE' => false);
+					$data = array('UNLOCKING QUOTE');
 				}
 			} else {
 				$session->loc = $config->pages->editquote."?qnbr=".$qnbr.$linkaddon;
@@ -236,7 +236,7 @@
 			$itemID = $input->$requestmethod->text('itemID');
 			$fororder = $input->get->order ? true : false;
 			$qty = determine_qty($input, $requestmethod, $itemID);
-			$data = array('DBNAME' => $config->dplusdbname, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'ITEMID' => $itemID, 'QTY' => "$qty");
+			$data = array("DBNAME=$config->dplusdbname", 'UPDATEQUOTEDETAIL', "QUOTENO=$qnbr", "ITEMID=$itemID", "QTY=$qty");
 			if ($input->$requestmethod->page) {
 				$session->loc = $input->$requestmethod->text('page');
 			} else {
@@ -277,7 +277,7 @@
 			$quotedetail->set('spcord', 'S');
 			$session->sql = $quotedetail->create();
 			$fororder = $input->get->order ? true : false;
-			$data = array('DBNAME' => $config->dplusdbname, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => '0', 'ITEMID' => 'N', 'QTY' => $qty);
+			$data = array("DBNAME=$config->dplusdbname", 'UPDATEQUOTEDETAIL', "QUOTENO=$qnbr", "LINENO=0", "ITEMID=N", "QTY=$qty");
 			if ($input->$requestmethod->page) {
 				$session->loc = $input->$requestmethod->text('page');
 			} else {
@@ -299,7 +299,7 @@
 			$quotedetail->set('rshipdate', $input->$requestmethod->text('rqstdate'));
 			$session->sql = $quotedetail->update();
 
-			$data = array('DBNAME' => $config->dplusdbname, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'CUSTID' => $custID);
+			$data = array("DBNAME=$config->dplusdbname", 'UPDATEQUOTEDETAIL', "QUOTENO=$qnbr", "LINENO=$linenbr", "CUSTID=$custID");
 
 			if ($input->$requestmethod->page) {
 				$session->loc = $input->$requestmethod->text('page');
@@ -337,7 +337,7 @@
 			$custID = Quote::find_custid(session_id(), $qnbr);
 			$session->sql = $quotedetail->update();
 
-			$data = array('DBNAME' => $config->dplusdbname, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'CUSTID' => $custID);
+			$data = array("DBNAME=$config->dplusdbname", 'UPDATEQUOTEDETAIL', "QUOTENO=$qnbr", "LINENO=$linenbr", "CUSTID=$custID");
 			if ($input->$requestmethod->page) {
 				$session->loc = $input->$requestmethod->text('page');
 			} else {
@@ -354,7 +354,7 @@
 			$quotedetail->set('linenbr', $input->$requestmethod->text('linenbr'));
 			$session->sql = $quotedetail->update();
 			// $custID = Quote::find_custid(session_id(), $qnbr, false);
-			$data = array('DBNAME' => $config->dplusdbname, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'QTY' => '0', 'CUSTID' => $custID);
+			$data = array("DBNAME=$config->dplusdbname", 'UPDATEQUOTEDETAIL', "QUOTENO=$qnbr", "LINENO=$linenbr", "QTY=0", "CUSTID=$custID");
 
 			if ($input->$requestmethod->page) {
 				$session->loc = $input->$requestmethod->text('page');
@@ -370,7 +370,7 @@
 			$quotedetail->set('quotqty', '0');
 			$session->sql = $quotedetail->update();
 			$custID = Quote::find_custid(session_id(), $qnbr, false);
-			$data = array('DBNAME' => $config->dplusdbname, 'UPDATEQUOTEDETAIL' => false, 'QUOTENO' => $qnbr, 'LINENO' => $linenbr, 'QTY' => '0', 'CUSTID' => $custID);
+			$data = array("DBNAME=$config->dplusdbname", 'UPDATEQUOTEDETAIL', "QUOTENO=$qnbr", "LINENO=$linenbr", "QTY=0", "CUSTID=$custID");
 
 			if ($input->get->page) {
 				$session->loc = $input->get->text('page');
@@ -381,7 +381,7 @@
 			break;
 		case 'unlock-quote':
 			$qnbr = $input->get->text('qnbr');
-			$data = array('UNLOCKING QUOTE' => false);
+			$data = array('UNLOCKING QUOTE');
 			$session->loc = $config->pages->edit."quote/confirm/?qnbr=".$qnbr.$linkaddon;
 			break;
 		case 'send-quote-to-order':
@@ -400,7 +400,7 @@
 				$session->sql = $quotedetail->update();
 			}
 			$session->custID = $custID = Quote::find_custid(session_id(), $qnbr, false);
-			$data = array('DBNAME' => $config->dplusdbname, 'QUOTETOORDER' => false, 'QUOTENO' => $qnbr, 'LINENO' => 'ALL');
+			$data = array("DBNAME=$config->dplusdbname", 'QUOTETOORDER', "QUOTENO=$qnbr", "LINENO=ALL");
 			$session->loc = $config->pages->orders."redir/?action=edit-new-order";
 			break;
 		case 'send-dplus-file':
@@ -408,7 +408,7 @@
 			break;
 	}
 
-	writedplusfile($data, $filename);
+	write_dplusfile($data, $filename);
 	curl_redir("127.0.0.1/cgi-bin/".$config->cgis['default']."?fname=$filename");
 	if (!empty($session->get('loc')) && !$config->ajax) {
 		header("Location: $session->loc");

@@ -122,18 +122,18 @@
 
 	switch ($action) {
 		case 'vi-buttons': //NOT USED WILL BE AUTOCALLED BY vend-vendor
-			$data = array('DBNAME' => $config->dplusdbname, 'VIBUTTONS' => false);
+			$data = array("DBNAME=$config->dplusdbname", 'VIBUTTONS');
 			break;
 		case 'vi-vendor':
-			$data = array('DBNAME' => $config->dplusdbname, 'VIVENDOR' => false, 'VENDID' => $vendorID);
+			$data = array("DBNAME=$config->dplusdbname", 'VIVENDOR', "VENDID=$vendorID");
 			$session->loc = $config->pages->vendorinfo.urlencode($vendorID)."/";
 			break;
 		case 'vi-shipfrom-list':
-			$data = array('DBNAME' => $config->dplusdbname, 'VISHIPFROMLIST' => $vendorID);
+			$data = array("DBNAME=$config->dplusdbname", "VISHIPFROMLIST=$vendorID");
 			break;
 		case 'vi-shipfrom':
 			$shipfromID = $input->get->text('shipfromID');
-			$data = array('DBNAME' => $config->dplusdbname, 'VISHIPFROMINFO' => false, 'VENDID' => $vendorID, 'SHIPID' => $shipfromID);
+			$data = array("DBNAME=$config->dplusdbname", 'VISHIPFROMINFO', "VENDID=$vendorID", "SHIPID=$shipfromID");
 			// USE THIS for cases where buttons will be grabbed twice
 			// if (!empty($input->get->text('shipfromID'))) {
 			// 	$data['SHIPID'] = $input->get->text('shipfromID');
@@ -141,63 +141,63 @@
 			$session->loc = $config->pages->vendorinfo.urlencode($vendorID)."/shipfrom-".urlencode($shipfromID);
 			break;
 		case 'vi-open-invoices':
-			$data = array('DBNAME' => $config->dplusdbname, 'VIOPENINV' => false, 'VENDID' => $vendorID);
+			$data = array("DBNAME=$config->dplusdbname", 'VIOPENINV', "VENDID=$vendorID");
 			break;
 		case 'vi-payments':
-			$data = array('DBNAME' => $config->dplusdbname, 'VIPAYMENT' => false, 'VENDID' => $vendorID);
+			$data = array("DBNAME=$config->dplusdbname", 'VIPAYMENT', "VENDID=$vendorID");
 			break;
 		case 'vi-purchase-history':
 			$date = $input->post->text('date');
 			$session->date = $date;
 			$startdate = date('Ymd', strtotime($date));
-			$data = array('DBNAME' => $config->dplusdbname, 'VIPURCHHIST' => false, 'VENDID' => $vendorID, 'DATE' => $startdate);
+			$data = array("DBNAME=$config->dplusdbname", 'VIPURCHHIST', "VENDID=$vendorID", "DATE=$startdate");
 			if (!empty($input->post->shipfromID)) {
 				$data['SHIPID'] = $input->post->text('shipfromID');
 			}
 			break;
 		case 'vi-purchase-orders':
-			$data = array('DBNAME' => $config->dplusdbname, 'VIPURCHORDR' => false, 'VENDID' => $vendorID);
+			$data = array("DBNAME=$config->dplusdbname", 'VIPURCHORDR', "VENDID=$vendorID");
 			if (!empty($input->post->shipfromID)) {
 				$data['SHIPID'] = $input->post->text('shipfromID');
 			}
 			break;
 		case 'vi-contact':
-			$data = array('DBNAME' => $config->dplusdbname, 'VICONTACT' => false, 'VENDID' => $vendorID);
+			$data = array("DBNAME=$config->dplusdbname", 'VICONTACT', "VENDID=$vendorID");
 			if (!empty($input->post->shipfromID)) {
 				$data['SHIPID'] = $input->post->text('shipfromID');
 			}
 			break;
 		case 'vi-notes':
-			$data = array('DBNAME' => $config->dplusdbname, 'VINOTES' => false, 'VENDID' => $vendorID);
+			$data = array("DBNAME=$config->dplusdbname", 'VINOTES', "VENDID=$vendorID");
 			if (!empty($input->post->shipfromID)) {
 				$data['SHIPID'] = $input->post->text('shipfromID');
 			}
 			break;
 		case 'vi-costing':
 			$itemID = $input->get->text('itemID');
-			$data = array('DBNAME' => $config->dplusdbname, 'VICOST' => false, 'VENDID' => $vendorID, 'ITEMID' => $itemID);
+			$data = array("DBNAME=$config->dplusdbname", 'VICOST', "VENDID=$vendorID", "ITEMID=$itemID");
 			break;
 		case 'vi-unreleased-purchase-orders':
-			$data = array('DBNAME' => $config->dplusdbname, 'VIUNRELEASED' => false, 'VENDID' => $vendorID);
+			$data = array("DBNAME=$config->dplusdbname", 'VIUNRELEASED', "VENDID=$vendorID");
 			if (!empty($input->post->shipfromID)) {
 				$data['SHIPID'] = $input->post->text('shipfromID');
 			}
 			break;
 		case 'vi-uninvoiced':
-			$data = array('DBNAME' => $config->dplusdbname, 'VIUNINVOICED' => false, 'VENDID' => $vendorID);
+			$data = array("DBNAME=$config->dplusdbname", 'VIUNINVOICED', "VENDID=$vendorID");
 			break;
 		case 'vi-24monthsummary':
-			$data = array('DBNAME' => $config->dplusdbname, 'VIMONTHSUM' => false, 'VENDID' => $vendorID);
+			$data = array("DBNAME=$config->dplusdbname", 'VIMONTHSUM', "VENDID=$vendorID");
 			if (!empty($input->post->shipfromID)) {
 				$data['SHIPID'] = $input->post->text('shipfromID');
 			}
 			break;
 		case 'vi-docview':
-			$data = array('DBNAME' => $config->dplusdbname, 'VIDOCVIEW' => false, 'FLD1CD' => 'VI', 'FLD1DATA' => $vendorID);
+			$data = array("DBNAME=$config->dplusdbname", 'VIDOCVIEW', "FLD1CD=VI", "FLD1DATA=$vendorID");
 			break;
 	}
 
-	writedplusfile($data, $filename);
+	write_dplusfile($data, $filename);
 	curl_redir("127.0.0.1/cgi-bin/".$config->cgis['default']."?fname=$filename");
 	if (!empty($session->get('loc')) && !$config->ajax) {
 		header("Location: $session->loc");
