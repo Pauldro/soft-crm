@@ -273,45 +273,47 @@
 			$shipto->create_custpermpermission($user->loginid);
 
 			$data = array(
-				'DBNAME' => $config->dplusdbname,
-				'NEWCUSTOMER' => false,
-				'BILLTONAME' => $customer->name,
-				'BILLTOADDRESS1' => $customer->addr1,
-				'BILLTOADDRESS2' => $customer->addr2,
-				'BILLTOADDRESS3' => $input->$requestmethod->text('billto-address3'),
-				'BILLTOCITY' => $customer->city,
-				'BILLTOSTATE' => $customer->state,
-				'BILLTOZIP' => $customer->zip,
-				'BILLTOCOUNTRY' => $input->$requestmethod->text('billto-country'),
-				'BILLTOPHONE' => str_replace('-', '', $customer->phone),
-				'BILLTOFAX' => str_replace('-', '', $customer->faxnbr),
-				'BILLTOEMAIL' => $customer->email,
-				'SHIPTOID' => $shipto->shiptoid,
-				'SHIPTONAME' => $shipto->name,
-				'SHIPTOADDRESS1' => $shipto->addr1,
-				'SHIPTOADDRESS2' => $shipto->addr2,
-				'SHIPTOADDRESS3' => $input->$requestmethod->text('shipto-address3'),
-				'SHIPTOCITY' => $shipto->city,
-				'SHIPTOSTATE' => $shipto->state,
-				'SHIPTOZIP' => $shipto->zip,
-				'SHIPTOCOUNTRY' => $input->$requestmethod->text('shipto-country'),
-				'SHIPTOPHONE' => str_replace('-', '', $shipto->phone),
-				'SHIPTOFAX' => str_replace('-', '', $shipto->faxnbr),
-				'SHIPTOEMAIL' => $shipto->email,
-				'SALESPERSON1' => $input->$requestmethod->text('salesperson1'),
-				'SALESPERSON2' => $input->$requestmethod->text('salesperson2'),
-				'SALESPERSON3' => $input->$requestmethod->text('salesperson3'),
-				'PRICECODE' => $input->$requestmethod->text('pricecode'),
-				'CONTACT' => $customer->contact,
-				'ARCONTACT' => $input->$requestmethod->text('arcontact') == 'Y' ? "Y" : "N",
-				'DUNCONTACT' => $input->$requestmethod->text('duncontact') == 'Y' ? "Y" : "N",
-				'BUYCONTACT' => $input->$requestmethod->text('buycontact'),
-				'CERCONTACT' => $input->$requestmethod->text('cercontact') == 'Y' ? "Y" : "N",
-				'ACKCONTACT' => $input->$requestmethod->text('ackcontact') == 'Y' ? "Y" : "N",
-				'EXTENSION' => $input->$requestmethod->text('contact-ext'),
-				'TITLE' => $input->$requestmethod->text('contact-title'),
-				'NOTES' => ''
+				"DBNAME=$config->dplusdbname",
+				'NEWCUSTOMER',
+				"BILLTONAME=$customer->name",
+				"BILLTOADDRESS1=$customer->addr1",
+				"BILLTOADDRESS2=$customer->addr2",
+				"BILLTOADDRESS3=".$input->$requestmethod->text('billto-address3'),
+				"BILLTOCITY=$customer->city",
+				"BILLTOSTATE=$customer->state",
+				"BILLTOZIP=$customer->zip",
+				"BILLTOCOUNTRY=".$input->$requestmethod->text('billto-country'),
+				"BILLTOPHONE=".str_replace('-', '', $customer->phone),
+				"BILLTOFAX=".str_replace('-', '', $customer->faxnbr),
+				"BILLTOEMAIL=$customer->email",
+				"SHIPTOID=$shipto->shiptoid",
+				"SHIPTONAME=$shipto->name",
+				"SHIPTOADDRESS1=$shipto->addr1",
+				"SHIPTOADDRESS2=$shipto->addr2",
+				"SHIPTOADDRESS3=".$input->$requestmethod->text('shipto-address3'),
+				"SHIPTOCITY=$shipto->city",
+				"SHIPTOSTATE=$shipto->state",
+				"SHIPTOZIP=$shipto->zip",
+				"SHIPTOCOUNTRY=".$input->$requestmethod->text('shipto-country'),
+				"SHIPTOPHONE=".str_replace('-', '', $shipto->phone),
+				"SHIPTOFAX=".str_replace('-', '', $shipto->faxnbr),
+				"SHIPTOEMAIL=$shipto->email",
+				"SALESPERSON1=".$input->$requestmethod->text('salesperson1'),
+				"SALESPERSON2=".$input->$requestmethod->text('salesperson2'),
+				"SALESPERSON3=".$input->$requestmethod->text('salesperson3'),
+				"PRICECODE=".$input->$requestmethod->text('pricecode'),
+				"CONTACT=$customer->contact",
+				"ARCONTACT=".($input->$requestmethod->text('arcontact') == 'Y' ? "Y" : "N"),
+				"DUNCONTACT=".($input->$requestmethod->text('dunningcontact') == 'Y' ? "Y" : "N"),
+				"BUYCONTACT=".($input->$requestmethod->text('buycontact') == 'Y' ? "Y" : "N"),
+				"CERCONTACT=".($input->$requestmethod->text('certcontact') == 'Y' ? "Y" : "N"),
+				"ACKCONTACT=".($input->$requestmethod->text('ackcontact') == 'Y' ? "Y" : "N"),
+				"EXTENSION=".$input->$requestmethod->text('contact-ext'),
+				"TITLE=".$input->$requestmethod->text('contact-title'),
+				"NOTES="
 			);
+			echo json_encode($data);
+			exit;
 			$session->loc = $config->pages->customer.'redir/?action=load-new-customer';
 			break;
 		case 'load-new-customer':
@@ -368,7 +370,7 @@
 			$contact->set('cellphone', $input->$requestmethod->text('contact-cellphone'));
 			$contact->set('email', $input->$requestmethod->text('contact-email'));
 			$contact->set('arcontact', $input->$requestmethod->text('arcontact') == 'Y' ? "Y" : "N");
-			$contact->set('dunningcontact', $input->$requestmethod->text('duncontact') == 'Y' ? "Y" : "N");
+			$contact->set('dunningcontact', $input->$requestmethod->text('dunningcontact') == 'Y' ? "Y" : "N");
 			$contact->set('buyingcontact', $input->$requestmethod->text('buycontact'));
 			$contact->set('certcontact', $input->$requestmethod->text('certcontact') == 'Y' ? "Y" : "N");
 			$contact->set('ackcontact', $input->$requestmethod->text('ackcontact') == 'Y' ? "Y" : "N");
@@ -381,11 +383,11 @@
 				"SHIPID=$shipID",
 				"CONTACT=$contact->contact",
 				"TITLE=$contact->title",
-				"PHONE=str_replace('-', '', $contact->phone)",
+				"PHONE=".str_replace('-', '', $contact->phone),
 				"EXTENSION=$contact->extension",
-				"FAX=str_replace('-', '', $contact->faxnbr)",
+				"FAX=".str_replace('-', '', $contact->faxnbr),
 				"EMAIL=$contact->email",
-				"CELLPHONE=str_replace('-', '', $contact->cellphone)",
+				"CELLPHONE=".str_replace('-', '', $contact->cellphone),
 				"ARCONTACT=$contact->arcontact",
 				"DUNCONTACT=$contact->dunningcontact",
 				"ACKCONTACT=$contact->ackcontact",
@@ -426,11 +428,11 @@
 				"CONTACT=$contactID",
 				"NAME=$contact->contact",
 				"TITLE=$contact->title",
-				"PHONE=str_replace('-', '', $contact->phone)",
+				"PHONE=".str_replace('-', '', $contact->phone),
 				"EXTENSION=$contact->extension",
-				"FAX=str_replace('-', '', $contact->faxnbr)",
+				"FAX=".str_replace('-', '', $contact->faxnbr),
 				"EMAIL=$contact->email",
-				"CELLPHONE=str_replace('-', '', $contact->cellphone)",
+				"CELLPHONE=".str_replace('-', '', $contact->cellphone),
 				"ARCONTACT=$contact->arcontact",
 				"DUNCONTACT=$contact->dunningcontact",
 				"ACKCONTACT=$contact->ackcontact",
@@ -488,12 +490,12 @@
 		case 'ci-order-documents':
 			$ordn = $input->get->text('ordn');
 			$type = $input->get->text('type');
-			$data = array("DBNAME=$config->dplusdbname", 'DOCVIEW', "FLD1CD=$config->documentstoragetypes[$type]", "FLD1DATA=$ordn");
+			$data = array("DBNAME=$config->dplusdbname", 'DOCVIEW', "FLD1CD={$config->documentstoragetypes[$type]}", "FLD1DATA=$ordn");
 			break;
 		case 'ci-quote-documents':
 			$qnbr = $input->get->text('qnbr');
 			$type = $input->get->text('type');
-			$data = array("DBNAME=$config->dplusdbname", 'DOCVIEW', "FLD1CD=$config->documentstoragetypes[$type]", "FLD1DATA=$qnbr");
+			$data = array("DBNAME=$config->dplusdbname", 'DOCVIEW', "FLD1CD={$config->documentstoragetypes[$type]}", "FLD1DATA=$qnbr");
 			break;
 		case 'ci-standing-orders':
 			$shipID = $input->get->text('shipID');
