@@ -21,10 +21,10 @@
 	// INCLUDE AUTOLOAD AND NECESSARY FUNCTIONS
 	include_once("./_func.php"); // include our shared functions
 	include_once("./_dbfunc.php");
-	
+
 	// AFTER LOADING CONFIGS, CLASSES, AND FUNCTIONS CHECK FOR LOGIN
 	$user->loggedin = is_validlogin(session_id());
-	
+
 	if ($user->loggedin) {
 		setup_user(session_id());
 		Dplus\Dpluso\General\SigninLog::log_signin(session_id(), $user->loginid);
@@ -50,6 +50,8 @@
 	$page->curl = new Dplus\Base\Curl();
 	$page->screenformatterfactory = new Dplus\Dpluso\ScreenFormatters\ScreenFormatterFactory(session_id());
 	$itemlookup = new Dplus\Dpluso\Items\ItemLookupModal();
+
+
 
 	Dplus\Dpluso\ScreenFormatters\TableScreenMaker::set_filedirectory($config->jsonfilepath);
 	Dplus\Dpluso\ScreenFormatters\TableScreenMaker::set_testfiledirectory($config->paths->vendor."cptechinc/dpluso-screen-formatters/src/examples/");
@@ -87,3 +89,10 @@
 	if ($input->get->json) {
 		$config->json = true;
 	}
+
+	// TWIG
+	$loader = new \Twig_Loader_Filesystem($config->paths->templates.'twig/');
+	$config->twig = new \Twig_Environment($loader, [
+	    'cache' => $config->paths->templates.'twig/cache/',
+	    'auto_reload' => true
+	]);

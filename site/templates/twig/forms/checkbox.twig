@@ -1,9 +1,9 @@
-{% if options is iterable %}
-	{% for value, label in options %}
-		<div class="{{ (value in disabled) ? 'disabled' : '' }}">
+{% if states is iterable %}
+	{% for state in states %}
+		<div class="{{ (state.name in disabled) ? 'disabled' : '' }}">
 			<label>
-				<input type="checkbox" value="{{ value }}">
-				{{ label }}
+				<input type="checkbox" value="{{ state.name }}">
+				&ensp;{{ state.name }} - {{ state.state }}
 			</label>
 		</div>
 	{% endfor %}

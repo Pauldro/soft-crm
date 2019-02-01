@@ -1,0 +1,5 @@
+<select name="{{ name }}" class="{{ class|replace({'.': ' ', '|': " "}) }}">
+    {% for age in range(1, 100) %}
+        <option value="{{ age }}">{{ age }}</option>
+    {% endfor %}
+</select>

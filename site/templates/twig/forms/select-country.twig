@@ -1,0 +1,5 @@
+<select name="{{ name }}" class="{{ class|replace({'.': ' ', '|': " "}) }}">
+    {% for country in countries %}
+        <option value="{{ country.name }}">{{ country.name }}</option>
+    {% endfor %}
+</select>
