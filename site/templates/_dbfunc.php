@@ -5535,6 +5535,9 @@
 		$q = (new QueryBuilder())->table('invsearch');
 		$q->where('sessionid', $sessionID);
 		$q->where('lotserial', $lotserial);
+		if (!empty($binID)) {
+			$q->where('bin', $binID);
+		}
 		$q->limit(1);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
@@ -5668,6 +5671,26 @@
 		}
 	}
 
+	/**
+	 * Returns the WhseBin for the range
+	 * @param  string $whseID Warehouse ID
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return WhseBin
+	 */
+	function get_bnctl_ranges($whseID, $debug = false) {
+		$q = (new QueryBuilder())->table('bincntl');
+		$q->where('warehouse', $whseID);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'WhseBin');
+			return $sql->fetchAll();
+		}
+	}
+	
 	/**
 	 * Returns the WhseBins for the range
 	 * @param  string $whseID Warehouse ID
