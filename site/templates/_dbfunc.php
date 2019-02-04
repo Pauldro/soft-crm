@@ -2398,9 +2398,7 @@
 				$q->set($property, $detail->$property);
 			}
 		}
-		$q->where('quotenbr', $detail->quotenbr);
-		$q->where('sessionid', $detail->sessionid);
-		$q->where('recno', $detail->recno);
+
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
@@ -2409,7 +2407,7 @@
 			if ($detail->has_changes()) {
 				$sql->execute($q->params);
 			}
-			return boolval(DplusWire::wire('dplusdatabase')->lastInsertId());
+			return boolval(does_quotedetailexist($detail->sessionid, $detail->quotenbr, $detail->linenbr));
 		}
 	}
 
@@ -3523,7 +3521,7 @@
 			if ($detail->has_changes()) {
 				$sql->execute($q->params);
 			}
-			return boolval(DplusWire::wire('dplusdatabase')->lastInsertId());
+			return boolval(does_orderdetailexist($detail->sessionid, $detail->orderno, $detail->linenbr));
 		}
 	}
 
