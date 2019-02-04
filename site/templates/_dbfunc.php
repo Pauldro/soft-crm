@@ -2398,7 +2398,9 @@
 				$q->set($property, $detail->$property);
 			}
 		}
-
+		$q->where('quotenbr', $detail->quotenbr);
+		$q->where('sessionid', $detail->sessionid);
+		$q->where('recno', $detail->recno);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
@@ -2407,7 +2409,7 @@
 			if ($detail->has_changes()) {
 				$sql->execute($q->params);
 			}
-			return boolval(does_quotedetailexist($detail->sessionid, $detail->quotenbr, $detail->linenbr));
+			return boolval(DplusWire::wire('dplusdatabase')->lastInsertId());
 		}
 	}
 
@@ -3521,7 +3523,7 @@
 			if ($detail->has_changes()) {
 				$sql->execute($q->params);
 			}
-			return boolval(does_orderdetailexist($detail->sessionid, $detail->orderno, $detail->linenbr));
+			return boolval(DplusWire::wire('dplusdatabase')->lastInsertId());
 		}
 	}
 
@@ -3643,6 +3645,7 @@
 /* =============================================================
 	MISC ORDER FUNCTIONS
 ============================================================ */
+
 	function get_allorderdocs($sessionID, $ordn, $debug = false) {
 		$q = (new QueryBuilder())->table('orddocs');
 		$q->where('sessionid', $sessionID);
@@ -3691,6 +3694,12 @@
 /* =============================================================
 	ITEM FUNCTIONS
 ============================================================ */
+	/**
+	 * Returns an array of items that match the search query and with the customer ID if provided
+	 * @param  string $itemID  Item ID
+	 * @param  bool   $debug   Run in debug? If so, return SQL Query
+	 * @return                 Item
+	 */
 	function get_itemfrompricing($itemID, $debug  = false) {
 		$q = (new QueryBuilder())->table('pricing');
 		$q->where('itemid', $itemID);
@@ -5326,33 +5335,6 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
-	/**
-	 * Returns the total Qty of this item ID at provided bin
-	 * @param  string $sessionID Session Identifier
-	 * @param  string $itemID    Item ID
-	 * @param  string $binID     Bin ID to grab Item
-	 * @param  bool   $debug     Run in debug? If so, return SQL Query
-	 * @return int               Number of results for this session
-	 */
-	function get_invsearch_total_qty_itemid($sessionID, $itemID, $binID = '', $debug = false) {
-		$q = (new QueryBuilder())->table('invsearch');
-		$q->field($q->expr('SUM(qty)'));
-		$q->where('sessionid', $sessionID);
-		$q->where('itemid', $itemID);
-
-		if (!empty($binID)) {
-			$q->where('bin', $binID);
-		}
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			return $sql->fetchColumn();
-		}
-	}
 
 	/**
 	 * Returns the Number of results for this session and Lot Number / Serial Number
@@ -5413,33 +5395,6 @@
 		$q = (new QueryBuilder())->table('invsearch');
 		$q->where('sessionid', $sessionID);
 		$q->group('itemid, xorigin');
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			$sql->setFetchMode(PDO::FETCH_CLASS, 'InventorySearchItem');
-			return $sql->fetchAll();
-		}
-	}
-	
-	/**
-	 * Returns an array of InventorySearchItem of invsearch results
-	 * @param  string $sessionID Session Identifier
-	 * @param  string $itemID    Item ID
-	 * @param  string $binID     Bin ID
-	 * @param  bool   $debug     Run in debug? If so, return SQL Query
-	 * @return array             [InventorySearchItem]
-	 */
-	function get_all_invsearchitems_lotserial($sessionID, $itemID, $binID, $debug = false) {
-		$q = (new QueryBuilder())->table('invsearch');
-		$q->where('sessionid', $sessionID);
-		$q->where('itemid', $itemID);
-		
-		if (!empty($binID)) {
-			$q->where('bin', $binID);
-		}
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
@@ -5533,9 +5488,6 @@
 		$q = (new QueryBuilder())->table('invsearch');
 		$q->where('sessionid', $sessionID);
 		$q->where('lotserial', $lotserial);
-		if (!empty($binID)) {
-			$q->where('bin', $binID);
-		}
 		$q->limit(1);
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
@@ -5669,26 +5621,6 @@
 		}
 	}
 
-	/**
-	 * Returns the WhseBin for the range
-	 * @param  string $whseID Warehouse ID
-	 * @param  bool   $debug  Run in debug? If so, return SQL Query
-	 * @return WhseBin
-	 */
-	function get_bnctl_ranges($whseID, $debug = false) {
-		$q = (new QueryBuilder())->table('bincntl');
-		$q->where('warehouse', $whseID);
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			$sql->setFetchMode(PDO::FETCH_CLASS, 'WhseBin');
-			return $sql->fetchAll();
-		}
-	}
-	
 	/**
 	 * Returns the WhseBins for the range
 	 * @param  string $whseID Warehouse ID
