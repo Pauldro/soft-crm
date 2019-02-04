@@ -57,18 +57,47 @@
 	Dplus\Dpluso\Configs\FormFieldsConfig::set_defaultconfigdirectory($config->paths->templates."configs/customer/");
 
 
-	// ADD DEFAULT CSS FILES
+	/* =============================================================
+		ADD Default CSS Scripts
+		
+		libraries.css includes
+		Load Awesome 
+		Morris 
+		Animate
+		Material Icons
+		Boostrap Toggle
+		DataTables
+		Font Awesome
+		Gradients
+		Fuel UX
+		Print CSS
+		Sweet Alert 2
+		Time Picker
+	============================================================ */
+	
 	$config->styles->append(get_hashedtemplatefileURL('styles/bootstrap.min.css'));
 	$config->styles->append('https://fonts.googleapis.com/icon?family=Material+Icons');
 	$config->styles->append(get_hashedtemplatefileURL('styles/libraries.css'));
 	$config->styles->append(get_hashedtemplatefileURL('styles/libs/bootstrap-select.css'));
 	$config->styles->append(get_hashedtemplatefileURL('styles/styles.css'));
 
-	// ADD DEFAULT JS FILES
+	
+	 /* =============================================================
+		ADD Default JS Files
+		
+		libraries.js Includes
+		Bootstrap
+		Bootstrap Notify
+		Bootstrap Toggle
+		URI.js
+		Jquery Actual
+		Sweet Alert 2
+		Fuel UX
+ 	============================================================ */
 	$config->scripts->append(get_hashedtemplatefileURL('scripts/libraries.js'));
 	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/timepicker.js'));
 	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/key-listener.js'));
-	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/datatables.js'));
+	//$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/datatables.js'));
 	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/datatables-datetime.js'));
 	$config->scripts->append(get_hashedtemplatefileURL('scripts/classes.js'));
 	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/bootstrap-select.js'));
