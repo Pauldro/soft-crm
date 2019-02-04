@@ -23,6 +23,6 @@
 		}
 	} else {
 		$page->body = $config->paths->content."cust-information/screen-formatters/forms/ci-default.php";
-		$config->scripts->append(hash_templatefile('scripts/table-formatter.js'));
+		$config->scripts->append(get_hashedtemplatefileURL('scripts/table-formatter.js'));
 		include $config->paths->content.'common/include-page.php';
 	}

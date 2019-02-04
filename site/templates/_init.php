@@ -58,23 +58,23 @@
 
 
 	// ADD DEFAULT CSS FILES
-	$config->styles->append(hash_templatefile('styles/bootstrap.min.css'));
+	$config->styles->append(get_hashedtemplatefileURL('styles/bootstrap.min.css'));
 	$config->styles->append('https://fonts.googleapis.com/icon?family=Material+Icons');
-	$config->styles->append(hash_templatefile('styles/libraries.css'));
-	$config->styles->append(hash_templatefile('styles/libs/bootstrap-select.css'));
-	$config->styles->append(hash_templatefile('styles/styles.css'));
+	$config->styles->append(get_hashedtemplatefileURL('styles/libraries.css'));
+	$config->styles->append(get_hashedtemplatefileURL('styles/libs/bootstrap-select.css'));
+	$config->styles->append(get_hashedtemplatefileURL('styles/styles.css'));
 
 	// ADD DEFAULT JS FILES
-	$config->scripts->append(hash_templatefile('scripts/libraries.js'));
-	$config->scripts->append(hash_templatefile('scripts/libs/timepicker.js'));
-	$config->scripts->append(hash_templatefile('scripts/libs/key-listener.js'));
-	$config->scripts->append(hash_templatefile('scripts/libs/datatables.js'));
-	$config->scripts->append(hash_templatefile('scripts/libs/datatables-datetime.js'));
-	$config->scripts->append(hash_templatefile('scripts/classes.js'));
-	$config->scripts->append(hash_templatefile('scripts/libs/bootstrap-select.js'));
-	$config->scripts->append(hash_templatefile('scripts/libs/jquery-validate.js'));
-	$config->scripts->append(hash_templatefile('scripts/scripts.js'));
-	$config->scripts->append(hash_templatefile('scripts/dplus-notes.js'));
+	$config->scripts->append(get_hashedtemplatefileURL('scripts/libraries.js'));
+	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/timepicker.js'));
+	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/key-listener.js'));
+	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/datatables.js'));
+	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/datatables-datetime.js'));
+	$config->scripts->append(get_hashedtemplatefileURL('scripts/classes.js'));
+	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/bootstrap-select.js'));
+	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/jquery-validate.js'));
+	$config->scripts->append(get_hashedtemplatefileURL('scripts/scripts.js'));
+	$config->scripts->append(get_hashedtemplatefileURL('scripts/dplus-notes.js'));
 
 
 	//$config->scripts->append($config->urls->modules . 'Inputfield/InputfieldCKEditor/ckeditor-4.6.1/ckeditor.js'));
