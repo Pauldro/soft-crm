@@ -1,5 +1,5 @@
 <?php 
-	$tableformatter = $page->screenformatterfactory->generate_screenformatter('ii-purchase-history');
+	$tableformatter = $page->screenformatterfactory->generate_screenformatter($formattercode);
 
 	if ($input->requestMethod() == "POST") {
 		$tableformatter->generate_formatterfrominput($input);
@@ -16,7 +16,7 @@
 				}
 				break;
 			case 'save-formatter':
-				$maxid = get_maxtableformatterid($user->loginid, 'ii-purchase-history');
+				$maxid = get_maxtableformatterid($user->loginid, $formattercode);
 				$page->body = $tableformatter->save_andrespond();
 				include $config->paths->content.'common/include-json-page.php';
 				break;
