@@ -305,12 +305,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-order.git",
-                "reference": "850589b07c75ccbeeea7de083db71776a5fcbbc8"
+                "reference": "a870b3eef68f085632b6bac8bbfcaddd65a5a620"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dplus-order/zipball/850589b07c75ccbeeea7de083db71776a5fcbbc8",
-                "reference": "850589b07c75ccbeeea7de083db71776a5fcbbc8",
+                "url": "https://api.github.com/repos/cptechinc/dplus-order/zipball/a870b3eef68f085632b6bac8bbfcaddd65a5a620",
+                "reference": "a870b3eef68f085632b6bac8bbfcaddd65a5a620",
                 "shasum": ""
             },
             "type": "library",
@@ -330,7 +330,7 @@
                 "quote",
                 "sales-order"
             ],
-            "time": "2018-11-09T22:13:13+00:00"
+            "time": "2019-02-01T19:49:05+00:00"
         },
         {
             "name": "cptechinc/dplus-processwire",
@@ -412,12 +412,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dpluso-warehouse.git",
-                "reference": "e5487cb92b1e43e7eaaa4e76a8680fbd9696f9f0"
+                "reference": "f899ccbe005185f6b9c5f7736099b199c08c7b06"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dpluso-warehouse/zipball/e5487cb92b1e43e7eaaa4e76a8680fbd9696f9f0",
-                "reference": "e5487cb92b1e43e7eaaa4e76a8680fbd9696f9f0",
+                "url": "https://api.github.com/repos/cptechinc/dpluso-warehouse/zipball/f899ccbe005185f6b9c5f7736099b199c08c7b06",
+                "reference": "f899ccbe005185f6b9c5f7736099b199c08c7b06",
                 "shasum": ""
             },
             "type": "library",
@@ -438,7 +438,7 @@
                 "dplus-warehouse",
                 "dpluso-warehouse"
             ],
-            "time": "2019-01-23T17:24:37+00:00"
+            "time": "2019-01-28T22:47:13+00:00"
         },
         {
             "name": "eoghanobrien/php-simple-mail",
