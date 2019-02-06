@@ -3464,6 +3464,14 @@
 		}
 	}
 
+	/**
+	 * Returns if an ordrhed detail record for Session ID exists
+	 * @param  string $sessionID Session ID
+	 * @param  string $ordn      Sales Order Number
+	 * @param  string $linenbr   Line Number
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return bool              Is there an ordrhed record for Session ID?
+	 */
 	function does_orderdetailexist($sessionID, $ordn, $linenbr, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrdet');
 		$q->field('COUNT(*)');
@@ -3486,7 +3494,7 @@
 	 * @param  string           $ordn      Sales Order Number
 	 * @param  string           $linenbr   Line Number
 	 * @param  bool             $debug     Run in debug? If so return SQL Query
-	 * @return array 
+	 * @return array
 	 */
 	function get_orderdetail($sessionID, $ordn, $linenbr, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrdet');
