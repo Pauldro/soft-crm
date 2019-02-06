@@ -3480,6 +3480,14 @@
 		}
 	}
 
+	/**
+	 * Retrieves Sales Order Detail Record
+	 * @param  string           $sessionID Session Identifier
+	 * @param  string           $ordn      Sales Order Number
+	 * @param  string           $linenbr   Line Number
+	 * @param  bool             $debug     Run in debug? If so return SQL Query
+	 * @return array 
+	 */
 	function get_orderdetail($sessionID, $ordn, $linenbr, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrdet');
 		$q->where('sessionid', $sessionID);
