@@ -3583,6 +3583,17 @@
 		}
 	}
 
+	/**
+	 * Updates credit card information for Sales Order
+	 * @param  string $sessionID Session Identifier
+	 * @param  string $ordn      Sales Order Number
+	 * @param  string $paytype   Payment Type
+	 * @param  string $ccno      Credit Card Number
+	 * @param  string $expdate   Expiration Date
+	 * @param  string $ccv       CCV Number
+	 * @param  bool   $debug     Run in debug? If so, returns SQL Query
+	 * @return OrderCreditCard
+	 */
 	function update_orderhead_credit($sessionID, $ordn, $paytype, $ccno, $expdate, $ccv, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrhed');
 		$q->mode('update');
