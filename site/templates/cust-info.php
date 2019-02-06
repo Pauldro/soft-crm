@@ -27,6 +27,7 @@
 	                    $toolbar = $config->paths->content."cust-information/toolbar.php";
 	                    $config->scripts->append(get_hashedtemplatefileURL('scripts/libs/raphael.js'));
 	                    $config->scripts->append(get_hashedtemplatefileURL('scripts/libs/morris.js'));
+						$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/datatables.js'));
 	            		$config->scripts->append(get_hashedtemplatefileURL('scripts/ci/cust-functions.js'));
 	            		$config->scripts->append(get_hashedtemplatefileURL('scripts/ci/cust-info.js'));
 	                    $itemlookup->set_customer($customer->custid, $customer->shiptoid);

@@ -17,7 +17,7 @@
 						<p class="list-group-item-text">ItemID: <?= $item->itemid; ?></p>
 						<p class="list-group-item-text"><?= $item->desc1; ?></p>
 						<p class="list-group-item-text bg-info"><strong>Bin:</strong> <?= $item->bin; ?> <strong>Qty:</strong> <?= $item->qty; ?></p>
-						<p class="list-group-item-text"><?= "Origin: " . strtoupper($item->xorigin); ?></p>
+						<p class="list-group-item-text"><?= "Derived From: " . strtoupper($item->xorigin); ?></p>
 						<p class="list-group-item-text"><?= "X-ref Item ID: " . $item->xitemid; ?></p>
 					</div>
 				</div>
