@@ -97,7 +97,7 @@
 	$config->scripts->append(get_hashedtemplatefileURL('scripts/libraries.js'));
 	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/timepicker.js'));
 	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/key-listener.js'));
-	//$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/datatables.js'));
+	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/datatables.js'));
 	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/datatables-datetime.js'));
 	$config->scripts->append(get_hashedtemplatefileURL('scripts/classes.js'));
 	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/bootstrap-select.js'));

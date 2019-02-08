@@ -1,5 +1,4 @@
 <?php
-	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/datatables.js'));
 	$config->scripts->append(get_hashedtemplatefileURL('scripts/pages/dashboard.js'));
 	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/raphael.js'));
 	$config->scripts->append(get_hashedtemplatefileURL('scripts/libs/morris.js'));
