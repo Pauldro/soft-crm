@@ -5,6 +5,7 @@
 	$whsesession = WhseSession::load(session_id());
 	$whsesession->init();
 	$binr = new Binr();
+	$config->scripts->append(get_hashedtemplatefileURL('scripts/warehouse/_shared-functions.js'));
 	$config->scripts->append(get_hashedtemplatefileURL('scripts/warehouse/binr.js'));
 
 	if ($input->get->scan) {
@@ -13,14 +14,14 @@
 		$resultscount = InventorySearchItem::count_all(session_id());
 
 		if ($resultscount == 0) {
-			$page->body = $config->paths->content."{$page->path}inventory-results.php";
+			$page->body = __DIR__."/inventory-results.php";
 		} elseif ($resultscount == 1) {
 			$item = InventorySearchItem::load_first(session_id());
 			$pageurl = $page->fullURL->getUrl();
 			header("Location: {$config->pages->menu_binr}redir/?action=search-item-bins&itemID=$item->itemid&page=$pageurl");
 		} else {
 			$items = InventorySearchItem::get_all(session_id());
-			$page->body = $config->paths->content."{$page->path}inventory-results.php";
+			$page->body = __DIR__."/inventory-results.php";
 		}
 	} elseif (!empty($input->get->serialnbr) | !empty($input->get->lotnbr) | !empty($input->get->itemID)) {
 		$binID  = $input->get->text('binID');
@@ -40,13 +41,13 @@
 		}
 
 		if ($resultscount == 1) {
-			$page->body = $config->paths->content."{$page->path}binr-form.php";
+			$page->body = __DIR__."/binr-form.php";
 		} else {
 			$items = InventorySearchItem::get_all(session_id());
-			$page->body = $config->paths->content."{$page->path}inventory-results.php";
+			$page->body = __DIR__."/inventory-results.php";
 		}
 	} else {
-		$page->body = $config->paths->content."{$page->path}item-form.php";
+		$page->body = __DIR__."/item-form.php";
 	}
 	$toolbar = false;
 	include $config->paths->content."common/include-toolbar-page.php";
