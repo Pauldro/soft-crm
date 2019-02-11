@@ -1,6 +1,3 @@
-<?php 
-	include "{$config->paths->content}warehouse/session.js.php"; 
-?>
 <div class="row">
 	<div class="col-sm-6">
 		<?php include __DIR__."/scanned-item-details.php"; ?>
@@ -63,7 +60,7 @@
 							<div class="input-group">
 								<input type="text" class="form-control input-sm" name="to-bin">
 								<span class="input-group-btn">
-									<button type="button" class="btn btn-sm btn-default show-possible-bins"> <span class="fa fa-search"></span> </button>
+									<button type="button" class="btn btn-sm btn-default show-possible-bins" data-input="to-bin"> <span class="fa fa-search"></span> </button>
 								</span>
 							</div>
 						</div>
@@ -76,3 +73,7 @@
 		<?php endif; ?>
 	</div>
 </div>
+<?php include "{$config->paths->content}warehouse/session.js.php"; ?>
+<script>
+	var validfrombins = <?= json_encode(ItemBinInfo::get_find_by_itemjsarray(session_id(), $item)); ?>
+</script>
