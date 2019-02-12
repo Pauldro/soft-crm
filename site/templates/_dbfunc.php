@@ -819,45 +819,47 @@
 			return $sql->fetchColumn();
 		}
 	}
-
+	
 	/**
-	 * Returns Customer Index records that match the Query
-	 * @param  string $keyword Query String to match
-	 * @param  int    $limit   Number of records to return
-	 * @param  int    $page    Page to start from
-	 * @param  string $orderby Order By string
-	 * @param  string $loginID User Login ID, if blank, will use current user
-	 * @param  bool   $debug   Run in debug? If so, will return SQL Query
-	 * @return array           Customer Index records that match the Query
+	 * Returns a QueryBuilder object built to query the custperm table
+	 * filtered to the Shared Logins and Login ID provided
+	 * @param  string       $loginID User Login ID
+	 * @return QueryBuilder          Query
 	 */
-	function search_custindexpaged($keyword, $limit = 10, $page = 1, $orderby, $loginID = '', $debug = false) {
-		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
-		$user = LogmUser::load($loginID);
+	function create_custpermquery($loginID) {
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
-
+		$query = (new QueryBuilder())->table('custperm');
+		$query->field('custid, shiptoid');
+		$query->where('loginid', [$loginID, $SHARED_ACCOUNTS]);
+		return $query;
+	}
+	
+	/**
+	 * Returns a QueryBuilder object built to query the customer index for the 
+	 * records that the login ID is allowed access to, and matches their query
+	 * @param  string       $loginID User Login
+	 * @param  string       $keyword Search String
+	 * @return QueryBuilder          Customer Index Query
+	 */
+	function create_searchcustindexquery($loginID, $keyword) {
+		$user = LogmUser::load($loginID);
 		$search = QueryBuilder::generate_searchkeyword($keyword);
 		$q = (new QueryBuilder())->table('custindex');
-
+		
 		if ($user->is_salesrep() && DplusWire::wire('pages')->get('/config/')->restrict_allowedcustomers) {
-			$permquery = (new QueryBuilder())->table('custperm');
-			$permquery->field('custid, shiptoid');
-			$permquery->where('loginid', [$loginID, $SHARED_ACCOUNTS]);
+			$permquery = create_custpermquery($loginID);
 			$q->where('(custid, shiptoid)','in', $permquery);
 		}
-
 		$matchexpression = $q->expr("MATCH(custid, shiptoid, name, addr1, addr2, city, state, zip, phone, cellphone, contact, email, typecode, faxnbr, title) AGAINST ([] IN BOOLEAN MODE)", ["'*$keyword*'"]);
-
 		if (!empty($keyword)) {
 			$q->where($matchexpression);
 		}
-
-		$q->limit($limit, $q->generate_offset($page, $limit));
-
+		
 		if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
 			if (!empty($orderbystring)) {
 				$q->order($q->generate_orderby($orderbystring));
 			} else {
-				$q->order($q->expr('custid <> []', [$search]));
+				$q->order($q->expr('custid <> [], name', [$search]));
 			}
 			$q->group('custid, shiptoid');
 		} elseif (DplusWire::wire('config')->cptechcustomer == 'stat') {
@@ -872,7 +874,28 @@
 				$q->order($q->expr('custid <> []', [$search]));
 			}
 		}
+		return $q;
+	}
 
+	/**
+	 * Returns Customer Index records that match the search string
+	 * It uses a subquery to get the results then Pagination is built off that
+	 * @param  string $keyword Query String to match
+	 * @param  int    $limit   Number of records to return
+	 * @param  int    $page    Page to start from
+	 * @param  string $orderby Order By string
+	 * @param  string $loginID User Login ID, if blank, will use current user
+	 * @param  bool   $debug   Run in debug? If so, will return SQL Query
+	 * @return array           Customer Index records that match the Query
+	 * @uses create_searchcustindexquery()
+	 */
+	function search_custindexpaged($keyword, $limit = 10, $page = 1, $orderby, $loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
+		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
+		$searchindexquery = create_searchcustindexquery($loginID, $keyword);
+		$q = (new QueryBuilder())->table($searchindexquery, 't');
+		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {

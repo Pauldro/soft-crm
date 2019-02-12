@@ -10,7 +10,7 @@ $(function() {
 	 * 2. Show From bin selection
 	 * 3. Choose From Bin
 	 * 4. Use bin Qty (if needed)
-	 * 5. Show Possible To Bins (if needed)
+	 * 5. Show Possible To Bins (if needed) included in _shared-functions.js
 	 * 6. Validate Form submit
 	 * 7. Helper Functions
 	 */
@@ -75,37 +75,8 @@ $(function() {
 	
 /////////////////////////////////////
 // 5. Show Possible To Bins (if needed)
+//	  included in _shared-functions.js
 /////////////////////////////////////
-	$("body").on("click", ".show-possible-bins", function(e) {
-		e.preventDefault();
-		var button = $(this);
-		
-		if (whsesession.whse.bins.arranged == 'list') { // IF WAREHOUSE HAS A BIN LIST
-			var bins = {};
-			var binid = '';
-			var spacesneeded = 0;
-			var spaces = '';
-			
-			for (var key in whsesession.whse.bins.bins) {
-				binid = key;
-				spacesneeded = (8 - binid.length);
-				spaces = '';
-				for (var i = 0; i <= spacesneeded; i++) {
-					spaces += '&nbsp;';
-				}
-				bins[key] = binid + spaces + whsesession.whse.bins.bins[key];
-			}
-			swal_choosebin(bins);
-		} else {
-			var table = create_binrangetable();
-			
-			swal({
-				type: 'info',
-				title: 'Bin Ranges',
-				html: table
-			}).catch(swal.noop);
-		}
-	});
 	
 /////////////////////////////////////
 // 6. Validate Form submit
@@ -141,21 +112,7 @@ $(function() {
 /////////////////////////////////////
 // Helper Functions
 /////////////////////////////////////
-	function swal_choosebin(bins) {
-		swal({
-			type: 'question',
-			title: 'Choose a bin',
-			input: 'select',
-			inputClass: 'form-control',
-			inputOptions: bins,
-		}).then(function (input) {
-			if (input) {
-				input_tobin.val(input);
-				swal.close();
-			} 
-		}).catch(swal.noop);
-	}
-	
+
 	function validate_frombin() {
 		var error = false;
 		var title = '';
@@ -168,27 +125,11 @@ $(function() {
 			error = true;
 			title = 'Error';
 			msg = 'Please Fill in the From Bin';
-		} else if (whsesession.whse.bins.arranged == 'list' && whsesession.whse.bins.bins[input_frombin.val()] === undefined) {
+		} else if (validfrombins.whse.bins.bins[input_frombin.val()] === undefined) {
 			error = true;
 			title = 'Invalid From Bin ID';
-			msg = 'Please Choose a valid From bin';
-		} else if (whsesession.whse.bins.arranged == 'range') {
-			if (input_frombin.val() != input_frombin.data('bin')) {
-				error = true;
-				
-				whsesession.whse.bins.bins.forEach(function(bin) {
-					if (input_frombin.val() >= bin.from && input_frombin.val() <= bin.through) {
-						error = false;
-					}
-				});
-				
-				if (error) {
-					title = 'Invalid From Bin ID';
-					msg = 'Your From Bin ID must between these ranges';
-					html = "<h4>Valid Bin Ranges<h4>" + create_binrangetable();
-				}
-			}
-		}
+			msg = 'Please Choose a valid From bin from the from bin list';
+		} 
 		return new SwalError(error, title, msg, html);
 	}
 
@@ -238,18 +179,5 @@ $(function() {
 			}
 		}
 		return new SwalError(error, title, msg, html);
-	}
-	
-	function create_binrangetable() {
-		var bootstrap = new JsContento();
-		var table = bootstrap.open('table', 'class=table table-striped table-condensed');
-			whsesession.whse.bins.bins.forEach(function(bin) {
-				table += bootstrap.open('tr', '');
-					table += bootstrap.openandclose('td', '', bin.from);
-					table += bootstrap.openandclose('td', '', bin.through);
-				table += bootstrap.close('tr');
-			});
-		table += bootstrap.close('table');
-		return table;
 	}
 });
