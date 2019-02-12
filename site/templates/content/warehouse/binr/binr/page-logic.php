@@ -24,18 +24,25 @@
 			$page->body = __DIR__."/inventory-results.php";
 		}
 	} elseif (!empty($input->get->serialnbr) | !empty($input->get->lotnbr) | !empty($input->get->itemID)) {
-		$binID  = $input->get->text('binID');
+		if ($input->get->frombin) {
+			$binID  = $input->get->text('frombin');
+		} else {
+			$binID  = $input->get->text('binID');
+		}
 
 		if ($input->get->serialnbr) {
 			$serialnbr = $input->get->text('serialnbr');
+			$input->get->scan = $serialnbr;
 			$resultscount = InventorySearchItem::count_from_lotserial(session_id(), $serialnbr);
 			$item = $resultscount == 1 ? InventorySearchItem::load_from_lotserial(session_id(), $serialnbr) : false;
 		} elseif ($input->get->lotnbr) {
 			$lotnbr = $input->get->text('lotnbr');
+			$input->get->scan = $lotnbr;
 			$resultscount = InventorySearchItem::count_from_lotserial(session_id(), $lotnbr, $binID);
 			$item = $resultscount == 1 ? InventorySearchItem::load_from_lotserial(session_id(), $lotnbr, $binID) : false;
 		} elseif ($input->get->itemID) {
 			$itemID = $input->get->text('itemID');
+			$input->get->scan = $itemID;
 			$resultscount = InventorySearchItem::count_from_itemid(session_id(), $itemID, $binID);
 			$item = $resultscount == 1 ? InventorySearchItem::load_from_itemid(session_id(), $itemID, $binID) : false;
 		}
