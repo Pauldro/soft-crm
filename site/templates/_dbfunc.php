@@ -819,7 +819,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	/**
 	 * Returns a QueryBuilder object built to query the custperm table
 	 * filtered to the Shared Logins and Login ID provided
@@ -833,9 +833,9 @@
 		$query->where('loginid', [$loginID, $SHARED_ACCOUNTS]);
 		return $query;
 	}
-	
+
 	/**
-	 * Returns a QueryBuilder object built to query the customer index for the 
+	 * Returns a QueryBuilder object built to query the customer index for the
 	 * records that the login ID is allowed access to, and matches their query
 	 * @param  string       $loginID User Login
 	 * @param  string       $keyword Search String
@@ -845,7 +845,7 @@
 		$user = LogmUser::load($loginID);
 		$search = QueryBuilder::generate_searchkeyword($keyword);
 		$q = (new QueryBuilder())->table('custindex');
-		
+
 		if ($user->is_salesrep() && DplusWire::wire('pages')->get('/config/')->restrict_allowedcustomers) {
 			$permquery = create_custpermquery($loginID);
 			$q->where('(custid, shiptoid)','in', $permquery);
@@ -854,7 +854,7 @@
 		if (!empty($keyword)) {
 			$q->where($matchexpression);
 		}
-		
+
 		if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
 			if (!empty($orderbystring)) {
 				$q->order($q->generate_orderby($orderbystring));
@@ -2605,6 +2605,14 @@
 /* =============================================================
 	PRODUCT FUNCTIONS
 ============================================================ */
+	/**
+	 * Returns the number of search records
+	 * @param  string   $sessionID    Session Identifier
+	 * @param  int      $limit        for pagination
+	 * @param  int      $page         for pagination
+	 * @param  bool     $debug        Run in debug? If so, return SQL Query
+	 * @return array                  of item records
+	 */
 	function get_itemsearchresults($sessionID, $limit = 10, $page = 1, $debug = false) {
 		$q = (new QueryBuilder())->table('pricing');
 		$q->where('sessionid', $sessionID);
@@ -2622,6 +2630,12 @@
 		}
 	}
 
+	/**
+	 * Returns the number of search records
+	 * @param  string   $sessionID    Session Identifier
+	 * @param  bool     $debug        Run in debug? If so, return SQL Query
+	 * @return int                    Number of Records search records
+	 */
 	function count_itemsearchresults($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('pricing');
 		$q->field($q->expr('COUNT(*)'));
@@ -2636,6 +2650,13 @@
 		}
 	}
 
+	/**
+	 * Returns number of Records for Items and sessionIDs
+	 * @param  string   $sessionID    Session Identifier
+	 * @param  string   $itemID       Item Identifier
+	 * @param  bool     $debug        Run in debug? If so, return SQL Query
+	 * @return int                    Number of Records for Items and sessionIDs
+	 */
 	function count_itemhistory($sessionID, $itemID, $debug = false) {
 		$q = (new QueryBuilder())->table('custpricehistory');
 		$q->field($q->expr('COUNT(*)'));
@@ -2651,6 +2672,14 @@
 		}
 	}
 
+	/**
+	 * Returns field in the Custpricehistory table
+	 * @param  string   $sessionID    Session Identifier
+	 * @param  string   $itemID       Item Identifier
+	 * @param  string   $field        Field in custpricehistory table
+	 * @param  bool     $debug        Run in debug? If so, return SQL Query
+	 * @return string                 Field name
+	 */
 	function get_itemhistoryfield($sessionID, $itemID, $field, $debug = false) {
 		$q = (new QueryBuilder())->table('custpricehistory');
 		$q->field($field);
@@ -2666,6 +2695,13 @@
 		}
 	}
 
+	/**
+	 * Returns the amount of item available
+	 * @param  string   $sessionID    Session Identifier
+	 * @param  string   $itemID       Item Identifier
+	 * @param  bool     $debug        Run in debug? If so, return SQL Query
+	 * @return array                  Number of availability
+	 */
 	function get_itemavailability($sessionID, $itemID, $debug = false) {
 		$q = (new QueryBuilder())->table('whseavail');
 		$q->where('sessionid', $sessionID);
@@ -2680,6 +2716,13 @@
 		}
 	}
 
+	/**
+	 * Returns the amount of item available
+	 * @param  string   $sessionID    Session Identifier
+	 * @param  string   $itemID       Item Identifier
+	 * @param  bool     $debug        Run in debug? If so, return SQL Query
+	 * @return array                  Number of availability
+	 */
 	function get_totalitemavailablity($sessionID, $itemID, $debug = false) {
 		$q = (new QueryBuilder())->table('whseavail');
 		$q->where('sessionid', $sessionID);
@@ -2695,6 +2738,12 @@
 		}
 	}
 
+	/**
+	 * Returns Commision Prices for Item
+	 * @param  string   $itemID       Item Identifier
+	 * @param  bool     $debug        Run in debug? If so, return SQL Query
+	 * @return array                  of commisions for item
+	 */
 	function get_commissionprices($itemID, $debug = false) {
 		$q = (new QueryBuilder())->table('commprice');
 		$q->where('itemid', $itemID);
@@ -2709,6 +2758,13 @@
 		}
 	}
 
+	/**
+	 * Returns Pricing Item from Pricing table
+	 * @param  string   $sessionID    Session Identifier
+	 * @param  string   $itemID       Item Identifier
+	 * @param  bool     $debug        Run in debug? If so, return SQL Query
+	 * @return array                  of pricing item record
+	 */
 	function get_pricingitem($sessionID, $itemID, $debug = false) {
 		$q = (new QueryBuilder())->table('pricing');
 		$q->where('sessionid', $sessionID);
@@ -2727,6 +2783,13 @@
 	/* =============================================================
 		USER ACTION FUNCTIONS
 	============================================================ */
+	/**
+	 * Returns Number of User Actions
+	 * @param  array   $filters     of filters
+	 * @param  array   $filterable  of filterable filters
+	 * @param  bool    $debug       Run in debug? If so, return SQL Query
+	 * @return int                  Number of user actions
+	 */
 	function count_actions($filters, $filterable, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$q->field($q->expr('COUNT(*)'));
@@ -2742,6 +2805,15 @@
 		}
 	}
 
+	/**
+	 * Returns User Actions
+	 * @param  array   $filters     of filters
+	 * @param  array   $filterable  of filterable filters
+	 * @param  int     $limit       for pagination
+	 * @param  int     $page        for pagination
+	 * @param  bool    $debug       Run in debug? If so, return SQL Query
+	 * @return array                of user actions
+	 */
 	function get_actions($filters, $filterable, $limit = 0, $page = 0, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$q->generate_filters($filters, $filterable);
@@ -2764,6 +2836,14 @@
 		}
 	}
 
+	/**
+	 * Returns Number of Actions for day
+	 * @param  string  $day         date
+	 * @param  array   $filters     of filters
+	 * @param  array   $filterable  of filterable filters
+	 * @param  bool    $debug       Run in debug? If so, return SQL Query
+	 * @return int                  Number of tasks that are from this day
+	 */
 	function count_dayallactions($day, $filters, $filterable, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$taskquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', 'task');
@@ -2790,6 +2870,14 @@
 		}
 	}
 
+	/**
+	 * Returns Action Records for day
+	 * @param  string  $day         date
+	 * @param  array   $filters     of filters
+	 * @param  array   $filterable  of filterable filters
+	 * @param  bool    $debug       Run in debug? If so, return SQL Query
+	 * @return array                of tasks that are from this day
+	 */
 	function get_dayallactions($day, $filters, $filterable, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$taskquery = (new QueryBuilder())->table('useractions')->field('id')->where('actiontype', 'task');
@@ -2813,6 +2901,14 @@
 		}
 	}
 
+	/**
+	 * Returns Task Records for incomplete tasks
+	 * @param  string  $day         date
+	 * @param  array   $filters     of filters
+	 * @param  array   $filterable  of filterable filters
+	 * @param  bool    $debug       Run in debug? If so, return SQL Query
+	 * @return array                of task that are not completed
+	 */
 	function get_daypriorincompletetasks($day, $filters, $filterable, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$q->where('actiontype', 'task');
@@ -2831,6 +2927,14 @@
 		}
 	}
 
+	/**
+	 * Returns number of tasks that are not complete
+	 * @param  string  $day         date
+	 * @param  array   $filters     of filters
+	 * @param  array   $filterable  of filterable filters
+	 * @param  bool    $debug       Run in debug? If so, return SQL Query
+	 * @return int                  Number of task not completed
+	 */
 	function count_daypriorincompletetasks($day, $filters, $filterable, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$q->field($q->expr('COUNT(*)'));
@@ -2849,6 +2953,12 @@
 		}
 	}
 
+	/**
+	 * Returns User Action Records
+	 * @param  string  $id     User Action ID
+	 * @param  bool    $debug  Run in debug? If so, return SQL Query
+	 * @return array           of User Action
+	 */
 	function get_useraction($id, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$q->where('id', $id);
@@ -2863,6 +2973,12 @@
 		}
 	}
 
+	/**
+	 * Returns if User Action updated successfully
+	 * @param  UserAction $updatedaction  User Action object
+	 * @param  bool       $debug          Run in debug? If so, return SQL Query
+	 * @return bool                       Are there rows that were changed?
+	 */
 	function update_useraction(UserAction $updatedaction, $debug = false) {
 		$originalaction = UserAction::load($updatedaction->id); // (id, bool fetchclass, bool debug)
 		$q = (new QueryBuilder())->table('useractions');
@@ -2879,6 +2995,13 @@
 		}
 	}
 
+	/**
+	 * Returns if links are different and old links are successfully updated to new
+	 * @param  UserAction $oldlinks     User Action object
+	 * @param  UserAction $newlinks     User Action object
+	 * @param  bool       $debug        Run in debug? If so, return SQL Query
+	 * @return bool                     Are there rows that were changed?
+	 */
 	function update_useractionlinks(UserAction $oldlinks, UserAction $newlinks, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$q->mode('update');
@@ -2903,6 +3026,12 @@
 		}
 	}
 
+	/**
+	 * Creates action for that user
+	 * @param  UserAction $action     User Action object
+	 * @param  bool       $debug      Run in debug? If so, return SQL Query
+	 * @return bool                   Is the last inserted ID the same as action created?
+	 */
 	function create_useraction(UserAction $action, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$q->mode('insert');
@@ -2918,6 +3047,12 @@
 		}
 	}
 
+	/**
+	 * Returns Max Action ID of User
+	 * @param  string $loginID     User Login Identifier
+	 * @param  bool   $debug       Run in debug?
+	 * @return string              Max Action ID
+	 */
 	function get_maxuseractionid($loginID, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$q->field($q->expr('MAX(id)'));
@@ -2933,6 +3068,13 @@
 		}
 	}
 
+	/**
+	 * Returns date of first Action created
+	 * @param  string $custID      Customer Identifier
+	 * @param  string $shipID      Ship Identifier
+	 * @param  bool   $debug       Run in debug?
+	 * @return string              date of first action created
+	 */
 	function get_mindateuseractioncreated($custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$q->field($q->expr("DATE_FORMAT(MIN(datecreated), '%m/%d/%Y')"));
@@ -2952,6 +3094,13 @@
 		}
 	}
 
+	/**
+	 * Returns date of first Action completed
+	 * @param  string $custID      Customer Identifier
+	 * @param  string $shipID      Ship Identifier
+	 * @param  bool   $debug       Run in debug?
+	 * @return string              date of first action completed
+	 */
 	function get_mindateuseractioncompleted($custID = false, $shipID = false, $debug = false) {
 		$q = (new QueryBuilder())->table('useractions');
 		$q->field($q->expr("DATE_FORMAT(MIN(datecreated), '%m/%d/%Y')"));
@@ -2974,6 +3123,11 @@
 /* =============================================================
 	VENDOR FUNCTIONS
 ============================================================ */
+	/**
+	 * Returns all Vendor Records
+	 * @param  bool   $debug       Run in debug?
+	 * @return array               of all vendor records
+	 */
 	function get_vendors($debug = false) {
 		$q = (new QueryBuilder())->table('vendors');
 		$q->where('shipfrom', '');
@@ -2988,6 +3142,13 @@
 		}
 	}
 
+	/**
+	 * Returns Vendor Record
+	 * @param string  $vendorID    Vendor Identifier
+	 * @param string  $shipfromID  Ship From Identifier
+	 * @param  bool   $debug       Run in debug?
+	 * @return array               of vendor record
+	 */
 	function get_vendor($vendorID, $shipfromID = '', $debug = false) {
 		$q = (new QueryBuilder())->table('vendors');
 		$q->where('vendid', $vendorID);
@@ -3003,6 +3164,12 @@
 		}
 	}
 
+	/**
+	 * Returns Ship From Records for Vendor
+	 * @param string  $vendorID  Vendor Identifier
+	 * @param  bool   $debug     Run in debug?
+	 * @return array             of shipfroms for vendor
+	 */
 	function get_vendorshipfroms($vendorID, $debug = false) {
 		$q = (new QueryBuilder())->table('vendors');
 		$q->field('shipfrom');
@@ -3018,6 +3185,14 @@
 		}
 	}
 
+	/**
+	 * Returns Vendor Records where search term has a match
+	 * @param string  $limit     Number of results allowed on page
+	 * @param string  $page      Page number results will start on
+	 * @param string  $keyword   Word or phrase in search
+	 * @param  bool   $debug     Run in debug?
+	 * @return array             of vendors matching search term
+	 */
 	function search_vendorspaged($limit = 10, $page = 1, $keyword, $debug) {
 		$q = (new QueryBuilder())->table('vendors');
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
@@ -3041,6 +3216,12 @@
 		}
 	}
 
+	/**
+	 * Returns Number of Vendor Records that match search term
+	 * @param string  $keyword   Word or phrase in search
+	 * @param  bool   $debug     Run in debug?
+	 * @return int               Number of vendors that match search term
+	 */
 	function count_searchvendors($keyword, $debug) {
 		$q = (new QueryBuilder())->table('vendors');
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
@@ -3064,6 +3245,11 @@
 		}
 	}
 
+	/**
+	 * Returns all Unit of Measure
+	 * @param  bool   $debug     Run in debug?
+	 * @return array             of units of measure
+	 */
 	function get_unitofmeasurements($debug) {
 		$q = (new QueryBuilder())->table('unitofmeasure');
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
@@ -3076,6 +3262,11 @@
 		}
 	}
 
+	/**
+	 * Returns Item Groups
+	 * @param  bool   $debug     Run in debug?
+	 * @return array             of all Item Groups
+	 */
 	function get_itemgroups($debug = false) {
 		$q = (new QueryBuilder())->table('itemgroups');
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
@@ -3088,6 +3279,12 @@
 		}
 	}
 
+	/**
+	 * Returns Name of Vendor
+	 * @param  string $vendorID  Vendor Identifier
+	 * @param  bool   $debug     Run in debug?
+	 * @return string            Vendor name
+	 */
 	function get_vendorname($vendorID, $debug = false) {
 		$q = (new QueryBuilder())->table('vendors');
 		$q->field('name');
@@ -3412,6 +3609,12 @@
 		}
 	}
 
+	/**
+	 * Returns if Order is locked
+	 * @param  string $ordn      Sales Order Number
+	 * @param  bool   $debug     Run in debug? If so, will return SQL Query
+	 * @return bool              Is there a Login ID in the lockedby column?
+	 */
 	function is_orderlocked($ordn, $debug = false) {
 		$q = (new QueryBuilder())->table('oe_head');
 		$q->field('lockedby');
@@ -3426,6 +3629,12 @@
 		}
 	}
 
+	/**
+	 * Returns Login ID of User who locked order
+	 * @param  string $ordn      Sales Order Number
+	 * @param  bool   $debug     Run in debug? If so, will return SQL Query
+	 * @return string            Login ID
+	 */
 	function get_orderlocklogin($ordn, $debug = false) {
 		$q = (new QueryBuilder())->table('oe_head');
 		$q->field('lockedby');
@@ -3598,6 +3807,14 @@
 		}
 	}
 
+	/**
+	 * Updates a Sales Order Head Record
+	 * @param  string           $sessionID Session Identifier
+	 * @param  string           $ordn      Order Number
+	 * @param  SalesOrderEdit   $order     Sales Order Edit Object
+	 * @param  bool             $debug     Run in debug? If so return SQL Query
+	 * @return bool                        did the orderhead get updated?
+	 */
 	function update_orderhead($sessionID, $ordn, SalesOrderEdit $order, $debug = false) {
 		$orginalorder = SalesOrderEdit::load($sessionID, $ordn);
 		$properties = array_keys($order->_toArray());
@@ -3677,6 +3894,12 @@
 		}
 	}
 
+	/**
+	 * Returns All Shipping Methods Available
+	 * @param  string $sessionID Session Identifier
+	 * @param  bool   $debug     Run in debug? If so, returns SQL Query
+	 * @return array             of shipping methods
+	 */
 	function get_shipvias($sessionID, $debug = false) {
 		$q = (new QueryBuilder())->table('shipvia');
 		$q->field('code');
@@ -3696,6 +3919,13 @@
 	MISC ORDER FUNCTIONS
 ============================================================ */
 
+	/**
+	 * Returns All Order Document Records
+	 * @param  string $sessionID   Session ID
+	 * @param  string $ordn        Order Number
+	 * @param  bool   $debug       Run in debug? If so, return SQL Query
+	 * @return array               of order's documents
+	 */
 	function get_allorderdocs($sessionID, $ordn, $debug = false) {
 		$q = (new QueryBuilder())->table('orddocs');
 		$q->where('sessionid', $sessionID);
@@ -3710,6 +3940,13 @@
 		}
 	}
 
+	/**
+	 * Returns Order Tracking Record
+	 * @param  string $sessionID   Session ID
+	 * @param  string $ordn        Order Number
+	 * @param  bool   $debug       Run in debug? If so, return SQL Query
+	 * @return array               of order's tracking information
+	 */
 	function get_ordertracking($sessionID, $ordn, $debug = false) {
 		$q = (new QueryBuilder())->table('ordrtrk');
 		$q->where('sessionid', $sessionID);
@@ -3724,6 +3961,10 @@
 		}
 	}
 
+	/**
+	 * Returns all states in table
+	 * @return array   			of states
+	 */
 	function get_states() {
 		$q = (new QueryBuilder())->table('states');
 		$q->field($q->expr("abbreviation AS state"));
@@ -3733,6 +3974,10 @@
 		return $sql->fetchAll(PDO::FETCH_ASSOC);
 	}
 
+	/**
+	 * Returns all countries in table
+	 * @return array   			of countries
+	 */
 	function get_countries() {
 		$q = (new QueryBuilder())->table('countries');
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
@@ -4135,6 +4380,12 @@
   /* =============================================================
 		CUSTOMER JSON CONFIGS
 	============================================================ */
+	/**
+	 * Returns if Customer Configuration exists
+	 * @param  string $config   Customer Configs
+	 * @param  bool   $debug    Run in debug?
+	 * @return bool   			Does the customer configuration exist?
+	 */
 	function does_customerconfigexist($config, $debug = false) {
 		$q = (new QueryBuilder())->table('customerconfigs');
 		$q->field($q->expr('COUNT(*)'));
@@ -4149,6 +4400,12 @@
 		}
 	}
 
+	/**
+	 * Returns Customer Configurations
+	 * @param  string $config   Customer Configs
+	 * @param  bool   $debug    Run in debug?
+	 * @return array   			of the customer configurations
+	 */
 	function get_customerconfig($config, $debug = false) {
 		$q = (new QueryBuilder())->table('customerconfigs');
 		$q->field('data');
@@ -4164,6 +4421,13 @@
 		}
 	}
 
+	/**
+	 * Updates Customer Configurations into customerconfigs tables
+	 * @param  string $config   Customer Configs
+	 * @param  string $data     json data fields
+	 * @param  bool   $debug    Run in debug?
+	 * @return array   			sql
+	 */
 	function update_customerconfig($config, $data, $debug = false) {
 		$q = (new QueryBuilder())->table('customerconfigs');
 		$q->mode('update');
@@ -4179,6 +4443,13 @@
 		}
 	}
 
+	/**
+	 * Inserts Customer Configurations into customerconfigs tables
+	 * @param  string $config   Customer Configs
+	 * @param  string $data     json data fields
+	 * @param  bool   $debug    Run in debug?
+	 * @return bool   			Does last inserted ID match the current inserted?
+	 */
 	function create_customerconfig($config, $data, $debug = false) {
 		$q = (new QueryBuilder())->table('customerconfigs');
 		$q->mode('insert');
@@ -4197,6 +4468,12 @@
 	/* =============================================================
 		LOGM FUNCTIONS
 	============================================================ */
+	/**
+	 * Returns the LogmUser Record matching User Login ID
+	 * @param  string $loginID   User Login ID, if blank, will use the current User
+	 * @param  bool   $debug     Run in debug?
+	 * @return LogmUser
+	 */
 	function get_logmuser($loginID, $debug = false) {
 		$q = (new QueryBuilder())->table('logm');
 		$q->where('loginid', $loginID);
@@ -4211,6 +4488,11 @@
 		}
 	}
 
+	/**
+	 * Returns all LogmUser Records
+	 * @param  bool   $debug     Run in debug?
+	 * @return array             of user records
+	 */
 	function get_logmuserlist($debug = false) {
 		$q = (new QueryBuilder())->table('logm');
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
@@ -5525,7 +5807,7 @@
 			return $sql->fetch();
 		}
 	}
-	
+
 	/**
 	 * Get Total Qty for provided $itemID
 	 * @param  string $sessionID Session Identifier
@@ -5577,7 +5859,7 @@
 			return $sql->fetch();
 		}
 	}
-	
+
 	/**
 	 * Returns an array of Inventory Search Items that are for the provided Item
 	 * Used for getting Lot Serial Items and their locations
@@ -5725,7 +6007,7 @@
 			return $sql->fetch();
 		}
 	}
-	
+
 	/**
 	 * Returns WhseBin Ranges
 	 * @param  string $whseID Warehouse ID
@@ -5811,6 +6093,12 @@
 		}
 	}
 
+	/**
+	 * Returns Item Master Record
+	 * @param  string $itemid Item ID
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return ItemMasterItem
+	 */
 	function get_item_im($itemid, $debug = false) {
 		$q = (new QueryBuilder())->table('itemmaster');
 		$q->where('itemid', $itemid);
