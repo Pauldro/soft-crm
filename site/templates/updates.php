@@ -53,7 +53,7 @@
     
     $inventorypage = $pages->get('/warehouse/inventory/');
     $inventorypage->of(false);
-    $inventorypage->dplusfunction = 'mwm';
+    $inventorypage->dplusfunction = 'wm';
     
     $inventory_pages = array(
         'physical-count' => array(
@@ -66,13 +66,13 @@
             'name' => 'find-item',
             'title' => 'Find Item',
             'summary' => 'Find Location(s) for an Item',
-            'function' => 'mwm'
+            'function' => 'wm'
         ),
         'bin-inquiry' => array(
             'name' => 'bin-inquiry',
             'title' => 'Bin Inquiry',
             'summary' => 'Show Items that are in a bin',
-            'function' => 'mwm'
+            'function' => 'wm'
         )
     );
     
@@ -89,20 +89,20 @@
     
     $pickingpage = $pages->get('/warehouse/picking/');
     $pickingpage->of(false);
-    $pickingpage->dplusfunction = 'mwm';
+    $pickingpage->dplusfunction = 'wm';
     
     $picking_pages = array(
         'pick-order' => array(
             'name' => 'pick-order',
             'title' => 'Sales Order Picking',
             'summary' => 'Pick Items for a Sales Order',
-            'function' => 'mwm'
+            'function' => 'wm'
         ),
         'pick-pack' => array(
             'name' => 'pick-pack',
             'title' => 'Sales Order Picking & Packing',
             'summary' => 'Pick & Pack Items for a Sales Order',
-            'function' => 'mwm'
+            'function' => 'wm'
         )
     );
     
@@ -119,5 +119,5 @@
     
     $warehousepage = $pages->get('/warehouse/');
     $warehousepage->of(false);
-    $warehousepage->dplusfunction = 'mwm';
+    $warehousepage->dplusfunction = 'wm';
 ?>
