@@ -19,43 +19,46 @@ DPluso is a PHP based browser front-end for Distribution Plus.
 Starting off as a tool for Salesreps, The software allows them to handle many aspects of their Day to Day
 
 1. CRM
-   We give the user the ability to Manage their Customers view sales data about their customer and
+	We give the user the ability to Manage their Customers view sales data about their customer and
 review Quotes and Sales Orders. The User can also make notes and tasks regarding that customer.
 User can also run reports, some which are formattable, that give them further insight into their customer such as sales history,
 standing orders, open invoices etc.
 
 2. Ordering
-   Users can also create orders and quotes for their customers. They can add items to a cart and then decide if the items
+	Users can also create orders and quotes for their customers. They can add items to a cart and then decide if the items
 need to be saved a quote or proceed with a sales order. The user can also can edit existing sales orders and quotes if they have permissions.
 
 3. Item Info
-   Users can also can gain insight on the items they sell, run some formattable reports. They can view stock info, view sales history, view what lots the items is contained in.
-
-
+	Users can also can gain insight on the items they sell, run some formattable reports. They can view stock info, view sales history, view what lots the items is contained in.
+	
 4. Vendor Info
-
+	Users can view and gain insight on the vendors they purchase from. Run Formattable reports
+	
+5. Warehouse Management
+	1. Manage Inventory by moving items, finding items, running bin inquiries, run physical counts
+	2. Pick Sales Orders
 
 
 ## Installing DPluso
-1. Get the most recent copy of DPlus CRM on the [Soft Server](http://192.168.1.2/dpluso/)
+1. Get the most recent copy of DPlus CRM on the Soft Server
 and log in to the Processwire, click on Setup -> Export. Name it dpluso, get a zip/file download, leave the config properties checked.
 2. Prepare the new server with directories each Dplus CRM installation needs these directories:
-    * /var/www/html/orderfiles/
-    * /var/www/html/files/
-    * /var/www/html/files/json/
-    * /var/www/html/data#  <- # should be the company # that the salesportal will be installed for
-    * /var/www/html/dpluso/ <- default salesportal directory
+	* /var/www/html/orderfiles/
+	* /var/www/html/files/
+	* /var/www/html/files/json/
+	* /var/www/html/data#  <- # should be the company # that the salesportal will be installed for
+	* /var/www/html/dpluso#/ <- default salesportal directory # should be the company # 
 3. Download Processwire from [Processwire](https://processwire.com/download/)
-    * If this a new installation no others have been made, use the 3.0 master link
-    * If not or if you want a for sure installation, use 2.8
-    * Download the zip open it up, inside it stick the dpluso/ zip download stick the bottom most site-dpluso directory in the processwire directory which has other site-*
-    * Upload the directory under processwire*master to /var/www/html/dpluso/
-4. Install DPlus CRM
-    * Go to that server IP or address with dpluso/ added to the url.
-    * Go through the Processwire installation, choose site-dpluso as the profile
-    * Follow the steps use cptecomm login as the database credentials, name the database dpluso
-    * For the admin link use manage, and the color scheme warm
-    * For the admin credentials use the rcapsys login
+	* If this a new installation no others have been made, use the 3.0 master link
+	* If not or if you want a for sure installation, use 3.0
+	* Download the zip open it up, inside it stick the dpluso/ zip download stick the bottom most site-dpluso directory in the processwire directory which has other site-*
+	* Upload the directory under processwire*master to /var/www/html/dpluso#/
+4. Install DPluso
+	* Go to that server IP or address with dpluso#/ added to the url.
+	* Go through the Processwire installation, choose site-dpluso as the profile
+	* Follow the steps use cptecomm login as the database credentials, name the database pw_dpluso#
+	* For the admin link use manage, and the color scheme warm
+	* For the admin credentials use the default developer login
 
 ## MYSQL Fulltext Search Index
 * [MySQL documentation](https://dev.mysql.com/doc/refman/5.5/en/fulltext-fine-tuning.html)
@@ -65,7 +68,7 @@ ft_min_word_len=2
 ```
 
 ## Issues
-* Issues can be reported in our [github](https://github.com/cptechinc/soft-crm/issues)
+* Issues can be reported in our [github](https://github.com/cptechinc/soft-dpluso/issues)
 * You can also include emojis on your issues https://gist.github.com/rxaviers/7360908
 * Include screenshots if you can, and then we can issue fixes based on those issues and track issues
 
@@ -75,9 +78,4 @@ ft_min_word_len=2
 ## Domains & Subdomains
 * For domain access to work properly you must add the domain / subdomain to the `$config->httpHosts` array.
 
-
-
-
-------
-
-Copyright 2017 by CPTech
+Copyright 2019 by CPTech
