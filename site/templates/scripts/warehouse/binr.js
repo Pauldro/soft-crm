@@ -1,8 +1,8 @@
 $(function() {
 	// BINR FORM INPUTS
 	var input_frombin = $('.binr-form').find('input[name=from-bin]');
-	var input_tobin = $('.binr-form').find('input[name=to-bin]');
-	var input_qty = $('.binr-form').find('input[name=qty]');
+	var input_tobin   = $('.binr-form').find('input[name=to-bin]');
+	var input_qty     = $('.binr-form').find('input[name=qty]');
 	
 	/**
 	 * The Order of Functions based on Order of Events
@@ -125,7 +125,7 @@ $(function() {
 			error = true;
 			title = 'Error';
 			msg = 'Please Fill in the From Bin';
-		} else if (validfrombins.whse.bins.bins[input_frombin.val()] === undefined) {
+		} else if (validfrombins[input_frombin.val()] === undefined) {
 			error = true;
 			title = 'Invalid From Bin ID';
 			msg = 'Please Choose a valid From bin from the from bin list';
