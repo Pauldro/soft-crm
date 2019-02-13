@@ -7,6 +7,7 @@
 **I'm submitting a ...** 
 <!--  (check one with "x") -->
 [ ] bug report
+
 [ ] feature request
 
 **Current behavior (Include Images if available):**
@@ -29,9 +30,11 @@ insert short code snippets here
 
 **Installation Information:**
 
-| Customer      | Name     |
-| Address       | Address   |
-| Company #     | Company #|
+| Installation  | Value |
+|---|---|
+| Customer   | Name  |
+| Address    | Customer Address  |
+| Company #  | Customer Company Number |
 
 
 **What is the most Current Commit?**
