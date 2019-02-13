@@ -20,7 +20,7 @@
 			$pageurl = $page->fullURL->getUrl();
 			header("Location: {$config->pages->menu_binr}redir/?action=search-item-bins&itemID=$item->itemid&page=$pageurl");
 		} else {
-			$items = InventorySearchItem::get_all(session_id());
+			$items = InventorySearchItem::get_all_distinct_itemid(session_id());
 			$page->body = __DIR__."/inventory-results.php";
 		}
 	} elseif (!empty($input->get->serialnbr) | !empty($input->get->lotnbr) | !empty($input->get->itemID)) {

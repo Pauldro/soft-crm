@@ -1,3 +1,5 @@
+<h3>Warehouse: <?= $whsesession->whseid; ?></h3>
+
 <div>
     <?php if ($page->parent->id != $pages->get('/')->id) : ?>
         <div class="form-group">

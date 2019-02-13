@@ -5525,6 +5525,34 @@
 			return $sql->fetch();
 		}
 	}
+	
+	/**
+	 * Get Total Qty for provided $itemID
+	 * @param  string $sessionID Session Identifier
+	 * @param  string $itemID    Item ID
+	 * @param  string $binID     Bin ID to Filter Count
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return int               Total Qty for $itemID
+	 */
+	function get_invsearch_total_qty_itemid($sessionID, $itemID, $binID = '', $debug = false) {
+		$q = (new QueryBuilder())->table('invsearch');
+		$q->field($q->expr('SUM(qty)'));
+		$q->where('sessionid', $sessionID);
+		$q->where('itemid', $itemID);
+
+		if (!empty($binID)) {
+			$q->where('bin', $binID);
+		}
+		$q->limit(1);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return intval($sql->fetchColumn());
+		}
+	}
 
 	/**
 	 * Returns the first item found in invsearch table with the provided lotserial number
@@ -5547,6 +5575,33 @@
 			$sql->execute($q->params);
 			$sql->setFetchMode(PDO::FETCH_CLASS, 'InventorySearchItem');
 			return $sql->fetch();
+		}
+	}
+	
+	/**
+	 * Returns an array of Inventory Search Items that are for the provided Item
+	 * Used for getting Lot Serial Items and their locations
+	 * @param  string $sessionID Session Identifier
+	 * @param  string $itemID    Lot Number / Serial Number
+	 * @param  string $binID     Bin ID to grab Item
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return array            <InventorySearchItem>
+	 */
+	function get_all_invsearchitems_lotserial($sessionID, $itemID, $binID = '', $debug = false) {
+		$q = (new QueryBuilder())->table('invsearch');
+		$q->where('itemid', $itemID);
+		if (!empty($binID)) {
+			$q->where('bin', $binID);
+		}
+		$q->where('sessionid', $sessionID);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'InventorySearchItem');
+			return $sql->fetchAll();
 		}
 	}
 
@@ -5668,6 +5723,26 @@
 			$sql->execute($q->params);
 			$sql->setFetchMode(PDO::FETCH_CLASS, 'WhseBin');
 			return $sql->fetch();
+		}
+	}
+	
+	/**
+	 * Returns WhseBin Ranges
+	 * @param  string $whseID Warehouse ID
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return array          <WhseBin>
+	 */
+	function get_bnctl_ranges($whseID, $debug = false) {
+		$q = (new QueryBuilder())->table('bincntl');
+		$q->where('warehouse', $whseID);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'WhseBin');
+			return $sql->fetchAll();
 		}
 	}
 
