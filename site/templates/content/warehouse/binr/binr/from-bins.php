@@ -5,8 +5,8 @@
      */
 ?>
 <div class="<?= !empty($item->bin) ? 'hidden' : ''; ?>">
-    <h3>Select <?= ucfirst($direction); ?> Bin</h3>
-    <div class="list-group <?= "choose-$direction-bins"; ?>">
+    <h3>Select From Bin</h3>
+    <div class="list-group <?= "choose-from-bins"; ?>">
         <div class="list-group-item">
             <div class="row">
                 <div class="col-xs-3">
@@ -22,7 +22,7 @@
         </div>
         <?php $bins = ItemBinInfo::find_by_item(session_id(), $item); ?>
         <?php foreach ($bins as $bin) : ?>
-            <a href="#" class="list-group-item choose-bin" data-binid="<?= $bin->binid; ?>" data-direction="<?= $direction; ?>" data-qty="<?= $bin->qty; ?>">
+            <a href="#" class="list-group-item choose-bin" data-binid="<?= $bin->binid; ?>" data-direction="from" data-qty="<?= $bin->qty; ?>">
                 <div class="row">
                     <div class="col-xs-4">
                         <p class="list-group-item-text"><?= $bin->binid; ?></p>

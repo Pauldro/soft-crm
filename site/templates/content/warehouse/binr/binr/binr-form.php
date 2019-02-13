@@ -32,10 +32,21 @@
 					</div>
 				</div>
 				<div>
-					<?php 
-						$direction = 'from';
-						include __DIR__."/select-direction-bin.php"; 
-					?>
+					<?php include __DIR__."/from-bins.php"; ?>
+				</div>
+			</div>
+			<div class="form-group">
+				<h3>To</h3>
+				<div class="row">
+					<div class="col-sm-6 form-group">
+						<label for="to-bin">Bin</label>
+						<div class="input-group">
+							<input type="text" class="form-control input-sm" name="to-bin" value="<?= isset($tobin) ? $tobin : ''; ?>">
+							<span class="input-group-btn">
+								<button type="button" class="btn btn-sm btn-default show-possible-bins" data-input="to-bin"> <span class="fa fa-search"></span> </button>
+							</span>
+						</div>
+					</div>
 				</div>
 			</div>
 			<div class="form-group">
@@ -46,21 +57,6 @@
 							<input type="text" class="form-control input-sm text-right" name="qty" value="<?= ItemBinInfo::get_binqty(session_id(), $item); ?>">
 							<span class="input-group-btn">
 								<button type="submit" class="btn btn-primary btn-sm not-round use-bin-qty" data-direction="from">Use Bin Qty</button>
-							</span>
-						</div>
-					</div>
-				</div>
-			</div>
-			
-			<div class="form-group">
-				<h3>To</h3>
-				<div class="row">
-					<div class="col-sm-6 form-group">
-						<label for="to-bin">Bin</label>
-						<div class="input-group">
-							<input type="text" class="form-control input-sm" name="to-bin" value="<?= isset($tobin) ? $tobin : ''; ?>">
-							<span class="input-group-btn">
-								<button type="button" class="btn btn-sm btn-default show-possible-bins" data-input="to-bin"> <span class="fa fa-search"></span> </button>
 							</span>
 						</div>
 					</div>

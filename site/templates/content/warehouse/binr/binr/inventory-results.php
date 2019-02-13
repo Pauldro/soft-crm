@@ -26,7 +26,7 @@
 								<div class="list-group">
 									<?php $lotserials = InventorySearchItem::get_all_items_lotserial(session_id(), $item->itemid); ?>
 									<?php foreach ($lotserials as $lotserial) : ?>
-										<a href="<?= $binr->get_item_binsURL($item); ?>" class="list-group-item binr-inventory-result" data-desc="<?= $item->get_itemtypepropertydesc(); ?>" data-item="<?= $item->get_itemidentifier(); ?>" data-qty="<?= $item->qty; ?>">
+										<a href="<?= $binr->get_item_binsURL($lotserial); ?>" class="list-group-item binr-inventory-result" data-desc="<?= $item->get_itemtypepropertydesc(); ?>" data-item="<?= $item->get_itemidentifier(); ?>" data-qty="<?= $item->qty; ?>">
 											<div class="row">
 												<div class="col-xs-12">
 													<h4 class="list-group-item-heading"><?= strtoupper($lotserial->get_itemtypepropertydesc()) . " " . $lotserial->get_itemidentifier(); ?></h4>
