@@ -37,7 +37,7 @@
 
 	switch ($action) {
 		case 'inventory-search':
-			$q = $input->$requestmethod->text('scan');
+			$q = strtoupper($input->$requestmethod->text('scan'));
 			$binID = $input->$requestmethod->text('binID');
 			$data = array("DBNAME=$config->dplusdbname", 'INVSEARCH', "QUERY=$q");
 			$url = new Purl\Url($input->$requestmethod->text('page'));
