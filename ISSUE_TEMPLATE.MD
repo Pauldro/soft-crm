@@ -28,8 +28,9 @@ insert short code snippets here
 <!-- List any other information that is relevant to your issue. Stack traces, related issues, suggestions on how to fix, Stack Overflow links, forum links, etc. -->
 
 **Installation Information:**
+
 | Customer      | Name     |
-| Address       |Address   |
+| Address       | Address   |
 | Company #     | Company #|
 
 
