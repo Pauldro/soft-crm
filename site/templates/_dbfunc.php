@@ -2486,7 +2486,6 @@
 	 * @param  string   $key1         Session Identifier
 	 * @param  string   $key2         key
 	 * @param  string   $type         Cart, Quote, Quote-to-order, Sales order
-	 * @param  string   $recnbr       Record Number
 	 * @param  bool     $useclass     Does it use Qnote class?
 	 * @param  bool     $debug        Run in debug? If so, return SQL Query
 	 * @return array                  of all Qnote records
@@ -2548,6 +2547,7 @@
 	 * @param  string   $sessionID    Session Identifier
 	 * @param  string   $key1         Session Identifier
 	 * @param  string   $key2         key
+	 * @param  string   $type         Is type Cart?
 	 * @param  bool     $debug        Run in debug? If so, return SQL Query
 	 * @return string                 Y or N
 	 */
@@ -2573,7 +2573,7 @@
 	 * @param  string   $sessionID    Session Identifier
 	 * @param  string   $key1         Session Identifier
 	 * @param  string   $key2         key
-	 * @param  bool     $debug        Run in debug? If so, return SQL Query
+	 * @param  string   $type         Is type Cart?
 	 * @return string                 Y or N
 	 */
 	function has_dplusnote($sessionID, $key1, $key2, $type) {
