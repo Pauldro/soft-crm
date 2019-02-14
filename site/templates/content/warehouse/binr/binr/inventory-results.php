@@ -15,7 +15,7 @@
 					<div class="col-xs-12">
 						<h4 class="list-group-item-heading">ITEMID: <?= $item->itemid; ?></h4>
 						<p class="list-group-item-text"><?= $item->desc1; ?></p>
-						
+
 						<?php if ($item->is_serialized() || $item->is_lotted()) : ?>
 							<p class="list-group-item-text bg-info"><strong>Bin:</strong> (MULTIPLE) <strong>Qty:</strong> <?= InventorySearchItem::get_total_qty_itemid(session_id(), $item->itemid); ?></p>
 							<p></p>
@@ -24,7 +24,7 @@
 							</button>
 							<div id="<?= $item->itemid; ?>-lotserial" class="collapse">
 								<div class="list-group">
-									<?php $lotserials = InventorySearchItem::get_all_items_lotserial(session_id(), $item->itemid); ?>
+									<?php $lotserials = InventorySearchItem::get_all_items_lotserial(session_id(), $item->itemid, $binID); ?>
 									<?php foreach ($lotserials as $lotserial) : ?>
 										<a href="<?= $binr->get_item_binsURL($lotserial); ?>" class="list-group-item binr-inventory-result" data-desc="<?= $item->get_itemtypepropertydesc(); ?>" data-item="<?= $item->get_itemidentifier(); ?>" data-qty="<?= $item->qty; ?>">
 											<div class="row">
