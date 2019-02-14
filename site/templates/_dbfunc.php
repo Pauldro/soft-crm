@@ -4067,7 +4067,7 @@
 	 * Returns an array of items that match the search query and with the customer ID if provided
 	 * @param  string $itemID  Item ID
 	 * @param  bool   $debug   Run in debug? If so, return SQL Query
-	 * @return                 Item
+	 * @return array           of items
 	 */
 	function get_itemfrompricing($itemID, $debug  = false) {
 		$q = (new QueryBuilder())->table('pricing');
