@@ -719,45 +719,6 @@
 		}
 	}
 
-	function edit_customercontact($custID, $shipID, $contactID, $contact, $debug = false) {
-		$originalcontact = get_customercontact($custID, $shipID, $contactID, false);
-		$q = (new QueryBuilder())->table('custindex');
-		$q->mode('update');
-		$q->generate_setdifferencesquery($originalcontact->_toArray(), $contact->_toArray());
-		$q->where('custid', $custID);
-		$q->where('shiptoid', $shipID);
-		$q->where('contact', $contactID);
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery();
-		} else {
-			$sql->execute($q->params);
-			$success = $sql->rowCount();
-			if ($success) {
-				return array("error" => false, "sql" => $q->generate_sqlquery($q->params));
-			} else {
-				return array("error" => true, "sql" => $q->generate_sqlquery($q->params));
-			}
-		}
-	}
-
-	function get_customersalesperson($custID, $shipID, $debug = false) {
-		$q = (new QueryBuilder())->table('custindex');
-		$q->field('splogin1');
-		$q->where('custid', $custID);
-		$q->where('shiptoid', $shipID);
-		$q->limit(1);
-
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			return $sql->fetchColumn();
-		}
-	}
 /* =============================================================
 	CUST INDEX FUNCTIONS
 ============================================================ */
@@ -797,6 +758,12 @@
 		}
 	}
 
+	/**
+	 * Returns the number of Distinct Customer Index Records that the user has access to
+	 * @param  string $loginID   User Login ID, if blank, will use current user
+	 * @param  bool   $debug     Run in debug? If so, will return SQL Query
+	 * @return int               number of Distinct Customer Records
+	 */
 	function count_distinctcustindex($loginID = '', $debug = false) {
 		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
 		$user = LogmUser::load($loginID);
@@ -958,7 +925,7 @@
 
 	/**
 	 * Get the X number of Top Selling Customers
-	 * @param  int    $limit    [description]
+	 * @param  int    $limit    Number of records to return
 	 * @param  string $loginID  User Login ID either provided, or current User
 	 * @param  bool   $debug    Run in debug? If true, return SQL Query
 	 * @return array            Top Selling Customers
@@ -1153,7 +1120,7 @@
 	/**
 	 * Returns an array of SalesOrder that match the filter criteria
 	 * @param  int    $limit       Number of Records to Return
-	 * @param  int    $page        Page Number
+	 * @param  int    $page        Page to start from
 	 * @param  string $sortrule    Sort (ASC)ENDING | (DESC)ENDING
 	 * @param  bool   $filter      Array of filters and their values
 	 * @param  bool   $filtertypes Array of filter properties
@@ -1201,7 +1168,7 @@
 	/**
 	 * Returns an array of SalesOrder that match the filter criteria
 	 * @param  int    $limit       Number of Records to Return
-	 * @param  int    $page        Page Number
+	 * @param  int    $page        Page to start from
 	 * @param  string $sortrule    Sort (ASC)ENDING | (DESC)ENDING
 	 * @param  string $orderby     Column / Property to sort on
 	 * @param  bool   $filter      Array of filters and their values
@@ -1465,6 +1432,13 @@
 		}
 	}
 
+	/**
+	 * Returns Order Documents matching order number
+	 * @param  string    $sessionID     Session Identifier
+	 * @param  string    $ordn          Order Number
+	 * @param  bool      $debug         Run in debug? If so return SQL Query
+	 * @return array                    array of Order Documents
+	 */
 	function get_orderdocs($sessionID, $ordn, $debug = false) {
 		$q = (new QueryBuilder())->table('orddocs');
 		$q->where('sessionid', $sessionID);
@@ -1791,6 +1765,12 @@
 		}
 	}
 
+	/**
+	 * Returns Sales History Record
+	 * @param  int    $ordn          Order Number
+	 * @param  bool   $debug         Run in debug? If so return SQL Query
+	 * @return array                 array of SalesOrderHistory record
+	 */
 	function get_saleshistoryorder($ordn, $debug = false) {
 		$q = (new QueryBuilder())->table('saleshist');
 		$q->where('ordernumber', $ordn);
@@ -2280,6 +2260,14 @@
 		}
 	}
 
+	/**
+	 * Returns the number of Quote Detail Records from the database
+	 * @param  string        $sessionID    Session Identifier
+	 * @param  string        $qnbr         Quote Number
+	 * @param  bool          $useclass     Is function using class?
+	 * @param  bool          $debug        Run in debug? If so, return SQL Query
+	 * @return int                         Number of quote detail records
+	 */
 	function get_quotehead($sessionID, $qnbr, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('quothed');
 		$q->where('sessionid', $sessionID);
@@ -2298,6 +2286,13 @@
 		}
 	}
 
+	/**
+	 * Returns the number of Quote Detail Records from the database
+	 * @param  string        $sessionID    Session Identifier
+	 * @param  string        $qnbr         Quote Number
+	 * @param  bool          $debug        Run in debug? If so, return SQL Query
+	 * @return int                         Number of quote detail records
+	 */
 	function count_quotedetails($sessionID, $qnbr, $debug = false) {
 		$q = (new QueryBuilder())->table('quotdet');
 		$q->field($q->expr('COUNT(*)'));
@@ -2313,6 +2308,14 @@
 		}
 	}
 
+	/**
+	 * Returns all Quote Detail Records from the database
+	 * @param  string        $sessionID    Session Identifier
+	 * @param  string        $qnbr         Quote Number
+	 * @param  bool          $useclass     Is function using class?
+	 * @param  bool          $debug        Run in debug? If so, return SQL Query
+	 * @return array                       of all Quote Detail records
+	 */
 	function get_quotedetails($sessionID, $qnbr, $useclass = false, $debug) {
 		$q = (new QueryBuilder())->table('quotdet');
 		$q->where('sessionid', $sessionID);
@@ -2331,6 +2334,14 @@
 		}
 	}
 
+	/**
+	 * Returns if Quote Detail Record exists
+	 * @param  string        $sessionID    Session Identifier
+	 * @param  string        $qnbr         Quote Number
+	 * @param  string        $linenbr      Line Number
+	 * @param  bool          $debug        Run in debug? If so, return SQL Query
+	 * @return int                         Is there a detail record?
+	 */
 	function does_quotedetailexist($sessionID, $qnbr, $linenbr, $debug = false) {
 		$q = (new QueryBuilder())->table('quotdet');
 		$q->field('COUNT(*)');
@@ -2347,6 +2358,14 @@
 		}
 	}
 
+	/**
+	 * Returns Quote Detail Record from database
+	 * @param  string        $sessionID    Session Identifier
+	 * @param  string        $qnbr         Quote Number
+	 * @param  string        $linenbr      Line Number
+	 * @param  bool          $debug        Run in debug? If so, return SQL Query
+	 * @return array                       of the detail record
+	 */
 	function get_quotedetail($sessionID, $qnbr, $linenbr, $debug = false) {
 		$q = (new QueryBuilder())->table('quotdet');
 		$q->where('sessionid', $sessionID);
@@ -2363,6 +2382,14 @@
 		}
 	}
 
+	/**
+	 * Updates Quote in database
+	 * @param  string        $sessionID    Session Identifier
+	 * @param  string        $qnbr         Quote Number
+	 * @param  Quote         $quote        Quote object
+	 * @param  bool          $debug        Run in debug? If so, return SQL Query
+	 * @return string                      Sql
+	 */
 	function edit_quotehead($sessionID, $qnbr, Quote $quote, $debug = false) {
 		$originalquote = Quote::load($sessionID, $qnbr);
 		$properties = array_keys($quote->_toArray());
@@ -2387,6 +2414,13 @@
 		}
 	}
 
+	/**
+	 * Updates Quote Detail Record into quotdet table
+	 * @param  string        $sessionID    Session Identifier
+	 * @param  QuoteDetail   $detail       QuoteDetail object
+	 * @param  bool          $debug        Run in debug? If so, return SQL Query
+	 * @return bool                        If row is present, record was updated
+	 */
 	function update_quotedetail($sessionID, QuoteDetail $detail, $debug = false) {
 		$originaldetail = QuoteDetail::load($sessionID, $detail->quotenbr, $detail->linenbr);
 		$properties = array_keys($detail->_toArray());
@@ -2412,6 +2446,13 @@
 		}
 	}
 
+	/**
+	 * Inserts Quote Detail Record into quotdet table
+	 * @param  string        $sessionID    Session Identifier
+	 * @param  QuoteDetail   $detail       QuoteDetail object
+	 * @param  bool          $debug        Run in debug? If so, return SQL Query
+	 * @return bool                        Did the record get successfully inserted?
+	 */
 	function insert_quotedetail($sessionID, QuoteDetail $detail, $debug = false) {
 		$properties = array_keys($detail->_toArray());
 		$q = (new QueryBuilder())->table('quotdet');
@@ -2439,6 +2480,17 @@
 /* =============================================================
 	QNOTES FUNCTIONS
 ============================================================ */
+	/**
+	 * Returns all DplusNote Records from qnote table
+	 * @param  string   $sessionID    Session Identifier
+	 * @param  string   $key1         Session Identifier
+	 * @param  string   $key2         key
+	 * @param  string   $type         Cart, Quote, Quote-to-order, Sales order
+	 * @param  string   $recnbr       Record Number
+	 * @param  bool     $useclass     Does it use Qnote class?
+	 * @param  bool     $debug        Run in debug? If so, return SQL Query
+	 * @return array                  of all Qnote records
+	 */
 	function get_qnotes($sessionID, $key1, $key2, $type, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('qnote');
 		$q->where('sessionid', $sessionID);
@@ -2459,6 +2511,17 @@
 		}
 	}
 
+	/**
+	 * Returns DplusNote Record from qnote table
+	 * @param  string   $sessionID    Session Identifier
+	 * @param  string   $key1         Session Identifier
+	 * @param  string   $key2         key
+	 * @param  string   $type         Cart, Quote, Quote-to-order, Sales order
+	 * @param  string   $recnbr       Record Number
+	 * @param  bool     $useclass     Does it use Qnote class?
+	 * @param  bool     $debug        Run in debug? If so, return SQL Query
+	 * @return array                  of Qnote record
+	 */
 	function get_qnote($sessionID, $key1, $key2, $type, $recnbr, $useclass = false, $debug = false) {
 		$q = (new QueryBuilder())->table('qnote');
 		$q->where('sessionid', $sessionID);
@@ -2480,6 +2543,14 @@
 		}
 	}
 
+	/**
+	 * Counts DplusNotes in Record
+	 * @param  string   $sessionID    Session Identifier
+	 * @param  string   $key1         Session Identifier
+	 * @param  string   $key2         key
+	 * @param  bool     $debug        Run in debug? If so, return SQL Query
+	 * @return string                 Y or N
+	 */
 	function count_qnotes($sessionID, $key1, $key2, $type, $debug = false) {
 		$q = (new QueryBuilder())->table('qnote');
 		$q->field($q->expr('COUNT(*)'));
@@ -2497,6 +2568,14 @@
 		}
 	}
 
+	/**
+	 * Checks if there is DplusNotes and returns "Y" or "N"
+	 * @param  string   $sessionID    Session Identifier
+	 * @param  string   $key1         Session Identifier
+	 * @param  string   $key2         key
+	 * @param  bool     $debug        Run in debug? If so, return SQL Query
+	 * @return string                 Y or N
+	 */
 	function has_dplusnote($sessionID, $key1, $key2, $type) {
 		if (count_qnotes($sessionID, $key1, $key2, $type)) {
 			return 'Y';
@@ -2505,6 +2584,13 @@
 		}
 	}
 
+	/**
+	 * Update Qnote Record to Qnote table
+	 * @param  string   $sessionID    Session Identifier
+	 * @param  Qnote    $qnote        Object of Qnote
+	 * @param  bool     $debug        Run in debug? If so, return SQL Query
+	 * @return array                  Sql
+	 */
 	function update_note($sessionID, Qnote $qnote, $debug = false) {
 		$originalnote = Qnote::load($sessionID, $qnote->key1, $qnote->key2, $qnote->rectype, $qnote->recno); // LOADS as Class
 		$q = (new QueryBuilder())->table('qnote');
@@ -2534,6 +2620,13 @@
 		}
 	}
 
+	/**
+	 * Inserts Qnote Record to Qnote table
+	 * @param  string   $sessionID    Session Identifier
+	 * @param  Qnote    $qnote        Object of Qnote
+	 * @param  bool     $debug        Run in debug? If so, return SQL Query
+	 * @return array                  Sql
+	 */
 	function add_qnote($sessionID, Qnote $qnote, $debug = false) {
 		$q = (new QueryBuilder())->table('qnote');
 		$q->mode('insert');
@@ -2557,6 +2650,15 @@
 		}
 	}
 
+	/**
+	 * Returns the number of search records
+	 * @param  string   $sessionID    Session Identifier
+	 * @param  string   $key1         Session Identifier
+	 * @param  string   $key2         key
+	 * @param  string   $rectype      Cart, Quote, Quote-to-order, Sales order
+	 * @param  bool     $debug        Run in debug? If so, return SQL Query
+	 * @return int                    Maximum record number
+	 */
 	function get_maxqnoterecnbr($sessionID, $key1, $key2, $rectype, $debug = false) {
 		$q = (new QueryBuilder())->table('qnote');
 		$q->field($q->expr('MAX(recno)'));
@@ -2574,42 +2676,14 @@
 		}
 	}
 
-	function delete_note($sessionID, Qnote $qnote, $debug = false) {
-		$q = (new QueryBuilder())->table('qnote');
-		$q->mode('delete');
-		$q->where('sessionid', $sessionID);
-		$q->where('key1', $qnote->key1);
-		$q->where('key2', $qnote->key2);
-		$q->where('form1', $qnote->form1);
-		$q->where('form2', $qnote->form2);
-		$q->where('form3', $qnote->form3);
-		$q->where('form4', $qnote->form4);
-		$q->where('form5', $qnote->form5);
-		$q->where('recno', $qnote->recno);
-		$q->where('rectype', $qnote->rectype);
-		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
-
-		if ($debug) {
-			return $q->generate_sqlquery($q->params);
-		} else {
-			$sql->execute($q->params);
-			return array(
-				'sql' => $q->generate_sqlquery($q->params),
-				'success' => $sql->rowCount() ? true : false,
-				'updated' => $sql->rowCount() ? true : false,
-				'querytype' => 'update'
-			);
-		}
-	}
-
 /* =============================================================
 	PRODUCT FUNCTIONS
 ============================================================ */
 	/**
 	 * Returns the number of search records
 	 * @param  string   $sessionID    Session Identifier
-	 * @param  int      $limit        for pagination
-	 * @param  int      $page         for pagination
+	 * @param  int      $limit        Number of records to return
+	 * @param  int      $page         Page to start from
 	 * @param  bool     $debug        Run in debug? If so, return SQL Query
 	 * @return array                  of item records
 	 */
@@ -2809,8 +2883,8 @@
 	 * Returns User Actions
 	 * @param  array   $filters     of filters
 	 * @param  array   $filterable  of filterable filters
-	 * @param  int     $limit       for pagination
-	 * @param  int     $page        for pagination
+	 * @param  int     $limit       Number of records to return
+	 * @param  int     $page        Page to start from
 	 * @param  bool    $debug       Run in debug? If so, return SQL Query
 	 * @return array                of user actions
 	 */
@@ -3187,8 +3261,8 @@
 
 	/**
 	 * Returns Vendor Records where search term has a match
-	 * @param string  $limit     Number of results allowed on page
-	 * @param string  $page      Page number results will start on
+	 * @param string  $limit     Number of records to return
+	 * @param string  $page      Page to start from
 	 * @param string  $keyword   Word or phrase in search
 	 * @param  bool   $debug     Run in debug?
 	 * @return array             of vendors matching search term
@@ -4017,8 +4091,8 @@
 	 * // NOTE This uses full text index to do the searching on, make sure that is created
 	 * @param  string $query  Search Query
 	 * @param  string $custID Customer ID
-	 * @param  int    $limit  How many results to return
-	 * @param  int    $page   Oage of results to start on
+	 * @param  int    $limit  Number of records to return
+	 * @param  int    $page   Page to start from
 	 * @param  bool   $debug  Run in debug? If so, return SQL Query
 	 * @return array          Items that match the search query
 	 */
