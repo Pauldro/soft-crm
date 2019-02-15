@@ -39,7 +39,7 @@
 											<div class="list-group-item">
 												<div class="row">
 													<div class="col-xs-12">
-														<h4 class="list-group-item-heading"><?= strtoupper($lotserial->get_itemtypepropertydesc()) . " " . $lotserial->get_itemidentifier(); ?></h4>
+														<h4 class="list-group-item-heading"><?= strtoupper($lotserial->get_itemtypepropertydesc()) . ": " . $lotserial->get_itemidentifier(); ?></h4>
 														<p class="list-group-item-text bg-info"><strong>Bin:</strong> <?= $lotserial->bin; ?> <strong>Qty:</strong> <?= $lotserial->qty; ?></p>
 														<?php if (!$whseconfig->validate_bin($lotserial->bin)) : ?>
 															<p class="list-group-item-text"><span class="label label-danger">Invalid Bin</span></p>

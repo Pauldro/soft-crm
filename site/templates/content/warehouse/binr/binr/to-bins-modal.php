@@ -13,7 +13,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="choose-to-bins-modal-label">Choose To bin for <?= strtoupper($item->get_itemtypepropertydesc()) . ' '. $item->get_itemidentifier(); ?></h4>
+				<h4 class="modal-title" id="choose-to-bins-modal-label">Choose To bin for <?= strtoupper($item->get_itemtypepropertydesc()) . ': '. $item->get_itemidentifier(); ?></h4>
 			</div>
 			<div class="modal-body">
 				<div>
@@ -25,7 +25,7 @@
 					</div>
 					<div class="tab-content">
 						<div role="tabpanel" class="tab-pane active" id="current">
-							<h4>Bins That Contain <?= strtoupper($item->get_itemtypepropertydesc()) . ' '. $item->get_itemidentifier(); ?> </h4>
+							<h4>Bins That Contain <?= strtoupper($item->get_itemtypepropertydesc()) . ': '. $item->get_itemidentifier(); ?> </h4>
 							<div class="list-group">
 								<?php foreach ($currentbins as $currentbin => $qty) : ?>
 									<a href="#" class="list-group-item choose-tobin" data-bin="<?= $currentbin; ?>">

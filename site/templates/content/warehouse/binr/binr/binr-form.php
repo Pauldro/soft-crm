@@ -4,7 +4,7 @@
 		<?php if (!empty($session->get('binr'))) : ?>
 			<?php if ($whsesession->had_succeeded()) : ?>
 				<div class="alert alert-success" role="alert">
-					<strong>Success:</strong> <?= strtoupper($item->get_itemtypepropertydesc()) . " ". $item->get_itemidentifier(); ?> has been moved
+					<strong>Success:</strong> <?= strtoupper($item->get_itemtypepropertydesc()) . ": ". $item->get_itemidentifier(); ?> has been moved
 				</div>
 				<a href="<?= $page->parent->url; ?>" class="btn btn-primary not-round"><?= $page->parent->title; ?> Menu</a>
 			<?php elseif (!empty($whsesession->status)) : ?>
