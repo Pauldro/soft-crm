@@ -43,7 +43,7 @@
 						<div class="input-group">
 							<input type="text" class="form-control input-sm" name="to-bin" value="<?= isset($tobin) ? $tobin : ''; ?>">
 							<span class="input-group-btn">
-								<button type="button" class="btn btn-sm btn-default show-possible-bins" data-input="to-bin"> <span class="fa fa-search"></span> </button>
+								<button type="button" class="btn btn-sm btn-default" data-toggle="modal" data-target="#choose-to-bins-modal" data-input="to-bin"> <span class="fa fa-search"></span> </button>
 							</span>
 						</div>
 					</div>
@@ -68,6 +68,7 @@
 		</form>
 	</div>
 </div>
+<?php include __DIR__ . '/to-bins-modal.php'; ?>
 <?php include "{$config->paths->content}warehouse/session.js.php"; ?>
 <script>
 	var validfrombins = <?= json_encode(ItemBinInfo::get_find_by_itemjsarray(session_id(), $item)); ?>

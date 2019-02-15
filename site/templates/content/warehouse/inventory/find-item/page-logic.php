@@ -1,4 +1,8 @@
 <?php
+	$whsesession = WhseSession::load(session_id());
+	$whsesession->init();
+	$whseconfig = WhseConfig::load($whsesession->whseid);
+
 	if ($input->get->scan) {
 		$scan = $input->get->text('scan');
 		$page->title = "Find Item Inquiry for $scan";

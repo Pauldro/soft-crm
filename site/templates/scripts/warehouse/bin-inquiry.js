@@ -18,20 +18,27 @@ $(function() {
 	 */
 	$(".select-bin-form").validate({
 		submitHandler : function(form) {
-			var valid_form = new SwalError(false, '', '', false);
 			var valid_bin = validate_binID();
 			
 			if (valid_bin.error) {
-				valid_form = valid_bin;
-			}
-			
-			if (valid_form.error) {
-				swal({
-					type: 'error',
-					title: valid_form.title,
-					text: valid_form.msg,
-					html: valid_form.html
-				});
+				if (input_bin.val() != '') {
+					swal({
+						type: 'error',
+						title: valid_bin.title,
+						text: "Continue bin Inquiry with bin " + input_bin.val() + "?",
+						showCancelButton: true,
+					}).then(function (input) {
+						if (input) {
+							form.submit();
+						}
+					}).catch(swal.noop);;
+				} else {
+					swal({
+						type: 'error',
+						title: valid_bin.title,
+						text: valid_bin.msg
+					});
+				}
 			} else {
 				form.submit();
 			}
@@ -72,6 +79,7 @@ $(function() {
 				}
 			});
 		}
+		html = false;
 		return new SwalError(error, title, msg, html);
 	}
 });

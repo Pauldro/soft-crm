@@ -77,7 +77,13 @@ $(function() {
 // 5. Show Possible To Bins (if needed)
 //	  included in _shared-functions.js
 /////////////////////////////////////
-	
+	$("body").on("click", "#choose-to-bins-modal .choose-tobin", function(e) {
+		e.preventDefault();
+		var button = $(this);
+		var binID = button.data('bin');
+		input_tobin.val(binID);
+		button.closest('.modal').modal('hide');
+	});
 /////////////////////////////////////
 // 6. Validate Form submit
 /////////////////////////////////////

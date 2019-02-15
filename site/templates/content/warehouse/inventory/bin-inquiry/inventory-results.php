@@ -12,6 +12,11 @@
 	<?php include __DIR__."/bin-form.php"; ?>
 </div>
 <?php if ($input->get->binID) : ?>
+	<?php if (!$whseconfig->validate_bin($binID)) : ?>
+		<div class="alert alert-danger" role="alert">
+			<strong>Warning! </strong> This bin (<?= $binID; ?>) is invalid accoring to your Warehouse Bin Configuration
+		</div>
+	<?php endif; ?>
 	<h3><?= $title; ?></h3>
 	<div class="list-group">
 		<?php if ($resultscount) : ?>

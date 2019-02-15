@@ -4,6 +4,7 @@
 	$binID = '';
 	$whsesession = WhseSession::load(session_id());
 	$whsesession->init();
+	$whseconfig = WhseConfig::load($whsesession->whseid);
 	$binr = new Binr();
 	$config->scripts->append(get_hashedtemplatefileURL('scripts/warehouse/_shared-functions.js'));
 	$config->scripts->append(get_hashedtemplatefileURL('scripts/warehouse/binr.js'));
