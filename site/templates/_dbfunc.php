@@ -4229,7 +4229,82 @@
 			return $sql->fetchColumn();
 		}
 	}
+	
+	/**
+	 * Returns a QueryBuidler object for that Item and Vendor ID
+	 * @param  string        $vendorID Vendor ID
+	 * @param  string        $itemID   Item ID
+	 * @return QueryBuilder
+	 */
+	function create_xrefitemvendorquery($vendorID, $itemID) {
+		$vendquery = (new QueryBuilder())->table('itemsearch');
+		$vendquery->field('itemid');
+		$vendquery->where('itemid', $itemID);
+		$vendquery->where('origintype', 'V');
+		$vendquery->where('originID', $vendorID);
+		return $vendquery;
+	}
+	
+	/**
+	 * Returns a QueryBuidler object for that Item and Customer ID
+	 * @param  string        $custID   Customer ID
+	 * @param  string        $itemID   Item ID
+	 * @return QueryBuilder
+	 */
+	function create_xrefitemcustomerquery($custID, $itemID) {
+		$custquery = (new QueryBuilder())->table('itemsearch');
+		$custquery->field('itemid');
+		$custquery->where('itemid', $itemID);
+		$custquery->where('origintype', 'C');
+		$custquery->where('originID', $custID);
+		return $custquery;
+	}
+	
+	/**
+	 * Does Cross-reference Item Exist?
+	 * @param  string $itemID   Item Number / ID
+	 * @param  string $custID   Customer ID
+	 * @param  string $vendorID Vendor ID
+	 * @param  bool   $debug    Run in debug? If so, return SQL Query
+	 * @return bool             Does Cross-reference Item Exist?
+	 */
+	function does_xrefitemexist($itemID, $custID = '', $vendorID = '', $debug = false) {
+		$q = (new QueryBuilder())->table('itemsearch');
+		$q->field('COUNT(*)');
+		$itemquery = (new QueryBuilder())->table('itemsearch');
+		$itemquery->field('itemid');
+		$itemquery->where('itemid', $itemID);
+		$itemquery->where('origintype', ['I', 'L']); // ITEMID found by the ITEMID, or by short item lookup // NOTE USED at Stempf
+		
+		if (!empty($custID)) {
+			$custquery = create_xrefitemcustomerquery($custID, $itemID);
+			$q->where(
+				$q
+				->orExpr()
+				->where('itemid', 'in', $itemquery)
+				->where('itemid', 'in', $custquery)
+			);
+		} elseif (!empty($vendorID)) {
+			$vendquery = create_xrefitemvendorquery($vendorID, $itemID);
+			$q->where(
+				$q
+				->orExpr()
+				->where('itemid', 'in', $itemquery)
+				->where('itemid', 'in', $vendquery)
+			);
+		} else {
+			$q->where('itemid', $itemID);
+		}
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return boolval($sql->fetchColumn());
+		}
+	}
+	
 	/**
 	 * Return the item from the cross-reference table
 	 * @param  string $itemID   Item Number / ID
@@ -4246,11 +4321,7 @@
 		$itemquery->where('origintype', ['I', 'L']); // ITEMID found by the ITEMID, or by short item lookup // NOTE USED at Stempf
 
 		if (!empty($custID)) {
-			$custquery = (new QueryBuilder())->table('itemsearch');
-			$custquery->field('itemid');
-			$custquery->where('itemid', $itemID);
-			$custquery->where('origintype', 'C');
-			$custquery->where('originID', $custID);
+			$custquery = create_xrefitemcustomerquery($custID, $itemID);
 			$q->where(
 				$q
 				->orExpr()
@@ -4258,11 +4329,7 @@
 				->where('itemid', 'in', $custquery)
 			);
 		} elseif (!empty($vendorID)) {
-			$vendquery = (new QueryBuilder())->table('itemsearch');
-			$vendquery->field('itemid');
-			$vendquery->where('itemid', $itemID);
-			$vendquery->where('origintype', 'V');
-			$vendquery->where('originID', $vendorID);
+			$vendquery = create_xrefitemvendorquery($vendorID, $itemID);
 			$q->where(
 				$q
 				->orExpr()
