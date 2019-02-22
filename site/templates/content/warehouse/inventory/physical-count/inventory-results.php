@@ -11,7 +11,7 @@
 					<div class="col-xs-12">
 						<h4 class="list-group-item-heading">ITEMID: <?= $item->itemid; ?></h4>
 						<p class="list-group-item-text"><?= $item->desc1; ?></p>
-						
+
 						<?php if ($item->is_serialized() || $item->is_lotted()) : ?>
 							<p></p>
 							<button class="btn btn-primary btn-sm" data-toggle="collapse" href="#<?= $item->itemid; ?>-lotserial" aria-expanded="false" aria-controls="<?= $item->itemid; ?>-lotserial">
@@ -25,7 +25,7 @@
 											<div class="row">
 												<div class="col-xs-12">
 													<h4 class="list-group-item-heading"><?= strtoupper($lotserial->get_itemtypepropertydesc()) . ": " . $lotserial->get_itemidentifier(); ?></h4>
-													<p class="list-group-item-text bg-info"><strong>Bin:</strong> <?= $lotserial->bin; ?> <strong>Qty:</strong> <?= $lotserial->qty; ?></p>
+													<p class="list-group-item-text bg-light"><strong>Bin:</strong> <?= $lotserial->bin; ?> <strong>Qty:</strong> <?= $lotserial->qty; ?></p>
 													<p></p>
 													<a href="<?= $physicalcounter->get_choose_itemURL($lotserial->get_itemtypeproperty(), $lotserial->get_itemidentifier()); ?>" class="btn btn-primary btn-sm">
 														Choose <?= strtoupper($lotserial->get_itemtypepropertydesc()); ?>
@@ -37,7 +37,7 @@
 								</div>
 							</div>
 						<?php else : ?>
-							<p class="list-group-item-text bg-info"><strong>Bin:</strong> <?= $item->bin; ?> <strong>Qty:</strong> <?= $item->qty; ?></p>
+							<p class="list-group-item-text bg-light"><strong>Bin:</strong> <?= $item->bin; ?> <strong>Qty:</strong> <?= $item->qty; ?></p>
 							<a href="<?= $physicalcounter->get_choose_itemURL($item->get_itemtypeproperty(), $item->get_itemidentifier()); ?>" class="btn btn-primary btn-sm">Choose Item</a>
 						<?php endif; ?>
 					</div>
