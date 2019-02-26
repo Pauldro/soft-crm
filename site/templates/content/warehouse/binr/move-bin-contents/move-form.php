@@ -22,7 +22,7 @@
 					<div class="input-group">
 						<input type="text" class="form-control bin-input" id="frombin" name="from-bin">
 						<span class="input-group-btn">
-							<button type="button" class="btn btn-default show-possible-bins" data-input="from-bin"> <span class="fa fa-search" aria-hidden="true"></span> </button>
+							<button type="button" class="btn btn-default" data-input="from-bin" data-toggle="modal" data-target="#select-bin-modal"> <span class="fa fa-search" aria-hidden="true"></span> </button>
 						</span>
 					</div>
 				</div>
@@ -35,9 +35,7 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
-
 		<div class="form-group">
 			<div class="row">
 				<div class="col-xs-9">
@@ -45,7 +43,7 @@
 					<div class="input-group">
 						<input type="text" class="form-control bin-input" id="tobin" name="to-bin">
 						<span class="input-group-btn">
-							<button type="button" class="btn btn-default show-possible-bins" data-input="to-bin"> <span class="fa fa-search" aria-hidden="true"></span> </button>
+							<button type="button" class="btn btn-default" data-input="to-bin" data-toggle="modal" data-target="#select-bin-modal"> <span class="fa fa-search" aria-hidden="true"></span> </button>
 						</span>
 					</div>
 				</div>
@@ -63,4 +61,5 @@
 	</form>
 </div>
 <?php include __DIR__ . "/bin-contents-modal.php"; ?>
+<?php include __DIR__ . "/select-bin-modal.php"; ?>
 <?php include "{$config->paths->content}warehouse/session.js.php"; ?>

@@ -3,7 +3,7 @@ $(function() {
 	var input_frombin = $('.binr-form').find('input[name=from-bin]');
 	var input_tobin   = $('.binr-form').find('input[name=to-bin]');
 	var input_qty     = $('.binr-form').find('input[name=qty]');
-	
+
 	/**
 	 * The Order of Functions based on Order of Events
 	 * 1. Select Item (only if theres a list)
@@ -14,7 +14,7 @@ $(function() {
 	 * 6. Validate Form submit
 	 * 7. Helper Functions
 	 */
-	
+
 /////////////////////////////////////
 // 1. Select Item (only if theres a List)
 ////////////////////////////////////
@@ -23,7 +23,7 @@ $(function() {
 		var desc = button.data('desc');
 		var qty = parseInt(button.data('qty'));
 		var title =  desc.toUpperCase() + ' ' + button.data('item') + ' is Not Available';
-		
+
 		if (qty < 1) {
 			e.preventDefault();
 			swal({
@@ -33,7 +33,7 @@ $(function() {
 			});
 		}
 	});
-	
+
 /////////////////////////////////////
 // 2. Show From bin selection
 /////////////////////////////////////
@@ -43,11 +43,11 @@ $(function() {
 		var bindirection = button.data('direction');
 		$('.choose-'+bindirection+'-bins').parent().removeClass('hidden').focus();
 	});
-	
+
 /////////////////////////////////////
 // 3. Choose From Bin
 /////////////////////////////////////
-	$("body").on("click", ".choose-bin", function(e) {
+	$("body").on("click", ".choose-from-bins .choose-bin", function(e) {
 		e.preventDefault();
 		var binrow = $(this);
 		var binID = binrow.data('binid');
@@ -59,7 +59,7 @@ $(function() {
 		$('.binr-form').find('.qty-available').text(qty);
 		binrow.closest('.list-group').parent().addClass('hidden');
 	});
-	
+
 /////////////////////////////////////
 // 4. Use bin Qty if needed
 /////////////////////////////////////
@@ -72,7 +72,7 @@ $(function() {
 		$('.binr-form').find('.qty-available').text(binqty);
 		input_qty.val(binqty);
 	});
-	
+
 /////////////////////////////////////
 // 5. Show Possible To Bins (if needed)
 //	  included in _shared-functions.js
@@ -84,6 +84,7 @@ $(function() {
 		input_tobin.val(binID);
 		button.closest('.modal').modal('hide');
 	});
+
 /////////////////////////////////////
 // 6. Validate Form submit
 /////////////////////////////////////
@@ -93,7 +94,7 @@ $(function() {
 			var valid_qty = validate_qty();
 			var valid_tobin = validate_tobin();
 			var valid_form = new SwalError(false, '', '', false);
-			
+
 			if (valid_frombin.error) {
 				valid_form = valid_frombin;
 			} else if (valid_qty.error) {
@@ -101,7 +102,7 @@ $(function() {
 			} else if (valid_tobin.error) {
 				valid_form = valid_tobin;
 			}
-			
+
 			if (valid_form.error) {
 				swal({
 					type: 'error',
@@ -114,11 +115,10 @@ $(function() {
 			}
 		}
 	});
-	
+
 /////////////////////////////////////
 // Helper Functions
 /////////////////////////////////////
-
 	function validate_frombin() {
 		var error = false;
 		var title = '';
@@ -126,7 +126,7 @@ $(function() {
 		var html = false;
 		var lowercase_frombin = input_frombin.val();
 		input_frombin.val(lowercase_frombin.toUpperCase());
-		
+
 		if (input_frombin.val() == '') {
 			error = true;
 			title = 'Error';
@@ -135,7 +135,7 @@ $(function() {
 			error = true;
 			title = 'Invalid From Bin ID';
 			msg = 'Please Choose a valid From bin from the from bin list';
-		} 
+		}
 		return new SwalError(error, title, msg, html);
 	}
 
@@ -144,7 +144,7 @@ $(function() {
 		var title = '';
 		var msg = '';
 		var html = false;
-		
+
 		if (input_qty.val() == '') {
 			error = true;
 			title = 'Error';
@@ -160,7 +160,7 @@ $(function() {
 		var html = false;
 		var lowercase_tobin = input_tobin.val();
 		input_tobin.val(lowercase_tobin.toUpperCase());
-		
+
 		if (input_tobin.val() == '') {
 			error = true;
 			title = 'Error';
@@ -171,13 +171,13 @@ $(function() {
 			msg = 'Please Choose a valid To bin';
 		} else if (whsesession.whse.bins.arranged == 'range') {
 			error = true;
-			
+
 			whsesession.whse.bins.bins.forEach(function(bin) {
 				if (input_tobin.val() >= bin.from && input_tobin.val() <= bin.through) {
 					error = false;
 				}
 			});
-			
+
 			if (error) {
 				title = 'Invalid To Bin ID';
 				msg = 'Your To Bin ID must between these ranges';

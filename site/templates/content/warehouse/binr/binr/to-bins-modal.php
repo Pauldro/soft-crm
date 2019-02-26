@@ -1,13 +1,11 @@
-<?php 
+<?php
 	$bins = ItemBinInfo::find_by_item(session_id(), $item);
 	$currentbins = array();
-	
+
 	foreach ($bins as $bin) {
 		$currentbins[$bin->bin] = $bin->qty;
 	}
-	
 ?>
-
 <div class="modal fade" id="choose-to-bins-modal" tabindex="-1" role="dialog" aria-labelledby="choose-to-bins-modal-label">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content">

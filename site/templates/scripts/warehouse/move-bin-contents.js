@@ -4,7 +4,57 @@ $(function() {
 	var input_frombin = form_movecontents.find('input[name=from-bin]');
 	var input_tobin = form_movecontents.find('input[name=to-bin]');
 	var modal_bincontents = $('#bin-contents-modal');
+	var modal_selectbin = $('#select-bin-modal');
 
+	/**
+	 * The Order of Functions based on Order of Events
+	 * 1. Show Possible Bins
+	 * 2. Show Bin Contents
+	 * 3 . Form, bin validation
+	 */
+
+	 /////////////////////////////////////
+	 // 1. Show Possible Bins (if needed)
+	 /////////////////////////////////////
+	 modal_selectbin.on('show.bs.modal', function (event) {
+	 	var modal = $(this);
+	 	var button = $(event.relatedTarget); // Button that triggered the modal
+	 	var inputname = button.data('input');
+	 	modal.attr('data-input', inputname);
+	 });
+
+	 $("body").on("click", "#select-bin-modal .select-bin", function(e) {
+	 	e.preventDefault();
+	 	var button = $(this);
+	 	var binID = button.data('bin');
+	 	var modal = button.closest('.modal');
+	 	// modal.data('input') isn't updated in the DOM
+	 	var inputname = modal.attr('data-input');
+	 	form_movecontents.find('input[name='+inputname+']').val(binID);
+	 	modal.modal('hide');
+	 });
+
+	 /////////////////////////////////////
+	 // 2. Show Bin contents (if needed)
+	 /////////////////////////////////////
+	modal_bincontents.on('show.bs.modal', function (event) {
+		var button = $(event.relatedTarget); // Button that triggered the modal
+		var modal = $(this);
+		var loadinto = modal.find('.bin-results');
+		var binID = button.closest('.form-group').find('.bin-input').val();
+		var pageurl = URI().toString();
+		var url = URI(config.urls.warehouse.inventory.redir.bin_inquiry);
+		url.addQuery('binID', binID);
+
+		console.log(url.toString());
+		loadinto.loadin(url.toString(), function() {
+			modal.find('.bin-id').text(binID);
+		});
+	});
+
+	/////////////////////////////////////
+	// 3. Form, [To / From Bin] Validation
+	/////////////////////////////////////
 	form_movecontents.validate({
 		submitHandler : function(form) {
 			var valid_frombin = validate_frombin();
@@ -28,22 +78,6 @@ $(function() {
 				form.submit();
 			}
 		}
-	});
-
-	modal_bincontents.on('show.bs.modal', function (event) {
-		var button = $(event.relatedTarget); // Button that triggered the modal
-		var modal = $(this);
-		var loadinto = modal.find('.bin-results');
-		var binID = button.closest('.form-group').find('.bin-input').val();
-		var pageurl = URI().toString();
-		var url = URI(config.urls.warehouse.inventory.redir.bin_inquiry);
-		url.addQuery('binID', binID);
-
-		console.log(url.toString());
-			loadinto.loadin(url.toString(), function() {
-				modal.find('.bin-id').text(binID);
-			});
-
 	});
 
 	function validate_frombin() {
@@ -77,7 +111,6 @@ $(function() {
 				msg = 'Your From Bin ID must between these ranges';
 				html = "<h4>Valid Bin Ranges<h4>" + create_binrangetable();
 			}
-
 		}
 		return new SwalError(error, title, msg, html);
 	}

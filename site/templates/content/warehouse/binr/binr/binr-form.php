@@ -62,7 +62,7 @@
 					</div>
 				</div>
 			</div>
-			<button type="submit" class="btn btn-emerald not-round">Submit</button> 
+			<button type="submit" class="btn btn-emerald not-round">Submit</button>
 			&nbsp; &nbsp;
 			<a href="<?= $page->url; ?>" class="btn btn-warning not-round">Cancel</a>
 		</form>

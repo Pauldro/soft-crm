@@ -1,4 +1,4 @@
-<?php 
+<?php
     /**
      * $direction is which bin to apply this select bins
      * Ex. to | from
@@ -6,7 +6,7 @@
 ?>
 <div class="<?= !empty($item->bin) ? 'hidden' : ''; ?>">
     <h3>Select From Bin</h3>
-    <div class="list-group <?= "choose-from-bins"; ?>">
+    <div class="list-group choose-from-bins">
         <div class="list-group-item">
             <div class="row">
                 <div class="col-xs-3">
