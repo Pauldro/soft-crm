@@ -1,8 +1,8 @@
 <div class="form-group">
-	<a href="<?= $contact->generate_customerURL(); ?>" class="btn btn-primary"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Go To <?= $contact->get_customername()."'s"; ?> Page </a>
+	<a href="<?= $config->dplusoURLS->get_ciURL($contact->custid, $contact->shiptoid); ?>" class="btn btn-primary"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Go To <?= $contact->get_customername()."'s"; ?> Page </a>
 </div>
 <div class="form-group">
-	<a href="<?= $contact->generate_contacturl(); ?>" class="btn btn-success"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Go To <?= $contact->contact."'s"; ?> Page </a>
+	<a href="<?= $config->dplusoURLS->get_customer_contactURL($contact->custid, $contact->shiptoid, $contact->contact); ?>" class="btn btn-success"><i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Go To <?= $contact->contact."'s"; ?> Page </a>
 </div>
 <div class="row">
 	<div class="col-sm-6">
@@ -14,7 +14,7 @@
 				<tr>
 					<td>Customer:</td>
 					<td>
-						<a href="<?= $contact->generate_customerURL(); ?>" target="_blank">
+						<a href="<?=  $config->dplusoURLS->get_ciURL($contact->custid); ?>" target="_blank">
 							<strong><?= $contact->custid. ' - '. $contact->name ?> <i class="glyphicon glyphicon-share" aria-hidden="true"></i></strong>
 						</a>
 					</td>
@@ -22,7 +22,7 @@
 				<?php if ($contact->has_shipto()) : ?>
 					<tr>
 						<td>Shipto ID:</td>
-						<td><a href="<?= $contact->generate_shiptourl(); ?>" target="_blank"><?= $contact->shiptoid; ?> <i class="glyphicon glyphicon-share" aria-hidden="true"></i></a></td>
+						<td><a href="<?=  $config->dplusoURLS->get_ciURL($contact->custid, $contact->shiptoid); ?>" target="_blank"><?= $contact->shiptoid; ?> <i class="glyphicon glyphicon-share" aria-hidden="true"></i></a></td>
 					</tr>
 				<?php endif; ?>
 				<tr>
@@ -85,7 +85,7 @@
 				</tr>
 				<tr>
 					<?php if ($primarycontact) : ?>
-						<td class="control-label">Buying Contact <a class="small" href="<?= $primarycontact->generate_contacturl(); ?>" target="_blank">[View Primary]</a></td>
+						<td class="control-label">Buying Contact <a class="small" href="<?= $config->dplusoURLS->get_customer_contactURL($primarycontact->custid, $primarycontact->shiptoid, $primarycontact->contact); ?>" target="_blank">[View Primary]</a></td>
 					<?php else : ?>
 						<td class="control-label">Buying Contact</td>
 					<?php endif; ?>
@@ -121,7 +121,7 @@
 					<tr>
 						<td>Customer:</td>
 						<td>
-							<a href="<?= $contact->generate_customerURL(); ?>" target="_blank">
+							<a href="<?=  $config->dplusoURLS->get_ciURL($contact->custid); ?>" target="_blank">
 								<strong><?= $contact->custid. ' - '. $contact->name ?> <i class="glyphicon glyphicon-share" aria-hidden="true"></i></strong>
 							</a>
 						</td>
@@ -129,7 +129,7 @@
 					<?php if ($contact->has_shipto()) : ?>
 						<tr>
 							<td>Shipto ID:</td>
-							<td><a href="<?= $contact->generate_shiptourl(); ?>" target="_blank"><?= $contact->shiptoid; ?> <i class="glyphicon glyphicon-share" aria-hidden="true"></i></a></td>
+							<td><a href="<?=  $config->dplusoURLS->get_ciURL($contact->custid, $contact->shiptoid); ?>" target="_blank"><?= $contact->shiptoid; ?> <i class="glyphicon glyphicon-share" aria-hidden="true"></i></a></td>
 						</tr>
 					<?php endif; ?>
 					<tr>
@@ -194,7 +194,7 @@
 					</tr>
 					<tr>
 						<?php if ($primarycontact) : ?>
-							<td class="control-label">Buying Contact <a class="small" href="<?= $primarycontact->generate_contacturl(); ?>" target="_blank">[View Primary]</a></td>
+							<td class="control-label">Buying Contact <a class="small" href="<?= $config->dplusoURLS->get_customer_contactURL($primarycontact->custid, $primarycontact->shiptoid, $primarycontact->contact); ?>" target="_blank">[View Primary]</a></td>
 						<?php else : ?>
 							<td class="control-label">Buying Contact</td>
 						<?php endif; ?>

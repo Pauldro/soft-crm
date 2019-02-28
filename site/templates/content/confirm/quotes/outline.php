@@ -1,4 +1,3 @@
-<?php $customer = Customer::load($quote->custid, $quote->shiptoid); ?>
 <div class="form-group hidden-print">
 	<a href="<?= $quotedisplay->generate_printURL($quote); ?>" target="_blank">
 		<span class="h3"><i class="fa fa-print" aria-hidden="true"></i></span> View Printable Quote
@@ -18,7 +17,7 @@
 			<tr>
 				<td>CustID</td>
 				<td>
-					<?= $quote->custid; ?> - <a href="<?= $customer->generate_customerURL(); ?>"><?= $customer->get_customername(); ?></a>
+					<?= $quote->custid; ?> - <a href="<?= $config->dplusoURLS->get_ciURL($quote->custid, $quote->shiptoid); ?>"><?= Customer::get_customernamefromid($quote->custid, $quote->shiptoid); ?></a>
 					<span class="glyphicon glyphicon-share"></span>
 				</td>
 			</tr>

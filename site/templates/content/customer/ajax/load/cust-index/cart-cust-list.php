@@ -21,7 +21,7 @@
                 <?php foreach ($customers as $cust) : ?>
                     <tr>
                         <td>
-                            <a href="<?= $cust->generate_setcartcustomerurl(); ?>">
+                            <a href="<?= $config->dplusoURLS->get_setcartcustomerURL($cust->custid, $cust->shiptoid); ?>">
                                 <?= $page->bootstrap->highlight($cust->custid, $input->get->text('q'));?>
                             </a> &nbsp; <span class="glyphicon glyphicon-share"></span>
                         </td>

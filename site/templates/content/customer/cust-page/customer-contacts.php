@@ -4,7 +4,7 @@
 			<i class="fa fa-address-book" aria-hidden="true"></i> &nbsp; Customer Contacts <span class="caret"></span>
 		</a> &nbsp;
 		<span class="badge"><?= $customer->count_contacts(); ?></span>
-		<a href="<?= $customer->generate_addcontacturl(); ?>" class="btn btn-info btn-xs pull-right hidden-print"><i class="fa fa-plus-square" aria-hidden="true"></i> <span class="sr-only">Add Contact</span></a>
+		<a href="<?= $config->dplusoURLS->get_customer_contact_addURL($customer->custid, $customer->shiptoid); ?>" class="btn btn-info btn-xs pull-right hidden-print"><i class="fa fa-plus-square" aria-hidden="true"></i> <span class="sr-only">Add Contact</span></a>
     </div>
     <div id="contacts-div" class="collapse" data-tableloaded="no" data-shipid="<?= $shipID; ?>">
         <div class="panel-body">
@@ -33,8 +33,8 @@
                 <tbody>
                     <?php foreach ($customer->get_contacts() as $contact) : ?>
                         <tr>
-                            <td><a href="<?= $contact->generate_contacturl(); ?>"><?= $contact->contact; ?></a></td>
-                            <td><a href="<?php $contact->generate_shiptourl();?>"><?= $contact->shiptoid; ?></a></td>
+                            <td><a href="<?= $config->dplusoURLS->get_customer_contactURL($contact->custid, $contact->shiptoid, $contact->contact); ?>"><?= $contact->contact; ?></a></td>
+                            <td><a href="<?= $config->dplusoURLS->get_ciURL($contact->custid, $contact->shiptoid);?>"><?= $contact->shiptoid; ?></a></td>
 							<td><?= $contact->title; ?></td>
                             <td>
 								<a href="<?= $contact->generate_contactmethodurl('phone'); ?>"><?= $contact->generate_phonedisplay(); ?></a>
@@ -43,7 +43,7 @@
                             <td><a href="<?= $contact->generate_contactmethodurl('email'); ?>"><?= $contact->email; ?></td>
                             <td>
                                 <?php if ($contact->can_edit()) : ?>
-                                    <a href="<?= $contact->generate_contactediturl(); ?>" class="btn btn-sm btn-warning">
+                                    <a href="<?= $config->dplusoURLS->get_customer_contact_editURL($contact->custid, $contact->shiptoid, $contact->contact); ?>" class="btn btn-sm btn-warning">
                                         <i class="fa fa-pencil" aria-hidden="true"></i> <span class="sr-only">Edit Contact</span>
                                     </a>
                                 <?php endif; ?>

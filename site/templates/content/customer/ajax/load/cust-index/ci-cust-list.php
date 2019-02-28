@@ -48,7 +48,7 @@
                     <?php foreach ($customers as $cust) : ?>
                         <tr>
                             <td>
-                                <a href="<?= $cust->generate_ciloadurl(); ?>">
+                                <a href="<?= $config->dplusoURLS->get_ciURL($cust->custid, $cust->shiptoid); ?>">
                                     <?= $page->bootstrap->highlight($cust->custid, $input->get->text('q'));?>
                                 </a> &nbsp; <span class="glyphicon glyphicon-share"></span>
                             </td>

@@ -13,7 +13,7 @@
                 <tr>
                     <td>Customer:</td>
                     <td>
-                        <a href="<?= $contact->generate_customerURL(); ?>" target="_blank">
+                        <a href="<?= $config->dplusoURLS->get_ciURL($contact->custid); ?>" target="_blank">
                             <?= $contact->custid. ' - '. $contact->name ?> <i class="glyphicon glyphicon-share" aria-hidden="true"></i>
                         </a>
                     </td>
@@ -21,7 +21,7 @@
     			<?php if ($contact->has_shipto()) : ?>
                     <tr>
                         <td>Shipto ID:</td>
-                        <td><a href="<?= $contact->generate_shiptourl(); ?>" target="_blank"><?= $contact->shiptoid; ?> <i class="glyphicon glyphicon-share" aria-hidden="true"></i></a></td>
+                        <td><a href="<?= $config->dplusoURLS->get_ciURL($contact->custid, $contact->shiptoid); ?>" target="_blank"><?= $contact->shiptoid; ?> <i class="glyphicon glyphicon-share" aria-hidden="true"></i></a></td>
                     </tr>
                 <?php endif; ?>
                 <tr>

@@ -56,8 +56,9 @@
 	Dplus\Dpluso\ScreenFormatters\TableScreenMaker::set_fieldfiledirectory($config->companyfiles."json/");
 	Dplus\Dpluso\Configs\FormFieldsConfig::set_defaultconfigdirectory($config->paths->templates."configs/customer/");
 
-
-	Dplus\Dpluso\Configs\DplusoConfigURLs::set_rootpath($config->rootURL);
+	use Dplus\Dpluso\Configs\DplusoConfigURLs;
+	DplusoConfigURLs::set_rootpath($config->rootURL);
+	$config->dplusoURLS = DplusoConfigURLs::get_instance();
 
 	/* =============================================================
 		ADD Default CSS Scripts
