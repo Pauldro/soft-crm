@@ -21,13 +21,13 @@
 	// INCLUDE AUTOLOAD AND NECESSARY FUNCTIONS
 	include_once("./_func.php"); // include our shared functions
 	include_once("./_dbfunc.php");
-	
+
 	// AFTER LOADING CONFIGS, CLASSES, AND FUNCTIONS CHECK FOR LOGIN
 	$user->loggedin = is_validlogin(session_id());
-	
+
 	if ($user->loggedin) {
 		setup_user(session_id());
-		Dplus\Dpluso\General\SigninLog::log_signin(session_id(), $user->loginid);
+	//	Dplus\Dpluso\General\SigninLog::log_signin(session_id(), $user->loginid);
 	} elseif ($page->template != 'template-login' && $page->template != 'redir' && $page->template != 'template-print') {
 		header('location: ' . $config->pages->login);
 		exit;
@@ -57,12 +57,14 @@
 	Dplus\Dpluso\Configs\FormFieldsConfig::set_defaultconfigdirectory($config->paths->templates."configs/customer/");
 
 
+	Dplus\Dpluso\Configs\DplusoConfigURLs::set_rootpath($config->rootURL);
+
 	/* =============================================================
 		ADD Default CSS Scripts
-		
+
 		libraries.css includes
-		Load Awesome 
-		Morris 
+		Load Awesome
+		Morris
 		Animate
 		Material Icons
 		Boostrap Toggle
@@ -74,17 +76,17 @@
 		Sweet Alert 2
 		Time Picker
 	============================================================ */
-	
+
 	$config->styles->append(get_hashedtemplatefileURL('styles/bootstrap.min.css'));
 	$config->styles->append('https://fonts.googleapis.com/icon?family=Material+Icons');
 	$config->styles->append(get_hashedtemplatefileURL('styles/libraries.css'));
 	$config->styles->append(get_hashedtemplatefileURL('styles/libs/bootstrap-select.css'));
 	$config->styles->append(get_hashedtemplatefileURL('styles/styles.css'));
 
-	
+
 	 /* =============================================================
 		ADD Default JS Files
-		
+
 		libraries.js Includes
 		Bootstrap
 		Bootstrap Notify

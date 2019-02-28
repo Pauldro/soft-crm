@@ -38,14 +38,14 @@
         "cptechinc/dplus-processwire": "dev-master",
         "cptechinc/dplus-order": "dev-master",
         "cptechinc/dplus-items": "dev-master",
-        "cptechinc/dplus-dpluso": "dev-master",
+        "cptechinc/dplus-dpluso": "dev-dplus-urls",
         "cptechinc/dplus-content": "dev-master",
         "cptechinc/dpluso-screen-formatters": "dev-master",
         "cptechinc/dplus-file-services": "dev-master",
         "cptechinc/dpluso-warehouse": "dev-master"
     },
     "autoload": {
-        "files": [ 
+        "files": [
             "wire/core/ProcessWire.php",
             "vendor/cptechinc/dplus-base/vendor/autoload.php",
             "vendor/cptechinc/dplus-dpluso/vendor/autoload.php",

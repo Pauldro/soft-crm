@@ -1,15 +1,17 @@
-<?php 
+<?php
 	use Dplus\Dpluso\Bookings\BookingsPanel;
-	
-	$bookingspanel = new BookingsPanel(session_id(), $page->fullURL); 
+
+	$bookingspanel = new BookingsPanel(session_id(), $page->fullURL);
 	$date = $input->get->text('date');
 	$details = $bookingspanel->get_bookingdayorderdetails($ordn, $date);
 ?>
-<?= $bookingspanel->generate_viewsalesordersbydaybacklink($date); ?>
+<a href="<?= $bookingspanel->generate_viewsalesordersbydayURL($date); ?>" class="modal-load btn btn-primary btn-sm info-screen" data-modal="<?= $bookingspanel->modal; ?>">
+	<i class="fa fa-arrow-circle-left" aria-hidden="true"></i> Back to Bookings on <?= $date; ?>
+</a>
 <div class="table-responsive">
 	<table class="table table-bordered table-condensed table-striped">
-		<thead> 
-			<tr> <th>Item ID</th> <th>Before Qty</th> <th>After Qty</th> <th>Before Price</th> <th>After Price</th> <th>Net Amount</th> </tr> 
+		<thead>
+			<tr> <th>Item ID</th> <th>Before Qty</th> <th>After Qty</th> <th>Before Price</th> <th>After Price</th> <th>Net Amount</th> </tr>
 		</thead>
 		<tbody>
 			<?php foreach ($details as $detail) : ?>

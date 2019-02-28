@@ -4,14 +4,16 @@
     $bookingspanel->set_customer($customer->custid, $customer->shiptoid);
 	$bookings = $bookingspanel->get_bookings();
 	$bookingdata = array();
-	
+
 	foreach ($bookings as $booking) {
 		$bookdata = array(
 			'bookdate' => Dplus\Base\DplusDateTime::format_date($booking['bookdate'], 'Y-m-d'),
 			'amount' => floatval($booking['amount'])
 		);
 		if ($bookingspanel->interval == 'day') {
-			$bookdata['dayurl'] = $bookingspanel->generate_viewsalesordersbydaylink($booking['bookdate']);
+			$href = $bookingspanel->generate_viewsalesordersbydayURL($booking['bookdate']);
+			$icon = $page->bootstrap->icon('fa fa-external-link');
+			$bookdata['dayurl'] = $page->bootstrap->a("href=$href|class=btn btn-primary btn-sm load-into-modal info-screen|data-modal=$bookingspanel->modal", "$icon View Sales Orders");
 		}
 
 		$bookingdata[] = $bookdata;
@@ -22,9 +24,15 @@
 	<div class="panel-heading not-round" id="bookings-panel">
 		<a href="#bookings-div" class="panel-link" data-parent="#bookings-panel" data-toggle="collapse" aria-expanded="true">
 			<span class="glyphicon glyphicon-book"></span> &nbsp; Bookings <span class="caret"></span>
-			&nbsp; | <?= $bookingspanel->generate_refreshlink(); ?>
+			&nbsp; |
+			<a class="load-link" href="<?= $bookingspanel->generate_refreshURL(); ?>" <?= $bookingspanel->ajaxdata; ?>>
+				<i class="fa fa-refresh" aria-hidden="true"></i> Refresh Bookings
+			</a>
 			<?php if ($input->get->date || $input->get->bookdate) : ?>
-				&nbsp; <?= $bookingspanel->generate_cleardateparameterslink(); ?>
+				&nbsp;
+				<a class="load-and-show btn btn-xs btn-warning" href="<?= $bookingspanel->generate_refreshURL(); ?>" <?= $bookingspanel->ajaxdata; ?>>
+					<i class="fa fa-times" aria-hidden="true"></i> Remove Date Parameters
+				</a>
 			<?php endif; ?>
 			<span class="pull-right"><?= $bookingspanel->generate_todaysbookingsdescription(); ?></span>
 		</a>
