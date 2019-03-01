@@ -10,10 +10,10 @@
 		if (!$user->loggedin) {
 			$url = $config->pages->login;
 		} else {
-			if (in_array($user->mainrole, array_keys($config->user_roles))) {
-				$url = $config->user_roles[$user->mainrole]['homepage']; 
+			if ($config->roles->does_role_exist($user->mainrole)) {
+				$url = $config->roles->get_role_homepage($user->mainrole);
 			} else {
-				$url = $config->user_roles['default']['homepage']; 
+				$url = $config->roles->get_role_homepage('default');
 			}
 		}
 	}

@@ -4,7 +4,7 @@
 	<?php endif; ?>
 	<li> <a href="#"><?= $appconfig->companydisplayname; ?></a> </li>
 
-	<li> <a href="<?= $config->user_roles['default']['homepage']; ?>"><i class="glyphicon glyphicon-home"></i> Home</a> </li>
+	<li> <a href="<?= $config->roles->get_role_homepage('default'); ?>"><i class="glyphicon glyphicon-home"></i> Home</a> </li>
 
 	<?php if ($user->hasPermission('can-run-reports')) : ?>
 		<li> <a href="<?= $config->pages->reports; ?>"> <i class="glyphicon glyphicon-duplicate"></i> Reports</a> </li>
@@ -25,7 +25,7 @@
 		<li><a href="<?= $config->pages->vendorinfo; ?>"><i class="fa fa-cubes" aria-hidden="true"></i> Vendors</a></li>
 	<?php endif; ?>
 	<li class="divider"></li>
-	
+
 	<?php if (has_dpluspermission($user->loginid, 'wm')) : ?>
 		<li> <a href="<?= $config->pages->warehouse; ?>"><i class="fa fa-building-o" aria-hidden="true"></i> Warehouse</a> </li>
 	<?php endif; ?>
