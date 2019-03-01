@@ -1,5 +1,6 @@
-<?php 
+<?php
     $vendorID = $shipfromID = '';
+
     if (has_dpluspermission($user->loginid, 'vi')) {
         if ($input->urlSegment(1)) { // Vendor ID provided
             $vendorID = $input->urlSegment(1);

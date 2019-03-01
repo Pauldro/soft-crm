@@ -8,8 +8,3 @@
     }
 
     $page->body = $config->paths->content."vendor/ajax/load/vend-index/search-form.php";
-
-
-
-
-?>

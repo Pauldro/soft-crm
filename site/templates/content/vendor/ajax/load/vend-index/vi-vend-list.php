@@ -1,17 +1,12 @@
 <?php
-    if ($input->get->q) {
-        $vendresults = search_vendorspaged($config->showonpage, $input->pageNum, $input->get->text('q'),  false);
+    if ($input->get->text('q')) {
+        $vendresults = search_vendorspaged($input->get->text('q'), $input->pageNum, $session->display);
         $resultscount = count_searchvendors($input->get->text('q'), false);
     }
-
-    $vendlink = new \Purl\Url($page->fullURL);
-    $vendlink->path = $config->pages->vendor.'redir/';
-    $vendlink->query = '';
-    $vendlink->query->set('action', 'vi-vendor');
 ?>
 
 <div id="vend-results">
-    <?php if ($input->get->q) : ?>
+    <?php if ($input->get->text('q')) : ?>
         <table id="vend-index" class="table table-striped table-bordered table-condensed">
             <thead>
                 <tr>
@@ -20,24 +15,23 @@
             </thead>
             <tbody>
                 <?php if ($resultscount > 0) : ?>
-                    <?php foreach ($vendresults as $vend) : ?>
-                         <?php $vendlink->query->set('vendorID', $vend['vendid']); ?>
+                    <?php foreach ($vendresults as $vendor) : ?>
                         <tr>
                             <td>
-                                <a href="<?= $vendlink; ?>">
-                                    <?= $page->bootstrap->highlight($vend['vendid'], $input->get->text('q'));?>
+                                <a href="<?= $config->dplusoURLS->get_viURL($vendor->vendid); ?>">
+                                    <?= $page->bootstrap->highlight($vendor->vendid, $input->get->text('q'));?>
                                 </a> &nbsp; <span class="glyphicon glyphicon-share"></span>
                             </td>
-                            <td><?= $page->bootstrap->highlight($vend['name'], $input->get->q); ?></td>
-                            <td><?= $page->bootstrap->highlight($vend['shipfrom'], $input->get->q); ?></td>
+                            <td><?= $page->bootstrap->highlight($vendor->name, $input->get->text('q')); ?></td>
+                            <td><?= $page->bootstrap->highlight($vendor->shipfrom, $input->get->text('q')); ?></td>
                             <td>
-                                <?= $page->bootstrap->highlight($vend['address1'], $input->get->q); ?>
-                                <?= $page->bootstrap->highlight($vend['address2'], $input->get->q); ?>
+                                <?= $page->bootstrap->highlight($vendor->address1, $input->get->text('q')); ?>
+                                <?= $page->bootstrap->highlight($vendor->address2, $input->get->text('q')); ?>
                             </td>
-                            <td><?= $page->bootstrap->highlight($vend['city'], $input->get->q); ?></td>
-                            <td><?= $page->bootstrap->highlight($vend['state'], $input->get->q); ?></td>
-                            <td><?= $page->bootstrap->highlight($vend['zip'], $input->get->q); ?></td>
-                            <td><a href="tel:<?= $vend['phone']; ?>" title="Click To Call"><?= $page->bootstrap->highlight($vend['phone'], $input->get->q); ?></a></td>
+                            <td><?= $page->bootstrap->highlight($vendor->city, $input->get->text('q')); ?></td>
+                            <td><?= $page->bootstrap->highlight($vendor->state, $input->get->text('q')); ?></td>
+                            <td><?= $page->bootstrap->highlight($vendor->zip, $input->get->text('q')); ?></td>
+                            <td><a href="tel:<?= $vendor->phone; ?>" title="Click To Call"><?= $page->bootstrap->highlight($vendor->phone, $input->get->text('q')); ?></a></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else : ?>

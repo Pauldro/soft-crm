@@ -3261,13 +3261,13 @@
 
 	/**
 	 * Returns Vendor Records where search term has a match
-	 * @param string  $limit     Number of records to return
-	 * @param string  $page      Page to start from
-	 * @param string  $keyword   Word or phrase in search
-	 * @param  bool   $debug     Run in debug?
-	 * @return array             of vendors matching search term
+	 * @param  string  $keyword   Word or phrase in search
+	 * @param  string  $page      Page to start from
+	 * @param  string  $limit     Number of records to return
+	 * @param  bool    $debug     Run in debug?
+	 * @return array              <Vendor>
 	 */
-	function search_vendorspaged($limit = 10, $page = 1, $keyword, $debug) {
+	function search_vendorspaged($keyword, $page = 1, $limit = 10, $debug = false) {
 		$q = (new QueryBuilder())->table('vendors');
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
 		$search = QueryBuilder::generate_searchkeyword($keyword);
@@ -3279,14 +3279,14 @@
 		}
 
 		$q->limit($limit, $q->generate_offset($page, $limit));
-
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'Vendor');
+			return $sql->fetchAll();
 		}
 	}
 
@@ -3315,7 +3315,7 @@
 			return $q->generate_sqlquery($q->params);
 		} else {
 			$sql->execute($q->params);
-			return $sql->fetchAll(PDO::FETCH_ASSOC);
+			return $sql->fetchColumn();
 		}
 	}
 
@@ -4229,7 +4229,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	/**
 	 * Returns a QueryBuidler object for that Item and Vendor ID
 	 * @param  string        $vendorID Vendor ID
@@ -4244,7 +4244,7 @@
 		$vendquery->where('originID', $vendorID);
 		return $vendquery;
 	}
-	
+
 	/**
 	 * Returns a QueryBuidler object for that Item and Customer ID
 	 * @param  string        $custID   Customer ID
@@ -4259,7 +4259,7 @@
 		$custquery->where('originID', $custID);
 		return $custquery;
 	}
-	
+
 	/**
 	 * Does Cross-reference Item Exist?
 	 * @param  string $itemID   Item Number / ID
@@ -4275,7 +4275,7 @@
 		$itemquery->field('itemid');
 		$itemquery->where('itemid', $itemID);
 		$itemquery->where('origintype', ['I', 'L']); // ITEMID found by the ITEMID, or by short item lookup // NOTE USED at Stempf
-		
+
 		if (!empty($custID)) {
 			$custquery = create_xrefitemcustomerquery($custID, $itemID);
 			$q->where(
@@ -4304,7 +4304,7 @@
 			return boolval($sql->fetchColumn());
 		}
 	}
-	
+
 	/**
 	 * Return the item from the cross-reference table
 	 * @param  string $itemID   Item Number / ID

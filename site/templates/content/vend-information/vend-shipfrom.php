@@ -1,8 +1,8 @@
 <?php
     $shipfromjson = json_decode(file_get_contents($config->jsonfilepath.session_id()."-vishipfrominfo.json"), true);
     // $shipfromjson = json_decode(file_get_contents($config->jsonfilepath."visftest-vishipfrominfo.json"), true);
-    
 ?>
+
 <div class="row">
     <div class="col-sm-2">
         <?php include $config->paths->content.'vend-information/vi-buttons.php'; ?>
@@ -11,8 +11,8 @@
         <?php include $config->paths->content."vend-information/vend-info-top.php"; ?>
         <div class="row">
             <div class="col-sm-6">
-                <h3>Shipfrom <?= $vendor->shipfrom; ?> <a href="<?= $vendor->generate_viurl(false); ?>" class="btn btn-warning">View without Shipfrom</a></h3>
-                
+                <h3>Shipfrom <?= $vendor->shipfrom; ?> <a href="<?= $config->dplusoURLS->get_viURL($vendor->vendid); ?>" class="btn btn-warning">View without Shipfrom</a></h3>
+
                 <table class="table table-striped table-bordered table-condensed table-excel">
                     <?php $topcolumns = array_keys($shipfromjson['columns']['top']); ?>
                     <?php foreach ($topcolumns as $column ) : ?>
@@ -75,7 +75,7 @@
                             <tr class="last-section-row"> <td>&nbsp;</td> <td>&nbsp;</td> <td>&nbsp;</td> </tr>
                         <?php endif; ?>
                     <?php endforeach; ?>
-                    
+
                     <?php $misccolumns = array_keys($shipfromjson['data']['right']['misc']); ?>
                     <?php foreach ($misccolumns as $misc) : ?>
                         <?php if ($misc != 'rfml') : ?>
