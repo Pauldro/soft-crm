@@ -10,13 +10,13 @@
                     <div class="row">
                         <?php if ($appconfig->show_nonstockadd) : ?>
                             <div class="col-xs-2">
-                                <a href="<?= $itemlookup->generate_nonstockformurl(); ?>" class="btn btn-primary load-into-modal nonstock-btn" data-modal="#ajax-modal" data-modalsize="xl">
+                                <a href="<?= $itemlookup->generate_nonstockformURL(); ?>" class="btn btn-primary load-into-modal nonstock-btn" data-modal="#ajax-modal" data-modalsize="xl">
                                     <i class="fa fa-cube" aria-hidden="true"></i> Non-stock
                                 </a>
                             </div>
                         <?php endif; ?>
                         <div class="col-xs-2">
-                            <a href="<?= $itemlookup->generate_addmultipleurl(); ?>" class="btn btn-primary load-into-modal add-multiple-items" data-modal="#ajax-modal" data-modalsize="md">
+                            <a href="<?= $itemlookup->generate_addmultipleURL(); ?>" class="btn btn-primary load-into-modal add-multiple-items" data-modal="#ajax-modal" data-modalsize="md">
                                 <i class="fa fa-cube" aria-hidden="true"></i> Add Multiple
                             </a>
                         </div>
@@ -27,7 +27,7 @@
                                     <input type="hidden" name="action" value="item-search">
                                     <input type="hidden" name="custID" value="<?= $itemlookup->custID; ?>" class="custID">
                                     <input type="hidden" name="shipID" value="<?= $itemlookup->shipID; ?>" class="shipID">
-                                    <input type="hidden" class="resultsurl" name="resultsurl" value="<?= $itemlookup->generate_resultsurl(); ?>">
+                                    <input type="hidden" class="resultsurl" name="resultsurl" value="<?= $itemlookup->generate_resultsURL(); ?>">
                                     <div class="row form-group">
                                         <div class="col-xs-12">
                                             <div class="input-group">

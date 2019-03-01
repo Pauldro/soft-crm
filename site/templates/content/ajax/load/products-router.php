@@ -2,6 +2,7 @@
 	$qnbr = $input->get->text('qnbr');
 	$ordn = $input->get->text('ordn');
     $filteron = $input->urlSegment(2);
+
     switch ($filteron) {
         case 'item-search-results':
             $custID = $input->get->text('custID');

@@ -354,25 +354,6 @@ $(document).ready(function() {
 	/*==============================================================
 		ORDER LIST FUNCTIONS
 	=============================================================*/
-		$(".page").on("click", ".edit-order", function(e) {
-			e.preventDefault();
-			var href = $(this).attr('href');
-			dplusrequesturl(href, function(url) {
-				window.location.href = url;
-			});
-		});
-
-		$(".page").on("click", ".load-cust-orders", function(event) { //Changed from #load-cust-orders  //DEPRECATED
-			event.preventDefault();
-			var loadinto = $(this).data('loadinto');
-			var geturl = $(this).attr('href');
-			var focuson = $(this).data('focus');
-			dplusrequesturl(geturl, function(url) {
-				$(loadinto).loadin(url, function() {
-					if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000); }
-				});
-			});
-		});
 
 		$("body").on("click", ".search-orders", function(e) {
 			e.preventDefault();
@@ -674,26 +655,26 @@ $(document).ready(function() {
 		//setup before functions
 		var typingTimer;                //timer identifier
 		var doneTypingInterval = 300;  //time in ms, 5 second for example
-		
+
 		$("body").on("keyup", ".ii-item-search", function() {
 			clearTimeout(typingTimer);
 			typingTimer = setTimeout(function() {
 				ii_itemsearch()
 			}, doneTypingInterval);
 		});
-		
-		//on keydown, clear the countdown 
+
+		//on keydown, clear the countdown
 		$("body").on("keydown", ".ii-item-search", function () {
 			clearTimeout(typingTimer);
 		});
-		
+
 		function ii_itemsearch() {
 			var thisform = $(".ii-item-search").closest('form');
 			var href = thisform.attr('action')+"?q="+urlencode($(".ii-item-search").val());
 			var loadinto = '#item-results';
 			$(loadinto).loadin(href, function() { });
 		}
-		
+
 
 		$("body").on("submit", "#ci-search-item", function(e) {
 			e.preventDefault();

@@ -1,25 +1,32 @@
 <?php
 	use Dplus\ProcessWire\DplusWire;
-	
+
 	// Figure out page request method, then grab needed inputs
 	$requestmethod = $input->requestMethod('POST') ? 'post' : 'get';
 	$action = $input->$requestmethod->text('action');
-	
+
 	// Set up filename and sessionID in case this was made through cURL
 	$filename = ($input->$requestmethod->sessionID) ? $input->$requestmethod->text('sessionID') : session_id();
 	$sessionID = ($input->$requestmethod->sessionID) ? $input->$requestmethod->text('sessionID') : session_id();
-	
+
 	// Set up custID & shipID for requests
 	$custID = $input->$requestmethod->text('custID');
 	$shipID = $input->$requestmethod->text('shipID');
-	
+
 	$session->fromredirect = $page->url;
-	
+
 	/**
 	* CART REDIRECT
 	* @param string $action
 	*
 	* switch ($action) {
+	* case 'shop-as-customer':
+	*		- Defines the Shopping Cart Customer
+	*		DBNAME=$config->dplusdbname
+	*		CARTCUST
+	*		CUSTID=$custID
+	*		SHIPID=$shipID
+	*		break;
 	*	case 'add-to-cart':
 	*		- Adds item to the cart for customer
 	*		DBNAME=$config->dplusdbname
@@ -72,12 +79,12 @@
 	*		EMPTYCART
 	*		break;
 	*	case 'create-sales-order':
-	*		- Create Sales Order from cart 
+	*		- Create Sales Order from cart
 	*		DBNAME=$config->dplusdbname
 	*		CREATESO
 	*		break;
 	*	case 'create-quote':
-	*		- Create Quote from cart 
+	*		- Create Quote from cart
 	*		DBNAME=$config->dplusdbname
 	*		CREATEQT
 	*		break;
@@ -86,6 +93,21 @@
 	**/
 
 	switch ($action) {
+		case 'shop-as-customer':
+			$cart = new CartQuote();
+			$cart->set('sessionid', session_id());
+			$cart->set('custid', "$custID");
+			$cart->set('shiptoid', "$shipID");
+			$session->sql = $cart->save(true);
+			$cart->create();
+			$data = false;
+
+			if ($input->$requestmethod->page) {
+				$session->loc = $input->$requestmethod->text('page');
+			} else {
+				$session->loc = $config->pages->cart;
+			}
+			break;
 		case 'add-to-cart':
 			$itemID = $input->$requestmethod->text('itemID');
 			$qty = determine_qty($input, $requestmethod, $itemID); // TODO MAKE IN CART DETAIL
