@@ -196,12 +196,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-dpluso.git",
-                "reference": "0381f478a0a06064fb9346fd8c4b0a5d16ad4483"
+                "reference": "421c43dd455cdf7b8b717ea6366ce4c7714042a8"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dplus-dpluso/zipball/0381f478a0a06064fb9346fd8c4b0a5d16ad4483",
-                "reference": "0381f478a0a06064fb9346fd8c4b0a5d16ad4483",
+                "url": "https://api.github.com/repos/cptechinc/dplus-dpluso/zipball/421c43dd455cdf7b8b717ea6366ce4c7714042a8",
+                "reference": "421c43dd455cdf7b8b717ea6366ce4c7714042a8",
                 "shasum": ""
             },
             "type": "library",
@@ -233,7 +233,7 @@
                 "order-displays",
                 "user-actions"
             ],
-            "time": "2019-03-01T15:04:37+00:00"
+            "time": "2019-03-01T16:23:30+00:00"
         },
         {
             "name": "cptechinc/dplus-file-services",
