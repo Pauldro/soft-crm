@@ -1,6 +1,7 @@
 <?php
+    use Dplus\Base\DplusDateTime;
     use Dplus\Dpluso\General\SigninLog;
-    
+
     $signinlog = new SigninLog(session_id(), $page->fullURL, '#user-signin-table', '#user-signin-table');
     $day = $input->get->day ? date('m/d/Y', strtotime($input->get->text('day'))) : $day = date('m/d/Y');
     $signinlog->generate_filter($input);
@@ -45,7 +46,9 @@
         <div class="form-group">
             <?php if ($input->get->filter) : ?>
         		<div>
-        			<?= $signinlog->generate_clearsearchlink(); ?>
+        			<a href="<?= $signinlog->get_loadURL(); ?>" class="btn btn-warning btn-block">
+                        <i class="fa fa-search-minus" aria-hidden="true"></i> Clear Search
+                    </a>
         		</div>
         	<?php endif; ?>
         </div>
@@ -62,8 +65,8 @@
         <?php $signinlog->get_signinlog(); ?>
 		<?php foreach ($signinlog->logs as $log) : ?>
     		<tr>
-                <td><?= Dplus\Base\DplusDateTime::format_date($log['date']); ?></td>
-                <td><?= Dplus\Base\DplusDateTime::format_date($log['date'], "H:i A"); ?></td>
+                <td><?= DplusDateTime::format_date($log['date']); ?></td>
+                <td><?= DplusDateTime::format_date($log['date'], "H:i A"); ?></td>
     			<td><?= LogmUser::find_username($log['user']); ?></td>
     		</tr>
         <?php endforeach; ?>
