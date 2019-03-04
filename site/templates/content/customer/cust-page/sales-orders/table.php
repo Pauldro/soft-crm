@@ -30,7 +30,7 @@
                 <td> <?= $order->ordernumber; ?></td>
                 <td><?= $order->custpo; ?></td>
                 <td>
-                    <a href="<?= $orderpanel->generate_customershiptoURL($order); ?>"><?= $order->shiptoid; ?></a>
+                    <a href="<?= $config->dplusoURLS->get_ciURL($order->custid, $order->shiptoid); ?>"><?= $order->shiptoid; ?></a>
                     <span class="pull-right"><?= $orderpanel->generate_shiptopopover($order); ?></span>
                 </td>
                 <td align="right">$ <?= $page->stringerbell->format_money($order->total_order); ?></td> <td align="right" ><?= DplusDateTime::format_date($order->order_date); ?></td>

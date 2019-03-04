@@ -107,13 +107,13 @@
 		<?php endif; ?>
 	</div>
 	<div class="col-sm-6 form-group">
-		<a href="<?= $orderdisplay->generate_customershiptoURL($order); ?>" class="btn btn-block btn-primary">
+		<a href="<?= $config->dplusoURLS->get_ciURL($order->custid, $order->shiptoid); ?>" class="btn btn-block btn-primary">
 			<i class="fa fa-user" aria-hidden="true"></i> Go To Customer Page
 		</a>
 	</div>
 </div>
 <?php if ($session->panelorigin == 'orders') :  ?>
-	<?php $url = $session->panelcustomer ? $orderdisplay->generate_customershiptoURL($order) : $config->pages->dashboard; ?>
+	<?php $url = $session->panelcustomer ? $config->dplusoURLS->get_ciURL($order->custid, $order->shiptoid) : $config->pages->dashboard; ?>
 	<a href="<?= $url; ?>" class="btn btn-block btn-info">
 		<span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Back to Panel
 	</a>

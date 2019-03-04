@@ -1,4 +1,4 @@
-<?php 
+<?php
 	use Dplus\Base\DplusDateTime;
 	$orderpanel->get_orders();
 ?>
@@ -28,10 +28,10 @@
 					<?php endif; ?>
 				</td>
 				<td><?= $order->ordernumber; ?></td>
-				<td><a href="<?= $orderpanel->generate_customerURL($order); ?>"><?= $order->custid; ?></a> <span class="glyphicon glyphicon-share" aria-hidden="true"></span><br><?= Customer::get_customernamefromid($order->custid); ?></td>
+				<td><a href="<?= $config->dplusoURLS->get_ciURL($order->custid); ?>"><?= $order->custid; ?></a> <span class="glyphicon glyphicon-share" aria-hidden="true"></span><br><?= Customer::get_customernamefromid($order->custid); ?></td>
 				<td><?= $order->custpo; ?></td>
 				<td>
-					<a href="<?= $orderpanel->generate_customershiptoURL($order); ?>"><?= $order->shiptoid; ?></a>
+					<a href="<?= $config->dplusoURLS->get_ciURL($order->custid); ?>"><?= $order->shiptoid; ?></a>
 					<span class="pull-right"><?= $orderpanel->generate_shiptopopover($order); ?></span>
 				</td>
 				<td align="right">$ <?= $page->stringerbell->format_money($order->total_order); ?></td>
@@ -78,15 +78,15 @@
 					<span class="col-xs-3">
 						<?php if ($order->can_edit()) : ?>
 							<a href="<?= $orderpanel->generate_editURL($order); ?>" class="edit-order h3" title="Edit Order">
-								<i class="fa fa-pencil" aria-hidden="true"></i> 
+								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</a>
 						<?php elseif ($order->is_lockedbyuser()) : ?>
 							<a href="<?= $orderpanel->generate_editURL($order); ?>" class="edit-order h3" title="Continue Editing Order">
-								<i class="fa fa-wrench" aria-hidden="true"></i> 
+								<i class="fa fa-wrench" aria-hidden="true"></i>
 							</a>
 						<?php else : ?>
 							<a href="<?= $orderpanel->generate_editURL($order); ?>" class="edit-order h3" title="Open in read-only mode">
-								<i class="fa fa-eye" aria-hidden="true"></i> 
+								<i class="fa fa-eye" aria-hidden="true"></i>
 							</a>
 						<?php endif; ?>
 					</span>
@@ -94,13 +94,13 @@
 			</tr>
 
 			<?php if ($order->ordernumber == $input->get->text('ordn')) : ?>
-				<?php 
+				<?php
 					if ($input->get->show == 'documents' && (!$input->get('item-documents'))) {
 						include $config->paths->content.'dashboard/sales-orders/documents-rows.php';
 					}
 					include $config->paths->content.'dashboard/sales-orders/detail-rows.php';
 					include $config->paths->content.'dashboard/sales-orders/total-rows.php';
-					
+
 					if ($input->get->text('show') == 'tracking') {
 						include $config->paths->content.'dashboard/sales-orders/tracking-rows.php';
 					}

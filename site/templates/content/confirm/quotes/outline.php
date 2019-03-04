@@ -109,14 +109,14 @@
 		</a>
 	</div>
 	<div class="col-sm-6">
-		<a href="<?= $quotedisplay->generate_customershiptoURL($quote); ?>" class="btn btn-block btn-primary">
+		<a href="<?= $config->dplusoURLS->get_ciURL($quote->custid, $quote->shiptoid); ?>" class="btn btn-block btn-primary">
 			<i class="fa fa-user" aria-hidden="true"></i> Go To Customer Page
 		</a>
 	</div>
 </div>
 </br>
 <?php if ($session->panelorigin == 'quotes') :  ?>
-	<?php $url = $session->panelcustomer ? $quotedisplay->generate_customershiptoURL($quote) : $config->pages->dashboard; ?>
+	<?php $url = $session->panelcustomer ? $config->dplusoURLS->get_ciURL($quote->custid, $quote->shiptoid) : $config->pages->dashboard; ?>
 	<a href="<?= $url; ?>" class="btn btn-block btn-info">
 		<span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Back to Panel
 	</a>

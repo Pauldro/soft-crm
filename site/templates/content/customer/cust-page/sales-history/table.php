@@ -1,6 +1,6 @@
-<?php 
+<?php
 	use Dplus\Base\DplusDateTime;
-	$orderpanel->get_orders(); 
+	$orderpanel->get_orders();
 ?>
 <table class="table table-striped table-bordered table-condensed order-listing-table">
 	<thead>
@@ -31,7 +31,7 @@
 				<td><?= $order->ordernumber; ?></td>
 				<td colspan="2"><?= $order->custpo; ?></td>
 				<td>
-					<a href="<?= $orderpanel->generate_customershiptoURL($order); ?>"><?= $order->shiptoid; ?></a>
+					<a href="<?= $config->dplusoURLS->get_ciURL($order->custid, $order->shiptoid); ?>"><?= $order->shiptoid; ?></a>
 					<span class="pull-right"><?= $orderpanel->generate_shiptopopover($order); ?></span>
 				</td>
 				<td class="text-right">$ <?= $page->stringerbell->format_money($order->total_order); ?></td>
@@ -78,13 +78,13 @@
 			</tr>
 
 			<?php if ($order->ordernumber == $input->get->text('ordn')) : ?>
-				<?php 
+				<?php
 					if ($input->get->show == 'documents' && (!$input->get('item-documents')))  {
-						include $config->paths->content.'customer/cust-page/sales-history/documents-rows.php'; 
+						include $config->paths->content.'customer/cust-page/sales-history/documents-rows.php';
 					}
 					include $config->paths->content.'customer/cust-page/sales-history/detail-rows.php';
 					include $config->paths->content.'customer/cust-page/sales-history/totals-rows.php';
-					
+
 					if ($input->get->text('show') == 'tracking') {
 						include $config->paths->content.'customer/cust-page/sales-history/tracking-rows.php';
 					}

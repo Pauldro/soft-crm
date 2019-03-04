@@ -1,5 +1,5 @@
-<?php 
-	use Dplus\ProcessWire\DplusWire; 
+<?php
+	use Dplus\ProcessWire\DplusWire;
 	$quotepanel->get_quotes();
 ?>
 <table class="table table-striped table-bordered table-condensed" id="quotes-table">
@@ -27,7 +27,7 @@
 					<?php endif; ?>
 				</td>
 				<td><?= $quote->quotnbr; ?></td>
-				<td><a href="<?= $quotepanel->generate_customerURL($quote); ?>"><?= $quote->custid; ?></a> <span class="glyphicon glyphicon-share" aria-hidden="true"></span><br><?= Customer::get_customernamefromid($quote->custid); ?></td>
+				<td><a href="<?= $config->dplusoURLS->get_ciURL($quote->custid); ?>"><?= $quote->custid; ?></a> <span class="glyphicon glyphicon-share" aria-hidden="true"></span><br><?= Customer::get_customernamefromid($quote->custid); ?></td>
 				<td><?= $quote->shiptoid; ?></td>
 				<td><?= $quote->quotdate; ?></td>
 				<td><?= $quote->revdate; ?></td>
@@ -47,7 +47,7 @@
 				<td>
 					<?php if (DplusWire::wire('user')->hasquotelocked) : ?>
 						<a href="<?= $quotepanel->generate_editURL($quote); ?>" class="edit-order h3" title="Continue Editing">
-							<i class="fa fa-wrench" aria-hidden="true"></i> 
+							<i class="fa fa-wrench" aria-hidden="true"></i>
 						</a>
 					<?php else : ?>
 						<a href="<?= $quotepanel->generate_editURL($quote); ?>" class="edit-order h3" title="Edit Quote">
