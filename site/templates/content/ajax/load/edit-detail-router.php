@@ -11,7 +11,7 @@
             $page->title = 'Edit Pricing for '. $linedetail->itemid;
 			$page->title .= (strlen($linedetail->vendoritemid)) ? ' &nbsp;'.$linedetail->vendoritemid : '';
             $custID = get_custidfromcart(session_id());
-            $formaction = $config->pages->cart."redir/";
+            $formaction = $config->dplusoURLS->get_cart_redirURL();
             $ordn = '';
 			$page->body = $config->paths->content."edit/pricing/sales-orders/edit-pricing-form.php";
             break;

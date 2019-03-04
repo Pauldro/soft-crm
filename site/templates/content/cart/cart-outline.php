@@ -8,7 +8,7 @@
 ?>
 <br>
 <?php if (has_dpluspermission($user->loginid, 'eso') && count_cartdetails(session_id()) > 0) : ?>
-	<a href="<?php echo $config->pages->cart."redir/?action=create-sales-order"; ?>" class="btn btn-success create-order" data-type="order">
+	<a href="<?= $config->dplusoURLS->get_cart_create_salesorderURL(); ?>" class="btn btn-success create-order" data-type="order">
 		<span class="fa-stack fa-md">
 			<i class="fa fa-usd fa-stack-1x"></i>
 			<i class="fa fa-file-o fa-stack-2x"></i>
@@ -18,7 +18,7 @@
 <?php endif; ?>
 
 <?php if (has_dpluspermission($user->loginid, 'eqo') && count_cartdetails(session_id()) > 0) : ?>
-	<a href="<?php echo $config->pages->cart."redir/?action=create-quote"; ?>" class="btn btn-success create-order" data-type="quote">
+	<a href="<?= $config->dplusoURLS->get_cart_create_quoteURL();?>" class="btn btn-success create-order" data-type="quote">
 		<span class="fa-stack fa-md" aria-hidden="true">
 			<i class="fa fa-quote-left fa-stack-1x"></i>
 			<i class="fa fa-file-o fa-stack-2x"></i>
@@ -26,7 +26,7 @@
 		Create Quote
 	</a>
 <?php endif; ?>
-<a href="<?= $config->pages->cart.'redir/?action=empty-cart'; ?>" class="btn btn-primary">
+<a href="<?= $config->dplusoURLS->get_cart_emptyURL(); ?>" class="btn btn-primary">
 	<span class="fa-stack fa-md" aria-hidden="true">
 		<i class="fa fa-bars fa-stack-1x"></i>
 		<i class="fa fa-file-o fa-stack-2x"></i>

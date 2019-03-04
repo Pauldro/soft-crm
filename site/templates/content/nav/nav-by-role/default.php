@@ -11,7 +11,7 @@
 	<?php endif; ?>
 
 	<?php if ($config->cptechcustomer != 'stat') : ?>
-		<li> <a href="<?= $config->pages->cart; ?>"> <i class="glyphicon glyphicon-list-alt"></i> Quick Entry (<?php //echo get_cart_count(session_id()); ?>)</a> </li>
+		<li> <a href="<?= $config->dplusoURLS->find('cart'); ?>"> <i class="glyphicon glyphicon-list-alt"></i> Quick Entry (<?php //echo get_cart_count(session_id()); ?>)</a> </li>
 	<?php endif; ?>
 
 	<li class="divider"></li>

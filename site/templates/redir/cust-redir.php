@@ -352,7 +352,7 @@
 			if ($input->$requestmethod->page) {
 				$session->loc = $input->$requestmethod->text('page');
 			} else {
-				$session->loc = $config->pages->cart;
+				$session->loc = $config->dplusoURLS->find('cart');
 			}
 			break;
 		case 'add-contact':

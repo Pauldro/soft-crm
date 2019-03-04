@@ -33,8 +33,7 @@
 		exit;
 	}
 
-	// CONFIGS FOR JS
-	include_once($config->paths->templates."_init.js.php");  // includes class files
+
 
 	// BUILD AND INSTATIATE CLASSES
 	$page->fullURL = new \Purl\Url($page->httpUrl);
@@ -42,7 +41,6 @@
 	if (!empty($config->filename) && $config->filename != '/') {
 		$page->fullURL->join($config->filename);
 	}
-
 
 	$page->stringerbell = new Dplus\Base\StringerBell();
 	$page->htmlwriter = new Dplus\Content\HTMLWriter();
@@ -61,6 +59,9 @@
 	DplusoConfigURLs::set_rootpath($config->rootURL);
 	$config->dplusoURLS = DplusoConfigURLs::get_instance();
 	$config->roles = DplusoRoles::get_instance();
+
+	// CONFIGS FOR JS
+	include_once($config->paths->templates."_init.js.php");  // includes class files
 
 	/* =============================================================
 		ADD Default CSS Scripts

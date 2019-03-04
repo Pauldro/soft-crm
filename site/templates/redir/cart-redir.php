@@ -105,7 +105,7 @@
 			if ($input->$requestmethod->page) {
 				$session->loc = $input->$requestmethod->text('page');
 			} else {
-				$session->loc = $config->pages->cart;
+				$session->loc = $config->dplusoURLS->find('cart');
 			}
 			break;
 		case 'add-to-cart':
@@ -145,7 +145,7 @@
 			$cartdetail->set('spcord', 'S');
 			$session->sql = $cartdetail->create();
 			$data = array("DBNAME=$config->dplusdbname", 'CARTDET', 'LINENO=0', 'ITEMID=N', "QTY=$qty", "CUSTID=$custID");
-			$session->loc = $config->pages->cart;
+			$session->loc = $config->dplusoURLS->find('cart');
 			break;
 		case 'add-multiple-items':
 			$itemids = $input->$requestmethod->itemID;
@@ -167,7 +167,7 @@
 				}
 			}
 			$session->addtocart = sizeof($itemIDs);
-			$session->loc = $config->pages->cart;
+			$session->loc = $config->dplusoURLS->find('cart');
 			break;
 		case 'reorder':
 			$from = $input->$requestmethod->text('from');
@@ -191,7 +191,7 @@
 				$qty = !empty($qty) ? $qty : "1";
 				$data[] = "ITEMID={$itemID}QTY=$qty";
 			}
-			$session->loc = $config->pages->cart;
+			$session->loc = $config->dplusoURLS->find('cart');
 			break;
 		case 'quick-update-line':
 			$linenbr = $input->$requestmethod->text('linenbr');
@@ -205,7 +205,7 @@
 			$cartdetail->set('rshipdate', $input->$requestmethod->text('rqstdate'));
 			$session->sql = $cartdetail->update();
 			$data = array("DBNAME=$config->dplusdbname", 'CARTDET', "LINENO=$linenbr", "CUSTID=$custID");
-			$session->loc = $config->pages->cart;
+			$session->loc = $config->dplusoURLS->find('cart');
 			break;
 		case 'update-line':
 			$linenbr = $input->$requestmethod->text('linenbr');
@@ -233,7 +233,7 @@
 			$session->sql = $cartdetail->update();
 			$session->loc = $input->$requestmethod->text('page');
 			$data = array("DBNAME=$config->dplusdbname", 'CARTDET', "LINENO=$linenbr", "CUSTID=$custID");
-			$session->loc = $config->pages->cart;
+			$session->loc = $config->dplusoURLS->find('cart');
 			break;
 		case 'remove-line':
 			$linenbr = $input->get->text('line');
@@ -243,11 +243,11 @@
 			$custID = CartQuote::get_cartcustid($sessionID);
 			$custID = !empty($custID) ? $custID : $config->defaultweb;
 			$data = array("DBNAME=$config->dplusdbname", 'CARTDET', "LINENO=$linenbr", 'QTY=0', "CUSTID=$custID");
-			$session->loc = $config->pages->cart;
+			$session->loc = $config->dplusoURLS->find('cart');
 			break;
 		case 'empty-cart':
 			$data = array("DBNAME=$config->dplusdbname", 'EMPTYCART');
-			$session->loc = $config->pages->cart;
+			$session->loc = $config->dplusoURLS->find('cart');
 			break;
 		case 'create-sales-order':
 			$data = array("DBNAME=$config->dplusdbname", 'CREATESO');

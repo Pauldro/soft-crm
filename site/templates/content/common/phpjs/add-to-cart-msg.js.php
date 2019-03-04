@@ -4,7 +4,7 @@
             $.notify({
                 icon: "glyphicon glyphicon-shopping-cart",
                 message: "<?= $session->addtocart; ?> <br> (Click this Message to go to the cart.)" ,
-                url: "<?= $config->pages->cart; ?>",
+                url: "<?= $config->dplusoURLS->find('cart'); ?>",
                 target: '_self'
             },{
                 type: "success",

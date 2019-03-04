@@ -7,7 +7,7 @@
     $config->pages->ajax = $config->urls->root . 'ajax/';
     $config->pages->ajaxjson = $config->urls->root . 'ajax/json/';
     $config->pages->ajaxload = $config->urls->root . 'ajax/load/';
-    $config->pages->cart = $config->urls->root . 'cart/';
+    $config->pages->cart = $config->dplusoURLS->find('cart');
     $config->pages->customer = $config->urls->root . 'customers/';
     $config->pages->custinfo = $config->urls->root . 'customers/cust-info/';
     $config->pages->contact = $config->urls->root . 'customers/contact/';

@@ -21,7 +21,7 @@
 
 <?php $details = get_cartdetails(session_id()); ?>
 <?php foreach ($details as $detail) : ?>
-	<form action="<?= $config->pages->cart.'redir/'; ?>" method="post" class="form-group detail allow-enterkey-submit">
+	<form action="<?= $config->dplusoURLS->get_cart_redirURL(); ?>" method="post" class="form-group detail allow-enterkey-submit">
 		<input type="hidden" name="action" value="quick-update-line">
 		<input type="hidden" name="linenbr" value="<?= $detail->linenbr; ?>">
 		<input type="hidden" name="min-price" value="<?= $detail->minprice; ?>">
@@ -76,7 +76,7 @@
 				<div class="row">
 					<div class="col-xs-6 sm-padding">
 						<h4 class="visible-xs-block">Details</h4>
-						<a href="<?= $config->pages->ajax."load/view-detail/cart/?line=".$detail->linenbr; ?>" class="h3 view-item-details detail-line-icon" data-itemid="<?= $detail->itemid; ?>" data-kit="<?= $detail->kititemflag; ?>" data-modal="#ajax-modal">
+						<a href="<?= $config->dplusoURLS->get_cart_view_detailURL($detail->linenbr); ?>" class="h3 view-item-details detail-line-icon" data-itemid="<?= $detail->itemid; ?>" data-kit="<?= $detail->kititemflag; ?>" data-modal="#ajax-modal">
 							<i class="fa fa-info-circle"></i>
 						</a>
 						<?php if ($detail->has_notes()) : ?>

@@ -1269,7 +1269,7 @@ $(document).ready(function() {
 	}
 
 	function edit_itempricing(itemID, custID, callback) {
-		var url = config.urls.products.redir.getitempricing+"&itemID="+urlencode(itemID)+"&custID="+urlencode(custID);
+		var url = URI(config.urls.products.redir.getitempricing).addQuery('itemID', itemID).addQuery('custID', custID).toString();
 		$.get(url, function() { callback(); });
 	}
 

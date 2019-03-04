@@ -6,9 +6,9 @@
     switch($addtype) {
         case 'cart':
             $ordn = '';
-            $addtoform->action = $config->pages->cart."redir/";
+            $addtoform->action = $config->dplusoURLS->get_cart_redirURL();
             $addtoform->rediraction = 'add-to-cart';
-            $addtoform->returnpage = $config->pages->cart;
+            $addtoform->returnpage = $config->dplusoURLS->find('cart');
             break;
 		case 'order':
             $ordn = $sanitizer->text($input->get->ordn);

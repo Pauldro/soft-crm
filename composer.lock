@@ -196,12 +196,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-dpluso.git",
-                "reference": "a6050825db9fd0e796df78876f41a2a7d8a6e1e8"
+                "reference": "947d28b9a6d0539cb34c9f4228ee19b49d6e1762"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dplus-dpluso/zipball/a6050825db9fd0e796df78876f41a2a7d8a6e1e8",
-                "reference": "a6050825db9fd0e796df78876f41a2a7d8a6e1e8",
+                "url": "https://api.github.com/repos/cptechinc/dplus-dpluso/zipball/947d28b9a6d0539cb34c9f4228ee19b49d6e1762",
+                "reference": "947d28b9a6d0539cb34c9f4228ee19b49d6e1762",
                 "shasum": ""
             },
             "type": "library",
@@ -233,7 +233,7 @@
                 "order-displays",
                 "user-actions"
             ],
-            "time": "2019-03-01T22:14:54+00:00"
+            "time": "2019-03-04T20:09:26+00:00"
         },
         {
             "name": "cptechinc/dplus-file-services",
@@ -305,12 +305,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-order.git",
-                "reference": "36835a4842e10aae5a033acd2f75fd415b15c35e"
+                "reference": "ea0d392973c10d80ab9c65d2ee6f05f434e9858a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dplus-order/zipball/36835a4842e10aae5a033acd2f75fd415b15c35e",
-                "reference": "36835a4842e10aae5a033acd2f75fd415b15c35e",
+                "url": "https://api.github.com/repos/cptechinc/dplus-order/zipball/ea0d392973c10d80ab9c65d2ee6f05f434e9858a",
+                "reference": "ea0d392973c10d80ab9c65d2ee6f05f434e9858a",
                 "shasum": ""
             },
             "type": "library",
@@ -330,7 +330,7 @@
                 "quote",
                 "sales-order"
             ],
-            "time": "2019-02-05T15:02:17+00:00"
+            "time": "2019-03-01T19:55:33+00:00"
         },
         {
             "name": "cptechinc/dplus-processwire",

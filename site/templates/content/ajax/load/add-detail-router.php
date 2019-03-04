@@ -2,10 +2,11 @@
     $addtype = $input->urlSegment(2); // CART || ORDER | QUOTE
     $qnbr = $ordn = '';
     $custID = $input->get->text('custID');
+
     switch ($addtype) {
         case 'cart':
             $page->title = 'Add multiple items for your Cart';
-            $formaction = $config->pages->cart."redir/";
+            $formaction = $config->dplusoURLS->get_cart_redirURL();
             break;
         case 'order':
             $ordn = $input->get->text('ordn');

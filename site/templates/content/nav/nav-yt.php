@@ -48,7 +48,7 @@
                     </a>
                     <ul class="dropdown-menu">
                     	<li> <a href="<?php echo $config->pages->account; ?>">View My Account</a> </li>
-                        <li><a href="<?php echo $config->pages->cart; ?>">Quick Entry</a></li>
+                        <li><a href="<?= $config->dplusoURLS->find('cart'); ?>">Quick Entry</a></li>
                         <li role="separator" class="divider"></li>
 						<?php if ($user->loggedin) : ?>
                             <li><a>Welcome, <?php echo $user->username; ?></a> </li>

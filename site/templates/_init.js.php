@@ -36,9 +36,9 @@
         'urls' => [
     		'index' => $config->pages->index,
     		'cart' => [
-                'page' => $config->pages->cart,
+                'page' => $config->dplusoURLS->find('cart'),
                 'redir' => [
-                    'reorder' => $config->pages->cart."redir/?action=reorder-items"
+                    'reorder' => $config->dplusoURLS->get_cart_reorderURL()
                 ]
             ],
     		'orderfiles' => $config->pages->documentstorage,

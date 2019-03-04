@@ -28,7 +28,7 @@
 					switch ($addtype) {
 						case 'cart':
 							$custID = CartQuote::get_cartcustid(session_id());
-				            $formaction = $config->pages->cart."redir/";
+				            $formaction = $config->dplusoURLS->get_cart_redirURL();
 				            $ordn = '';
 				            break;
 				        case 'sales-order':
