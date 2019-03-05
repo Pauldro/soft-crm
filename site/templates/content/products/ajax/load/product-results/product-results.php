@@ -18,7 +18,7 @@
             break;
 		case 'quote':
             $qnbr = $sanitizer->text($input->get->qnbr);
-            $addtoform->action = $config->pages->quotes."redir/";
+            $addtoform->action = $config->dplusoURLs->find('quotes_redir');
             $addtoform->rediraction = 'add-to-quote';
             $addtoform->returnpage = $input->get->order ? $config->pages->edit."quote-to-order/?qnbr=$qnbr" : $config->pages->edit."quote/?qnbr=$qnbr";
             break;

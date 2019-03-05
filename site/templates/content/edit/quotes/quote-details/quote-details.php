@@ -19,7 +19,7 @@
 
 <?php $quote_details = $editquotedisplay->get_quotedetails($quote); ?>
 <?php foreach ($quote_details as $detail) : ?>
-	<form action="<?= $config->pages->quotes.'redir/'; ?>" method="post" class="form-group detail allow-enterkey-submit">
+	<form action="<?= $config->dplusoURLs->find('quotes_redir'); ?>" method="post" class="form-group detail allow-enterkey-submit">
 		<input type="hidden" name="action" value="quick-update-line">
 		<input type="hidden" name="qnbr" value="<?= $qnbr; ?>">
 		<input type="hidden" name="linenbr" value="<?= $detail->linenbr; ?>">
@@ -76,12 +76,12 @@
 					<div class="row">
 						<div class="col-xs-6 sm-padding">
 							<h4 class="visible-xs-block">Details</h4>
-							<!-- View Item Link --> 
+							<!-- View Item Link -->
 							<a href="<?= $editquotedisplay->generate_viewdetailURL($quote, $detail); ?>" class="h3 view-item-details detail-line-icon" data-itemid="<?= $detail->itemid; ?>" data-kit="<?= $detail->kititemflag; ?>" data-modal="<?= $editquotedisplay->modal; ?>">
 								<i class="fa fa-info-circle" aria-hidden="true"></i>
 							</a>
-							
-							<!-- Dplus Notes Link --> 
+
+							<!-- Dplus Notes Link -->
 							<?php if ($detail->has_notes()) : ?>
 								<a href="<?= $editquotedisplay->generate_request_dplusnotesURL($quote, $detail->linenbr); ?>" class="load-notes" title="View and Create Quote Notes" data-modal="<?= $editquotedisplay->modal; ?>">
 									<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
@@ -95,17 +95,17 @@
 
 						<div class="col-xs-6 sm-padding">
 							<h4 class="visible-xs-block">Edit</h4>
-							<!-- Save Detail Button --> 
+							<!-- Save Detail Button -->
 							<button type="submit" name="button" class="btn btn-sm btn-info detail-line-icon" title="Save Changes">
 								<span class="fa fa-floppy-o"></span> <span class="sr-only">Save Line</span>
 							</button>
-							<!-- Edit Detail Link --> 
+							<!-- Edit Detail Link -->
 							<a href="<?= $editquotedisplay->generate_vieweditdetailURL($quote, $detail); ?>" class="update-line" title="Edit Line" data-kit="<?= $detail->kititemflag; ?>" data-itemid="<?= $detail->itemid; ?>" data-custid="<?= $quote->custid; ?>" aria-label="Edit Detail Line">
 								<button class="btn btn-sm btn-warning detail-line-icon">
 									<span class="fa fa-pencil"></span>
 								</button>
 							</a>
-							<!-- Remove Detail Link --> 
+							<!-- Remove Detail Link -->
 							<a href="<?= $editquotedisplay->generate_removedetailURL($quote, $detail); ?>" class="btn btn-sm btn-danger" aria-label="Delete Line" title="Delete Line">
 								<span class="fa fa-trash-o"></span>
 							</a>

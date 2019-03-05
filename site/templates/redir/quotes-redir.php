@@ -160,9 +160,9 @@
 			$data = array("DBNAME=$config->dplusdbname", 'LOADQUOTEDETAIL', "QUOTENO=$qnbr", "CUSTID=$custID");
 
 			if ($input->get->lock) {
-				$session->loc = $config->pages->editquote."?qnbr=".$qnbr;
+				$session->loc = $config->dplusoURLS->get_edit_quotepageURL($qnbr);
 			} elseif ($input->get->print) {
-				$session->loc = $config->pages->print."quote/?qnbr=".$qnbr;
+				$session->loc = $config->dplusoURLS->get_quote_printpageURL($qnbr);
 			} else {
 				if ($input->get->custID) {
 					if ($input->get->shipID) {
@@ -181,7 +181,7 @@
 			$time = date('Hi');
 			$custID = Quote::find_custid(session_id(), $qnbr, false);
 			$data = array("DBNAME=$config->dplusdbname", 'EDITQUOTE', "QUOTENO=$qnbr");
-			$session->loc= $config->pages->editquote."?qnbr=".$qnbr;
+			$session->loc = $config->dplusoURLS->get_edit_quotepageURL($qnbr);
 			if ($input->get->quoteorigin) {
 				$session->panelorigin = 'quotes';
 				$session->paneloriginpage = $input->get->text('quoteorigin');
@@ -195,7 +195,7 @@
 			$date = date('Ymd');
 			$time = date('Hi');
 			$data = array("DBNAME=$config->dplusdbname", "EDITQUOTE=$qnbr", "QUOTENO=$qnbr");
-			$session->loc = $config->pages->editquote."?qnbr=".$qnbr;
+			$session->loc = $config->dplusoURLS->get_edit_quotepageURL($qnbr);
 			break;
 		case 'update-quotehead':
 			$qnbr = $input->$requestmethod->text('qnbr');
@@ -228,7 +228,7 @@
 					$data = array('UNLOCKING QUOTE');
 				}
 			} else {
-				$session->loc = $config->pages->editquote."?qnbr=".$qnbr.$linkaddon;
+				$session->loc = $config->dplusoURLS->get_edit_quotepageURL($qnbr).$linkaddon;
 			}
 			break;
 		case 'add-to-quote':
@@ -240,7 +240,7 @@
 			if ($input->$requestmethod->page) {
 				$session->loc = $input->$requestmethod->text('page');
 			} else {
-				$session->loc = $fororder ? $config->pages->edit."quote-to-order/?qnbr=$qnbr" : $config->pages->edit."quote/?qnbr=$qnbr";
+				$session->loc = $fororder ? $config->dplusoURLS->get_quote_orderURL($qnbr) : $config->dplusoURLS->get_edit_quotepageURL($qnbr);
 			}
 
 			$session->editdetail = true;

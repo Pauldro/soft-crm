@@ -20,9 +20,9 @@
 			$custID = get_custidfromquote(session_id(), $qnbr);
 
             if ($input->get->order) {
-                $formaction = $config->pages->quotes."redir/?order=true";
+                $formaction = "{$config->dplusoURLS->paths->quotes_redir}/?order=true";
             } else {
-                $formaction = $config->pages->quotes."redir/";
+                $formaction = $config->dplusoURLS->find('quotes_redir');
             }
             break;
     }

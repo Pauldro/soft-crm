@@ -14,7 +14,7 @@
 	// APPLICATION CONFIGS
 	include_once($config->paths->templates."configs/dpluso-config.php");
 	$config->pages = new ProcessWire\Paths($config->rootURL);
-	include_once($config->paths->templates."configs/nav-config.php");
+
 	include_once($config->paths->templates."configs/user-roles-config.php");
 	$appconfig = $pages->get('/config/');
 
@@ -58,8 +58,9 @@
 	use Dplus\Dpluso\Configs\DplusoConfigURLs;
 	DplusoConfigURLs::set_rootpath($config->rootURL);
 	$config->dplusoURLS = DplusoConfigURLs::get_instance();
+	$config->dplusoURLs = $config->dplusoURLS;
 	$config->roles = DplusoRoles::get_instance();
-
+	include_once($config->paths->templates."configs/nav-config.php");
 	// CONFIGS FOR JS
 	include_once($config->paths->templates."_init.js.php");  // includes class files
 

@@ -255,7 +255,7 @@
 			break;
 		case 'create-quote':
 			$data = array("DBNAME=$config->dplusdbname", 'CREATEQT');
-			$session->loc = "{$config->pages->quotes}redir/?action=edit-new-quote";
+			$session->loc = $config->dplusoURLS->get_new_editquoteURL();
 			break;
 	}
 

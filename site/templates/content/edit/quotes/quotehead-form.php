@@ -1,5 +1,5 @@
 <?php include $config->paths->content.'edit/quotes/quote-attachments.php'; ?>
-<form id="quotehead-form" action="<?= $config->pages->quotes."redir/";  ?>" class="form-group order-form" method="post">
+<form id="quotehead-form" action="<?= $config->dplusoURLS->find('quotes_redir');  ?>" class="form-group order-form" method="post">
 	<input type="hidden" name="action" value="update-quotehead">
 	<input type="hidden" name="qnbr" id="qnbr" value="<?= $quote->quotnbr; ?>">
     <input type="hidden" name="custID" id="custID" value="<?= $quote->custid; ?>">
@@ -34,7 +34,7 @@
 			<i class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></i> Finished with quote
 		</a>
     <?php else : ?>
-        <?php if (($config->pages->orderquote.'?qnbr='.$qnbr) != $config->filename && has_dpluspermission($user->loginid, 'eso')) : ?>
+        <?php if (($config->dplusoURLS->get_quote_orderURL($qnbr)) != $config->filename && has_dpluspermission($user->loginid, 'eso')) : ?>
             <div class="form-group">
 				<a href="<?= $editquotedisplay->generate_orderquoteURL($quote); ?>" class="btn btn-default btn-block">
 					<i class="fa fa-paper-plane-o" aria-hidden="true"></i> Send To Order

@@ -36,7 +36,7 @@
 			$qnbr = $input->get->text('qnbr');
 			$custID = get_custidfromquote(session_id(), $qnbr);
 			$linedetail = QuoteDetail::load(session_id(), $qnbr, $linenbr);
-			$formaction = $config->pages->quotes."redir/";
+			$formaction = $config->dplusoURLs->paths->find('quotes_redir');
             $page->title = 'Edit Pricing for '. $linedetail->itemid;
 			$page->title .= (strlen($linedetail->vendoritemid)) ? ' &nbsp;'.$linedetail->vendoritemid : '';
 			$page->body = $config->paths->content."edit/pricing/quotes/edit-pricing-form.php";

@@ -27,7 +27,7 @@
 	        </table>
 	    </div>
 	</div>
-	<form action="<?= $config->pages->quotes.'redir/'; ?>" method="post" id="select-items-form" onsubmit="validate_selection()">
+	<form action="<?= $config->dplusoURLs->find('quotes_redir'); ?>" method="post" id="select-items-form" onsubmit="validate_selection()">
 		<input type="hidden" name="action" value="send-quote-to-order">
 		<input type="hidden" name="qnbr" value="<?= $qnbr; ?>">
 		<?php foreach ($quote_details as $detail) : ?>
