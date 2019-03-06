@@ -80,7 +80,7 @@
 			'name' => 'print-item-label',
 			'title' => 'Print Item Label',
 			'summary' => 'Print a Label for a bin Item',
-			'function' => 'wm'
+			'function' => 'pilbl'
 		)
 	);
 
@@ -146,5 +146,5 @@
 
 	$warehousepage = $pages->get('/warehouse/');
 	$warehousepage->of(false);
-	$warehousepage->dplusfunction = 'mpwm';
+	$warehousepage->dplusfunction = 'wm';
 	$warehousepage->save();
