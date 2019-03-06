@@ -4,6 +4,7 @@
         if (!WhseSession::does_sessionexist(session_id())) {
             WhseSession::start_session(session_id());
         }
+		$whsesession = WhseSession::load(session_id());
         $page->body = $config->paths->content."warehouse/menu.php";
         include $config->paths->content."common/include-page.php";
     } else {
