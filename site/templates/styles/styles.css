@@ -14,7 +14,12 @@
 	a .highlight {color: #000;}
 	.highlight a {color: #0f7864; }
 	.jumbotron.pagetitle {padding-top: 15px; padding-bottom: 15px; color: #ecf0f1; background-color: #2c3e50;}
-	.jumbotron.pagetitle h1 {margin-top: 5px; margin-bottom: 5px; font-size: 50px;}
+	.jumbotron.pagetitle h1 {margin-top: 5px; margin-bottom: 5px; font-size: 3em;}
+
+	@media only screen and (max-width: 768px) {
+		.jumbotron.pagetitle h1 {font-size: 2.5em;}
+	}
+
 
 	.btn.btn-rounded {border-radius: 50%;}
 

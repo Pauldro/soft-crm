@@ -1,6 +1,5 @@
-<?php 
+<?php
     $permission = (!empty($page->dplusfunction)) ? has_dpluspermission($user->loginid, $page->dplusfunction) : true;
-    
     if ($permission) {
         if (!WhseSession::does_sessionexist(session_id())) {
             WhseSession::start_session(session_id());
