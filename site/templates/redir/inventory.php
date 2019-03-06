@@ -109,10 +109,70 @@
 			$url->query->set('binID', $binID);
 			$session->loc = $url->getUrl();
 			break;
+		case 'init-label-print':
+			$whsesession = WhseSession::load(session_id());
+			$binID = $input->$requestmethod->text('binID');
+			$itemID = $input->$requestmethod->text('itemID');
+			$url = new Purl\Url($config->pages->inventory_printitemlabel);
+			$url->query->set('binID', $binID);
+
+			if (!empty($input->$requestmethod->serialnbr) | !empty($input->$requestmethod->lotnbr)) {
+				if ($input->$requestmethod->serialnbr) {
+					$lotserial = $input->$requestmethod->text('serialnbr');
+				} elseif ($input->$requestmethod->lotnbr) {
+					$lotserial = $input->$requestmethod->text('lotnbr');
+				}
+				$item = InventorySearchItem::load_from_lotserial(session_id(), $lotserial);
+			} else {
+				$item = InventorySearchItem::load_from_itemid(session_id(), $itemID);
+			}
+			$data = array("DBNAME=$config->dplusdbname", "ITEMCARTONINIT", "ITEMID=$itemID", "WHSE=$whsesession->whseid", "BIN=$binID");
+
+			if ($item->is_lotted() || $item->is_serialized()) {
+				$data[] = "LOTSER=$item->lotserial";
+				$url->query->set($item->get_itemtypeproperty(), $item->lotserial);
+			} else {
+				$url->query->set('itemID', $itemID);
+			}
+
+			$session->loc  = $url->getUrl();
+			break;
+		case 'print-thermal-label':
+			$binID = $input->$requestmethod->text('binID');
+			$itemID = $input->$requestmethod->text('itemID');
+			$lotserial = $input->$requestmethod->text('lotserial');
+			$whseID = $input->$requestmethod->text('whseID');
+
+			if (LabelPrintSession::exists(session_id())) {
+				$labelsession = LabelPrintSession::load(session_id());
+			} else {
+				$labelsession = new LabelPrintSession();
+				$labelsession->set('sessionid', session_id());
+				$labelsession->set('itemid', $itemID);
+				$labelsession->set('bin', $binID);
+				$labelsession->set('lotserial', $lotserial);
+				$labelsession->set('whse', $whseID);
+			}
+
+			$labelsession->set('label_box', $input->$requestmethod->text('box-label'));
+			$labelsession->set('printer_box', $input->$requestmethod->text('box-printer'));
+			$labelsession->set('qty_box', $input->$requestmethod->text('box-qty'));
+			$labelsession->set('nbr_box_labels', $input->$requestmethod->text('box-label-count'));
+
+			$labelsession->set('label_master', $input->$requestmethod->text('masterpack-label'));
+			$labelsession->set('printer_master', $input->$requestmethod->text('masterpack-printer'));
+			$labelsession->set('qty_master', $input->$requestmethod->text('masterpack-qty'));
+			$labelsession->set('nbr_master_labels', $input->$requestmethod->text('masterpack-label-count'));
+			$labelsession->save();
+
+			$data = array("DBNAME=$config->dplusdbname", "ITEMCARTONPRINT");
+			$session->loc = $input->$requestmethod->text('page');
+			break;
 	}
 
 	write_dplusfile($data, $filename);
 	curl_redir("127.0.0.1/cgi-bin/".$config->cgis['whse']."?fname=$filename");
+	
 	if (!empty($session->get('loc'))) {
 		header("Location: $session->loc");
 	}

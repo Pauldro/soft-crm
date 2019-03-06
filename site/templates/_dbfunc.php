@@ -4229,7 +4229,7 @@
 			return $sql->fetchColumn();
 		}
 	}
-	
+
 	/**
 	 * Returns a QueryBuidler object for that Item and Vendor ID
 	 * @param  string        $vendorID Vendor ID
@@ -4244,7 +4244,7 @@
 		$vendquery->where('originID', $vendorID);
 		return $vendquery;
 	}
-	
+
 	/**
 	 * Returns a QueryBuidler object for that Item and Customer ID
 	 * @param  string        $custID   Customer ID
@@ -4259,7 +4259,7 @@
 		$custquery->where('originID', $custID);
 		return $custquery;
 	}
-	
+
 	/**
 	 * Does Cross-reference Item Exist?
 	 * @param  string $itemID   Item Number / ID
@@ -4275,7 +4275,7 @@
 		$itemquery->field('itemid');
 		$itemquery->where('itemid', $itemID);
 		$itemquery->where('origintype', ['I', 'L']); // ITEMID found by the ITEMID, or by short item lookup // NOTE USED at Stempf
-		
+
 		if (!empty($custID)) {
 			$custquery = create_xrefitemcustomerquery($custID, $itemID);
 			$q->where(
@@ -4304,7 +4304,7 @@
 			return boolval($sql->fetchColumn());
 		}
 	}
-	
+
 	/**
 	 * Return the item from the cross-reference table
 	 * @param  string $itemID   Item Number / ID
@@ -6255,5 +6255,149 @@
 			$sql->execute($q->params);
 			$sql->setFetchMode(PDO::FETCH_CLASS, 'ItemMasterItem');
 			return $sql->fetch();
+		}
+	}
+
+	/**
+	 * Returns a List of Thermal Label Formats
+	 * @param  bool   $debug Run in debug? If so, return SQL Query
+	 * @return array         <ThermalLabelFormat>
+	 */
+	function find_thermalformatlabel_formats($debug = false) {
+		$q = (new QueryBuilder())->table('thermal_label_format');
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'ThermalLabelFormat');
+			return $sql->fetchAll();
+		}
+	}
+
+	/**
+	 * Returns a List of Printers
+	 * @param  string $whseID Warehouse ID  NOTE NOT USED
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return array          <WhsePrinter>
+	 */
+	function find_prntctrl_printers($whseID = '', $debug = false) {
+		$q = (new QueryBuilder())->table('prntctrl');
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'WhsePrinter');
+			return $sql->fetchAll();
+		}
+	}
+
+	/**
+	 * Returns if there's a record in the itemcartonlabel table for session
+	 * @param  string $sessionID Session Identifier
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return bool              Is there a record for Session?
+	 */
+	function does_itemcartonlabel_session_exist($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('itemcartonlabel');
+		$q->field($q->expr('COUNT(*)'));
+		$q->where('sessionid', $sessionID);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return boolval($sql->fetchColumn());
+		}
+	}
+
+	/**
+	 * Returns instance of LabelPrintSession for Session from the itemcartonlabel
+	 * @param  string $sessionID  Session Identifier
+	 * @param  bool   $debug      Run in debug? If so, return SQL Query
+	 * @return LabelPrintSession
+	 */
+	function get_itemcartonlabel_session($sessionID, $debug = false) {
+		$q = (new QueryBuilder())->table('itemcartonlabel');
+		$q->where('sessionid', $sessionID);
+		$q->limit(1);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'LabelPrintSession');
+			return $sql->fetch();
+		}
+	}
+
+
+	/**
+	 * Inserts itemcartonlabel record with <LabelPrintSession> values
+	 * @param  string            $sessionID    Session Identifier
+	 * @param  LabelPrintSession $labelsession Print Label Values
+	 * @param  bool              $debug        Run in debug? If so, return SQL Query
+	 * @return bool                            Was record able to be inserted?
+	 */
+	function insert_itemcartonlabel_session($sessionID, LabelPrintSession $labelsession, $debug = false) {
+		$haschanges = false;
+		$properties = array_keys($labelsession->_toArray());
+		$q = (new QueryBuilder())->table('itemcartonlabel');
+		$q->mode('insert');
+
+		foreach ($properties as $property) {
+			if (!empty($labelsession->$property) || strlen($labelsession->$property)) {
+				$haschanges = true;
+				$q->set($property, $labelsession->$property);
+			}
+		}
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+			if ($haschanges) {
+				$sql->execute($q->params);
+			}
+			return does_itemcartonlabel_session_exist($sessionID);
+		}
+	}
+
+	/**
+	 * Updates itemcartonlabel record with <LabelPrintSession> values
+	 * @param  string            $sessionID    Session Identifier
+	 * @param  LabelPrintSession $labelsession Print Label Values
+	 * @param  bool              $debug        Run in debug? If so, return SQL Query
+	 * @return bool                            Was record able to be updated?
+	 */
+	function update_itemcartonlabel_session($sessionID, LabelPrintSession $labelsession, $debug = false) {
+		$haschanges = false;
+		$originalsession = LabelPrintSession::load($sessionID);
+		$properties = array_keys($labelsession->_toArray());
+		$q = (new QueryBuilder())->table('itemcartonlabel');
+		$q->mode('update');
+
+		foreach ($properties as $property) {
+			if ($labelsession->$property != $originalsession->$property) {
+				$haschanges = true;
+				$q->set($property, $labelsession->$property);
+			}
+		}
+		$q->where('sessionid', $labelsession->sessionid);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery();
+		} else {
+
+			if ($haschanges) {
+				$sql->execute($q->params);
+			}
+			return boolval($sql->rowCount());
 		}
 	}
