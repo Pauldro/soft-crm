@@ -412,22 +412,22 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dpluso-warehouse.git",
-                "reference": "f188b0e03fda699ad04d5f7008209c5729c272fc"
+                "reference": "21b3ed8a09d8314c1d9a3354695619cb3d23c13f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dpluso-warehouse/zipball/f188b0e03fda699ad04d5f7008209c5729c272fc",
-                "reference": "f188b0e03fda699ad04d5f7008209c5729c272fc",
+                "url": "https://api.github.com/repos/cptechinc/dpluso-warehouse/zipball/21b3ed8a09d8314c1d9a3354695619cb3d23c13f",
+                "reference": "21b3ed8a09d8314c1d9a3354695619cb3d23c13f",
                 "shasum": ""
             },
             "type": "library",
             "autoload": {
-                "classmap": [
-                    "src/Model/"
-                ],
                 "psr-4": {
                     "Dplus\\Warehouse\\": "src/"
-                }
+                },
+                "classmap": [
+                    "src/Model/"
+                ]
             },
             "notification-url": "https://packagist.org/downloads/",
             "description": "Classes for Warehouse Dplus Online",
@@ -438,7 +438,7 @@
                 "dplus-warehouse",
                 "dpluso-warehouse"
             ],
-            "time": "2019-03-05T22:54:01+00:00"
+            "time": "2019-03-06T16:39:26+00:00"
         },
         {
             "name": "eoghanobrien/php-simple-mail",
