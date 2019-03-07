@@ -10,7 +10,7 @@
 		$resultscount = InventorySearchItem::count_distinct_itemid(session_id());
 		$items = InventorySearchItem::get_all_distinct_itemid(session_id());
 		$page->title = "Bin Inquiry for $binID";
-		$page->body = __DIR__."/inventory-results.php";
+		$page->body = __DIR__."/inventory-results-list.php";
 	} else {
 		$binID = '';
 		$resultscount = 0;

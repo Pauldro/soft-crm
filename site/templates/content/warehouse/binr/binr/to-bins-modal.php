@@ -48,7 +48,7 @@
 								<div class="list-group">
 									<?php $list = $whseconfig->get_binlist(); ?>
 									<?php foreach ($list as $listedbin) : ?>
-										<a href="#" class="list-group-item choose-tobin" data-bin="<?= $currentbin; ?>">
+										<a href="#" class="list-group-item choose-tobin" data-bin="<?= $listedbin; ?>">
 											<div class="row">
 												<div class="col-xs-6">
 													<h5 class="list-group-item-heading"><?= $listedbin->from; ?></h5>
