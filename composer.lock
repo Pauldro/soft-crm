@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "content-hash": "93bcffb6159ac52e1898d9d3cedfe0aa",
@@ -164,12 +164,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-content.git",
-                "reference": "82749f5e3c2b188dbf1111e3e88993cb64724027"
+                "reference": "274b9d70f115a4119b11dfa2b9db335b6e0410ba"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dplus-content/zipball/82749f5e3c2b188dbf1111e3e88993cb64724027",
-                "reference": "82749f5e3c2b188dbf1111e3e88993cb64724027",
+                "url": "https://api.github.com/repos/cptechinc/dplus-content/zipball/274b9d70f115a4119b11dfa2b9db335b6e0410ba",
+                "reference": "274b9d70f115a4119b11dfa2b9db335b6e0410ba",
                 "shasum": ""
             },
             "type": "library",
@@ -188,7 +188,7 @@
                 "paginator",
                 "table"
             ],
-            "time": "2018-12-13T16:01:58+00:00"
+            "time": "2019-03-11T15:02:55+00:00"
         },
         {
             "name": "cptechinc/dplus-dpluso",
@@ -277,12 +277,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-items.git",
-                "reference": "a70d01fca90c22554cad3d065843b06670366a3b"
+                "reference": "2d40de46f4087cf7a6dce803720aadb12e40eda4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dplus-items/zipball/a70d01fca90c22554cad3d065843b06670366a3b",
-                "reference": "a70d01fca90c22554cad3d065843b06670366a3b",
+                "url": "https://api.github.com/repos/cptechinc/dplus-items/zipball/2d40de46f4087cf7a6dce803720aadb12e40eda4",
+                "reference": "2d40de46f4087cf7a6dce803720aadb12e40eda4",
                 "shasum": ""
             },
             "type": "library",
@@ -297,7 +297,7 @@
             "keywords": [
                 "items"
             ],
-            "time": "2019-02-18T16:49:24+00:00"
+            "time": "2019-03-07T17:19:42+00:00"
         },
         {
             "name": "cptechinc/dplus-order",
