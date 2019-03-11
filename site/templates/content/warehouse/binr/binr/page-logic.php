@@ -54,7 +54,11 @@
 		}
 
 		if ($resultscount == 1) {
-			$page->body = __DIR__."/binr-form.php";
+			if (!empty($session->get('binr'))) {
+				$page->body = __DIR__."/results-screen.php";
+			} else {
+				$page->body = __DIR__."/binr-form.php";
+			}
 		} else {
 			$items = InventorySearchItem::get_all(session_id());
 			$page->body = __DIR__."/inventory-results.php";
