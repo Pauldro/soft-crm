@@ -25,6 +25,15 @@
 	// AFTER LOADING CONFIGS, CLASSES, AND FUNCTIONS CHECK FOR LOGIN
 	$user->loggedin = is_validlogin(session_id());
 
+	use Dplus\Dpluso\Configs\DplusoRoles;
+	use Dplus\Dpluso\Configs\DplusoConfigURLs;
+	DplusoConfigURLs::set_rootpath($config->rootURL);
+	$config->dplusoURLS = DplusoConfigURLs::get_instance();
+	$config->dplusoURLs = $config->dplusoURLS;
+	$config->roles = DplusoRoles::get_instance();
+
+	include_once($config->paths->templates."configs/nav-config.php");
+
 	if ($user->loggedin) {
 		setup_user(session_id());
 	//	Dplus\Dpluso\General\SigninLog::log_signin(session_id(), $user->loginid);
@@ -32,8 +41,6 @@
 		header('location: ' . $config->pages->login);
 		exit;
 	}
-
-
 
 	// BUILD AND INSTATIATE CLASSES
 	$page->fullURL = new \Purl\Url($page->httpUrl);
@@ -54,13 +61,7 @@
 	Dplus\Dpluso\ScreenFormatters\TableScreenMaker::set_fieldfiledirectory($config->companyfiles."json/");
 	Dplus\Dpluso\Configs\FormFieldsConfig::set_defaultconfigdirectory($config->paths->templates."configs/customer/");
 
-	use Dplus\Dpluso\Configs\DplusoRoles;
-	use Dplus\Dpluso\Configs\DplusoConfigURLs;
-	DplusoConfigURLs::set_rootpath($config->rootURL);
-	$config->dplusoURLS = DplusoConfigURLs::get_instance();
-	$config->dplusoURLs = $config->dplusoURLS;
-	$config->roles = DplusoRoles::get_instance();
-	include_once($config->paths->templates."configs/nav-config.php");
+
 	// CONFIGS FOR JS
 	include_once($config->paths->templates."_init.js.php");  // includes class files
 
