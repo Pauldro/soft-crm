@@ -29,6 +29,9 @@
                     case 'os':
                         include $config->paths->content."customer/ajax/load/cust-index/order-search-cust-list.php";
                         break;
+					case 'aj':
+						include $config->paths->content."customer/ajax/load/cust-index/ajax-cust-list.php";
+						break;
                 }
             } else {
                 include $config->paths->content."customer/ajax/load/cust-index/ci-cust-list.php";
