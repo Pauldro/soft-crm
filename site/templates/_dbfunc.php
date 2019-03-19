@@ -5810,6 +5810,52 @@
 	}
 
 	/**
+	 * Returns the Number of Bins that contain $itemID
+	 * @param  string $sessionID Session Identifier
+	 * @param  string $itemID    Item ID
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return int               Number of results for this session
+	 */
+	function count_invsearch_itemid_bins($sessionID, $itemID, $debug = false) {
+		$q = (new QueryBuilder())->table('invsearch');
+		$q->field($q->expr('COUNT(DISTINCT(bin))'));
+		$q->where('sessionid', $sessionID);
+		$q->where('itemid', $itemID);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+
+	/**
+	 * Returns an array of InventorySearchItem of invsearch results
+	 * @param  string $sessionID Session Identifier
+	 * @param  string $itemID    Item ID
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return array             <InventorySearchItem>
+	 */
+	function get_invsearch_item_bins($sessionID, $itemID, $debug = false) {
+		$q = (new QueryBuilder())->table('invsearch');
+		$q->where('sessionid', $sessionID);
+		$q->where('itemid', $itemID);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'InventorySearchItem');
+			return $sql->fetchAll();
+		}
+	}
+
+
+
+	/**
 	 * Returns the Number of results for this session and Lot Number / Serial Number
 	 * // NOTE COUNTING THE DISTINCT XREF ITEMID solves an issue where
 	 *         the item is the exact same, it's just an item with the same ITEMID / LOT SERIAL from different X-refs

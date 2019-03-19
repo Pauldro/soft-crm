@@ -50,6 +50,28 @@
 										<?php endforeach; ?>
 									</div>
 								</div>
+							<?php elseif (InventorySearchItem::count_itemid_bins(session_id(), $item->itemid) > 1) : ?>
+								<?php $binitems = InventorySearchItem::get_invsearch_itemid_bins(session_id(), $item->itemid); ?>
+								<p class="list-group-item-text bg-light"><strong>Bin:</strong> (MULTIPLE) <strong>Qty:</strong> <?= InventorySearchItem::get_total_qty_itemid(session_id(), $item->itemid); ?></p>
+								<button class="btn btn-primary btn-sm" data-toggle="collapse" href="#<?= $item->itemid; ?>-bins" aria-expanded="false" aria-controls="<?= $item->itemid; ?>-lotserial">
+									Show / Hide Bins
+								</button>
+								<div id="<?= $item->itemid; ?>-bins" class="collapse">
+									<div class="list-group">
+										<?php foreach ($binitems as $binitem) : ?>
+											<div class="list-group-item">
+												<div class="row">
+													<div class="col-xs-12">
+														<p class="list-group-item-text bg-light"><strong>Bin:</strong> <?= $binitem->bin; ?> <strong>Qty:</strong> <?= $binitem->qty; ?></p>
+														<?php if (!$whseconfig->validate_bin($binitem->bin)) : ?>
+															<p class="list-group-item-text"><span class="label label-danger">Invalid Bin</span></p>
+														<?php endif; ?>
+													</div>
+												</div>
+											</div>
+										<?php endforeach; ?>
+									</div>
+								</div>
 							<?php else : ?>
 								<p class="list-group-item-text bg-light"><strong>Bin:</strong> <?= $item->bin; ?> <strong>Qty:</strong> <?= $item->qty; ?></p>
 								<?php if (!$whseconfig->validate_bin($item->bin)) : ?>
