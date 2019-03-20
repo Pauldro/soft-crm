@@ -5763,13 +5763,17 @@
 	/**
 	 * Returns an array of InventorySearchItem of invsearch results
 	 * @param  string $sessionID Session Identifier
+	 * @param  string $binID     Bin ID to grab Item
 	 * @param  bool   $debug     Run in debug? If so, return SQL Query
 	 * @return array            Array of InventorySearchItem
 	 */
-	function count_invsearchitems_distinct_itemid($sessionID, $debug = false) {
+	function count_invsearchitems_distinct_itemid($sessionID, $binID = '', $debug = false) {
 		$q = (new QueryBuilder())->table('invsearch');
 		$q->field($q->expr('COUNT(DISTINCT(itemid))'));
 		$q->where('sessionid', $sessionID);
+		if (!empty($binID)) {
+			$q->where('bin', $binID);
+		}
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {

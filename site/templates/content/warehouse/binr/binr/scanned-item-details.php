@@ -25,7 +25,7 @@
 	<?php endif; ?>
 	<tr>
 		<td>Primary Bin</td>
-		<td><?= $item->primarybin; ?></td>
+		<td><?= $item->primebin; ?></td>
 	</tr>
 	<tr>
 		<td>Current Bin</td>
