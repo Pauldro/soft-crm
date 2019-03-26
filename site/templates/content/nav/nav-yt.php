@@ -12,7 +12,7 @@
 		$navbar = 'navbar-default';
 	}
 ?>
-<nav class="navbar <?php echo $navbar; ?> navbar-fixed-top" id="nav-yt">
+<nav class="navbar <?php echo $navbar; ?>" id="nav-yt">
 	<div class="container">
 		<div class="navbar-header">
 			<a href="#" class=" navbar-brand yt-menu-open">

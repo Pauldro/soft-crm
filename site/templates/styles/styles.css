@@ -2,7 +2,7 @@
 	GENERAL STYLES
 ==============================================================*/
 	html { position: relative; height: 100%; }
-	body { height: 100%; margin-top: 40px;}
+	body { height: 100%; }
 	body.no-nav {margin-top: 0px;}
 	h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6{font-family:Lato; }
 	footer { background-color: #242F40; width: 100%; color: #f8f8f8; padding-top: 15px; }
@@ -114,6 +114,8 @@
 	.table-striped > tbody > tr.bg-warning:nth-of-type(odd) { background-color: #f39c12; }
 	ul.list-unstyled ul.list-unstyled {margin-left: 20px;}
 
+
+
 /*==============================================================
 	FUELUX STYLES
 ==============================================================*/
@@ -179,6 +181,8 @@
 /*==============================================================
 	NAVIGATION
 ==============================================================*/
+	.navbar {margin-bottom: 0px;}
+
 	.nav>li>a.login { background-color: #5cb85c;; color: white; display: block;}
 	.nav>li>a.login { background-color: #5cb85c;; color: white; display: block;}
 	.nav>li>a.logout, ul a.logout { background-color: #d9534f; color: white; }
@@ -205,7 +209,8 @@
 ==============================================================*/
 	/* #nav-yt{z-index: 13;} */
 	#yt-menu, #slide-menu {
-		background-color: #f8f8f8; border: 1px solid #e8e8e8; border: 1px solid #ccc; z-index: 13; position: fixed; box-shadow: 5px 10px 15px 5px rgba(0,0,0,.1); margin-top: 20px; display: none; }
+		background-color: #f8f8f8; border: 1px solid #e8e8e8; border: 1px solid #ccc; z-index: 13; position: absolute; box-shadow: 5px 10px 15px 5px rgba(0,0,0,.1); display: none;
+	}
 
 	#yt-menu .dropdown-header, #slide-menu .dropdown-header { color: #cc181e; }
 	#yt-menu .heading, #slide-menu .heading { color: #cc181e; }
