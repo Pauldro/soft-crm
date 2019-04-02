@@ -13,7 +13,7 @@
 				</div>
 			<?php endif; ?>
 		<?php endif; ?>
-		<form action="<?= "{$config->pages->menu_binr}redir/"; ?>" method="POST" class="binr-form" id="binr-form">
+		<form action="<?= "{$config->pages->menu_binr}redir/"; ?>" method="POST" class="binr-form" id="binr-form" tab-inputs="true">
 			<input type="hidden" name="action" value="bin-reassign">
 			<input type="hidden" name="page" value="<?= $page->fullURL->getUrl(); ?>">
 			<input type="hidden" name="itemID" value="<?= $item->itemid; ?>">

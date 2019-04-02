@@ -229,11 +229,25 @@ $(document).ready(function() {
 			});
 		});
 
-		$("body").on('keypress', 'form input', function(e) {
+		$("body").on('keypress', 'form.allow-enterkey-submit input', function(e) {
 			if ($(this).closest('form').hasClass('allow-enterkey-submit')) {
 				return true;
 			} else {
 				return e.which !== 13;
+			}
+		});
+
+		$("body").on('keypress', 'form:not(.allow-enterkey-submit) input', function(e) {
+			if (e.which === 13) {
+				e.preventDefault();
+				var input = $(this);
+
+				if (input.closest('form').attr('tab-inputs') == "true") {
+					var $canfocus = $('input:not([type=hidden])');
+			        var index = $canfocus.index(this) + 1;
+			        if (index >= $canfocus.length) index = 0;
+			        $canfocus.eq(index).focus();
+				}
 			}
 		});
 
@@ -674,26 +688,26 @@ $(document).ready(function() {
 		//setup before functions
 		var typingTimer;                //timer identifier
 		var doneTypingInterval = 300;  //time in ms, 5 second for example
-		
+
 		$("body").on("keyup", ".ii-item-search", function() {
 			clearTimeout(typingTimer);
 			typingTimer = setTimeout(function() {
 				ii_itemsearch()
 			}, doneTypingInterval);
 		});
-		
-		//on keydown, clear the countdown 
+
+		//on keydown, clear the countdown
 		$("body").on("keydown", ".ii-item-search", function () {
 			clearTimeout(typingTimer);
 		});
-		
+
 		function ii_itemsearch() {
 			var thisform = $(".ii-item-search").closest('form');
 			var href = thisform.attr('action')+"?q="+urlencode($(".ii-item-search").val());
 			var loadinto = '#item-results';
 			$(loadinto).loadin(href, function() { });
 		}
-		
+
 
 		$("body").on("submit", "#ci-search-item", function(e) {
 			e.preventDefault();
@@ -1139,6 +1153,12 @@ $(document).ready(function() {
 			return $.param(newParams);
 		}
 	}(jQuery));
+
+	jQuery.extend(jQuery.expr[':'], {
+	    focusable_inputs: function (el, index, selector) {
+	        return $(el).is(':input');
+	    }
+	});
 
 	$.fn.extend({
 		postform: function(options, callback) { //{formdata: data/false, jsoncallback: true/false, action: true/false}
