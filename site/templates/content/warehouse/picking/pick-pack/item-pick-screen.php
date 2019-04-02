@@ -1,6 +1,6 @@
-<?php 
+<?php
 	use Dplus\ProcessWire\DplusWire;
-	include "{$config->paths->content}warehouse/picking/item.js.php"; 
+	include "{$config->paths->content}warehouse/picking/item.js.php";
 ?>
 <div>
 	<h2>Head to <?= $pickitem->bin; ?></h2>
@@ -33,7 +33,7 @@
 			<td class="control-label">Expected Qty</td> <td class="text-right" colspan="2"><?= $pickitem->binqty; ?></td>
 		</tr>
 		<tr>
-			<td class="control-label">Item ID</td> 
+			<td class="control-label">Item ID</td>
 			<td class="text-right" colspan="2">
 				<?= $pickitem->itemid; ?>
 				<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#item-info-modal">
@@ -42,24 +42,28 @@
 			</td>
 		</tr>
 		<tr>
-			<td class="control-label">Qty Needed</td> 
+			<td class="control-label">Desc</td>
+			<td><?= $pickitem->itemdesc1; ?></td>
+		</tr>
+		<tr>
+			<td class="control-label">Qty Needed</td>
 			<td class="text-right"><?= $pickitem->qtyordered; ?> Eaches</td>
 			<td class="text-right"><?= $pickitem->get_qtycasedescription($pickitem->qtyordered); ?></td>
 		</tr>
 		<?php if ($pickitem->has_qtypulled()) : ?>
 			<tr>
-				<td class="control-label">Previously Picked</td> 
+				<td class="control-label">Previously Picked</td>
 				<td class="text-right"><?= $pickitem->qtypulled; ?> Eaches</td>
 				<td class="text-right"><?= $pickitem->get_qtycasedescription($pickitem->qtypulled); ?></td>
 			</tr>
 		<?php endif; ?>
 		<tr>
-			<td class="control-label">Qty Picked</td> 
+			<td class="control-label">Qty Picked</td>
 			<td class="text-right"><?= intval($pickitem->get_userpickedtotal()); ?> Eaches</td>
 			<td class="text-right"><?= $pickitem->get_qtycasedescription(intval($pickitem->get_userpickedtotal())); ?></td>
 		</tr>
-		<?php 
-			$bgcolor = ''; 
+		<?php
+			$bgcolor = '';
 			if ($pickitem->has_pickedtoomuch() || $pickitem->has_pickedmorethanbinqty()) {
 				$bgcolor = "bg-warning";
 			} elseif (!$pickitem->has_qtyremaining()) {
@@ -67,12 +71,12 @@
 			}
 		?>
 		<tr class="<?= $bgcolor; ?>">
-			<td class="control-label">Qty Remaining</td> 
+			<td class="control-label">Qty Remaining</td>
 			<td class="text-right"><?= $pickitem->get_qtyremaining(); ?> Eaches</td>
 			<td class="text-right"><?= $pickitem->get_qtycasedescription($pickitem->get_qtyremaining()); ?></td>
 		</tr>
 	</table>
-	
+
 	<?php if (DplusWire::wire('notices')->hasErrors()) : ?>
 		<div class="alert alert-danger alert-dismissible" role="alert">
 			<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -96,7 +100,7 @@
             </span>
         </div>
     </form>
-	
+
 	<div class="row">
 		<div class="col-sm-3 col-xs-6 form-group">
 			<a href="<?= $pickorder->generate_finishitemurl($pickitem); ?>" class="btn btn-emerald finish-item">
@@ -121,4 +125,3 @@
 <h3 class="text-center">Barcodes Scanned</h3>
 <?php include $config->paths->content."warehouse/picking/pick-pack/picked-items-table.php"; ?>
 <?php include $config->paths->content."warehouse/picking/pick-order/item-info-modal.php"; ?>
-	
