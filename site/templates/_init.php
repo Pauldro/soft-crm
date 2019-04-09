@@ -28,7 +28,7 @@
 	if ($user->loggedin) {
 		setup_user(session_id());
 		Dplus\Dpluso\General\SigninLog::log_signin(session_id(), $user->loginid);
-	} elseif ($page->template != 'template-login' && $page->template != 'redir' && $page->template != 'template-print') {
+	} elseif ($page->template != 'template-login' && $page->template != 'redir' && $page->template != 'template-print' && $page->template != 'warehouse-print') {
 		header('location: ' . $config->pages->login);
 		exit;
 	}
@@ -115,4 +115,8 @@
 
 	if ($input->get->json) {
 		$config->json = true;
+	}
+
+	if ($input->get->print || $input->get->text('view') == 'pdf') {
+		$config->print = true;
 	}

@@ -28,12 +28,12 @@
                             <?php if ($item->is_serialized() || $item->is_lotted()) : ?>
                                 <p class="list-group-item-text bg-light"><strong>Bin:</strong> <?= $item->bin; ?> <strong>Total Qty:</strong> <?= InventorySearchItem::get_total_qty_itemid(session_id(), $item->itemid); ?></p>
                                 <p></p>
-                                <button class="btn btn-primary btn-sm" data-toggle="collapse" href="#<?= $item->itemid; ?>-lotserial" aria-expanded="false" aria-controls="<?= $item->itemid; ?>-lotserial">
+                                <button class="btn btn-primary btn-sm <?= $config->print ? 'hidden' : ''; ?>" data-toggle="collapse" href="#<?= $item->itemid; ?>-lotserial" aria-expanded="false" aria-controls="<?= $item->itemid; ?>-lotserial">
                                     Show / Hide <?= strtoupper($item->get_itemtypepropertydesc()) . "S"; ?>
                                 </button>
-                                <div id="<?= $item->itemid; ?>-lotserial" class="collapse">
+                                <div id="<?= $item->itemid; ?>-lotserial" class="<?= $config->print ? '' : 'collapse'; ?>">
                                     <div class="list-group">
-                                        <?php $lotserials = InventorySearchItem::get_all_items_lotserial(session_id(), $item->itemid); ?>
+                                        <?php $lotserials = InventorySearchItem::get_all_items_lotserial(isset($sessionID) ? $sessionID : session_id(), $item->itemid); ?>
                                         <?php foreach ($lotserials as $lotserial) : ?>
                                             <div class="list-group-item">
                                                 <div class="row">
