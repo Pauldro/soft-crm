@@ -1,6 +1,6 @@
 <div class="form-group">
-	<a href="<?= $page->parent->url; ?>" class="btn btn-primary not-round">
-		<i class="fa fa-arrow-left" aria-hidden="true"></i> Return to Inventory Menu
+	<a href="<?= $page->url; ?>" class="btn btn-primary not-round">
+		<i class="fa fa-arrow-left" aria-hidden="true"></i> Return to Item Form
 	</a>
 </div>
 <div class="col-sm-6">
@@ -15,12 +15,14 @@
 		<input type="hidden" name="page" value="<?= $page->fullURL->getUrl(); ?>">
 
 		<div class="results">
-			
-		</div>
 
+		</div>
 		<table class="table table-striped">
+			<tr>
+				<td colspan="2" class="bg-info text-center"><b>Product Label</b></td>
+			</tr>
 			<tr class="input-row">
-				<td class="control-label">Package Label</td>
+				<td class="control-label">Product Label</td>
 				<td>
 					<div class="label-input">
 						<div class="input-group">
@@ -32,7 +34,9 @@
 							</span>
 						</div>
 						<br>
-						<p class="label-desc"></p>
+						<p class="label-desc">
+							<?= !empty($labelsession->label_box) ? ThermalLabelFormat::load_desc($labelsession->label_box) : '';  ?>
+						</p>
 					</div>
 				</td>
 			</tr>
@@ -48,14 +52,16 @@
 								</button>
 							</span>
 						</div><br>
-						<p class="printer-desc"></p>
+						<p class="printer-desc">
+							<?= !empty($labelsession->printer_box) ? WhsePrinter::load_desc($whsesession->whseid, $labelsession->printer_box) : '';  ?>
+						</p>
 					</div>
 				</td>
 			</tr>
 			<tr class="input-row">
 				<td class="control-label">Box Qty</td>
 				<td>
-					<input class="form-control input-sm qty required" type="number" name="box-qty">
+					<input class="form-control input-sm qty required" type="number" name="box-qty" value="0">
 				</td>
 			</tr>
 			<tr class="input-row">
@@ -65,7 +71,7 @@
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">Master Pack</td>
+				<td colspan="2" class="bg-info text-center"><b>Master Pack</b></td>
 			</tr>
 			<tr class="input-row">
 				<td class="control-label">Master Pack Label</td>
@@ -79,7 +85,9 @@
 								</button>
 							</span>
 						</div><br>
-						<p class="label-desc"></p>
+						<p class="label-desc">
+							<?= !empty($labelsession->label_master) ? ThermalLabelFormat::load_desc($labelsession->label_master) : '';  ?>
+						</p>
 					</div>
 				</td>
 			</tr>
@@ -95,7 +103,9 @@
 								</button>
 							</span>
 						</div><br>
-						<p class="printer-desc"></p>
+						<p class="printer-desc">
+							<?= !empty($labelsession->printer_master) ? WhsePrinter::load_desc($whsesession->whseid, $labelsession->printer_master) : '';  ?>
+						</p>
 					</div>
 				</td>
 			</tr>

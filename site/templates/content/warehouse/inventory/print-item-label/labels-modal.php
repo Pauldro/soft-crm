@@ -12,7 +12,7 @@
 				<div>
 					<div class="list-group">
 						<?php foreach ($labelformats as $labelformat) : ?>
-							<a href="#" class="list-group-item select-labelformat">
+							<a href="#" class="list-group-item select-labelformat" data-label="<?= $labelformat->id; ?>">
 								<div class="row">
 									<div class="col-xs-6">
 										<h5 class="list-group-item-heading format-id"><?= $labelformat->id; ?></h5>

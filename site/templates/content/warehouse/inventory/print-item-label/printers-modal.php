@@ -12,7 +12,7 @@
 				<div>
 					<div class="list-group">
 						<?php foreach ($printers as $printer) : ?>
-							<a href="#" class="list-group-item select-labelprinter">
+							<a href="#" class="list-group-item select-labelprinter" data-printer="<?= $printer->id; ?>">
 								<div class="row">
 									<div class="col-xs-6">
 										<h5 class="list-group-item-heading printer-id"><?= $printer->id; ?></h5>

@@ -412,12 +412,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dpluso-warehouse.git",
-                "reference": "6b65611717f9dafc6841500ff4f7166f74ed3499"
+                "reference": "8fe766e314f7154449bda4706cd0686d23e9a408"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dpluso-warehouse/zipball/6b65611717f9dafc6841500ff4f7166f74ed3499",
-                "reference": "6b65611717f9dafc6841500ff4f7166f74ed3499",
+                "url": "https://api.github.com/repos/cptechinc/dpluso-warehouse/zipball/8fe766e314f7154449bda4706cd0686d23e9a408",
+                "reference": "8fe766e314f7154449bda4706cd0686d23e9a408",
                 "shasum": ""
             },
             "type": "library",
@@ -438,7 +438,7 @@
                 "dplus-warehouse",
                 "dpluso-warehouse"
             ],
-            "time": "2019-03-20T20:14:29+00:00"
+            "time": "2019-04-09T16:47:45+00:00"
         },
         {
             "name": "eoghanobrien/php-simple-mail",

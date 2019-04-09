@@ -31,6 +31,30 @@ $(function() {
 		modal.modal('hide');
 	});
 
+	$("body").on("change", "input[name=box-label]", function() {
+		var input   = $(this);
+		var labelID = input.val();
+		var label   = $('#labelformats-modal').find('.select-labelformat[data-label="'+labelID+'"]');
+		var desc = '';
+
+		if (label.length) {
+			desc = label.find('.format-desc').text();
+		}
+		input.closest('.label-input').find('.label-desc').text(desc);
+	});
+
+	$("body").on("change", "input[name=masterpack-label]", function() {
+		var input   = $(this);
+		var labelID = input.val();
+		var label   = $('#labelformats-modal').find('.select-labelformat[data-label="'+labelID+'"]');
+		var desc = '';
+
+		if (label.length) {
+			desc = label.find('.format-desc').text();
+		}
+		input.closest('.label-input').find('.label-desc').text(desc);
+	});
+
 /////////////////////////////////////
 // 1. Select Printer
 ////////////////////////////////////
@@ -52,6 +76,21 @@ $(function() {
 		input.val(labelID);
 		input.closest('.printer-input').find('.printer-desc').text(desc);
 		modal.modal('hide');
+	});
+
+	$("body").on("change", "input[name=box-printer]", function() {
+		var input   = $(this);
+		var printerID = input.val();
+		var printer   = $('#labelprinters-modal').find('.select-labelprinter[data-printer="'+printerID+'"]');
+		var desc = '';
+
+		if (printer.length) {
+			console.log('found');
+			desc = printer.find('.printer-desc').text();
+		} else {
+			console.log(printerID);
+		}
+		input.closest('.printer-input').find('.printer-desc').text(desc);
 	});
 
 /////////////////////////////////////
