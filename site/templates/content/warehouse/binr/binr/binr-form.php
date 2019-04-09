@@ -54,7 +54,7 @@
 					<div class="col-sm-6 form-group">
 						<label for="bin-qty">Qty </label> (On Hand: <span class="qty-available"><?= ItemBinInfo::get_binqty(session_id(), $item); ?></span>)
 						<div class="input-group">
-							<input type="text" class="form-control input-sm text-right" name="qty" value="<?= ItemBinInfo::get_binqty(session_id(), $item); ?>">
+							<input type="text" class="form-control input-sm text-right" name="qty" value="">
 							<span class="input-group-btn">
 								<button type="submit" class="btn btn-primary btn-sm not-round use-bin-qty" data-direction="from">Use Bin Qty</button>
 							</span>
