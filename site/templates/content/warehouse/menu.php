@@ -4,7 +4,7 @@
     <?php if ($page->parent->id != $pages->get('/')->id) : ?>
         <div class="form-group">
             <a href="<?= $page->parent->url; ?>" class="btn btn-primary not-round">
-                <i class="fa fa-arrow-left" aria-hidden="true"></i> Go Back to Previous Menu
+                <i class="fa fa-arrow-left" aria-hidden="true"></i> Go Back to <?= $page->parent->title; ?> Menu
             </a>
         </div>
     <?php endif; ?>
