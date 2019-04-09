@@ -6327,6 +6327,48 @@
 	}
 
 	/**
+	 * Returns a Thermal Label Format
+	 * @param  string $format formatID
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return array          <ThermalLabelFormat>
+	 */
+	function get_thermalformatlabel_format($format, $debug = false) {
+		$q = (new QueryBuilder())->table('thermal_label_format');
+		$q->where('id', $format);
+		$q->limit(1);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'ThermalLabelFormat');
+			return $sql->fetch();
+		}
+	}
+
+	/**
+	 * Returns a Thermal Label Format description
+	 * @param  string $format formatID
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return array          <ThermalLabelFormat>
+	 */
+	function get_thermalformatlabel_format_desc($format, $debug = false) {
+		$q = (new QueryBuilder())->table('thermal_label_format');
+		$q->field('desc');
+		$q->where('id', $format);
+		$q->limit(1);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchcolumn();
+		}
+	}
+
+	/**
 	 * Returns a List of Printers
 	 * @param  string $whseID Warehouse ID  NOTE NOT USED
 	 * @param  bool   $debug  Run in debug? If so, return SQL Query
@@ -6344,6 +6386,51 @@
 			return $sql->fetchAll();
 		}
 	}
+
+	/**
+	 * Returns a prntnctrl record
+	 * @param  string $whseID    Warehouse ID  NOTE NOT USED
+	 * @param  string $printerID Printer ID
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return array             <WhsePrinter>
+	 */
+	function get_prntctrl_printer($whseID = '', $printerID, $debug = false) {
+		$q = (new QueryBuilder())->table('prntctrl');
+		$q->where('id', $printerID);
+		$q->limit(1);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			$sql->setFetchMode(PDO::FETCH_CLASS, 'WhsePrinter');
+			return $sql->fetch();
+		}
+	}
+
+	/**
+	 * Returns a prntnctrl printer description
+	 * @param  string $whseID    Warehouse ID  NOTE NOT USED
+	 * @param  string $printerID Printer ID
+	 * @param  bool   $debug     Run in debug? If so, return SQL Query
+	 * @return array             Whse Printer Desc
+	 */
+	function get_prntctrl_printer_desc($whseID = '', $printerID, $debug = false) {
+		$q = (new QueryBuilder())->table('prntctrl');
+		$q->field('desc');
+		$q->where('id', $printerID);
+		$q->limit(1);
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchColumn();
+		}
+	}
+
 
 	/**
 	 * Returns if there's a record in the itemcartonlabel table for session
