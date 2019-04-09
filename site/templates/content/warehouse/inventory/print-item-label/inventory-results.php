@@ -52,6 +52,9 @@
 								</div>
 							<?php else : ?>
 								<p class="list-group-item-text bg-light"><strong>Bin:</strong> <?= $item->bin; ?> <strong>Qty:</strong> <?= $item->qty; ?></p>
+								<a class="btn btn-primary" href="<?= $labelprinting->get_request_labelprintinitURL($item->itemid, $item->get_itemtypeproperty(), $item->get_itemidentifier(), $item->bin); ?>">
+									Choose <?= $item->itemid . ' at Bin ' . $item->bin; ?>
+								</a>
 								<?php if (!$whseconfig->validate_bin($item->bin)) : ?>
 									<p class="list-group-item-text"><span class="label label-danger">Invalid Bin</span></p>
 								<?php endif; ?>

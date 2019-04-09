@@ -13,7 +13,28 @@
 		$page->title = "Find Item Inquiry for $scan";
 		$resultscount = InventorySearchItem::count_distinct_itemid(session_id());
 		$items = InventorySearchItem::get_all_distinct_itemid(session_id());
-		$page->body = __DIR__."/inventory-results.php";
+
+		if ($resultscount == 1) {
+			if (InventorySearchItem::count_all(session_id()) == 1) {
+				$item = InventorySearchItem::load_first(session_id());
+
+				if (LabelPrintSession::exists(session_id())) {
+					$labelsession = LabelPrintSession::load(session_id());
+				} else {
+					$labelsession = new LabelPrintSession();
+					$labelsession->set('sessionid', session_id());
+					$labelsession->set('itemid', $item->itemid);
+					$labelsession->set('bin', $item->bin);
+					$labelsession->set('lotserial', $item->lotserial);
+					$labelsession->set('whse', $whsesession->whseid);
+				}
+				$page->body = __DIR__."/print-label-form.php";
+			} else {
+				$page->body = __DIR__."/inventory-results.php";
+			}
+		} else {
+			$page->body = __DIR__."/inventory-results.php";
+		}
 
 	} elseif (!empty($input->get->serialnbr) | !empty($input->get->lotnbr) | !empty($input->get->itemID)) {
 		$binID = $input->get->text('binID');
