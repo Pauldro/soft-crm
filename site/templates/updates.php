@@ -148,3 +148,38 @@
 	$warehousepage->of(false);
 	$warehousepage->dplusfunction = 'wm';
 	$warehousepage->save();
+
+
+	$whseprint_template = "warehouse-print";
+	$whseprint_pages = array(
+		'bin-inquiry-print' => array(
+			'name' => 'print',
+			'title' => 'Print',
+			'parent' => '/warehouse/inventory/bin-inquiry/'
+		),
+		'item-inquiry-print' => array(
+			'name' => 'print',
+			'title' => 'Print',
+			'parent' => '/warehouse/inventory/find-item/'
+		),
+	);
+
+	if (!$templates->get($whseprint_template)) {
+		$t = new Template();
+		$t->name = $whseprint_template;
+		$template->save();
+	}
+
+
+	foreach ($whseprint_pages as $printpage) {
+		$parent = $pages->get($printpage['parent']);
+		
+		if (!boolval($parent->numChildren("name=print"))) {
+			$p = new Page();
+			$p->template = $whseprint_template; // set template
+			$p->parent = $parent;
+			$p->name = $printpage['name']; // give it a name used in the url for the page
+			$p->title = $printpage['title']; // set page title (not neccessary but recommended)
+			$p->save();
+		}
+	}

@@ -117,6 +117,6 @@
 		$config->json = true;
 	}
 
-	if ($input->get->print || $input->get->text('view') == 'pdf') {
+	if ($input->get->print || $input->get->text('view') == 'pdf' || $page->template == 'warehouse-print') {
 		$config->print = true;
 	}
