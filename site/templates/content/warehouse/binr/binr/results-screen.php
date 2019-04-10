@@ -9,5 +9,10 @@
 <?php endif; ?>
 
 <a href="<?= $page->parent->url; ?>" class="btn btn-primary not-round"><?= $page->parent->title; ?> Menu</a>
-
-<a href="<?= $page->url; ?>" class="btn btn-warning not-round">Next Item</a>
+<?php if ($input->get->tobin || $input->get->frombin) : ?>
+	<?php $url = new Purl\Url($page->fullURL->getUrl()); ?>
+	<?php $url->query->remove('itemID'); ?>
+	<a href="<?= $url; ?>" class="btn btn-warning not-round">Next Item</a>
+<?php else : ?>
+	<a href="<?= $page->url; ?>" class="btn btn-warning not-round">Next Item</a>
+<?php endif; ?>

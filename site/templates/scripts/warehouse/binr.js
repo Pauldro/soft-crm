@@ -55,7 +55,7 @@ $(function() {
 		var bindirection = binrow.data('direction');
 		$('.binr-form').find('input[name='+bindirection+'-bin]').attr('data-bin', binID);
 		$('.binr-form').find('input[name='+bindirection+'-bin]').val(binID);
-		input_qty.val(qty);
+		//input_qty.val(qty);
 		$('.binr-form').find('.qty-available').text(qty);
 		binrow.closest('.list-group').parent().addClass('hidden');
 	});
