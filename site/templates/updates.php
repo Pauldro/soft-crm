@@ -165,15 +165,22 @@
 	);
 
 	if (!$templates->get($whseprint_template)) {
+
+		if (!$fieldgroups->get($whseprint_template)) {
+			$pw_fields = new Fieldgroup();
+			$pw_fields->name = $whseprint_template;
+			$pw_fields->save();
+		}
+
 		$t = new Template();
 		$t->name = $whseprint_template;
-		$template->save();
+		$t->fieldgroup = $fieldgroups->get($whseprint_template);
+		$t->save();
 	}
-
 
 	foreach ($whseprint_pages as $printpage) {
 		$parent = $pages->get($printpage['parent']);
-		
+
 		if (!boolval($parent->numChildren("name=print"))) {
 			$p = new Page();
 			$p->template = $whseprint_template; // set template
