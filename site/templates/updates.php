@@ -33,8 +33,8 @@
 	);
 
 	foreach ($binr_pages as $pagename => $page) {
-		if ($binrpage->numChildren("name=$pagename")) {
-			$p = $binrpage->child("name=$pagename");
+		if ($binrpage->numChildren("name=$pagename,include=hidden")) {
+			$p = $binrpage->child("name=$pagename,,include=hidden");
 			$p->of(false);
 			$p->title = $page['title'];
 			$p->summary = $page['summary'];
@@ -52,7 +52,7 @@
 		}
 	}
 
-	$inventorypage = $pages->get('/warehouse/inventory/');
+	$inventorypage = $pages->get('/warehouse/inventory/, include=hidden');
 	$inventorypage->of(false);
 	$inventorypage->dplusfunction = 'mivty';
 	$inventorypage->save();
@@ -85,8 +85,8 @@
 	);
 
 	foreach ($inventory_pages as $pagename => $page) {
-		if ($inventorypage->numChildren("name=$pagename")) {
-			$p = $inventorypage->child("name=$pagename");
+		if ($inventorypage->numChildren("name=$pagename,include=hidden")) {
+			$p = $inventorypage->child("name=$pagename,include=hidden");
 			$p->of(false);
 			$p->title = $page['title'];
 			$p->summary = $page['summary'];
@@ -104,10 +104,11 @@
 		}
 	}
 
-	$pickingpage = $pages->get('/warehouse/picking/');
+	$pickingpage = $pages->get('/warehouse/picking/, include=hidden');
 	$pickingpage->of(false);
 	$pickingpage->dplusfunction = 'mppik';
 	$pickingpage->save();
+
 
 	$picking_pages = array(
 		'pick-order' => array(
@@ -125,8 +126,8 @@
 	);
 
 	foreach ($picking_pages as $pagename => $page) {
-		if ($pickingpage->numChildren("name=$pagename")) {
-			$p = $pickingpage->child("name=$pagename");
+		if ($pickingpage->numChildren("name=$pagename,include=hidden")) {
+			$p = $pickingpage->child("name=$pagename,include=hidden");
 			$p->of(false);
 			$p->title = $page['title'];
 			$p->summary = $page['summary'];
@@ -181,7 +182,7 @@
 	foreach ($whseprint_pages as $printpage) {
 		$parent = $pages->get($printpage['parent']);
 
-		if (!boolval($parent->numChildren("name=print"))) {
+		if (!boolval($parent->numChildren("name=print,include=hidden"))) {
 			$p = new Page();
 			$p->template = $whseprint_template; // set template
 			$p->parent = $parent;
