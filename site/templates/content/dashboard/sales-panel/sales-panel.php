@@ -5,11 +5,11 @@
 ?>
 <div class="panel panel-primary not-round" id="customer-sales-panel">
 	<div class="panel-heading not-round" id="customer-sale-panel-heading">
-		<a href="#salesdata-div" class="panel-link" data-parent="#tasks-panel" data-toggle="collapse" aria-expanded="true">
+		<a href="#salesdata-div" class="panel-link" data-parent="#tasks-panel" data-toggle="collapse" aria-expanded="false">
 			<span class="glyphicon glyphicon-book"></span> &nbsp; Top 25 customers <span class="caret"></span>
 		</a>
 	</div>
-	<div id="salesdata-div" class="" aria-expanded="true">
+	<div id="salesdata-div" class="collapse" aria-expanded="false">
 		<?php if (sizeof($customers)) : ?>
 			<div>
 				<div class="row">
