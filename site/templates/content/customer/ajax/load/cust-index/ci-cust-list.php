@@ -33,7 +33,22 @@
                         </a>
                     </th>
                     <th>Ship-To</th>
-                    <th>Location</th>
+                    <th>Address</th>
+                    <th>
+                        <a href="<?= $custindex->generate_sortbyURL("city") ; ?>" class="load-link" <?= $custindex->ajaxdata; ?>>
+                            City <?= $custindex->tablesorter->generate_sortsymbol('city'); ?>
+                        </a>
+                    </th>
+                    <th>
+                        <a href="<?= $custindex->generate_sortbyURL("state") ; ?>" class="load-link" <?= $custindex->ajaxdata; ?>>
+                            State <?= $custindex->tablesorter->generate_sortsymbol('state'); ?>
+                        </a>
+                    </th>
+                    <th>
+                        <a href="<?= $custindex->generate_sortbyURL("zip") ; ?>" class="load-link" <?= $custindex->ajaxdata; ?>>
+                            Zip <?= $custindex->tablesorter->generate_sortsymbol('zip'); ?>
+                        </a>
+                    </th>
                     <th width="100">
                         <a href="<?= $custindex->generate_sortbyURL("phone") ; ?>" class="load-link" <?= $custindex->ajaxdata; ?>>
                             Phone <?= $custindex->tablesorter->generate_sortsymbol('phone'); ?>
@@ -54,7 +69,10 @@
                             </td>
                             <td><?= $page->bootstrap->highlight($cust->name, $input->get->q); ?></td>
                             <td><?= $page->bootstrap->highlight($cust->shiptoid, $input->get->q); ?></td>
-                            <td><?= $page->bootstrap->highlight($cust->generate_address(), $input->get->q); ?></td>
+                            <td><?= $page->bootstrap->highlight($cust->addr1, $input->get->q); ?></td>
+                            <td><?= $page->bootstrap->highlight($cust->city, $input->get->q); ?></td>
+                            <td><?= $page->bootstrap->highlight($cust->state, $input->get->q); ?></td>
+                            <td><?= $page->bootstrap->highlight($cust->zip, $input->get->q); ?></td>
                             <td><a href="tel:<?= $cust->phone; ?>" title="Click To Call"><?= $page->bootstrap->highlight($cust->phone, $input->get->q); ?></a></td>
                             <td class="text-right"><?= empty($cust->get_lastsaledate($user->loginid)) ? 'N/A' : Dplus\Base\DplusDateTime::format_date($cust->get_lastsaledate($user->loginid)); ?></td>
                         </tr>

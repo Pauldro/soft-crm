@@ -804,11 +804,12 @@
 	/**
 	 * Returns a QueryBuilder object built to query the customer index for the
 	 * records that the login ID is allowed access to, and matches their query
-	 * @param  string       $loginID User Login
-	 * @param  string       $keyword Search String
-	 * @return QueryBuilder          Customer Index Query
+	 * @param  string       $loginID  User Login
+	 * @param  string       $keyword  Search String
+	 * @param  string       $orderby  Orderby string e.g. custid-ASC
+	 * @return QueryBuilder           Customer Index Query
 	 */
-	function create_searchcustindexquery($loginID, $keyword) {
+	function create_searchcustindexquery($loginID, $keyword, $orderby = '') {
 		$user = LogmUser::load($loginID);
 		$search = QueryBuilder::generate_searchkeyword($keyword);
 		$q = (new QueryBuilder())->table('custindex');
@@ -823,20 +824,20 @@
 		}
 
 		if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
-			if (!empty($orderbystring)) {
-				$q->order($q->generate_orderby($orderbystring));
+			if (!empty($orderby)) {
+				$q->order($q->generate_orderby($orderby));
 			} else {
 				$q->order($q->expr('custid <> [], name', [$search]));
 			}
 			$q->group('custid, shiptoid');
 		} elseif (DplusWire::wire('config')->cptechcustomer == 'stat') {
-			if (!empty($orderbystring)) {
-				$q->order($q->generate_orderby($orderbystring));
+			if (!empty($orderby)) {
+				$q->order($q->generate_orderby($orderby));
 			}
 			$q->group('custid');
 		} else {
-			if (!empty($orderbystring)) {
-				$q->order($q->generate_orderby($orderbystring));
+			if (!empty($orderby)) {
+				$q->order($q->generate_orderby($orderby));
 			} else {
 				$q->order($q->expr('custid <> []', [$search]));
 			}
@@ -860,7 +861,7 @@
 		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
 		$user = LogmUser::load($loginID);
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
-		$searchindexquery = create_searchcustindexquery($loginID, $keyword);
+		$searchindexquery = create_searchcustindexquery($loginID, $keyword, $orderby);
 		$q = (new QueryBuilder())->table($searchindexquery, 't');
 		$q->limit($limit, $q->generate_offset($page, $limit));
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
