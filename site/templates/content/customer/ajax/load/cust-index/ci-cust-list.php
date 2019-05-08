@@ -54,7 +54,11 @@
                             Phone <?= $custindex->tablesorter->generate_sortsymbol('phone'); ?>
                         </a>
                     </th>
-                    <th>Last Sale Date</th>
+                    <th>
+                        <a href="<?= $custindex->generate_sortbyURL("lastsaledate") ; ?>" class="load-link" <?= $custindex->ajaxdata; ?>>
+                            Last Sale Date <?= $custindex->tablesorter->generate_sortsymbol('lastsaledate'); ?>
+                        </a>
+                    </th>
                 </tr>
             </thead>
             <tbody>
@@ -64,7 +68,7 @@
                         <tr>
                             <td>
                                 <a href="<?= $cust->generate_ciloadurl(); ?>">
-                                    <?= $page->bootstrap->highlight($cust->custid, $input->get->text('q'));?>
+                                    <?= $page->bootstrap->highlight($cust->custid, $input->get->text('q')); ?>
                                 </a> &nbsp; <span class="glyphicon glyphicon-share"></span>
                             </td>
                             <td><?= $page->bootstrap->highlight($cust->name, $input->get->q); ?></td>
@@ -74,7 +78,7 @@
                             <td><?= $page->bootstrap->highlight($cust->state, $input->get->q); ?></td>
                             <td><?= $page->bootstrap->highlight($cust->zip, $input->get->q); ?></td>
                             <td><a href="tel:<?= $cust->phone; ?>" title="Click To Call"><?= $page->bootstrap->highlight($cust->phone, $input->get->q); ?></a></td>
-                            <td class="text-right"><?= empty($cust->get_lastsaledate($user->loginid)) ? 'N/A' : Dplus\Base\DplusDateTime::format_date($cust->get_lastsaledate($user->loginid)); ?></td>
+                            <td class="text-right"><?= $cust->lastsaledate == 0 ? 'N/A' : Dplus\Base\DplusDateTime::format_date($cust->lastsaledate); ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else : ?>
