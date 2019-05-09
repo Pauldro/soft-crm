@@ -36,7 +36,7 @@
 											<td><?= $cust->get_name(); ?></td>
 											<td class="text-right">$ <?= $page->stringerbell->format_money($customer['amountsold']); ?></td>
 											<td class="text-right"><?= $customer['timesold']; ?></td>
-											<td class="text-right"><?= $customer['lastsaledate'] == 0 ? '' : Dplus\Base\DplusDateTime::format_date($customer['lastsaledate']); ?></td>
+											<td class="text-right" data-sort="<?= strtotime($customer['lastsaledate']); ?>"><?= $customer['lastsaledate'] == 0 ? '' : Dplus\Base\DplusDateTime::format_date($customer['lastsaledate']); ?></td>
 										</tr>
 									<?php endforeach; ?>
 								</tbody>

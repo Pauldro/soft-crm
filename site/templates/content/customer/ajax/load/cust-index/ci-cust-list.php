@@ -54,7 +54,7 @@
                             Phone <?= $custindex->tablesorter->generate_sortsymbol('phone'); ?>
                         </a>
                     </th>
-                    <th>
+                    <th class="text-right">
                         <a href="<?= $custindex->generate_sortbyURL("lastsaledate") ; ?>" class="load-link" <?= $custindex->ajaxdata; ?>>
                             Last Sale Date <?= $custindex->tablesorter->generate_sortsymbol('lastsaledate'); ?>
                         </a>
