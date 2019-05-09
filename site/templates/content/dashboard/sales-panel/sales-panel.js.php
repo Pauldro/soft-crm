@@ -20,6 +20,10 @@
 					$('#cust-sales').find('#'+label['custid']+'-cust').css('backgroundColor', pie.options.colors[index]);
 				});
 			});
+
+			$('#salesdata-div').on('hidden.bs.collapse', function () {
+				$(this).find('#cust-sales-graph').empty();
+			});
 		});
 	</script>
 <?php endif; ?>

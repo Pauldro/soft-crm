@@ -54,5 +54,9 @@
 				yLabelFormat: function (y) { return "$ "+y.formatMoney() + ' dollars'; },
 			});
 		});
+
+		$('#bookings-div').on('hidden.bs.collapse', function () {
+			$(this).find('#bookings-chart').empty();
+		});
 	});
 </script>
