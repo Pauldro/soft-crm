@@ -823,6 +823,11 @@
 			$q->where($matchexpression);
 		}
 
+		$q = add_custindex_orderby($q, $search, $orderby);
+		return $q;
+	}
+
+	function add_custindex_orderby($q, $search, $orderby = '') {
 		if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
 			if (!empty($orderby)) {
 				$q->order($q->generate_orderby($orderby));
@@ -832,6 +837,7 @@
 			$q->group('custid, shiptoid');
 		} elseif (DplusWire::wire('config')->cptechcustomer == 'stat') {
 			if (!empty($orderby)) {
+				echo $orderby;
 				$q->order($q->generate_orderby($orderby));
 			}
 			$q->group('custid');
@@ -839,6 +845,7 @@
 			if (!empty($orderby)) {
 				$q->order($q->generate_orderby($orderby));
 			} else {
+
 				$q->order($q->expr('custid <> []', [$search]));
 			}
 		}
@@ -870,6 +877,8 @@
 			$q->join('custperm.custid', 't.custid', 'left outer');
 			$q->where('custperm.loginid', $user->get_custpermloginid());
 			$q->order($q->generate_orderby($orderby));
+		} else {
+			$q = add_custindex_orderby($q, QueryBuilder::generate_searchkeyword($keyword), $orderby);
 		}
 
 		$q->limit($limit, $q->generate_offset($page, $limit));
