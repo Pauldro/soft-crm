@@ -8,10 +8,8 @@
 					colors: <?= json_encode(array_rand(array_flip($config->allowedcolors), 25)); ?>
 				});
 
-				fill_pie_colors(pie);
-
-				$('#cust-sales').on('draw.dt', function () {
-					fill_pie_colors(pie);
+				fill_pie_colors(pie, function() {
+					$('#cust-sales').DataTable();
 				});
 			});
 
@@ -19,7 +17,7 @@
 				$(this).find('#cust-sales-graph').empty();
 			});
 
-			function fill_pie_colors(pie) {
+			function fill_pie_colors(pie, callback) {
 				pie.options.data.forEach(function(label, i) {
 					var index = i;
 					if (pie.options.colors.length < 11) {
@@ -31,6 +29,7 @@
 					}
 					$('#cust-sales').find('#'+label['custid']+'-cust').css('backgroundColor', pie.options.colors[index]);
 				});
+				callback();
 			}
 		});
 	</script>
