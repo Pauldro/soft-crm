@@ -1,3 +1,10 @@
+<?php
+    use Dplus\Dpluso\Customer\CustomerIndex;
+
+    $custindex = new CustomerIndex($page->fullURL, '#cust-index-search-form', '#cust-index-search-form');
+    $states = $custindex->get_statesbylogin();
+?>
+
 <form action="<?= $config->pages->ajax."load/customers/cust-index/"; ?>" method="POST" id="cust-index-search-form" class="allow-enterkey-submit">
     <div class="form-group">
         <?php if ($input->get->function) : ?>
@@ -13,6 +20,17 @@
             </span>
         </div>
     </div>
+
+    <div class="row mb-5">
+		<div class="col-sm-12">
+			<button class="btn btn-primary toggle-order-search pull-right" type="button" data-toggle="collapse" data-target="#cust-search-div" aria-expanded="false" aria-controls="cust-search-div">Toggle State Search <i class="fa fa-search" aria-hidden="true"></i></button>
+		</div>
+	</div>
+
+	<div id="cust-search-div" class="collapse">
+		<?php include $config->paths->content."customer/ajax/load/cust-index/state-search-form.php"; ?>
+	</div>
+
     <div>
         <?php
             if (!empty($input->get->q) || !empty($input->get->function)) {

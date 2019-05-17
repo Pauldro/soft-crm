@@ -754,6 +754,7 @@ $(document).ready(function() {
 				var field = form.find('[name=field]').val();
 				href.addQuery('field', field);
 			}
+			var href = URI(form.attr('action')) + '?' + form.serialize();
 			href = href.toString();
 			$(loadinto).loadin(href+' '+loadinto, function() {
 

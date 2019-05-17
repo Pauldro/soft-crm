@@ -788,6 +788,36 @@
 	}
 
 	/**
+	 * Returns the number of Distinct States the user has customers in
+	 * @param  string $loginID   User Login ID, if blank, will use current user
+	 * @param  bool   $debug     Run in debug? If so, will return SQL Query
+	 * @return array             number of Distinct states
+	 */
+	function get_statesbylogin($loginID = '', $debug = false) {
+		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
+		$user = LogmUser::load($loginID);
+		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
+		$q = (new QueryBuilder())->table('custindex');
+		$q->field('DISTINCT(state)');
+		$q->order('state ASC');
+
+		if ($user->is_salesrep() && DplusWire::wire('pages')->get('/config/')->restrict_allowedcustomers) {
+			$custpermquery = (new QueryBuilder())->table('custperm');
+			$custpermquery->field('DISTINCT(state)');
+			$custpermquery->where('loginid', 'in', [$loginID, $SHARED_ACCOUNTS]);
+			$q->where('state','in', $custpermquery);
+		}
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return $sql->fetchAll(PDO::FETCH_ASSOC);
+		}
+	}
+
+	/**
 	 * Returns a QueryBuilder object built to query the custperm table
 	 * filtered to the Shared Logins and Login ID provided
 	 * @param  string       $loginID User Login ID
@@ -864,7 +894,7 @@
 	 * @return array           Customer Index records that match the Query
 	 * @uses create_searchcustindexquery()
 	 */
-	function search_custindexpaged($keyword, $limit = 10, $page = 1, $orderby, $loginID = '', $debug = false) {
+	function search_custindexpaged($keyword, $limit = 10, $page = 1, $orderby, $filter = false, $filtertypes = false, $loginID = '', $debug = false) {
 		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
 		$user = LogmUser::load($loginID);
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
@@ -879,6 +909,10 @@
 			$q->order($q->generate_orderby($orderby));
 		} else {
 			$q = add_custindex_orderby($q, QueryBuilder::generate_searchkeyword($keyword), $orderby);
+		}
+
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
 		}
 
 		$q->limit($limit, $q->generate_offset($page, $limit));
@@ -902,7 +936,7 @@
 	 * @param  bool   $debug   Run in debug? If so, Return SQL Query
 	 * @return int             Number of custindex records that match the search | SQL Query
 	 */
-	function count_searchcustindex($query, $loginID = '', $debug = false) {
+	function count_searchcustindex($query, $loginID = '', $filter = false, $filtertypes = false, $debug = false) {
 		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
 		$user = LogmUser::load($loginID);
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
@@ -934,6 +968,10 @@
 
 		if (!empty($query)) {
 			$q->where($matchexpression);
+		}
+
+		if (!empty($filter)) {
+			$q->generate_filters($filter, $filtertypes);
 		}
 
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
