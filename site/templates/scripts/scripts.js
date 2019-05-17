@@ -150,6 +150,7 @@ $(document).ready(function() {
 				var loadinto = form.data('loadinto');
 				var focuson = form.data('focus');
 				loadin(href, loadinto, function() {
+					console.log(href);
 					if (focuson.length > 0) { $('html, body').animate({scrollTop: $(focuson).offset().top - 60}, 1000);}
 				});
 			} else {

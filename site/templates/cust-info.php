@@ -73,7 +73,13 @@
             $dplusfunction = 'ci';
             $page->body = $config->paths->content."customer/ajax/load/cust-index/search-form.php";
     	}
-        include $config->paths->content."common/include-toolbar-page.php";
+
+		if ($config->ajax) {
+			include $page->body;
+		} else {
+			include $config->paths->content."common/include-toolbar-page.php";
+		}
+
     } else {
         include $config->paths->content."common/permission-denied-page.php";
     }
