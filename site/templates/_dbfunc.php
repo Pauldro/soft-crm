@@ -867,7 +867,7 @@
 			$q->group('custid, shiptoid');
 		} elseif (DplusWire::wire('config')->cptechcustomer == 'stat') {
 			if (!empty($orderby)) {
-				echo $orderby;
+
 				$q->order($q->generate_orderby($orderby));
 			}
 			$q->group('custid');
@@ -906,10 +906,8 @@
 			$q->field('custperm.lastsaledate');
 			$q->join('custperm.custid', 't.custid', 'left outer');
 			$q->where('custperm.loginid', $user->get_custpermloginid());
-			$q->order($q->generate_orderby($orderby));
-		} else {
-			$q = add_custindex_orderby($q, QueryBuilder::generate_searchkeyword($keyword), $orderby);
 		}
+		$q = add_custindex_orderby($q, QueryBuilder::generate_searchkeyword($keyword), $orderby);
 
 		if (!empty($filter)) {
 			$q->generate_filters($filter, $filtertypes);
