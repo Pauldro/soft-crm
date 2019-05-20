@@ -1,11 +1,12 @@
 <?php
 	use Dplus\Dpluso\Customer\CustomerIndex;
-	$url = new Purl\Url($config->pages->ajax."load/customers/cust-index/");
-	$custindex = new CustomerIndex($url, '#cust-index-search-form', '#cust-index-search-form');
+	$url = new Purl\Url($page->fullURL->getUrl());
+	$url->path = $config->pages->ajax."load/customers/cust-index/";
+	$custindex = new CustomerIndex($url, '#cust-index', '#cust-index');
 	$states = $custindex->get_statesbylogin();
 ?>
-
-<div id="cust-index-search-form">
+<?php echo $url->url; ?>
+<div id="cust-index">
 	<form action="<?= $config->pages->ajax."load/customers/cust-index/"; ?>" method="POST" id="cust-index-search-form" class="allow-enterkey-submit">
 	    <div class="form-group">
 	        <?php if ($input->get->function) : ?>

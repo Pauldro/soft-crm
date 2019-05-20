@@ -798,15 +798,12 @@
 		$user = LogmUser::load($loginID);
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
 		$q = (new QueryBuilder())->table('custindex');
+		// if ($loginID != '') {
+		// 	$q->where('splogin1', $loginID);
+		// } Works for Stat not for Soft
 		$q->field('DISTINCT(state)');
 		$q->order('state ASC');
 
-		if ($user->is_salesrep() && DplusWire::wire('pages')->get('/config/')->restrict_allowedcustomers) {
-			$custpermquery = (new QueryBuilder())->table('custperm');
-			$custpermquery->field('DISTINCT(state)');
-			$custpermquery->where('loginid', 'in', [$loginID, $SHARED_ACCOUNTS]);
-			$q->where('state','in', $custpermquery);
-		}
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
 
 		if ($debug) {
@@ -867,7 +864,6 @@
 			$q->group('custid, shiptoid');
 		} elseif (DplusWire::wire('config')->cptechcustomer == 'stat') {
 			if (!empty($orderby)) {
-
 				$q->order($q->generate_orderby($orderby));
 			}
 			$q->group('custid');
