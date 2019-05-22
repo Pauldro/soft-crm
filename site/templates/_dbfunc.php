@@ -897,12 +897,22 @@
 		$searchindexquery = create_searchcustindexquery($loginID, $keyword);
 		$q = (new QueryBuilder())->table($searchindexquery, 't');
 
-		if (strpos($orderby, 'lastsaledate') !== false) {
+		if ((isset($filter['lastsaledate'])) && (strpos($orderby, 'lastsaledate') !== false)) {
 			$q->field('t.*');
 			$q->field('custperm.lastsaledate');
 			$q->join('custperm.custid', 't.custid', 'left outer');
 			$q->where('custperm.loginid', $user->get_custpermloginid());
+		} elseif (strpos($orderby, 'lastsaledate') !== false) {
+			$q->field('t.*');
+			$q->field('custperm.lastsaledate');
+			$q->join('custperm.custid', 't.custid', 'left outer');
+			$q->where('custperm.loginid', $user->get_custpermloginid());
+		} elseif (isset($filter['lastsaledate'])) {
+			$q->field('t.*');
+			$q->field('custperm.lastsaledate');
+			$q->join('custperm.custid', 't.custid', 'left outer');
 		}
+
 		$q = add_custindex_orderby($q, QueryBuilder::generate_searchkeyword($keyword), $orderby);
 
 		if (!empty($filter)) {
@@ -934,7 +944,8 @@
 		$loginID = (!empty($loginID)) ? $loginID : DplusWire::wire('user')->loginid;
 		$user = LogmUser::load($loginID);
 		$SHARED_ACCOUNTS = DplusWire::wire('config')->sharedaccounts;
-		$q = (new QueryBuilder())->table('custindex');
+		$searchindexquery = create_searchcustindexquery($loginID, $query);
+		$q = (new QueryBuilder())->table($searchindexquery, 't');
 
 		$matchexpression = $q->expr("MATCH(custid, shiptoid, name, addr1, addr2, city, state, zip, phone, cellphone, contact, email, typecode, faxnbr, title) AGAINST ([] IN BOOLEAN MODE)", ["'*$query*'"]);
 
@@ -943,25 +954,33 @@
 			$custpermquery = (new QueryBuilder())->table('custperm')->field('custid, shiptoid')->where('loginid', [$loginID, $SHARED_ACCOUNTS]);
 
 			if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
-				$q->field($q->expr('COUNT(DISTINCT(CONCAT(custid, shiptoid)))'));
+				$q->field($q->expr('COUNT(DISTINCT(CONCAT(t.custid, shiptoid)))'));
 			} elseif (DplusWire::wire('config')->cptechcustomer == 'stat') {
-				$q->field($q->expr('COUNT(DISTINCT(CONCAT(custid)))'));
+				$q->field($q->expr('COUNT(DISTINCT(CONCAT(t.custid)))'));
 			} else {
 				$q->field($q->expr('COUNT(*)'));
 			}
 			$q->where('(custid, shiptoid)','in', $custpermquery);
 		} else {
 			if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
-				$q->field($q->expr('COUNT(DISTINCT(CONCAT(custid, shiptoid)))'));
+				$q->field($q->expr('COUNT(DISTINCT(CONCAT(t.custid, shiptoid)))'));
 			} elseif (DplusWire::wire('config')->cptechcustomer == 'stat') {
-				$q->field($q->expr('COUNT(DISTINCT(CONCAT(custid)))'));
+				// changed t.custid
+				$q->field($q->expr('COUNT(DISTINCT(CONCAT(t.custid)))'));
 			} else {
 				$q->field($q->expr('COUNT(*)'));
 			}
 		}
 
 		if (!empty($query)) {
-			$q->where($matchexpression);
+			//$q->where($matchexpression);
+		}
+		
+		if (isset($filter['lastsaledate'])) {
+			//unset($filter['lastsaledate']);
+			$q->field('t.*');
+			$q->field('custperm.lastsaledate');
+			$q->join('custperm.custid', 't.custid', 'left outer');
 		}
 
 		if (!empty($filter)) {

@@ -1,4 +1,22 @@
 <input type="hidden" name="filter" value="filter">
+<h3>Last Sale Date</h3>
+<div class="row">
+    <div class="col-sm-2">
+        <input type="checkbox" name="source" value="C" <?= ($custindex->has_filtervalue('source', 'C')) ? 'checked' : ''; ?>>&ensp;
+        <label>Customers</label></br>
+    </div>
+    <div class="col-sm-2">
+        <?php $name = 'lastsaledate[]'; $value = $custindex->get_filtervalue('lastsaledate'); ?>
+        <?php include $config->paths->content."common/date-picker.php"; ?>
+        <label class="small text-muted">From Date </label>
+    </div>
+    <div class="col-sm-2">
+        <?php $name = 'lastsaledate[]'; $value = $custindex->get_filtervalue('lastsaledate', 1); ?>
+        <?php include $config->paths->content."common/date-picker.php"; ?>
+        <label class="small text-muted">Through Date </label>
+    </div>
+</div>
+<h3>State</h3>
 <div class="row">
     <?php foreach ($states as $state) : ?>
         <div class="col-sm-2">

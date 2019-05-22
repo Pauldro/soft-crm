@@ -10,7 +10,6 @@
 	$paginator = new Paginator($custindex->pagenbr, $resultscount, $custindex->pageurl, 'cust-index', $custindex->ajaxdata);
 ?>
 
-
 <div id="cust-results">
 	<?php if ($appconfig->allow_customeradd) : ?>
 		<div class="form-group">
