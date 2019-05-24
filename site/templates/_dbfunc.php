@@ -954,16 +954,16 @@
 			$custpermquery = (new QueryBuilder())->table('custperm')->field('custid, shiptoid')->where('loginid', [$loginID, $SHARED_ACCOUNTS]);
 
 			if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
-				$q->field($q->expr('COUNT(DISTINCT(CONCAT(t.custid, shiptoid)))'));
+				$q->field($q->expr('COUNT(DISTINCT(CONCAT(t.custid, t.shiptoid)))'));
 			} elseif (DplusWire::wire('config')->cptechcustomer == 'stat') {
 				$q->field($q->expr('COUNT(DISTINCT(CONCAT(t.custid)))'));
 			} else {
 				$q->field($q->expr('COUNT(*)'));
 			}
-			$q->where('(custid, shiptoid)','in', $custpermquery);
+			$q->where('(t.custid, t.shiptoid)','in', $custpermquery);
 		} else {
 			if (DplusWire::wire('config')->cptechcustomer == 'stempf') {
-				$q->field($q->expr('COUNT(DISTINCT(CONCAT(t.custid, shiptoid)))'));
+				$q->field($q->expr('COUNT(DISTINCT(CONCAT(t.custid, t.shiptoid)))'));
 			} elseif (DplusWire::wire('config')->cptechcustomer == 'stat') {
 				// changed t.custid
 				$q->field($q->expr('COUNT(DISTINCT(CONCAT(t.custid)))'));
@@ -975,7 +975,7 @@
 		if (!empty($query)) {
 			//$q->where($matchexpression);
 		}
-		
+
 		if (isset($filter['lastsaledate'])) {
 			//unset($filter['lastsaledate']);
 			$q->field('t.*');
