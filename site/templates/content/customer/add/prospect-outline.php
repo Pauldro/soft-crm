@@ -21,8 +21,6 @@
 
 <form action="<?= $config->pages->customer.'redir/'; ?>" method="post">
     <input type="hidden" name="action" value="add-prospect">
-    <input type="hidden" name="salesperson2" value="">
-    <input type="hidden" name="salesperson3" value="">
     <div class="row">
         <div class="col-sm-6">
            <legend>Prospect Information</legend>

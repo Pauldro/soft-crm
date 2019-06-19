@@ -359,8 +359,6 @@
 				$customer = new Customer();
 				$customer->set('custid', session_id());
 				$customer->set('splogin1', $input->$requestmethod->text('salesperson1'));
-				$customer->set('splogin2',  $input->$requestmethod->text('salesperson2'));
-				$customer->set('splogin3', $input->$requestmethod->text('salesperson3'));
 				$customer->set('date', date('Ymd'));
 				$customer->set('time', date('His'));
 				$customer->set('source', 'P');
@@ -376,11 +374,6 @@
 				$customer->set('faxnbr', $input->$requestmethod->text('contact-fax'));
 				$customer->set('email', $input->$requestmethod->text('contact-email'));
 				$customer->set('recno', get_maxcustindexrecnbr() + 1);
-				$customer->set('arcontact', $input->$requestmethod->text('arcontact') == 'Y' ? "Y" : "N");
-				$customer->set('dunningcontact', $input->$requestmethod->text('dunningcontact') == 'Y' ? "Y" : "N");
-				$customer->set('buyingcontact', $input->$requestmethod->text('buycontact'));
-				$customer->set('certcontact', $input->$requestmethod->text('certcontact') == 'Y' ? "Y" : "N");
-				$customer->set('ackcontact', $input->$requestmethod->text('ackcontact') == 'Y' ? "Y" : "N");
 				$customer->create();
 				$customer->create_custpermpermission($user->loginid);
 
@@ -398,28 +391,9 @@
 					"BILLTOPHONE=".str_replace('-', '', $customer->phone),
 					"BILLTOFAX=".str_replace('-', '', $customer->faxnbr),
 					"BILLTOEMAIL=$customer->email",
-					"SHIPTOID=$shipto->shiptoid",
-					"SHIPTONAME=$shipto->name",
-					"SHIPTOADDRESS1=$shipto->addr1",
-					"SHIPTOADDRESS2=$shipto->addr2",
-					"SHIPTOADDRESS3=".$input->$requestmethod->text('shipto-address3'),
-					"SHIPTOCITY=$shipto->city",
-					"SHIPTOSTATE=$shipto->state",
-					"SHIPTOZIP=$shipto->zip",
-					"SHIPTOCOUNTRY=".$input->$requestmethod->text('shipto-country'),
-					"SHIPTOPHONE=".str_replace('-', '', $shipto->phone),
-					"SHIPTOFAX=".str_replace('-', '', $shipto->faxnbr),
-					"SHIPTOEMAIL=$shipto->email",
 					"SALESPERSON1=".$input->$requestmethod->text('salesperson1'),
-					"SALESPERSON2=".$input->$requestmethod->text('salesperson2'),
-					"SALESPERSON3=".$input->$requestmethod->text('salesperson3'),
 					"PRICECODE=".$input->$requestmethod->text('pricecode'),
 					"CONTACT=$customer->contact",
-					"ARCONTACT=".($input->$requestmethod->text('arcontact') == 'Y' ? "Y" : "N"),
-					"DUNCONTACT=".($input->$requestmethod->text('dunningcontact') == 'Y' ? "Y" : "N"),
-					"BUYCONTACT=".($input->$requestmethod->text('buycontact') == 'Y' ? "Y" : "N"),
-					"CERCONTACT=".($input->$requestmethod->text('certcontact') == 'Y' ? "Y" : "N"),
-					"ACKCONTACT=".($input->$requestmethod->text('ackcontact') == 'Y' ? "Y" : "N"),
 					"EXTENSION=".$input->$requestmethod->text('contact-ext'),
 					"TITLE=".$input->$requestmethod->text('contact-title'),
 					"NOTES="

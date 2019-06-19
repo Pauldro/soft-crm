@@ -2,8 +2,8 @@
 <h3>Last Sale Date</h3>
 <div class="row">
     <div class="col-sm-2">
-        <input type="checkbox" name="source" value="C" <?= ($custindex->has_filtervalue('source', 'C')) ? 'checked' : ''; ?>>&ensp;
-        <label>Customers</label></br>
+        <input type="checkbox" name="source" value="P" <?= ($custindex->has_filtervalue('source', 'P')) ? 'checked' : ''; ?>>&ensp;
+        <label>Prospects</label></br>
     </div>
     <div class="col-sm-2">
         <?php $name = 'lastsaledate[]'; $value = $custindex->get_filtervalue('lastsaledate'); ?>
