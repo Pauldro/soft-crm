@@ -1,7 +1,7 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
     "content-hash": "93bcffb6159ac52e1898d9d3cedfe0aa",
@@ -196,12 +196,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dplus-dpluso.git",
-                "reference": "e0d237cb4dd5596c6b103b3888ba3ccb55cfe51e"
+                "reference": "f896b71c34bf98b145240f4167f41f8938d2fa6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dplus-dpluso/zipball/e0d237cb4dd5596c6b103b3888ba3ccb55cfe51e",
-                "reference": "e0d237cb4dd5596c6b103b3888ba3ccb55cfe51e",
+                "url": "https://api.github.com/repos/cptechinc/dplus-dpluso/zipball/f896b71c34bf98b145240f4167f41f8938d2fa6d",
+                "reference": "f896b71c34bf98b145240f4167f41f8938d2fa6d",
                 "shasum": ""
             },
             "type": "library",
@@ -233,7 +233,7 @@
                 "order-displays",
                 "user-actions"
             ],
-            "time": "2019-01-08T19:34:51+00:00"
+            "time": "2019-06-04T14:11:48+00:00"
         },
         {
             "name": "cptechinc/dplus-file-services",
@@ -412,12 +412,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/cptechinc/dpluso-warehouse.git",
-                "reference": "8fe766e314f7154449bda4706cd0686d23e9a408"
+                "reference": "dcc8d50ab5f89dc55e3106485669c9ac1badb3df"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cptechinc/dpluso-warehouse/zipball/8fe766e314f7154449bda4706cd0686d23e9a408",
-                "reference": "8fe766e314f7154449bda4706cd0686d23e9a408",
+                "url": "https://api.github.com/repos/cptechinc/dpluso-warehouse/zipball/dcc8d50ab5f89dc55e3106485669c9ac1badb3df",
+                "reference": "dcc8d50ab5f89dc55e3106485669c9ac1badb3df",
                 "shasum": ""
             },
             "type": "library",
@@ -438,7 +438,7 @@
                 "dplus-warehouse",
                 "dpluso-warehouse"
             ],
-            "time": "2019-04-09T16:47:45+00:00"
+            "time": "2019-04-25T14:52:52+00:00"
         },
         {
             "name": "eoghanobrien/php-simple-mail",

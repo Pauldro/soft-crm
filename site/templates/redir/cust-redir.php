@@ -61,6 +61,47 @@
 	*		TITLE=$contacttitle
 	*		NOTES=
 	*		break;
+	* 	case 'add-prospect':
+	* 		- Creates a new Customer
+	* 		DBNAME=$config->dplusdbname
+	* 		NEWCUSTOMER
+	*		BILLTONAME=$customer-name
+	*		BILLTOADDRESS1=$customer-addr1
+	*		BILLTOADDRESS2=$customer-addr2
+	*		BILLTOADDRESS3=$billtoaddress3
+	*		BILLTOCITY=$customer-city
+	*		BILLTOSTATE=$customer-state
+	*		BILLTOZIP=$customer-zip
+	*		BILLTOCOUNTRY=$billtocountry
+	*		BILLTOPHONE=$customer-phone
+	*		BILLTOFAX=$customer-faxnbr
+	*		BILLTOEMAIL=$customer-email
+	*		SHIPTOID=$shipto-shiptoid
+	*		SHIPTONAME=$shipto-name
+	*		SHIPTOADDRESS1=$shipto-addr1
+	*		SHIPTOADDRESS2=$shipto-addr2
+	*		SHIPTOADDRESS3=$shiptoaddress3
+	*		SHIPTOCITY=$shipto-city
+	*		SHIPTOSTATE=$shipto-state
+	*		SHIPTOZIP=$shipto-zip
+	*		SHIPTOCOUNTRY=$shipto-country
+	*		SHIPTOPHONE=$shipto-phone
+	*		SHIPTOFAX=$shipto-faxnbr
+	*		SHIPTOEMAIL=$shipto-email
+	*		SALESPERSON1=$salesperson1
+	*		SALESPERSON2=$salesperson2
+	*		SALESPERSON3=$salesperson3
+	*		PRICECODE=$pricecode
+	*		CONTACT=$customer-contact
+	*		ARCONTACT="Y" : "N"
+	*		DUNCONTACT="Y" : "N"
+	*		BUYCONTACT="Y" : "N"
+	*		CERCONTACT=$input-post-text(cercontact)
+	*		ACKCONTACT="Y" : "N"
+	*		EXTENSION=$contactext
+	*		TITLE=$contacttitle
+	*		NOTES=
+	*		break;
 	* 	case 'load-new-customer':
 	* 		- Loads the new Customer and redirects to their page by their new ID
 	*		DBNAME=$config->dplusdbname
@@ -314,6 +355,77 @@
 			);
 			$session->loc = $config->pages->customer.'redir/?action=load-new-customer';
 			break;
+			case 'add-prospect':
+				$customer = new Customer();
+				$customer->set('custid', session_id());
+				$customer->set('splogin1', $input->$requestmethod->text('salesperson1'));
+				$customer->set('splogin2',  $input->$requestmethod->text('salesperson2'));
+				$customer->set('splogin3', $input->$requestmethod->text('salesperson3'));
+				$customer->set('date', date('Ymd'));
+				$customer->set('time', date('His'));
+				$customer->set('source', 'P');
+				$customer->set('name',  $input->$requestmethod->text('billto-name'));
+				$customer->set('addr1', $input->$requestmethod->text('billto-address'));
+				$customer->set('addr2', $input->$requestmethod->text('billto-address2'));
+				$customer->set('city', $input->$requestmethod->text('billto-city'));
+				$customer->set('state', $input->$requestmethod->text('billto-state'));
+				$customer->set('zip', $input->$requestmethod->text('billto-zip'));
+				$customer->set('contact', !empty($input->$requestmethod->text('contact-name')) ? $input->$requestmethod->text('contact-name') : $customer->name);
+				$customer->set('phone', $input->$requestmethod->text('contact-phone'));
+				$customer->set('extension', $input->$requestmethod->text('contact-ext'));
+				$customer->set('faxnbr', $input->$requestmethod->text('contact-fax'));
+				$customer->set('email', $input->$requestmethod->text('contact-email'));
+				$customer->set('recno', get_maxcustindexrecnbr() + 1);
+				$customer->set('arcontact', $input->$requestmethod->text('arcontact') == 'Y' ? "Y" : "N");
+				$customer->set('dunningcontact', $input->$requestmethod->text('dunningcontact') == 'Y' ? "Y" : "N");
+				$customer->set('buyingcontact', $input->$requestmethod->text('buycontact'));
+				$customer->set('certcontact', $input->$requestmethod->text('certcontact') == 'Y' ? "Y" : "N");
+				$customer->set('ackcontact', $input->$requestmethod->text('ackcontact') == 'Y' ? "Y" : "N");
+				$customer->create();
+				$customer->create_custpermpermission($user->loginid);
+
+				$data = array(
+					"DBNAME=$config->dplusdbname",
+					'ADDPROSPECT',
+					"BILLTONAME=$customer->name",
+					"BILLTOADDRESS1=$customer->addr1",
+					"BILLTOADDRESS2=$customer->addr2",
+					"BILLTOADDRESS3=".$input->$requestmethod->text('billto-address3'),
+					"BILLTOCITY=$customer->city",
+					"BILLTOSTATE=$customer->state",
+					"BILLTOZIP=$customer->zip",
+					"BILLTOCOUNTRY=".$input->$requestmethod->text('billto-country'),
+					"BILLTOPHONE=".str_replace('-', '', $customer->phone),
+					"BILLTOFAX=".str_replace('-', '', $customer->faxnbr),
+					"BILLTOEMAIL=$customer->email",
+					"SHIPTOID=$shipto->shiptoid",
+					"SHIPTONAME=$shipto->name",
+					"SHIPTOADDRESS1=$shipto->addr1",
+					"SHIPTOADDRESS2=$shipto->addr2",
+					"SHIPTOADDRESS3=".$input->$requestmethod->text('shipto-address3'),
+					"SHIPTOCITY=$shipto->city",
+					"SHIPTOSTATE=$shipto->state",
+					"SHIPTOZIP=$shipto->zip",
+					"SHIPTOCOUNTRY=".$input->$requestmethod->text('shipto-country'),
+					"SHIPTOPHONE=".str_replace('-', '', $shipto->phone),
+					"SHIPTOFAX=".str_replace('-', '', $shipto->faxnbr),
+					"SHIPTOEMAIL=$shipto->email",
+					"SALESPERSON1=".$input->$requestmethod->text('salesperson1'),
+					"SALESPERSON2=".$input->$requestmethod->text('salesperson2'),
+					"SALESPERSON3=".$input->$requestmethod->text('salesperson3'),
+					"PRICECODE=".$input->$requestmethod->text('pricecode'),
+					"CONTACT=$customer->contact",
+					"ARCONTACT=".($input->$requestmethod->text('arcontact') == 'Y' ? "Y" : "N"),
+					"DUNCONTACT=".($input->$requestmethod->text('dunningcontact') == 'Y' ? "Y" : "N"),
+					"BUYCONTACT=".($input->$requestmethod->text('buycontact') == 'Y' ? "Y" : "N"),
+					"CERCONTACT=".($input->$requestmethod->text('certcontact') == 'Y' ? "Y" : "N"),
+					"ACKCONTACT=".($input->$requestmethod->text('ackcontact') == 'Y' ? "Y" : "N"),
+					"EXTENSION=".$input->$requestmethod->text('contact-ext'),
+					"TITLE=".$input->$requestmethod->text('contact-title'),
+					"NOTES="
+				);
+				$session->loc = $config->pages->customer.'redir/?action=load-new-customer';
+				break;
 		case 'load-new-customer':
 			$custID = get_createdordn(session_id());
 			$session->sql = Customer::change_custid(session_id(), $custID);
