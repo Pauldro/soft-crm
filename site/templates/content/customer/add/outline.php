@@ -13,6 +13,12 @@
 
     $changesalesrep = $users->find("name=$user->loginid")->count ? ($users->get("name=$user->loginid")->hasRole('manager')) : false;
 ?>
+
+<div class="form-group">
+    <a href="<?= $page->parent->url; ?>" class="btn btn-primary">
+        <i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>&ensp;Back to Customer Page
+    </a>
+</div>
 <form action="<?= $config->pages->customer.'redir/'; ?>" method="post">
     <input type="hidden" name="action" value="add-customer">
     <input type="hidden" name="salesperson2" value="">
