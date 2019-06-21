@@ -373,6 +373,7 @@
 				$customer->set('extension', $input->$requestmethod->text('contact-ext'));
 				$customer->set('faxnbr', $input->$requestmethod->text('contact-fax'));
 				$customer->set('email', $input->$requestmethod->text('contact-email'));
+				$customer->set('typecode', $input->$requestmethod->text('typecode'));
 				$customer->set('recno', get_maxcustindexrecnbr() + 1);
 				$customer->create();
 				$customer->create_custpermpermission($user->loginid);
@@ -392,7 +393,7 @@
 					"BILLTOFAX=".str_replace('-', '', $customer->faxnbr),
 					"BILLTOEMAIL=$customer->email",
 					"SALESPERSON1=".$input->$requestmethod->text('salesperson1'),
-					"PRICECODE=".$input->$requestmethod->text('pricecode'),
+					"PRICECODE=".$input->$requestmethod->text('typecode'),
 					"CONTACT=$customer->contact",
 					"EXTENSION=".$input->$requestmethod->text('contact-ext'),
 					"TITLE=".$input->$requestmethod->text('contact-title'),
