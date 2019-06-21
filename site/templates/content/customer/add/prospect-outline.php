@@ -91,8 +91,18 @@
                     <?php endif; ?>
                 </tr>
                 <tr>
+                    <td class="control-label">Phone</td>
+                    <td><input type="text" class="form-control input-sm" name="contact-phone" value=""></td>
+                </tr>
+                <tr>
                     <td class="control-label">Type Code</td>
-                    <td><input type="text" class="form-control input-sm qty pull-right" name="typecode" value=""></td>
+                    <td>
+                        <select name="typecode" class="form-control input-sm">
+                            <?php foreach ($pricecodes as $pricecode) : ?>
+                                <option value="<?= $pricecode; ?>"><?= $pricecode; ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </td>
                 </tr>
                 <tr>
                     <td class="control-label">Notes</td>
