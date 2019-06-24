@@ -98,8 +98,8 @@
                     <td class="control-label">Type Code</td>
                     <td>
                         <select name="typecode" class="form-control input-sm">
-                            <?php foreach ($pricecodes as $pricecode) : ?>
-                                <option value="<?= $pricecode; ?>"><?= $pricecode; ?></option>
+                            <?php foreach ($pricecodes as $pricecode => $description) : ?>
+                                <option value="<?= $pricecode; ?>"><?= $description; ?></option>
                             <?php endforeach; ?>
                         </select>
                     </td>

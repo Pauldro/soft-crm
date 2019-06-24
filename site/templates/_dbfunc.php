@@ -338,7 +338,7 @@
 			$q->where('shiptoid', $shiptoID);
 			$q->where('source', Contact::$types['customer-shipto']);
 		} else {
-			$q->where('source', Contact::$types['customer']);
+			$q->where('source', array(Contact::$types['customer'], 'P'));
 		}
 
 		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
