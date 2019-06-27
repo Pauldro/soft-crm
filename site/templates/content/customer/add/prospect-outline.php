@@ -95,6 +95,10 @@
                     <td><input type="text" class="form-control input-sm" name="contact-phone" value=""></td>
                 </tr>
                 <tr>
+                    <td class="control-label">Email</td>
+                    <td><input type="email" class="form-control input-sm" name="contact-email" value=""></td>
+                </tr>
+                <tr>
                     <td class="control-label">Type Code</td>
                     <td>
                         <select name="typecode" class="form-control input-sm">

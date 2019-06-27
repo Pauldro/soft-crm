@@ -1,19 +1,34 @@
 <input type="hidden" name="filter" value="filter">
-<h3>Last Sale Date</h3>
+
 <div class="row">
-    <div class="col-sm-2">
-        <input type="checkbox" name="source" value="P" <?= ($custindex->has_filtervalue('source', 'P')) ? 'checked' : ''; ?>>&ensp;
-        <label>Prospects</label></br>
+    <div class="col-sm-6">
+        <h3>Type of Customer</h3>
+        <div class="row">
+            <div class="col-sm-6">
+                <input type="checkbox" name="source" value="P" <?= ($custindex->has_filtervalue('source', 'P')) ? 'checked' : ''; ?>>&ensp;
+                <label>Prospect</label></br>
+            </div>
+            <div class="col-sm-6">
+                <input type="checkbox" name="source" value="C" <?= ($custindex->has_filtervalue('source', 'C')) ? 'checked' : ''; ?>>&ensp;
+                <label>Customer</label></br>
+            </div>
+        </div>
     </div>
-    <div class="col-sm-2">
-        <?php $name = 'lastsaledate[]'; $value = $custindex->get_filtervalue('lastsaledate'); ?>
-        <?php include $config->paths->content."common/date-picker.php"; ?>
-        <label class="small text-muted">From Date </label>
-    </div>
-    <div class="col-sm-2">
-        <?php $name = 'lastsaledate[]'; $value = $custindex->get_filtervalue('lastsaledate', 1); ?>
-        <?php include $config->paths->content."common/date-picker.php"; ?>
-        <label class="small text-muted">Through Date </label>
+
+    <div class="col-sm-6">
+        <h3>Last Sale Date</h3>
+        <div class="row">
+            <div class="col-sm-6">
+                <?php $name = 'lastsaledate[]'; $value = $custindex->get_filtervalue('lastsaledate'); ?>
+                <?php include $config->paths->content."common/date-picker.php"; ?>
+                <label class="small text-muted">From Date </label>
+            </div>
+            <div class="col-sm-6">
+                <?php $name = 'lastsaledate[]'; $value = $custindex->get_filtervalue('lastsaledate', 1); ?>
+                <?php include $config->paths->content."common/date-picker.php"; ?>
+                <label class="small text-muted">Through Date </label>
+            </div>
+        </div>
     </div>
 </div>
 <h3>State</h3>
