@@ -8,7 +8,9 @@
 	}
 ?>
 
-<?php if (file_exists($salesfile)) : ?>
+<?php if ($customer->source == 'P') : ?>
+	<div class="alert alert-warning" role="alert">No data at this time</div>
+<?php elseif (file_exists($salesfile)) : ?>
 	<?php $salesjson = json_decode(file_get_contents($salesfile), true);  ?>
 	<?php if (!$salesjson) { $salesjson = array('error' => true, 'errormsg' => 'The customer shiptos Inquiry Single JSON contains errors');} ?>
 	<?php if ($salesjson['error']) : ?>
