@@ -354,53 +354,53 @@
 				"NOTES="
 			);
 			$session->loc = $config->pages->customer.'redir/?action=load-new-customer';
-			break;
-			case 'add-prospect':
-				$customer = new Customer();
-				$customer->set('custid', session_id());
-				$customer->set('splogin1', $input->$requestmethod->text('salesperson1'));
-				$customer->set('date', date('Ymd'));
-				$customer->set('time', date('His'));
-				$customer->set('source', 'P');
-				$customer->set('name',  $input->$requestmethod->text('billto-name'));
-				$customer->set('addr1', $input->$requestmethod->text('billto-address'));
-				$customer->set('addr2', $input->$requestmethod->text('billto-address2'));
-				$customer->set('city', $input->$requestmethod->text('billto-city'));
-				$customer->set('state', $input->$requestmethod->text('billto-state'));
-				$customer->set('zip', $input->$requestmethod->text('billto-zip'));
-				$customer->set('contact', !empty($input->$requestmethod->text('contact-name')) ? $input->$requestmethod->text('contact-name') : $customer->name);
-				$customer->set('phone', $input->$requestmethod->text('contact-phone'));
-				$customer->set('extension', $input->$requestmethod->text('contact-ext'));
-				$customer->set('faxnbr', $input->$requestmethod->text('contact-fax'));
-				$customer->set('email', $input->$requestmethod->text('contact-email'));
-				$customer->set('typecode', $input->$requestmethod->text('typecode'));
-				$customer->set('recno', get_maxcustindexrecnbr() + 1);
-				$customer->create();
-				$customer->create_custpermpermission($user->loginid);
+		break;
+		case 'add-prospect':
+			$customer = new Customer();
+			$customer->set('custid', session_id());
+			$customer->set('splogin1', $input->$requestmethod->text('salesperson1'));
+			$customer->set('date', date('Ymd'));
+			$customer->set('time', date('His'));
+			$customer->set('source', 'P');
+			$customer->set('name',  $input->$requestmethod->text('billto-name'));
+			$customer->set('addr1', $input->$requestmethod->text('billto-address'));
+			$customer->set('addr2', $input->$requestmethod->text('billto-address2'));
+			$customer->set('city', $input->$requestmethod->text('billto-city'));
+			$customer->set('state', $input->$requestmethod->text('billto-state'));
+			$customer->set('zip', $input->$requestmethod->text('billto-zip'));
+			$customer->set('contact', !empty($input->$requestmethod->text('contact-name')) ? $input->$requestmethod->text('contact-name') : $customer->name);
+			$customer->set('phone', $input->$requestmethod->text('contact-phone'));
+			$customer->set('extension', $input->$requestmethod->text('contact-ext'));
+			$customer->set('faxnbr', $input->$requestmethod->text('contact-fax'));
+			$customer->set('email', $input->$requestmethod->text('contact-email'));
+			$customer->set('typecode', $input->$requestmethod->text('typecode'));
+			$customer->set('recno', get_maxcustindexrecnbr() + 1);
+			$customer->create();
+			$customer->create_custpermpermission($user->loginid);
 
-				$data = array(
-					"DBNAME=$config->dplusdbname",
-					'ADDPROSPECT',
-					"BILLTONAME=$customer->name",
-					"BILLTOADDRESS1=$customer->addr1",
-					"BILLTOADDRESS2=$customer->addr2",
-					"BILLTOADDRESS3=".$input->$requestmethod->text('billto-address3'),
-					"BILLTOCITY=$customer->city",
-					"BILLTOSTATE=$customer->state",
-					"BILLTOZIP=$customer->zip",
-					"BILLTOCOUNTRY=".$input->$requestmethod->text('billto-country'),
-					"BILLTOPHONE=".str_replace('-', '', $customer->phone),
-					"BILLTOFAX=".str_replace('-', '', $customer->faxnbr),
-					"BILLTOEMAIL=$customer->email",
-					"SALESPERSON1=".$input->$requestmethod->text('salesperson1'),
-					"PRICECODE=".$input->$requestmethod->text('typecode'),
-					"CONTACT=$customer->contact",
-					"EXTENSION=".$input->$requestmethod->text('contact-ext'),
-					"TITLE=".$input->$requestmethod->text('contact-title'),
-					"NOTES="
-				);
-				$session->loc = $config->pages->customer.'redir/?action=load-new-customer';
-				break;
+			$data = array(
+				"DBNAME=$config->dplusdbname",
+				'ADDPROSPECT',
+				"BILLTONAME=$customer->name",
+				"BILLTOADDRESS1=$customer->addr1",
+				"BILLTOADDRESS2=$customer->addr2",
+				"BILLTOADDRESS3=".$input->$requestmethod->text('billto-address3'),
+				"BILLTOCITY=$customer->city",
+				"BILLTOSTATE=$customer->state",
+				"BILLTOZIP=$customer->zip",
+				"BILLTOCOUNTRY=".$input->$requestmethod->text('billto-country'),
+				"BILLTOPHONE=".str_replace('-', '', $customer->phone),
+				"BILLTOFAX=".str_replace('-', '', $customer->faxnbr),
+				"BILLTOEMAIL=$customer->email",
+				"SALESPERSON1=".$input->$requestmethod->text('salesperson1'),
+				"PRICECODE=".$input->$requestmethod->text('typecode'),
+				"CONTACT=$customer->contact",
+				"EXTENSION=".$input->$requestmethod->text('contact-ext'),
+				"TITLE=".$input->$requestmethod->text('contact-title'),
+				"NOTES="
+			);
+			$session->loc = $config->pages->customer.'redir/?action=load-new-customer';
+			break;
 		case 'load-new-customer':
 			$custID = get_createdordn(session_id());
 			$session->sql = Customer::change_custid(session_id(), $custID);

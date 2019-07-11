@@ -1,3 +1,14 @@
+<!-- <div class="row">
+	<div class="col-sm-4">
+		<div class="alert alert-info" role="alert">
+			<i class="fa fa-info-circle" aria-hidden="true"></i>&ensp;This is a Prospect
+		</div>
+	</div>
+	<div class="col-sm-8">
+		<a href="<?= $config->pages->customer.'add-customer-from-prospect/?custID=' . $custID; ?>" class="btn btn-primary pull-right">Create Customer from Prospect&ensp;<i class="fa fa-user-plus" aria-hidden="true"></i></a>
+	</div>
+</div> -->
+
 <div class="row">
 	<div class="col-sm-2 hidden-xs">
 		<?php include $config->paths->content.'cust-information/ci-buttons.php'; ?>
