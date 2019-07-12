@@ -12,11 +12,15 @@
     }
 
     $changesalesrep = $users->find("name=$user->loginid")->count ? ($users->get("name=$user->loginid")->hasRole('manager')) : false;
+
+    $requestmethod = $input->requestMethod('POST') ? 'post' : 'get';
+    $custID = $input->$requestmethod->text('custID');
+    $customer = Customer::load($custID);
 ?>
 
 <div class="form-group">
-    <a href="<?= $page->parent->url; ?>" class="btn btn-primary">
-        <i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>&ensp;Back to Customer Page
+    <a href="<?= $config->pages->customer.'cust-info/' . $custID; ?>" class="btn btn-primary">
+        <i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>&ensp;Back to <?= $customer->name; ?> Page
     </a>
 </div>
 <form action="<?= $config->pages->customer.'redir/'; ?>" method="post">
@@ -34,15 +38,15 @@
                     </tr>
                     <tr>
                         <td class="control-label">Name</td>
-                        <td><input type="text" class="form-control input-sm required" name="billto-name" value=""></td>
+                        <td><input type="text" class="form-control input-sm required" name="billto-name" value="<?= $customer->name; ?>"></td>
                     </tr>
                     <tr>
                         <td class="control-label">Address</td>
-                        <td><input type="text" class="form-control input-sm required" name="billto-address" value=""></td>
+                        <td><input type="text" class="form-control input-sm required" name="billto-address" value="<?= $customer->addr1; ?>"></td>
                     </tr>
                     <tr>
                         <td class="control-label">Address 2</td>
-                        <td><input type="text" class="form-control input-sm" name="billto-address2" value=""></td>
+                        <td><input type="text" class="form-control input-sm" name="billto-address2" value="<?= $customer->addr2; ?>"></td>
                     </tr>
                     <tr>
                         <td class="control-label">Address 3</td>
@@ -50,15 +54,15 @@
                     </tr>
                     <tr>
                         <td class="control-label">City</td>
-                        <td><input type="text" class="form-control input-sm required" name="billto-city" value=""></td>
+                        <td><input type="text" class="form-control input-sm required" name="billto-city" value="<?= $customer->city; ?>"></td>
                     </tr>
                     <tr>
                         <td class="control-label">State</td>
-                        <td><input type="text" class="form-control input-sm required" name="billto-state" value=""></td>
+                        <td><input type="text" class="form-control input-sm required" name="billto-state" value="<?= $customer->state; ?>"></td>
                     </tr>
                     <tr>
                         <td class="control-label">Zip</td>
-                        <td><input type="text" class="form-control input-sm required" name="billto-zip" value=""></td>
+                        <td><input type="text" class="form-control input-sm required" name="billto-zip" value="<?= $customer->zip; ?>"></td>
                     </tr>
                     <tr>
                         <td class="control-label">Country</td>
@@ -131,7 +135,7 @@
             <table class="table table-striped table-bordered table-condensed">
                 <tr>
                     <td class="control-label">Contact</td>
-                    <td><input type="text" class="form-control input-sm" name="contact-name" value=""></td>
+                    <td><input type="text" class="form-control input-sm" name="contact-name" value="<?= $customer->contact; ?>"></td>
                 </tr>
                 <tr>
                     <td class="control-label">Contact Title</td>
@@ -139,7 +143,7 @@
                 </tr>
                 <tr>
                     <td class="control-label">Phone</td>
-                    <td><input type="tel" class="form-control input-sm phone-input" name="contact-phone" value=""></td>
+                    <td><input type="tel" class="form-control input-sm phone-input" name="contact-phone" value="<?= $customer->phone; ?>"></td>
                 </tr>
                 <tr>
                     <td class="control-label">Ext.</td>
@@ -151,7 +155,7 @@
                 </tr>
                 <tr>
                     <td class="control-label">E-mail</td>
-                    <td><input type="email" class="form-control input-sm" name="contact-email" value=""></td>
+                    <td><input type="email" class="form-control input-sm" name="contact-email" value="<?= $customer->email; ?>"></td>
                 </tr>
                 <tr>
                     <td class="control-label">AR Contact</td>
@@ -224,5 +228,5 @@
            </table>
         </div>
     </div> <!-- end price/notes row -->
-    <button type="submit" class="btn btn-primary">Add New Customer</button>
+    <button type="submit" class="btn btn-primary">Add New Customer from Prospect&ensp;<i class="fa fa-user-plus" aria-hidden="true"></i></button>
 </form>
