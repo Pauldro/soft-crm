@@ -4163,6 +4163,7 @@
 	/**
 	 * Returns an array of items that match the search query and with the customer ID if provided
 	 * // NOTE This uses full text index to do the searching on, make sure that is created
+	 * // NOTE This will fallback to using LIKEto find results
 	 * @param  string $query  Search Query
 	 * @param  string $custID Customer ID
 	 * @param  int    $limit  Number of records to return
@@ -4174,7 +4175,12 @@
 		$search = QueryBuilder::generate_searchkeyword($query);
 		$q = (new QueryBuilder())->table('itemsearch');
 		$q->where('itemstatus', '!=', 'I');
-		$matchexpression = $q->expr("MATCH(itemid, refitemid, desc1, desc2) AGAINST ([] IN BOOLEAN MODE)", ["'*$query*'"]);
+
+		if (count_searchitems_match($query, $custID)) {
+			$matchexpression = $q->expr("MATCH(itemid, refitemid, desc1, desc2) AGAINST ([] IN BOOLEAN MODE)", ["'*$query*'"]);
+		} else {
+			$matchexpression = $q->expr("CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2) LIKE []", ["%$query%"]);
+		}
 
 		if (empty($custID)) {
 			$q->where('origintype', ['I', 'V', 'L']);
@@ -4213,6 +4219,24 @@
 	 * @return int          Search Item Count
 	 */
 	function count_searchitems($query, $custID, $debug = false) {
+		$count_match = count_searchitems_match($query, $custID);
+
+		if ($count_match) {
+			return $count_match;
+		} else {
+			return count_searchitems_like($query, $custID);
+		}
+	}
+
+	/**
+	 * Returns the numberof items that match the search query and with the customer ID if provided
+	 * // NOTE This uses full text index to do the searching on, make sure that is created
+	 * @param  string $query  Search Query
+	 * @param  string $custID Customer ID
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return int          Search Item Count
+	 */
+	function count_searchitems_match($query, $custID, $debug = false) {
 		$search = QueryBuilder::generate_searchkeyword($query);
 		$q = (new QueryBuilder())->table('itemsearch');
 		$q->field('COUNT(DISTINCT(itemid))');
@@ -4239,6 +4263,46 @@
 			return intval($sql->fetchColumn());
 		}
 	}
+
+
+
+	/**
+	 * Returns the numberof items that match the search query and with the customer ID if provided
+	 * // NOTE This uses LIKE to find results
+	 * @param  string $query  Search Query
+	 * @param  string $custID Customer ID
+	 * @param  bool   $debug  Run in debug? If so, return SQL Query
+	 * @return int          Search Item Count
+	 */
+	function count_searchitems_like($query, $custID, $debug = false) {
+		$search = QueryBuilder::generate_searchkeyword($query);
+		$q = (new QueryBuilder())->table('itemsearch');
+		$q->field('COUNT(DISTINCT(itemid))');
+		$q->where('itemstatus', '!=', 'I');
+		$matchexpression = $q->expr("CONCAT(itemid, ' ', refitemid, ' ', desc1, ' ', desc2) LIKE []", ["%$query%"]);
+
+		if (empty($custID)) {
+			$q->where('origintype', ['I', 'V', 'L']);
+			if (!empty($query)) {
+				$q->where($matchexpression);
+			}
+		} else {
+			$q->where('origintype', ['I', 'V', 'L', 'C']);
+			if (!empty($query)) {
+				$q->where($matchexpression);
+			}
+		}
+		$sql = DplusWire::wire('dplusdatabase')->prepare($q->render());
+
+		if ($debug) {
+			return $q->generate_sqlquery($q->params);
+		} else {
+			$sql->execute($q->params);
+			return intval($sql->fetchColumn());
+		}
+	}
+
+
 
 	/**
 	 * Returns the Item Description from the cross reference table
