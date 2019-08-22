@@ -1,4 +1,4 @@
-<?php 
+<?php
 	use Dplus\Base\DplusDateTime;
 	$orderpanel->get_orders();
 ?>
@@ -69,7 +69,7 @@
 								<i class="fa fa-plane hover" aria-hidden="true"></i>
 							</a>
 						<?php else : ?>
-							<a href="#" class="h3 text-mutled" title="No Tracking info Available">
+							<a href="#" class="h3 text-muted" title="No Tracking info Available">
 								<i class="fa fa-plane hover" aria-hidden="true"></i>
 							</a>
 						<?php endif; ?>
@@ -78,15 +78,15 @@
 					<span class="col-xs-3">
 						<?php if ($order->can_edit()) : ?>
 							<a href="<?= $orderpanel->generate_editURL($order); ?>" class="edit-order h3" title="Edit Order">
-								<i class="fa fa-pencil" aria-hidden="true"></i> 
+								<i class="fa fa-pencil" aria-hidden="true"></i>
 							</a>
 						<?php elseif ($order->is_lockedbyuser()) : ?>
 							<a href="<?= $orderpanel->generate_editURL($order); ?>" class="edit-order h3" title="Continue Editing Order">
-								<i class="fa fa-wrench" aria-hidden="true"></i> 
+								<i class="fa fa-wrench" aria-hidden="true"></i>
 							</a>
 						<?php else : ?>
 							<a href="<?= $orderpanel->generate_editURL($order); ?>" class="edit-order h3" title="Open in read-only mode">
-								<i class="fa fa-eye" aria-hidden="true"></i> 
+								<i class="fa fa-eye" aria-hidden="true"></i>
 							</a>
 						<?php endif; ?>
 					</span>
@@ -94,13 +94,13 @@
 			</tr>
 
 			<?php if ($order->ordernumber == $input->get->text('ordn')) : ?>
-				<?php 
+				<?php
 					if ($input->get->show == 'documents' && (!$input->get('item-documents'))) {
 						include $config->paths->content.'dashboard/sales-orders/documents-rows.php';
 					}
 					include $config->paths->content.'dashboard/sales-orders/detail-rows.php';
 					include $config->paths->content.'dashboard/sales-orders/total-rows.php';
-					
+
 					if ($input->get->text('show') == 'tracking') {
 						include $config->paths->content.'dashboard/sales-orders/tracking-rows.php';
 					}

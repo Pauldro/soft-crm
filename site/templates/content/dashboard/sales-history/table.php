@@ -1,4 +1,4 @@
-<?php 
+<?php
 	use Dplus\Base\DplusDateTime;
 	$orderpanel->get_orders();
 ?>
@@ -9,7 +9,7 @@
 	<tbody>
 		<?php if ($orderpanel->count == 0 && $input->get->text('ordn') == '') : ?>
 			<tr>
-				<td colspan="12" class="text-center">No Orders found!</td> 
+				<td colspan="12" class="text-center">No Orders found!</td>
 			</tr>
 		<?php endif; ?>
 		<?php foreach($orderpanel->orders as $order) : ?>
@@ -66,12 +66,12 @@
 								<i class="fa fa-plane hover" aria-hidden="true"></i>
 							</a>
 						<?php else : ?>
-							<a href="#" class="h3 text-mutled" title="No Tracking info Available">
+							<a href="#" class="h3 text-muted" title="No Tracking info Available">
 								<i class="fa fa-plane hover" aria-hidden="true"></i>
 							</a>
 						<?php endif; ?>
 					</span>
-					
+
 				</td>
 			</tr>
 
@@ -83,13 +83,13 @@
 						<td colspan="2"> </td> <td></td> <td></td> <td></td>
 					 </tr>
 				<?php endif; ?>
-				<?php 
+				<?php
 					if ($input->get->show == 'documents' && (!$input->get('item-documents'))) {
 						include $config->paths->content.'dashboard/sales-history/documents-rows.php';
 					}
 					include $config->paths->content.'dashboard/sales-history/detail-rows.php';
 					include $config->paths->content.'dashboard/sales-history/totals-rows.php';
-					
+
 					if ($input->get->text('show') == 'tracking') {
 						include $config->paths->content.'dashboard/sales-history/tracking-rows.php';
 					}

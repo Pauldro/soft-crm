@@ -1,6 +1,6 @@
-<?php 
+<?php
 	use Dplus\Base\DplusDateTime;
-	$orderpanel->get_orders(); 
+	$orderpanel->get_orders();
 ?>
 <table class="table table-striped table-bordered table-condensed order-listing-table">
 	<thead>
@@ -69,7 +69,7 @@
 								<i class="fa fa-plane hover" aria-hidden="true"></i>
 							</a>
 						<?php else : ?>
-							<a href="#" class="h3 text-mutled" title="No Tracking info Available">
+							<a href="#" class="h3 text-muted" title="No Tracking info Available">
 								<i class="fa fa-plane hover" aria-hidden="true"></i>
 							</a>
 						<?php endif; ?>
@@ -78,13 +78,13 @@
 			</tr>
 
 			<?php if ($order->ordernumber == $input->get->text('ordn')) : ?>
-				<?php 
+				<?php
 					if ($input->get->show == 'documents' && (!$input->get('item-documents')))  {
-						include $config->paths->content.'customer/cust-page/sales-history/documents-rows.php'; 
+						include $config->paths->content.'customer/cust-page/sales-history/documents-rows.php';
 					}
 					include $config->paths->content.'customer/cust-page/sales-history/detail-rows.php';
 					include $config->paths->content.'customer/cust-page/sales-history/totals-rows.php';
-					
+
 					if ($input->get->text('show') == 'tracking') {
 						include $config->paths->content.'customer/cust-page/sales-history/tracking-rows.php';
 					}
