@@ -15,6 +15,7 @@
 	$pagenumber = (!empty($input->get->page) ? $input->get->int('page') : 1);
 	$sortaddon = (!empty($input->get->orderby) ? '&orderby=' . $input->get->text('orderby') : '');
 	$filteraddon = '';
+
 	if ($input->get->filter) {
 		$quotepanel = new QuotePanel(session_id(), $page->fullURL, '', '', '');
 		$quotepanel->generate_filter($input);
@@ -171,7 +172,7 @@
 						$session->loc = Paginator::paginate_url($config->pages->ajax."load/quotes/cust/{$input->get->custID}/?qnbr=".$qnbr.$linkaddon, $pagenumber, $input->get->custID, '');
 					}
 				} else {
-					$session->loc = Paginator::paginate_url($config->pages->ajax."load/quotes/salesrep/?qnbr=".$qnbr.$linkaddon, $pagenumber, "quotes", '');
+					$session->loc = Paginator::paginate_url($config->pages->ajax."load/quotes/salesrep/?qnbr=".$qnbr.$linkaddon, $pagenumber, "salesrep", '');
 				}
 			}
 			break;

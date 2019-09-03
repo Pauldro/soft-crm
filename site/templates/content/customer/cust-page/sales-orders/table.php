@@ -67,7 +67,7 @@
 								<i class="fa fa-plane hover" aria-hidden="true"></i>
 							</a>
 						<?php else : ?>
-							<a href="#" class="h3 text-mutled" title="No Tracking info Available">
+							<a href="#" class="h3 text-muted" title="No Tracking info Available">
 								<i class="fa fa-plane hover" aria-hidden="true"></i>
 							</a>
 						<?php endif; ?>
