@@ -2,7 +2,7 @@ $(function() {
     var formfields = {
         form1: '#note1', form2: '#note2', form3: '#note3', form4: '#note4', form5: '#form5', type: '.type', key1: '.key1', key2: '.key2', recnbr: '.recnbr'
     }
-    
+
     $("body").on("click", ".dplusnote", function(e) {
         e.preventDefault();
         $('.bg-warning').removeClass('bg-warning');
@@ -11,18 +11,18 @@ $(function() {
         var form = button.data('form');
         $.getJSON(geturl, function(json) {
             var note = json.note;
-            
+
             for (var i = 1; i < 6; i++) {
                 $('#note'+i).bootstrapToggle(togglearray[note["form"+i]]);
             }
-            
+
             $(form + ' .note').val(note.notefld);
             $(form + ' .action').val('edit-note');
             $(form + ' .recnbr').val(note.recno);
             button.addClass('bg-warning');
         });
     });
-    
+
     $("body").on("submit", "#notes-form", function(e)  {
         e.preventDefault();
         var form = $(this);
@@ -36,12 +36,12 @@ $(function() {
         var loadurl = form.find('.notepage').val();
         var currentrecnbr = form.find('.recnbr').val();
         var existingrecnbr = 0;
-        
+
         $.getJSON(validateurl, function(json) {
             if (json.notes.length > 0) {
                 $(json.notes).each(function(index, note) {
                     var notecombo = note.form1 + note.form2 + note.form3 + note.form4 + note.form5;
-                    
+
                     if (formcombo == notecombo) {
                         existingrecnbr = note.recno;
                         return false;
@@ -67,8 +67,8 @@ $(function() {
                 } else {
                     form.find('.action').val('add-note');
                 }
-                
-                form.postform({}, function() { 
+
+                form.postform({}, function() {
                     wait(1000, function() {
                         $(loadinto).loadin(loadurl, function() {
                              $.notify({
@@ -80,6 +80,9 @@ $(function() {
                                  onShown: function() {
                                      $(".rec"+recnbr).click()
                                  },
+                                 onClosed: function() {
+									 location.reload();
+								 }
                             });
                         });
                     });
