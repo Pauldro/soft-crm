@@ -1,4 +1,5 @@
 <?php
+
 	// Figure out page request method, then grab needed inputs
 	$requestmethod = $input->requestMethod('POST') ? 'post' : 'get';
 	$action = $input->$requestmethod->text('action');
@@ -114,7 +115,7 @@
 			}
 			break;
 		case 'add-note':
-			$note = new QNote();
+			$note = new Qnote();
 			$note->set('sessionid', $sessionID);
 			$note->set('rectype', $input->post->text('type'));
 			$note->set('key1', $input->post->text('key1'));

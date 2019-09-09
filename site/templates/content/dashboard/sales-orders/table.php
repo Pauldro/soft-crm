@@ -57,7 +57,7 @@
 								<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
 							</a>
 						<?php else : ?>
-							<a href="<?= $orderpanel->generate_request_dplusnotesURL($order, $detail->linenbr); ?>" class="load-notes text-muted" title="View Order Notes" data-modal="<?= $orderpanel->modal; ?>">
+							<a href="<?= $orderpanel->generate_request_dplusnotesURL($order, 0); ?>" class="load-notes text-muted" title="View Order Notes" data-modal="<?= $orderpanel->modal; ?>">
 								<i class="material-icons md-36" aria-hidden="true">&#xE0B9;</i>
 							</a>
 						<?php endif; ?>
