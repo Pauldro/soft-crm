@@ -1,7 +1,7 @@
 <?php
 	//$qnbr = is defined in notes router
 	//$linenbr is defined in notes-router
-	$notes = get_qnotes(session_id(), $ordn, $linenbr, Qnote::get_qnotetype('sales-orders'), true); // TRUE is USE CLASS 
+	$notes = get_qnotes(session_id(), $ordn, $linenbr, Qnote::get_qnotetype('sales-orders'), true); // TRUE is USE CLASS
 ?>
 
 <div class="panel panel-primary">
@@ -44,7 +44,7 @@
 			</div>
 			<div class="form-group col-xs-6 col-sm-offset-1 col-sm-2 hidden">
 				<label class="control-label">Acknowledgement</label>
-				<input type="checkbox" name="form6" id="note5" class="check-toggle" data-size="small" data-width="73px" value="Y">
+				<input type="checkbox" name="form5" id="note5" class="check-toggle" data-size="small" data-width="73px" value="Y">
 			</div>
 		</div>
 
