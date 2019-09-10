@@ -139,6 +139,19 @@
 				"FORM4=$note->form4",
 				"FORM5=$note->form5"
 			);
+
+			if ($note->key2 > 0) {
+				if ($note->rectype == 'SORD') {
+					$orderdetail = SalesOrderDetail::load(session_id(), $note->key1, $note->key2);
+					$orderdetail->set('hasnotes', 'Y');
+					$session->sql = $orderdetail->update();
+				}
+				if ($note->rectype == 'QUOT') {
+					$quotedetail = QuoteDetail::load(session_id(), $note->key1, $note->key2);
+					$quotedetail->set('hasnotes', 'Y');
+					$session->sql = $quotedetail->update();
+				}
+			}
 			break;
 	}
 
