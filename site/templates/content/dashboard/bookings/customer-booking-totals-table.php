@@ -1,7 +1,7 @@
 <?php $custbookings = $bookingspanel->get_bookingtotalsbycustomer(); ?>
 <table class="table table-bordered table-condensed table-striped" id="bookings-by-customer">
-	<thead> 
-		<tr><th>Customer</th> <th>Amount</th> </tr> 
+	<thead>
+		<tr><th>Customer</th> <th>Amount</th> </tr>
 	</thead>
 	<tbody>
 		<?php foreach ($custbookings as $custbooking) : ?>
